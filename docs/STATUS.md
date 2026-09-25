@@ -14,6 +14,22 @@
 
 ## >>> RESUME HERE <<<
 
+**S1 SLIDES DONE 2026-09-25:** `docs/deck/DRISHTI_SIH26102_v2.pptx` (+ `.pdf`; copies in
+`~/Downloads`). Six slides in the team's SIH template (title, proposed solution, technical
+approach, feasibility, impact, research), rebuilt from measurements of their deck
+(`docs/deck/spec/page*.json`) by `docs/deck/build.js`; render through real PowerPoint with
+`docs/deck/render.ps1`. Facts learned doing it:
+- CAG Report 31 of 2010-11 annexure TOTAL rows: Annex 7.2 plaques not erected = 4,918 works,
+  31 DAs, Rs 100.20 cr; Annex 4.7 incomplete works = 12,006 works, 71 DAs, Rs 279.99 cr.
+  **`~/saakshya/data/raw/cag/cag_findings.json` is unreliable** (column mix-ups, wrong totals) -
+  read the TOTAL rows in `mplads_cag2010_annexures.txt` instead.
+- The team's "Rs 9.16 Cr on 518 works" is not in that report; replaced, flagged to the user.
+- 45 vs 75 days: the 2016 text says sanction in 75 days / reject in 45; secondary sources quote
+  2023 wording "sanction/rejection ... within 45 days". The 2023 PDF could not be fetched
+  (mplads.gov.in refused the connection) - ask the user to download it in a browser, then
+  update `contracts`/validation clocks.
+- Montserrat (title-slide labels) is not installed on this PC; the team's PowerPoint has it.
+
 **2026-09-25: the user approved DRISHTI v2 (12 agents).** Order now (design §8):
 1. **M0 hosting** - needs `! npx supabase login` (Vercel login DONE 2026-09-25).
 2. **S1 slides** - the user will send "the other ppt we are working on" for the art style;
