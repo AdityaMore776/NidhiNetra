@@ -401,7 +401,7 @@ function chrome(s, title, pageNo, { logoTitle = false } = {}) {
   chrome(s, "IMPACT AND BENEFITS", 5);
   label(s, "IMPACT ON TARGET STAKEHOLDERS", 48.6, 124);
   const who = [
-    [48, "landmark", "Ministry (MoSPI)", ["National risk heat-map by state & district", "Spot systemic issues & guideline gaps", "Evidence-backed reports for Parliament", "Every agent's accuracy tracked openly"]],
+    [48, "landmark", "Ministry (MoSPI)", ["National risk heat-map by state & district", "Spot systemic issues & guideline gaps", "Evidence-backed reports for Parliament", "Agent accuracy tracked openly"]],
     [390, "sitemap", "State Nodal Authorities", ["District & agency league tables", "Escalate stalled or high-risk works", "Track follow-up on every alert", "Spot contractor concentration"]],
     [733, "map-location-dot", "District Authorities", ["Daily ranked alert queue with evidence", "Inspection plan with optimised route", "Pre-sanction check in the 45-day window", "One-click PDF evidence brief"]],
     [1075, "user-tie", "Members of Parliament", ["Live status of recommended works", "Early warning on delays & idle funds", "Citizens confirm completed assets", "Transparent record builds public trust"]],
@@ -410,7 +410,7 @@ function chrome(s, title, pageNo, { logoTitle = false } = {}) {
     box(s, x, 161, 317, 266, { fill: C.light, r: 11 });
     iconCircle(s, ic, x + 19, 181, 64);
     text(s, head, x + 96, 181, 212, 64, { bold: true, size: 19.7, color: C.navy, valign: "middle" });
-    text(s, bullets(items), x + 30, 262, 276, 160, { size: 17.5, paraAfter: 4 });
+    text(s, bullets(items), x + 30, 262, 276, 160, { size: 17.5, paraAfter: 2 });
   }
 
   label(s, "BENEFITS", 48.6, 457);
@@ -430,7 +430,7 @@ function chrome(s, title, pageNo, { logoTitle = false } = {}) {
   label(s, "EXPECTED OUTCOMES", 961, 457, 430);
   const out = [
     [487, true, "100%", "of works screened daily; 2,09,993 real works already done"],
-    [580, false, "0.4%", "flagged for review: a queue District Authorities can clear"],
+    [580, false, "0.13%", "flagged for review: a queue District Authorities can clear"],
     [673, false, "2 in 3", "completed works have certificates or photos DRISHTI can verify"],
   ];
   for (const [y, dark, big, small] of out) {
@@ -440,8 +440,9 @@ function chrome(s, title, pageNo, { logoTitle = false } = {}) {
     text(s, small, 1116, y + 6, 266, 63, { size: 16.5, color: dark ? C.grey : C.dark, valign: "middle" });
   }
   s.addNotes([
-    "Measured on the real eSAKSHI export in the prototype (2026-09-25): 2,09,993 works screened; 847 (0.40%)",
-    "flagged Medium for review by the cost and record checks, none High yet. 'Two in three': about two-thirds of",
+    "Measured on the real eSAKSHI export in the live prototype (2026-09-26): 2,09,993 works screened; 276 (0.13%)",
+    "flagged Medium for review (253 on price), none High yet. Date errors from bulk entry when eSAKSHI opened are",
+    "listed once per office (22 offices) instead of filling the queue. 'Two in three': about two-thirds of",
     "completed works carry an attachment on eSAKSHI (65.9% of completed 18th Lok Sabha works in the export).",
   ].join(" "));
 }

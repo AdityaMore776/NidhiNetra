@@ -14,6 +14,20 @@
 
 ## >>> RESUME HERE <<<
 
+**M0 IS LIVE (2026-09-26): https://drishti-lyart.vercel.app** (Vercel project `drishti`,
+team aditya-more-s-dreamscapeproject, auto-deploys on push to `main`; Vercel Services works on
+Hobby). Database: Supabase via the Vercel marketplace (`drishti-db`, bom1 Mumbai, free plan);
+env in `.env.local` (gitignored, pulled by the CLI). Bulk jobs: `data/with_env.py load_db.py`,
+`data/with_env.py batch_assess.py` (session pooler; never prints secrets). Demo logins:
+`.demo-logins.txt` (gitignored) - ministry@ / district@ (Pratapgarh, LGD 173) / field@drishti.demo.
+Verified live with Playwright: login, dashboard (2,09,993 works), district scoping (1,140 works).
+
+Queue after porting T16/T18 (impossible dates judged by quarter; concentrated offices listed
+once on the dashboard): **847 -> 276 works (0.13%)**, 253 on price; 22 offices listed.
+Known follow-ups: first load after a deploy takes a few seconds (cold start + aggregation over
+2.1 lakh rows - consider summary tables); district officers' map could zoom to their district.
+
+
 **S1 SLIDES DONE 2026-09-25:** `docs/deck/DRISHTI_SIH26102_v2.pptx` (+ `.pdf`; copies in
 `~/Downloads`). Six slides in the team's SIH template (title, proposed solution, technical
 approach, feasibility, impact, research), rebuilt from measurements of their deck
@@ -115,4 +129,4 @@ Rebuild data: `data/build_corpus.py` → `data/build_stats.py` (asserts AD-106 f
 
 ## Live links
 
-- Production: (not deployed yet)
+- Production: https://drishti-lyart.vercel.app
