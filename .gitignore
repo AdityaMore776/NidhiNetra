@@ -28,3 +28,4 @@ eval/work/
 .DS_Store
 Thumbs.db
 *.egg-info/
+data/evidence/
