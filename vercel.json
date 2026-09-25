@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "web": { "root": "apps/web" },
+    "engine": { "root": "apps/engine", "entrypoint": "drishti.main:app" }
+  },
+  "rewrites": [
+    { "source": "/api/v1/(.*)", "destination": { "service": "engine" } },
+    { "source": "/(.*)", "destination": { "service": "web" } }
+  ]
+}
