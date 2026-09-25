@@ -26,7 +26,7 @@ class StatsStore:
     unit_models: dict[str, UnitRateModel] = field(default_factory=dict)
 
     @classmethod
-    def from_rows(cls, cohorts, durations, unit_models) -> "StatsStore":
+    def from_rows(cls, cohorts, durations, unit_models) -> StatsStore:
         s = cls()
         for r in cohorts:
             if r["n"] < MIN_COHORT:
@@ -42,7 +42,7 @@ class StatsStore:
         return s
 
     @classmethod
-    def load(cls, url: str) -> "StatsStore":
+    def load(cls, url: str) -> StatsStore:
         with psycopg.connect(url, prepare_threshold=None, row_factory=dict_row) as con:
             return cls.from_rows(
                 con.execute("SELECT * FROM cohort_stats").fetchall(),

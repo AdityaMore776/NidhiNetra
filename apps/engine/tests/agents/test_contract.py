@@ -2,8 +2,7 @@ import json
 
 import pytest
 
-from drishti.agents.contract import (AgentResult, BANNED_WORDS, Finding, Status,
-                                     check_plain_language)
+from drishti.agents.contract import BANNED_WORDS, AgentResult, Finding, Status, check_plain_language
 
 
 def _result(**kw):

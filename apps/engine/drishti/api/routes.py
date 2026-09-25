@@ -14,9 +14,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from drishti import config
 from drishti.agents.statistical.cohort import StatsStore
 from drishti.auth import Principal, current_user
-from drishti.batch import WORK_COLUMNS, assess_one
+from drishti.batch import WORK_COLUMNS, _normalise, assess_one
 from drishti.db import connect
-from drishti.batch import _normalise
 from drishti.pipeline.orchestrator import AGENT_ORDER, QUESTIONS, Context, assess_work
 
 router = APIRouter(prefix="/api/v1")

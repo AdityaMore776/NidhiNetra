@@ -19,3 +19,8 @@ pythonpath = ["."]
 [tool.ruff]
 line-length = 100
 target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+# B008: FastAPI declares dependencies as defaults. UP042: str+Enum kept for JSON clarity.
+ignore = ["B008", "UP042"]

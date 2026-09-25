@@ -2,8 +2,7 @@ import math
 
 import pytest
 
-from drishti.agents.statistical.band import (Cohort, cost_risk, cost_verdict, shrunk_sd,
-                                              zscore)
+from drishti.agents.statistical.band import Cohort, cost_risk, cost_verdict, shrunk_sd, zscore
 
 
 def _cohort():

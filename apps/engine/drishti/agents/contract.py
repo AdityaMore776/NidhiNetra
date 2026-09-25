@@ -89,7 +89,7 @@ class AgentResult:
         return d
 
     @classmethod
-    def from_json(cls, d: dict[str, Any]) -> "AgentResult":
+    def from_json(cls, d: dict[str, Any]) -> AgentResult:
         d = dict(d)
         d["findings"] = [Finding(**f) for f in d.get("findings", [])]
         return cls(**d)

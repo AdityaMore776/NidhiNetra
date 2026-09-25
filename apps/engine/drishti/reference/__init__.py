@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from functools import lru_cache
+from functools import cache
 from pathlib import Path
 
 import yaml
@@ -10,7 +10,7 @@ import yaml
 HERE = Path(__file__).resolve().parent
 
 
-@lru_cache(maxsize=None)
+@cache
 def _load(name: str) -> dict:
     return yaml.safe_load((HERE / name).read_text(encoding="utf-8"))
 

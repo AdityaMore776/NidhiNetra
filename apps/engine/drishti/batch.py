@@ -8,7 +8,7 @@ per work.
 from __future__ import annotations
 
 import json
-from typing import Iterable
+from collections.abc import Iterable
 
 import psycopg
 from psycopg.rows import dict_row
