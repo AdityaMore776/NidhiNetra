@@ -56,13 +56,25 @@ def reads_as_bundle(text: str | None) -> bool:
     return bool(BULK_WORDS.search(t) or BULK_LIST.search(t))
 
 
-def stated_length(text: str | None) -> float:
-    """Metres named in the description, or NaN when none is usable."""
+LENGTH_KM = re.compile(r"(\d+(?:\.\d+)?)\s*(?:km|kms|kilomet(?:er|re)s?)\b", re.I)
+
+
+def stated_length(text: str | None, allow_km: bool = False) -> float:
+    """Metres named in the description, or NaN when none is usable.
+
+    The fitted price curve (data/build_stats.py) is measured on metres only,
+    exactly as the old build measured it, so allow_km stays off there. The agent
+    turns it on when judging one work: "1.2 Km black top road" is a length too.
+    """
+    v = math.nan
     m = LENGTH.search(text or "")
-    if not m:
-        return math.nan
-    try:
-        v = float(m.group(1).replace(",", ""))
-    except ValueError:
-        return math.nan
+    if m:
+        try:
+            v = float(m.group(1).replace(",", ""))
+        except ValueError:
+            v = math.nan
+    elif allow_km:
+        k = LENGTH_KM.search(text or "")
+        if k:
+            v = float(k.group(1)) * 1000.0
     return v if MIN_LENGTH_M <= v <= MAX_LENGTH_M else math.nan

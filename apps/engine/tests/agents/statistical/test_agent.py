@@ -105,3 +105,11 @@ def test_countable_items_admit_the_bulk_explanation():
     assert r.verdict == "COST_ABOVE_PEERS"
     assert "many units" in r.headline
     assert r.confidence == pytest.approx(0.6)
+
+
+def test_a_road_stated_in_kilometres_gets_a_per_metre_row(stats):
+    r = assess(_work(amount=29_495_741.0,
+                     description="Laying of 1.2 Km Black Top Road in Gangaram Village"),
+               stats, AS_OF)
+    row = next(x for x in r.evidence["comparison"] if x["metric"] == "Cost per metre")
+    assert row["this_work"] == pytest.approx(29_495_741.0 / 1200.0)

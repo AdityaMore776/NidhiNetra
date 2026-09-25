@@ -46,3 +46,11 @@ def test_stated_length_refuses_widths_and_typos():
 def test_real_bulk_orders_the_first_regex_missed(text):
     # read off the top of the 2026-09-25 dry run over the real corpus
     assert reads_as_bundle(text)
+
+
+def test_kilometres_are_read_only_when_asked():
+    assert math.isnan(stated_length("Laying of 1.2 Km Black Top Road in Gangaram Village"))
+    assert stated_length("Laying of 1.2 Km Black Top Road", allow_km=True) == pytest.approx(1200.0)
+    assert stated_length("CC road 450 mtr", allow_km=True) == 450.0
+    # 25 km is a corridor, not one village road
+    assert math.isnan(stated_length("road of 25 km", allow_km=True))

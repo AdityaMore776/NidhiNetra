@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
+/* Colours sampled from the team's SIH deck, so each agent on screen carries the
+   colour of the feature it delivers on the Proposed Solution slide. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f6f7fb;
+  --surface: #ffffff;
+  --foreground: #1b1f2a;
+  --muted: #5d6475;
+  --line: #e3e6ee;
+  --navy: #1e3a6e;
+  --site: #70c6ab;
+  --reuse: #9469e5;
+  --duplicate: #ef558a;
+  --statistical: #f48137;
+  --fusion: #2fb0ae;
+  --inputs: #2e9adf;
+  --high: #d6344a;
+  --medium: #f0a020;
+  --low: #3aa76d;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-navy: var(--navy);
+  --color-site: var(--site);
+  --color-reuse: var(--reuse);
+  --color-duplicate: var(--duplicate);
+  --color-statistical: var(--statistical);
+  --color-fusion: var(--fusion);
+  --color-inputs: var(--inputs);
+  --color-high: var(--high);
+  --color-medium: var(--medium);
+  --color-low: var(--low);
+  --font-sans: var(--font-inter);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), "Segoe UI", system-ui, sans-serif;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.maplibregl-ctrl-attrib {
+  font-size: 10px;
 }

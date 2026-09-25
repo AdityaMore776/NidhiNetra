@@ -62,7 +62,7 @@ def _length_m(work: dict) -> float:
         return float(q)
     if q and unit == "km":
         return float(q) * 1000.0
-    return stated_length(work.get("description"))
+    return stated_length(work.get("description"), allow_km=True)
 
 
 def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
