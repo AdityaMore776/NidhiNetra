@@ -107,6 +107,32 @@ def districts(user: Principal = Depends(current_user)) -> list[dict]:
             for r in rows]
 
 
+@router.get("/dashboard/offices")
+def offices(user: Principal = Depends(current_user)) -> list[dict]:
+    """Implementing offices whose completion dates need checking as a whole.
+
+    An office that records many works as completed before they were recommended has a
+    recording practice, not many separate problems (validation/timeline.py), so it is
+    listed here once instead of flooding the review queue.
+    """
+    timeline = _stats().timeline
+    rows = timeline.concentrated_offices() if timeline else []
+    if not rows:
+        return []
+    where, params = _scope(user)
+    with connect() as con:
+        places = con.execute(
+            f"SELECT w.agency_name, max(w.district_lgd) AS district_lgd, "
+            f"max(w.district_name) AS district_name, max(w.state_name) AS state_name "
+            f"FROM works w WHERE w.agency_name = ANY(%s) AND {where} GROUP BY w.agency_name",
+            ([r["agency_name"] for r in rows], *params)).fetchall()
+    place = {p["agency_name"]: p for p in places}
+    return [{**r, "district_lgd": place[r["agency_name"]]["district_lgd"],
+             "district_name": place[r["agency_name"]]["district_name"],
+             "state_name": place[r["agency_name"]]["state_name"]}
+            for r in rows if r["agency_name"] in place]
+
+
 def _list(user: Principal, *, q: str | None, district: str | None, wtype: str | None,
           band: str | None, review_only: bool, page: int) -> dict:
     where, params = _scope(user)

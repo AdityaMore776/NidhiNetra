@@ -69,6 +69,17 @@ export interface DistrictRow {
   share: number;
 }
 
+export interface OfficeRow {
+  agency_name: string;
+  completed: number;
+  bad: number;
+  rate: number;
+  lift: number;
+  district_lgd: string | null;
+  district_name: string | null;
+  state_name: string | null;
+}
+
 export interface WorkRow {
   work_id: string;
   source: "REAL" | "SCENARIO" | "LIVE";

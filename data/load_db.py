@@ -30,6 +30,8 @@ TABLES = {
     "duration_stats": ["work_type_code", "n", "p50", "p90", "p98"],
     "unit_rate_models": ["work_type_code", "unit", "n", "slope", "intercept", "resid_sd",
                          "anchor_low", "anchor_high", "anchor_label"],
+    "timeline_quarters": ["quarter", "n", "bad"],
+    "timeline_agencies": ["agency_name", "completed", "bad"],
 }
 MAX_DB_MB = 400
 
@@ -38,7 +40,7 @@ def load(url: str) -> None:
     print("migrations applied:", migrate.apply(url) or "none pending")
     with psycopg.connect(url, prepare_threshold=None) as con:
         con.execute("TRUNCATE assessments, works, districts, cohort_stats, duration_stats, "
-                    "unit_rate_models")
+                    "unit_rate_models, timeline_quarters, timeline_agencies")
         for table, cols in TABLES.items():
             t0 = time.time()
             df = pd.read_parquet(BUILD / f"{table}.parquet")

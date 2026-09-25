@@ -36,3 +36,11 @@ docs/deck/preview/
 .vercel
 .env*
 !.env.example
+
+# Supabase agent skill installed by `vercel integration add` (local tooling)
+.agents/
+.claude/skills/
+skills-lock.json
+
+# demo account passwords, printed once by data/seed_users.py
+.demo-logins.txt

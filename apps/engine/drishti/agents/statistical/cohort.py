@@ -15,6 +15,7 @@ from psycopg.rows import dict_row
 
 from drishti.agents.statistical.band import MIN_COHORT, Cohort
 from drishti.agents.statistical.unit_rate import UnitRateModel
+from drishti.validation.timeline import TimelineRates
 
 BACKOFF = ("type_district", "type_state", "type")
 
@@ -24,10 +25,17 @@ class StatsStore:
     cohorts: dict[tuple[str, str, str], Cohort] = field(default_factory=dict)
     durations: dict[str, dict] = field(default_factory=dict)
     unit_models: dict[str, UnitRateModel] = field(default_factory=dict)
+    # How common impossible dates were per quarter and per office (validation/timeline.py).
+    timeline: TimelineRates | None = None
 
     @classmethod
-    def from_rows(cls, cohorts, durations, unit_models) -> StatsStore:
+    def from_rows(cls, cohorts, durations, unit_models, quarters=(), agencies=()) -> StatsStore:
         s = cls()
+        quarters, agencies = list(quarters), list(agencies)
+        if quarters:
+            s.timeline = TimelineRates.from_counts(
+                {r["quarter"]: (int(r["n"]), int(r["bad"])) for r in quarters},
+                {r["agency_name"]: (int(r["completed"]), int(r["bad"])) for r in agencies})
         for r in cohorts:
             if r["n"] < MIN_COHORT:
                 continue
@@ -47,7 +55,9 @@ class StatsStore:
             return cls.from_rows(
                 con.execute("SELECT * FROM cohort_stats").fetchall(),
                 con.execute("SELECT * FROM duration_stats").fetchall(),
-                con.execute("SELECT * FROM unit_rate_models").fetchall())
+                con.execute("SELECT * FROM unit_rate_models").fetchall(),
+                con.execute("SELECT * FROM timeline_quarters").fetchall(),
+                con.execute("SELECT * FROM timeline_agencies").fetchall())
 
     def cohort(self, work_type: str | None, district: str | None,
                state: str | None) -> Cohort | None:

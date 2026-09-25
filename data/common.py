@@ -41,5 +41,7 @@ def load_context() -> Context:
     stats = StatsStore.from_rows(
         pd.read_parquet(BUILD / "cohort_stats.parquet").to_dict("records"),
         pd.read_parquet(BUILD / "duration_stats.parquet").to_dict("records"),
-        pd.read_parquet(BUILD / "unit_rate_models.parquet").to_dict("records"))
+        pd.read_parquet(BUILD / "unit_rate_models.parquet").to_dict("records"),
+        pd.read_parquet(BUILD / "timeline_quarters.parquet").to_dict("records"),
+        pd.read_parquet(BUILD / "timeline_agencies.parquet").to_dict("records"))
     return Context(stats=stats, as_of=config.snapshot_date())

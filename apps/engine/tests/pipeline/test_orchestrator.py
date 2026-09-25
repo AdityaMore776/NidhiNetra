@@ -65,3 +65,15 @@ def test_row_is_json_ready(ctx):
     row = assess_work(_work(), ctx).to_row()
     json.dumps(row["agents"]), json.dumps(row["parts"]), json.dumps(row["validation"])
     assert row["band"] in ("HIGH", "MEDIUM", "LOW")
+
+
+def test_validation_is_judged_against_the_quarter(ctx):
+    from drishti.validation.timeline import TimelineRates
+
+    ctx.stats.timeline = TimelineRates.from_counts({"2024-Q1": (25086, 443)}, {},
+                                                   overall=(85773, 1096))
+    a = assess_work(_work(recommended_date=date(2024, 2, 1), completed_date=date(2023, 11, 1),
+                          status="COMPLETED", amount=158_000.0), ctx)
+    issue = next(i for i in a.validation if i.code == "IMPOSSIBLE_TIMELINE")
+    assert issue.risk == pytest.approx(0.10)
+    assert a.fused.band == "LOW"

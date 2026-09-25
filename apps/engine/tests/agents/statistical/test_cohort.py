@@ -53,3 +53,19 @@ def test_loads_from_the_database(migrated_url):
     s = StatsStore.load(migrated_url)
     assert s.cohort("ROAD_CC", "1", "2").n == 100
     assert s.p98("ROAD_CC") == 900
+
+
+def test_timeline_rates_come_from_the_database(migrated_url):
+    with psycopg.connect(migrated_url) as con:
+        con.execute("INSERT INTO timeline_quarters VALUES "
+                    "('2024-Q1', 25086, 443), ('2024-Q3', 3719, 18)")
+        con.execute("INSERT INTO timeline_agencies VALUES ('Office A', 400, 85)")
+        con.commit()
+    s = StatsStore.load(migrated_url)
+    assert s.timeline.overall == pytest.approx(461 / 28805)
+    assert s.timeline.agency_concentration("Office A").bad == 85
+
+
+def test_no_timeline_tables_means_no_rates():
+    s = StatsStore.from_rows(cohorts=[], durations=[], unit_models=[])
+    assert s.timeline is None

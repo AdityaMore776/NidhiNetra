@@ -30,15 +30,7 @@ def test_completed_before_recommended():
     i = next(i for i in issues if i.code == "IMPOSSIBLE_TIMELINE")
     assert i.severity == Severity.WARN
     assert "152 days" in i.message
-    assert i.risk == pytest.approx(0.30)
-
-
-def test_migration_window_is_named_and_weighs_less():
-    issues = validate(_work(recommended_date=date(2023, 8, 1),
-                            completed_date=date(2023, 2, 1), status="COMPLETED"), AS_OF)
-    i = next(i for i in issues if i.code == "IMPOSSIBLE_TIMELINE")
-    assert "back-entered" in i.message
-    assert i.risk == pytest.approx(0.10)
+    assert i.risk == pytest.approx(0.30)   # no quarter rates given: judged on its own
 
 
 def test_completion_after_the_data_ends():

@@ -92,6 +92,22 @@ def road_curve(w: pd.DataFrame) -> pd.DataFrame:
         "anchor_high": ROAD_ANCHOR[1], "anchor_label": ROAD_ANCHOR[2]}])
 
 
+def timeline_counts(works: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """How often "completed before recommended" (by 7+ days) occurs, per recommendation
+    quarter and per implementing office. Read by validation/timeline.py."""
+    d = works[works.recommended_date.notna() & works.completed_date.notna()].copy()
+    rec = pd.to_datetime(d.recommended_date)
+    gap = (rec - pd.to_datetime(d.completed_date)).dt.days
+    d["bad"] = (gap >= 7).astype(int)
+    d["quarter"] = rec.dt.year.astype(str) + "-Q" + rec.dt.quarter.astype(str)
+    q = d.groupby("quarter").agg(n=("bad", "size"), bad=("bad", "sum")).reset_index()
+    a = (d[d.agency_name.notna()].groupby("agency_name")
+         .agg(completed=("bad", "size"), bad=("bad", "sum")).reset_index())
+    print(f"impossible dates: {int(q.bad.sum()):,} of {int(q.n.sum()):,} works with both dates "
+          f"({q.bad.sum() / q.n.sum():.2%}; measured 1,096 of 85,773 on 2026-09-25)")
+    return q, a
+
+
 def main() -> None:
     works = pd.read_parquet(BUILD / "works.parquet")
     w = works[(works.amount > 0) & works.work_type_code.notna()].copy()
@@ -101,6 +117,9 @@ def main() -> None:
     c = c[c.n >= MIN_COHORT]
     d = durations(works)
     u = road_curve(w)
+    tq, ta = timeline_counts(works)
+    tq.to_parquet(BUILD / "timeline_quarters.parquet", index=False)
+    ta.to_parquet(BUILD / "timeline_agencies.parquet", index=False)
     c.to_parquet(BUILD / "cohort_stats.parquet", index=False)
     d.to_parquet(BUILD / "duration_stats.parquet", index=False)
     u.to_parquet(BUILD / "unit_rate_models.parquet", index=False)

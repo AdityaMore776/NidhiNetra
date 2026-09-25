@@ -101,3 +101,20 @@ def test_quiet_works_are_stored_compact_and_rebuilt_when_opened(client, api_db):
     w = client.get("/api/v1/works/W-TYPICAL", headers=MINISTRY).json()["assessment"]
     assert [r["agent"] for r in w["agents"]][-1] == "statistical"
     assert w["agents"][-1]["verdict"] == "COST_TYPICAL"
+
+
+def test_offices_with_unreliable_completion_dates(client, api_db):
+    import psycopg
+
+    with psycopg.connect(api_db) as con:
+        con.execute("UPDATE works SET agency_name = 'Anand(DISTRICT COLLECTOR)' "
+                    "WHERE district_lgd = '639'")
+        con.execute("INSERT INTO timeline_quarters VALUES ('2024-Q3', 3719, 18)")
+        con.execute("INSERT INTO timeline_agencies VALUES ('Anand(DISTRICT COLLECTOR)', 200, 40), "
+                    "('Kheda(DISTRICT COLLECTOR)', 300, 1)")
+        con.commit()
+    from drishti.api import routes
+    routes._stats.cache_clear()
+    rows = client.get("/api/v1/dashboard/offices", headers=MINISTRY).json()
+    assert [r["agency_name"] for r in rows] == ["Anand(DISTRICT COLLECTOR)"]
+    assert rows[0]["district_name"] == "Anand" and rows[0]["bad"] == 40

@@ -4,18 +4,20 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { IndiaMap } from "@/components/IndiaMap";
 import { WorkTable } from "@/components/ui";
-import { api, type DistrictRow, type Page, type Summary, type WorkRow } from "@/lib/api";
+import { api, type DistrictRow, type OfficeRow, type Page, type Summary, type WorkRow } from "@/lib/api";
 import { AGENTS, BAND_COLOR, count, inr } from "@/lib/format";
 
 export default function Dashboard() {
   const [s, setS] = useState<Summary | null>(null);
   const [districts, setDistricts] = useState<DistrictRow[]>([]);
   const [top, setTop] = useState<WorkRow[]>([]);
+  const [offices, setOffices] = useState<OfficeRow[]>([]);
 
   useEffect(() => {
     api<Summary>("/dashboard/summary").then(setS);
     api<DistrictRow[]>("/dashboard/districts").then(setDistricts);
     api<Page<WorkRow>>("/queue").then((p) => setTop(p.items.slice(0, 8)));
+    api<OfficeRow[]>("/dashboard/offices").then(setOffices);
   }, []);
 
   if (!s) return <p className="text-muted text-sm">Loading…</p>;
@@ -91,6 +93,48 @@ export default function Dashboard() {
           </p>
         </section>
       </div>
+
+      {offices.length > 0 && (
+        <section className="card p-4 space-y-3">
+          <div>
+            <h2 className="font-semibold">Offices whose completion dates need checking</h2>
+            <p className="text-xs text-muted">
+              These offices record many works as completed before they were recommended. That is a record-keeping habit, so it is
+              listed here once per office instead of filling the review queue work by work.
+            </p>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-xs text-muted border-b border-line">
+                  <th className="py-2 pr-4 font-medium">Implementing office</th>
+                  <th className="py-2 pr-4 font-medium">District</th>
+                  <th className="py-2 pr-4 font-medium text-right">Works dated before recommendation</th>
+                  <th className="py-2 font-medium text-right">vs national rate</th>
+                </tr>
+              </thead>
+              <tbody>
+                {offices.slice(0, 8).map((o) => (
+                  <tr key={o.agency_name} className="border-b border-line last:border-0">
+                    <td className="py-2 pr-4">{o.agency_name}</td>
+                    <td className="py-2 pr-4 whitespace-nowrap">
+                      {o.district_name}
+                      <span className="text-xs text-muted">, {o.state_name}</span>
+                    </td>
+                    <td className="py-2 pr-4 text-right whitespace-nowrap">
+                      {count(o.bad)} of {count(o.completed)} ({(o.rate * 100).toFixed(1)}%)
+                    </td>
+                    <td className="py-2 text-right font-semibold whitespace-nowrap" style={{ color: "var(--medium)" }}>
+                      {o.lift.toFixed(0)}× higher
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {offices.length > 8 && <p className="text-xs text-muted">and {offices.length - 8} more offices.</p>}
+        </section>
+      )}
 
       <section className="space-y-3">
         <div className="flex items-end justify-between">

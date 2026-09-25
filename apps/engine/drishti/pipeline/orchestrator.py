@@ -87,7 +87,7 @@ def _run(agent: str, fn, *args) -> AgentResult:
 
 
 def assess_work(work: dict, ctx: Context) -> Assessment:
-    issues = validate(work, ctx.as_of)
+    issues = validate(work, ctx.as_of, ctx.stats.timeline)
     results = []
     for agent in AGENT_ORDER:
         if agent == "statistical":
