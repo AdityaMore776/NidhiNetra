@@ -39,3 +39,10 @@ def clause(clause_id: str) -> dict:
 
 def citation(clause_id: str) -> str:
     return f"MPLADS Guidelines (June 2016), para {clause(clause_id)['paragraph']}"
+
+
+def is_countable(code: str | None) -> bool:
+    """Items bought in units (lights, borewells, computers): a work's amount depends
+    on a count the published export does not carry."""
+    spec = work_types().get(code or "")
+    return bool(spec) and spec.get("unit") == "nos"

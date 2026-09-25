@@ -92,3 +92,16 @@ def test_not_assessable_is_said_out_loud(stats, kw, reason):
 def test_money_ahead_of_site_waits_for_site_progress(stats):
     r = assess(_work(), stats, AS_OF)
     assert any("Site Progress" in lim for lim in r.limitations)
+
+
+def test_countable_items_admit_the_bulk_explanation():
+    stats = StatsStore.from_rows(
+        cohorts=[{"level": "type_district", "work_type_code": "STREET_LIGHT", "key": "639",
+                  "n": 466, "p10": 4.0, "p50": 4.2, "p90": 4.5, "sd": 0.2}],
+        durations=[], unit_models=[])
+    work = _work(work_type_code="STREET_LIGHT", amount=2_000_000.0,
+                 description="Supply and installation of LED lights for the block")
+    r = assess(work, stats, AS_OF)
+    assert r.verdict == "COST_ABOVE_PEERS"
+    assert "many units" in r.headline
+    assert r.confidence == pytest.approx(0.6)

@@ -34,6 +34,7 @@ QUESTION = "Is the project cost unusual for similar works?"
 OUTSIDE_CEILING_INR = 2_500_000.0      # para 2.9, verified clause OUTSIDE_CONSTITUENCY_CEILING
 CEILING_RISK = 0.70
 LEVEL_CONFIDENCE = {"type_district": 0.85, "type_state": 0.7, "type": 0.55}
+COUNTABLE_CONFIDENCE = 0.6
 
 
 def inr(v: float) -> str:
@@ -95,9 +96,13 @@ def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
         "deviation_pct": (ratio - 1.0) * 100.0,
     }]
     compared = f"compared with {cohort.n:,} {cohort.description}"
+    countable = reference.is_countable(wtype)
     if verdict == "COST_ABOVE_PEERS":
         text = (f"Costs {ratio:.1f}x the typical amount for {type_name} works in "
                 f"{_place(work)} ({compared}).")
+        if countable:
+            text += (" For items counted in units, this can also mean many units filed "
+                     "as one work; the description does not say how many.")
         findings.append(Finding("COST_ABOVE_PEERS", text, hard=False, risk=risk,
                                 evidence={"z": z, "ratio": ratio}))
     elif verdict == "COST_BELOW_PEERS":
@@ -162,6 +167,12 @@ def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
     limitations.append("A peer median is not a schedule of rates: an unusual amount can "
                        "have an ordinary explanation (terrain, specification, scope).")
 
+    confidence = LEVEL_CONFIDENCE[cohort.level]
+    if countable and verdict == "COST_ABOVE_PEERS":
+        # The unit count is missing, so the outlier is ambiguous between a mispriced
+        # item and a bulk order; it is read with less confidence, not suppressed.
+        confidence = min(confidence, COUNTABLE_CONFIDENCE)
+
     top = max(findings, key=lambda f: f.risk, default=None)
     if top is None:
         headline = (f"Cost is within the usual range for {type_name} works in "
@@ -172,7 +183,7 @@ def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
         agent=AGENT, status=Status.ASSESSED,
         verdict=top.code if top else verdict,
         risk=top.risk if top else 0.0,
-        confidence=LEVEL_CONFIDENCE[cohort.level],
+        confidence=confidence,
         hard=any(f.hard for f in findings),
         headline=headline, version=VERSION, findings=findings, limitations=limitations,
         evidence={"comparison": comparison,

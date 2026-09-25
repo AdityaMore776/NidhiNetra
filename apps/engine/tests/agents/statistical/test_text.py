@@ -35,3 +35,14 @@ def test_stated_length_refuses_widths_and_typos():
     assert math.isnan(stated_length("road 5 mt width"))
     assert math.isnan(stated_length("road 20,000 mtr"))
     assert math.isnan(stated_length("no length here"))
+
+
+@pytest.mark.parametrize("text", [
+    "SUPPLY AND INSTALLATION OF LED SEMI HIGH MASK LIGHT AT 217 DIFFRENT PLACES IN DISTRICT",
+    "installation of semi high mast light in maximum 810 location of different gram panchayat",
+    "supply and installation of led semi high mast light as per list enclosed",
+    "PER LIGHT COST 283000 AND 60 DIFFERENT PLACE OF COST 16980000.00 (AS PER LIST)",
+])
+def test_real_bulk_orders_the_first_regex_missed(text):
+    # read off the top of the 2026-09-25 dry run over the real corpus
+    assert reads_as_bundle(text)

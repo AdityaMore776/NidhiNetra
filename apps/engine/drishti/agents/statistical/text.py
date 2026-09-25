@@ -1,8 +1,10 @@
 """What a work's description says about its size.
 
-Ported unchanged from ~/saakshya/docs/visual/analyse_costs.py, where every
-pattern was measured against the real corpus (AD-106): 8.8% of descriptions
-read as a bundle, 7.3% state a length.
+Ported from ~/saakshya/docs/visual/analyse_costs.py, where every pattern was
+measured against the real corpus (AD-106): 8.8% of descriptions read as a
+bundle, 7.3% state a length. Widened on 2026-09-25 after the first dry run
+over all real works: the top of the ranking was bulk light orders the first
+patterns missed ("217 DIFFRENT PLACES", "810 location", "as per list").
 
 A sanction that names a count or a list is many works filed as one. At 100x
 its peers it is either mispriced or many units under one work id, and the
@@ -25,10 +27,17 @@ BULK_COUNT = re.compile(r"\b(\d{1,4})\b(?:\s*\([^)]{0,40}\))?[\s\-,]{0,12}"
                         r"(?:\w+[\s\-]){0,3}?" + COUNTABLE, re.I)
 BULK_WORDS = re.compile(r"\b(?:one|two|three|four|five|six|seven|eight|nine|ten|twenty|"
                         r"thirty|forty|fifty|sixty|seventy|eighty|ninety)\s+hundred\b", re.I)
-BULK_LIST = re.compile(r"(?:sl\.?\s*no\.?|from)\s*\.?\s*\d+\s*(?:to|-)\s*\d+"
-                       r"|as\s+per\s+(?:the\s+)?(?:enclosed|attached)\s+list"
-                       r"|at\s+\d{1,4}\s+different\s+places"
-                       r"|at\s+different\s+places", re.I)
+
+# The corpus spells these "DIFFRENT PLACES", "60 DIFFERENT PLACE", "810 location".
+DIFFERENT = r"diff?e?rent"
+PLACES = r"(?:places?|locations?|sites?)"
+BULK_LIST = re.compile(
+    r"(?:sl\.?\s*no\.?|from)\s*\.?\s*\d+\s*(?:to|-)\s*\d+"
+    r"|as\s+per\s+(?:the\s+)?(?:enclosed\s+|attached\s+)?list"
+    r"|list\s+(?:enclosed|attached)"
+    r"|\b\d{1,4}\s+(?:" + DIFFERENT + r"\s+)?" + PLACES + r"\b"
+    r"|at\s+" + DIFFERENT + r"\s+" + PLACES,
+    re.I)
 
 # Below 10 m a number is a width or a diameter; above 10 km it is a typo or a
 # corridor, not one village road.
