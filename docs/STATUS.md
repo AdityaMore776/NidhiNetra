@@ -15,7 +15,7 @@ Done:
 - 2026-09-25: design approved; repo created; old repo snapshot-committed.
 
 Next:
-- Write `docs/plans/M0-foundations-statistical.md` (task-level, TDD), then build it.
+- Build `docs/plans/M0-foundations-statistical.md`, starting at Task 1 (hosting spike).
 
 ## Milestones
 
