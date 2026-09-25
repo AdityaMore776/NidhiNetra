@@ -6,10 +6,8 @@ prefix is part of each route rather than stripped by a rewrite.
 
 from fastapi import FastAPI
 
+from drishti.api.routes import router
+
 app = FastAPI(title="DRISHTI engine", version="0.1.0", docs_url="/api/v1/docs",
               openapi_url="/api/v1/openapi.json")
-
-
-@app.get("/api/v1/health")
-def health() -> dict:
-    return {"ok": True, "service": "drishti-engine"}
+app.include_router(router)
