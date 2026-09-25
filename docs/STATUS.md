@@ -2,7 +2,10 @@
 
 **Read this first. It is the single source of truth for where the build is.**
 
-- Design (approved 2026-09-25): `docs/specs/2026-09-25-drishti-prototype-design.md`
+- **Current design (approved 2026-09-25, v2): `docs/specs/2026-09-25-drishti-v2-full-agents-design.md`**
+  - 12 agents in 4 stages + 4 decision tools; real eSAKSHI evidence; head-to-head vs rival methods.
+  - Supersedes the 4-agent guardrail. Architecture/stack from the first design still apply:
+    `docs/specs/2026-09-25-drishti-prototype-design.md`.
 - Milestone task plans: `docs/plans/`
 - Old research build (read-only source for ported code and raw data): `~/saakshya`
   (snapshot commit `abf2da4`)
@@ -11,13 +14,20 @@
 
 ## >>> RESUME HERE <<<
 
-**Current milestone: M0 — Foundations + Statistical agent (target 30 Sept 2026).**
+**2026-09-25: the user approved DRISHTI v2 (12 agents).** Order now (design §8):
+1. **M0 hosting** - needs `! npx supabase login` (Vercel login DONE 2026-09-25).
+2. **S1 slides** - the user will send "the other ppt we are working on" for the art style;
+   build the slides from design §6 (pictorial, plain words, no file paths/test counts).
+3. **M1** - Evidence Harvester (public eSAKSHI endpoints, see design §1/§4; pilot, 1.5 s
+   between requests, free first test run of ~500 works) + Photo Forensics + Geo-Location.
+
+**M0 detail - Foundations + Statistical agent (target 30 Sept 2026).**
 
 **Built and tested locally (2026-09-25):** engine (123 tests, ruff clean), web
 (typecheck, lint, build clean), full real corpus assessed on a local Postgres.
 **Blocked on two user logins** before hosting:
 
-1. `! npx vercel login` — the Vercel CLI on this machine is logged out.
+1. ~~`! npx vercel login`~~ done 2026-09-25.
 2. `! npx supabase login` — then create the project from the CLI
    (`supabase projects create drishti --region ap-south-1`), write the URL, anon key,
    service-role key and pooler URLs into `~/drishti/.env` (gitignored) WITHOUT printing
