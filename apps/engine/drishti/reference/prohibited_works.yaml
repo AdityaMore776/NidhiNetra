@@ -1,0 +1,312 @@
+# =====================================================================
+# PROHIBITED WORKS UNDER MPLADS
+# =====================================================================
+# Verbatim from Annex 3.3 of the Comptroller and Auditor General of
+# India, Report No. 31 of 2010-11, "Performance Audit of the Members of
+# Parliament Local Area Development Scheme", published at cag.gov.in.
+#
+# This replaces a list previously assembled from secondary sources and
+# marked TBD-VERIFY throughout the codebase. It is an authoritative
+# government statement of the categories, quoted rather than paraphrased.
+#
+# ---------------------------------------------------------------------
+# NOW CROSS-CHECKED AGAINST THE SCHEME'S OWN ANNEXURE-II
+# ---------------------------------------------------------------------
+# The list below was assembled from an AUDITOR'S annexure. The scheme's
+# own guidelines carry the prohibition list directly, as Annexure-II,
+# "LIST OF WORKS PROHIBITED UNDER MPLADS". That document has now been
+# retrieved - June 2016 edition - and every item here checked against it.
+#
+# The correspondence is exact, and worth stating plainly: all thirteen
+# items CAG listed in 2010 appear as items 1 to 13 of the scheme's own
+# Annexure-II in 2016, in the same order. An audit annexure agreeing
+# item for item with the scheme text six years later is the strongest
+# corroboration available that this taxonomy is the right one.
+#
+# It also found three things a single source could not.
+#
+#   Two items were MISSING. Annexure-II items 15 and 16 - Swagat Dwars,
+#   and execution of works in unauthorized colonies - are prohibitions
+#   the platform did not know about, because the 2010 annexure predates
+#   them. Both are now here.
+#
+#   Item 14 reads "Deleted." in the source, with the numbering around it
+#   preserved. The annexure is amended item by item, which is exactly the
+#   mechanism `superseded_likely` models - and direct evidence that an
+#   item can stop applying while the list around it stands unchanged.
+#
+#   Each item's EXCEPTIONS are now recorded. The 2010 annexure gives the
+#   categories; the scheme text gives the carve-outs, and the carve-outs
+#   are where the false positives live. A crematorium inside the grounds
+#   of a place of worship is expressly permitted; so is re-boring a hand
+#   pump, which item 4 would otherwise read as maintenance.
+#
+# ---------------------------------------------------------------------
+# A CAVEAT THAT MATTERS, AND MUST NOT BE DROPPED
+# ---------------------------------------------------------------------
+# This is still not the CURRENT edition. The guidelines were revised in
+# April 2023, and mplads.gov.in, which hosts that edition, refuses
+# connections from outside its network. Item 5 is visibly out of date in
+# the 2016 text as well: it prohibits "all renovation and repair works",
+# yet the current published MPLADS data contains a live work category
+# called "Repair and Renovation" with 514 works recorded against it.
+#
+# So a match against this list is evidence that a work MAY fall outside
+# the scheme as the scheme stood in 2016. It is not proof that it falls
+# outside the scheme today. Each item records which sources carry it, and
+# an item no source of the current vintage supports stays unenforced.
+#
+# ---------------------------------------------------------------------
+# superseded_likely: THE CAVEAT, WITH A MECHANISM BEHIND IT
+# ---------------------------------------------------------------------
+# The caveat above was written and then not acted on, and the cost was
+# measurable: the ineligibility rule ran at 4.8% precision on the labelled
+# corpus, because two of the fourteen items are things the scheme now
+# openly funds. A warning in a comment does not stop a detector.
+#
+# An item marked `superseded_likely: true` is NOT enforced. It stays in
+# the file, with its text and the evidence that superseded it, because the
+# reasoning is worth keeping and because the item becomes enforceable
+# again the moment someone reads the 2023 document and finds it there.
+#
+# The evidence required is specific: the scheme's own live work-category
+# vocabulary offering a category the item prohibits. That is eSAKSHI
+# stating its own scope, which outranks a 2010 audit annexure, and it
+# updates itself when the scheme does. An intuition that an item "probably
+# doesn't apply any more" is not evidence and must not appear here.
+# =====================================================================
+
+version: 1
+source:
+  authority: Comptroller and Auditor General of India
+  document: Report No. 31 of 2010-11, Performance Audit of MPLADS
+  annexure: "3.3"
+  url: https://cag.gov.in/uploads/download_audit_report/2010/Union_Performance_Local_area_Development_Scheme_31_2010_annexures.pdf
+  vintage: 2010
+  supersedes_check_required: true
+
+# The scheme's own list, which the audit annexure above reports against.
+# Its enabling paragraph is verified in contracts/guidelines_clauses.yaml
+# as clause PROHIBITED_WORKS, and the annexure text itself is checked
+# against the source document by tests/test_guidelines.py.
+scheme_source:
+  authority: Ministry of Statistics and Programme Implementation
+  document: >-
+    Guidelines on Members of Parliament Local Area Development Scheme
+    (MPLADS)
+  edition: "2016-06"
+  edition_label: June 2016
+  annexure: "II"
+  annexure_heading: LIST OF WORKS PROHIBITED UNDER MPLADS
+  clause_id: PROHIBITED_WORKS
+  items_total: 16
+  items_deleted: ["14"]
+  vintage: 2016
+  is_current_edition: false
+
+items:
+  - id: GOVT_BUILDING
+    text: >-
+      Office and residential buildings belonging to Central, and State
+      Governments, their Departments, Government Agencies/Organizations
+      and Public Sector Undertakings.
+    keywords: [office building, staff quarters, residential building, rest house,
+               government quarters, administrative block]
+    verified_against_2023: false
+    annexure_ii_2016_item: "1"
+    verified_against_2016: true
+    exceptions:
+      - >-
+        Construction of a Railway Halt Station is permissible, subject to para 3.35.
+    superseded_likely: true
+    superseded_evidence: >-
+      eSAKSHI offers "Construction of Government office buildings (Post
+      office, Police station, Police chauki, etc.)" as a live work category.
+    note: >-
+      The residential half of this item may well still stand. It is
+      suppressed as a whole rather than split, because splitting it would
+      mean paraphrasing an authoritative text on our own authority - which
+      is what the previous secondary-source list did wrong.
+
+  - id: PRIVATE_BUILDING
+    text: >-
+      Office and residential buildings, and other works belonging to
+      private, cooperative and commercial organizations.
+    keywords: [private building, private land, niji bhumi, cooperative society building]
+    verified_against_2023: false
+    annexure_ii_2016_item: "2"
+    verified_against_2016: true
+
+  - id: COMMERCIAL
+    text: All works involving commercial establishments/units.
+    keywords: [commercial establishment, commercial complex, shop, market stall]
+    verified_against_2023: false
+    annexure_ii_2016_item: "3"
+    verified_against_2016: true
+
+  - id: MAINTENANCE
+    text: All maintenance works of any type.
+    keywords: [maintenance, annual maintenance, upkeep]
+    verified_against_2023: false
+    annexure_ii_2016_item: "4"
+    verified_against_2016: true
+    exceptions:
+      - >-
+        Re-boring of hand pumps is permissible, subject to para 3.32.
+    note: >-
+      Likely superseded. Treat with caution: the current scheme records
+      works under a live "Repair and Renovation" category.
+
+  - id: RENOVATION
+    text: >-
+      All renovation, and repair works except heritage and archeological
+      monuments and buildings with specific permission available from the
+      Archeological Survey of India.
+    keywords: [renovation, repair works]
+    verified_against_2023: false
+    annexure_ii_2016_item: "5"
+    verified_against_2016: true
+    exceptions:
+      - >-
+        Retrofitting of essential lifeline buildings - government hospitals, government schools, and public buildings to be used as shelters in an emergency - is permitted.
+      - >-
+        Heritage and archaeological monuments and buildings are permitted, with specific permission from the Archaeological Survey of India.
+    superseded_likely: true
+    superseded_evidence: >-
+      eSAKSHI's own work-category vocabulary offers "Renovation of Community
+      Hall and Public Centres" and "Renovation of ponds and lakes" as
+      selectable categories today, and records a live "Repair and Renovation"
+      work category. The scheme cannot be offering a category it prohibits.
+    note: >-
+      Enforcing this cost 672 false positives on the labelled corpus and
+      1,270 on the real national data - "Renovation of village pond" is an
+      eligible work, and the 2010 text says otherwise only because the 2010
+      scheme did.
+
+  - id: GRANTS_LOANS
+    text: >-
+      Grants and loans, contribution to any Central and State/UT Relief
+      Funds.
+    keywords: [grant, loan, relief fund, contribution to fund]
+    verified_against_2023: false
+    annexure_ii_2016_item: "6"
+    verified_against_2016: true
+
+  - id: NAMED_ASSET
+    text: Assets to be named after any person.
+    keywords: [named after, statue, memorial, smarak, pratima, murti, bust]
+    verified_against_2023: false
+    annexure_ii_2016_item: "7"
+    verified_against_2016: true
+
+  - id: MOVABLE_ITEMS
+    text: >-
+      Purchase of all movable items except vehicles, earth movers, and
+      equipments meant for hospital, educational, sports, drinking water
+      and sanitation purposes.
+    keywords: []
+    verified_against_2023: false
+    annexure_ii_2016_item: "8"
+    verified_against_2016: true
+    exceptions:
+      - >-
+        The special items and items of non durable nature listed in Annexure-IIA are permitted.
+    note: >-
+      Has broad exceptions, so a keyword match is unsafe. Left without
+      keywords deliberately: this item needs the Norm Agent reading the
+      guideline text, not a substring test.
+
+  - id: LAND_ACQUISITION
+    text: Acquisition of land or any compensation for land acquired.
+    keywords: [land acquisition, land purchase, bhumi kharid, compensation for land]
+    verified_against_2023: false
+    annexure_ii_2016_item: "9"
+    verified_against_2016: true
+
+  - id: REIMBURSEMENT
+    text: >-
+      Reimbursement of any type of completed or partly completed works or
+      items.
+    keywords: [reimbursement, reimburse]
+    verified_against_2023: false
+    annexure_ii_2016_item: "10"
+    verified_against_2016: true
+
+  - id: INDIVIDUAL_BENEFIT
+    text: Assets for individual/family benefits.
+    keywords: [individual beneficiary, family benefit, personal use]
+    verified_against_2023: false
+    annexure_ii_2016_item: "11"
+    verified_against_2016: true
+    exceptions:
+      - >-
+        Tricycles including motorised, artificial limbs, and battery operated motorised wheelchairs for differently abled deserving persons are permitted, per para 3.28.
+      - >-
+        Funds may be given to a Centrally Sponsored Scheme that provides assets for individual or family use, provided the Member neither alters the scheme criteria nor nominates individual beneficiaries.
+
+  - id: RECURRING_EXPENDITURE
+    text: All revenue and recurring expenditure.
+    keywords: [salary, wages, honorarium, recurring expenditure, operational cost]
+    verified_against_2023: false
+    annexure_ii_2016_item: "12"
+    verified_against_2016: true
+
+  - id: RELIGIOUS
+    text: >-
+      Works within the places of religious worship and on land belonging
+      to or owned by religious faith/group.
+    keywords: [temple, mandir, mosque, masjid, church, gurudwara, religious]
+    verified_against_2023: false
+    annexure_ii_2016_item: "13"
+    verified_against_2016: true
+    exceptions:
+      - >-
+        Construction of crematoriums and structures on burial or cremation grounds is permitted irrespective of religious faith, and regardless of the location being adjacent to or falling within the area of a place of religious worship.
+    note: >-
+      High false-positive risk: village landmarks are routinely named for
+      temples, so "road near Hanuman mandir" is a road. The locative test
+      in core/rules/refine.py handles this and must not be bypassed.
+
+  # -----------------------------------------------------------------
+  # The two items below are NOT in the 2010 CAG annexure. They were found
+  # by reading the scheme's own Annexure-II, and are the direct argument
+  # for checking a derived list against the source it derives from.
+  # -----------------------------------------------------------------
+
+  - id: SWAGAT_DWAR
+    text: Construction of Swagat Dwars.
+    keywords: [swagat dwar, swagat dwaar, swagat gate, welcome gate,
+               welcome arch, welcome gateway, pravesh dwar, entrance arch]
+    verified_against_2023: false
+    annexure_ii_2016_item: "15"
+    verified_against_2016: true
+    source_note: >-
+      Not in the 2010 CAG annexure. Present in the scheme's own
+      Annexure-II as item 15.
+    note: >-
+      A swagat dwar is a decorative welcome arch over a road at a village
+      or town entrance. It is the archetypal MPLADS prestige work - highly
+      visible, named after somebody, and of no infrastructure value - which
+      is presumably why the scheme names it specifically.
+      Keywords are compound only. "gate" and "arch" on their own match
+      school compound gates and bridge arches, both of which are ordinary
+      eligible works, so a bare-word match here would be the AD-49 mistake
+      repeated: 4,123 solar lights standing NEAR a temple were once read as
+      building temples.
+
+  - id: UNAUTHORIZED_COLONY
+    text: Execution of works in unauthorized colonies.
+    keywords: [unauthorized colony, unauthorised colony, illegal colony,
+               avaidh vasahat, anadhikrut vasahat]
+    verified_against_2023: false
+    annexure_ii_2016_item: "16"
+    verified_against_2016: true
+    source_note: >-
+      Not in the 2010 CAG annexure. Present in the scheme's own
+      Annexure-II as item 16.
+    note: >-
+      Rarely self-declared in a work description, so keyword matching will
+      find almost none of these. The item is recorded because the list
+      should be complete and because the real test is a land-status join
+      the published export cannot support - which is the honest reason
+      this is not a strong detector rather than an unstated one.

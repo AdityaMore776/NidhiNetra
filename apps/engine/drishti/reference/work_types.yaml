@@ -1,0 +1,323 @@
+# =====================================================================
+# MPLADS WORK TYPE TAXONOMY + VERIFIABILITY ROUTER
+# =====================================================================
+# Drives three things:
+#   1. Which evidence modality can verify a work  (tier)
+#   2. Which satellite index to use, and its honest detection floor (geo)
+#   3. Which unit-rate benchmark applies for cost analysis  (benchmark)
+#
+# TIERS
+#   A  Satellite-verifiable. Footprint is large enough to move a 10 m
+#      Sentinel pixel. Change detection is the primary evidence.
+#   B  Photo-verifiable only. Real asset, too small for 10 m imagery.
+#      Photo forensics + EXIF/geo audit is the primary evidence.
+#   C  Document/network only. No fixed footprint at all (goods,
+#      equipment, vehicles). Unit-cost benchmarking + vendor graph.
+#
+# The tier is a CEILING on what we may claim. A Tier B work must never
+# receive a satellite verdict. This is enforced in core/geo/router.py
+# and asserted in tests/test_router.py.
+#
+# min_footprint_m2 is the honest detection floor we advertise. Below it
+# we return NOT_APPLICABLE rather than a low-confidence guess.
+# =====================================================================
+
+version: 1
+
+defaults:
+  tier: C
+  benchmark: none
+
+work_types:
+
+  # ------------------------------------------------- ROADS & CONNECTIVITY
+  - code: ROAD_CC
+    name: Cement concrete road
+    category: Roads and pathways
+    unit: m
+    tier: A
+    geo:
+      shape: corridor          # buffer along a line
+      buffer_m: 15
+      min_quantity: 200        # metres; below this, drop to tier B
+      s2_index: BSI            # bare-soil / built surface gain
+      s1_expect: step_up       # new hard surface raises backscatter
+      notes: >-
+        A 4 m wide road is sub-pixel in width. Detection relies on the
+        linear corridor signature over length, not on any single pixel.
+    benchmark:
+      basis: sor
+      sor_item: CC_ROAD_M150_100MM
+      unit_rate_key: inr_per_m
+
+  - code: ROAD_BT
+    name: Bituminous road
+    category: Roads and pathways
+    unit: m
+    tier: A
+    geo: { shape: corridor, buffer_m: 15, min_quantity: 200, s2_index: BSI, s1_expect: step_up }
+    benchmark: { basis: sor, sor_item: BT_ROAD_20MM, unit_rate_key: inr_per_m }
+
+  - code: FOOTPATH
+    name: Footpath / paver block pathway
+    category: Roads and pathways
+    unit: m
+    tier: B
+    geo: { shape: corridor, buffer_m: 8, min_quantity: 500, s2_index: BSI, s1_expect: weak }
+    benchmark: { basis: sor, sor_item: PAVER_BLOCK_60MM, unit_rate_key: inr_per_sqm }
+
+  - code: CULVERT
+    name: Culvert / small bridge
+    category: Roads and pathways
+    unit: nos
+    tier: B
+    benchmark: { basis: sor, sor_item: RCC_CULVERT, unit_rate_key: inr_per_nos }
+
+  - code: BRIDGE
+    name: Bridge
+    category: Roads and pathways
+    unit: m
+    tier: A
+    geo: { shape: corridor, buffer_m: 25, min_quantity: 30, s2_index: BSI, s1_expect: step_up }
+    benchmark: { basis: sor, sor_item: RCC_BRIDGE, unit_rate_key: inr_per_m }
+
+  # ------------------------------------------------------------ BUILDINGS
+  - code: COMMUNITY_HALL
+    name: Community hall / bhavan
+    category: Community infrastructure
+    unit: sqm
+    tier: A
+    geo:
+      shape: box
+      buffer_m: 50
+      min_footprint_m2: 200
+      s2_index: NDBI
+      s1_expect: step_up
+      notes: >-
+        Sentinel-1 is the primary signal here. Walls and corners produce
+        a persistent double-bounce backscatter step that is detectable
+        well below the optical resolution limit, and it works through
+        monsoon cloud when Sentinel-2 is unusable.
+    benchmark: { basis: sor, sor_item: RCC_BUILDING_G, unit_rate_key: inr_per_sqm }
+
+  - code: SCHOOL_BUILDING
+    name: School building / additional classroom
+    category: Education
+    unit: sqm
+    tier: A
+    geo: { shape: box, buffer_m: 50, min_footprint_m2: 200, s2_index: NDBI, s1_expect: step_up }
+    benchmark: { basis: sor, sor_item: RCC_BUILDING_G, unit_rate_key: inr_per_sqm }
+
+  - code: HEALTH_BUILDING
+    name: Health sub-centre / PHC building
+    category: Health and family welfare
+    unit: sqm
+    tier: A
+    geo: { shape: box, buffer_m: 50, min_footprint_m2: 200, s2_index: NDBI, s1_expect: step_up }
+    benchmark: { basis: sor, sor_item: RCC_BUILDING_G, unit_rate_key: inr_per_sqm }
+
+  - code: LIBRARY
+    name: Public library building
+    category: Education
+    unit: sqm
+    tier: A
+    geo: { shape: box, buffer_m: 50, min_footprint_m2: 200, s2_index: NDBI, s1_expect: step_up }
+    benchmark: { basis: sor, sor_item: RCC_BUILDING_G, unit_rate_key: inr_per_sqm }
+
+  - code: BOUNDARY_WALL
+    name: Boundary wall / compound wall
+    category: Community infrastructure
+    unit: m
+    tier: B
+    geo: { shape: corridor, buffer_m: 10, min_quantity: 400, s2_index: NDBI, s1_expect: weak }
+    benchmark: { basis: sor, sor_item: BRICK_WALL_230MM, unit_rate_key: inr_per_m }
+
+  - code: TOILET_BLOCK
+    name: Public toilet block
+    category: Sanitation and public health
+    unit: nos
+    tier: B
+    benchmark: { basis: sor, sor_item: TOILET_BLOCK_2SEAT, unit_rate_key: inr_per_nos }
+
+  - code: BUS_SHELTER
+    name: Bus shelter / waiting shed
+    category: Community infrastructure
+    unit: nos
+    tier: B
+    benchmark: { basis: sor, sor_item: BUS_SHELTER, unit_rate_key: inr_per_nos }
+
+  # ---------------------------------------------------------------- WATER
+  - code: POND
+    name: Pond / talab renovation
+    category: Irrigation and water
+    unit: sqm
+    tier: A
+    geo:
+      shape: box
+      buffer_m: 100
+      min_footprint_m2: 400
+      s2_index: NDWI
+      s1_expect: step_down     # open water is specular, backscatter drops
+      notes: >-
+        Water bodies are the single most reliable satellite target.
+        NDWI change is unambiguous and Sentinel-1 gives a clean drop.
+    benchmark: { basis: sor, sor_item: EARTHWORK_EXCAVATION, unit_rate_key: inr_per_cum }
+
+  - code: CHECK_DAM
+    name: Check dam / bandhara
+    category: Irrigation and water
+    unit: nos
+    tier: A
+    geo: { shape: box, buffer_m: 100, min_footprint_m2: 300, s2_index: NDWI, s1_expect: step_down }
+    benchmark: { basis: sor, sor_item: RCC_CHECK_DAM, unit_rate_key: inr_per_nos }
+
+  - code: BOREWELL
+    name: Borewell / hand pump
+    category: Drinking water
+    unit: nos
+    tier: B
+    benchmark: { basis: sor, sor_item: BOREWELL_150MM, unit_rate_key: inr_per_m }
+
+  - code: WATER_TANK
+    name: Overhead water tank
+    category: Drinking water
+    unit: kl
+    tier: B
+    geo: { shape: box, buffer_m: 40, min_footprint_m2: 150, s2_index: NDBI, s1_expect: weak }
+    benchmark: { basis: sor, sor_item: OHT_RCC, unit_rate_key: inr_per_kl }
+
+  - code: DRAIN
+    name: Drainage / nala construction
+    category: Sanitation and public health
+    unit: m
+    tier: B
+    geo: { shape: corridor, buffer_m: 10, min_quantity: 500, s2_index: BSI, s1_expect: weak }
+    benchmark: { basis: sor, sor_item: RCC_DRAIN, unit_rate_key: inr_per_m }
+
+  # ------------------------------------------------------- OPEN / LARGE AREA
+  - code: PLAYGROUND
+    name: Playground / open gym / sports ground
+    category: Sports
+    unit: sqm
+    tier: A
+    geo: { shape: box, buffer_m: 100, min_footprint_m2: 1000, s2_index: NDVI, s1_expect: step_down }
+    benchmark: { basis: sor, sor_item: GROUND_LEVELLING, unit_rate_key: inr_per_sqm }
+
+  - code: SOLAR_PLANT
+    name: Solar power plant / rooftop solar
+    category: Non-conventional energy
+    unit: kw
+    tier: A
+    geo: { shape: box, buffer_m: 60, min_footprint_m2: 500, s2_index: NDBI, s1_expect: step_up }
+    benchmark: { basis: gem, gem_category: SOLAR_PV_ROOFTOP, unit_rate_key: inr_per_kw }
+
+  - code: CREMATORIUM
+    name: Crematorium / burial ground development
+    category: Community infrastructure
+    unit: sqm
+    tier: A
+    geo: { shape: box, buffer_m: 60, min_footprint_m2: 300, s2_index: NDBI, s1_expect: step_up }
+    benchmark: { basis: sor, sor_item: RCC_BUILDING_G, unit_rate_key: inr_per_sqm }
+
+  # ------------------------------------------------------ SMALL FIXED ASSETS
+  - code: STREET_LIGHT
+    name: Solar / LED street light
+    category: Non-conventional energy
+    unit: nos
+    tier: B
+    benchmark: { basis: gem, gem_category: SOLAR_STREET_LIGHT, unit_rate_key: inr_per_nos }
+    notes: >-
+      The canonical example of a Tier B work. A judge will ask whether a
+      satellite can see a street light. It cannot, and the router never
+      claims it can. Photo forensics carries the entire evidential load.
+
+  - code: HIGH_MAST
+    name: High mast light
+    category: Non-conventional energy
+    unit: nos
+    tier: B
+    benchmark: { basis: gem, gem_category: HIGH_MAST_LIGHT, unit_rate_key: inr_per_nos }
+
+  - code: CCTV
+    name: CCTV surveillance system
+    category: Community infrastructure
+    unit: nos
+    tier: B
+    benchmark: { basis: gem, gem_category: CCTV_SYSTEM, unit_rate_key: inr_per_nos }
+
+  # --------------------------------------------------------- GOODS / TIER C
+  - code: COMPUTER
+    name: Computers / smart classroom equipment
+    category: Education
+    unit: nos
+    tier: C
+    benchmark: { basis: gem, gem_category: DESKTOP_COMPUTER, unit_rate_key: inr_per_nos }
+
+  - code: FURNITURE
+    name: Furniture (desks, benches, chairs)
+    category: Education
+    unit: nos
+    tier: C
+    benchmark: { basis: gem, gem_category: SCHOOL_FURNITURE, unit_rate_key: inr_per_nos }
+
+  - code: AMBULANCE
+    name: Ambulance / hearse van
+    category: Health and family welfare
+    unit: nos
+    tier: C
+    benchmark: { basis: gem, gem_category: AMBULANCE_TYPE_B, unit_rate_key: inr_per_nos }
+
+  - code: MEDICAL_EQUIPMENT
+    name: Medical equipment
+    category: Health and family welfare
+    unit: nos
+    tier: C
+    benchmark: { basis: gem, gem_category: MEDICAL_EQUIPMENT, unit_rate_key: inr_per_nos }
+
+  - code: SPORTS_EQUIPMENT
+    name: Sports equipment / gym equipment
+    category: Sports
+    unit: nos
+    tier: C
+    benchmark: { basis: gem, gem_category: GYM_EQUIPMENT, unit_rate_key: inr_per_nos }
+
+  - code: OTHER
+    name: Other / unclassified
+    category: Other
+    unit: nos
+    tier: C
+    benchmark: { basis: none }
+
+# =====================================================================
+# SUPERSEDED - kept as a record, read by nothing.
+# =====================================================================
+# These seven patterns were the platform's first attempt at an
+# ineligibility list, assembled from secondary summaries with every
+# clause reference left as TBD-VERIFY. They were replaced by
+# contracts/prohibited_works.yaml, which quotes the Comptroller and
+# Auditor General's annexure and the scheme's own Annexure-II verbatim
+# and is what core/rules/refined_detectors.py actually reads.
+#
+# They are not given real citations now, because giving a citation to a
+# list nothing loads would be decoration. They are not deleted either:
+# two of them are a useful record of how a plausible keyword list goes
+# wrong, and both mistakes cost measured precision before they were
+# found.
+#
+#   MEMORIAL listed the bare words "arch" and "gate". The scheme does
+#   prohibit decorative welcome arches - Annexure-II item 15, "Swagat
+#   Dwars" - but "gate" alone matches school compound gates and "arch"
+#   matches bridge arches, both ordinary eligible works. The replacement
+#   list carries only compound forms.
+#
+#   RECURRING_EXPENSE listed "repair" and "maintenance" as flatly
+#   prohibited. eSAKSHI offers "Repair and Renovation" as a live work
+#   category today. Enforcing that pair is the AD-49 failure - a rule
+#   running at 4.8% precision against a scheme that had moved on.
+#
+# The verified clause register is contracts/guidelines_clauses.yaml.
+# =====================================================================
+
+superseded_ineligible_patterns:
+  superseded_by: contracts/prohibited_works.yaml
+  read_by: []

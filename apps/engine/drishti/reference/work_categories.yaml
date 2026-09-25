@@ -1,0 +1,357 @@
+version: 1
+note: Real eSAKSHI work categories mapped to the taxonomy in work_types.yaml. Extracted from 60,359 published
+  MPLADS works (Vonter/india-mplads-works, ODbL).
+categories:
+  ? 1-MOH.DHOLI KHAL ME SHARUK KE DUKAN SE MAKSOOM KE DUKAN TAK, JAVED KE DUKAN SE CH.SALEEM TAK 175 MT.
+    CC ROAD, NALI Rs 739700.00
+  : ROAD_CC
+  2-KASBA RAMPUR MANIHARAN ME VINOD KE DUKAN SE HAJI ASIF, TAHIR, JAMSHED KE GHAR KE AUR 150 MT. CC ROAD, NALI: ROAD_CC
+  3-MOH.NEW SUDRSHAN NAGAR ME RAO ASLAM KE MAKAN SE DEHRADUN ROAD KE AUR 100 MT CC ROAD, NALI Rs 800000.00: ROAD_CC
+  ? 4-WARD 6 MOH.VARDHMAN COLONY ME MASTER SHAREEF KE GHAR SE AHASAN KE GHAR KE AUR , SHAHJAD KE PLAT
+    SE NASIR KE GHAR KE AUR , DEEPAK DAS KE GHAR SE RAMESH SHAHGAL KE GHAR KE AUR 180 MT CC ROAD, NALI
+    Rs 2304000.00
+  : ROAD_CC
+  7-KASBA DEOBAND KE MOH. LAHSWADA ME ALAM KE MAKAN SE SAGEER KE MAKAN KE AUR 100 MT. CC ROAD, NALI Rs 944000.00: ROAD_CC
+  Additional Work - Improvements of Park and Students study center: PLAYGROUND
+  Additional improvements to the existing Burial ground: CREMATORIUM
+  Addl. Classroom: SCHOOL_BUILDING
+  Ambulance: HEALTH_BUILDING
+  Anganwadi Building: COMMUNITY_HALL
+  BLOCK TOPPING ROAD: ROAD_CC
+  BOREWELL: BOREWELL
+  BOREWELL & HANDPUMP: BOREWELL
+  BOREWELL AND POWER PUMP: BOREWELL
+  BOREWELL WITH MINI POWER PUMP: BOREWELL
+  BOREWELL, MOTOR AND PIPELINE.: BOREWELL
+  BOREWELL, MOTOR, SINTEX AND PIPELINE: BOREWELL
+  BOUNDARY WALL: BOUNDARY_WALL
+  BT ROAD: ROAD_CC
+  BT ROAD & 2 CULVERTS: CULVERT
+  BT ROAD AND DRAINAGE: ROAD_CC
+  BT Road: ROAD_CC
+  Bench And Desk: FURNITURE
+  Bench and Desk: FURNITURE
+  Block Topping Road: ROAD_CC
+  Blocktopping Road: ROAD_CC
+  Borewell and Mini OHT: BOREWELL
+  Boundary wall: BOUNDARY_WALL
+  Bridge: CULVERT
+  Burial Ground: CREMATORIUM
+  Burial Ground Road: ROAD_CC
+  Burial Ground road: ROAD_CC
+  C.C.ROAD: ROAD_CC
+  C/O AMBULANCE ROAD DYARSGHAT TO NAUNI-GARETI: ROAD_CC
+  C/O AMBULANCE ROAD SARSOO: ROAD_CC
+  C/O AMBULANCE ROAD SUNARDI TO KAMTHAN: ROAD_CC
+  C/O AMBULANCE ROAD VILLAGGE BANAR: ROAD_CC
+  C/O COMMUNITY HALL AT VILLAGE TADOL: COMMUNITY_HALL
+  C/O COMMUNITY HALL VILLAGE BHARYADI: COMMUNITY_HALL
+  C/O DRAIN AND GATKA AMBULANCE ROAD DANWLA: ROAD_CC
+  C/O DRAINAGE AND SOILING L/R KUNCHELA TO NEAR H/O SH. NARESH: DRAIN
+  C/O PAKKA PATH ANJI ROAD TO NEAR H/O ASHA DEVI: ROAD_CC
+  C/O PAKKA PATH LINK ROAD JADLI: ROAD_CC
+  CC ROAD: ROAD_CC
+  CC ROAD AND DRAINAGE.: ROAD_CC
+  CC ROAD NU KAM: ROAD_CC
+  CC ROad: ROAD_CC
+  CC Road: ROAD_CC
+  CC Road and drainage: ROAD_CC
+  CC road: ROAD_CC
+  CEMENT CONCRETE ROAD: ROAD_CC
+  COMMUNITY CENTRE: COMMUNITY_HALL
+  COMPLETION OF COMMUNITY HALL VILLAGE BASHAD: COMMUNITY_HALL
+  COMPOUND WALL: BOUNDARY_WALL
+  COMPOUND WALL AND INSTALLATION OF LIGHTS: BOUNDARY_WALL
+  COMPOUND WALL TO BURIAL GROUND: BOUNDARY_WALL
+  CONSTRUCTION OF ANGANWADI BUILDING AT PULIYAMKOMBAI AT SATHYAMANGALAM TOWN: COMMUNITY_HALL
+  CONSTRUCTION OF COMMUNITY HALL: COMMUNITY_HALL
+  CONSTRUCTION OF COMPOUND WALL TO GOVERNMENT SCHOOLS.: SCHOOL_BUILDING
+  CONSTRUCTION OF CULVERT: CULVERT
+  CONSTRUCTION OF DRAIN AT BHAVANISAGAR MARKET SATHUKKAM FROM VASANTHA FANCY STORE TO MAHALAKSHMI STORE AT BHAVANISAGAR: DRAIN
+  CULVERT: CULVERT
+  Cement Concrete Road: ROAD_CC
+  Common work sheds for artisans: COMMUNITY_HALL
+  Community Centre: COMMUNITY_HALL
+  Community Hall: COMMUNITY_HALL
+  Community Hall Nirman: COMMUNITY_HALL
+  Community Hall at Anna Nagar Ward No.13 Sirumugai Town Panchayat: COMMUNITY_HALL
+  Community Toilets: TOILET_BLOCK
+  Completion of Additional Classroom: SCHOOL_BUILDING
+  Compound Wall: BOUNDARY_WALL
+  Compound Wall to burrial ground: BOUNDARY_WALL
+  Concrete road: ROAD_CC
+  ConstConstruction of Community Hall in CHINAGUNDI Village: COMMUNITY_HALL
+  Construction of Additional School Bilding: SCHOOL_BUILDING
+  Construction of Anganwadi Building: COMMUNITY_HALL
+  Construction of Balance Work Community Hall: COMMUNITY_HALL
+  Construction of Balance Work for District Padmashali Hostel Building: COMMUNITY_HALL
+  Construction of Boundary Wall: BOUNDARY_WALL
+  Construction of Boundary wall & Momty: BOUNDARY_WALL
+  Construction of Boundary wall, Shed and Salvation Gate. (See serial no.-19 on M.P.'s Letterhead): BOUNDARY_WALL
+  Construction of Building: COMMUNITY_HALL
+  Construction of Building as Study Centre and Toilet: TOILET_BLOCK
+  Construction of C.C. Road: ROAD_CC
+  Construction of CC Open Drain with cover slab: DRAIN
+  Construction of Canteen Building: COMMUNITY_HALL
+  Construction of Class Rooms at Govt English Medium School, Daddalakadu: SCHOOL_BUILDING
+  Construction of Classrooms: SCHOOL_BUILDING
+  Construction of College and Hostel: SCHOOL_BUILDING
+  Construction of Community Center: COMMUNITY_HALL
+  Construction of Community Hall: COMMUNITY_HALL
+  Construction of Community Hall at ANAWAL: COMMUNITY_HALL
+  Construction of Community hall: COMMUNITY_HALL
+  Construction of Cycle Stand at School / College: SCHOOL_BUILDING
+  Construction of Drainage: DRAIN
+  Construction of Drinking Water Facility: WATER_TANK
+  Construction of Footpaths/Pedestrian ways: FOOTPATH
+  Construction of Government office buildings (Post office, Police station, Police chauki, etc.): COMMUNITY_HALL
+  Construction of Library and Toilet in School: SCHOOL_BUILDING
+  Construction of New Building: COMMUNITY_HALL
+  Construction of Playground of the KJP Synod Sepngi at Nongum Village: PLAYGROUND
+  Construction of Rainwater Harvesting Parks –demo projects – subject to only one per municipality: PLAYGROUND
+  Construction of Retaining Wall and Development of Road: ROAD_CC
+  Construction of Side Drain or Link Drain: DRAIN
+  Construction of Side Drain or Link Drain and Stone Mansory: DRAIN
+  Construction of Toilet Block: TOILET_BLOCK
+  Construction of a Community Hall.: COMMUNITY_HALL
+  Construction of a Community Hall. (See serial no.-12 on M.P.'s Letteread): COMMUNITY_HALL
+  Construction of additional Classroom at Prachi Higher Secondary Women’s School, Purbakhanda: SCHOOL_BUILDING
+  Construction of additional rooms and halls in the existing public and community building: SCHOOL_BUILDING
+  Construction of boundary walls of existing public and community buildings: BOUNDARY_WALL
+  'Construction of building for GPS (TW) School, Chatrapalli, Galikonda GP, UDISE Code : 28131314206': SCHOOL_BUILDING
+  Construction of building for GPS (TW) school,Kakarapadu Village , Pynampadu Post: SCHOOL_BUILDING
+  'Construction of building for MPP School, Baridiputtu,Gondeli GP, UDISE Code : 28131005508': SCHOOL_BUILDING
+  'Construction of building for MPP School, Bondaguda Village, UDISE Code : 28130515701 in Araku valley Mandal': SCHOOL_BUILDING
+  'Construction of building for MPP School, Gummalapalem village, Anthada GP, UDISE Code : 28131406801': SCHOOL_BUILDING
+  Construction of building for MPP School, Kammaragoyya, Pedaluvvasingi GP: SCHOOL_BUILDING
+  'Construction of building for MPP School, Vetchangi UDISE Code : 28130126501': SCHOOL_BUILDING
+  Construction of building for artificial insemination and breeding centers: COMMUNITY_HALL
+  Construction of building for veterinary aid centers: COMMUNITY_HALL
+  Construction of buildings and providing fixed assets for semen banks: COMMUNITY_HALL
+  Construction of buildings for community cultural activities: COMMUNITY_HALL
+  Construction of buildings for crèches and anganwadies: COMMUNITY_HALL
+  Construction of buildings for multi-gym: COMMUNITY_HALL
+  Construction of buildings for sports facilities: PLAYGROUND
+  Construction of buildings for training institutions: COMMUNITY_HALL
+  Construction of bus-sheds or bus-stops: BUS_SHELTER
+  Construction of college and hostel: SCHOOL_BUILDING
+  Construction of common work sheds/ common covered sitting area: COMMUNITY_HALL
+  Construction of community centers and community halls: COMMUNITY_HALL
+  Construction of culverts and bridges: CULVERT
+  Construction of drain work: DRAIN
+  Construction of flood control embankments: POND
+  Construction of foot over bridge (FOB): CULVERT
+  Construction of footpaths and pedestrian ways: FOOTPATH
+  Construction of gaurd room and Toilet: TOILET_BLOCK
+  Construction of library in school: SCHOOL_BUILDING
+  Construction of new school building: SCHOOL_BUILDING
+  Construction of office room and toilet: TOILET_BLOCK
+  Construction of park: PLAYGROUND
+  Construction of public irrigation facilities: POND
+  Construction of public libraries and reading rooms: LIBRARY
+  Construction of public staircase to access road over bridge: CULVERT
+  Construction of public toilets and bathrooms: TOILET_BLOCK
+  Construction of road: ROAD_CC
+  Construction of road under bridge: CULVERT
+  Construction of roads, approach roads, link roads and pathways: ROAD_CC
+  Construction of roads, link roads, pathways or any other road with or without drainage system: ROAD_CC
+  Construction of room and Toilet for Bar Association: TOILET_BLOCK
+  Construction of rooms and facilities for hospitals, FWC , PHC Centers and ANM centers: HEALTH_BUILDING
+  Construction of rooms and halls in school and colleges: SCHOOL_BUILDING
+  Construction of school building at velagalapalem: SCHOOL_BUILDING
+  'Construction of school building of MPP School Battapanukula , U Dise code : 28131409201 at Battapanukula (Village & Post).': SCHOOL_BUILDING
+  ? 'Construction of school building of MPP School Boyalagudem , U Dise code : 28131220801 at Boyalagudem
+    Village , Yerrabommalu Post.'
+  : SCHOOL_BUILDING
+  ? 'Construction of school building of MPP School Gunnamamidi , U Dise code : 28131215809 at Gunnamamidi
+    Village , Anjali sanivaram Post.'
+  : SCHOOL_BUILDING
+  Construction of school building of MPP School Thatimanupalem Village , Anthada Post: SCHOOL_BUILDING
+  Construction of stairs at a pond: POND
+  Construction of the Community Hall of the Moolamyliang Village Dorbar.: COMMUNITY_HALL
+  Construction of toilet blocks: TOILET_BLOCK
+  Construction of veterinary hospitals and dispensaries: HEALTH_BUILDING
+  Construction of water tanks: WATER_TANK
+  Creation of new ponds: POND
+  Cremation She: CREMATORIUM
+  Cremation Shed: CREMATORIUM
+  Crematoriums or structures on burial/ cremation ground for public convenience: CREMATORIUM
+  DEVELOPMENT OF EXISTING MEDIAN GARDEN ALONG ASHU BISWAS ROAD IN K.M.C. WARD 72 UNDER BOROUGH-VIII: ROAD_CC
+  DEVELOPMENT OF POND BY PROVIDING BULLAH PILING: POND
+  DRAINAGE: DRAIN
+  DRAINAGE & BT ROAD: ROAD_CC
+  DRAINAGE AND CC ROAD: ROAD_CC
+  DRAINAGE AND CEMENT CONCRETE ROAD: ROAD_CC
+  Desks and Benches: FURNITURE
+  Development of Community Building of Balpa Panchayath: COMMUNITY_HALL
+  Development of playfields and sports grounds: PLAYGROUND
+  Development of playground: PLAYGROUND
+  Development of public parks: PLAYGROUND
+  Distribution of sports equipments: PLAYGROUND
+  Drainage: DRAIN
+  Drainage and Culvert: CULVERT
+  Embankment construction: POND
+  Establishing public lift irrigation projects: POND
+  Establishment of Herbal Garden, Butterfly Park and Indoor Garden: PLAYGROUND
+  FORMATION OF BT ROAD: ROAD_CC
+  Fitting of Sitting RCC Benches in Public Places: FURNITURE
+  Fixing of Sitting RCC Benches: FURNITURE
+  Fixing of Sitting RCC Benches in Public Places: FURNITURE
+  Furniture Supply in Ramlila Manch: FURNITURE
+  Furniture and Fixtures for Marriage Hall: FURNITURE
+  Furniture in Red Cross building: FURNITURE
+  Hospital Equipment - OCT Machine for Sadvichar Pariwar Eye Hospital (Sadvichar Pariwar Trust): HEALTH_BUILDING
+  Hygienic Canteen Building: COMMUNITY_HALL
+  INSTALLATION OF CCTV CAMERAS: CCTV
+  Improvement Road: ROAD_CC
+  Installation of Solar Lights: SOLAR_PLANT
+  Installation of firmly fixed waiting chairs and benches at railway stations: FURNITURE
+  Installation of fixed garden gym equipment: PLAYGROUND
+  Installation of multi-gym equipment: PLAYGROUND
+  Installing community drinking water plants: WATER_TANK
+  Installing hand pumps: BOREWELL
+  Installing tube-wells and borewells: BOREWELL
+  Interlocking Road: ROAD_CC
+  Interlocking Tiles on Road: ROAD_CC
+  Interlocking Tiles on Road and Construction of Drain: ROAD_CC
+  Interlocking Tiles on Road and Drain: ROAD_CC
+  Interlocking Tiles on Roads and Construction of Drain: ROAD_CC
+  LAYING CEMENT CONCRETE ROAD: ROAD_CC
+  LIBRARY ROOM: LIBRARY
+  Laying of CC road: ROAD_CC
+  Library Building: LIBRARY
+  Lighting of public spaces: STREET_LIGHT
+  MULTIPURPOSE BUILDING: COMMUNITY_HALL
+  Multipurpose Building: COMMUNITY_HALL
+  NEW BOREWELL: BOREWELL
+  NEW BOREWELL AND OVERHEAD TANK: BOREWELL
+  New Community Hall: COMMUNITY_HALL
+  New Drinking Water facility: WATER_TANK
+  New PCC Road: ROAD_CC
+  New PCC Road and Drainage: ROAD_CC
+  New PCC Road and drainage system: ROAD_CC
+  New PCC Road with Covered drainage system: ROAD_CC
+  New PCC and covered drainage system: DRAIN
+  New PCC,Drainage and Drinking Water Facility: WATER_TANK
+  New PCC,bridge with drainage system: CULVERT
+  New Public Toilet Construction: TOILET_BLOCK
+  New SC Community Hall: COMMUNITY_HALL
+  OVERHEAD TANK: WATER_TANK
+  OVERHEAD TANK (OHT): WATER_TANK
+  Over Head Water Tank: WATER_TANK
+  PAVER BLOCK ROAD: ROAD_CC
+  PCC ROAD & DRAIN: ROAD_CC
+  PCC Road & Drain: ROAD_CC
+  PCC Road and Drainage: ROAD_CC
+  PCC Road construction (400 Miter.) (See serial no.-13 on M.P.'s Letterhead): ROAD_CC
+  PROCUREMENT AND SUPPLY OF COMPUTERS: COMPUTER
+  PROCUREMENT AND SUPPLY OF FURNITURE: FURNITURE
+  PROVIDE FENCING AROUND IN BURIAL GROUND: CREMATORIUM
+  ? PROVIDING NEW BOREWELL SUPPLY AND ERRECTION OF SUBMERSIBLE PUMP AND WATER SUPPLY ARRANGEMENTS AT SUNDAKKAPALAYAM
+    WEST COLONY NAMBIYAPALAYAM PANCHAYAT
+  : BOREWELL
+  PROVIDING PAVER BLOCK PAVEMENT AT INSIDE CREMATORIUM AT ANNUR TOWN PANCHAYAT: CREMATORIUM
+  PROVIDING SMART CLASS IN PANCHAYAT UNION ELEMENTARY SCHOOL AT MUDIYANUR OF THALAMALAI PANCHAYAT: SCHOOL_BUILDING
+  PUBLIC TOILET: TOILET_BLOCK
+  PURCHASE OF FURNITURE, AIR CONDITIONER AND SOUND SYSTEM: FURNITURE
+  PURCHASE OF SCHOOL BUS: SCHOOL_BUILDING
+  Park Construction Work: PLAYGROUND
+  Paving and asphalting the road from Talgaon mosum main road to sub-centre to Boudhawadi. Tal.Rajapur (SC/ST): ROAD_CC
+  Payau ewm toilet Nirman: TOILET_BLOCK
+  Providing CC Road: ROAD_CC
+  Providing CCTV camera system for security of public areas: CCTV
+  Providing Desk and bench in Kovilambakkam Government Higher Secondary school: SCHOOL_BUILDING
+  Providing Dual Desks & S type Chairs: FURNITURE
+  Providing Interlocking Floor Rubber Mats and Lighting arrangements for Kabadi sports: PLAYGROUND
+  Providing drains and gutters for public drainage: DRAIN
+  Providing of Internal CC road Sl.No 3 on MP letter head: ROAD_CC
+  Providing of internal CC road at Jerrila (village): ROAD_CC
+  Providing sports equipment, except consumable items: PLAYGROUND
+  Providing supply pipelines for drinking water: WATER_TANK
+  Public Distribution Shop Building: COMMUNITY_HALL
+  Purchase Books for Library: LIBRARY
+  Purchase and installation of Solar Street Light at Moolamyliang Village: STREET_LIGHT
+  Purchase of IT systems, including hardware and software for educational purposes: COMPUTER
+  Purchase of Office Furniture, Stationery, Equipment including IT Systems: FURNITURE
+  Purchase of ambulance to transport sick and injured animals: HEALTH_BUILDING
+  Purchase of ambulances (Four, three and two wheelers): HEALTH_BUILDING
+  Purchase of books and periodicals for libraries: LIBRARY
+  Purchase of books for public libraries: LIBRARY
+  Purchase of furniture and fixtures for educational purposes: FURNITURE
+  Purchase of furniture and other equipment for cultural center: FURNITURE
+  Purchase of hospital equipment: HEALTH_BUILDING
+  Purchase of immovable sports equipment: PLAYGROUND
+  Purchase of medical equipment under MPLAD Scheme for Mohandai Oswal Cancer Hospital, Ludhiana: HEALTH_BUILDING
+  Purchase of mobile sanitation equipment: TOILET_BLOCK
+  Purchase of mobile water tankers: WATER_TANK
+  Purchase of school vans and buses: SCHOOL_BUILDING
+  Purchase of school vans and buses (Four and three wheelers): SCHOOL_BUILDING
+  Purchase of smart boards: COMPUTER
+  Purchase of smart boards, visual display units and projectors: COMPUTER
+  Purchase of sports equipment: PLAYGROUND
+  Purchase of vehicle for mobile dispensaries (Four, three and two wheelers): HEALTH_BUILDING
+  Purchase of vehicles for mobile libraries: LIBRARY
+  R.C.C. Culvert: CULVERT
+  R/O L/R MAIN ROAD RAU PULL TO DAYANAND HOUSE: ROAD_CC
+  Renovation of Community Hall and Public Centres: COMMUNITY_HALL
+  Renovation of Teli hostel near Kartik Oraon College in Gumla block: SCHOOL_BUILDING
+  Renovation of ponds and lakes: POND
+  Retrofitting in essential lifeline buildings: COMMUNITY_HALL
+  Retrofitting, preservation or conservation of heritage and archaeological monuments and buildings: COMMUNITY_HALL
+  Roofing and borewell, installation of electric motor and pipe line: BOREWELL
+  SOLAR LIGHTS: SOLAR_PLANT
+  STORM WATER DRAIN & CULVERT: CULVERT
+  School Building (Ground + 1 Floor): SCHOOL_BUILDING
+  School Building Class Room: SCHOOL_BUILDING
+  School Building construction at Shri Kariyammadevi rural development and educational institute Budugumpa Village.: SCHOOL_BUILDING
+  School Compound Wall: SCHOOL_BUILDING
+  School Toilet: SCHOOL_BUILDING
+  Setting up of laboratories: COMPUTER
+  Setting up of soil testing laboratories: COMPUTER
+  Site development and boundary wall: BOUNDARY_WALL
+  Solar panel installation: SOLAR_PLANT
+  Street lights: STREET_LIGHT
+  Supply of Lab Equipment for GOVT High School -KOYYURU Sl.No 2 Work on MP LETTER head: SCHOOL_BUILDING
+  Supply of Lab Equipment for GOVT High School –LAMBASINGI Sl.No 2 work on MP letter Head: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Boys) -KOMMIKA Sl.no 2 work on MP letter head: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Boys) Sl.no 2 on mp letter head: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Boys) – BALAPAM Sl.No 6 work on MP letter head: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Boys) – LAMBASINGI: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Boys) – MAMPA Sl.No 4 work on MP letter head: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Boys) – TAJULAPALEM Sl.No 5 work on MP letter Head: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Boys) –CHINTHAPALLI -1: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Boys) –KOYYURU -1 Sl.No 5 work on MP letter head: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Boys) –KOYYURU -2: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Boys) –LOTHUGEDDA: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Boys)- PEDABARADA Sl.No 3 work on MP letter head: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Boys)-CHINTHAPALLI -2: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Boys)-CHITTEMPADU: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Boys)-CHITTEMPADU Sl.No 3 on MP letter Head: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Boys)-DOWNURU: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Boys)-SARABHANNAPALEM Sl.no 3 on mp letter head: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Girls) – LAMBASINGI: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Girls) – P.MAKKAVARAM Sl.No 4 on MP letter head: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Girls) – PAKALAJEEDI Sl.No 6 work on MP letter head: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Girls) – WANGASARA: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Girls) – Y.N.PAKALU Sl.No 6 on MP letter head: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Girls) –RAJENDRAPALEM Sl.No 1 on MP letter head: SCHOOL_BUILDING
+  Supply of Lab Equipment for GTW Ashram High School (Girls) –RAVANAPALLI Sl.No 5 on MP letter head: SCHOOL_BUILDING
+  Supply of Lab Equipment for ZillaParishad High School – BALARAM Sl.No 3 work on MP letter head: SCHOOL_BUILDING
+  Supply of Lab Equipment forZillaParishad High School -CHINTHAPALLI Sl.No 4 work on MP letter head: SCHOOL_BUILDING
+  Toilets and Bathroom: TOILET_BLOCK
+  Underground Drainage & CC Road: ROAD_CC
+  Up-gradation of Auditorium Hall in Municipal High School: SCHOOL_BUILDING
+  community centre: COMMUNITY_HALL
+  community hall: COMMUNITY_HALL
+  construction of Reading Room: LIBRARY
+  drinking water plants: WATER_TANK
+  embankment construction: POND
+  levelling of Playground: PLAYGROUND
+  new PCC road: ROAD_CC
+  pevor block Construction in Ground of Shyama Prasad Mukherjee Multipurpose Building in Brambe: COMMUNITY_HALL
+  procurement of bus for degree college tral: SCHOOL_BUILDING
+  providing internal CC Road at siribala (Village) ,vanchula (post) Sl.No 2 work on MP letter head: ROAD_CC
+  providing of internal cc road at teemulabanda Sl.No 4 work on mp letter head: ROAD_CC
+  purchase of ambulance van for Mangal Mandir Manav Seva Parivar: HEALTH_BUILDING
+  solar light: SOLAR_PLANT
+  water tanker: WATER_TANK

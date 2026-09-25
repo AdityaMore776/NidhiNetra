@@ -1,0 +1,337 @@
+# =====================================================================
+# MPLADS GUIDELINES - VERIFIED CLAUSE REGISTER
+# =====================================================================
+# Every numeric threshold this platform enforces, with the paragraph of
+# the scheme's own published guidelines that establishes it, quoted
+# verbatim.
+#
+# This replaces TBD-VERIFY. Until now the annual entitlement, the earmark
+# shares, the completion period and the outside-constituency ceiling were
+# values gathered from secondary sources during planning. A detector
+# enforcing an unread number is enforcing a rumour, so the engine
+# suppressed the citation and printed the assumed value inline instead.
+#
+# ---------------------------------------------------------------------
+# VERIFICATION IS EXECUTABLE
+# ---------------------------------------------------------------------
+# The `quote` on each clause is checked against the source document by
+# ingest/adapters/guidelines.py and tests/test_guidelines.py: the text
+# must appear verbatim, after whitespace normalisation, in the paragraph
+# the clause names. Quoting correctly from the wrong paragraph fails,
+# because a citation that sends a reviewer to the wrong page is a wrong
+# citation.
+#
+# A test also plants a corrupted quote and confirms the check rejects it.
+# A guard that cannot fail guards nothing.
+#
+# ---------------------------------------------------------------------
+# THE EDITION IS PART OF THE CITATION, AND MUST NOT BE DROPPED
+# ---------------------------------------------------------------------
+# These paragraphs are verified against the **June 2016** edition. That is
+# the most recent full edition retrievable as a document: mplads.gov.in,
+# which hosts the April 2023 edition, refuses connections from outside its
+# network, from this machine and from an independent fetcher.
+#
+# The 2023 revision RENUMBERED paragraphs - PIB Release 2155040 cites
+# "Para 4.3.2" for a delegation provision the 2016 edition carries
+# elsewhere. So a 2016 paragraph number is not a 2023 paragraph number,
+# and every citation the platform prints names its edition:
+#
+#     MPLADS Guidelines (June 2016), para 3.13
+#
+# That is a weaker claim than a 2023 citation and a far stronger one than
+# a suppressed citation. A reviewer can open the named document at the
+# named paragraph and read the same sentence.
+#
+# `current_edition_status` on each clause records what is known about
+# whether the 2023 revision changed it. Three values, and the difference
+# between the second and the third is the whole point:
+#
+#   unchanged_confirmed   A later authority restates the same value.
+#   unchanged_unconfirmed The 2016 text stands and nothing is known to
+#                         have changed it. NOT a claim that it is current.
+#   superseded            A later authority changed it. The platform
+#                         follows the amendment, not the clause.
+#
+# ---------------------------------------------------------------------
+# WHAT THE 2023 REVISION IS KNOWN TO HAVE CHANGED
+# ---------------------------------------------------------------------
+# One amendment is known and was load bearing. Funds were released in two
+# instalments of Rs 2.5 crore until FY 2022-23 and in a single instalment
+# of Rs 5 crore from 1 April 2023. Every real record this platform runs on
+# is post-April-2023, so the simulator's TRANCHE_COUNT of 2 - carried as
+# TBD-VERIFY since Phase 0 - was the wrong value for the entire corpus the
+# platform is actually deployed against.
+# =====================================================================
+
+version: 1
+
+source:
+  authority: Ministry of Statistics and Programme Implementation
+  document: >-
+    Guidelines on Members of Parliament Local Area Development Scheme
+    (MPLADS)
+  edition: "2016-06"
+  edition_label: June 2016
+  url: https://cdnbbsr.s3waas.gov.in/s3c3614206a443012045cfd75d2600af2d/uploads/2023/02/2023020891.pdf
+  pdf_sha256: 96577d03bab8b56d7c70617b678f03123df3163958b4b81975168f4f7dc2b4b5
+  text_sha256: 1e35598c34d79a1dfd19abb969a975b370b7cd6781f929ce2f21d2d97e98664b
+  retrieved: "2026-08-28"
+  current_edition: "2023-04"
+  current_edition_retrieved: false
+  current_edition_note: >-
+    mplads.gov.in refused connections from this machine and from an
+    independent fetcher on 2026-08-28. The April 2023 edition could not be
+    retrieved. It is not assumed to be identical to this one.
+
+# Later authorities used to establish what the 2023 revision changed.
+amending_authorities:
+  - id: PIB_2155040
+    authority: Press Information Bureau, Government of India
+    document: >-
+      Ministry of Statistics and Programme Implementation has laid out
+      Detailed Provisions in the Revised MPLADS Guidelines, 2023
+    release_id: "2155040"
+    date: "2025-08-11"
+    url: https://www.pib.gov.in/PressReleasePage.aspx?PRID=2155040&reg=48&lang=2
+    note: >-
+      A written reply by the Minister of State to the Rajya Sabha. A
+      ministerial statement to Parliament about the ministry's own scheme
+      is a primary source for what the scheme now does, though not a
+      substitute for the guidelines text itself.
+
+clauses:
+
+  # -----------------------------------------------------------------
+  - id: ANNUAL_ENTITLEMENT
+    paragraph: "2.1"
+    quote: >-
+      The annual MPLADS fund entitlement per MP constituency is Rs. 5
+      crore.
+    establishes:
+      annual_entitlement_inr: 50000000
+    current_edition_status: unchanged_confirmed
+    confirmed_by: PIB_2155040
+    confirmation_quote: >-
+      The annual entitlement for each Member of Parliament under the MPLAD
+      Scheme is Rs 5.00 crore since 2011-12.
+
+  # -----------------------------------------------------------------
+  - id: PROHIBITED_WORKS
+    paragraph: "2.4"
+    quote: >-
+      All works to meet locally felt infrastructure and development needs,
+      with an emphasis on creation of durable assets in the constituency
+      are permissible under MPLADS except those prohibited in Annexure-II.
+    establishes: {}
+    current_edition_status: unchanged_unconfirmed
+    annexure: "II"
+    annexure_heading: LIST OF WORKS PROHIBITED UNDER MPLADS
+    note: >-
+      The scheme is permissive by default and prohibitive by exception,
+      which is the right way round for a detector to read it: a work is
+      not ineligible because it is unusual, only because it matches a
+      listed item. The list itself is in contracts/prohibited_works.yaml,
+      where each item now records whether it appears in this Annexure-II
+      as well as in the 2010 CAG annexure it was first taken from.
+
+  # -----------------------------------------------------------------
+  - id: SC_ST_EARMARK
+    paragraph: "2.5"
+    quote: >-
+      M.Ps are to recommend every year, works costing at least 15 per cent
+      of the MPLADS entitlement for the year for areas inhabited by
+      Scheduled Caste population and 7.5 per cent for areas inhabited by
+      S.T. population.
+    establishes:
+      sc_earmark_share: 0.15
+      st_earmark_share: 0.075
+    current_edition_status: unchanged_unconfirmed
+    note: >-
+      The paragraph goes on to state the arithmetic explicitly - Rs 75 lacs
+      SC and Rs 37.5 lacs ST out of Rs 5 crore - which is a useful check
+      that the shares are of the entitlement and not of expenditure.
+
+  # -----------------------------------------------------------------
+  - id: EARMARK_ENFORCEMENT
+    paragraph: "6.4"
+    quote: >-
+      The District Authority shall enforce the provisions made in the
+      Paragraph 2.5 on the earmarked 15% and 7.5 % of funding for MPLADS
+      works in the SC and ST areas respectively.
+    establishes: {}
+    current_edition_status: unchanged_unconfirmed
+    note: >-
+      Names the office accountable for the earmark. The earmark rules
+      raise a signal against the Member; this paragraph is why the
+      District Authority is the right recipient of it.
+
+  # -----------------------------------------------------------------
+  - id: DISTRICT_INSPECTION_SHARE
+    paragraph: "6.4"
+    quote: >-
+      The District Authority would be responsible for overall coordination
+      and supervision of the works under the scheme at the district level
+      and inspect at least 10% of the works under implementation every
+      year.
+    establishes:
+      district_inspection_share: 0.10
+    current_edition_status: unchanged_unconfirmed
+    note: >-
+      The single most important number in this file for what the platform
+      is FOR. The scheme's own inspection mandate is 10% of works under
+      implementation. Against 210,195 published works that is a physical
+      workload no district establishment can carry uniformly, which is the
+      argument for ranking rather than sampling.
+
+  # -----------------------------------------------------------------
+  - id: OUTSIDE_CONSTITUENCY_CEILING
+    paragraph: "2.9"
+    quote: >-
+      the MP can recommend eligible works under these Guidelines up to a
+      maximum of Rs. 25 lakh in a financial year.
+    establishes:
+      outside_constituency_ceiling_inr: 2500000
+    current_edition_status: unchanged_unconfirmed
+    note: >-
+      Works outside the constituency are PERMITTED up to this ceiling. The
+      jurisdiction rules must see such works and weigh them, never discard
+      them - see AD-54, where 755 genuinely cross-state works were
+      correctly retained.
+
+  # -----------------------------------------------------------------
+  - id: SANCTION_PERIOD
+    paragraph: "3.12"
+    quote: >-
+      All recommended eligible works should be sanctioned within 75 days
+      from the date of receipt of the recommendation, after completing all
+      formalities.
+    establishes:
+      sanction_period_days: 75
+      rejection_intimation_days: 45
+    current_edition_status: unchanged_unconfirmed
+    note: >-
+      The same paragraph sets 45 days for intimating a rejection. It also
+      excludes any period under the Election Commission's model code of
+      conduct from the reckoning - a real exemption the platform does not
+      yet model, and one that would otherwise produce a burst of false
+      delay findings around every general election.
+
+  # -----------------------------------------------------------------
+  - id: COMPLETION_PERIOD
+    paragraph: "3.13"
+    quote: >-
+      The time limit for completion of the works should generally not
+      exceed one year.
+    establishes:
+      completion_period_days: 365
+    current_edition_status: unchanged_unconfirmed
+    note: >-
+      "Generally" is in the text and matters. The paragraph explicitly
+      permits longer where the sanction letter records specific reasons,
+      so exceeding a year is a question and not a finding. Measured on the
+      real corpus, median completion is 392 days and 52% of completed
+      works exceed the norm - which is why the delay detector sits at each
+      work type's own p98 and not at this figure. See AD-52.
+
+  # -----------------------------------------------------------------
+  - id: TRUST_SOCIETY_CEILING
+    paragraph: "3.21.2"
+    quote: >-
+      Not more than Rs.50 lakh, can be spent from MPLADS fund, for one or
+      more works of a particular Society/Trust in the lifetime of that
+      Society/Trust.
+    establishes:
+      trust_society_lifetime_ceiling_inr: 5000000
+      trust_society_annual_ceiling_inr: 10000000
+    current_edition_status: unchanged_unconfirmed
+    note: >-
+      The same paragraph adds a separate annual ceiling of Rs one crore
+      across all Societies/Trusts from FY 2012-13. Two different ceilings,
+      one per trust for its lifetime and one per Member per year; STATUS
+      previously recorded a single "~Rs 75 lakh trusts/societies ceiling",
+      which is neither of them - it is the tribal-area enhancement below.
+
+  # -----------------------------------------------------------------
+  - id: TRUST_SOCIETY_TRIBAL_CEILING
+    paragraph: "2.5.1"
+    quote: >-
+      the ceiling of Rs. 50 lakh stipulated for building assets by trusts
+      and societies in Para 3.21.2 of the Guidelines, will be enhanced by
+      50% to Rs. 75 lakh
+    establishes:
+      trust_society_tribal_ceiling_inr: 7500000
+    current_edition_status: unchanged_unconfirmed
+    note: >-
+      Applies only where the community building work is primarily for the
+      benefit of tribal people in tribal areas. The platform holds this
+      value but enforces no rule on it, because the published export
+      carries no trust or society identifier to attach it to.
+
+  # -----------------------------------------------------------------
+  - id: ADMINISTRATIVE_EXPENSES
+    paragraph: "4.17"
+    quote: >-
+      The existing contingency funds of 0.5% have been increased to 2% as
+      Administrative Expenses, of the annual entitlement of MPLAD funds.
+    establishes:
+      administrative_expenses_share: 0.02
+    current_edition_status: unchanged_unconfirmed
+    note: >-
+      Recorded because 2% of Rs 5 crore is part of the entitlement and not
+      additional to it, so an entitlement-derived rule that treats the
+      whole Rs 5 crore as available for works is overstating the works
+      budget by Rs 10 lakh per Member per year.
+
+  # -----------------------------------------------------------------
+  - id: FUND_RELEASE_INSTALMENTS
+    paragraph: "4.1"
+    quote: >-
+      The annual entitlement of Rs 5 crore shall be released, in two equal
+      instalments of Rs 2.5 crore each, by Government of India directly to
+      the District Authority of the Nodal District of the Member of
+      Parliament concerned.
+    establishes:
+      tranche_count: 1
+    current_edition_status: superseded
+    superseded_by: PIB_2155040
+    superseded_quote: >-
+      The funds were being disbursed in two instalments of Rs 2.5 crore
+      each, to the District Authorities till the financial year 2022-23.
+      From 1st April, 2023, with launch of web portal eSAKSHI, annual fund
+      is being authorized in a single instalment of Rs 5.00 Crore at the
+      beginning of each financial year.
+    note: >-
+      The only clause in this file the platform does NOT follow as written.
+      `establishes` carries the amended value, because every record the
+      platform runs on is post-April-2023: the eSAKSHI export begins with
+      the portal's launch. The simulator carried TRANCHE_COUNT = 2 as a
+      TBD-VERIFY value from Phase 0, which was correct for the scheme as it
+      stood when that value was guessed and wrong for every work in the
+      data.
+
+# ---------------------------------------------------------------------
+# Numbers this platform uses that are NOT in this file, and why
+# ---------------------------------------------------------------------
+# Recorded so that absence reads as a decision rather than an oversight.
+#
+#   delegation_of_powers_limit
+#     core/stats/detectors.py carries a Rs 5 lakh threshold for sanctions
+#     issued without evident delegation. The 2016 edition leaves the limit
+#     to State rules, and PIB 2155040 states the 2023 guidelines direct
+#     States to delegate FULL powers to the Implementing District
+#     Authority (Para 4.3.2) - which removes the ceiling rather than
+#     setting one. The threshold stays unverified and its detector stays
+#     marked as depending on an unverified constant.
+#
+#   work-type unit costs
+#     Learned from the corpus, never from a guideline. The scheme
+#     publishes no schedule of rates. See AD-24.
+#
+#   p98 delay thresholds
+#     Derived from the observed distribution per work type, deliberately
+#     not from the one-year norm in COMPLETION_PERIOD. See AD-52.
+unlisted:
+  - delegation_of_powers_limit
+  - work_type_unit_cost
+  - delay_threshold_days
