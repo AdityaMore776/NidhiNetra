@@ -5,10 +5,10 @@ from __future__ import annotations
 import os
 from datetime import date
 
-# The published eSAKSHI export was scraped in 2025; its latest recommendation
-# date is the "today" for real works, so a work is not called late merely
+# The eSAKSHI export was scraped in late May 2026 (latest recommendation date
+# 2026-05-26). That date is the "today" for real works, so a work is not called late merely
 # because the data is old. Overridable for live data.
-DEFAULT_SNAPSHOT = "2025-05-26"
+DEFAULT_SNAPSHOT = "2026-05-26"
 
 
 def database_url() -> str:
