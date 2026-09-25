@@ -86,3 +86,18 @@ def test_queue_holds_only_works_needing_review_in_priority_order(client):
 def test_keepalive_touches_the_database(client):
     r = client.get("/api/v1/health/keepalive").json()
     assert r["ok"] is True and r["works"] == 4
+
+
+def test_quiet_works_are_stored_compact_and_rebuilt_when_opened(client, api_db):
+    import psycopg
+
+    with psycopg.connect(api_db) as con:
+        compact, agents = con.execute(
+            "SELECT compact, agents FROM assessments WHERE work_id = 'W-TYPICAL'").fetchone()
+        flagged = con.execute(
+            "SELECT compact FROM assessments WHERE work_id = 'W-COSTLY'").fetchone()[0]
+    assert compact is True and agents == []
+    assert flagged is False
+    w = client.get("/api/v1/works/W-TYPICAL", headers=MINISTRY).json()["assessment"]
+    assert [r["agent"] for r in w["agents"]][-1] == "statistical"
+    assert w["agents"][-1]["verdict"] == "COST_TYPICAL"

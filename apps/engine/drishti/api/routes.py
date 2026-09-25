@@ -16,7 +16,8 @@ from drishti.agents.statistical.cohort import StatsStore
 from drishti.auth import Principal, current_user
 from drishti.batch import WORK_COLUMNS, assess_one
 from drishti.db import connect
-from drishti.pipeline.orchestrator import AGENT_ORDER, QUESTIONS, Context
+from drishti.batch import _normalise
+from drishti.pipeline.orchestrator import AGENT_ORDER, QUESTIONS, Context, assess_work
 
 router = APIRouter(prefix="/api/v1")
 
@@ -170,4 +171,9 @@ def work(work_id: str, user: Principal = Depends(current_user)) -> dict:
                             (work_id,)).fetchone()
     assessment = _jsonable(dict(a))
     assessment["assessed_at"] = str(a["assessed_at"])
+    if a["compact"]:
+        full = assess_work(_normalise(dict(row)),
+                           Context(stats=_stats(), as_of=config.snapshot_date())).to_row()
+        for k in ("parts", "validation", "agents"):
+            assessment[k] = full[k]
     return {"work": _jsonable(dict(row)), "assessment": assessment}

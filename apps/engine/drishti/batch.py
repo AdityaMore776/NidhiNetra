@@ -23,14 +23,15 @@ WORK_COLUMNS = ("work_id, source, house, term, state_lgd, state_name, district_l
 
 UPSERT = """
 INSERT INTO assessments (work_id, assessed_at, score, band, limited, priority, parts,
-                         validation, agents, versions, alerts, headline)
+                         validation, agents, versions, alerts, headline, compact)
 VALUES (%(work_id)s, now(), %(score)s, %(band)s, %(limited)s, %(priority)s, %(parts)s,
-        %(validation)s, %(agents)s, %(versions)s, %(alerts)s, %(headline)s)
+        %(validation)s, %(agents)s, %(versions)s, %(alerts)s, %(headline)s, %(compact)s)
 ON CONFLICT (work_id) DO UPDATE SET
     assessed_at = now(), score = EXCLUDED.score, band = EXCLUDED.band,
     limited = EXCLUDED.limited, priority = EXCLUDED.priority, parts = EXCLUDED.parts,
     validation = EXCLUDED.validation, agents = EXCLUDED.agents,
-    versions = EXCLUDED.versions, alerts = EXCLUDED.alerts, headline = EXCLUDED.headline
+    versions = EXCLUDED.versions, alerts = EXCLUDED.alerts, headline = EXCLUDED.headline,
+    compact = EXCLUDED.compact
 """
 
 
@@ -51,6 +52,11 @@ def row_for(a: Assessment) -> dict:
               default=None)
     row["alerts"] = alerts
     row["headline"] = top.headline if top else None
+    # LOW works keep only their summary; the detail is rebuilt when opened
+    # (keeps the free 500 MB database at a fraction of that - measured 489 MB without).
+    row["compact"] = a.fused.band == "LOW"
+    if row["compact"]:
+        row["parts"], row["validation"], row["agents"] = {}, [], []
     for k in ("parts", "validation", "agents", "versions"):
         row[k] = Jsonb(json.loads(json.dumps(row[k], default=str)))
     return row
