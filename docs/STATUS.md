@@ -24,7 +24,7 @@ Headlines: Cost beats Isolation Forest by far; Eligibility v2 56% precision (was
 Document + Contractor agents work for FREE on UP's portal-generated certificates (real
 sanction dates, payments, vendor codes); split/bulk patterns real; delay model weak
 (AUC 0.71); GPS stamps readable (coords 10/10 by eye), phone EXIF GPS always stripped.
-**Bug found + fixed in code:** works' `district_lgd` is really the CENSUS-2011 code; the map
+**Bug found + fixed + LIVE (commit a96b9ca):** works' `district_lgd` is really the CENSUS-2011 code; the map
 outlines carry real LGD codes -> live map painted wrong districts. `data/district_crosswalk.py`
 adds `code` to each outline; `IndiaMap.tsx` joins on it. Next build order: FINDINGS "What to
 build next".

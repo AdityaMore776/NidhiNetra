@@ -385,8 +385,9 @@ only be shown as a labelled demo.
      The map outlines carry the real LGD codes.
    - Joined by number, Pratapgarh's works were drawn on Pilibhit, Kupwara's on Anantnag, and
      so on.
-   - **Fixed in code:** `data/district_crosswalk.py` matches all 752 districts by state and
-     name, and the map joins on the new `code`. Not yet deployed.
+   - **Fixed and live (26 Sep 2026):** `data/district_crosswalk.py` matches all 752 districts
+     by state and name, and the map joins on the new `code`. Checked on the live site:
+     Pratapgarh (UP) now carries its own works.
 2. **Personal data in public records.**
    - Some descriptions contain private phone numbers.
    - Certificates carry vendors' bank account numbers.
