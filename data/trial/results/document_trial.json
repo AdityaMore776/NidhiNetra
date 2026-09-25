@@ -1,0 +1,205 @@
+{
+  "files_read": 583,
+  "pages_read": 1604,
+  "page_kinds": {
+    "other_or_unreadable": 518,
+    "utilisation_certificate": 431,
+    "utilisation_certificate_p2": 429,
+    "bill_invoice": 61,
+    "gps_photo_page": 54,
+    "completion_certificate": 53,
+    "photo_or_blank": 40,
+    "measurement_book": 18
+  },
+  "utilisation_certificates": 431,
+  "certification_pages": 429,
+  "certification_pages_with_any_box_marked": 2,
+  "page_kinds_by_sample": {
+    "national": {
+      "other_or_unreadable": 508,
+      "bill_invoice": 61,
+      "gps_photo_page": 54,
+      "completion_certificate": 53,
+      "photo_or_blank": 40,
+      "utilisation_certificate": 33,
+      "utilisation_certificate_p2": 31,
+      "measurement_book": 18
+    },
+    "district": {
+      "utilisation_certificate": 398,
+      "utilisation_certificate_p2": 398,
+      "other_or_unreadable": 10
+    }
+  },
+  "pdf_files_by_sample": {
+    "national": {
+      "nothing_readable": 158,
+      "has_readable_page": 150
+    },
+    "district": {
+      "has_readable_page": 265,
+      "nothing_readable": 10
+    }
+  },
+  "fields_read_share": {
+    "agency": 0.91,
+    "work_name": 1.0,
+    "location": 0.993,
+    "sanction_date": 0.694,
+    "sanctioned_amount": 0.998,
+    "status": 0.998,
+    "payment_date": 0.998,
+    "approved_amount": 0.998,
+    "vendor_code": 0.977,
+    "vendor_name": 0.977
+  },
+  "right_document": {
+    "files_with_certificates": 286,
+    "files_whose_certificates_all_belong": 284,
+    "files_with_no_certificate_for_their_work": 0,
+    "files_also_carrying_other_works_certificates": 2,
+    "examples_no_certificate_for_their_work": [],
+    "examples_other_works_certificates": [
+      {
+        "work_id": "WS/MP807/2023-2024/31787",
+        "file": "1897866.1971045",
+        "page": "3",
+        "location": "Chandauka",
+        "sanctioned_amount": "185823.0",
+        "approved_amount": "9000.0",
+        "amount": "567942.0",
+        "description": "Shiv ji mandir adharpur mod anu basti ke pas sarvjanik sthal"
+      },
+      {
+        "work_id": "WS/MP807/2023-2024/31786",
+        "file": "1897891.1971070",
+        "page": "3",
+        "location": "Suryagarh Jagannath",
+        "sanctioned_amount": "185823.0",
+        "approved_amount": "9000.0",
+        "amount": "567942.0",
+        "description": "chhautna veer baba sarvjanik sthal"
+      }
+    ]
+  },
+  "sanction_delay": {
+    "works": 211,
+    "median_days": 68.0,
+    "over_45_days": 204,
+    "over_75_days": 33,
+    "negative_days": 1,
+    "share_over_75": 0.156
+  },
+  "status": {
+    "works_with_own_certificate": 285,
+    "works_whose_certificates_all_say_in_progress": 282,
+    "certificates_by_status": {
+      "inprogress": 422,
+      "completed": 6
+    }
+  },
+  "contractors": {
+    "works_with_vendor": 278,
+    "distinct_vendors": 19,
+    "by_district": [
+      {
+        "district": "Pratapgarh",
+        "works": 261,
+        "vendors": 7,
+        "top_vendor": "Youraj Construction",
+        "top_vendor_share": 0.391,
+        "top3_share": 0.839
+      },
+      {
+        "district": "Bijnor",
+        "works": 8,
+        "vendors": 4,
+        "top_vendor": "Raj CunstructionAndSupplier",
+        "top_vendor_share": 0.5,
+        "top3_share": 0.875
+      }
+    ],
+    "top_vendors": [
+      {
+        "vendor": "Youraj Construction",
+        "works": 102
+      },
+      {
+        "vendor": "VinayakEnterprises",
+        "works": 87
+      },
+      {
+        "vendor": "Imamuddin",
+        "works": 30
+      },
+      {
+        "vendor": "Ramchandar Singh",
+        "works": 25
+      },
+      {
+        "vendor": "BihariJiMahadevAssociates",
+        "works": 10
+      },
+      {
+        "vendor": "Raj CunstructionAndSupplier",
+        "works": 4
+      },
+      {
+        "vendor": "Kiran Devi Singh",
+        "works": 4
+      },
+      {
+        "vendor": "Akanksha Enterprises",
+        "works": 3
+      },
+      {
+        "vendor": "MaksudAhmadContractor",
+        "works": 2
+      },
+      {
+        "vendor": "ElectromechEnterpries",
+        "works": 2
+      }
+    ],
+    "agencies": {
+      "areamanagerupsmallindustriesltdkanpur": 232,
+      "?": 21,
+      "provincialcooprativeconstructionanddevelopmentltd": 10,
+      "provincialcooperativeconstrutionanddevelopment": 7,
+      "provincialco-operrativeconstructionanddevelopment": 3,
+      "provincialco-operativeconstructionanddevelopment": 2,
+      "provincialco-operativeconstructionanddevelopmentltd": 1,
+      "peprovincialco-oprativecanddltd": 1
+    },
+    "vendors_per_agency": {
+      "?": 7,
+      "areamanagerupsmallindustriesltdkanpur": 5,
+      "provincialcooperativeconstrutionanddevelopment": 4,
+      "provincialco-operrativeconstructionanddevelopment": 2,
+      "provincialco-operativeconstructionanddevelopment": 2,
+      "peprovincialco-oprativecanddltd": 1,
+      "areaofficerupsmallindustriescorporationltdkanpur": 1,
+      "provincialco-operativeconstructionanddevelopmentltd": 1
+    }
+  },
+  "other_papers_amount_check": {
+    "district": {
+      "files_with_rupee_amounts": 0,
+      "an_amount_equals_portal_within_1pct": 0
+    },
+    "national": {
+      "files_with_rupee_amounts": 95,
+      "an_amount_equals_portal_within_1pct": 64
+    }
+  },
+  "by_sample": {
+    "district": {
+      "files": 265,
+      "no_certificate_for_their_work": 0
+    },
+    "national": {
+      "files": 21,
+      "no_certificate_for_their_work": 0
+    }
+  }
+}

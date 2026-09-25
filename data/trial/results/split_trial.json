@@ -1,0 +1,2509 @@
+{
+  "bunching": {
+    "thresholds": {
+      "1_lakh": {
+        "just_below": 1268,
+        "exactly": 6083,
+        "just_above": 237,
+        "below_to_above": 5.4
+      },
+      "2_lakh": {
+        "just_below": 3286,
+        "exactly": 11145,
+        "just_above": 1705,
+        "below_to_above": 1.9
+      },
+      "3_lakh": {
+        "just_below": 3390,
+        "exactly": 10423,
+        "just_above": 655,
+        "below_to_above": 5.2
+      },
+      "5_lakh": {
+        "just_below": 9620,
+        "exactly": 20533,
+        "just_above": 794,
+        "below_to_above": 12.1
+      },
+      "10_lakh": {
+        "just_below": 4694,
+        "exactly": 8521,
+        "just_above": 409,
+        "below_to_above": 11.5
+      },
+      "20_lakh": {
+        "just_below": 481,
+        "exactly": 1273,
+        "just_above": 133,
+        "below_to_above": 3.6
+      },
+      "25_lakh": {
+        "just_below": 603,
+        "exactly": 935,
+        "just_above": 146,
+        "below_to_above": 4.1
+      }
+    },
+    "national_share_4_8_to_5_lakh": 0.0458,
+    "districts_most_crowded_below_5_lakh": [
+      {
+        "state_name": "Karnataka",
+        "district_name": "Kolar",
+        "works": 221,
+        "in_band": 130,
+        "share": 0.588
+      },
+      {
+        "state_name": "Bihar",
+        "district_name": "Darbhanga",
+        "works": 568,
+        "in_band": 309,
+        "share": 0.544
+      },
+      {
+        "state_name": "Bihar",
+        "district_name": "Sitamarhi",
+        "works": 397,
+        "in_band": 176,
+        "share": 0.443
+      },
+      {
+        "state_name": "Telangana",
+        "district_name": "Mahabubabad",
+        "works": 360,
+        "in_band": 138,
+        "share": 0.383
+      },
+      {
+        "state_name": "Karnataka",
+        "district_name": "Bengaluru (Urban)",
+        "works": 956,
+        "in_band": 331,
+        "share": 0.346
+      },
+      {
+        "state_name": "Odisha",
+        "district_name": "Sundargarh",
+        "works": 364,
+        "in_band": 115,
+        "share": 0.316
+      },
+      {
+        "state_name": "Gujarat",
+        "district_name": "Porbandar",
+        "works": 261,
+        "in_band": 82,
+        "share": 0.314
+      },
+      {
+        "state_name": "Rajasthan",
+        "district_name": "Ajmer",
+        "works": 308,
+        "in_band": 91,
+        "share": 0.295
+      }
+    ]
+  },
+  "identical_text": {
+    "groups": 2914,
+    "works": 23330,
+    "every_piece_4_to_5_lakh_total_over_5_lakh": {
+      "groups": 136,
+      "works": 744
+    },
+    "largest_under_limit": [
+      {
+        "district": "Sitamarhi",
+        "state": "Bihar",
+        "type": "STREET_LIGHT",
+        "n": 48,
+        "total": 23904000.0,
+        "span_days": 7,
+        "desc": "installation of high mast light specification- 12m & 12.5m height, 2 section, 3 core 2.539mm cable,150Wx6 LED luminaries,6 foundation bolt, control pannel etc i"
+      },
+      {
+        "district": "Gumla",
+        "state": "Jharkhand",
+        "type": "LIBRARY",
+        "n": 58,
+        "total": 23200000.0,
+        "span_days": 0,
+        "desc": "buying books and equipments for the school"
+      },
+      {
+        "district": "Eluru",
+        "state": "Andhra Pradesh",
+        "type": "COMPUTER",
+        "n": 50,
+        "total": 20000000.0,
+        "span_days": 0,
+        "desc": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+      },
+      {
+        "district": "Gaya",
+        "state": "Bihar",
+        "type": "LIBRARY",
+        "n": 33,
+        "total": 15636258.0,
+        "span_days": 0,
+        "desc": "purchase of books for school public library"
+      },
+      {
+        "district": "Anuppur",
+        "state": "Madhya Pradesh",
+        "type": "STREET_LIGHT",
+        "n": 29,
+        "total": 12020384.0,
+        "span_days": 46,
+        "desc": "installation of solar street lights\nRs.34894*12 (Nos.)\nImplementing Agency Executive Engineer E/M, PWD, Rewa Division, M.P."
+      },
+      {
+        "district": "Khargone",
+        "state": "Madhya Pradesh",
+        "type": "STREET_LIGHT",
+        "n": 18,
+        "total": 8013600.0,
+        "span_days": 0,
+        "desc": "HIGH MASK SOLAR LIGHTS"
+      }
+    ]
+  },
+  "candidate_works_4_to_5_lakh": 19943,
+  "clusters": 2131,
+  "works_in_clusters": 7277,
+  "cluster_sizes": {
+    "2": 1195,
+    "3": 396,
+    "4": 191,
+    "5": 92,
+    "6": 68,
+    "7": 45,
+    "8": 36,
+    "9": 20,
+    "10": 23,
+    "11": 16,
+    "12": 10,
+    "13": 8,
+    "14": 6,
+    "15": 6,
+    "16": 3,
+    "19": 4,
+    "20": 4,
+    "24": 2,
+    "27": 2,
+    "33": 1,
+    "43": 1,
+    "48": 1,
+    "50": 1
+  },
+  "clusters_totalling_5_lakh_or_more": 2131,
+  "top_districts": [
+    [
+      "Darbhanga",
+      39
+    ],
+    [
+      "Bengaluru (Urban)",
+      38
+    ],
+    [
+      "Y.S.R.",
+      36
+    ],
+    [
+      "Ranchi",
+      32
+    ],
+    [
+      "Hassan",
+      31
+    ],
+    [
+      "Cuddalore",
+      29
+    ],
+    [
+      "Sri Potti Sriramulu Nellore",
+      27
+    ],
+    [
+      "Mahabubabad",
+      27
+    ],
+    [
+      "Kachchh",
+      27
+    ],
+    [
+      "Nandyal",
+      24
+    ]
+  ],
+  "examples": [
+    {
+      "district": "Eluru",
+      "state": "Andhra Pradesh",
+      "type": "COMPUTER",
+      "total": 20000000.0,
+      "shared_words": [
+        "biological",
+        "mathematics"
+      ],
+      "works": [
+        {
+          "work_id": "WS/MP18007/2025-2026/137050",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137047",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137063",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137062",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137061",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137060",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137059",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137048",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137057",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137056",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137055",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137054",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137053",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137052",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137051",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137049",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137058",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137095",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137094",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137072",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137071",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137070",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137075",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137076",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137069",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137068",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "NOREF-b8711c1aa02d66",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137067",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137066",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137065",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137064",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137073",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137078",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137077",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137080",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137093",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137092",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137091",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137090",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137089",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137088",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137087",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137079",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137074",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137085",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137084",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137083",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137082",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137081",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        },
+        {
+          "work_id": "WS/MP18007/2025-2026/137086",
+          "amount": 400000.0,
+          "recommended": "2024-08-26",
+          "description": "Providing Laboratory equipment to Physical Science/Biological Science/Mathematics and Social Studies."
+        }
+      ]
+    },
+    {
+      "district": "West Singhbhum",
+      "state": "Jharkhand",
+      "type": "WATER_TANK",
+      "total": 23563200.0,
+      "shared_words": [],
+      "works": [
+        {
+          "work_id": "WS/MP609/2023-2024/84115",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84116",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84136",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84137",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84139",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84140",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84435",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one deepboring and installation of 2000 ltr x 3 water storage tanks with electric submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/83771",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/83772",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84078",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84230",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one deepboring and installation of 2000 ltr x 3 water storage tanks with electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84079",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84080",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84231",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000ltr x 3 Water Storage tanks with Electric Submercibble "
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84112",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84138",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/83773",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84008",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84007",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/83981",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/83980",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/83979",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/83978",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/83977",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/83747",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/83746",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/83745",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84077",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84321",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one deepboring and installation o f 2000ltr x 3 water storage tanks with electric submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84076",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/83711",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one deepboring and installation of 2000 ltr x 3 storage tanks  with Electric Submersibble wate"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/83743",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/83744",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84035",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84034",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84033",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84032",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84031",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84011",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84010",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84009",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84113",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/84114",
+          "amount": 490900.0,
+          "recommended": "2024-01-18",
+          "description": "Construction of one Deepboring and installation of 2000 ltr x 3 water storage tanks with Electric Submersibble"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/90466",
+          "amount": 490900.0,
+          "recommended": "2024-01-27",
+          "description": "Installation of Solar water tower system with Solar pannel, Solar Submersibble water pump and a Water storage "
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/90428",
+          "amount": 490900.0,
+          "recommended": "2024-01-27",
+          "description": "Construction of Deep boring and Installation of 2000ltr x 3 storage water tank(Sintex) with Electric Submersib"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/90467",
+          "amount": 490900.0,
+          "recommended": "2024-01-27",
+          "description": "Construction of deep boring and installation of 2000 ltr x 3 storage water tank (Sintex) with Electric Submers"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/90475",
+          "amount": 490900.0,
+          "recommended": "2024-01-28",
+          "description": "Construction of Deep boring and installation of 2000 ltr x 3 storage water tanks (Sintex) with electric submer"
+        },
+        {
+          "work_id": "WS/MP609/2023-2024/90531",
+          "amount": 490900.0,
+          "recommended": "2024-01-28",
+          "description": "Construction of Deepboring and Installation of 2000 ltr x 3 Water Storage tanks (Sintex) with electric Submers"
+        }
+      ]
+    },
+    {
+      "district": "Darbhanga",
+      "state": "Bihar",
+      "type": "STREET_LIGHT",
+      "total": 21285000.0,
+      "shared_words": [],
+      "works": [
+        {
+          "work_id": "WS/MP416/2025-2026/148841",
+          "amount": 495000.0,
+          "recommended": "2024-10-21",
+          "description": "Supply And installation Mini High Mast Lightning System Keoti Bazaar Chowk"
+        },
+        {
+          "work_id": "WS/MP416/2025-2026/148842",
+          "amount": 495000.0,
+          "recommended": "2024-10-21",
+          "description": "Supply And installation Mini High Mast Lightning System AT Banwari Chowk Keoti"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/150765",
+          "amount": 495000.0,
+          "recommended": "2024-11-05",
+          "description": "Supply And installation Mini High Mast Lightning System AT badh Pokhara Chowk"
+        },
+        {
+          "work_id": "WS/MP416/2025-2026/150767",
+          "amount": 495000.0,
+          "recommended": "2024-11-05",
+          "description": "Supply And installation Mini High Mast Lightning System AT Gandhi Chowk Chhatwan"
+        },
+        {
+          "work_id": "WS/MP416/2025-2026/150766",
+          "amount": 495000.0,
+          "recommended": "2024-11-05",
+          "description": "Supply And installation Mini High Mast Lightning System near Ladar Durga Temple block  Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156902",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "AT Near Dudhiya Khaparpura more block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156903",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "AT Near Hanuman Nagar Dudhiya more block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156905",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "AT Near Khirma Bazaar High School Gate block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156906",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "AT Bhikari Chowk Khirma block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156907",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "AT Nanaura Chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156908",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "AT Nanaura Community Hall near Kath tree block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156914",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "AT Koilathan chatra Chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156915",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "AT Karjapatti Slashthan Chowk  block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156917",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "AT Kothli Majhiama haat Chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156901",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "AT Andama near  Subhash Yadav house block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156626",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Keoti Ranwe Chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156916",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "AT Kaem Chak near Near the Kayamchak bridge block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156900",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "AT Andama Gandhi Chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156899",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "AT Kothiya Mahavir Mandir Chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156898",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Pindaruch paschim tola durga mandir chowk block Keo"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156628",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System  AT Keoti Ranwe Purani Tola Chowk block Keoti darbhang"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156629",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Darma Chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156630",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Paigambarpur Chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156631",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System  AT Lallu Chowk Sarjapur block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156632",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Chak Bhawani Chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156633",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Naya Gaon West Futani Chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156634",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Chakka Chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156873",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Rajaur Rahi Tol near Durga Temple block Keoti darbh"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156874",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System At Near Pathra Patti Mahadev Temple block Keoti darbha"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156875",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT In the premises of PHC Keoti Ranwe block Keoti darb"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156876",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Jiwar Mandir Chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156877",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Darma near Chitragupta Temple block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156878",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Bariaul chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156879",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Kaharia Durga Mandir Chowk bock Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156880",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Karjapatti Durga Mandir Chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156881",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Madhopatti Mahavari Temple Chowk block Keoti darbha"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156882",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Mahamadpur Hanuman Temple Chowk block Keoti darbhan"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156892",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "AT Mahamadpur Gandhi Chowk Chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156893",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "AT Radha Krishna Ganj Chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156894",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "AT Mahamadpur paschim tola near bridge block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156895",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Mahamadpur Telia Pokhar Chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156897",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Pindaruch baluha chowk block Keoti darbhanga"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156443",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "Supply And installation Mini High Mast Lightning System AT Raiam bazar Chowk"
+        }
+      ]
+    },
+    {
+      "district": "Yavatmal",
+      "state": "Maharashtra",
+      "type": "STREET_LIGHT",
+      "total": 13200000.0,
+      "shared_words": [
+        "basvine"
+      ],
+      "works": [
+        {
+          "work_id": "NOREF-7fa0503df98d39",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Nimbha yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-7112b847d890fd",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At Shirajgaon yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-9bcd83ad0b01ad",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At Dattapur under Gram Panchayat Isapur yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-66c30469c9a7f6",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At. Ward no 1 yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-177d613408eccb",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At Rui Mothi yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-3ac7a08798708f",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Mandva yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-149799a4f00c9d",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Dhanora bk. yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-a52689f8a63b7d",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At Virkhed yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-fecd050eb3e558",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Kalgaon yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-039a6fa30cb92c",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At Sharad yethe solar high mast basvine Tq Kalamb"
+        },
+        {
+          "work_id": "NOREF-d3ea32d60c0902",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Pimpri Kalga yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-c5c9897dd12e85",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Wadki yethe solar high mast basvine Tq Yavatmal"
+        },
+        {
+          "work_id": "NOREF-c62383079e3445",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Wanwarla Tq.Pusad yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-34e9d228cb5c17",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Shembal pimpri Tq.Pusad yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-06fae79a1a0945",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.karla Dev Tq.Pusad yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-6cbfa8ad0a0f4f",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At Koljhari yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-e3a527ff9c0ccc",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At Ganeshwadi yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-bde697b3efa547",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Khairi yethe solar high mast basvine Tq Ralegaon"
+        },
+        {
+          "work_id": "NOREF-664bf90551297a",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Watkhed ythe solar high mast basvine Tq Ralegaon"
+        },
+        {
+          "work_id": "NOREF-e263c057a0d2af",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Khadki Bus stand yethe solar high mast basvine Tq Yavatmal"
+        },
+        {
+          "work_id": "NOREF-769000bb859614",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Chorkhopdi Tq.Darwha yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-9eef82c515249f",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Mahatoli tq.Darwha yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-81b11e39f110e0",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At Nanza yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-6c23a3d0ae7e7e",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At Dahegaon yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-bda3fe1dcfe335",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At Weni kh yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-1903b0d1d12140",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Chikhli Tq Darwha yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-5a8db23c66aa07",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Tarnoli Tq Darwha yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-212fca415611d2",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "AT Darwha Ward no 2 yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-c262edb7f983eb",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Bramhanwada West yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-032d71b3b48119",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Dagaddhanora yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-2b091e6d6c8af2",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At.Chikni Domga yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-f0d2ad51a6098f",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At Mendhla yethe solar high mast basvine"
+        },
+        {
+          "work_id": "NOREF-dba1c806486e2f",
+          "amount": 400000.0,
+          "recommended": "2025-02-25",
+          "description": "At gahuli tq pusad yethe solar high mast basvine"
+        }
+      ]
+    },
+    {
+      "district": "Bapatla",
+      "state": "Andhra Pradesh",
+      "type": "COMPUTER",
+      "total": 11340000.0,
+      "shared_words": [
+        "stem"
+      ],
+      "works": [
+        {
+          "work_id": "WS/MP18005/2026-2027/273552",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in BALAYOGI GURUKULAM for GIRLS in Repalle, Bapatla district"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/274717",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in ZPHS Cherukuru, Parchur Mandal"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/274471",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in APSWRS Girls, Bapatla"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/274473",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in ZPHS Chandole, Pittalavanipalem Mandal"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/274714",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in ZPHS Valaparla, Martur Mandal"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/274715",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory inAPSWRS Yeddanapudi"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/274716",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in ZPHS Inkollu"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/274718",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in KGBV Chinaganjam"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/274713",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in MJP BC Welfare School, Vetapalem Mandal"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/274720",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in in YN Govt High School, Karamchedu"
+        },
+        {
+          "work_id": "NOREF-a703e964f3a2f4",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in ZPHS Bommanampadu, Addanki Mandal"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/274709",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in ZPHS Yazali, Karlapalem Mandal"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/274721",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in ZPHS Appikatla, Bapatla"
+        },
+        {
+          "work_id": "NOREF-3bb62e38cefad1",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in KGBV Girls, Ballikurava Mandal"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/274711",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in AP Model School, Chirala"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/273553",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in ZPHS Gullapalli, Cherukupalle Mandal, Bapatla district"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/273554",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in ZPHS Vullipalem, Nagaram Mandal, Bapatla district"
+        },
+        {
+          "work_id": "NOREF-4d2d32c670fdf0",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in ZPHS Medarametla"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/274463",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in MJPAPBCWR School, Kotturu, Nizampatnam Mandal, Bapatla district"
+        },
+        {
+          "work_id": "NOREF-0a81e7636f551e",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in SR JRY, ZPHS Kondamanjulur, J Panguluru Mandal"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/273551",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in ZPHS Moparru, Amarthaluru Mandal, Bapatla district"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/273550",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in zphs Jampani, Vemuru Mandal, Bapatla district"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/273549",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in ZPHS Ilavaram, Bhattiprolu Mandal, Bapatla district"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/273548",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in ZPHS(Girls) Kolluru, Kolluru Mandal, Bapatla district"
+        },
+        {
+          "work_id": "WS/MP18005/2026-2027/273547",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in DR B R A APSWRS (B), Tsundur Village, Tsundur Mandal, Bapatla district"
+        },
+        {
+          "work_id": "NOREF-f0a3fcc2e4db67",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in ZPHS Elchur, Santhamaguluru Mandal"
+        },
+        {
+          "work_id": "NOREF-ecd17c3012fbbe",
+          "amount": 420000.0,
+          "recommended": "2026-03-18",
+          "description": "Establishment of STEM Laboratory in Sri Prakasam Govt Girls High School, Addanki Mandal"
+        }
+      ]
+    },
+    {
+      "district": "Samastipur",
+      "state": "Bihar",
+      "type": "WATER_TANK",
+      "total": 10800000.0,
+      "shared_words": [
+        "vibhutipur"
+      ],
+      "works": [
+        {
+          "work_id": "WS/MP883/2023-2024/74458",
+          "amount": 400000.0,
+          "recommended": "2024-01-03",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT KERAI KE UTKRAMIT MADHAY VIDHALAYA SARPATI KERAI  ME WATER ATM KA ADHISHTHAPAN"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74457",
+          "amount": 400000.0,
+          "recommended": "2024-01-03",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT CHAKHABIB KE UTKRAMIT MADHAY VIDHALAYA TOLA FAKIRANA ME WATER ATM  KA ADHISHTHAP"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74468",
+          "amount": 400000.0,
+          "recommended": "2024-01-03",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT TBHAKA KE PRATHMIK VIDHALAYA JHAHURA VARD NO. 12 ME WATER ATM KA ADHISHTHAPAN"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74462",
+          "amount": 400000.0,
+          "recommended": "2024-01-03",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT GANGOLI MANDA KE MADHAY VIDHALAYA GANGOLI VARD NO. 03 ME WATER ATM KA ADHISHTHAP"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74461",
+          "amount": 400000.0,
+          "recommended": "2024-01-03",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT SURAULI KE UTKRAMIT MADHAY VIDHALAYA DAMODARPUR VARD NO. 12 ME WATER ATM KA ADHI"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74460",
+          "amount": 400000.0,
+          "recommended": "2024-01-03",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT MAHISHI KE PRATHMIK VIDHALAYA MAHISHI DIH DURGA MANDIR KE PAAS ME WATER ATM KA A"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74473",
+          "amount": 400000.0,
+          "recommended": "2024-01-03",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT KHASH TBHKA DAKSHIN KE UTKRAMIT MADHAY VIDHALAYA CHAKFTEH GANJ VARD NO. 14 ME WA"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74498",
+          "amount": 400000.0,
+          "recommended": "2024-01-03",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT KHASH TBHAKA UTTAR KE MADHAY VIDHALAYA KORBADDHA TBHAKA VARD NO. 05 ME WATER ATM"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74502",
+          "amount": 400000.0,
+          "recommended": "2024-01-03",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT KALYANPUR UTTAR KE UTKRAMIT MADHAY VIDHALAYA KALYANPUR MILKI BHUMIHAR TOLA VARD "
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74514",
+          "amount": 400000.0,
+          "recommended": "2024-01-03",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT PATAILIYA KE UTKRAMIT MADHAY VIDHALAYA DINAYATPUR VARD NO. 16 ME WATER ATM KA AD"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74512",
+          "amount": 400000.0,
+          "recommended": "2024-01-03",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT BHUSHWAR KE UTKRAMIT MADHAY VIDHALAYA BHUSHWAR DIH VARD NO. 06 ME WATER ATM KA A"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74511",
+          "amount": 400000.0,
+          "recommended": "2024-01-03",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT NARHAN KE RAJAYKIY MADHAY VIDHALAYA NARHAN VARD NO. 02 ME WATER ATM KA ADHISHTHA"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74510",
+          "amount": 400000.0,
+          "recommended": "2024-01-03",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT MUSTAFAPUR KE PRATHMIK VIDHALAY VARAIYA GACHCHI VARD NO.12 ME WATER ATM KA ADHIS"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74507",
+          "amount": 400000.0,
+          "recommended": "2024-01-03",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT MAHMADPUR SAKRA KE PRATHMIK VIDHALAYA JAGARNATHPUR VARD NO. 08 ME WATER ATM KA A"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74505",
+          "amount": 400000.0,
+          "recommended": "2024-01-03",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT KALYANPUR DAKSHIN KE RAJYKIY MADHAY VIDHALAYA SMATHA VARD NO. 14 ME WATER ATM KA"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74503",
+          "amount": 400000.0,
+          "recommended": "2024-01-03",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT CHORA TBHAKA KE UTKRAMIT MADHAY VIDHALAYA BANHAITI VARD NO. 16 ME WATER ATM KA A"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74930",
+          "amount": 400000.0,
+          "recommended": "2024-01-04",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT PATVARA KE UTKRAMIT MADHAY VIDHALAYA PATVARA UTTAR VARD NO. 01 ME WATER ATM KA A"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74947",
+          "amount": 400000.0,
+          "recommended": "2024-01-04",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT SAKHMOHAN KE MADHAY VIDHALAYA SAKHMOHAN VARD NO. 11 ME WATER ATM KA ADHISHTHAPAN"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/74952",
+          "amount": 400000.0,
+          "recommended": "2024-01-04",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT SINGHIYA DAKSHIN KE PRATHMIK VIDHALAYA BHINDI SINGHIYA ME WATER ATM KA ADHISHTHA"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/75126",
+          "amount": 400000.0,
+          "recommended": "2024-01-04",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT BORIYA KE RAJAYKIY MADHAY VIDHALAYA MANRAY TOLA VARD NO. 02 ME WATER ATM KA ADHI"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/75082",
+          "amount": 400000.0,
+          "recommended": "2024-01-04",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT MAHTHI DAKSHIN KE UTKRAMIT MADHAY VIDHALAYA EKHARA VARD NO. 13 ME WATER ATM KA A"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/75073",
+          "amount": 400000.0,
+          "recommended": "2024-01-04",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT VAJITPUR BAMBAIYA KE MADHAY VIDHALAYA BELSANDI DIH VARD NO. 08 ME WATER ATM KA A"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/75059",
+          "amount": 400000.0,
+          "recommended": "2024-01-04",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT ALAMPUR KODARIYA KE UTKRAMIT MADHAY VIDHALAYA MAHTHI TOLA ASAMPUR ME WATER ATM K"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/75055",
+          "amount": 400000.0,
+          "recommended": "2024-01-04",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT BELSANDI TARA KE RAJAKIY MADHAY VIDHALAYA SHANKAR CHAUK PETROL PUMP KE PAAS ME W"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/75051",
+          "amount": 400000.0,
+          "recommended": "2024-01-04",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT SINGHIYA UTTAR KE MADHAY VIDHALAYA SALKHANNI ME WATER ATM KA ADHISHTHAPAN"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/75048",
+          "amount": 400000.0,
+          "recommended": "2024-01-04",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT MAHTHI UTTAR KE UTKRAMIT MADHAY VIDHALAYA SONVAR CHAK VARD NO. 01 ME WATER ATM K"
+        },
+        {
+          "work_id": "WS/MP883/2023-2024/75121",
+          "amount": 400000.0,
+          "recommended": "2024-01-04",
+          "description": "PRAKHAND VIBHUTIPUR PANCHAYAT DESARI KE UTKRAMIT MADHAY VIDHALAYA DESARI ME WATER ATM KA ADHISHTHAPAN"
+        }
+      ]
+    },
+    {
+      "district": "Jangaon",
+      "state": "Telangana",
+      "type": "CCTV",
+      "total": 11976000.0,
+      "shared_words": [
+        "janagaon"
+      ],
+      "works": [
+        {
+          "work_id": "WS/MP764/2024-2025/118797",
+          "amount": 499000.0,
+          "recommended": "2024-03-02",
+          "description": "Supply & Providing CC Cameras in Manikyapur, Linalaghanpur Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/124011",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in Thatikonda  of Ghanpur Station Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/124029",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in Uppagal of Zaffergadh Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/124030",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in Konaichalam of Zaffergadh Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/124012",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in jittagudem of Ghanpur Station Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/124034",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in Thammadapally (G)  of Zaffergadh Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/124010",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in Samudrala of Ghanpur Station Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/124033",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in Thimmapur of Zaffergadh Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/124032",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in  Zaffergadh of Zaffergadh Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/124031",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in Suraram of Zaffergadh Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/124035",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in Obulapur of Zaffergadh Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/124036",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in Shapally of Zaffergadh Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/124090",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and providing CC cameras in Mukthumbanda Thanda of Zaffergadh Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/124008",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in Raghavapur of Ghanpur Station Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/124009",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in Rangaraigudem of Ghanpur Station Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/123998",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in Namiligonda of Ghanpur Station Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/123995",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in Komatigudem of Ghanpur Station Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/123991",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and providing CC cameras in Ippagudem of Station Ghanpur Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/123990",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and providing CC cameras in Ghanpur Station of Station Ghanpur Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/123996",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in Kothapally of Ghanpur Station Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/123988",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and providing CC cameras in Akkampallygudem of Station Ghanpur Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2024-2025/123989",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and providing CC cameras in SC Colony of Station Ghanpur Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/123999",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in Pamunuru of Ghanpur Station Mandal, Janagaon District"
+        },
+        {
+          "work_id": "WS/MP764/2023-2024/123997",
+          "amount": 499000.0,
+          "recommended": "2024-03-09",
+          "description": "Supply and Providing CC cameras in Meedikonda of Ghanpur Station Mandal, Janagaon District"
+        }
+      ]
+    },
+    {
+      "district": "Chitradurga",
+      "state": "Karnataka",
+      "type": "COMMUNITY_HALL",
+      "total": 9600000.0,
+      "shared_words": [],
+      "works": [
+        {
+          "work_id": "WS/MP18082/2025-2026/178867",
+          "amount": 400000.0,
+          "recommended": "2025-03-04",
+          "description": "construction of Rangamandira at K.Kurubarahalli village, Kanguvalli Grama Panchayath in Hosadurga taluk"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/178871",
+          "amount": 400000.0,
+          "recommended": "2025-03-04",
+          "description": "Construction of Rangamandira at Kallavvanagathihalli village of B.Durga Grama Panchayath."
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/186700",
+          "amount": 400000.0,
+          "recommended": "2025-03-26",
+          "description": "Construction of Rangamandira at Honnayyanaroppa village of Doddachelluru Grama Panchayath,"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/187467",
+          "amount": 400000.0,
+          "recommended": "2025-03-28",
+          "description": "Construction of Rangamandira at Government Higher Primary School of Athimage Bhovihatti"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/187466",
+          "amount": 400000.0,
+          "recommended": "2025-03-28",
+          "description": "Construction of Rangamandira at Kannagondi village of Kellodu Grama Panchayath"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/189662",
+          "amount": 400000.0,
+          "recommended": "2025-04-07",
+          "description": "Construction of Rangamandira at Government Higher Primary School in Shravanagere village in Dharmapura Grama P"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/189629",
+          "amount": 400000.0,
+          "recommended": "2025-04-07",
+          "description": "Construction of Rangamandira at Government High School at Venukalgudda Village of Eshwaragere Gram Panchayath"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/189627",
+          "amount": 400000.0,
+          "recommended": "2025-04-07",
+          "description": "Construction of Rangamandira at Moodlahatti village of Kariyala Grama Panchayath in Khate number 2236"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/189752",
+          "amount": 400000.0,
+          "recommended": "2025-04-07",
+          "description": "Construction of Rangamandira in the Premises of Government Higher Primary School in Sooragondanahalli village"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/189762",
+          "amount": 400000.0,
+          "recommended": "2025-04-07",
+          "description": "Construction of Rangamandira at Government Lower Primary School premises of Balagatta village of Vanivilaspura"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/191408",
+          "amount": 400000.0,
+          "recommended": "2025-04-15",
+          "description": "Construction of Rangamandira at Government Highschool Premises at Ramajogihalli village"
+        },
+        {
+          "work_id": "NOREF-f7490c28d8dc31",
+          "amount": 400000.0,
+          "recommended": "2025-04-23",
+          "description": "Construction of Rangamandira at Nagarakatte village of Hebballi Grama Panchayath"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/193871",
+          "amount": 400000.0,
+          "recommended": "2025-04-23",
+          "description": "Construction of Rangamandira at Nayakarahatti (Nayakara Sollapura) village of Janukonda Grama Panchyath"
+        },
+        {
+          "work_id": "WS/MP18082/2026-2027/197035",
+          "amount": 400000.0,
+          "recommended": "2025-05-06",
+          "description": "Construction of Rangamandira at Adanuru village of Holalkere Grama Panchayath"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/197041",
+          "amount": 400000.0,
+          "recommended": "2025-05-06",
+          "description": "Construction of Rangamandira in the Premises of Government lower Primary School at Chillahalli village of Abbi"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/197040",
+          "amount": 400000.0,
+          "recommended": "2025-05-06",
+          "description": "Construction of Rangamandira near Thippeswamy temple at Khandenahalli village"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/198203",
+          "amount": 400000.0,
+          "recommended": "2025-05-09",
+          "description": "Construction of Rangamandira in the Premises of Government Higher Primary School at Mallurahalli village"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/211834",
+          "amount": 400000.0,
+          "recommended": "2025-06-24",
+          "description": "Construction of Rangamandira at Government Lower Primary School Premises at Mavinakatte village of Devigere Gr"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/211821",
+          "amount": 400000.0,
+          "recommended": "2025-06-24",
+          "description": "Construction of Rangamandira at Government Lower Primary School at Belavinamaradahatti village of Nerlahalli G"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/213866",
+          "amount": 400000.0,
+          "recommended": "2025-07-01",
+          "description": "Construction of Rangamandira at Government Higher Primary School premises at Heuru village of Hebballi Grama P"
+        },
+        {
+          "work_id": "NOREF-9bfa00978974ed",
+          "amount": 400000.0,
+          "recommended": "2025-07-01",
+          "description": "Construction of Rangamandira at Government High School Premises at Siddeshwaranadurga village"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/213882",
+          "amount": 400000.0,
+          "recommended": "2025-07-01",
+          "description": "Construction of Rangamandira at Government Lower Primary School Premises at Mugalikatte village of Upparigenah"
+        },
+        {
+          "work_id": "WS/MP18082/2025-2026/218550",
+          "amount": 400000.0,
+          "recommended": "2025-07-15",
+          "description": "Construction of Rangamandira at the Premises of Government Higher Primary School of Talavarahatti village of V"
+        },
+        {
+          "work_id": "NOREF-bb936e52a589a3",
+          "amount": 400000.0,
+          "recommended": "2025-08-20",
+          "description": "Repair work of Existing Community hall at Kellodu village in Hosadurga taluk"
+        }
+      ]
+    },
+    {
+      "district": "Darbhanga",
+      "state": "Bihar",
+      "type": "STREET_LIGHT",
+      "total": 9900000.0,
+      "shared_words": [
+        "kevti"
+      ],
+      "works": [
+        {
+          "work_id": "WS/MP416/2024-2025/156912",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "kevti prakhand antargat dome gawn ke dome chowk mandir ke nikat sarvajanik sthal par mini high mast electric l"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156913",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "kevti prkahand antargat koilasthan gawn me koilasthan durga mandir ke nikat sarvajanik sthal par mini high mas"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/156896",
+          "amount": 495000.0,
+          "recommended": "2024-12-04",
+          "description": "kevti prakhand antargat benwara ganesh mandir ke nikat sarvajanik sthal par mini high mast electric light ka a"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/169653",
+          "amount": 495000.0,
+          "recommended": "2025-01-28",
+          "description": "kevti prakhand antargat chhotki ladha karpoori chowk ke nikat sarvajanik sthal par mini high mast electric lig"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/169652",
+          "amount": 495000.0,
+          "recommended": "2025-01-28",
+          "description": "kevti prakhand antargat ladha chowk ke nikat sarvajani sthal par mini high mast electric light ka adhisthapan "
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/169679",
+          "amount": 495000.0,
+          "recommended": "2025-01-28",
+          "description": "kevti prakhand antargat parsa hospital chowk ke nikat sarvajanik sthal par mini high mast electric light ka ad"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/169651",
+          "amount": 495000.0,
+          "recommended": "2025-01-28",
+          "description": "kevti prakhand antargat phulkahi appan chowk ke nikat sarvajanik sthal par mini high mast electric light ka ad"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/169650",
+          "amount": 495000.0,
+          "recommended": "2025-01-28",
+          "description": "kevti prakhand antargat bhagwati sthan telia pokhar ke nikat sarvajanik sthal par mini high mast electric ligh"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/169649",
+          "amount": 495000.0,
+          "recommended": "2025-01-28",
+          "description": "kevti prakhand antargat chhatwan haat gachhi durga mandir ckowk ke nikat sarvajanik sthal par mini high mast e"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/169727",
+          "amount": 495000.0,
+          "recommended": "2025-01-28",
+          "description": "kevti prakhand antargat ganj raghauli tol brahmsthan ke nikat sarvajanik sthal par mini high mast electric lig"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/169633",
+          "amount": 495000.0,
+          "recommended": "2025-01-28",
+          "description": "kevti prakhand antargat gadhooli chowk mahavir mandir ke nikat sarvajanik sthal par mini hight mast electric l"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/169681",
+          "amount": 495000.0,
+          "recommended": "2025-01-28",
+          "description": "kevti prakhand antargat barahi brahamsthan ke nikat sarvajanik sthal par mini high mast electric light ka adhi"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/169680",
+          "amount": 495000.0,
+          "recommended": "2025-01-28",
+          "description": "kevti prakhand antargat dighiar haat chowk ke nikat sarvajanik sthal par mini high mast electric light ka adhi"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/169678",
+          "amount": 495000.0,
+          "recommended": "2025-01-28",
+          "description": "kevti prakhand antargat kanhaiya ghat kamadtoli ke nikat sarvajanik sthal par mini high mast electric light ka"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/169728",
+          "amount": 495000.0,
+          "recommended": "2025-01-28",
+          "description": "kevti prakhand antargat postapur puliya  (sahpur dih) ke nikat sarvajanik sthal par mini high mast electric li"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/169677",
+          "amount": 495000.0,
+          "recommended": "2025-01-28",
+          "description": "kevti prakhand antargat magarthoo sahoo ji sarvajanik samudayik bhawan ke nikat sarvajanik sthal par mini high"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/169629",
+          "amount": 495000.0,
+          "recommended": "2025-01-28",
+          "description": "kevti prakhand antargat koylasthan behatwara chowk ke nikat sarvajanik sthal par mini high mast electric light"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/169630",
+          "amount": 495000.0,
+          "recommended": "2025-01-28",
+          "description": "kevti prakhand antargat nariyal tol pul ke nikat sarvajanik sthal par mini high mast electric light ka adhisth"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/169631",
+          "amount": 495000.0,
+          "recommended": "2025-01-28",
+          "description": "kevti prakhand antargat barahi pul chowk ke nikat sarvajanik sthal par mini high mast electric light ka adhist"
+        },
+        {
+          "work_id": "WS/MP416/2024-2025/169632",
+          "amount": 495000.0,
+          "recommended": "2025-01-28",
+          "description": "kevti prakhand antaragt maliya tol chowk ke nikat sarvajanik sthal par mini high mast electric light ka adhist"
+        }
+      ]
+    },
+    {
+      "district": "Bengaluru (Urban)",
+      "state": "Karnataka",
+      "type": "ROAD_CC",
+      "total": 9988830.0,
+      "shared_words": [
+        "hesarghatta"
+      ],
+      "works": [
+        {
+          "work_id": "WS/MP18364/2024-2025/138186",
+          "amount": 499150.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Nagaraj’s house to Venkatesh’s house in Donekal village in Hesargh"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138036",
+          "amount": 499575.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Shrinivas’s house to Bhimaiah’s house in Donekal village in Hesarg"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138035",
+          "amount": 499575.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Jaishankar’s house to Mallikarjuna’s house in Donekal village in H"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138033",
+          "amount": 499575.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Narayanappa’s house to Venkataramanappa house in Donekal village i"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/137933",
+          "amount": 499575.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Donekal Main road to Ramesh's house in Donekal village in Hesargha"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138220",
+          "amount": 499466.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Hesarghatta Sparsha Trust main road to Bhimanna’s house in Hesargh"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138221",
+          "amount": 499466.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Hesarghatta Sparsha Trust main road to Chamundeshwari Temple road "
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138222",
+          "amount": 499466.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Chandrappa’s house to Rajanna’s house in Hesarghatta Panchayath li"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138223",
+          "amount": 499466.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Ramesh’s house to Ramachandra’s house in Hesarghatta Panchayath li"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138038",
+          "amount": 499575.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Thippeswamy’s house to Venkatachalaiah’s  house in Donekal village"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138214",
+          "amount": 499575.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Krishnamurthy’s house to Ravikumar’s house in Donekal village in H"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138185",
+          "amount": 499150.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Muneshwara temple main road to Lokesh’s house in Donekal village i"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138184",
+          "amount": 499150.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Venkatesh’s house to Lakshmamma’s house in Donekal village in Hesa"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138183",
+          "amount": 499150.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Shrinivasaiah’s house to Hanumanthuraju’s house in Donekal village"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138212",
+          "amount": 499575.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Balu’s house to Shrinivas Naik’s house in Donekal village in Hesar"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138213",
+          "amount": 499575.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Thimanna’s house to Ramesh’s house in Donekal village in Hesarghat"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138224",
+          "amount": 499466.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Jayaramaiah’s house to Kumar’s house in Hesarghatta Panchayath lim"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138215",
+          "amount": 499575.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Rajanna’s house to Ramkrishnappa’s house in Donekal village in Hes"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138216",
+          "amount": 499575.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Nagapura main road to Hesarghatta farm main road in Hesarghatta Pa"
+        },
+        {
+          "work_id": "WS/MP18364/2024-2025/138181",
+          "amount": 499150.0,
+          "recommended": "2024-09-03",
+          "description": "Formation and improvements to the road from Manjunath’s house to Girish’s  house in Donekal village in Hesargh"
+        }
+      ]
+    },
+    {
+      "district": "Sambhal",
+      "state": "Uttar Pradesh",
+      "type": "WATER_TANK",
+      "total": 8044940.0,
+      "shared_words": [
+        "pyaau"
+      ],
+      "works": [
+        {
+          "work_id": "WS/MP488/2023-2024/22813",
+          "amount": 402247.0,
+          "recommended": "2023-09-19",
+          "description": "GRAM ASGARIPUR BLOCK ASMOULI ME MATTEN PRADHAN KE SCHOOL KE PASS SHEETAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/22816",
+          "amount": 402247.0,
+          "recommended": "2023-09-19",
+          "description": "GRAM SONDHAN MOHAMMADPUR BLOCK PANWANSA ME CHAURAHE KE PASS SHEETAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/22812",
+          "amount": 402247.0,
+          "recommended": "2023-09-19",
+          "description": "GRAM KOKABANS BLOCK BANIYAKHEDA ME MASJID KE PASS SHEETAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/22814",
+          "amount": 402247.0,
+          "recommended": "2023-09-19",
+          "description": "GRAM DHURETA BLOCK PANWANSA ME MASJID KE PASS SHEETAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/22815",
+          "amount": 402247.0,
+          "recommended": "2023-09-19",
+          "description": "GRAM SHAHPUR SOT BLOCK ASMOULI ME MASJID KE PASS SHEETAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/22817",
+          "amount": 402247.0,
+          "recommended": "2023-09-19",
+          "description": "MOHALLA NALA SAMBHAL WARD 21 MANOKAMNA INTER COLLEGE ME SHEETAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/22818",
+          "amount": 402247.0,
+          "recommended": "2023-09-19",
+          "description": "MOHALLA JAGAT SAMBHALWARD NO 11  ME HIND INTER COLLEGE ME SHEETAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/22819",
+          "amount": 402247.0,
+          "recommended": "2023-09-19",
+          "description": "MOHALLA DEEPA SARAI SAMBHAL \n WARD NO 26 ME DEEWAN KHANE KE PASS SHEETAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/22811",
+          "amount": 402247.0,
+          "recommended": "2023-09-19",
+          "description": "GRAM SEHRA BLOCK PANWASA ME CHAURAHE KE PASS SHEETAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/22810",
+          "amount": 402247.0,
+          "recommended": "2023-09-19",
+          "description": "GRAM NEHROLI BLOCK ASMAULI ME MASJID KE PASS SHEETAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/38004",
+          "amount": 402247.0,
+          "recommended": "2023-10-17",
+          "description": "GRAM MANAUTA BLOCK ASMAULI SHAHIN ISMARK MAHAVIDYAL KE PASS SHITAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/38005",
+          "amount": 402247.0,
+          "recommended": "2023-10-17",
+          "description": "GRAM AKBARPUR GAHRA BLOCK ASMOLI MASJID KE PASS SHITAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/38012",
+          "amount": 402247.0,
+          "recommended": "2023-10-17",
+          "description": "WARD NO 25 MOHALLA  HINDUPURA KHEDA DEEPA SARAI BLOCK SAMBHAL ME PAKHAD KE PAAS SHITAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/38011",
+          "amount": 402247.0,
+          "recommended": "2023-10-17",
+          "description": "WARD NO 03 MOHALLA HAYAT NAGAR BLOCK SAMBHAL ME TIRAHE PAR SHITAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/38010",
+          "amount": 402247.0,
+          "recommended": "2023-10-17",
+          "description": "WARD NO 15 MOHALLA KOT GARVI BLOCK SAMBHAL ME SHUAIB KHAN KE MAKAN KE PAAS SHITAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/38009",
+          "amount": 402247.0,
+          "recommended": "2023-10-17",
+          "description": "GRAM MANDLAI BLOCK SAMBHAL ME MASJID KE PAAS SHITAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/38008",
+          "amount": 402247.0,
+          "recommended": "2023-10-17",
+          "description": "GRAM SEHRA BLOCK PAWASA ME CHURAHA PAR SHITAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/38007",
+          "amount": 402247.0,
+          "recommended": "2023-10-17",
+          "description": "GRAM RAWAN BUJURJ BLOCK ASMOLI ME MASJID KE PAAS SHITAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/38006",
+          "amount": 402247.0,
+          "recommended": "2023-10-17",
+          "description": "GRAM ETALA MAFI BLOCK ASMOLI ME  MASJID KE PASS SHITAL JAL PYAAU"
+        },
+        {
+          "work_id": "WS/MP488/2023-2024/38013",
+          "amount": 402247.0,
+          "recommended": "2023-10-17",
+          "description": "WARD NO 02  MOHALLA HATIM SARAI BLOCK SAMBHAL ME MAZAR  KE PAAS SHITAL JAL PYAAU"
+        }
+      ]
+    },
+    {
+      "district": "Sabar Kantha",
+      "state": "Gujarat",
+      "type": "COMPUTER",
+      "total": 9980000.0,
+      "shared_words": [
+        "games",
+        "maths",
+        "mind"
+      ],
+      "works": [
+        {
+          "work_id": "WS/MP070/2025-2026/140357",
+          "amount": 499000.0,
+          "recommended": "2024-09-23",
+          "description": "Providing Maths and science mind games based activity room with equipments at Chitariya Primary School"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/140355",
+          "amount": 499000.0,
+          "recommended": "2024-09-23",
+          "description": "Providing Maths and science mind games based activity room with equipments at Dadhvav Primary school"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/140352",
+          "amount": 499000.0,
+          "recommended": "2024-09-23",
+          "description": "Providing Maths and science mind games based activity room with equipments at Hadiyol primary school"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/140353",
+          "amount": 499000.0,
+          "recommended": "2024-09-23",
+          "description": "Providing Maths and science mind games based activity room with equipments at Raygadh Primary School"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/142949",
+          "amount": 499000.0,
+          "recommended": "2024-09-23",
+          "description": "Providing Maths and science mind games based activity room with equipments at Sarsav Primary School"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/140358",
+          "amount": 499000.0,
+          "recommended": "2024-09-23",
+          "description": "Providing Maths and science mind games based activity room with equipments at Antarsumba Primary School"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/140354",
+          "amount": 499000.0,
+          "recommended": "2024-09-23",
+          "description": "Providing Maths and science mind games based activity room with equipments at Vijaynagar-1 primary school"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/143186",
+          "amount": 499000.0,
+          "recommended": "2024-09-24",
+          "description": "Providing Maths and science mind games based activity room with equipments at Kalakhetara primary school"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/143185",
+          "amount": 499000.0,
+          "recommended": "2024-09-24",
+          "description": "Providing Maths and science mind games based activity room with equipments at Ganer primary school"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/143184",
+          "amount": 499000.0,
+          "recommended": "2024-09-24",
+          "description": "Providing Maths and science mind games based activity room with equipments at Delvada Primary school"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/143187",
+          "amount": 499000.0,
+          "recommended": "2024-09-24",
+          "description": "Providing Maths and science mind games based activity room with equipments at Ganva primary school"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/143188",
+          "amount": 499000.0,
+          "recommended": "2024-09-24",
+          "description": "Providing Maths and science mind games based activity room with equipments at Mauchha primary school"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/143189",
+          "amount": 499000.0,
+          "recommended": "2024-09-24",
+          "description": "Providing Maths and science mind games based activity room with equipments at Zinzva primary school"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/143159",
+          "amount": 499000.0,
+          "recommended": "2024-09-24",
+          "description": "Providing Maths and science mind games based activity room with equipments at Charanvata primary school"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/143157",
+          "amount": 499000.0,
+          "recommended": "2024-09-24",
+          "description": "Providing Maths and science mind games based activity room with equipments at Matoda primary school"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/143156",
+          "amount": 499000.0,
+          "recommended": "2024-09-24",
+          "description": "Providing Maths and science mind games based activity room with equipments at Nava mota primary school"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/143155",
+          "amount": 499000.0,
+          "recommended": "2024-09-24",
+          "description": "Providing Maths and science mind games based activity room with equipments at Pipodara primary school"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/143154",
+          "amount": 499000.0,
+          "recommended": "2024-09-24",
+          "description": "Providing Maths and science mind games based activity room with equipments at Paroya primary school"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/143153",
+          "amount": 499000.0,
+          "recommended": "2024-09-24",
+          "description": "Providing Maths and science mind games based activity room with equipments at khedbrahma taluka school no.1"
+        },
+        {
+          "work_id": "WS/MP070/2025-2026/143158",
+          "amount": 499000.0,
+          "recommended": "2024-09-24",
+          "description": "Providing Maths and science mind games based activity room with equipments at Varvada Primary school"
+        }
+      ]
+    }
+  ]
+}

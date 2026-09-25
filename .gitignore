@@ -44,3 +44,10 @@ skills-lock.json
 
 # demo account passwords, printed once by data/seed_users.py
 .demo-logins.txt
+.venv-trial/
+data/trial/results/*.png
+
+# OCR text of evidence files (contains names and bank account numbers)
+data/trial/cache/
+# trial run logs
+data/trial/*.log

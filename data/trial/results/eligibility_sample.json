@@ -1,0 +1,542 @@
+[
+ [
+  "COMMERCIAL",
+  "shop",
+  "NOREF-6a983fe29dcae3",
+  "COMMUNITY_HALL",
+  1336000.0,
+  "Mayiladuthurai",
+  "Construction of Public Distribution Shop in Keelaperumpallam Panchayat"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP18173/2024-2025/137925",
+  "COMMUNITY_HALL",
+  1352339.0,
+  "Viluppuram",
+  "Construction of Fair Price Shop at Appampattu village in Konai Panchayat"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "NOREF-adb4f04f861033",
+  "COMMUNITY_HALL",
+  977000.0,
+  "Tirunelveli",
+  "Construction of Public Distribution Shop Building a Anaithalaiyur Village in Gangaikondan Panchayat in Manur Panchayat Union."
+ ],
+ [
+  "RELIGIOUS",
+  "mandir",
+  "WS/MP428/2026-2027/275089",
+  "BOUNDARY_WALL",
+  300000.0,
+  "Kawardha (Kabirdham)",
+  "boundary nirman saraswati shishu mandir ke pas samudayik bhavan me"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP740/2024-2025/59157",
+  "COMMUNITY_HALL",
+  1200000.0,
+  "Erode",
+  "Construction of Public Distribution shop building at ramar kovil street (Ward No.9) – K.N.Palayam"
+ ],
+ [
+  "NAMED_ASSET",
+  "statue",
+  "NOREF-96a64c88c0a96d",
+  "PLAYGROUND",
+  1000000.0,
+  "Chandrapur",
+  "Beautification of the Annabhau Sathe statue area in Mouja Jivati, Taluka Jivati."
+ ],
+ [
+  "SWAGAT_DWAR",
+  "entrance arch",
+  "NOREF-2fffe49eea38db",
+  "BUS_SHELTER",
+  2000000.0,
+  "Ranipet",
+  "Construction of Bus stand Entrance Arch"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP870/2023-2024/128440",
+  "COMMUNITY_HALL",
+  1300000.0,
+  "Tirupathur",
+  "Construction of Amutham Public Distribution Shop in Municipal Ward 30 New Town, Vanniyambadi."
+ ],
+ [
+  "MAINTENANCE",
+  "maintenance",
+  "NOREF-19dd8bd8f972f0",
+  "ROAD_CC",
+  400000.0,
+  "Kozhikode",
+  "Repair and Maintenance of Puthanparamb Karakkunn Road"
+ ],
+ [
+  "MAINTENANCE",
+  "maintenance",
+  "WS/MP18328/2026-2027/273150",
+  "COMMUNITY_HALL",
+  100000.0,
+  "Mandi",
+  "Repair and Maintenance of Mahila Mandal Bhawan Shahal in GP Pangna. Work Executing Agency-BDO Churag"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP747/2023-2024/76177",
+  "COMMUNITY_HALL",
+  1243438.0,
+  "Madurai",
+  "Construction of Public distribution shop in ward no.99 at Madurai Corporation (2022-2023)"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP457/2025-2026/191880",
+  "COMMUNITY_HALL",
+  979584.0,
+  "Viluppuram",
+  "Construction of Ration shop in 22nd ward, Kidangal 2, Tindivanam"
+ ],
+ [
+  "RELIGIOUS",
+  "temple",
+  "WS/MP385/2023-2024/17856",
+  "ROAD_CC",
+  500000.0,
+  "Bhilwara",
+  "Construction of road Small Temple to cemetery, Village - Girdiya GP-Girdiya, Teh-Shahpura"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP458/2025-2026/153614",
+  "COMMUNITY_HALL",
+  1400000.0,
+  "Thoothukudi",
+  "Construction of Ration Shop Building at Levingipuram South zone Thoothukudi Corporation - Ward 45"
+ ],
+ [
+  "RELIGIOUS",
+  "mandir",
+  "WS/MP718/2024-2025/103620",
+  "COMMUNITY_HALL",
+  800000.0,
+  NaN,
+  "Samudayik Khula Baramda Nirman Karya Radha Krishna Mandir Ke Pas SoorKhan khera"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "NOREF-c7d717737d8b6d",
+  "COMMUNITY_HALL",
+  1200000.0,
+  "Theni",
+  "Construction of new Ration Shop in Boothipuram"
+ ],
+ [
+  "NAMED_ASSET",
+  "memorial",
+  "WS/MP314/2023-2024/51786",
+  "SCHOOL_BUILDING",
+  600000.0,
+  "Barpeta",
+  "Infrastructure Development of Fakaruddin Ali Ahmed Memorial Senior Secondary School."
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "NOREF-ef3e680cf957f3",
+  "SCHOOL_BUILDING",
+  1600000.0,
+  "Coimbatore",
+  "Construction of Public Distribution Shop at Abirami Nagar in Ward No.37 of Coimbatore Corporation"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "NOREF-ce3d8f5046fbc9",
+  "COMMUNITY_HALL",
+  1700000.0,
+  "Salem",
+  "Construction of a fair price shop building near Bharathinagar Vinayagar Temple in Diviison 2 Salem Corporation"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "NOREF-3981f1f9e2f700",
+  "COMMUNITY_HALL",
+  1900000.0,
+  "Ranipet",
+  "Construction of Public distribution Shop in navalpur"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP18175/2025-2026/158071",
+  "COMMUNITY_HALL",
+  749592.0,
+  "Dharmapuri",
+  "Construction of Ration shop building at Panjapalli panchayat Oddarthinnai village"
+ ],
+ [
+  "RELIGIOUS",
+  "mandir",
+  "WS/MP18049/2025-2026/152175",
+  "SCHOOL_BUILDING",
+  1500000.0,
+  "Bilaspur",
+  "Bhawan Nirman Saraswati Shishu mandir Sendri"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP739/2024-2025/65997",
+  "COMMUNITY_HALL",
+  1177000.0,
+  "Namakkal",
+  "Construction of PD Shop at Palanthinnipatty pudur, vennandur block"
+ ],
+ [
+  "RELIGIOUS",
+  "mandir",
+  "WS/MP718/2024-2025/101425",
+  "COMMUNITY_HALL",
+  480000.0,
+  "Udaipur",
+  "Vishranti Grah Nirman Karya Shri Hanuman Mandir Ke Pas Vada Fala"
+ ],
+ [
+  "RELIGIOUS",
+  "temple",
+  "WS/MP677/2025-2026/197739",
+  "COMMUNITY_HALL",
+  1402898.0,
+  "Palghar",
+  "Construction of a community temple at Thackeraypada in Pimpalshet tal dahanu"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP458/2025-2026/153616",
+  "COMMUNITY_HALL",
+  1400000.0,
+  "Thoothukudi",
+  "Construction of Ration Shop Building at Chatram Street Opp. Arignar Anna Mandapam East zone Thoothukudi Corporation - Ward 38"
+ ],
+ [
+  "RELIGIOUS",
+  "mandir",
+  "WS/MP410/2025-2026/178474",
+  "COMMUNITY_HALL",
+  250000.0,
+  "Tinsukia",
+  "Infrastructure Development of Ram Mandir Kala Kristi Kendra, Bengenabari Gaon, Samdang, Doodmdooma LAC"
+ ],
+ [
+  "NAMED_ASSET",
+  "memorial",
+  "WS/MP538/2024-2025/45670",
+  "COMMUNITY_HALL",
+  300000.0,
+  "Udalguri",
+  "Construction/Renovation of Justin Lakra Memorial Cultural Stage near No. 2 Hatigarh Tea Estate"
+ ],
+ [
+  "RELIGIOUS",
+  "mandir",
+  "WS/MP442/2023-2024/29047",
+  "COMMUNITY_HALL",
+  100000.0,
+  "Chhindwara",
+  "Rangmanch nirman Hospital Hanuman mandir ke pass"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP740/2024-2025/59156",
+  "COMMUNITY_HALL",
+  1100000.0,
+  "Erode",
+  "Construction of Public Distribution shop building at periya kundri – Kundri Panchayat"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP458/2024-2025/119183",
+  "COMMUNITY_HALL",
+  950000.0,
+  "Thoothukudi",
+  "Construction of Ration shop building at Mela vellamadam village in Vellamadam Panchayat in Alwarthirunagari Panchayat Union."
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP017/2024-2025/160038",
+  "COMMUNITY_HALL",
+  1200000.0,
+  "Ranipet",
+  "Construction of fair Price Shop Sriram nagar"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP748/2024-2025/130149",
+  "COMMUNITY_HALL",
+  1394466.0,
+  "Madurai",
+  "Construction of Ration shop"
+ ],
+ [
+  "MAINTENANCE",
+  "maintenance",
+  "NOREF-0e1b2da78f9302",
+  "ROAD_CC",
+  500000.0,
+  "Kozhikode",
+  "Repair and Maintenance of Iriyambadam Kuzhiyambadam C K Road"
+ ],
+ [
+  "RELIGIOUS",
+  "mandir",
+  "NOREF-beb6bbf47333d5",
+  "COMMUNITY_HALL",
+  850000.0,
+  "Haveri",
+  "Construction of Ranga Mandir navoday school"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP755/2024-2025/25320",
+  "COMMUNITY_HALL",
+  1500000.0,
+  "Kancheepuram",
+  "Construction of Ration Shop (PDS)."
+ ],
+ [
+  "RELIGIOUS",
+  "mandir",
+  "WS/MP428/2026-2027/275088",
+  NaN,
+  200000.0,
+  "Kawardha (Kabirdham)",
+  "sanskritik manch nirman saraswati shishu mandir ke pas"
+ ],
+ [
+  "SWAGAT_DWAR",
+  "entrance arch",
+  "WS/MP166/2025-2026/258718",
+  "BOUNDARY_WALL",
+  10000000.0,
+  "Chennai",
+  "Construction of a compound wall and entrance arch in residential buildings built by the Tamil Nadu Urban Habitat Development Board in the Guavathoppu scheme are"
+ ],
+ [
+  "RELIGIOUS",
+  "mandir",
+  "WS/MP442/2023-2024/30369",
+  "SCHOOL_BUILDING",
+  83119.0,
+  "Chhindwara",
+  "Rangmanch atirikt Nirman Mata Mandir ke pass"
+ ],
+ [
+  "RELIGIOUS",
+  "mandir",
+  "WS/MP442/2023-2024/99456",
+  "ROAD_CC",
+  200000.0,
+  "Chhindwara",
+  "CC Road Construction Hanuman Mandir road Ubhegaon"
+ ],
+ [
+  "RELIGIOUS",
+  "masjid",
+  "WS/MP18329/2026-2027/205471",
+  "ROAD_CC",
+  500000.0,
+  "Idukki",
+  "Construction of  pathazhappara- palamala masjid Road ,Ward 5 Kallumari  of Kumaramangalam Panchayat, under Kumaramangalam  Village in the Thodupuzha Block, Iduk"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "NOREF-5697622c0a84ab",
+  "COMMUNITY_HALL",
+  1500000.0,
+  "Theni",
+  "Construction of new Ration Shop in Sivananthar Park"
+ ],
+ [
+  "RELIGIOUS",
+  "temple",
+  "NOREF-3ebe1ec807af71",
+  "COMMUNITY_HALL",
+  2500000.0,
+  "Pune",
+  "Construction of a community temple at Ganraj Mandal Karvenagar, Kothrud in Pune Lok Sabha constituency."
+ ],
+ [
+  "RELIGIOUS",
+  "temple",
+  "WS/MP624/2024-2025/75982",
+  "BOUNDARY_WALL",
+  499000.0,
+  "Chikkaballapura",
+  "Development of Sri Lakshminarasimhaswamy Temple at E-Thimmasandra, Shidlaghatta taluk"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "NOREF-86833b03e2666f",
+  "COMMUNITY_HALL",
+  1200000.0,
+  "Madurai",
+  "Construction of new ration shop in Usilampatti town"
+ ],
+ [
+  "RELIGIOUS",
+  "mandir",
+  "WS/MP437/2025-2026/190594",
+  "COMMUNITY_HALL",
+  1000000.0,
+  "Garhwa",
+  "Construction of two rooms of Community Building near under construction Surya Mandir in village Kundi"
+ ],
+ [
+  "RELIGIOUS",
+  "mandir",
+  "WS/MP722/2025-2026/244187",
+  "ROAD_CC",
+  83051.0,
+  "Jhalawar",
+  "CC road Manali Nirman Hanuman Mandir Se lekar Kishan ji kahar ke Makan ki or ward number 41 jhalawar"
+ ],
+ [
+  "RELIGIOUS",
+  "mandir",
+  "WS/MP724/2024-2025/177289",
+  "COMMUNITY_HALL",
+  450000.0,
+  "Dungarpur",
+  "baradare nirman dharakon mata mandir Vageri"
+ ],
+ [
+  "RELIGIOUS",
+  "mandir",
+  "WS/\t MP005/2025-2026/194447",
+  "ROAD_CC",
+  200000.0,
+  "Ahmadabad",
+  "Construction of C.C Work Shaktimata Mandir Towards harijanVas Area"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP505/2024-2025/90152",
+  "COMMUNITY_HALL",
+  1150000.0,
+  "Coimbatore",
+  "Construction of Public Distribution Shop"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP18265/2025-2026/155926",
+  "COMMUNITY_HALL",
+  300000.0,
+  "Cuddalore",
+  "To construction of new Ration shop in Kovilur panchayat near panchayat office"
+ ],
+ [
+  "RELIGIOUS",
+  "mandir",
+  "WS/MP499/2023-2024/15049",
+  "POND",
+  946020.0,
+  "Bhagalpur",
+  "Construction work of Sidhi Ghat and beautification of Durga Mandir Talab in Panchayat Mohanpur, village Kharwa."
+ ],
+ [
+  "RELIGIOUS",
+  "mandir",
+  "WS/MP18162/2025-2026/251135",
+  "ROAD_CC",
+  500000.0,
+  "Bhilwara",
+  "CC Sadak Nirman Ramdev Mandir ke se Kala Ka kuaa Pashushala ki Taraf Vill Titoda Jagir GP Tidoda Jagir PS Jahazpur"
+ ],
+ [
+  "COMMERCIAL",
+  "market stall",
+  "WS/MP18139/2025-2026/202398",
+  "COMMUNITY_HALL",
+  200000.0,
+  "Bargarh",
+  "Construction of Market Stall Just Like Stage-type at Dava"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "NOREF-e6ae8dcd32d42b",
+  "COMMUNITY_HALL",
+  1400000.0,
+  "Ranipet",
+  "Construction of Fair Price Shop in Arakkonam ward no 21"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP740/2024-2025/59161",
+  "COMMUNITY_HALL",
+  1230000.0,
+  "Erode",
+  "Construction of Public Distribution shop building at Ward No.11 – Bhavanisagar Town"
+ ],
+ [
+  "COMMERCIAL",
+  "shop",
+  "WS/MP740/2024-2025/59167",
+  "COMMUNITY_HALL",
+  900000.0,
+  "Tiruppur",
+  "Construction of Public Distribution shop building at Ward No.13 Sangamangulam Street – Avanasi Town Pts"
+ ],
+ [
+  "RELIGIOUS",
+  "church",
+  "WS/MP347/2024-2025/140240",
+  "ROAD_CC",
+  1406283.0,
+  "Kollam",
+  "Construction of Pera- St.John's Marthoma Church- Cheruvalloore Road in Ummannoor Grama Panchayath"
+ ],
+ [
+  "RELIGIOUS",
+  "mandir",
+  "WS/MP638/2026-2027/236567",
+  "BOUNDARY_WALL",
+  300000.0,
+  "Chhatarpur",
+  "Saanskritik Bhawan Ki Boundary Wall Nirman Sarasvati Shishu Mandir Ke Paas"
+ ],
+ [
+  "NAMED_ASSET",
+  "statue",
+  "WS/MP082/2025-2026/235802",
+  "COMMUNITY_HALL",
+  1200000.0,
+  "Ranchi",
+  "Beautification of the Lord Birsa Munda statue site located in the village Daladili Purana Bazar Tand of Saparom Panchayat Lalgutwa under Nagdi Block Nagdi."
+ ]
+]

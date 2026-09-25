@@ -1,0 +1,73 @@
+{
+  "stuck_now": {
+    "recommended_apr2023_may2024": 97808,
+    "still_open_2_years_later": 40489,
+    "share": 0.414,
+    "value_cr": 2177.6,
+    "by_status": {
+      "SANCTIONED": 37658,
+      "RECOMMENDED": 2831
+    },
+    "by_type": {
+      "COMMUNITY_HALL": 9374,
+      "ROAD_CC": 8515,
+      "STREET_LIGHT": 7590,
+      "SCHOOL_BUILDING": 2095,
+      "WATER_TANK": 1881,
+      "BOREWELL": 1404
+    }
+  },
+  "district_level": {
+    "districts_with_50plus_new_works": 183,
+    "rank_correlation_model": 0.4345,
+    "rank_correlation_past_district_rate": 0.4049,
+    "mean_abs_error_model_pts": 19.2
+  },
+  "setup": {
+    "pretend_today": "2025-01-01",
+    "horizon_days": 365,
+    "train": "recommended 2023-04-01 .. 2023-12-31",
+    "test": "recommended 2025-01-01 .. 2025-05-26"
+  },
+  "train_works": 52315,
+  "test_works": 27924,
+  "late_rate_train": 0.7656,
+  "late_rate_test": 0.709,
+  "model": {
+    "auc": 0.7077,
+    "late_in_riskiest_10pct": 0.8095,
+    "late_in_safest_10pct": 0.1902,
+    "mean_predicted": 0.8124
+  },
+  "baseline_office_record": {
+    "auc": 0.6791,
+    "late_in_riskiest_10pct": 0.7822,
+    "late_in_safest_10pct": 0.2915
+  },
+  "baseline_work_type_record": {
+    "auc": 0.6261,
+    "late_in_riskiest_10pct": 0.9008,
+    "late_in_safest_10pct": 0.6927
+  },
+  "baseline_office_backlog": {
+    "auc": 0.5439,
+    "late_in_riskiest_10pct": 0.8112,
+    "late_in_safest_10pct": 0.6544
+  },
+  "feature_importance": {
+    "log_amount": 1654,
+    "agency_name_rate": 1221,
+    "desc_len": 1101,
+    "office_open": 1052,
+    "office_recent": 901,
+    "state_lgd": 775,
+    "work_type_code": 624,
+    "work_type_code_rate": 622,
+    "district_lgd_rate": 451,
+    "month": 440,
+    "bundle": 85,
+    "house": 64,
+    "category": 10,
+    "outside": 0
+  }
+}

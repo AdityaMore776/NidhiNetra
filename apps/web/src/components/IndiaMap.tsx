@@ -21,7 +21,10 @@ export function IndiaMap({ rows }: { rows: DistrictRow[] }) {
 
   useEffect(() => {
     if (!ref.current) return;
-    const byLgd = new Map(rows.map((r) => [r.district_lgd, r]));
+    // Works carry the Census-2011 district code (named district_lgd); the outlines carry the
+    // real LGD code. data/district_crosswalk.py writes the works' code onto each outline as
+    // `code` - join on that, never on `lgd`, or the wrong district is painted.
+    const byCode = new Map(rows.map((r) => [r.district_lgd, r]));
     const map = new maplibregl.Map({
       container: ref.current,
       style: { version: 8, sources: {}, layers: [{ id: "bg", type: "background", paint: { "background-color": "#eef1f7" } }] },
@@ -46,7 +49,7 @@ export function IndiaMap({ rows }: { rows: DistrictRow[] }) {
         fetch("/geo/states.json").then((r) => r.json()),
       ]);
       for (const f of districts.features) {
-        const r = byLgd.get(f.properties.lgd);
+        const r = f.properties.code ? byCode.get(f.properties.code) : undefined;
         f.properties.share = r ? r.share : -1;
         f.properties.works = r ? r.works : 0;
         f.properties.review = r ? r.review : 0;
@@ -85,8 +88,8 @@ export function IndiaMap({ rows }: { rows: DistrictRow[] }) {
         popup.remove();
       });
       map.on("click", "districts-fill", (e) => {
-        const lgd = e.features?.[0]?.properties?.lgd;
-        if (lgd) router.push(`/works?district=${lgd}`);
+        const code = e.features?.[0]?.properties?.code;
+        if (code) router.push(`/works?district=${code}`);
       });
     });
     return () => map.remove();

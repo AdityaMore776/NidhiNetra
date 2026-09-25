@@ -1,0 +1,1270 @@
+{
+  "site_specific_works": 134326,
+  "works_sharing_site_text_in_district": 1828,
+  "pairs_by_timing": {
+    "within_60_days": 1294,
+    "while_first_open": 48
+  },
+  "after_first_completed": {
+    "pairs": 0,
+    "with_repair_or_extension_words": 0,
+    "same_work_type": 0,
+    "clean_candidates": 0
+  },
+  "while_first_open_reading": {
+    "grey": 20,
+    "same_asset": 19,
+    "no_site": 9
+  },
+  "while_first_open_pairs": [
+    {
+      "kind": "while_first_open",
+      "gap_days": 182,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP078/2025-2026/220893",
+        "amount": "2000000.0",
+        "recommended_date": "2025-07-22",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "LIBRARY"
+      },
+      "b": {
+        "work_id": "WS/MP078/2025-2026/260491",
+        "amount": "1500000.0",
+        "recommended_date": "2026-01-20",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "LIBRARY"
+      },
+      "district": "Mandi",
+      "state": "Himachal Pradesh",
+      "description": "Purchase of Books for public library in different government schools located at District Mandi through Dy Director Elementary Education Mandi District Mandi Him",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 97,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP18155/2025-2026/243422",
+        "amount": "500000.0",
+        "recommended_date": "2025-10-25",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "DRAIN"
+      },
+      "b": {
+        "work_id": "WS/MP18155/2025-2026/260963",
+        "amount": "500000.0",
+        "recommended_date": "2026-01-30",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "DRAIN"
+      },
+      "district": "Hoshiarpur",
+      "state": "Punjab",
+      "description": "Construction of Sewage for disposal of sullage water",
+      "reading": "no_site"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 113,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP140/2025-2026/179470",
+        "amount": "375000.0",
+        "recommended_date": "2025-03-06",
+        "completed_date": "2026-01-28",
+        "status": "COMPLETED",
+        "work_type_code": "WATER_TANK"
+      },
+      "b": {
+        "work_id": "WS/MP140/2025-2026/212985",
+        "amount": "375000.0",
+        "recommended_date": "2025-06-27",
+        "completed_date": "2026-03-19",
+        "status": "COMPLETED",
+        "work_type_code": "WATER_TANK"
+      },
+      "district": "Ludhiana",
+      "state": "Punjab",
+      "description": "Regarding for giving single septic vacuum of 6000 ltr water tanker to Village. (SC)",
+      "reading": "no_site"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 292,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP844/2025-2026/221383",
+        "amount": "4000000.0",
+        "recommended_date": "2025-07-23",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "COMPUTER"
+      },
+      "b": {
+        "work_id": "WS/MP844/2026-2027/280124",
+        "amount": "2401634.0",
+        "recommended_date": "2026-05-11",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "COMPUTER"
+      },
+      "district": "Faridkot",
+      "state": "Punjab",
+      "description": "MPLAD Grant of rupees 40 lakhs to Red Cross Society, Faridkot for purchase of Furniture, Machinery and establishing Skill Development Labs for Skill Center at R",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 532,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP716/2023-2024/116439",
+        "amount": "250000.0",
+        "recommended_date": "2024-02-28",
+        "completed_date": "2025-10-03",
+        "status": "COMPLETED",
+        "work_type_code": "SCHOOL_BUILDING"
+      },
+      "b": {
+        "work_id": "WS/MP716/2025-2026/226681",
+        "amount": "250000.0",
+        "recommended_date": "2025-08-13",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "SCHOOL_BUILDING"
+      },
+      "district": "Mansa",
+      "state": "Punjab",
+      "description": "Construction of Shed in Ramdasia sikh Dharamshala",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 100,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP18158/2025-2026/192812",
+        "amount": "300000.0",
+        "recommended_date": "2025-05-01",
+        "completed_date": "2026-05-15",
+        "status": "COMPLETED",
+        "work_type_code": "COMMUNITY_HALL"
+      },
+      "b": {
+        "work_id": "WS/MP18158/2025-2026/221590",
+        "amount": "50000.0",
+        "recommended_date": "2025-08-09",
+        "completed_date": "2026-05-15",
+        "status": "COMPLETED",
+        "work_type_code": "COMMUNITY_HALL"
+      },
+      "district": "Patiala",
+      "state": "Punjab",
+      "description": "Construction of shed in Dharamshala in village Lehal Jagir, Block Bhunerheri, Patiala",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 105,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "NOREF-f70fd8b5244e6a",
+        "amount": "1000000.0",
+        "recommended_date": "2025-11-11",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "ROAD_CC"
+      },
+      "b": {
+        "work_id": "NOREF-2877c0a855ff45",
+        "amount": "2000000.0",
+        "recommended_date": "2026-02-24",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "ROAD_CC"
+      },
+      "district": "Tehri Garhwal",
+      "state": "Uttarakhand",
+      "description": "For construction of interlock tiles and road on the footpath at Maa Chandrabadni Temple in Devprayag development block of Tehri Garhwal district.",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 73,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP021/2025-2026/225744",
+        "amount": "500000.0",
+        "recommended_date": "2025-08-07",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "BOREWELL"
+      },
+      "b": {
+        "work_id": "WS/MP021/2025-2026/242831",
+        "amount": "500000.0",
+        "recommended_date": "2025-10-19",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "BOREWELL"
+      },
+      "district": "Udham Singh Nagar",
+      "state": "Uttarakhand",
+      "description": "Janpad Udham Singh Nagar Ke antargat Nagar Panchayat gularbhoj ke ward number 2 aur ward number 3 ke vibhinn sthanon per sarvjanik pressure head pump ki sthapna",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 69,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP329/2025-2026/255636",
+        "amount": "500000.0",
+        "recommended_date": "2025-12-26",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "PLAYGROUND"
+      },
+      "b": {
+        "work_id": "WS/MP329/2025-2026/272333",
+        "amount": "399885.0",
+        "recommended_date": "2026-03-05",
+        "completed_date": "2026-04-21",
+        "status": "COMPLETED",
+        "work_type_code": "PLAYGROUND"
+      },
+      "district": "Bhiwani",
+      "state": "Haryana",
+      "description": "Purchase of Kabddi Mats for GP",
+      "reading": "no_site"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 73,
+      "repair_words": false,
+      "same_type": false,
+      "a": {
+        "work_id": "NOREF-2e0bb0f94b0274",
+        "amount": "314167.0",
+        "recommended_date": "2025-04-25",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "nan"
+      },
+      "b": {
+        "work_id": "WS/MP18397/2025-2026/215445",
+        "amount": "291305.0",
+        "recommended_date": "2025-07-07",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "nan"
+      },
+      "district": "Central",
+      "state": "Delhi",
+      "description": "Installation of Boom barrier",
+      "reading": "no_site"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 255,
+      "repair_words": false,
+      "same_type": false,
+      "a": {
+        "work_id": "WS/MP18397/2025-2026/222213",
+        "amount": "173043.0",
+        "recommended_date": "2025-07-27",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "nan"
+      },
+      "b": {
+        "work_id": "WS/MP18442/2026-2027/272633",
+        "amount": "175538.0",
+        "recommended_date": "2026-04-08",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "nan"
+      },
+      "district": "South",
+      "state": "Delhi",
+      "description": "Installation of Boom barrier",
+      "reading": "no_site"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 90,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "NOREF-89951977b00c0c",
+        "amount": "1500000.0",
+        "recommended_date": "2025-04-02",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "LIBRARY"
+      },
+      "b": {
+        "work_id": "WS/MP18030/2025-2026/213612",
+        "amount": "1499440.0",
+        "recommended_date": "2025-07-01",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "LIBRARY"
+      },
+      "district": "Bhojpur",
+      "state": "Bihar",
+      "description": "Library construction work near the Banyan tree on the southern Ahar of the village.",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 132,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP18031/2025-2026/239362",
+        "amount": "400000.0",
+        "recommended_date": "2025-10-03",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "STREET_LIGHT"
+      },
+      "b": {
+        "work_id": "NOREF-1817a713a8870c",
+        "amount": "400000.0",
+        "recommended_date": "2026-02-12",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "STREET_LIGHT"
+      },
+      "district": "Aurangabad",
+      "state": "Bihar",
+      "description": "Installation of High Mast Light at Veer Lorik Chowk Mod   in Village Silaad Khurd   Panchayat Sarganawan   Block Deo  Aurangabad",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 228,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP013/2026-2027/209392",
+        "amount": "250000.0",
+        "recommended_date": "2025-06-17",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "BOUNDARY_WALL"
+      },
+      "b": {
+        "work_id": "NOREF-94e3db5ba4bfc8",
+        "amount": "250000.0",
+        "recommended_date": "2026-01-31",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "BOUNDARY_WALL"
+      },
+      "district": "Gyalshing",
+      "state": "Sikkim",
+      "description": "Construction of drainage system at Bijanbari,Dorok",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 94,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP18371/2024-2025/177743",
+        "amount": "910000.0",
+        "recommended_date": "2025-02-26",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "HEALTH_BUILDING"
+      },
+      "b": {
+        "work_id": "WS/MP18371/2025-2026/205542",
+        "amount": "800000.0",
+        "recommended_date": "2025-05-31",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "HEALTH_BUILDING"
+      },
+      "district": "Imphal West",
+      "state": "Manipur",
+      "description": "Medical Equipment to be Fitted in Ambulance, Multiparameter Cardiac Monitor, Autoloader Collapsible Stretcher, Oxygen Cylinder, and Artificial Manual Breathing ",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 128,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP18371/2025-2026/205542",
+        "amount": "800000.0",
+        "recommended_date": "2025-05-31",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "HEALTH_BUILDING"
+      },
+      "b": {
+        "work_id": "WS/MP18371/2025-2026/240202",
+        "amount": "749970.0",
+        "recommended_date": "2025-10-06",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "HEALTH_BUILDING"
+      },
+      "district": "Imphal West",
+      "state": "Manipur",
+      "description": "Medical Equipment to be Fitted in Ambulance, Multiparameter Cardiac Monitor, Autoloader Collapsible Stretcher, Oxygen Cylinder, and Artificial Manual Breathing ",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 221,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP479/2024-2025/138684",
+        "amount": "650000.0",
+        "recommended_date": "2024-09-03",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "COMMUNITY_HALL"
+      },
+      "b": {
+        "work_id": "WS/MP479/2025-2026/190878",
+        "amount": "650000.0",
+        "recommended_date": "2025-04-12",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "COMMUNITY_HALL"
+      },
+      "district": "Bankura",
+      "state": "West Bengal",
+      "description": "Construction of Krishi Charcha Kendra",
+      "reading": "no_site"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 373,
+      "repair_words": false,
+      "same_type": false,
+      "a": {
+        "work_id": "WS/MP18254/2025-2026/169712",
+        "amount": "300000.0",
+        "recommended_date": "2025-01-28",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "nan"
+      },
+      "b": {
+        "work_id": "NOREF-b21ca30e067333",
+        "amount": "300000.0",
+        "recommended_date": "2026-02-05",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "nan"
+      },
+      "district": "Paschim Medinipur",
+      "state": "West Bengal",
+      "description": "Distribution of Hearing Aids to specially Abled Persons",
+      "reading": "no_site"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 373,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP18254/2025-2026/169711",
+        "amount": "600000.0",
+        "recommended_date": "2025-01-28",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "FURNITURE"
+      },
+      "b": {
+        "work_id": "NOREF-79e188019e4a7a",
+        "amount": "600000.0",
+        "recommended_date": "2026-02-05",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "FURNITURE"
+      },
+      "district": "Paschim Medinipur",
+      "state": "West Bengal",
+      "description": "Distribution of Wheel Chairs , Tri Cycles, Walker, Under Arm Cratch  for Specially Abled Person",
+      "reading": "no_site"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 245,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP18322/2024-2025/183297",
+        "amount": "300000.0",
+        "recommended_date": "2025-03-19",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "CULVERT"
+      },
+      "b": {
+        "work_id": "WS/MP18322/2025-2026/242730",
+        "amount": "400000.0",
+        "recommended_date": "2025-11-19",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "CULVERT"
+      },
+      "district": "Dumka",
+      "state": "Jharkhand",
+      "description": "Construction of Guardwall in Village- Ranga roadside, Panchayat- Shivtalla",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 416,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP698/2025-2026/132198",
+        "amount": "600000.0",
+        "recommended_date": "2024-03-16",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "BOREWELL"
+      },
+      "b": {
+        "work_id": "WS/MP18350/2025-2026/197046",
+        "amount": "625359.0",
+        "recommended_date": "2025-05-06",
+        "completed_date": "2026-02-16",
+        "status": "COMPLETED",
+        "work_type_code": "BOREWELL"
+      },
+      "district": "Kandhamal",
+      "state": "Odisha",
+      "description": "Installation of Borewell and Solar water Supply at Ekalavya Model Residential School, Phiringia",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 199,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "NOREF-5637c516f53c5c",
+        "amount": "75000.0",
+        "recommended_date": "2022-02-27",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "COMMUNITY_HALL"
+      },
+      "b": {
+        "work_id": "NOREF-8eeb5a0518c3b8",
+        "amount": "50000.0",
+        "recommended_date": "2022-09-14",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "COMMUNITY_HALL"
+      },
+      "district": "Betul",
+      "state": "Madhya Pradesh",
+      "description": "Construction of cultural theatre- Construction of cultural theatre (Chaupal) near Dadadham premises in village Belkund, Gram Panchayat Belkund Block Athner Vidh",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 80,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP18403/2026-2027/271871",
+        "amount": "500000.0",
+        "recommended_date": "2026-02-28",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "LIBRARY"
+      },
+      "b": {
+        "work_id": "NOREF-b013d3d1505580",
+        "amount": "500000.0",
+        "recommended_date": "2026-05-19",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "LIBRARY"
+      },
+      "district": "Mahesana",
+      "state": "Gujarat",
+      "description": "Construction of library next to Shri M.G. Chaudhary Higher Secondary School run by Akhil Anjana Kelavani Mandal, Mevad",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 383,
+      "repair_words": false,
+      "same_type": false,
+      "a": {
+        "work_id": "WS/MP18324/2025-2026/153750",
+        "amount": "200000.0",
+        "recommended_date": "2024-11-21",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "nan"
+      },
+      "b": {
+        "work_id": "WS/MP18324/2025-2026/253174",
+        "amount": "350000.0",
+        "recommended_date": "2025-12-09",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "nan"
+      },
+      "district": "Amreli",
+      "state": "Gujarat",
+      "description": "Work to extend the chekdem  near the leather industry in Shedubhar village",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 66,
+      "repair_words": false,
+      "same_type": false,
+      "a": {
+        "work_id": "WS/MP572/2023-2024/44567",
+        "amount": "210000.0",
+        "recommended_date": "2023-11-03",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "POND"
+      },
+      "b": {
+        "work_id": "WS/MP572/2025-2026/77456",
+        "amount": "210000.0",
+        "recommended_date": "2024-01-08",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "FURNITURE"
+      },
+      "district": "Bhavnagar",
+      "state": "Gujarat",
+      "description": "China Chips for Benches Work ((1) Zhanzaria Near Hanumanji Temple No-10 (2) Phuljariya Near Hanumanji Temple No-10 (3) Ratakhda Near Khodiyar Temple No-08 (4) S",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 98,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP572/2023-2024/48826",
+        "amount": "472620.0",
+        "recommended_date": "2023-11-11",
+        "completed_date": "2025-01-27",
+        "status": "COMPLETED",
+        "work_type_code": "BOUNDARY_WALL"
+      },
+      "b": {
+        "work_id": "WS/MP572/2024-2025/107833",
+        "amount": "299172.0",
+        "recommended_date": "2024-02-17",
+        "completed_date": "2026-01-21",
+        "status": "COMPLETED",
+        "work_type_code": "BOUNDARY_WALL"
+      },
+      "district": "Bhavnagar",
+      "state": "Gujarat",
+      "description": "Protection wall work (valid on condition of preventing village erosion)",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 226,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP672/2024-2025/104727",
+        "amount": "500000.0",
+        "recommended_date": "2024-02-14",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "HEALTH_BUILDING"
+      },
+      "b": {
+        "work_id": "WS/MP672/2024-2025/144101",
+        "amount": "152300.0",
+        "recommended_date": "2024-09-27",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "HEALTH_BUILDING"
+      },
+      "district": "Nagpur",
+      "state": "Maharashtra",
+      "description": "Upgrading of Prosthetic & Orthotics unit at CRC, Nagpur.",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 62,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP662/2025-2026/165325",
+        "amount": "499000.0",
+        "recommended_date": "2024-01-14",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "COMMUNITY_HALL"
+      },
+      "b": {
+        "work_id": "WS/MP662/2024-2025/130595",
+        "amount": "499500.0",
+        "recommended_date": "2024-03-16",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "COMMUNITY_HALL"
+      },
+      "district": "Thane",
+      "state": "Maharashtra",
+      "description": "Construction of Senior Citizen Katta and Open Gym at Dombivli East Khandkar Galli, Tilaknagar, Dombivli East in Kalyan Dombivli Municipal Corporation area.",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 195,
+      "repair_words": true,
+      "same_type": false,
+      "a": {
+        "work_id": "WS/MP18343/2025-2026/179124",
+        "amount": "8000000.0",
+        "recommended_date": "2025-03-12",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "BOUNDARY_WALL"
+      },
+      "b": {
+        "work_id": "WS/MP18343/2025-2026/232260",
+        "amount": "5000000.0",
+        "recommended_date": "2025-09-23",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "SCHOOL_BUILDING"
+      },
+      "district": "East Godavari",
+      "state": "Andhra Pradesh",
+      "description": "Construction of additional infrastructure at Phule Ambedkar Bhavan in the Municipal Corporation of Rajamahendravaram",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 510,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP403/2023-2024/83496",
+        "amount": "300000.0",
+        "recommended_date": "2024-01-17",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "WATER_TANK"
+      },
+      "b": {
+        "work_id": "WS/MP403/2025-2026/207889",
+        "amount": "1200000.0",
+        "recommended_date": "2025-06-10",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "WATER_TANK"
+      },
+      "district": "Prakasam",
+      "state": "Andhra Pradesh",
+      "description": "Providing 1000 LPH Reverse Osmosis Plant with Bore well, Motor and Shed in Bodapadu Village",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 510,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP403/2024-2025/83499",
+        "amount": "275000.0",
+        "recommended_date": "2024-01-17",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "WATER_TANK"
+      },
+      "b": {
+        "work_id": "WS/MP403/2025-2026/207888",
+        "amount": "900000.0",
+        "recommended_date": "2025-06-10",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "WATER_TANK"
+      },
+      "district": "Prakasam",
+      "state": "Andhra Pradesh",
+      "description": "Providing 1000 LPH Reverse Osmosis Plant with Bore well, Motor and Shed in Kandulapuram Village",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 510,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP403/2023-2024/83524",
+        "amount": "180000.0",
+        "recommended_date": "2024-01-17",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "WATER_TANK"
+      },
+      "b": {
+        "work_id": "WS/MP403/2025-2026/207894",
+        "amount": "900000.0",
+        "recommended_date": "2025-06-10",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "WATER_TANK"
+      },
+      "district": "Prakasam",
+      "state": "Andhra Pradesh",
+      "description": "Providing 1000 LPH Reverse Osmosis Plant with Bore well, Motor and Shed in Lakkavaram Village",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 301,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "NOREF-599f09c940fcb6",
+        "amount": "499000.0",
+        "recommended_date": "2025-06-18",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "FOOTPATH"
+      },
+      "b": {
+        "work_id": "NOREF-4ab566e07aedc9",
+        "amount": "1000000.0",
+        "recommended_date": "2026-04-15",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "FOOTPATH"
+      },
+      "district": "Bidar",
+      "state": "Karnataka",
+      "description": "providing pavers near bhoome complex, near nirgude complex and opposite jadhav hospital",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 62,
+      "repair_words": false,
+      "same_type": false,
+      "a": {
+        "work_id": "NOREF-8f3c4eaeb68a21",
+        "amount": "500000.0",
+        "recommended_date": "2025-07-17",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "FURNITURE"
+      },
+      "b": {
+        "work_id": "WS/MP18089/2026-2027/233381",
+        "amount": "500000.0",
+        "recommended_date": "2025-09-17",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "COMPUTER"
+      },
+      "district": "Koppal",
+      "state": "Karnataka",
+      "description": "Supplying of Digital education enhancing Programme equipments to goverment high school Hiresindhogi of koppal Parlimentary constituency.",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 359,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP096/2025-2026/181146",
+        "amount": "191552.0",
+        "recommended_date": "2025-03-12",
+        "completed_date": "2026-05-19",
+        "status": "COMPLETED",
+        "work_type_code": "STREET_LIGHT"
+      },
+      "b": {
+        "work_id": "WS/MP096/2025-2026/272616",
+        "amount": "210000.0",
+        "recommended_date": "2026-03-06",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "STREET_LIGHT"
+      },
+      "district": "Kasaragod",
+      "state": "Kerala",
+      "description": "Setting up of Low mast light at Chuzhikkayam - Pallithatt, ward No. 17, West Eleri Panchayat",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 78,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "NOREF-a08b7f0ad01586",
+        "amount": "2000000.0",
+        "recommended_date": "2025-03-24",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "ROAD_CC"
+      },
+      "b": {
+        "work_id": "NOREF-4b2ec41295da5b",
+        "amount": "2000000.0",
+        "recommended_date": "2025-06-10",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "ROAD_CC"
+      },
+      "district": "Kannur",
+      "state": "Kerala",
+      "description": "Construction of Road at Cheriya Areekkamal Vellilam Thodika",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 193,
+      "repair_words": false,
+      "same_type": false,
+      "a": {
+        "work_id": "WS/MP096/2024-2025/164712",
+        "amount": "2200000.0",
+        "recommended_date": "2025-01-10",
+        "completed_date": "2026-05-25",
+        "status": "COMPLETED",
+        "work_type_code": "nan"
+      },
+      "b": {
+        "work_id": "WS/MP096/2025-2026/220989",
+        "amount": "2200000.0",
+        "recommended_date": "2025-07-22",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "nan"
+      },
+      "district": "Malappuram",
+      "state": "Kerala",
+      "description": "Purchasing of School bus for JNRHSS, Edavanna Ward No. 08, Edavanna Panchayat.",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 279,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "NOREF-81300fd8f044c7",
+        "amount": "500000.0",
+        "recommended_date": "2024-09-06",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "STREET_LIGHT"
+      },
+      "b": {
+        "work_id": "WS/MP18095/2025-2026/208344",
+        "amount": "442500.0",
+        "recommended_date": "2025-06-12",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "STREET_LIGHT"
+      },
+      "district": "Alappuzha",
+      "state": "Kerala",
+      "description": "Installation of a High Mast Light in the northern part of Veeramangalam Junction",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 282,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP189/2024-2025/159265",
+        "amount": "168905.0",
+        "recommended_date": "2024-12-17",
+        "completed_date": "2026-03-30",
+        "status": "COMPLETED",
+        "work_type_code": "ROAD_CC"
+      },
+      "b": {
+        "work_id": "NOREF-010fba1579575c",
+        "amount": "1000000.0",
+        "recommended_date": "2025-09-25",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "ROAD_CC"
+      },
+      "district": "Pathanamthitta",
+      "state": "Kerala",
+      "description": "Construction of Concrete road from Kaleeckal Padi to Puthenpurackal Ela Road",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 834,
+      "repair_words": true,
+      "same_type": false,
+      "a": {
+        "work_id": "WS/MP345/2024-2025/174108",
+        "amount": "194461.0",
+        "recommended_date": "2022-04-13",
+        "completed_date": "2025-06-05",
+        "status": "COMPLETED",
+        "work_type_code": "LIBRARY"
+      },
+      "b": {
+        "work_id": "WS/MP345/2024-2025/134137",
+        "amount": "512291.0",
+        "recommended_date": "2024-07-25",
+        "completed_date": "2025-02-19",
+        "status": "COMPLETED",
+        "work_type_code": "COMMUNITY_HALL"
+      },
+      "district": "Kollam",
+      "state": "Kerala",
+      "description": "Construction of Building (Second Floor) for Aduthala Tagore Memorial Library in  Chathanoor Constituency",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 347,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP096/2025-2026/182239",
+        "amount": "1000000.0",
+        "recommended_date": "2025-03-16",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "ROAD_CC"
+      },
+      "b": {
+        "work_id": "NOREF-94469e11461e51",
+        "amount": "1000000.0",
+        "recommended_date": "2026-02-26",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "ROAD_CC"
+      },
+      "district": "Thiruvananthapuram",
+      "state": "Kerala",
+      "description": "Construction of Meeranvettikarikkakam - Chathimangalam - Kattilakuzhi road or pathway, Ward No.10, Peringammala Panchayat",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 293,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP743/2023-2024/57647",
+        "amount": "400000.0",
+        "recommended_date": "2023-12-06",
+        "completed_date": "2026-02-13",
+        "status": "COMPLETED",
+        "work_type_code": "COMPUTER"
+      },
+      "b": {
+        "work_id": "WS/MP743/2024-2025/143068",
+        "amount": "400000.0",
+        "recommended_date": "2024-09-24",
+        "completed_date": "2026-02-18",
+        "status": "COMPLETED",
+        "work_type_code": "COMPUTER"
+      },
+      "district": "Kancheepuram",
+      "state": "Tamil Nadu",
+      "description": "Purchasing of smart class room equipment for Singadivakkam Govt. Hr.Sec. School in Walajabad Panchayat Union. (Supply of smart class equipment 2 set)",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 119,
+      "repair_words": false,
+      "same_type": false,
+      "a": {
+        "work_id": "WS/MP738/2023-2024/50325",
+        "amount": "275000.0",
+        "recommended_date": "2023-11-18",
+        "completed_date": "2025-12-02",
+        "status": "COMPLETED",
+        "work_type_code": "BOREWELL"
+      },
+      "b": {
+        "work_id": "WS/MP738/2024-2025/131993",
+        "amount": "275000.0",
+        "recommended_date": "2024-03-16",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "WATER_TANK"
+      },
+      "district": "Erode",
+      "state": "Tamil Nadu",
+      "description": "Drilling New Borewell, Motor, Sintex Tank and Watersupply  in Ward No.13,  Elango Street at Sivagiri Town Panchayat. (2022-23)",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 110,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP758/2025-2026/170881",
+        "amount": "1000000.0",
+        "recommended_date": "2025-01-30",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "COMPUTER"
+      },
+      "b": {
+        "work_id": "WS/MP758/2025-2026/201225",
+        "amount": "1000000.0",
+        "recommended_date": "2025-05-20",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "COMPUTER"
+      },
+      "district": "Karur",
+      "state": "Tamil Nadu",
+      "description": "Purchase of Smart Class for 5 Classrooms in Government Arts  College,Thanthondri Malai,Karur",
+      "reading": "same_asset"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 65,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "NOREF-a0ab55e83655bc",
+        "amount": "1000000.0",
+        "recommended_date": "2025-07-01",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "COMMUNITY_HALL"
+      },
+      "b": {
+        "work_id": "NOREF-53b8238908a6b8",
+        "amount": "1000000.0",
+        "recommended_date": "2025-09-04",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "COMMUNITY_HALL"
+      },
+      "district": "Kanniyakumari",
+      "state": "Tamil Nadu",
+      "description": "meenavar oyivu arai",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 243,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "NOREF-e20266fa9beee8",
+        "amount": "50000.0",
+        "recommended_date": "2024-03-16",
+        "completed_date": "None",
+        "status": "RECOMMENDED",
+        "work_type_code": "BOUNDARY_WALL"
+      },
+      "b": {
+        "work_id": "WS/MP710/2024-2025/152566",
+        "amount": "350000.0",
+        "recommended_date": "2024-11-14",
+        "completed_date": "2024-11-12",
+        "status": "COMPLETED",
+        "work_type_code": "BOUNDARY_WALL"
+      },
+      "district": "Puducherry",
+      "state": "Puducherry",
+      "description": "Providing M.S. Grill around Multipurpose Hall near temple at Jeeva Nagar in Kamaraj Nagar Constituency",
+      "reading": "grey"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 138,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP18276/2025-2026/184948",
+        "amount": "2688000.0",
+        "recommended_date": "2025-03-21",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "FURNITURE"
+      },
+      "b": {
+        "work_id": "WS/MP18276/2025-2026/225453",
+        "amount": "2772000.0",
+        "recommended_date": "2025-08-06",
+        "completed_date": "None",
+        "status": "SANCTIONED",
+        "work_type_code": "FURNITURE"
+      },
+      "district": "Chhotaudepur",
+      "state": "Gujarat",
+      "description": "White tiles Tikdi wala Bankada",
+      "reading": "no_site"
+    },
+    {
+      "kind": "while_first_open",
+      "gap_days": 138,
+      "repair_words": false,
+      "same_type": true,
+      "a": {
+        "work_id": "WS/MP237/2023-2024/28092",
+        "amount": "4478992.0",
+        "recommended_date": "2023-09-28",
+        "completed_date": "2024-09-10",
+        "status": "COMPLETED",
+        "work_type_code": "SCHOOL_BUILDING"
+      },
+      "b": {
+        "work_id": "WS/MP237/2023-2024/104390",
+        "amount": "2946458.0",
+        "recommended_date": "2024-02-13",
+        "completed_date": "2024-10-28",
+        "status": "COMPLETED",
+        "work_type_code": "SCHOOL_BUILDING"
+      },
+      "district": "Jhargram",
+      "state": "West Bengal",
+      "description": "Construction of ACR of Banpura Taraknath High School (H.S.), At.+Mouza-Banpura, Jl. No.-096, Plot no.365, P.O.-Banpura, P.S.-Sankrail, Dist.-Jhargram.",
+      "reading": "grey"
+    }
+  ],
+  "examples": []
+}

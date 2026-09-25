@@ -1,0 +1,249 @@
+{
+  "funnel": {
+    "by_term": [
+      {
+        "tenure_label": "17th Lok Sabha",
+        "allocated_cr": 4767.6,
+        "recommended_cr": 4467.1,
+        "sanctioned_cr": 4289.0,
+        "completed_cr": 2358.4,
+        "expenditure_cr": 3782.6,
+        "spent_share_of_allocated": 0.793,
+        "completed_share_of_recommended": 0.528
+      },
+      {
+        "tenure_label": "18th Lok Sabha",
+        "allocated_cr": 8268.9,
+        "recommended_cr": 4775.4,
+        "sanctioned_cr": 3544.4,
+        "completed_cr": 1050.7,
+        "expenditure_cr": 2193.4,
+        "spent_share_of_allocated": 0.265,
+        "completed_share_of_recommended": 0.22
+      },
+      {
+        "tenure_label": "Rajya Sabha",
+        "allocated_cr": 3619.5,
+        "recommended_cr": 2316.7,
+        "sanctioned_cr": 1823.4,
+        "completed_cr": 693.7,
+        "expenditure_cr": 1316.6,
+        "spent_share_of_allocated": 0.364,
+        "completed_share_of_recommended": 0.299
+      }
+    ],
+    "ls17_states_lowest_spent_share": [
+      {
+        "state_name": "Odisha",
+        "allocated_cr": 173.21,
+        "expenditure_cr": 113.6252,
+        "unspent_cr": 59.6,
+        "spent_share": 0.656
+      },
+      {
+        "state_name": "Delhi",
+        "allocated_cr": 77.0,
+        "expenditure_cr": 51.28,
+        "unspent_cr": 25.7,
+        "spent_share": 0.666
+      },
+      {
+        "state_name": "Rajasthan",
+        "allocated_cr": 250.63,
+        "expenditure_cr": 169.5139,
+        "unspent_cr": 81.1,
+        "spent_share": 0.676
+      },
+      {
+        "state_name": "Andhra Pradesh",
+        "allocated_cr": 268.7,
+        "expenditure_cr": 187.75,
+        "unspent_cr": 80.9,
+        "spent_share": 0.699
+      },
+      {
+        "state_name": "Telangana",
+        "allocated_cr": 179.37,
+        "expenditure_cr": 125.7616,
+        "unspent_cr": 53.6,
+        "spent_share": 0.701
+      },
+      {
+        "state_name": "Haryana",
+        "allocated_cr": 81.92,
+        "expenditure_cr": 57.56,
+        "unspent_cr": 24.4,
+        "spent_share": 0.703
+      }
+    ],
+    "ls17_states_highest_spent_share": [
+      {
+        "state_name": "Uttar Pradesh",
+        "allocated_cr": 575.6099,
+        "expenditure_cr": 527.6446,
+        "spent_share": 0.917
+      },
+      {
+        "state_name": "Tamil Nadu",
+        "allocated_cr": 362.95,
+        "expenditure_cr": 332.5,
+        "spent_share": 0.916
+      },
+      {
+        "state_name": "Chhattisgarh",
+        "allocated_cr": 73.51,
+        "expenditure_cr": 65.85,
+        "spent_share": 0.896
+      }
+    ]
+  },
+  "timing": {
+    "recommendations_by_quarter": [
+      {
+        "quarter": "2023Q3",
+        "works": 19371,
+        "done_within_1y": 0.286,
+        "done_by_snapshot": 0.668
+      },
+      {
+        "quarter": "2023Q4",
+        "works": 31185,
+        "done_within_1y": 0.196,
+        "done_by_snapshot": 0.58
+      },
+      {
+        "quarter": "2024Q1",
+        "works": 45167,
+        "done_within_1y": 0.169,
+        "done_by_snapshot": 0.555
+      },
+      {
+        "quarter": "2024Q2",
+        "works": 115,
+        "done_within_1y": 0.096,
+        "done_by_snapshot": 0.426
+      },
+      {
+        "quarter": "2024Q3",
+        "works": 7200,
+        "done_within_1y": 0.226,
+        "done_by_snapshot": 0.517
+      },
+      {
+        "quarter": "2024Q4",
+        "works": 12660,
+        "done_within_1y": 0.241,
+        "done_by_snapshot": 0.536
+      },
+      {
+        "quarter": "2025Q1",
+        "works": 17253,
+        "done_within_1y": 0.275,
+        "done_by_snapshot": 0.391
+      },
+      {
+        "quarter": "2025Q2",
+        "works": 18559,
+        "done_within_1y": 0.28,
+        "done_by_snapshot": 0.288
+      }
+    ],
+    "completions_share_by_month": {
+      "1": 0.1722,
+      "2": 0.1353,
+      "3": 0.121,
+      "4": 0.026,
+      "5": 0.0221,
+      "6": 0.0647,
+      "7": 0.1038,
+      "8": 0.0785,
+      "9": 0.0724,
+      "10": 0.065,
+      "11": 0.0723,
+      "12": 0.0668
+    },
+    "march_vs_average_month": 1.45
+  },
+  "sanction_backlog": {
+    "waiting_beyond_75_days": 21323,
+    "waiting_value_cr": 1360.6,
+    "median_days_waiting": 239,
+    "by_term": [
+      {
+        "term": "17th Lok Sabha",
+        "works": 3331,
+        "value_cr": 168.9
+      },
+      {
+        "term": "18th Lok Sabha",
+        "works": 14793,
+        "value_cr": 860.7
+      },
+      {
+        "term": "Rajya Sabha",
+        "works": 3184,
+        "value_cr": 329.6
+      }
+    ],
+    "districts_with_100plus_recommendations": 550,
+    "districts_over_half_waiting": 6,
+    "worst_districts": [
+      {
+        "state_name": "Goa",
+        "district_name": "North Goa",
+        "recommended": 164,
+        "waiting": 113,
+        "waiting_share": 0.689
+      },
+      {
+        "state_name": "Odisha",
+        "district_name": "Rayagarha",
+        "recommended": 372,
+        "waiting": 235,
+        "waiting_share": 0.632
+      },
+      {
+        "state_name": "Uttar Pradesh",
+        "district_name": "Shrawasti",
+        "recommended": 1111,
+        "waiting": 641,
+        "waiting_share": 0.577
+      },
+      {
+        "state_name": "Maharashtra",
+        "district_name": "Mumbai",
+        "recommended": 153,
+        "waiting": 81,
+        "waiting_share": 0.529
+      },
+      {
+        "state_name": "Maharashtra",
+        "district_name": "Nanded",
+        "recommended": 477,
+        "waiting": 247,
+        "waiting_share": 0.518
+      },
+      {
+        "state_name": "Telangana",
+        "district_name": "Sangareddy",
+        "recommended": 504,
+        "waiting": 261,
+        "waiting_share": 0.518
+      },
+      {
+        "state_name": "Tamil Nadu",
+        "district_name": "Mayiladuthurai",
+        "recommended": 180,
+        "waiting": 89,
+        "waiting_share": 0.494
+      },
+      {
+        "state_name": "Maharashtra",
+        "district_name": "Pune",
+        "recommended": 681,
+        "waiting": 333,
+        "waiting_share": 0.489
+      }
+    ]
+  }
+}

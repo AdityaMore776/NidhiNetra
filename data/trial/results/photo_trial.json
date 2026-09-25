@@ -1,0 +1,351 @@
+{
+  "photos": 321,
+  "unreadable": 0,
+  "distinct_photos": 319,
+  "by_sample": {
+    "district": 169,
+    "national": 150
+  },
+  "pairs_from_different_works": 50678,
+  "thresholds": {
+    "phash256_max_bits": 51,
+    "dhash64_max_bits": 5,
+    "orb_min_inliers": 134
+  },
+  "robustness_caught_overall": {
+    "dhash64": 0.563,
+    "phash256": 0.7,
+    "orb": 0.994,
+    "drishti_phash_or_orb": 0.999
+  },
+  "robustness_by_edit": [
+    {
+      "edit": "brighter_25pct",
+      "dhash64": 0.875,
+      "phash256": 1.0,
+      "orb": 0.997,
+      "drishti_phash_or_orb": 1.0
+    },
+    {
+      "edit": "crop_8pct",
+      "dhash64": 0.194,
+      "phash256": 0.097,
+      "orb": 0.997,
+      "drishti_phash_or_orb": 1.0
+    },
+    {
+      "edit": "half_size",
+      "dhash64": 1.0,
+      "phash256": 1.0,
+      "orb": 0.994,
+      "drishti_phash_or_orb": 1.0
+    },
+    {
+      "edit": "resaved_q40",
+      "dhash64": 1.0,
+      "phash256": 1.0,
+      "orb": 1.0,
+      "drishti_phash_or_orb": 1.0
+    },
+    {
+      "edit": "screenshot_frame",
+      "dhash64": 0.003,
+      "phash256": 0.009,
+      "orb": 1.0,
+      "drishti_phash_or_orb": 1.0
+    },
+    {
+      "edit": "stamp_band_18pct",
+      "dhash64": 0.445,
+      "phash256": 0.925,
+      "orb": 0.969,
+      "drishti_phash_or_orb": 0.994
+    },
+    {
+      "edit": "turned_2deg",
+      "dhash64": 0.426,
+      "phash256": 0.868,
+      "orb": 1.0,
+      "drishti_phash_or_orb": 1.0
+    }
+  ],
+  "exact_copies_across_works": [
+    [
+      "WS/MP807/2023-2024/32921",
+      "WS/MP807/2023-2024/32924"
+    ],
+    [
+      "WS/MP356/2023-2024/95025",
+      "WS/MP356/2023-2024/95039",
+      "WS/MP356/2023-2024/95050"
+    ],
+    [
+      "WS/MP444/2024-2025/146209",
+      "WS/MP444/2024-2025/146217"
+    ],
+    [
+      "WS/MP602/2023-2024/72625",
+      "WS/MP602/2023-2024/75517"
+    ],
+    [
+      "WS/MP18104/2025-2026/152189",
+      "WS/MP18104/2025-2026/154228"
+    ]
+  ],
+  "near_copies_found": [],
+  "closest_pairs_for_reading": [
+    {
+      "a": "1654108.1713687.jpeg",
+      "b": "1595529.1651796.jpeg",
+      "work_a": "WS/MP360/2025-2026/197889",
+      "work_b": "WS/MP360/2025-2026/197870",
+      "phash_bits": 52,
+      "dhash_bits": 17,
+      "orb_inliers": 114,
+      "label": "different"
+    },
+    {
+      "a": "598736.615272.png",
+      "b": "598630.615165.png",
+      "work_a": "WS/MP337/2024-2025/71064",
+      "work_b": "WS/MP337/2024-2025/71072",
+      "phash_bits": 56,
+      "dhash_bits": 10,
+      "orb_inliers": 116,
+      "label": "different"
+    },
+    {
+      "a": "483978.494310.jpg",
+      "b": "484154.494575.jpg",
+      "work_a": "WS/MP103/2023-2024/97472",
+      "work_b": "WS/MP103/2023-2024/97486",
+      "phash_bits": 58,
+      "dhash_bits": 10,
+      "orb_inliers": 75,
+      "label": "different"
+    },
+    {
+      "a": "2185526.2277320.jpg",
+      "b": "2185384.2277174.jpg",
+      "work_a": "WS/MP18234/2025-2026/240448",
+      "work_b": "WS/MP18234/2025-2026/240458",
+      "phash_bits": 66,
+      "dhash_bits": 14,
+      "orb_inliers": 17,
+      "label": "different"
+    },
+    {
+      "a": "1927765.2002855.jpeg",
+      "b": "1927648.2002727.jpeg",
+      "work_a": "WS/MP892/2025-2026/211639",
+      "work_b": "WS/MP892/2025-2026/196892",
+      "phash_bits": 70,
+      "dhash_bits": 24,
+      "orb_inliers": 133,
+      "label": "different"
+    },
+    {
+      "a": "2185001.2276770.jpg",
+      "b": "2186036.2277870.jpg",
+      "work_a": "WS/MP18234/2025-2026/240503",
+      "work_b": "WS/MP18234/2025-2026/240525",
+      "phash_bits": 74,
+      "dhash_bits": 16,
+      "orb_inliers": 10,
+      "label": "different"
+    },
+    {
+      "a": "1654108.1713686.jpeg",
+      "b": "484154.494575.jpg",
+      "work_a": "WS/MP360/2025-2026/197889",
+      "work_b": "WS/MP103/2023-2024/97486",
+      "phash_bits": 74,
+      "dhash_bits": 18,
+      "orb_inliers": 23,
+      "label": "different"
+    },
+    {
+      "a": "2185526.2277320.jpg",
+      "b": "2185595.2277391.jpg",
+      "work_a": "WS/MP18234/2025-2026/240448",
+      "work_b": "WS/MP18234/2025-2026/240457",
+      "phash_bits": 78,
+      "dhash_bits": 14,
+      "orb_inliers": 18,
+      "label": "different"
+    },
+    {
+      "a": "2186017.2277851.jpg",
+      "b": "2185685.2277485.jpg",
+      "work_a": "WS/MP18234/2025-2026/240523",
+      "work_b": "WS/MP18234/2025-2026/240530",
+      "phash_bits": 78,
+      "dhash_bits": 6,
+      "orb_inliers": 24,
+      "label": "different"
+    },
+    {
+      "a": "2185595.2277391.jpg",
+      "b": "2185384.2277174.jpg",
+      "work_a": "WS/MP18234/2025-2026/240457",
+      "work_b": "WS/MP18234/2025-2026/240458",
+      "phash_bits": 80,
+      "dhash_bits": 14,
+      "orb_inliers": 15,
+      "label": "different"
+    },
+    {
+      "a": "2185994.2277825.jpg",
+      "b": "2185789.2277604.jpg",
+      "work_a": "WS/MP18234/2025-2026/240510",
+      "work_b": "WS/MP18234/2025-2026/240533",
+      "phash_bits": 80,
+      "dhash_bits": 12,
+      "orb_inliers": 17,
+      "label": "different"
+    },
+    {
+      "a": "483978.494310.jpg",
+      "b": "1595529.1651795.jpeg",
+      "work_a": "WS/MP103/2023-2024/97472",
+      "work_b": "WS/MP360/2025-2026/197870",
+      "phash_bits": 80,
+      "dhash_bits": 15,
+      "orb_inliers": 43,
+      "label": "different"
+    },
+    {
+      "a": "1595529.1651795.jpeg",
+      "b": "484154.494575.jpg",
+      "work_a": "WS/MP360/2025-2026/197870",
+      "work_b": "WS/MP103/2023-2024/97486",
+      "phash_bits": 80,
+      "dhash_bits": 15,
+      "orb_inliers": 43,
+      "label": "different"
+    },
+    {
+      "a": "483978.494309.jpg",
+      "b": "484154.494574.jpg",
+      "work_a": "WS/MP103/2023-2024/97472",
+      "work_b": "WS/MP103/2023-2024/97486",
+      "phash_bits": 82,
+      "dhash_bits": 23,
+      "orb_inliers": 31,
+      "label": "different"
+    },
+    {
+      "a": "1529322.1581613.jpg",
+      "b": "1595529.1651795.jpeg",
+      "work_a": "WS/MP360/2024-2025/186901",
+      "work_b": "WS/MP360/2025-2026/197870",
+      "phash_bits": 84,
+      "dhash_bits": 15,
+      "orb_inliers": 63,
+      "label": "different"
+    },
+    {
+      "a": "1654108.1713688.jpeg",
+      "b": "1595529.1651797.jpeg",
+      "work_a": "WS/MP360/2025-2026/197889",
+      "work_b": "WS/MP360/2025-2026/197870",
+      "phash_bits": 116,
+      "dhash_bits": 19,
+      "orb_inliers": 117,
+      "label": "different"
+    },
+    {
+      "a": "1529322.1581615.jpg",
+      "b": "1595529.1651797.jpeg",
+      "work_a": "WS/MP360/2024-2025/186901",
+      "work_b": "WS/MP360/2025-2026/197870",
+      "phash_bits": 100,
+      "dhash_bits": 23,
+      "orb_inliers": 94,
+      "label": "different"
+    },
+    {
+      "a": "1529322.1581614.jpg",
+      "b": "1654108.1713687.jpeg",
+      "work_a": "WS/MP360/2024-2025/186901",
+      "work_b": "WS/MP360/2025-2026/197889",
+      "phash_bits": 106,
+      "dhash_bits": 17,
+      "orb_inliers": 74,
+      "label": "different"
+    },
+    {
+      "a": "1529322.1581614.jpg",
+      "b": "1595529.1651796.jpeg",
+      "work_a": "WS/MP360/2024-2025/186901",
+      "work_b": "WS/MP360/2025-2026/197870",
+      "phash_bits": 90,
+      "dhash_bits": 6,
+      "orb_inliers": 74,
+      "label": "different"
+    },
+    {
+      "a": "1654108.1713686.jpeg",
+      "b": "1595529.1651795.jpeg",
+      "work_a": "WS/MP360/2025-2026/197889",
+      "work_b": "WS/MP360/2025-2026/197870",
+      "phash_bits": 94,
+      "dhash_bits": 11,
+      "orb_inliers": 68,
+      "label": "different"
+    },
+    {
+      "a": "1529322.1581615.jpg",
+      "b": "1654108.1713688.jpeg",
+      "work_a": "WS/MP360/2024-2025/186901",
+      "work_b": "WS/MP360/2025-2026/197889",
+      "phash_bits": 116,
+      "dhash_bits": 22,
+      "orb_inliers": 58,
+      "label": "different"
+    },
+    {
+      "a": "2004591.2084138.jpeg",
+      "b": "2006112.2085721.jpeg",
+      "work_a": "WS/MP18225/2025-2026/150523",
+      "work_b": "WS/MP18225/2025-2026/150534",
+      "phash_bits": 116,
+      "dhash_bits": 32,
+      "orb_inliers": 57,
+      "label": "different"
+    },
+    {
+      "a": "2004591.2084138.jpeg",
+      "b": "2006735.2086381.jpeg",
+      "work_a": "WS/MP18225/2025-2026/150523",
+      "work_b": "WS/MP18225/2025-2026/174419",
+      "phash_bits": 122,
+      "dhash_bits": 29,
+      "orb_inliers": 56,
+      "label": "different"
+    },
+    {
+      "a": "2003411.2082898.jpeg",
+      "b": "2006769.2086418.jpeg",
+      "work_a": "WS/MP18225/2025-2026/150484",
+      "work_b": "WS/MP18225/2025-2026/174771",
+      "phash_bits": 128,
+      "dhash_bits": 34,
+      "orb_inliers": 51,
+      "label": "different"
+    },
+    {
+      "a": "2000839.2080201.jpeg",
+      "b": "2006321.2085947.jpeg",
+      "work_a": "WS/MP18225/2025-2026/150473",
+      "work_b": "WS/MP18225/2025-2026/150553",
+      "phash_bits": 124,
+      "dhash_bits": 37,
+      "orb_inliers": 46,
+      "label": "different"
+    }
+  ],
+  "labels_so_far": {
+    "different": 25
+  }
+}

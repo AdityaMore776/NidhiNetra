@@ -10,6 +10,9 @@ Writes simplified GeoJSON for the web app:
   apps/web/public/geo/states.json
 
 Run: apps\engine\.venv\Scripts\python.exe data\boundaries.py
+Then: data\district_crosswalk.py - it adds the works' district code ("code") to each outline.
+The `lgd` property here is the real LGD code; the works' "district_lgd" is the Census-2011
+code, so the two must never be joined by number.
 """
 
 from __future__ import annotations

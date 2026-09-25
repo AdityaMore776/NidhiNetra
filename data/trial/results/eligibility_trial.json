@@ -1,0 +1,67 @@
+{
+  "keyword_presence": {
+    "matches": 21010,
+    "sampled": 40,
+    "clear": 2,
+    "grey": 5,
+    "clear_share": 0.05,
+    "clear_or_grey_share": 0.175
+  },
+  "v1_object_of_work": {
+    "matches": 642,
+    "by_item": {
+      "COMMERCIAL": 266,
+      "RELIGIOUS": 262,
+      "MAINTENANCE": 56,
+      "NAMED_ASSET": 46,
+      "SWAGAT_DWAR": 8,
+      "GRANTS_LOANS": 3,
+      "PRIVATE_BUILDING": 1
+    },
+    "sampled": 60,
+    "clear": 7,
+    "grey": 8,
+    "clear_share": 0.117,
+    "clear_or_grey_share": 0.25
+  },
+  "v2_after_reading": {
+    "matches": 458,
+    "by_item": {
+      "RELIGIOUS": 341,
+      "MAINTENANCE": 56,
+      "NAMED_ASSET": 38,
+      "COMMERCIAL": 11,
+      "SWAGAT_DWAR": 8,
+      "GRANTS_LOANS": 3,
+      "PRIVATE_BUILDING": 1
+    },
+    "dev_sample_first_draft": {
+      "sampled": 50,
+      "clear": 28,
+      "grey": 8,
+      "clear_share": 0.56,
+      "clear_or_grey_share": 0.72
+    },
+    "test_sample_fresh": {
+      "sampled": 50,
+      "clear": 28,
+      "grey": 12,
+      "clear_share": 0.56,
+      "clear_or_grey_share": 0.8
+    },
+    "left_behind_keyword_only": {
+      "works": 20553,
+      "sampled": 60,
+      "clear": 0,
+      "grey": 2,
+      "clear_share": 0.0,
+      "clear_or_grey_share": 0.033
+    },
+    "of_v1_sample_clear_kept": 7,
+    "of_v1_sample_grey_kept": 7,
+    "of_v1_sample_legit_dropped": 42,
+    "of_v1_sample_legit_total": 45,
+    "of_dev_sample_legit_now_dropped": 13,
+    "of_dev_sample_clear_still_caught": 28
+  }
+}

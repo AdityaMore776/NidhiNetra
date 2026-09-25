@@ -1,0 +1,36 @@
+{
+  "test_works": 1000,
+  "control_works": 20000,
+  "drishti_cost_agent": {
+    "false_alarm_rate": 0.0154,
+    "caught_x1.5": 0.004,
+    "caught_x2": 0.18,
+    "caught_x3": 0.39,
+    "caught_x5": 0.632,
+    "caught_x10": 0.837
+  },
+  "drishti_review_queue": {
+    "false_alarm_rate": 0.0011,
+    "caught_x1.5": 0.0,
+    "caught_x2": 0.0,
+    "caught_x3": 0.018,
+    "caught_x5": 0.185,
+    "caught_x10": 0.36
+  },
+  "isolation_forest_type_state_amount": {
+    "false_alarm_rate": 0.0154,
+    "caught_x1.5": 0.014,
+    "caught_x2": 0.019,
+    "caught_x3": 0.02,
+    "caught_x5": 0.028,
+    "caught_x10": 0.051
+  },
+  "isolation_forest_amount_only": {
+    "false_alarm_rate": 0.0154,
+    "caught_x1.5": 0.018,
+    "caught_x2": 0.02,
+    "caught_x3": 0.059,
+    "caught_x5": 0.184,
+    "caught_x10": 0.47
+  }
+}

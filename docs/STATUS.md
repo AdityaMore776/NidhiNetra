@@ -14,12 +14,28 @@
 
 ## >>> RESUME HERE <<<
 
+**REAL-WORKS TRIAL DONE 2026-09-26: read `docs/trial/FINDINGS.md` first.** Every agent was
+tested on the real export plus real eSAKSHI evidence for 837 completed works (all 435 in
+Pratapgarh UP + 400 random; 905 files, 791 MB, in `data/evidence/`, gitignored; manifest
+`data/evidence/manifest.jsonl`). Scripts `data/trial/*.py` (venv `.venv-trial`), results
+`data/trial/results/` (run `sanitize_results.py` before committing - masks phone/account
+numbers), local OCR cache `data/trial/cache/ocr/` (gitignored: holds names/accounts).
+Headlines: Cost beats Isolation Forest by far; Eligibility v2 56% precision (was 12%);
+Document + Contractor agents work for FREE on UP's portal-generated certificates (real
+sanction dates, payments, vendor codes); split/bulk patterns real; delay model weak
+(AUC 0.71); GPS stamps readable (coords 10/10 by eye), phone EXIF GPS always stripped.
+**Bug found + fixed in code:** works' `district_lgd` is really the CENSUS-2011 code; the map
+outlines carry real LGD codes -> live map painted wrong districts. `data/district_crosswalk.py`
+adds `code` to each outline; `IndiaMap.tsx` joins on it. Next build order: FINDINGS "What to
+build next".
+
 **M0 IS LIVE (2026-09-26): https://drishti-lyart.vercel.app** (Vercel project `drishti`,
 team aditya-more-s-dreamscapeproject, auto-deploys on push to `main`; Vercel Services works on
 Hobby). Database: Supabase via the Vercel marketplace (`drishti-db`, bom1 Mumbai, free plan);
 env in `.env.local` (gitignored, pulled by the CLI). Bulk jobs: `data/with_env.py load_db.py`,
 `data/with_env.py batch_assess.py` (session pooler; never prints secrets). Demo logins:
-`.demo-logins.txt` (gitignored) - ministry@ / district@ (Pratapgarh, LGD 173) / field@drishti.demo.
+`.demo-logins.txt` (gitignored) - ministry@ / district@ (Pratapgarh UP, census code 173 =
+LGD 174) / field@drishti.demo.
 Verified live with Playwright: login, dashboard (2,09,993 works), district scoping (1,140 works).
 
 Queue after porting T16/T18 (impossible dates judged by quarter; concentrated offices listed
@@ -113,8 +129,8 @@ Rebuild data: `data/build_corpus.py` → `data/build_stats.py` (asserts AD-106 f
 
 ## Guardrails (from the user — never break)
 
-- Exactly the deck's pipeline and four agents. No new agents. No satellite anything.
-- GPS/location validation lives inside Site Progress and Image Reuse.
+- ~~Exactly four agents, no satellite~~ - superseded 2026-09-25 by the approved v2 design:
+  12 agents, each only if proven; satellite only for big works and only after a go/no-go.
 - Free tiers only for now; paid Gemini is a switch, not a default.
 - `main` is always the demoable live link; host at every milestone.
 - The user is non-technical: report in plain words, outcome first.
@@ -122,7 +138,12 @@ Rebuild data: `data/build_corpus.py` → `data/build_stats.py` (asserts AD-106 f
 ## Traps already hit
 
 - Shell heredocs / Python string edits turned `\b` into a backspace byte in a regex.
-  Write regex files with the Write tool.
+  Write regex files with the Write tool. (Hit AGAIN 2026-09-26 via a Bash heredoc that ran
+  Python to patch a file - never patch regex code through Bash; use Edit/Write only.)
+- `district_lgd` in works/cohorts/PIN files is the Census-2011 code, NOT LGD. Never join it
+  to the map outlines' `lgd` by number - use `data/build/district_crosswalk.parquet`.
+- Windows: two ProcessPoolExecutors started from background shells died with
+  "WinError 6 handle is invalid"; run extra OCR as single-process shards (`--shard i/n`).
 - pandas NaN reached the engine as a truthy float; clean records via `data/common.py`.
 - MapLibre 6 needs its worker served from `public/maplibre` (`scripts/copy-maplibre.mjs`).
 - Next.js 16: middleware is now `proxy.ts`; read `apps/web/node_modules/next/dist/docs/`.

@@ -1,0 +1,94 @@
+{
+  "items_read": 1925,
+  "photos": 321,
+  "pdf_pages": 1604,
+  "gps_app_named": 131,
+  "with_coordinates": 190,
+  "works_with_coordinates": 170,
+  "works_in_pilot": 835,
+  "place": {
+    "inside_own_district": 187,
+    "outside_within_5km_border": 2,
+    "outside_more_than_5km": 0,
+    "examples_outside": []
+  },
+  "time": {
+    "in_window": 186,
+    "before_recommendation": 3,
+    "NaN": 1
+  },
+  "time_examples": [
+    {
+      "work_id": "WS/MP070/2023-2024/7171",
+      "sample": "national",
+      "file": "110137.110781",
+      "page": 5,
+      "lat": 23.936828,
+      "lon": 73.357114,
+      "stamp_date": "2023-06-29",
+      "district": "Sabar Kantha",
+      "inside_own_district": true,
+      "km_outside": NaN,
+      "falls_in": "Sabar Kantha",
+      "time": "before_recommendation",
+      "pin": "383462",
+      "pin_district_matches": true,
+      "recommended": "2023-07-31",
+      "completed": "2023-07-03"
+    },
+    {
+      "work_id": "WS/MP720/2024-2025/124508",
+      "sample": "national",
+      "file": "1455816.1504262",
+      "page": 0,
+      "lat": 24.762702,
+      "lon": 74.196467,
+      "stamp_date": "2023-07-30",
+      "district": "Chittaurgarh",
+      "inside_own_district": true,
+      "km_outside": NaN,
+      "falls_in": "Chittorgarh",
+      "time": "before_recommendation",
+      "pin": "312205",
+      "pin_district_matches": true,
+      "recommended": "2024-03-11",
+      "completed": "2025-09-29"
+    },
+    {
+      "work_id": "WS/MP720/2024-2025/124252",
+      "sample": "national",
+      "file": "997551.1030105",
+      "page": 0,
+      "lat": 24.852992,
+      "lon": 74.505609,
+      "stamp_date": "2024-02-12",
+      "district": "Chittaurgarh",
+      "inside_own_district": true,
+      "km_outside": NaN,
+      "falls_in": "Chittorgarh",
+      "time": "before_recommendation",
+      "pin": NaN,
+      "pin_district_matches": null,
+      "recommended": "2024-03-11",
+      "completed": "2023-12-31"
+    }
+  ],
+  "pin": {
+    "null": 121,
+    "true": 66,
+    "false": 3
+  },
+  "same_spot_same_day_different_works": [
+    {
+      "spot": [
+        26.9906,
+        81.117
+      ],
+      "date": "2024-02-08",
+      "works": [
+        "WS/MP811/2023-2024/50082",
+        "WS/MP811/2023-2024/50089"
+      ]
+    }
+  ]
+}
