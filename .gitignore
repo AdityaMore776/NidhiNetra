@@ -1,0 +1,29 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+.next/
+out/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Vercel
+.vercel
+
+# Local data (raw exports live in ~/saakshya/data/raw; build outputs are regenerated)
+data/raw/
+data/build/
+data/cache/
+eval/work/
+
+# OS
+.DS_Store
+Thumbs.db
