@@ -1,0 +1,1906 @@
+{
+"spans": [
+{
+"t": "NeuralNexus",
+"font": "Calibri-Bold",
+"size": 20.5,
+"color": "2A4D88",
+"bbox": [
+66.7,
+48.9,
+176.3,
+69.4
+]
+},
+{
+"t": "FEASIBILITY AND VIABILITY",
+"font": "Cambria-Bold",
+"size": 42.0,
+"color": "2A4D88",
+"bbox": [
+422.6,
+37.1,
+970.6,
+86.3
+]
+},
+{
+"t": "@SIH Idea submission – Template",
+"font": "Calibri",
+"size": 15.0,
+"color": "FFFFFF",
+"bbox": [
+616.5,
+781.7,
+823.0,
+796.7
+]
+},
+{
+"t": "4",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "FFFFFF",
+"bbox": [
+1384.8,
+780.6,
+1393.2,
+797.1
+]
+},
+{
+"t": "F E A S I B I L I T Y A N A L Y S I S",
+"font": "Calibri-Bold",
+"size": 17.2,
+"color": "2A4D88",
+"bbox": [
+48.6,
+128.3,
+262.1,
+145.5
+]
+},
+{
+"t": "Technical Feasibility",
+"font": "Calibri-Bold",
+"size": 18.0,
+"color": "2A4D88",
+"bbox": [
+126.4,
+193.9,
+276.1,
+211.9
+]
+},
+{
+"t": "Proven open-source Python/JS stack;",
+"font": "Calibri",
+"size": 16.5,
+"color": "1A2F57",
+"bbox": [
+70.2,
+248.4,
+318.3,
+264.9
+]
+},
+{
+"t": "every engine has a working reference",
+"font": "Calibri",
+"size": 16.5,
+"color": "1A2F57",
+"bbox": [
+70.2,
+267.9,
+321.2,
+284.4
+]
+},
+{
+"t": "library. Runs on one laptop, no GPU.",
+"font": "Calibri",
+"size": 16.5,
+"color": "1A2F57",
+"bbox": [
+70.2,
+287.4,
+313.9,
+303.9
+]
+},
+{
+"t": "Data Feasibility",
+"font": "Calibri-Bold",
+"size": 18.0,
+"color": "2A4D88",
+"bbox": [
+450.4,
+193.9,
+565.3,
+211.9
+]
+},
+{
+"t": "Existing Records",
+"font": "Calibri-Bold",
+"size": 15.6,
+"color": "1A2F57",
+"bbox": [
+398.5,
+238.6,
+503.5,
+254.3
+]
+},
+{
+"t": "Uses work, financial, location, document",
+"font": "Calibri",
+"size": 15.6,
+"color": "1A2F57",
+"bbox": [
+398.5,
+256.6,
+655.5,
+272.3
+]
+},
+{
+"t": "and image data.",
+"font": "Calibri",
+"size": 15.6,
+"color": "1A2F57",
+"bbox": [
+398.5,
+274.6,
+500.3,
+290.3
+]
+},
+{
+"t": "Operational Feasibility",
+"font": "Calibri-Bold",
+"size": 18.0,
+"color": "2A4D88",
+"bbox": [
+126.4,
+379.7,
+295.5,
+397.7
+]
+},
+{
+"t": "Workflow Fit",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "1A2F57",
+"bbox": [
+70.2,
+430.7,
+159.3,
+447.2
+]
+},
+{
+"t": "Supports existing MPLADS processes",
+"font": "Calibri",
+"size": 16.5,
+"color": "1A2F57",
+"bbox": [
+70.2,
+450.2,
+315.4,
+466.7
+]
+},
+{
+"t": "without replacing official checks.",
+"font": "Calibri",
+"size": 16.5,
+"color": "1A2F57",
+"bbox": [
+70.2,
+469.7,
+289.5,
+486.2
+]
+},
+{
+"t": "Economic Feasibility",
+"font": "Calibri-Bold",
+"size": 18.0,
+"color": "2A4D88",
+"bbox": [
+450.4,
+381.5,
+601.9,
+399.5
+]
+},
+{
+"t": "Low Infrastructure",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "1A2F57",
+"bbox": [
+398.5,
+431.6,
+525.5,
+448.1
+]
+},
+{
+"t": "Uses open-source tools and cloud-",
+"font": "Calibri",
+"size": 16.5,
+"color": "1A2F57",
+"bbox": [
+398.5,
+451.1,
+629.4,
+467.6
+]
+},
+{
+"t": "based deployment.",
+"font": "Calibri",
+"size": 16.5,
+"color": "1A2F57",
+"bbox": [
+398.5,
+470.6,
+527.3,
+487.1
+]
+},
+{
+"t": "C H A L L E N G E S & R I S K S",
+"font": "Calibri-Bold",
+"size": 17.2,
+"color": "2A4D88",
+"bbox": [
+718.2,
+128.3,
+921.6,
+145.5
+]
+},
+{
+"t": "S T R A T E G I E S T O O V E R C O M E",
+"font": "Calibri-Bold",
+"size": 17.2,
+"color": "2A4D88",
+"bbox": [
+1085.4,
+128.3,
+1346.7,
+145.5
+]
+},
+{
+"t": "Incomplete Data",
+"font": "Calibri-Bold",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+768.2,
+175.1,
+876.9,
+190.8
+]
+},
+{
+"t": "Missing or inconsistent records may",
+"font": "Calibri",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+768.2,
+193.8,
+998.1,
+209.6
+]
+},
+{
+"t": "affect analysis.",
+"font": "Calibri",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+768.2,
+212.6,
+862.7,
+228.3
+]
+},
+{
+"t": "Data Validation",
+"font": "Calibri-Bold",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+1135.4,
+178.8,
+1237.3,
+194.6
+]
+},
+{
+"t": "Clean and standardise records before",
+"font": "Calibri",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+1135.4,
+197.6,
+1374.6,
+213.3
+]
+},
+{
+"t": "analysis.",
+"font": "Calibri",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+1135.4,
+216.3,
+1189.4,
+232.1
+]
+},
+{
+"t": "False Alerts",
+"font": "Calibri-Bold",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+768.2,
+263.5,
+843.5,
+279.3
+]
+},
+{
+"t": "Genuine variations may trigger",
+"font": "Calibri",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+768.2,
+282.3,
+965.6,
+298.0
+]
+},
+{
+"t": "unnecessary alerts.",
+"font": "Calibri",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+768.2,
+301.0,
+891.3,
+316.8
+]
+},
+{
+"t": "Multiple Checks",
+"font": "Calibri-Bold",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+1135.4,
+263.3,
+1239.8,
+279.0
+]
+},
+{
+"t": "Combine signals before raising an",
+"font": "Calibri",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+1135.4,
+282.0,
+1350.2,
+297.8
+]
+},
+{
+"t": "alert.",
+"font": "Calibri",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+1135.4,
+300.8,
+1169.2,
+316.5
+]
+},
+{
+"t": "Limited Fraud Data",
+"font": "Calibri-Bold",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+769.1,
+352.7,
+893.8,
+368.4
+]
+},
+{
+"t": "Few confirmed cases may limit",
+"font": "Calibri",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+769.1,
+371.4,
+965.8,
+387.2
+]
+},
+{
+"t": "supervised detection.",
+"font": "Calibri",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+769.1,
+390.2,
+907.0,
+405.9
+]
+},
+{
+"t": "Hybrid Detection",
+"font": "Calibri-Bold",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+1135.4,
+355.6,
+1246.9,
+371.4
+]
+},
+{
+"t": "Use rules, anomalies and historical",
+"font": "Calibri",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+1135.4,
+374.4,
+1357.2,
+390.1
+]
+},
+{
+"t": "patterns.",
+"font": "Calibri",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+1135.4,
+393.1,
+1193.5,
+408.9
+]
+},
+{
+"t": "Sensitive Data",
+"font": "Calibri-Bold",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+768.2,
+441.0,
+861.4,
+456.8
+]
+},
+{
+"t": "Financial and official records require",
+"font": "Calibri",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+768.2,
+459.8,
+1000.8,
+475.5
+]
+},
+{
+"t": "secure access.",
+"font": "Calibri",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+768.2,
+478.5,
+859.0,
+494.3
+]
+},
+{
+"t": "Secure Access",
+"font": "Calibri-Bold",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+1135.4,
+442.9,
+1226.1,
+458.6
+]
+},
+{
+"t": "Use role-based access and controlled",
+"font": "Calibri",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+1135.4,
+461.6,
+1372.7,
+477.4
+]
+},
+{
+"t": "evidence.",
+"font": "Calibri",
+"size": 15.8,
+"color": "1A2F57",
+"bbox": [
+1135.4,
+480.4,
+1196.9,
+496.1
+]
+},
+{
+"t": "V I A B I L I T Y ",
+"font": "Calibri-Bold",
+"size": 17.2,
+"color": "2A4D88",
+"bbox": [
+48.6,
+547.3,
+148.4,
+564.6
+]
+},
+{
+"t": "Human Control ",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "FFFFFF",
+"bbox": [
+99.8,
+607.0,
+208.0,
+623.5
+]
+},
+{
+"t": "Human-in-the-Loop",
+"font": "Calibri-Bold",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+61.6,
+646.9,
+201.9,
+664.1
+]
+},
+{
+"t": "AI flags risks; officials",
+"font": "Calibri",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+61.6,
+667.1,
+209.6,
+684.4
+]
+},
+{
+"t": "verify and decide.",
+"font": "Calibri",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+61.6,
+687.4,
+186.1,
+704.6
+]
+},
+{
+"t": "Existing Workflow ",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "FFFFFF",
+"bbox": [
+327.4,
+607.0,
+455.6,
+623.5
+]
+},
+{
+"t": "Workflow Compatibility",
+"font": "Calibri-Bold",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+301.3,
+647.2,
+473.0,
+664.4
+]
+},
+{
+"t": "Works alongside existing",
+"font": "Calibri",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+301.3,
+667.4,
+474.7,
+684.7
+]
+},
+{
+"t": "MPLADS workflows.",
+"font": "Calibri",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+301.3,
+687.7,
+441.7,
+704.9
+]
+},
+{
+"t": "Priority-Based Action",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "FFFFFF",
+"bbox": [
+556.4,
+607.0,
+701.8,
+623.5
+]
+},
+{
+"t": "Risk-Based Verification",
+"font": "Calibri-Bold",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+537.7,
+642.6,
+702.4,
+659.8
+]
+},
+{
+"t": "Prioritises higher-risk",
+"font": "Calibri",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+537.7,
+662.8,
+686.0,
+680.1
+]
+},
+{
+"t": "works for inspection.",
+"font": "Calibri",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+537.7,
+683.1,
+684.8,
+700.3
+]
+},
+{
+"t": "Future Expansion.",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "FFFFFF",
+"bbox": [
+805.1,
+607.0,
+928.3,
+623.5
+]
+},
+{
+"t": "Modular and Expandable",
+"font": "Calibri-Bold",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+776.5,
+647.2,
+956.5,
+664.4
+]
+},
+{
+"t": "Independent agents can",
+"font": "Calibri",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+776.5,
+667.4,
+945.7,
+684.7
+]
+},
+{
+"t": "be added or improved",
+"font": "Calibri",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+776.5,
+687.7,
+932.3,
+704.9
+]
+},
+{
+"t": "separately.",
+"font": "Calibri",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+776.5,
+707.9,
+853.9,
+725.2
+]
+}
+],
+"draws": [
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+0.0,
+0.0,
+1440.0,
+810.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+0.0,
+0.0,
+1440.0,
+810.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+36.7,
+22.6,
+206.4,
+96.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 4.5,
+"rect": [
+36.7,
+22.6,
+206.3,
+96.2
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+-0.8,
+768.2,
+1440.8,
+810.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+-0.7,
+768.2,
+1440.7,
+810.7
+],
+"n_items": 1,
+"kinds": "re",
+"fo": null
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+161.2,
+352.0,
+326.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 3.0,
+"rect": [
+47.8,
+161.3,
+351.7,
+326.9
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+64.1,
+177.4,
+115.2,
+228.6
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+64.0,
+177.4,
+115.2,
+228.6
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+371.8,
+161.2,
+676.0,
+326.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 3.0,
+"rect": [
+371.9,
+161.3,
+675.7,
+326.9
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+388.1,
+177.4,
+439.2,
+228.6
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+388.1,
+177.4,
+439.2,
+228.6
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+347.0,
+352.0,
+512.7
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 3.0,
+"rect": [
+47.8,
+347.0,
+351.7,
+512.7
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+64.1,
+363.2,
+115.2,
+414.4
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+64.0,
+363.2,
+115.2,
+414.4
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+371.8,
+347.0,
+676.0,
+512.7
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 3.0,
+"rect": [
+371.9,
+347.0,
+675.7,
+512.7
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+388.1,
+363.2,
+439.2,
+414.4
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+388.1,
+363.2,
+439.2,
+414.4
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "D9D9D8",
+"stroke": null,
+"w": null,
+"rect": [
+717.5,
+161.2,
+1026.8,
+238.4
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "D9D9D8",
+"w": 2.999999761581421,
+"rect": [
+717.5,
+161.2,
+1026.7,
+238.3
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+1084.6,
+161.2,
+1392.1,
+238.4
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "7C94B8",
+"w": 3.000000238418579,
+"rect": [
+1084.7,
+161.3,
+1392.1,
+238.3
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "D9D9D8",
+"stroke": null,
+"w": null,
+"rect": [
+717.5,
+249.8,
+1026.8,
+326.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "D9D9D8",
+"w": 2.999999761581421,
+"rect": [
+717.5,
+249.8,
+1026.7,
+326.9
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+1084.6,
+249.8,
+1392.1,
+326.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "7C94B8",
+"w": 3.000000238418579,
+"rect": [
+1084.7,
+249.8,
+1392.1,
+326.9
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "D9D9D8",
+"stroke": null,
+"w": null,
+"rect": [
+717.5,
+338.4,
+1026.8,
+415.5
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "D9D9D8",
+"w": 2.999999761581421,
+"rect": [
+717.5,
+338.4,
+1026.7,
+415.5
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+1084.6,
+338.4,
+1392.1,
+415.5
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "7C94B8",
+"w": 3.000000238418579,
+"rect": [
+1084.7,
+338.4,
+1392.1,
+415.5
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "D9D9D8",
+"stroke": null,
+"w": null,
+"rect": [
+717.5,
+426.9,
+1026.8,
+504.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "D9D9D8",
+"w": 2.999999761581421,
+"rect": [
+717.5,
+426.9,
+1026.7,
+504.0
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+1084.6,
+426.9,
+1392.1,
+504.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "7C94B8",
+"w": 3.000000238418579,
+"rect": [
+1084.7,
+426.9,
+1392.1,
+504.0
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+582.5,
+259.9,
+746.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 2.999999761581421,
+"rect": [
+47.8,
+582.5,
+259.9,
+745.9
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+60.8,
+595.4,
+246.9,
+635.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.000000238418579,
+"rect": [
+60.8,
+595.4,
+247.0,
+635.8
+],
+"n_items": 6,
+"kinds": "clcclc",
+"fo": null
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+285.4,
+582.5,
+497.5,
+746.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 2.999999761581421,
+"rect": [
+285.4,
+582.5,
+497.5,
+745.9
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+298.4,
+595.4,
+484.5,
+635.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.000000238418579,
+"rect": [
+298.4,
+595.4,
+484.6,
+635.8
+],
+"n_items": 6,
+"kinds": "clcclc",
+"fo": null
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+523.0,
+582.5,
+735.1,
+746.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 2.999999761581421,
+"rect": [
+523.0,
+582.5,
+735.1,
+745.9
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+536.0,
+595.4,
+722.1,
+635.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.000000238418579,
+"rect": [
+536.0,
+595.4,
+722.2,
+635.8
+],
+"n_items": 6,
+"kinds": "clcclc",
+"fo": null
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+760.7,
+582.5,
+972.7,
+746.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 2.999999761581421,
+"rect": [
+760.6,
+582.5,
+972.7,
+745.9
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "D9962B",
+"stroke": null,
+"w": null,
+"rect": [
+773.6,
+595.4,
+959.7,
+635.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "D9962B",
+"w": 3.000000238418579,
+"rect": [
+773.6,
+595.4,
+959.8,
+635.8
+],
+"n_items": 6,
+"kinds": "clcclc",
+"fo": null
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+36.7,
+22.6,
+206.3,
+96.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+161.2,
+351.8,
+326.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+64.1,
+177.5,
+115.2,
+228.6
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+371.9,
+161.2,
+675.8,
+326.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+388.0,
+177.5,
+439.2,
+228.6
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+347.0,
+351.8,
+512.7
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+64.1,
+363.2,
+115.2,
+414.4
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+371.9,
+347.0,
+675.8,
+512.7
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+388.0,
+363.2,
+439.2,
+414.4
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+717.5,
+161.2,
+1026.8,
+238.3
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+717.5,
+249.8,
+1026.8,
+326.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+717.5,
+338.4,
+1026.8,
+415.5
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+717.5,
+426.9,
+1026.8,
+504.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+582.4,
+260.0,
+745.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+60.8,
+595.4,
+247.0,
+635.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+285.5,
+582.4,
+497.6,
+745.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+298.4,
+595.4,
+484.6,
+635.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+523.0,
+582.4,
+735.2,
+745.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+536.0,
+595.4,
+722.2,
+635.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+760.7,
+582.4,
+972.8,
+745.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+773.6,
+595.4,
+959.8,
+635.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+1084.7,
+161.2,
+1392.1,
+238.3
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+1084.7,
+249.8,
+1392.1,
+326.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+1084.7,
+338.4,
+1392.1,
+415.5
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+1084.7,
+426.9,
+1392.1,
+504.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+-0.8,
+768.2,
+1440.7,
+810.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+}
+]
+}

@@ -1,0 +1,2170 @@
+{
+"spans": [
+{
+"t": "NeuralNexus",
+"font": "Calibri-Bold",
+"size": 20.5,
+"color": "2A4D88",
+"bbox": [
+66.7,
+48.9,
+176.3,
+69.4
+]
+},
+{
+"t": "@SIH Idea submission – Template",
+"font": "Calibri",
+"size": 15.0,
+"color": "FFFFFF",
+"bbox": [
+616.5,
+781.7,
+823.0,
+796.7
+]
+},
+{
+"t": "2",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "FFFFFF",
+"bbox": [
+1384.8,
+780.6,
+1393.2,
+797.1
+]
+},
+{
+"t": "PROPOSED",
+"font": "Cambria-Bold",
+"size": 18.0,
+"color": "FFFFFF",
+"bbox": [
+114.1,
+149.4,
+205.5,
+170.5
+]
+},
+{
+"t": "SOLUTION",
+"font": "Cambria-Bold",
+"size": 18.0,
+"color": "FFFFFF",
+"bbox": [
+114.1,
+170.4,
+200.5,
+191.5
+]
+},
+{
+"t": "DRISHTI ",
+"font": "Calibri-Bold",
+"size": 17.2,
+"color": "2A4D88",
+"bbox": [
+324.0,
+143.0,
+385.3,
+160.3
+]
+},
+{
+"t": "is an AI-powered risk-intelligence layer on top of ",
+"font": "Calibri",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+385.3,
+143.0,
+728.6,
+160.3
+]
+},
+{
+"t": "eSAKSHI",
+"font": "Calibri-Bold",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+728.7,
+143.0,
+789.0,
+160.3
+]
+},
+{
+"t": " that screens every MPLADS work - sanctions, estimates, expenditure, progress &",
+"font": "Calibri",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+789.0,
+143.0,
+1357.2,
+160.3
+]
+},
+{
+"t": "payments - flags ",
+"font": "Calibri",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+324.0,
+163.3,
+442.4,
+180.5
+]
+},
+{
+"t": "overruns, duplicates, split works, delays & rule breaches",
+"font": "Calibri-Bold",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+442.4,
+163.3,
+845.3,
+180.5
+]
+},
+{
+"t": " with plain-language reasons, and turns them into a ",
+"font": "Calibri",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+845.2,
+163.3,
+1209.6,
+180.5
+]
+},
+{
+"t": "daily inspection plan",
+"font": "Calibri-Bold",
+"size": 17.2,
+"color": "2A4D88",
+"bbox": [
+1209.7,
+163.3,
+1357.6,
+180.5
+]
+},
+{
+"t": "for District Authorities.",
+"font": "Calibri",
+"size": 17.2,
+"color": "1A2F57",
+"bbox": [
+324.0,
+183.5,
+484.6,
+200.8
+]
+},
+{
+"t": "DETAILED EXPLANATION",
+"font": "Cambria-Bold",
+"size": 15.8,
+"color": "FFFFFF",
+"bbox": [
+114.1,
+255.2,
+298.2,
+273.7
+]
+},
+{
+"t": "HOW IT ADDRESSES THE PROBLEM",
+"font": "Cambria-Bold",
+"size": 15.8,
+"color": "FFFFFF",
+"bbox": [
+572.8,
+255.2,
+828.0,
+273.7
+]
+},
+{
+"t": "INNOVATION & UNIQUENESS",
+"font": "Cambria-Bold",
+"size": 15.8,
+"color": "FFFFFF",
+"bbox": [
+1031.6,
+255.2,
+1239.0,
+273.7
+]
+},
+{
+"t": "W H A T D R I S H T I D E T E C T S  —  M A P P E D T O P S R E Q U I R E M E N T S",
+"font": "Calibri-Bold",
+"size": 17.2,
+"color": "2A4D88",
+"bbox": [
+48.6,
+579.7,
+627.5,
+597.0
+]
+},
+{
+"t": "Cost Overruns",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "000000",
+"bbox": [
+122.0,
+644.8,
+219.0,
+661.3
+]
+},
+{
+"t": "Duplicate Works",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "000000",
+"bbox": [
+349.4,
+644.8,
+462.7,
+661.3
+]
+},
+{
+"t": "Delayed Projects",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "000000",
+"bbox": [
+576.8,
+644.8,
+691.7,
+661.3
+]
+},
+{
+"t": "Fund Misuse /",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "000000",
+"bbox": [
+804.2,
+635.0,
+901.7,
+651.5
+]
+},
+{
+"t": "Fraud",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "000000",
+"bbox": [
+804.2,
+654.5,
+843.5,
+671.0
+]
+},
+{
+"t": "Non-Compliance",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "000000",
+"bbox": [
+1031.6,
+644.8,
+1145.5,
+661.3
+]
+},
+{
+"t": "Early Warning",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "000000",
+"bbox": [
+1259.0,
+644.8,
+1355.2,
+661.3
+]
+},
+{
+"t": "Guideline-as-Code Engine",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "000000",
+"bbox": [
+101.2,
+299.7,
+294.9,
+318.0
+]
+},
+{
+"t": ": ",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "2A4D88",
+"bbox": [
+294.9,
+299.7,
+304.0,
+318.0
+]
+},
+{
+"t": "checkable rules of",
+"font": "Calibri",
+"size": 18.2,
+"color": "000000",
+"bbox": [
+304.0,
+299.7,
+437.8,
+318.0
+]
+},
+{
+"t": "MPLADS Guidelines 2023 run on every work;",
+"font": "Calibri",
+"size": 18.2,
+"color": "000000",
+"bbox": [
+101.2,
+321.5,
+431.9,
+339.7
+]
+},
+{
+"t": "each flag cites the para.",
+"font": "Calibri",
+"size": 18.2,
+"color": "000000",
+"bbox": [
+101.2,
+343.2,
+277.0,
+361.5
+]
+},
+{
+"t": "AI Anomaly Engines",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "000000",
+"bbox": [
+101.2,
+365.0,
+251.1,
+383.2
+]
+},
+{
+"t": ": ",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "2A4D88",
+"bbox": [
+251.1,
+365.0,
+260.3,
+383.2
+]
+},
+{
+"t": "expected-cost model,",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+260.3,
+365.0,
+420.3,
+383.2
+]
+},
+{
+"t": "split-work & Hindi–English duplicate finder,",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+101.2,
+386.7,
+422.2,
+405.0
+]
+},
+{
+"t": "delay prediction.",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+101.2,
+408.5,
+225.8,
+426.7
+]
+},
+{
+"t": "Explainable Risk Score (0–100)",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "000000",
+"bbox": [
+101.2,
+430.2,
+330.9,
+448.5
+]
+},
+{
+"t": ": ",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "2A4D88",
+"bbox": [
+330.9,
+430.2,
+340.0,
+448.5
+]
+},
+{
+"t": "fuses all",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+340.0,
+430.2,
+399.8,
+448.5
+]
+},
+{
+"t": "signals + top-3 reasons in plain Hindi/English.",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+101.2,
+452.0,
+435.2,
+470.2
+]
+},
+{
+"t": "Inspection Planner + Field App",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "000000",
+"bbox": [
+101.2,
+473.7,
+331.2,
+492.0
+]
+},
+{
+"t": ": ",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "2A4D88",
+"bbox": [
+331.2,
+473.7,
+340.3,
+492.0
+]
+},
+{
+"t": "best sites for",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+340.3,
+473.7,
+435.7,
+492.0
+]
+},
+{
+"t": "an officer's day, routed; verdicts retrain the",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+101.2,
+495.5,
+423.6,
+513.7
+]
+},
+{
+"t": "models.",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+101.2,
+517.2,
+160.0,
+535.5
+]
+},
+{
+"t": "Manual monitoring can't scale →",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "000000",
+"bbox": [
+559.6,
+299.7,
+809.7,
+318.0
+]
+},
+{
+"t": "100% of",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+813.9,
+299.7,
+874.0,
+318.0
+]
+},
+{
+"t": "works screened automatically, every day.",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+559.6,
+321.5,
+865.7,
+339.7
+]
+},
+{
+"t": "Issues found after money is spent",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "000000",
+"bbox": [
+559.6,
+343.2,
+814.1,
+361.5
+]
+},
+{
+"t": " → ",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "2A4D88",
+"bbox": [
+814.1,
+343.2,
+838.8,
+361.5
+]
+},
+{
+"t": "pre-",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+838.8,
+343.2,
+869.4,
+361.5
+]
+},
+{
+"t": "sanction check inside the 45-day window.",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+559.6,
+365.0,
+868.2,
+383.2
+]
+},
+{
+"t": "Flags without context",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "000000",
+"bbox": [
+559.6,
+386.7,
+723.2,
+405.0
+]
+},
+{
+"t": " → ",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "2A4D88",
+"bbox": [
+723.2,
+386.7,
+748.0,
+405.0
+]
+},
+{
+"t": "every alert shows",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+748.0,
+386.7,
+878.3,
+405.0
+]
+},
+{
+"t": "evidence, the rule broken & what would clear",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+559.6,
+408.5,
+898.1,
+426.7
+]
+},
+{
+"t": "it.",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+559.6,
+430.2,
+574.5,
+448.5
+]
+},
+{
+"t": "Many alerts, few officers",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "000000",
+"bbox": [
+559.6,
+452.0,
+747.8,
+470.2
+]
+},
+{
+"t": " → ",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "2A4D88",
+"bbox": [
+747.8,
+452.0,
+772.6,
+470.2
+]
+},
+{
+"t": "risk-ranked queue",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+772.6,
+452.0,
+906.9,
+470.2
+]
+},
+{
+"t": "+ optimised visit route.",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+559.6,
+473.7,
+730.4,
+492.0
+]
+},
+{
+"t": "Risk → Action: ",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "B87512",
+"bbox": [
+1018.0,
+299.7,
+1131.8,
+318.0
+]
+},
+{
+"t": "converts risk scores into a time-",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+1131.8,
+299.7,
+1367.1,
+318.0
+]
+},
+{
+"t": "boxed, route-optimised inspection plan - not",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+1018.0,
+321.5,
+1349.2,
+339.7
+]
+},
+{
+"t": "just a list of flags.",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+1018.0,
+343.2,
+1146.1,
+361.5
+]
+},
+{
+"t": "Learns from the field: ",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "B87512",
+"bbox": [
+1018.0,
+365.0,
+1184.9,
+383.2
+]
+},
+{
+"t": "geo-tagged officer",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+1184.9,
+365.0,
+1320.7,
+383.2
+]
+},
+{
+"t": "verdicts become labels, solving the “no fraud",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+1018.0,
+386.7,
+1351.3,
+405.0
+]
+},
+{
+"t": "labels” problem.",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+1018.0,
+408.5,
+1140.3,
+426.7
+]
+},
+{
+"t": "Clause-cited alerts: ",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "B87512",
+"bbox": [
+1018.0,
+430.2,
+1166.4,
+448.5
+]
+},
+{
+"t": "every flag traceable to",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+1166.5,
+430.2,
+1332.3,
+448.5
+]
+},
+{
+"t": "Guidelines 2023.",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+1018.0,
+452.0,
+1141.8,
+470.2
+]
+},
+{
+"t": "Human-in-the-loop: ",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "B87512",
+"bbox": [
+1018.0,
+473.7,
+1172.3,
+492.0
+]
+},
+{
+"t": "flags risk for review, never",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+1172.3,
+473.7,
+1367.5,
+492.0
+]
+},
+{
+"t": "accuses — safe for MPs & officials.",
+"font": "Calibri",
+"size": 18.2,
+"color": "1A2F57",
+"bbox": [
+1018.0,
+495.5,
+1274.6,
+513.7
+]
+},
+{
+"t": "Expected-cost range model",
+"font": "Calibri",
+"size": 15.2,
+"color": "1A2F57",
+"bbox": [
+63.7,
+687.4,
+232.3,
+702.7
+]
+},
+{
+"t": "per work type & state",
+"font": "Calibri",
+"size": 15.2,
+"color": "1A2F57",
+"bbox": [
+63.7,
+705.4,
+198.7,
+720.7
+]
+},
+{
+"t": "Multilingual text match +",
+"font": "Calibri",
+"size": 15.2,
+"color": "1A2F57",
+"bbox": [
+291.1,
+687.4,
+446.6,
+702.7
+]
+},
+{
+"t": "village & date check",
+"font": "Calibri",
+"size": 15.2,
+"color": "1A2F57",
+"bbox": [
+291.1,
+705.4,
+414.7,
+720.7
+]
+},
+{
+"t": "45-day / 12-month rule",
+"font": "Calibri",
+"size": 15.2,
+"color": "1A2F57",
+"bbox": [
+518.5,
+687.4,
+663.0,
+702.7
+]
+},
+{
+"t": "clocks + delay model",
+"font": "Calibri",
+"size": 15.2,
+"color": "1A2F57",
+"bbox": [
+518.5,
+705.4,
+646.4,
+720.7
+]
+},
+{
+"t": "Split-work clusters, spend >",
+"font": "Calibri",
+"size": 14.2,
+"color": "1A2F57",
+"bbox": [
+745.9,
+687.4,
+904.9,
+701.7
+]
+},
+{
+"t": "sanction, outliers",
+"font": "Calibri",
+"size": 14.2,
+"color": "1A2F57",
+"bbox": [
+745.9,
+703.9,
+845.6,
+718.2
+]
+},
+{
+"t": "Guideline-as-Code rules with",
+"font": "Calibri",
+"size": 14.2,
+"color": "1A2F57",
+"bbox": [
+973.3,
+687.4,
+1140.0,
+701.7
+]
+},
+{
+"t": "para citation",
+"font": "Calibri",
+"size": 14.2,
+"color": "1A2F57",
+"bbox": [
+973.3,
+703.9,
+1046.5,
+718.2
+]
+},
+{
+"t": "Pre-sanction check + SMS /",
+"font": "Calibri",
+"size": 14.2,
+"color": "1A2F57",
+"bbox": [
+1200.7,
+687.4,
+1357.3,
+701.7
+]
+},
+{
+"t": "email risk alerts",
+"font": "Calibri",
+"size": 14.2,
+"color": "1A2F57",
+"bbox": [
+1200.7,
+703.9,
+1291.8,
+718.2
+]
+},
+{
+"t": "DRISHTI",
+"font": "Cambria-Bold",
+"size": 42.0,
+"color": "000000",
+"bbox": [
+677.3,
+31.5,
+842.8,
+80.8
+]
+}
+],
+"draws": [
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+0.0,
+0.0,
+1440.0,
+810.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+0.0,
+0.0,
+1440.0,
+810.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+36.7,
+22.6,
+206.4,
+96.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 4.5,
+"rect": [
+36.7,
+22.6,
+206.3,
+96.2
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+-0.8,
+768.2,
+1440.8,
+810.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+-0.7,
+768.2,
+1440.7,
+810.7
+],
+"n_items": 1,
+"kinds": "re",
+"fo": null
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+126.7,
+1392.1,
+216.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 3.0,
+"rect": [
+47.9,
+126.7,
+1392.1,
+216.7
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+126.7,
+303.3,
+216.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+47.8,
+126.7,
+303.1,
+216.7
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+263.8,
+475.4,
+546.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 3.000000238418579,
+"rect": [
+47.8,
+263.9,
+475.3,
+546.1
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+67.3,
+242.2,
+355.0,
+286.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.000000238418579,
+"rect": [
+67.3,
+242.2,
+355.0,
+286.9
+],
+"n_items": 6,
+"kinds": "clcclc",
+"fo": null
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+506.2,
+263.8,
+933.8,
+546.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 3.000000238418579,
+"rect": [
+506.2,
+263.9,
+933.7,
+546.1
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+525.7,
+242.2,
+904.1,
+286.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.000000238418579,
+"rect": [
+525.7,
+242.2,
+904.1,
+286.9
+],
+"n_items": 6,
+"kinds": "clcclc",
+"fo": null
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+964.6,
+263.8,
+1392.2,
+546.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 3.000000238418579,
+"rect": [
+964.6,
+263.9,
+1392.1,
+546.1
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "D9962B",
+"stroke": null,
+"w": null,
+"rect": [
+984.1,
+242.2,
+1305.9,
+286.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "D9962B",
+"w": 3.000000238418579,
+"rect": [
+984.1,
+242.2,
+1305.8,
+286.9
+],
+"n_items": 6,
+"kinds": "clcclc",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+612.7,
+255.3,
+749.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "B1BBC8",
+"w": 3.000000238418579,
+"rect": [
+47.8,
+612.7,
+255.1,
+749.2
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+63.0,
+627.8,
+114.1,
+679.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+63.0,
+627.8,
+114.1,
+679.0
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+275.2,
+612.7,
+482.7,
+749.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "B1BBC8",
+"w": 3.000000238418579,
+"rect": [
+275.2,
+612.7,
+482.5,
+749.2
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+290.4,
+627.8,
+341.5,
+679.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+290.4,
+627.8,
+341.5,
+679.0
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+502.6,
+612.7,
+710.1,
+749.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "B1BBC8",
+"w": 3.000000238418579,
+"rect": [
+502.6,
+612.7,
+709.9,
+749.2
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+517.8,
+627.8,
+568.9,
+679.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+517.8,
+627.8,
+568.9,
+679.0
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+730.0,
+612.7,
+937.4,
+749.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "B1BBC8",
+"w": 3.000000238418579,
+"rect": [
+730.0,
+612.7,
+937.3,
+749.2
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+745.2,
+627.8,
+796.3,
+679.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+745.2,
+627.8,
+796.3,
+679.0
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+957.4,
+612.7,
+1164.8,
+749.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "B1BBC8",
+"w": 3.000000238418579,
+"rect": [
+957.4,
+612.7,
+1164.7,
+749.2
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+972.5,
+627.8,
+1023.7,
+679.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+972.5,
+627.8,
+1023.7,
+679.0
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+1184.8,
+612.7,
+1392.2,
+749.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "B1BBC8",
+"w": 3.000000238418579,
+"rect": [
+1184.8,
+612.7,
+1392.1,
+749.2
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+1199.9,
+627.8,
+1251.1,
+679.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+1199.9,
+627.8,
+1251.1,
+679.0
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+87.4,
+307.4,
+91.9,
+311.9
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+87.4,
+372.7,
+91.9,
+377.2
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+87.4,
+437.9,
+91.9,
+442.4
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+87.4,
+481.4,
+91.9,
+485.9
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+545.8,
+307.4,
+550.3,
+311.9
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+545.8,
+350.9,
+550.3,
+355.4
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+545.8,
+394.4,
+550.3,
+398.9
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+545.8,
+459.7,
+550.3,
+464.2
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "B87512",
+"stroke": null,
+"w": null,
+"rect": [
+1004.2,
+307.4,
+1008.7,
+311.9
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "B87512",
+"stroke": null,
+"w": null,
+"rect": [
+1004.2,
+372.7,
+1008.7,
+377.2
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "B87512",
+"stroke": null,
+"w": null,
+"rect": [
+1004.2,
+437.9,
+1008.7,
+442.4
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "B87512",
+"stroke": null,
+"w": null,
+"rect": [
+1004.2,
+481.4,
+1008.7,
+485.9
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+36.7,
+22.6,
+206.3,
+96.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+126.7,
+1392.1,
+216.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+126.7,
+303.1,
+216.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+67.3,
+242.2,
+355.0,
+286.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+525.7,
+242.2,
+904.1,
+286.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+984.1,
+242.2,
+1305.8,
+286.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+263.8,
+475.3,
+546.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+506.2,
+263.8,
+933.7,
+546.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+964.6,
+263.8,
+1392.1,
+546.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+612.7,
+255.1,
+749.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+63.0,
+627.8,
+114.2,
+679.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+275.2,
+612.7,
+482.5,
+749.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+290.4,
+627.8,
+341.5,
+679.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+502.6,
+612.7,
+709.9,
+749.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+517.8,
+627.8,
+568.9,
+679.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+730.0,
+612.7,
+937.3,
+749.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+745.2,
+627.8,
+796.3,
+679.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+957.4,
+612.7,
+1164.7,
+749.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+972.5,
+627.8,
+1023.7,
+679.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+1184.8,
+612.7,
+1392.1,
+749.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+1199.9,
+627.8,
+1251.1,
+679.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+-0.8,
+768.2,
+1440.7,
+810.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+}
+]
+}

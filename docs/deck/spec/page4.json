@@ -1,0 +1,1942 @@
+{
+"spans": [
+{
+"t": "NeuralNexus",
+"font": "Calibri-Bold",
+"size": 20.5,
+"color": "2A4D88",
+"bbox": [
+66.7,
+48.9,
+176.3,
+69.4
+]
+},
+{
+"t": "TECHNICAL APPROACH",
+"font": "Cambria-Bold",
+"size": 42.0,
+"color": "2A4D88",
+"bbox": [
+471.5,
+37.1,
+921.8,
+86.3
+]
+},
+{
+"t": "SMART INDIA",
+"font": "Arial-BoldMT",
+"size": 14.2,
+"color": "4A4F55",
+"bbox": [
+1304.1,
+35.2,
+1397.5,
+51.1
+]
+},
+{
+"t": "HACKATHON",
+"font": "Arial-BoldMT",
+"size": 14.2,
+"color": "4A4F55",
+"bbox": [
+1304.9,
+51.0,
+1396.7,
+66.9
+]
+},
+{
+"t": "2026",
+"font": "Arial-BoldMT",
+"size": 14.2,
+"color": "4A4F55",
+"bbox": [
+1335.0,
+66.7,
+1366.7,
+82.6
+]
+},
+{
+"t": "@SIH Idea submission – Template",
+"font": "Calibri",
+"size": 15.0,
+"color": "FFFFFF",
+"bbox": [
+616.5,
+781.7,
+823.0,
+796.7
+]
+},
+{
+"t": "3",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "FFFFFF",
+"bbox": [
+1384.8,
+780.6,
+1393.2,
+797.1
+]
+},
+{
+"t": "S Y S T E M A R C H I T E C T U R E & W O R K F L O W",
+"font": "Calibri-Bold",
+"size": 17.2,
+"color": "2A4D88",
+"bbox": [
+48.6,
+128.3,
+414.5,
+145.5
+]
+},
+{
+"t": "01",
+"font": "Cambria-Bold",
+"size": 27.0,
+"color": "7C94B8",
+"bbox": [
+242.0,
+182.2,
+273.9,
+213.9
+]
+},
+{
+"t": "Data Ingestion",
+"font": "Calibri-Bold",
+"size": 18.8,
+"color": "2A4D88",
+"bbox": [
+65.9,
+242.9,
+179.1,
+261.6
+]
+},
+{
+"t": "e",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+87.3,
+276.4,
+94.7,
+291.4
+]
+},
+{
+"t": "CSV / Excel / API upload",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+87.3,
+294.4,
+232.6,
+309.4
+]
+},
+{
+"t": "Nightly refresh",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+87.3,
+312.4,
+177.7,
+327.4
+]
+},
+{
+"t": "02",
+"font": "Cambria-Bold",
+"size": 27.0,
+"color": "7C94B8",
+"bbox": [
+518.1,
+182.2,
+550.0,
+213.9
+]
+},
+{
+"t": "Cleaning & Features",
+"font": "Calibri-Bold",
+"size": 18.8,
+"color": "2A4D88",
+"bbox": [
+342.0,
+242.9,
+498.0,
+261.6
+]
+},
+{
+"t": "Date & amount validation",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+363.4,
+276.9,
+520.7,
+291.9
+]
+},
+{
+"t": "Work type from Hinglish text",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+363.4,
+294.9,
+539.5,
+309.9
+]
+},
+{
+"t": "Mask names & phone numbers",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+363.4,
+312.9,
+553.4,
+327.9
+]
+},
+{
+"t": "03",
+"font": "Cambria-Bold",
+"size": 27.0,
+"color": "B1BBC8",
+"bbox": [
+794.2,
+182.2,
+826.2,
+213.9
+]
+},
+{
+"t": "AI Detection Engines",
+"font": "Calibri-Bold",
+"size": 18.8,
+"color": "FFFFFF",
+"bbox": [
+618.1,
+242.9,
+778.9,
+261.6
+]
+},
+{
+"t": "Rules + anomaly models",
+"font": "Calibri",
+"size": 15.0,
+"color": "FFFFFF",
+"bbox": [
+639.5,
+276.4,
+786.8,
+291.4
+]
+},
+{
+"t": "Cost, split & duplicate checks",
+"font": "Calibri",
+"size": 15.0,
+"color": "FFFFFF",
+"bbox": [
+639.5,
+294.4,
+816.7,
+309.4
+]
+},
+{
+"t": "Delay prediction",
+"font": "Calibri",
+"size": 15.0,
+"color": "FFFFFF",
+"bbox": [
+639.5,
+312.4,
+739.5,
+327.4
+]
+},
+{
+"t": "04",
+"font": "Cambria-Bold",
+"size": 27.0,
+"color": "7C94B8",
+"bbox": [
+1070.3,
+182.2,
+1102.3,
+213.9
+]
+},
+{
+"t": "Risk Scoring &",
+"font": "Calibri-Bold",
+"size": 18.8,
+"color": "2A4D88",
+"bbox": [
+894.2,
+242.9,
+1004.6,
+261.6
+]
+},
+{
+"t": "Explainability",
+"font": "Calibri-Bold",
+"size": 18.8,
+"color": "2A4D88",
+"bbox": [
+894.2,
+265.4,
+999.2,
+284.1
+]
+},
+{
+"t": "Weighted fusion → 0–100",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+915.6,
+301.7,
+1074.3,
+316.7
+]
+},
+{
+"t": "SHAP top-3 reasons",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+915.6,
+319.7,
+1035.4,
+334.7
+]
+},
+{
+"t": "Low / Med / High / Critical",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+915.6,
+337.7,
+1076.2,
+352.7
+]
+},
+{
+"t": "05",
+"font": "Cambria-Bold",
+"size": 27.0,
+"color": "7C94B8",
+"bbox": [
+1346.4,
+182.2,
+1378.4,
+213.9
+]
+},
+{
+"t": "Alerts & Dashboards",
+"font": "Calibri-Bold",
+"size": 18.8,
+"color": "2A4D88",
+"bbox": [
+1170.3,
+242.9,
+1330.3,
+261.6
+]
+},
+{
+"t": "4 role-based views",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+1191.7,
+301.7,
+1305.3,
+316.7
+]
+},
+{
+"t": "SMS / email / PDF brief",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+1191.7,
+319.7,
+1332.8,
+334.7
+]
+},
+{
+"t": "Inspection plan + field app",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+1191.7,
+337.7,
+1352.3,
+352.7
+]
+},
+{
+"t": "A I / M L D E T E C T I O N E N G I N E S",
+"font": "Calibri-Bold",
+"size": 17.2,
+"color": "2A4D88",
+"bbox": [
+48.6,
+448.0,
+325.9,
+465.2
+]
+},
+{
+"t": "Rule & Compliance Engine",
+"font": "Calibri-Bold",
+"size": 18.0,
+"color": "2A4D88",
+"bbox": [
+132.8,
+501.9,
+328.6,
+519.9
+]
+},
+{
+"t": "How: ",
+"font": "Calibri-Bold",
+"size": 15.0,
+"color": "2A4D88",
+"bbox": [
+132.8,
+533.9,
+169.1,
+548.9
+]
+},
+{
+"t": "Guideline-as-Code (JSON rules)",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+169.1,
+533.9,
+357.9,
+548.9
+]
+},
+{
+"t": "Catches: ",
+"font": "Calibri-Bold",
+"size": 15.0,
+"color": "2A4D88",
+"bbox": [
+132.8,
+551.9,
+188.8,
+566.9
+]
+},
+{
+"t": "sanction > 45 days, spend > sanction",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+188.8,
+551.9,
+410.7,
+566.9
+]
+},
+{
+"t": "Statistical / ML Anomaly Engine",
+"font": "Calibri-Bold",
+"size": 18.0,
+"color": "2A4D88",
+"bbox": [
+546.5,
+501.9,
+783.7,
+519.9
+]
+},
+{
+"t": "How: ",
+"font": "Calibri-Bold",
+"size": 15.0,
+"color": "2A4D88",
+"bbox": [
+546.5,
+533.9,
+582.7,
+548.9
+]
+},
+{
+"t": "Isolation Forest + LightGBM quantile",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+582.7,
+533.9,
+804.9,
+548.9
+]
+},
+{
+"t": "Catches: ",
+"font": "Calibri-Bold",
+"size": 15.0,
+"color": "2A4D88",
+"bbox": [
+546.5,
+551.9,
+602.4,
+566.9
+]
+},
+{
+"t": "₹18 L road vs ₹6–9 L usual range",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+602.4,
+551.9,
+799.8,
+566.9
+]
+},
+{
+"t": "Duplicate & Similarity Engine",
+"font": "Calibri-Bold",
+"size": 18.0,
+"color": "2A4D88",
+"bbox": [
+132.8,
+642.3,
+350.0,
+660.3
+]
+},
+{
+"t": "How: ",
+"font": "Calibri-Bold",
+"size": 15.0,
+"color": "2A4D88",
+"bbox": [
+132.8,
+674.3,
+169.1,
+689.3
+]
+},
+{
+"t": "Multilingual MiniLM + village/date",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+169.1,
+674.3,
+378.5,
+689.3
+]
+},
+{
+"t": "Catches: ",
+"font": "Calibri-Bold",
+"size": 15.0,
+"color": "2A4D88",
+"bbox": [
+132.8,
+692.3,
+188.8,
+707.3
+]
+},
+{
+"t": "same handpump in Hindi & English",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+188.8,
+692.3,
+401.0,
+707.3
+]
+},
+{
+"t": "Predictive Risk Engine",
+"font": "Calibri-Bold",
+"size": 18.0,
+"color": "2A4D88",
+"bbox": [
+546.5,
+642.3,
+710.0,
+660.3
+]
+},
+{
+"t": "How: ",
+"font": "Calibri-Bold",
+"size": 15.0,
+"color": "2A4D88",
+"bbox": [
+546.5,
+674.3,
+582.7,
+689.3
+]
+},
+{
+"t": "XGBoost delay model + OR-Tools",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+582.7,
+674.3,
+782.4,
+689.3
+]
+},
+{
+"t": "Catches: ",
+"font": "Calibri-Bold",
+"size": 15.0,
+"color": "2A4D88",
+"bbox": [
+546.5,
+692.3,
+602.4,
+707.3
+]
+},
+{
+"t": "works likely to miss 12-month limit",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+602.4,
+692.3,
+815.2,
+707.3
+]
+},
+{
+"t": "T E C H N O L O G Y S T A C K",
+"font": "Calibri-Bold",
+"size": 17.2,
+"color": "2A4D88",
+"bbox": [
+894.2,
+448.0,
+1087.8,
+465.2
+]
+},
+{
+"t": "Frontend",
+"font": "Calibri-Bold",
+"size": 15.8,
+"color": "FFFFFF",
+"bbox": [
+901.5,
+493.5,
+961.5,
+509.3
+]
+},
+{
+"t": "React + Vite, Tailwind CSS, Recharts, Leaflet",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+1074.9,
+494.8,
+1340.2,
+509.8
+]
+},
+{
+"t": "Backend / APIs",
+"font": "Calibri-Bold",
+"size": 15.8,
+"color": "FFFFFF",
+"bbox": [
+901.5,
+535.3,
+999.4,
+551.0
+]
+},
+{
+"t": "Python FastAPI, JWT role-based access",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+1074.9,
+536.6,
+1310.0,
+551.6
+]
+},
+{
+"t": "AI / ML",
+"font": "Calibri-Bold",
+"size": 15.8,
+"color": "FFFFFF",
+"bbox": [
+901.5,
+577.0,
+949.6,
+592.8
+]
+},
+{
+"t": "scikit-learn, LightGBM, XGBoost, SHAP",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+1074.9,
+578.3,
+1308.0,
+593.3
+]
+},
+{
+"t": "NLP / Optimisation",
+"font": "Calibri-Bold",
+"size": 15.8,
+"color": "FFFFFF",
+"bbox": [
+901.5,
+618.8,
+1026.3,
+634.5
+]
+},
+{
+"t": "sentence-transformers, RapidFuzz, OR-Tools",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+1074.9,
+620.1,
+1344.8,
+635.1
+]
+},
+{
+"t": "Database",
+"font": "Calibri-Bold",
+"size": 15.8,
+"color": "FFFFFF",
+"bbox": [
+901.5,
+660.5,
+962.9,
+676.3
+]
+},
+{
+"t": "PostgreSQL + PostGIS, Parquet files",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+1074.9,
+661.8,
+1289.2,
+676.8
+]
+},
+{
+"t": "Deploy & Security",
+"font": "Calibri-Bold",
+"size": 15.8,
+"color": "FFFFFF",
+"bbox": [
+901.5,
+702.3,
+1018.6,
+718.0
+]
+},
+{
+"t": "Docker, HTTPS, hash-chained audit log",
+"font": "Calibri",
+"size": 15.0,
+"color": "1A2F57",
+"bbox": [
+1074.9,
+703.6,
+1308.8,
+718.6
+]
+}
+],
+"draws": [
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+0.0,
+0.0,
+1440.0,
+810.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+0.0,
+0.0,
+1440.0,
+810.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+36.7,
+22.6,
+206.4,
+96.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 4.5,
+"rect": [
+36.7,
+22.6,
+206.3,
+96.2
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+-0.8,
+768.2,
+1440.8,
+810.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+-0.7,
+768.2,
+1440.7,
+810.7
+],
+"n_items": 1,
+"kinds": "re",
+"fo": null
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+161.2,
+288.0,
+411.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 3.0,
+"rect": [
+47.9,
+161.2,
+287.7,
+411.1
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+65.1,
+178.5,
+120.6,
+234.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+65.1,
+178.5,
+120.6,
+234.0
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+74.9,
+281.7,
+78.6,
+285.4
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+74.9,
+299.7,
+78.6,
+303.4
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+74.9,
+317.7,
+78.6,
+321.4
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+324.0,
+161.2,
+564.1,
+411.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 3.0,
+"rect": [
+324.0,
+161.2,
+563.8,
+411.1
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+341.2,
+178.5,
+396.7,
+234.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+341.2,
+178.5,
+396.7,
+234.0
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+351.0,
+282.1,
+354.7,
+285.9
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+351.0,
+300.1,
+354.7,
+303.9
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+351.0,
+318.1,
+354.7,
+321.9
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+600.1,
+161.2,
+840.2,
+411.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+600.1,
+161.2,
+839.9,
+411.1
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+617.4,
+178.5,
+672.9,
+234.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "FFFFFF",
+"w": 3.0,
+"rect": [
+617.4,
+178.5,
+672.9,
+234.0
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+627.1,
+281.7,
+630.9,
+285.4
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+627.1,
+299.7,
+630.9,
+303.4
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+627.1,
+317.7,
+630.9,
+321.4
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+876.2,
+161.2,
+1116.4,
+411.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 3.0,
+"rect": [
+876.2,
+161.2,
+1116.0,
+411.1
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+893.5,
+178.5,
+949.0,
+234.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+893.5,
+178.5,
+949.0,
+234.0
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+903.2,
+307.0,
+907.0,
+310.7
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+903.2,
+325.0,
+907.0,
+328.7
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+903.2,
+343.0,
+907.0,
+346.7
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+1152.3,
+161.2,
+1392.5,
+411.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 3.0,
+"rect": [
+1152.3,
+161.2,
+1392.1,
+411.1
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+1169.6,
+178.5,
+1225.1,
+234.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+1169.6,
+178.5,
+1225.1,
+234.0
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+1179.3,
+307.0,
+1183.1,
+310.7
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+1179.3,
+325.0,
+1183.1,
+328.7
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+1179.3,
+343.0,
+1183.1,
+346.7
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+479.8,
+443.5,
+602.3
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "B1BBC8",
+"w": 3.000000238418579,
+"rect": [
+47.9,
+479.8,
+443.5,
+602.3
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+64.1,
+496.0,
+119.6,
+551.5
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+64.0,
+496.0,
+119.5,
+551.5
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+461.5,
+479.8,
+857.1,
+602.3
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "B1BBC8",
+"w": 3.000000238418579,
+"rect": [
+461.5,
+479.8,
+857.2,
+602.3
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+477.7,
+496.0,
+533.2,
+551.5
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+477.7,
+496.0,
+533.2,
+551.5
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+620.2,
+443.5,
+742.7
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "B1BBC8",
+"w": 3.000000238418579,
+"rect": [
+47.9,
+620.2,
+443.5,
+742.7
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+64.1,
+636.5,
+119.6,
+692.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+64.0,
+636.5,
+119.5,
+692.0
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+461.5,
+620.2,
+857.1,
+742.7
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "B1BBC8",
+"w": 3.000000238418579,
+"rect": [
+461.5,
+620.2,
+857.2,
+742.7
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+477.7,
+636.5,
+533.2,
+692.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+477.7,
+636.5,
+533.2,
+692.0
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+894.8,
+481.2,
+1068.6,
+732.0
+],
+"n_items": 24,
+"kinds": "llllllllllll",
+"fo": 1.0
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+1068.2,
+481.2,
+1390.2,
+732.0
+],
+"n_items": 24,
+"kinds": "llllllllllll",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "FFFFFF",
+"w": 1.5,
+"rect": [
+895.0,
+481.3,
+1390.7,
+731.8
+],
+"n_items": 10,
+"kinds": "llllllllll",
+"fo": null
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+36.7,
+22.6,
+206.3,
+96.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+161.2,
+287.7,
+411.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+65.1,
+178.5,
+120.6,
+234.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+324.0,
+161.2,
+563.8,
+411.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+341.2,
+178.5,
+396.7,
+234.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+600.1,
+161.2,
+839.9,
+411.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+617.4,
+178.5,
+672.9,
+234.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+876.2,
+161.2,
+1116.0,
+411.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+893.5,
+178.5,
+949.0,
+234.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+1152.3,
+161.2,
+1392.1,
+411.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+1169.6,
+178.5,
+1225.1,
+234.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+479.8,
+443.6,
+602.3
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+64.1,
+496.0,
+119.6,
+551.5
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+461.5,
+479.8,
+857.2,
+602.3
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+477.7,
+496.0,
+533.2,
+551.5
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+620.2,
+443.6,
+742.7
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+64.1,
+636.4,
+119.6,
+691.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+461.5,
+620.2,
+857.2,
+742.7
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+477.7,
+636.4,
+533.2,
+691.9
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+-0.8,
+768.2,
+1440.7,
+810.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+}
+]
+}

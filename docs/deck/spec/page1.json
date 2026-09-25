@@ -1,0 +1,410 @@
+{
+"spans": [
+{
+"t": "SMART INDIA HACKATHON 2026",
+"font": "Cambria-Bold",
+"size": 48.0,
+"color": "2A4D88",
+"bbox": [
+104.5,
+45.8,
+828.9,
+102.1
+]
+},
+{
+"t": "Problem Statement ID",
+"font": "Montserrat-Bold",
+"size": 18.8,
+"color": "FFFFFF",
+"bbox": [
+8.2,
+177.2,
+228.9,
+200.1
+]
+},
+{
+"t": "SIH26102",
+"font": "BookmanOldStyle-Bold",
+"size": 18.8,
+"color": "1A2F57",
+"bbox": [
+310.2,
+178.5,
+407.3,
+200.5
+]
+},
+{
+"t": "Problem Statement Title",
+"font": "Montserrat-Bold",
+"size": 18.8,
+"color": "FFFFFF",
+"bbox": [
+8.2,
+290.0,
+250.1,
+312.9
+]
+},
+{
+"t": "Development of an AI-powered system to detect anomalies,",
+"font": "BookmanOldStyle-Bold",
+"size": 18.8,
+"color": "1A2F57",
+"bbox": [
+310.2,
+268.7,
+891.1,
+290.7
+]
+},
+{
+"t": "fraud, and inefficiencies in MPLAD Scheme implementation",
+"font": "BookmanOldStyle-Bold",
+"size": 18.8,
+"color": "1A2F57",
+"bbox": [
+310.2,
+291.2,
+894.8,
+313.2
+]
+},
+{
+"t": "regd.",
+"font": "BookmanOldStyle-Bold",
+"size": 18.8,
+"color": "1A2F57",
+"bbox": [
+310.2,
+313.7,
+358.9,
+335.7
+]
+},
+{
+"t": "Organisation",
+"font": "Montserrat-Bold",
+"size": 18.8,
+"color": "FFFFFF",
+"bbox": [
+8.2,
+382.8,
+136.0,
+405.6
+]
+},
+{
+"t": "Ministry of Statistics & Programme Implementation (MoSPI)",
+"font": "BookmanOldStyle-Bold",
+"size": 18.8,
+"color": "1A2F57",
+"bbox": [
+310.2,
+384.0,
+899.7,
+406.0
+]
+},
+{
+"t": "Theme",
+"font": "Montserrat-Bold",
+"size": 18.8,
+"color": "FFFFFF",
+"bbox": [
+8.2,
+462.3,
+76.1,
+485.1
+]
+},
+{
+"t": "Smart Automation",
+"font": "BookmanOldStyle-Bold",
+"size": 18.8,
+"color": "1A2F57",
+"bbox": [
+310.2,
+463.5,
+491.3,
+485.5
+]
+},
+{
+"t": "PS Category",
+"font": "Montserrat-Bold",
+"size": 18.8,
+"color": "FFFFFF",
+"bbox": [
+8.2,
+541.7,
+129.2,
+564.5
+]
+},
+{
+"t": "Software",
+"font": "BookmanOldStyle-Bold",
+"size": 18.8,
+"color": "1A2F57",
+"bbox": [
+310.2,
+542.9,
+395.3,
+564.9
+]
+},
+{
+"t": "Team ID",
+"font": "Montserrat-Bold",
+"size": 18.8,
+"color": "FFFFFF",
+"bbox": [
+8.2,
+619.6,
+89.8,
+642.4
+]
+},
+{
+"t": "121911",
+"font": "BookmanOldStyle-Bold",
+"size": 18.8,
+"color": "1A2F57",
+"bbox": [
+310.2,
+620.8,
+384.4,
+642.8
+]
+},
+{
+"t": "Team Name",
+"font": "Montserrat-Bold",
+"size": 18.8,
+"color": "FFFFFF",
+"bbox": [
+8.2,
+728.5,
+126.4,
+751.3
+]
+},
+{
+"t": "NeuralNexus",
+"font": "BookmanOldStyle-Bold",
+"size": 18.8,
+"color": "1A2F57",
+"bbox": [
+310.2,
+729.7,
+431.3,
+751.7
+]
+},
+{
+"t": "DRISHTI",
+"font": "Cambria-Bold",
+"size": 62.0,
+"color": "FFFFFF",
+"bbox": [
+1065.5,
+366.2,
+1309.7,
+438.9
+]
+},
+{
+"t": "The AI-eye on every MPLADS rupee",
+"font": "Calibri-Bold",
+"size": 28.5,
+"color": "B1BBC8",
+"bbox": [
+979.5,
+442.0,
+1397.9,
+470.5
+]
+},
+{
+"t": "Detect anomalies. Explain risks.",
+"font": "Calibri-Italic",
+"size": 27.5,
+"color": "D9D9D8",
+"bbox": [
+985.8,
+503.0,
+1378.3,
+530.5
+]
+},
+{
+"t": "Enable smarter oversight of public",
+"font": "Calibri-Italic",
+"size": 27.5,
+"color": "D9D9D8",
+"bbox": [
+969.4,
+533.8,
+1394.7,
+561.3
+]
+},
+{
+"t": "funds.",
+"font": "Calibri-Italic",
+"size": 27.5,
+"color": "D9D9D8",
+"bbox": [
+1144.4,
+564.5,
+1219.7,
+592.0
+]
+}
+],
+"draws": [
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+0.0,
+0.0,
+1440.0,
+810.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+0.0,
+0.0,
+1440.0,
+810.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+0.3,
+128.7,
+302.7,
+809.7
+],
+"n_items": 28,
+"kinds": "llllllllllll",
+"fo": 1.0
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+302.3,
+128.7,
+933.1,
+809.7
+],
+"n_items": 28,
+"kinds": "llllllllllll",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "B1BBC8",
+"w": 1.0,
+"rect": [
+0.5,
+128.9,
+933.4,
+809.5
+],
+"n_items": 11,
+"kinds": "lllllllllll",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+933.5,
+-0.8,
+1440.7,
+810.7
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+933.4,
+-0.7,
+1440.7,
+810.7
+],
+"n_items": 1,
+"kinds": "re",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+992.8,
+58.6,
+1382.8,
+249.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "FFFFFF",
+"w": 3.0,
+"rect": [
+992.8,
+58.7,
+1383.1,
+249.1
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+933.5,
+-0.8,
+1440.7,
+810.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+}
+]
+}

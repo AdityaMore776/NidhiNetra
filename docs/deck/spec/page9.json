@@ -1,0 +1,2236 @@
+{
+"spans": [
+{
+"t": "NeuralNexus",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "2A4D88",
+"bbox": [
+77.4,
+51.1,
+165.6,
+67.6
+]
+},
+{
+"t": "IMPACT AND BENEFITS",
+"font": "Cambria-Bold",
+"size": 42.0,
+"color": "2A4D88",
+"bbox": [
+472.1,
+37.1,
+921.1,
+86.3
+]
+},
+{
+"t": "SMART INDIA",
+"font": "Arial-BoldMT",
+"size": 14.2,
+"color": "4A4F55",
+"bbox": [
+1304.1,
+35.2,
+1397.5,
+51.1
+]
+},
+{
+"t": "HACKATHON",
+"font": "Arial-BoldMT",
+"size": 14.2,
+"color": "4A4F55",
+"bbox": [
+1304.9,
+51.0,
+1396.7,
+66.9
+]
+},
+{
+"t": "2026",
+"font": "Arial-BoldMT",
+"size": 14.2,
+"color": "4A4F55",
+"bbox": [
+1335.0,
+66.7,
+1366.7,
+82.6
+]
+},
+{
+"t": "@SIH Idea submission – Template",
+"font": "Calibri",
+"size": 15.0,
+"color": "FFFFFF",
+"bbox": [
+616.5,
+781.7,
+823.0,
+796.7
+]
+},
+{
+"t": "5",
+"font": "Calibri-Bold",
+"size": 16.5,
+"color": "FFFFFF",
+"bbox": [
+1384.8,
+780.6,
+1393.2,
+797.1
+]
+},
+{
+"t": "I M P A C T O N T A R G E T S T A K E H O L D E R S",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "2A4D88",
+"bbox": [
+48.6,
+126.8,
+412.9,
+145.0
+]
+},
+{
+"t": "Ministry (MoSPI)",
+"font": "Calibri-Bold",
+"size": 19.7,
+"color": "2A4D88",
+"bbox": [
+143.6,
+202.6,
+282.0,
+222.4
+]
+},
+{
+"t": "State Nodal Authorities",
+"font": "Calibri-Bold",
+"size": 19.7,
+"color": "2A4D88",
+"bbox": [
+486.1,
+202.6,
+678.5,
+222.4
+]
+},
+{
+"t": "District league table of risk &",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+437.6,
+265.7,
+643.0,
+283.2
+]
+},
+{
+"t": "delays",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+437.6,
+286.0,
+482.6,
+303.5
+]
+},
+{
+"t": "Escalate stalled or high-risk works",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+437.6,
+306.2,
+677.4,
+323.7
+]
+},
+{
+"t": "Track follow-up on every alert",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+437.6,
+326.5,
+650.6,
+344.0
+]
+},
+{
+"t": "Compare districts delivery trends",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+437.6,
+346.7,
+672.9,
+364.2
+]
+},
+{
+"t": "District Authorities",
+"font": "Calibri-Bold",
+"size": 19.7,
+"color": "2A4D88",
+"bbox": [
+828.5,
+202.6,
+984.0,
+222.4
+]
+},
+{
+"t": "Daily ranked alert queue with",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+780.0,
+265.7,
+990.1,
+283.2
+]
+},
+{
+"t": "reasons",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+780.0,
+286.0,
+835.3,
+303.5
+]
+},
+{
+"t": "Inspection plan with optimized",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+780.0,
+306.2,
+999.4,
+323.7
+]
+},
+{
+"t": "route",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+780.0,
+326.5,
+819.1,
+344.0
+]
+},
+{
+"t": "Pre-sanction check in the 45-day",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+780.0,
+346.7,
+1011.3,
+364.2
+]
+},
+{
+"t": "window",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+780.0,
+367.0,
+836.7,
+384.5
+]
+},
+{
+"t": "One-click PDF evidence brief for",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+780.0,
+387.2,
+1007.1,
+404.7
+]
+},
+{
+"t": "every alert",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+780.0,
+407.5,
+856.4,
+425.0
+]
+},
+{
+"t": "Members of Parliament",
+"font": "Calibri-Bold",
+"size": 19.7,
+"color": "2A4D88",
+"bbox": [
+1171.0,
+202.6,
+1365.6,
+222.4
+]
+},
+{
+"t": "B E N E F I T S",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "2A4D88",
+"bbox": [
+48.6,
+459.4,
+141.8,
+477.7
+]
+},
+{
+"t": "SOCIAL",
+"font": "Calibri-Bold",
+"size": 16.7,
+"color": "FFFFFF",
+"bbox": [
+121.5,
+500.6,
+171.3,
+517.3
+]
+},
+{
+"t": "ECONOMIC",
+"font": "Calibri-Bold",
+"size": 16.7,
+"color": "FFFFFF",
+"bbox": [
+421.8,
+501.1,
+500.4,
+517.8
+]
+},
+{
+"t": "ENVIRONMENTAL",
+"font": "Calibri-Bold",
+"size": 16.7,
+"color": "FFFFFF",
+"bbox": [
+722.4,
+500.3,
+847.1,
+517.0
+]
+},
+{
+"t": "E X P E C T E D O U T C O M E S",
+"font": "Calibri-Bold",
+"size": 18.2,
+"color": "2A4D88",
+"bbox": [
+961.2,
+459.4,
+1181.5,
+477.7
+]
+},
+{
+"t": "100%",
+"font": "Cambria-Bold",
+"size": 31.5,
+"color": "FFFFFF",
+"bbox": [
+977.4,
+505.5,
+1064.1,
+542.4
+]
+},
+{
+"t": "of available works screened",
+"font": "Calibri",
+"size": 16.7,
+"color": "D9D9D8",
+"bbox": [
+1123.2,
+506.3,
+1311.6,
+523.1
+]
+},
+{
+"t": "automatically",
+"font": "Calibri",
+"size": 16.7,
+"color": "D9D9D8",
+"bbox": [
+1123.2,
+525.8,
+1215.7,
+542.6
+]
+},
+{
+"t": "≥ 75%",
+"font": "Cambria-Bold",
+"size": 31.5,
+"color": "2A4D88",
+"bbox": [
+977.4,
+598.4,
+1071.0,
+635.3
+]
+},
+{
+"t": "planted anomalies caught in top-5",
+"font": "Calibri",
+"size": 16.7,
+"color": "1A2F57",
+"bbox": [
+1123.2,
+599.2,
+1355.8,
+616.0
+]
+},
+{
+"t": "risk queue (target)",
+"font": "Calibri",
+"size": 16.7,
+"color": "1A2F57",
+"bbox": [
+1123.2,
+618.7,
+1249.1,
+635.5
+]
+},
+{
+"t": "45 days",
+"font": "Cambria-Bold",
+"size": 31.5,
+"color": "2A4D88",
+"bbox": [
+977.4,
+691.2,
+1088.5,
+728.2
+]
+},
+{
+"t": "recommendations pre-checked",
+"font": "Calibri",
+"size": 16.7,
+"color": "1A2F57",
+"bbox": [
+1123.2,
+692.1,
+1335.5,
+708.9
+]
+},
+{
+"t": "before sanction",
+"font": "Calibri",
+"size": 16.7,
+"color": "1A2F57",
+"bbox": [
+1123.2,
+711.6,
+1229.8,
+728.4
+]
+},
+{
+"t": "National risk heat-map by state &",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+95.1,
+265.7,
+333.9,
+283.2
+]
+},
+{
+"t": "district",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+95.1,
+286.0,
+144.4,
+303.5
+]
+},
+{
+"t": "Spot systemic issues & guideline",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+95.1,
+306.2,
+324.5,
+323.7
+]
+},
+{
+"t": "gaps",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+95.1,
+326.5,
+127.8,
+344.0
+]
+},
+{
+"t": "Evidence-backed reports for",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+95.1,
+346.7,
+295.6,
+364.2
+]
+},
+{
+"t": "Parliament",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+95.1,
+367.0,
+172.8,
+384.5
+]
+},
+{
+"t": "Data-driven guideline revisions",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+95.1,
+387.2,
+315.0,
+404.7
+]
+},
+{
+"t": "Live status of recommended works",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+1122.4,
+265.7,
+1370.8,
+283.2
+]
+},
+{
+"t": "Early warning on delays in",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+1122.4,
+286.0,
+1307.5,
+303.5
+]
+},
+{
+"t": "constituency",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+1122.4,
+306.2,
+1213.3,
+323.7
+]
+},
+{
+"t": "Transparent records builds public",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+1122.4,
+326.5,
+1359.8,
+344.0
+]
+},
+{
+"t": "trust",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+1122.4,
+346.7,
+1156.3,
+364.2
+]
+},
+{
+"t": "Fewer stalled works in",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+1122.4,
+367.0,
+1281.2,
+384.5
+]
+},
+{
+"t": "constituency",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+1122.4,
+387.2,
+1213.3,
+404.7
+]
+},
+{
+"t": "Faster delivery of",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+95.1,
+545.4,
+218.1,
+562.9
+]
+},
+{
+"t": "community assets",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+95.1,
+565.7,
+223.3,
+583.2
+]
+},
+{
+"t": "Public trust through",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+95.1,
+585.9,
+236.7,
+603.4
+]
+},
+{
+"t": "transparency",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+95.1,
+606.2,
+188.4,
+623.7
+]
+},
+{
+"t": "Citizens get assets that truly",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+95.1,
+626.4,
+294.5,
+643.9
+]
+},
+{
+"t": "exist",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+95.1,
+646.7,
+128.1,
+664.2
+]
+},
+{
+"t": "Fairer spread of works",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+95.1,
+666.9,
+253.9,
+684.4
+]
+},
+{
+"t": "across areas",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+95.1,
+687.2,
+182.3,
+704.7
+]
+},
+{
+"t": "Flag risks before funds move",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+395.7,
+545.4,
+598.8,
+562.9
+]
+},
+{
+"t": "Targeted visits save officer",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+395.7,
+565.7,
+584.7,
+583.2
+]
+},
+{
+"t": "time",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+395.7,
+585.9,
+428.3,
+603.4
+]
+},
+{
+"t": "Better oversight of public",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+395.7,
+606.2,
+576.0,
+623.7
+]
+},
+{
+"t": "spending",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+395.7,
+626.4,
+460.3,
+643.9
+]
+},
+{
+"t": "Fewer cost overruns and",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+395.7,
+646.7,
+571.0,
+664.2
+]
+},
+{
+"t": "rework",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+395.7,
+666.9,
+446.3,
+684.4
+]
+},
+{
+"t": "Paperless, digital monitoring",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+696.3,
+545.4,
+899.2,
+562.9
+]
+},
+{
+"t": "Fewer wasted site trips and",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+696.3,
+565.7,
+891.9,
+583.2
+]
+},
+{
+"t": "fuel",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+696.3,
+585.9,
+723.6,
+603.4
+]
+},
+{
+"t": "Durable assets built right",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+696.3,
+606.2,
+873.7,
+623.7
+]
+},
+{
+"t": "first time",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+696.3,
+626.4,
+761.0,
+643.9
+]
+},
+{
+"t": "Assets tracked through their",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+696.3,
+646.7,
+897.9,
+664.2
+]
+},
+{
+"t": "life cycle",
+"font": "Calibri",
+"size": 17.5,
+"color": "1A2F57",
+"bbox": [
+696.3,
+666.9,
+757.8,
+684.4
+]
+}
+],
+"draws": [
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+0.0,
+0.0,
+1440.0,
+810.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+0.0,
+0.0,
+1440.0,
+810.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+36.7,
+22.6,
+206.4,
+96.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 4.5,
+"rect": [
+36.7,
+22.6,
+206.3,
+96.2
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+-0.8,
+768.2,
+1440.8,
+810.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+-0.7,
+768.2,
+1440.7,
+810.7
+],
+"n_items": 1,
+"kinds": "re",
+"fo": null
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+161.2,
+364.8,
+427.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 2.999999761581421,
+"rect": [
+47.8,
+161.3,
+364.8,
+427.3
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+67.3,
+180.7,
+131.4,
+244.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+67.3,
+180.7,
+131.4,
+244.8
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+390.3,
+161.2,
+707.2,
+427.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 2.999999761581421,
+"rect": [
+390.3,
+161.3,
+707.2,
+427.3
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+409.7,
+180.7,
+473.9,
+244.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+409.7,
+180.7,
+473.9,
+244.8
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+423.9,
+272.9,
+428.4,
+277.4
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+423.9,
+313.4,
+428.4,
+317.9
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+423.9,
+333.6,
+428.4,
+338.1
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+423.9,
+353.9,
+428.4,
+358.4
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+732.7,
+161.2,
+1049.7,
+427.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 2.999999761581421,
+"rect": [
+732.7,
+161.3,
+1049.7,
+427.3
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+752.2,
+180.7,
+816.3,
+244.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+752.2,
+180.7,
+816.3,
+244.8
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+766.3,
+272.9,
+770.8,
+277.4
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+766.3,
+313.4,
+770.8,
+317.9
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+766.3,
+353.9,
+770.8,
+358.4
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+766.3,
+394.4,
+770.8,
+398.9
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+1075.2,
+161.2,
+1392.1,
+427.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 2.999999761581421,
+"rect": [
+1075.2,
+161.3,
+1392.1,
+427.3
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+1094.6,
+180.7,
+1158.8,
+244.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+1094.6,
+180.7,
+1158.7,
+244.8
+],
+"n_items": 4,
+"kinds": "cccc",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+509.0,
+322.9,
+748.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "B1BBC8",
+"w": 3.0,
+"rect": [
+47.9,
+509.0,
+322.9,
+748.1
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+67.3,
+487.4,
+303.5,
+532.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.000000238418579,
+"rect": [
+67.3,
+487.4,
+303.5,
+532.1
+],
+"n_items": 6,
+"kinds": "clcclc",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+348.4,
+509.0,
+623.5,
+748.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "B1BBC8",
+"w": 3.0,
+"rect": [
+348.5,
+509.0,
+623.5,
+748.1
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+367.9,
+487.4,
+604.1,
+532.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.000000238418579,
+"rect": [
+367.9,
+487.4,
+604.1,
+532.1
+],
+"n_items": 6,
+"kinds": "clcclc",
+"fo": null
+},
+{
+"fill": "FFFFFF",
+"stroke": null,
+"w": null,
+"rect": [
+649.0,
+509.0,
+924.1,
+748.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "B1BBC8",
+"w": 3.0,
+"rect": [
+649.1,
+509.0,
+924.1,
+748.1
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+668.5,
+487.4,
+904.7,
+532.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.000000238418579,
+"rect": [
+668.5,
+487.4,
+904.7,
+532.1
+],
+"n_items": 6,
+"kinds": "clcclc",
+"fo": null
+},
+{
+"fill": "2A4D88",
+"stroke": null,
+"w": null,
+"rect": [
+960.5,
+487.4,
+1392.2,
+562.3
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "2A4D88",
+"w": 3.0,
+"rect": [
+960.5,
+487.4,
+1392.1,
+562.3
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+960.5,
+580.3,
+1392.2,
+655.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 3.0,
+"rect": [
+960.5,
+580.3,
+1392.1,
+655.2
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "EDF0F5",
+"stroke": null,
+"w": null,
+"rect": [
+960.5,
+673.2,
+1392.2,
+748.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 1.0
+},
+{
+"fill": null,
+"stroke": "EDF0F5",
+"w": 3.0,
+"rect": [
+960.5,
+673.2,
+1392.1,
+748.1
+],
+"n_items": 8,
+"kinds": "clclclcl",
+"fo": null
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+81.4,
+272.9,
+85.9,
+277.4
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+81.4,
+313.4,
+85.9,
+317.9
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+81.4,
+353.9,
+85.9,
+358.4
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+81.4,
+394.4,
+85.9,
+398.9
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+1108.8,
+272.9,
+1113.3,
+277.4
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+1108.8,
+293.1,
+1113.3,
+297.6
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+1108.8,
+333.6,
+1113.3,
+338.1
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+1108.8,
+374.1,
+1113.3,
+378.6
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+81.4,
+552.6,
+85.9,
+557.1
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+81.4,
+593.1,
+85.9,
+597.6
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+81.4,
+633.6,
+85.9,
+638.1
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+81.4,
+674.1,
+85.9,
+678.6
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+382.0,
+552.6,
+386.5,
+557.1
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+382.0,
+572.8,
+386.5,
+577.3
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+382.0,
+613.3,
+386.5,
+617.8
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+382.0,
+653.8,
+386.5,
+658.3
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+682.6,
+552.6,
+687.1,
+557.1
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+682.6,
+572.8,
+687.1,
+577.3
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+682.6,
+613.3,
+687.1,
+617.8
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "1A2F57",
+"stroke": null,
+"w": null,
+"rect": [
+682.6,
+653.8,
+687.1,
+658.3
+],
+"n_items": 16,
+"kinds": "cccccccccccc",
+"fo": 1.0
+},
+{
+"fill": "C2CCDA",
+"stroke": null,
+"w": null,
+"rect": [
+1088.4,
+583.3,
+1089.7,
+591.1
+],
+"n_items": 4,
+"kinds": "llll",
+"fo": 1.0
+},
+{
+"fill": "C2CCDA",
+"stroke": null,
+"w": null,
+"rect": [
+1088.4,
+644.4,
+1089.7,
+652.2
+],
+"n_items": 4,
+"kinds": "llll",
+"fo": 1.0
+},
+{
+"fill": "C2CCDA",
+"stroke": null,
+"w": null,
+"rect": [
+1088.4,
+591.1,
+1089.7,
+644.5
+],
+"n_items": 4,
+"kinds": "llll",
+"fo": 1.0
+},
+{
+"fill": "C2CCDA",
+"stroke": null,
+"w": null,
+"rect": [
+1104.8,
+676.2,
+1106.1,
+684.0
+],
+"n_items": 4,
+"kinds": "llll",
+"fo": 1.0
+},
+{
+"fill": "C2CCDA",
+"stroke": null,
+"w": null,
+"rect": [
+1104.8,
+737.3,
+1106.1,
+745.1
+],
+"n_items": 4,
+"kinds": "llll",
+"fo": 1.0
+},
+{
+"fill": "C2CCDA",
+"stroke": null,
+"w": null,
+"rect": [
+1104.8,
+684.0,
+1106.1,
+737.3
+],
+"n_items": 4,
+"kinds": "llll",
+"fo": 1.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+36.7,
+22.6,
+206.3,
+96.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+161.2,
+364.8,
+427.3
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+67.3,
+180.7,
+131.4,
+244.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+390.3,
+161.2,
+707.2,
+427.3
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+409.7,
+180.7,
+473.9,
+244.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+732.7,
+161.2,
+1049.7,
+427.3
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+752.2,
+180.7,
+816.3,
+244.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+1075.2,
+161.2,
+1392.1,
+427.3
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+1094.6,
+180.7,
+1158.8,
+244.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+67.3,
+487.4,
+303.5,
+532.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+47.8,
+509.0,
+323.0,
+748.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+367.9,
+487.4,
+604.1,
+532.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+348.5,
+509.0,
+623.6,
+748.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+668.5,
+487.4,
+904.7,
+532.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+649.0,
+509.0,
+924.2,
+748.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+960.5,
+487.4,
+1392.1,
+562.3
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+960.5,
+580.3,
+1392.1,
+655.2
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+1083.7,
+582.4,
+1094.6,
+653.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+960.5,
+673.2,
+1392.1,
+748.1
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+1100.1,
+675.3,
+1111.0,
+746.0
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+},
+{
+"fill": "000000",
+"stroke": null,
+"w": null,
+"rect": [
+-0.8,
+768.2,
+1440.7,
+810.8
+],
+"n_items": 1,
+"kinds": "re",
+"fo": 0.0
+}
+]
+}
