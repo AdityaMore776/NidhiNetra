@@ -2,6 +2,31 @@
 
 **Read this first. It is the single source of truth for where the build is.**
 
+## At a glance (26 Sept 2026)
+
+| | |
+|---|---|
+| **Live** | https://drishti-lyart.vercel.app — all 2,09,993 real works assessed; review queue 276 (0.13%); Ministry / District / Field logins |
+| **In the live engine** | Cost agent, Data Validation, Risk Fusion v1, role scoping, India map on LGD outlines |
+| **Proven on real data, being ported** | Eligibility v2, Split & Duplicate, Photo Forensics, Geo-Location, Document, Contractor Network, Delay (as track records), Fund Flow (facts) — see [AGENTS.md](AGENTS.md) |
+| **Needs a decision** | paid AI key (capped) for Hindi/handwritten papers, Site Progress and plaque check |
+| **Gated off** | Satellite (no large works with coordinates yet); Citizen Verification is demo-only (no real ratings) |
+
+### Roadmap (v2 design §8, reordered by the trial)
+
+| # | Build | State |
+|---|---|---|
+| M0 | Foundations + Cost agent, hosted | ✅ live 26 Sept |
+| Trial | Every agent tried on real evidence for 837 works | ✅ done 26 Sept — [trial/FINDINGS.md](trial/FINDINGS.md) |
+| M1 | Document + Contractor agents (free local reading of certificates) | next |
+| M2 | Eligibility v2 in the engine; Split / bulk-order + funded-twice detector; matching by meaning | planned |
+| M3 | Photo Forensics + Geo-Location (stamp reader, district, PIN, time) | planned |
+| M4 | Delay track records + stuck works; Fund Flow sanction backlog; role dashboards | planned |
+| M5 | Paid AI key → Hindi papers, Site Progress, plaques; field app; Citizen demo | needs decision |
+| M6 | Fusion v2 (conflict rules), Inspection Planner, Ask DRISHTI, Satellite go/no-go, finale polish | planned |
+
+The sections below are the working notes the team resumes from.
+
 - **Current design (approved 2026-09-25, v2): `docs/specs/2026-09-25-drishti-v2-full-agents-design.md`**
   - 12 agents in 4 stages + 4 decision tools; real eSAKSHI evidence; head-to-head vs rival methods.
   - Supersedes the 4-agent guardrail. Architecture/stack from the first design still apply:
@@ -118,14 +143,7 @@ Rebuild data: `data/build_corpus.py` → `data/build_stats.py` (asserts AD-106 f
 
 ## Milestones
 
-| | Target | State |
-|---|---|---|
-| M0 Foundations + Statistical agent | 30 Sept | built locally; hosting blocked on logins |
-| M1 Duplicate Project agent | ~7 Oct | not started |
-| M2 Image Reuse agent | ~17 Oct | not started |
-| M3 Site Progress agent (GPS) | ~31 Oct | not started |
-| M4 Full loop (fusion, review, decisions) | ~15 Nov | not started |
-| M5 Finale polish | Nov–Dec | not started |
+See the roadmap under "At a glance" above (the original 4-agent milestone list was superseded by v2).
 
 ## Guardrails (from the user — never break)
 

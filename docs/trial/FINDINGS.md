@@ -318,7 +318,6 @@ the **byte-identical file**:
   or person.
 
 ### B3 Geo-location
-*(Filled in after the text reading finishes.)*
 
 - **Phone GPS data is gone.** 0 of 321 photos carry it (Pratapgarh and national alike); upload
   strips it. The only location is the text that GPS-camera apps (NoteCam, GPS Map Camera,
