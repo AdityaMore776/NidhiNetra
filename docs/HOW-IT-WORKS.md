@@ -95,16 +95,14 @@ Another: in Nanded, **three works of ₹4,96,000 each** for the *same road*, rec
 ₹14.88 lakh in pieces each just under ₹5 lakh. Duplicate & Split raises it; the officer checks whether the
 split was allowed.
 
-## 5. What makes DRISHTI different
+## 5. What DRISHTI brings
 
-| Most approaches | DRISHTI |
-|---|---|
-| look only at the spreadsheet | also **reads the real certificates, bills and geo-stamped photos** on eSAKSHI |
-| tested on made-up data | **tested on real government data**, 837 works' real evidence |
-| a generic "anomaly detector" | **one specialist per problem the auditors actually found** |
-| "trust our AI" | every agent **measured against the rivals' method on the same data**, and switched off if it loses |
-| flags with no reason | **top reasons, the evidence and the guideline clause** for every flag |
-| "fraud detected" | **"needs verification"** — the officer decides |
+- **It reads the real evidence** — the certificates, bills and geo-stamped photos already on eSAKSHI, not just the spreadsheet.
+- **It is tested on real government data** — the real evidence of 837 completed works, and all 2.1 lakh works.
+- **One specialist per problem the auditors actually found** — cost, duplicates, splits, rules, photos, location, documents, delays, money, contractors.
+- **Proof before launch** — every agent has a measured accuracy target and stays switched off until it meets it.
+- **Every flag explains itself** — top reasons, the evidence and the guideline clause.
+- **"Needs verification", never "fraud"** — the officer decides.
 
 ## 6. What DRISHTI will never do
 

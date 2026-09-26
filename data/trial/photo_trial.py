@@ -8,7 +8,7 @@ Two questions:
      cropping, brightening, a slight turn, a stamped band, a screenshot frame? Each method runs
      at the loosest setting that confuses no two DIFFERENT photos in the pilot (pairs the eye
      confirmed as the same photo are left out of that calculation - they are the findings).
-     256-bit pHash (DRISHTI) + ORB against the 64-bit dHash a rival project uses.
+     256-bit pHash (DRISHTI) + ORB against a plain 64-bit dHash.
 
 Certificates are not fingerprinted: portal-generated forms look identical to any image hash
 (59,054 false "matches" in a first run). Documents are compared by their text instead.

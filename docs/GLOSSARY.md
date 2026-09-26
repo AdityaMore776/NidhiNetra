@@ -43,7 +43,7 @@
 | **Perceptual fingerprint (pHash)** | A compact code for what an image looks like, robust to resizing and brightness changes; used to find reused photos. |
 | **ORB feature matching** | Matches distinctive points between two images; survives crops, rotation and screenshots. |
 | **OCR** | Reading text from an image or scanned PDF. |
-| **Baseline / rival method** | The simple or commonly used method (keyword search, Isolation Forest, 64-bit hash) each agent must beat on the same data. |
+| **Accuracy target** | The measured result an agent must reach on real data before it goes live. |
 | **Kill criterion** | The result below which an agent stays switched off. |
 | **REAL / SCENARIO / LIVE** | Where a record came from: the eSAKSHI data, a planted demo case, or a submission on our site. |
 | **Research build** | The team's earlier offline codebase (`~/saakshya`) from which methods are ported. |

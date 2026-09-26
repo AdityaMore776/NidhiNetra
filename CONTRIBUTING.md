@@ -11,8 +11,8 @@
    (`data/trial/cache/`) stay local. Run `data/trial/sanitize_results.py` before committing trial results.
 5. **Only measured numbers.** Any figure in the docs, the app or the deck must come from a script whose output
    is saved. Examples quoted as findings must have been checked by eye.
-6. **Proof before launch.** A new agent ships only with (a) tests, (b) a measurement on real data, (c) a
-   head-to-head against the simple/rival method, and (d) a kill criterion. If it loses, it stays off.
+6. **Proof before launch.** A new agent ships only with (a) tests, (b) a measurement on real data, and (c) an
+   accuracy target it must meet. If it misses, it stays off.
 7. **Never score MPs.** Works, offices and agencies only.
 8. **Be polite to eSAKSHI.** Keep the harvester at one request per 1.5 s.
 

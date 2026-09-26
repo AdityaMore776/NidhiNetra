@@ -173,7 +173,7 @@ function chrome(s, title, pageNo, { logoTitle = false } = {}) {
     ] },
     { x: 964.6, pillW: 321.8, fill: C.gold, icon: "star", head: "INNOVATION & UNIQUENESS", labelColor: C.goldText, items: [
       ["Reads eSAKSHI's own evidence", "spots reused photos, wrong locations, missing plaques and bills that don't add up."],
-      ["Proven, then measured", "methods India already runs at scale (PMAY-G, Amrit Sarovar); each agent must beat a baseline first."],
+      ["Proven, then measured", "methods India already runs at scale (PMAY-G, Amrit Sarovar); each agent is measured on real data first."],
       ["Clause-cited, human-in-the-loop", "every flag cites the guideline; flags for review, never accuses."],
       ["Learns from the field", "officer verdicts become labels, solving the “no fraud labels” problem."],
     ] },
@@ -319,8 +319,7 @@ function chrome(s, title, pageNo, { logoTitle = false } = {}) {
     "Stage order: before sanction (Eligibility, Duplicate & Split, Cost); during construction (Site Progress,",
     "Photo Forensics, Geo-Location, Document, Satellite); money & time (Delay Prediction, Fund Flow,",
     "Contractor Network); after completion (Citizen Verification). Each agent is tested on held-out real",
-    "data against the method a typical team would use (Isolation Forest, TF-IDF duplicates, 64-bit photo",
-    "hashes, deadline rules) and stays switched off if it does not beat it.",
+    "eSAKSHI data and stays switched off until it meets its accuracy target.",
   ].join(" "));
 }
 
@@ -384,7 +383,7 @@ function chrome(s, title, pageNo, { logoTitle = false } = {}) {
   box(s, 998, 582, 394, 164, { fill: C.navy, r: 11 });
   iconCircle(s, "flask-vial", 1016, 598, 44, { fill: C.white, tone: "n" });
   text(s, "PROOF BEFORE LAUNCH", 1072, 598, 310, 44, { font: "Cambria", bold: true, size: 18, color: C.white, valign: "middle" });
-  text(s, "Every agent is tested on real eSAKSHI data and must beat a simple baseline before it goes live. If it fails, it stays switched off.",
+  text(s, "Every agent is tested on real eSAKSHI data and must meet its accuracy target before it goes live. If it fails, it stays switched off.",
     1016, 652, 362, 88, { size: 16, color: C.white });
   s.addNotes([
     "Precedents: PMAY-G releases instalments only on geo-tagged stage photos (3.84 crore house sites geo-tagged by",
@@ -451,34 +450,29 @@ function chrome(s, title, pageNo, { logoTitle = false } = {}) {
 {
   const s = pres.addSlide();
   chrome(s, "RESEARCH AND REFERENCES", 6);
-  label(s, "COMPARISON WITH EXISTING SYSTEMS", 48.6, 124);
-  const Y = "✓", N = "✗", PT = "Partial";
-  const rowsCmp = [
-    ["AI anomaly detection in spending", Y, N, N, N],
-    ["Duplicate & split works (Hindi + English)", Y, N, PT, N],
-    ["Reads certificates & bills (Hindi/English)", Y, N, PT, N],
-    ["Spots reused or edited photos", Y, N, N, N],
-    ["Checks where & when photos were taken", Y, PT, N, N],
-    ["Guideline compliance with para cited", Y, PT, Y, N],
-    ["Delay / overrun early warning", Y, PT, N, PT],
-    ["Explainable 0–100 risk score", Y, N, N, N],
-    ["Risk-based inspection route plan", Y, N, N, N],
-    ["Citizen confirmation & field learning", Y, PT, N, N],
+  label(s, "WHAT DRISHTI CHECKS — AND HOW", 48.6, 124);
+  const rowsCap = [
+    ["AI anomaly detection in spending", "Cost range of similar works in the same district", "Before sanction"],
+    ["Duplicate & split works (Hindi + English)", "Same-site and bulk-order patterns, meaning match", "Before sanction"],
+    ["Guideline compliance with para cited", "Rules + the clause quoted on every flag", "Before sanction"],
+    ["Reads certificates & bills (Hindi/English)", "Sanction date, payments and contractor read", "During work"],
+    ["Spots reused or edited photos", "Image fingerprints + feature matching", "During work"],
+    ["Checks where & when photos were taken", "GPS stamp read; district, PIN and date checked", "During work"],
+    ["Delay & stuck-work early warning", "Stuck works + each office's track record", "Money & time"],
+    ["Citizen confirmation & field learning", "QR at site; officer verdicts retrain agents", "After completion"],
+    ["Explainable 0–100 risk score", "All agents fused + top-3 reasons", "Every work"],
+    ["Risk-based inspection route plan", "Picks the mandatory 10% of visits, routed", "Every work"],
   ];
-  const head = ["Capability", "DRISHTI", "eSAKSHI Portal", "Manual Audit / Inspection", "Generic BI Dashboards"].map((t, i) => ({
-    text: t, options: { fill: { color: i === 1 ? C.gold : C.navy }, color: C.white, bold: true, fontSize: 15.5, align: i === 0 ? "left" : "center", valign: "middle", margin: [0, P(6), 0, P(6)] },
+  const head = ["Capability", "How DRISHTI does it", "Stage"].map((t, i) => ({
+    text: t, options: { fill: { color: i === 1 ? C.gold : C.navy }, color: C.white, bold: true, fontSize: 15.5, align: "left", valign: "middle", margin: [0, P(6), 0, P(8)] },
   }));
-  const mark = (v, col) => {
-    const base = { fill: { color: col === 1 ? C.goldTint : C.white }, align: "center", valign: "middle", margin: 0 };
-    if (v === PT) return { text: v, options: { ...base, bold: true, color: C.partial, fontSize: 14.5 } };
-    return { text: v, options: { ...base, fontFace: "Segoe UI Symbol", fontSize: 19, color: v === Y ? C.tick : C.cross } };
-  };
-  const body = rowsCmp.map((r) => [
+  const body = rowsCap.map((r) => [
     { text: r[0], options: { fill: { color: C.light }, bold: true, color: C.dark, fontSize: 14.5, valign: "middle", margin: [0, P(6), 0, P(6)] } },
-    ...r.slice(1).map((v, i) => mark(v, i + 1)),
+    { text: r[1], options: { fill: { color: C.goldTint }, color: C.dark, fontSize: 14.5, valign: "middle", margin: [0, P(6), 0, P(8)] } },
+    { text: r[2], options: { fill: { color: C.white }, bold: true, color: C.navy, fontSize: 14, valign: "middle", margin: [0, P(6), 0, P(8)] } },
   ]);
   s.addTable([head, ...body], {
-    x: P(49), y: P(156), colW: [P(300), P(128), P(128), P(128), P(127)],
+    x: P(49), y: P(156), colW: [P(300), P(360), P(151)],
     rowH: [P(48), ...Array(10).fill(P(33))], fontFace: "Calibri",
     border: { type: "solid", pt: 1, color: C.border },
   });
@@ -530,8 +524,8 @@ function chrome(s, title, pageNo, { logoTitle = false } = {}) {
     text(s, runs, 916, y + 74, 462, 108, { size: 15.3, paraAfter: 2 });
   }
   s.addNotes([
-    "Checkmarks: eSAKSHI collects geo-tagged photos and citizen ratings but does not verify or use them (21,789 of",
-    "21,793 ratings on completed 18th LS works are zero) - hence 'Partial'. CAG figures are totals from the annexures",
+    "Citizen ratings on eSAKSHI are almost all empty (21,789 of 21,793 on completed 18th LS works are zero), so",
+    "citizen confirmation is a new channel. CAG figures are totals from the annexures",
     "of CAG Report No. 31 of 2010-11 (TOTAL rows, sampled districts): Annex 7.2 plaques not erected - 4,918 works in 31",
     "District Authorities (Rs 100.20 crore); Annex 4.7 incomplete works - 12,006 works in 71 DAs, Rs 279.99 crore. The earlier '₹9.16 Cr on 518 works' figure was replaced because it could not be traced",
     "to that report; restore it if the team has the source. Outlay ~Rs 4,000 crore: PIB 2027330 (June 2024).",

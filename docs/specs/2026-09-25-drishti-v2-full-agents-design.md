@@ -16,12 +16,12 @@
 - handwritten Hindi utilisation certificates
 - site photos with the **GPS location and time stamped into the picture**
 
-Rival teams test on made-up data. We will test on the government's own evidence.
+We test on the government's own evidence.
 
-**How we beat the 8 rival projects I studied:**
-1. Real evidence instead of invented data.
+**What sets the approach:**
+1. Real evidence from eSAKSHI itself.
 2. A measured accuracy figure for every agent.
-3. Each of our methods run head-to-head against the method a rival uses, on the same data.
+3. Every method measured on real data against an accuracy target.
 4. Checks at every stage: before sanction, during work, on money and time, after completion.
 
 **Next steps:**
@@ -102,21 +102,6 @@ MoSPI itself added a way (March 2026) to replace **"incorrect images uploaded ea
 - **Citizen ratings exist on eSAKSHI but are unused:** 21,789 zeros and 4 real ratings.
 - **MP-level money files:** allocated, recommended, sanctioned, completed and spent per MP (`mplads_{17ls,18ls,rs,aggregate}.csv`).
 
-### What rivals have (8 public SIH26102 projects reviewed)
-
-| Rival | What it has |
-|---|---|
-| NIREEKSHAK | 9 engines, synthetic lifecycle, audit chain |
-| HetviPatadia | 7 engines, contractor graph, dHash, SHAP |
-| MPLAD-AI | delay prediction, contractor analysis, voice assistant |
-| mplads-ai | real export, Isolation Forest, TF-IDF duplicates, Ask-AI |
-| Sentinel | 7 rules on ~285 synthetic works, 4 role dashboards |
-| Data-Yoddhas | Isolation Forest, PostGIS radius, pHash |
-| SaniyaGharat | graph neural networks, 60 labels |
-| MPLens | synthetic risk table |
-
-**None of their READMEs shows real documents or photos, GPS read from real photos, or accuracy measured on held-out real data.**
-
 ### Your decisions (2026-09-25)
 
 - All feasible, proven agents.
@@ -135,7 +120,7 @@ MoSPI itself added a way (March 2026) to replace **"incorrect images uploaded ea
 4. **Measured before it goes live.** Each agent has:
    - a labelled test set
    - a target
-   - **a head-to-head against the rival's method**
+   - **an accuracy target on real data**
    - a **kill criterion**: missing the target keeps it switched off
 5. **Honest output.** Results are SHOWN / NOT SHOWN / CAN'T TELL. "Needs verification", never an accusation. The officer always decides.
 
@@ -146,17 +131,17 @@ MoSPI itself added a way (March 2026) to replace **"incorrect images uploaded ea
 | # | Agent | The question it answers (deck line) | Problem it fixes | Proven method | Precedent | Data | How we prove it |
 |---|---|---|---|---|---|---|---|
 | **A: before money moves** | | | | | | | |
-| A1 | **Eligibility** | Is this work allowed under MPLADS? | Non-compliance (CAG 4.3: 7,230 works; 3.5; 7.3; outside-constituency) | Rule checks with verbatim clause citations + prohibited-work classifier (object-of-work matcher, built, + Gemini with the clause quoted) | The guidelines themselves; LLM text classification | Real | 300 hand-labelled real descriptions; vs keyword matching (rivals) |
-| A2 | **Duplicate & Split** | Is this already funded, or one work cut into pieces? | Duplicates (PS), convergence (CAG 3.6), split works | DIGIPIN spatial + rare-token + multilingual embeddings + status/amount/renewal gates (ported, measured) + split pattern (same MP/village/type, within 90 days, sum over threshold) | Record linkage; Open Contracting "split purchases" red flag | Real (429 repeat clusters measured) | 100 planted paraphrased duplicates + 500 random works; vs TF-IDF cosine ≥0.88 (mplads-ai) |
-| A3 | **Cost** *(built)* | Is the cost unusual for similar works? | Inflated estimates (PS "cost estimates") | Peer bands per type × district (AD-106), road ₹/m vs published rates, bulk-order reading | Estimate vetting against schedules of rates | Real (847 of 209,993 need review) | Planted inflation ×1.5 to ×5; vs Isolation Forest (4 rivals) |
+| A1 | **Eligibility** | Is this work allowed under MPLADS? | Non-compliance (CAG 4.3: 7,230 works; 3.5; 7.3; outside-constituency) | Rule checks with verbatim clause citations + prohibited-work classifier (object-of-work matcher, built, + Gemini with the clause quoted) | The guidelines themselves; LLM text classification | Real | 300 hand-labelled real descriptions |
+| A2 | **Duplicate & Split** | Is this already funded, or one work cut into pieces? | Duplicates (PS), convergence (CAG 3.6), split works | DIGIPIN spatial + rare-token + multilingual embeddings + status/amount/renewal gates (ported, measured) + split pattern (same MP/village/type, within 90 days, sum over threshold) | Record linkage; Open Contracting "split purchases" red flag | Real (429 repeat clusters measured) | 100 planted paraphrased duplicates + 500 random works |
+| A3 | **Cost** *(built)* | Is the cost unusual for similar works? | Inflated estimates (PS "cost estimates") | Peer bands per type × district (AD-106), road ₹/m vs published rates, bulk-order reading | Estimate vetting against schedules of rates | Real (847 of 209,993 need review) | Planted inflation ×1.5 to ×5 |
 | **B: while the work is built** | | | | | | | |
 | B1 | **Site Progress** | Do the photos show what was claimed? | Progress misreporting, CAG 4.8 unfruitful works, **7.2 plaques missing (4,918 works)**, MoSPI's "incorrect images" | Gemini checks free-text claims with repeat + half-set controls (ported); **plaque present and readable**; "does the photo show this type of work?" | PMAY-G pays only on geotagged stage photos (3.84 crore sites) | Real completion photos (pilot) + labelled web photos | Claim set: false claims caught ≥70%, true claims wrongly contradicted ≤5%; plaque accuracy on labelled real photos |
-| B2 | **Photo Forensics** | Has this photo, or this certificate, been used before or edited? | Reused or recycled evidence | 256-bit pHash + dHash, crop hashes, ORB feature matching; **also on rendered PDF pages** (same certificate on two works); editing/scan/screenshot signs | Perceptual hashing at scale (PhotoDNA-class) | Real pilot index | Edit suite (resize, crop, recompress…) + real matches checked by eye; vs 64-bit dHash (HetviPatadia) |
-| B3 | **Geo-Location** | Was the photo taken at the site, and when? | Photos from elsewhere, backdated evidence | GPS from photo data **or read from the stamped overlay** (lat/long, PIN, address, time); inside the district/constituency (LGD polygons, built); near the named village (gazetteer); PIN→district (India Post–LGD file in repo); time inside the sanction→completion window; same coordinates + time on different works | PMAY-G AwaasApp, GeoMGNREGA, Amrit Sarovar all rely on geotagged photos | Real overlays seen in eSAKSHI photos | Overlay reading checked against 100 hand-read photos; boundary checks are exact; rivals can't do this on real data (no pins) |
+| B2 | **Photo Forensics** | Has this photo, or this certificate, been used before or edited? | Reused or recycled evidence | 256-bit pHash + dHash, crop hashes, ORB feature matching; **also on rendered PDF pages** (same certificate on two works); editing/scan/screenshot signs | Perceptual hashing at scale (PhotoDNA-class) | Real pilot index | Edit suite (resize, crop, recompress…) + real matches checked by eye |
+| B3 | **Geo-Location** | Was the photo taken at the site, and when? | Photos from elsewhere, backdated evidence | GPS from photo data **or read from the stamped overlay** (lat/long, PIN, address, time); inside the district/constituency (LGD polygons, built); near the named village (gazetteer); PIN→district (India Post–LGD file in repo); time inside the sanction→completion window; same coordinates + time on different works | PMAY-G AwaasApp, GeoMGNREGA, Amrit Sarovar all rely on geotagged photos | Real overlays seen in eSAKSHI photos | Overlay reading checked against 100 hand-read photos; boundary checks are exact |
 | B4 | **Document** | Do the certificates and bills add up? | Doubtful vouchers (CAG 4.9), payment/document mismatch, sanction delays | Gemini reads certificates/UCs/bills (Hindi/English, handwritten) into fields. Checks: arithmetic; dates in order (sanction ≤ start ≤ completion ≤ handover, **real 75-day and 1-year checks**); document vs portal (amount, name, district); right document for the stage; required set present; GSTIN checksum/state code | Document AI is industry-standard; eSAKSHI requires documents at every payment stage | Real (pilot) | Field accuracy on 100 hand-transcribed documents, including handwritten Hindi UCs |
 | B5 | **Satellite** *(big works only, gated)* | Did a large work change the ground? | Ghost large works (ponds, long new roads, big buildings) | Sentinel-2 before/after (free; Planetary Computer, no key): water index for ponds, built/bare-soil change for roads over 1 km and buildings over ~2,000 m², at coordinates from B3; otherwise NOT_APPLICABLE | **Mission Amrit Sarovar**: 68,000+ ponds monitored with remote sensing (BISAG-N) | Real works with B3 coordinates | **Go/no-go:** ≥20 real large works; if it can't separate built from not-built, it stays off |
 | **C: money and time** | | | | | | | |
-| C1 | **Delay Prediction** | Which works will be late, and which are stuck now? | Delays (PS), CAG 4.5/4.6/4.7 | Gradient-boosted model on **real completion histories** (late = not done within 12 months of recommendation), validated on a later period; stuck-now detector; sanction-delay monitor (dates from B4) | MoSPI's own PAIMANA problem (SIH26103) asks for exactly this | **Real labels** | Accuracy on a later cohort, and precision in the top 10%; vs the simple "past the deadline" rule |
+| C1 | **Delay Prediction** | Which works will be late, and which are stuck now? | Delays (PS), CAG 4.5/4.6/4.7 | Gradient-boosted model on **real completion histories** (late = not done within 12 months of recommendation), validated on a later period; stuck-now detector; sanction-delay monitor (dates from B4) | MoSPI's own PAIMANA problem (SIH26103) asks for exactly this | **Real labels** | Accuracy on a later cohort, and precision in the top 10% |
 | C2 | **Fund Flow** | Will the money be used well and on time? | Unspent/idle funds, year-end rush, advances (CAG 6.7: ₹89.8 crore; 6.8), payment ahead of verified progress | Per-MP and per-district funnel (allocated→recommended→sanctioned→spent), March-rush share vs norm, lapse forecast, payment vs B1/B4 progress, calamity-consent checks | CAG findings; budget-execution monitoring | Real MP-level files + dates | Backtest the FY2024-25 forecast from mid-year data |
 | C3 | **Contractor Network** | Is a small circle of contractors getting everything? | Collusion, concentration, cartels | Contractor names from B4, matched and cleaned → contractor–agency–district–MP graph; share per district/agency; contractors spread across many agencies; contractors behind flagged or duplicate works | Open Contracting red flags (supplier concentration) | Real names on certificates and photo sheets | Name-matching accuracy on hand-labelled pairs; concentration figures are facts |
 | **D: after completion** | | | | | | | |
@@ -226,13 +211,6 @@ MoSPI itself added a way (March 2026) to replace **"incorrect images uploaded ea
 ## 5. Proof plan: numbers, not claims
 
 - **Per agent:** tuned on a development set, reported on a held-out set, misses published (see the table in §3).
-- **Head-to-head against rival methods, on the same data.** This is the "demolish" slide:
-  - Isolation Forest vs our peer bands (A3)
-  - TF-IDF cosine vs our duplicate method (A2)
-  - 64-bit dHash vs 256-bit pHash + ORB (B2)
-  - keyword lists vs object-of-work + clause-cited classifier (A1)
-  - "deadline passed" vs the real-label delay model (C1)
-  - a vision model without controls vs our repeat and half-set controls (B1)
 - **A real-data findings report.** Each finding is checked by eye before it's quoted. Examples of what it would count: photos reused across works, certificates disagreeing with the portal, photos stamped outside the district, missing plaques, contractor concentration, predicted-late works.
 - **The Evidence page** is generated from `eval/results/*.json`. No hand-typed numbers.
 
@@ -247,8 +225,8 @@ Keep it pictorial and plain-language, with no file paths or test counts on slide
 3. **Proposed solution:** 12 agents in 4 stage columns, each with its one-line question and an icon, plus the 4 decision tools.
 4. **What makes it real:** a real completion certificate, the real GPS-stamped photo and the real Hindi UC, each annotated with what the agent reads.
 5. **Technical approach:** the pipeline plus the agent cards (method → output) and the stack.
-6. **Proof:** head-to-head bars against the rival methods (filled only with measured numbers; unmeasured ones are shown as "target").
-7. **Why us vs existing:** a feature grid of DRISHTI against the typical approach (the plain black-grid style you chose on 2026-09-19).
+6. **Proof:** measured accuracy for each agent (only measured numbers; unmeasured ones are shown as "target").
+7. **What DRISHTI checks:** a capability grid of DRISHTI's checks and how each works.
 8. **Feasibility:** proven precedents (PMAY-G, GeoMGNREGA, Amrit Sarovar, social audit, CAG), free/open tools, privacy.
 9. **Impact:** 4 role dashboards, inspection planner, early warnings.
 
@@ -299,7 +277,7 @@ Everything else is labelled as a target.
 | **M3** | Oct wk 3–4 | A1 Eligibility (classifier), A2 Duplicate & Split, C1 Delay Prediction, C2 Fund Flow; role dashboards v1 | Real accuracy of the delay model; MP/district funnels |
 | **M4** | Nov wk 1–2 | B1 Site Progress + plaque check + field app (live camera + GPS); D1 Citizen Verification | Claims checked against photos; missing plaques on real works |
 | **M5** | Nov wk 3 | Fusion v2 (12 agents, conflict rules), Inspection Planner, case workflow + audit chain, Ask DRISHTI | The complete loop, by role |
-| **M6** | Nov wk 4 – Dec | B5 Satellite go/no-go (+ agent if it passes); your real photos; head-to-head report; Hindi; demo script | The finale build |
+| **M6** | Nov wk 4 – Dec | B5 Satellite go/no-go (+ agent if it passes); your real photos; evaluation report; Hindi; demo script | The finale build |
 
 **How I work each milestone:**
 1. Write a task plan to `docs/plans/`.
@@ -313,7 +291,7 @@ Everything else is labelled as a target.
 ## 9. Verification
 
 - **Engine tests:** each agent has unit tests plus pgserver integration tests. The fusion conflict rules R1–R6 each have a test.
-- **Per-agent evaluation:** `python -m eval.run --agent <id>` writes held-out metrics and the head-to-head against the rival method.
+- **Per-agent evaluation:** `python -m eval.run --agent <id>` writes held-out metrics.
 - **Real findings:** every real finding quoted anywhere (site, slides) is checked by eye first and linked to its source file.
 - **Live site:** a Playwright smoke run after every deploy (login → dashboard → a flagged work → agent cards → decision).
 - **Free-tier health:** database under 400 MB, storage under 800 MB, the AI ledger within quota, the daily keep-alive cron running.

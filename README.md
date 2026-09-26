@@ -23,9 +23,9 @@ MPLAD Scheme. It checks every MPLADS work, flags the ones an officer should look
 - **DRISHTI runs specialist AI agents over every work.** Each agent checks one kind of problem. Their
   results are combined into one **0–100 risk score** with the top reasons, and the riskiest works go into a
   **review queue** for the district officer.
-- **What makes it different:** eSAKSHI's public dashboard also serves the real **certificates, bills and
+- **Reads the real evidence:** eSAKSHI's public dashboard also serves the real **certificates, bills and
   geo-stamped site photos** behind each work. DRISHTI reads that evidence, not just the spreadsheet, and
-  every agent is tested on real government data, head-to-head against the methods other teams use.
+  every agent is tested on real government data before it goes live.
 - **DRISHTI never accuses anyone.** It says "needs verification", never "fraud". An officer always decides.
 
 ## What works today
@@ -39,14 +39,14 @@ MPLAD Scheme. It checks every MPLADS work, flags the ones an officer should look
 
 ### Headline results from the real-data trial
 
-| Agent | Result on real data | Rival method, same data |
-|---|---|---|
-| **Cost** | catches **63%** of works inflated 5× (84% at 10×), 1.5% false alarms | Isolation Forest: 3% (5%) at the same false-alarm rate |
-| **Eligibility** | **56%** of flags plainly prohibited, 80% worth a look (fresh sample) | keyword search: 5% and 18%, while flagging 46× more works |
-| **Photo Forensics** | recognises **99.9%** of edited copies (crop, stamp, screenshot, rotate) | 64-bit fingerprint: 56% |
-| **Split works** | 12× more works just under ₹5 lakh than just over; 136 bulk-order groups (744 works) kept under the limit | — |
-| **Geo-Location** | GPS stamps read on 170 works; found 3 works whose own photos show them finished *before* the MP recommended them | rivals have no real GPS |
-| **Document** | reads sanction date, payments and contractor off 431 UP certificates **for free** (local text reading); 16% sanctioned after the 75-day limit | — |
+| Agent | Result on real data |
+|---|---|
+| **Cost** | catches **63%** of works inflated 5× (84% at 10×), with 1.5% false alarms |
+| **Eligibility** | **56%** of flags plainly prohibited, 80% worth an officer's look (fresh sample) |
+| **Photo Forensics** | recognises **99.9%** of edited copies (crop, stamp, screenshot, rotate) |
+| **Split works** | 12× more works just under ₹5 lakh than just over; 136 bulk-order groups (744 works) kept under the limit |
+| **Geo-Location** | GPS stamps read on 170 works; found 3 works whose own photos show them finished *before* the MP recommended them |
+| **Document** | reads sanction date, payments and contractor off 431 UP certificates **for free** (local text reading); 16% sanctioned after the 75-day limit |
 
 Weak or untested results are reported just as plainly (delay prediction is only slightly better than an
 office's past record; satellite is a no-go for now). See [`docs/AGENTS.md`](docs/AGENTS.md).
@@ -104,7 +104,7 @@ and site photos, Sentinel-2 for large works only.
 
 1. **Needs verification, never "fraud".** Accusing words are blocked in code (`BANNED_WORDS`); a test fails if any agent uses one.
 2. **"Could not check" is not a clean chit.** An agent that cannot assess a work says so; it never counts as low risk.
-3. **Proof before launch.** An agent goes live only after it beats a simple baseline on real data. If it fails, it stays off.
+3. **Proof before launch.** An agent goes live only after it meets its accuracy target on real data. If it fails, it stays off.
 4. **Only measured numbers.** Every figure in this repo comes from a script whose output is saved in `data/trial/results/`.
 5. **Privacy.** Downloaded evidence, OCR text, phone numbers and bank account numbers never enter git or the screen.
 

@@ -28,7 +28,7 @@
 The sections below are the working notes the team resumes from.
 
 - **Current design (approved 2026-09-25, v2): `docs/specs/2026-09-25-drishti-v2-full-agents-design.md`**
-  - 12 agents in 4 stages + 4 decision tools; real eSAKSHI evidence; head-to-head vs rival methods.
+  - 12 agents in 4 stages + 4 decision tools; real eSAKSHI evidence; every agent measured on real data.
   - Supersedes the 4-agent guardrail. Architecture/stack from the first design still apply:
     `docs/specs/2026-09-25-drishti-prototype-design.md`.
 - Milestone task plans: `docs/plans/`
@@ -45,7 +45,7 @@ Pratapgarh UP + 400 random; 905 files, 791 MB, in `data/evidence/`, gitignored; 
 `data/evidence/manifest.jsonl`). Scripts `data/trial/*.py` (venv `.venv-trial`), results
 `data/trial/results/` (run `sanitize_results.py` before committing - masks phone/account
 numbers), local OCR cache `data/trial/cache/ocr/` (gitignored: holds names/accounts).
-Headlines: Cost beats Isolation Forest by far; Eligibility v2 56% precision (was 12%);
+Headlines: Cost catches 63% of 5x mark-ups at 1.5% false alarms; Eligibility v2 56% precision (was 12%);
 Document + Contractor agents work for FREE on UP's portal-generated certificates (real
 sanction dates, payments, vendor codes); split/bulk patterns real; delay model weak
 (AUC 0.71); GPS stamps readable (coords 10/10 by eye), phone EXIF GPS always stripped.

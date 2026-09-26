@@ -1,4 +1,4 @@
-r"""Trial 1 - the Cost agent on real works, and the method rival teams use.
+r"""Trial 1 - the Cost agent on real works, and a standard outlier model for comparison.
 
 Question: if a real work's amount is inflated, how often is it caught, and how many ordinary
 works are flagged along the way?
@@ -9,7 +9,7 @@ Method (planted inflation; there are no labelled fraud cases in the export):
   2. Rebuild the peer bands WITHOUT those 1,000 works.
   3. Multiply each test work's amount by 1.5, 2, 3, 5 and 10 and re-run the agent.
   4. False alarms: another 20,000 untouched works run through the same bands.
-  5. Head-to-head: Isolation Forest (used by mplads-ai, Data-Yoddhas and others) on
+  5. Comparison: Isolation Forest on
      log(amount) + work type + state, tuned to the SAME false-alarm rate, then scored on the
      same inflated works.
 
@@ -103,7 +103,7 @@ def main() -> None:
     for f in FACTORS:
         queue[f"caught_x{f:g}"] = float(queued(test, f).mean())
 
-    # ---- Isolation Forest, the rivals' method, at the same false-alarm rate
+    # ---- Isolation Forest, a standard outlier model, at the same false-alarm rate
     def features(df: pd.DataFrame, factor: float = 1.0) -> pd.DataFrame:
         x = pd.get_dummies(df[["work_type_code", "state_lgd"]].astype(str), dtype=float)
         x["logamt"] = np.log10(df.amount.astype(float) * factor)
@@ -114,24 +114,24 @@ def main() -> None:
     iforest = IsolationForest(n_estimators=300, random_state=26).fit(xtrain.values)
     ctrl_scores = -iforest.score_samples(features(control).reindex(columns=cols, fill_value=0).values)
     threshold = np.quantile(ctrl_scores, 1 - ours["false_alarm_rate"])
-    rival = {"false_alarm_rate": float((ctrl_scores > threshold).mean())}
+    iforest = {"false_alarm_rate": float((ctrl_scores > threshold).mean())}
     for f in FACTORS:
         s = -iforest.score_samples(features(test, f).reindex(columns=cols, fill_value=0).values)
-        rival[f"caught_x{f:g}"] = float((s > threshold).mean())
+        iforest[f"caught_x{f:g}"] = float((s > threshold).mean())
 
-    # IF on amount alone (the simplest rival version)
+    # IF on amount alone (the simplest version)
     if1 = IsolationForest(n_estimators=300, random_state=26).fit(rest[["l"]].values)
     c1 = -if1.score_samples(control[["l"]].values)
     t1 = np.quantile(c1, 1 - ours["false_alarm_rate"])
-    rival_amount = {"false_alarm_rate": float((c1 > t1).mean())}
+    iforest_amount = {"false_alarm_rate": float((c1 > t1).mean())}
     for f in FACTORS:
         s = -if1.score_samples(np.log10(test.amount.astype(float).values * f).reshape(-1, 1))
-        rival_amount[f"caught_x{f:g}"] = float((s > t1).mean())
+        iforest_amount[f"caught_x{f:g}"] = float((s > t1).mean())
 
     result = {"test_works": len(test), "control_works": len(control),
               "drishti_cost_agent": ours, "drishti_review_queue": queue,
-              "isolation_forest_type_state_amount": rival,
-              "isolation_forest_amount_only": rival_amount}
+              "isolation_forest_type_state_amount": iforest,
+              "isolation_forest_amount_only": iforest_amount}
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "cost_trial.json").write_text(json.dumps(result, indent=2))
     print(json.dumps(result, indent=2))

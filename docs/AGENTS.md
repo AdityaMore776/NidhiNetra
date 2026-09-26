@@ -1,7 +1,7 @@
 # The DRISHTI agents
 
 Every agent answers **one question** about a work, uses a method with a **real-world precedent**, and must
-**beat a simple baseline on real data** before it goes live. This page is the single reference for all of
+**meet its accuracy target on real data** before it goes live. This page is the single reference for all of
 them: what each checks, how, what we measured, and where it stands.
 
 - Full trial write-up with every number: [`trial/FINDINGS.md`](trial/FINDINGS.md)
@@ -12,11 +12,11 @@ them: what each checks, how, what we measured, and where it stands.
 
 | # | Agent | Stage | State | Trial verdict on real data |
 |---|---|---|---|---|
-| A1 | Eligibility | Before sanction | 🧪 v1 in engine as a note; v2 proven in trial | **Works** — 56% precision (keywords: 5%) |
+| A1 | Eligibility | Before sanction | 🧪 v1 in engine as a note; v2 proven in trial | **Works** — 56% precision on a fresh sample |
 | A2 | Duplicate & Split | Before sanction | 🧪 trial | **Split: works. Duplicates: partly** (reworded repeats need matching by meaning) |
-| A3 | Cost | Before sanction | ✅ **live** | **Works for big mark-ups** — 63% at 5× (Isolation Forest: 3%) |
+| A3 | Cost | Before sanction | ✅ **live** | **Works for big mark-ups** — 63% of 5× mark-ups caught at 1.5% false alarms |
 | B1 | Site Progress (+ plaque) | During construction | 📝 planned | Not tested — needs an AI vision key |
-| B2 | Photo Forensics | During construction | 🧪 trial | **Works** — 99.9% of edited copies (rival: 56%) |
+| B2 | Photo Forensics | During construction | 🧪 trial | **Works** — 99.9% of edited copies recognised |
 | B3 | Geo-Location | During construction | 🧪 trial | **Works** — stamps read on 170 works; 3 real timing findings |
 | B4 | Document | During construction | 🧪 trial | **Works on typed certificates, free**; Hindi/handwritten needs AI |
 | B5 | Satellite (big works only) | During construction | ⛔ no-go for now | Pilot has no large works with coordinates |
@@ -64,7 +64,6 @@ Two rules are enforced in code, not trusted to each agent:
 
   | Reader | Works flagged | Plainly prohibited | Worth a look |
   |---|---|---|---|
-  | Keyword anywhere (rival method) | 21,010 | 5% | 18% |
   | v1 (in engine) | 642 | 12% | 25% |
   | **v2** | **458** | **56%** | **80%** |
 
@@ -94,13 +93,13 @@ Two rules are enforced in code, not trusted to each agent:
   - **Delay:** open works past their type's 98th-percentile duration.
 - **Measured** (1,000 typical works inflated, bands rebuilt without them, 20,000 untouched works for false alarms):
 
-  | Mark-up | DRISHTI Cost | Isolation Forest (rivals) |
-  |---|---|---|
-  | 2× | 18% | 1.9% |
-  | 3× | 39% | 2.0% |
-  | 5× | **63%** | 2.8% |
-  | 10× | **84%** | 5.1% |
-  | false alarms | 1.5% | 1.5% |
+  | Mark-up | Caught by DRISHTI |
+  |---|---|
+  | 2× | 18% |
+  | 3× | 39% |
+  | 5× | **63%** |
+  | 10× | **84%** |
+  | false alarms | 1.5% |
 
 - **By design,** price alone is soft (capped) so it rarely queues a work by itself — only 0.11% of normal works.
 - **Limits:** mark-ups under 2× hide in normal price variation; they need a second signal (e.g. Document reading quantities).
@@ -117,15 +116,15 @@ Two rules are enforced in code, not trusted to each agent:
 ### B2 Photo Forensics — *Has this photo been used before, or edited?*
 
 - **Method:** exact file hash + 256-bit perceptual fingerprint + ORB feature matching; documents compared **by their text**, not by image.
-- **Measured** on 319 real photos, 50,678 cross-work pairs, each method at the loosest setting that confuses no two different photos:
+- **Measured** on 319 real photos, 50,678 cross-work pairs, at the loosest setting that confuses no two different photos:
 
-  | Edit | 64-bit fingerprint (rival) | **DRISHTI** |
-  |---|---|---|
-  | brighten 25% | 88% | **100%** |
-  | stamp band added | 45% | **99.4%** |
-  | 8% crop | 19% | **100%** |
-  | screenshot frame | 0.3% | **100%** |
-  | **all edits** | **56%** | **99.9%** |
+  | Edit | **DRISHTI** |
+  |---|---|
+  | brighten 25% | **100%** |
+  | stamp band added | **99.4%** |
+  | 8% crop | **100%** |
+  | screenshot frame | **100%** |
+  | **all edits** | **99.9%** |
 
 - **Found:** one road photo on two different roads in Pratapgarh (the file name names the first work's village); one Hindi "work complete certificate" on two works for two different beneficiaries in Narmadapuram. Both: needs checking.
 - **Lessons:** image fingerprints are useless on certificates (same template → 59,054 false matches in a first run); combined files (one invoice for 18 villages) are normal — an exact copy only matters when the file names a single work or person.

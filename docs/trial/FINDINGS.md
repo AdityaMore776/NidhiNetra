@@ -11,15 +11,15 @@ should look.
 
 | Agent | Verdict | One line |
 |---|---|---|
-| A3 Cost *(built)* | **Works, for big mark-ups** | Catches 63% of works inflated 5× and 84% at 10×, while flagging 1.5% of normal works. The Isolation Forest rivals use catches 3% and 5% at the same false-alarm rate (18% and 47% in its best version). Mark-ups under 2× need a second signal. |
+| A3 Cost *(built)* | **Works, for big mark-ups** | Catches 63% of works inflated 5× and 84% at 10×, while flagging 1.5% of normal works. Mark-ups under 2× need a second signal. |
 | A2 Split works | **Works** | Real pattern: 12× more works just under ₹5 lakh than just over. Found same-day splits and bulk orders kept under the limit. |
 | A2 Duplicates | **Partly** | 48 cases of one named site recommended again while the first was still open; about 19 of them look like one asset funded twice. Exact wording finds nothing once the first work is complete, so real repeats are reworded. Matching by meaning is not built yet. |
-| A1 Eligibility | **Works after a rewrite** | On a fresh sample, 56% of what it flags plainly reads as prohibited, and 80% is worth an officer's look. The keyword search rivals use: 5% and 18%, while flagging 46× more works. |
+| A1 Eligibility | **Works after a rewrite** | On a fresh sample, 56% of what it flags plainly reads as prohibited, and 80% is worth an officer's look. |
 | C1 Delay prediction | **Weak** | Scores 0.71 on a 0.5–1.0 scale, against 0.68 for simply using the office's past record. Better sold as office track records. 7 in 10 works miss the one-year target anyway. |
 | C2 Fund flow | **Facts work; forecasts can't be tested** | 21,323 works (₹1,361 cr) are still waiting for sanction past 75 days. A "year-end rush" signal turned out to be a portal cycle and was dropped. |
 | B4 Document | **Works on typed certificates, free** | Local text reading (no AI service) reads the sanction date, payments and contractor off 431 Uttar Pradesh certificates. It shows 16% of works were sanctioned after the 75-day limit, and that the paper for 282 of 285 "completed" works still says "in progress". About half of other states' papers (Hindi, handwritten) need AI reading. |
 | C3 Contractor | **Works where certificates exist** | The vendor code is an exact identity. In Pratapgarh, 3 vendors hold 84% of the 261 works we could read. |
-| B2 Photo reuse | **Works** | Recognises 99.9% of edited copies (crops, stamps, screenshots); the rival fingerprint gets 56%. The pilot has no disguised copies, but 5 exact files sit on different works, and 2 of those need checking. |
+| B2 Photo reuse | **Works** | Recognises 99.9% of edited copies (crops, stamps, screenshots). The pilot has no disguised copies, but 5 exact files sit on different works, and 2 of those need checking. |
 | B3 Geo-location | **Works** | GPS stamps were read on 170 works, and all fall inside their own district. The date check caught 3 works whose own photos show them finished *before* the MP recommended them. |
 | B1 Site progress | **Not tested** | Needs an AI vision key. |
 | B5 Satellite | **No-go for now** | The pilot has no large works that also have GPS coordinates. |
@@ -51,22 +51,21 @@ should look.
 - Rebuild the price bands without them.
 - Inflate each by 1.5×, 2×, 3×, 5× and 10×.
 - Count how many the agent catches. Count false alarms on 20,000 untouched works.
-- Run Isolation Forest (the method several rival projects use) at **the same false-alarm rate**.
 
-| Mark-up | DRISHTI cost agent | Isolation Forest (type + state + amount) | Isolation Forest (amount only) |
-|---|---|---|---|
-| 1.5× | 0.4% | 1.4% | 1.8% |
-| 2× | 18% | 1.9% | 2.0% |
-| 3× | 39% | 2.0% | 5.9% |
-| 5× | **63%** | 2.8% | 18% |
-| 10× | **84%** | 5.1% | 47% |
-| False alarms | 1.5% | 1.5% | 1.5% |
+| Mark-up | DRISHTI cost agent |
+|---|---|
+| 1.5× | 0.4% |
+| 2× | 18% |
+| 3× | 39% |
+| 5× | **63%** |
+| 10× | **84%** |
+| False alarms | 1.5% |
 
 **On its own**, the price finding puts only 0.11% of normal works in the review queue, and
 it catches 18% of 5× mark-ups and 36% of 10×. That is deliberate: price alone should rarely
 queue a work.
 
-**Meaning:** comparing a work with its peers beats a generic outlier model by a wide margin.
+**Meaning:** comparing a work with similar works in its own district catches large mark-ups reliably.
 Mark-ups under 2× hide inside normal price variation, so they need a second signal, such as
 the document agent reading quantities.
 
@@ -124,15 +123,14 @@ same-site split. Generic text points to a bulk purchase cut under the tender lim
 
 | Reader | Works flagged | Plainly prohibited | Worth an officer's look |
 |---|---|---|---|
-| Keyword anywhere (rival method) | 21,010 | 5% (2 of 40) | 18% |
 | v1: word must be the object of the work *(built)* | 642 | 12% (7 of 60) | 25% |
 | **v2: v1 + fixes from reading its mistakes** | **458** | **56% (28 of 50)** | **80%** |
 
 **Honest scoring:**
 - The v2 fixes were found on one sample of 50. The figure above comes from a **fresh** sample
   of 50, read after the rules were frozen.
-- Of the 20,553 works that only the keyword search flags, 0 of 60 read as plainly prohibited
-  and 2 as worth a look. So v2 misses little while flagging 46× fewer works.
+- Checking what v2 leaves out: of 20,553 works that merely mention a prohibited word, 0 of 60 read as plainly prohibited
+  and 2 as worth a look. So v2 misses little.
 
 **What v2 fixed:**
 - **Ration, fair-price and PDS shops** are government outlets, not commercial ones.
@@ -283,21 +281,21 @@ Certificate (Annexure-VI), printed, signed and scanned. It carries:
 
 **Robustness.**
 - **Setup:** 319 distinct real photos, compared across 50,678 pairs from different works.
-- **Setting:** each method runs at the loosest setting that confuses no two *different*
+- **Setting:** each part runs at the loosest setting that confuses no two *different*
   photos.
 - **Check by eye:** the 25 closest pairs were all different pictures sharing a layout —
   photographed forms of one template, handwritten photo sheets, numbered handpump prints.
 - **Result:** each edited copy of each photo was tested:
 
-| Edit | 64-bit fingerprint (rival) | 256-bit fingerprint | Feature matching (ORB) | **DRISHTI (either)** |
-|---|---|---|---|---|
-| Re-save, half size | 100% | 100% | 99–100% | **100%** |
-| Brighten 25% | 88% | 100% | 99.7% | **100%** |
-| Stamp band added | 45% | 93% | 97% | **99.4%** |
-| 2° turn | 43% | 87% | 100% | **100%** |
-| 8% crop | 19% | 10% | 99.7% | **100%** |
-| Screenshot frame | 0.3% | 0.9% | 100% | **100%** |
-| **All edits** | **56%** | **70%** | **99.4%** | **99.9%** |
+| Edit | 256-bit fingerprint | Feature matching (ORB) | **DRISHTI (either)** |
+|---|---|---|---|
+| Re-save, half size | 100% | 99–100% | **100%** |
+| Brighten 25% | 100% | 99.7% | **100%** |
+| Stamp band added | 93% | 97% | **99.4%** |
+| 2° turn | 87% | 100% | **100%** |
+| 8% crop | 10% | 99.7% | **100%** |
+| Screenshot frame | 0.9% | 100% | **100%** |
+| **All edits** | **70%** | **99.4%** | **99.9%** |
 
 **Real reuse in the pilot:** no disguised (edited) copies turned up. 5 groups of works carry
 the **byte-identical file**:

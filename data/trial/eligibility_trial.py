@@ -1,7 +1,7 @@
 r"""Trial 5 - Eligibility (prohibited works, Annexure-II) on the real descriptions.
 
 Three readers of the same 209,993 descriptions:
-  keyword  - a prohibited word appears anywhere (what rival projects do)
+  keyword  - a prohibited word appears anywhere (simple keyword match)
   v1       - the built matcher: the word must be the OBJECT of the work ("construction of ... temple")
   v2       - v1 plus fixes found by reading v1's matches (this trial):
                * ration / fair-price / public-distribution shops are government PDS outlets, not
