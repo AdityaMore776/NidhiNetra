@@ -167,7 +167,7 @@ function chrome(s, title, pageNo, { logoTitle = false } = {}) {
     ] },
     { x: 506.2, pillW: 378.4, fill: C.navy, icon: "circle-check", head: "HOW IT ADDRESSES THE PROBLEM", labelColor: C.dark, arrowJoin: true, items: [
       ["Manual monitoring can't scale", "every work screened automatically, every day."],
-      ["Money moves before checks", "pre-sanction check inside the 45-day window."],
+      ["Money moves before checks", "eligibility, duplicate & cost checks before sanction."],
       ["Evidence uploaded, never checked", "every photo & bill read, compared and placed on the map."],
       ["Many alerts, few officers", "risk-ranked queue + optimised visit route."],
     ] },
@@ -208,7 +208,7 @@ function chrome(s, title, pageNo, { logoTitle = false } = {}) {
     ] },
     { head: "MONEY & TIME", icon: "chart-line", agents: [
       ["Delay Prediction", "likely to miss 12 months"],
-      ["Fund Flow", "idle funds, year-end rush"],
+      ["Fund Flow", "idle funds, sanctions waiting too long"],
       ["Contractor Network", "a few firms win all"],
     ] },
     { head: "AFTER COMPLETION", icon: "people-roof", agents: [
@@ -240,8 +240,8 @@ function chrome(s, title, pageNo, { logoTitle = false } = {}) {
     "misuse of funds (Photo Forensics, Geo-Location, Document, Fund Flow, Contractor Network), non-compliance",
     "(Eligibility), early warning (Delay Prediction, pre-sanction checks). Satellite runs only for big works",
     "(ponds, long roads) and only after it passes a go/no-go test on real works.",
-    "45-day window: the team's reading of the MPLADS Guidelines 2023 — confirm against the 2023 text",
-    "(the 2016 edition says sanction within 75 days, rejection within 45).",
+    "Sanction window: the 2016 Guidelines say sanction within 75 days (rejection within 45); on 211 real UP",
+    "certificates the median was 68 days and 16% were sanctioned after 75 days. Confirm the 2023 wording.",
   ].join(" "));
 }
 
@@ -282,7 +282,7 @@ function chrome(s, title, pageNo, { logoTitle = false } = {}) {
     ["file-invoice", "Document", "AI reads certificates, bills & UCs", "amounts & dates that don't add up"],
     ["satellite", "Satellite", "Sentinel-2 before/after, big works only", "ponds & long roads never built"],
     ["hourglass-half", "Delay Prediction", "model trained on real completion history", "works likely to miss 12 months"],
-    ["money-bill-trend-up", "Fund Flow", "MP & district money funnel over time", "idle funds, year-end rush"],
+    ["money-bill-trend-up", "Fund Flow", "MP & district money funnel over time", "idle funds, sanctions waiting too long"],
     ["diagram-project", "Contractor Network", "contractor–agency–district graph", "a few firms winning most works"],
     ["users", "Citizen Verification", "QR code at site → photo + GPS", "assets missing or not in use"],
   ];
@@ -400,10 +400,10 @@ function chrome(s, title, pageNo, { logoTitle = false } = {}) {
   chrome(s, "IMPACT AND BENEFITS", 5);
   label(s, "IMPACT ON TARGET STAKEHOLDERS", 48.6, 124);
   const who = [
-    [48, "landmark", "Ministry (MoSPI)", ["National risk heat-map by state & district", "Spot systemic issues & guideline gaps", "Evidence-backed reports for Parliament", "Agent accuracy tracked openly"]],
-    [390, "sitemap", "State Nodal Authorities", ["District & agency league tables", "Escalate stalled or high-risk works", "Track follow-up on every alert", "Spot contractor concentration"]],
-    [733, "map-location-dot", "District Authorities", ["Daily ranked alert queue with evidence", "Inspection plan with optimised route", "Pre-sanction check in the 45-day window", "One-click PDF evidence brief"]],
-    [1075, "user-tie", "Members of Parliament", ["Live status of recommended works", "Early warning on delays & idle funds", "Citizens confirm completed assets", "Transparent record builds public trust"]],
+    [48, "landmark", "Ministry (MoSPI)", ["National risk heat-map by state & district", "Spot patterns: split works, repeats, delays", "Sanction backlog & fund use by term", "Agent accuracy tracked openly"]],
+    [390, "sitemap", "State Nodal Authorities", ["District & agency track records", "Escalate stuck or high-risk works", "Sanction delays read from certificates", "Spot contractor concentration"]],
+    [733, "map-location-dot", "District Authorities", ["Daily ranked review queue with evidence", "Inspection plan with optimised route", "Pre-sanction eligibility & cost checks", "Photo, GPS & certificate checks"]],
+    [1075, "user-tie", "Members of Parliament", ["Live status of recommended works", "Early warning on stuck works & waiting sanctions", "Citizens confirm completed assets", "Transparent record builds public trust"]],
   ];
   for (const [x, ic, head, items] of who) {
     box(s, x, 161, 317, 266, { fill: C.light, r: 11 });
@@ -414,9 +414,9 @@ function chrome(s, title, pageNo, { logoTitle = false } = {}) {
 
   label(s, "BENEFITS", 48.6, 457);
   const ben = [
-    [48, "handshake", "SOCIAL", ["Faster delivery of community assets", "Public trust through transparency", "Citizens get assets that truly exist", "Fairer spread of works across areas"]],
-    [348, "coins", "ECONOMIC", ["Flag risks before funds move", "Targeted visits save officer time", "Catch reused photos & padded bills", "Fewer cost overruns and rework"]],
-    [649, "leaf", "ENVIRONMENTAL", ["Paperless, digital monitoring", "Fewer wasted site trips and fuel", "Durable assets built right first time", "Assets tracked through their life cycle"]],
+    [48, "handshake", "SOCIAL", ["Assets that truly exist, where claimed", "Rules followed: ineligible works caught early", "Stuck works surfaced, delivered faster", "Public trust through transparency"]],
+    [348, "coins", "ECONOMIC", ["Flag risks before funds move", "Catch split works, repeats & padded costs", "Catch reused photos & bills that don't add up", "Targeted visits save officer time"]],
+    [649, "leaf", "ENVIRONMENTAL", ["Paperless, digital monitoring", "Remote checks via photos & GPS stamps", "Fewer wasted site trips and fuel", "Assets tracked through their life cycle"]],
   ];
   for (const [x, ic, head, items] of ben) {
     box(s, x, 509, 275, 239, { fill: C.white, r: 11, line: C.border, lineW: 1.5 });
