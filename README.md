@@ -13,6 +13,8 @@ MPLAD Scheme. It checks every MPLADS work, flags the ones an officer should look
 
 ---
 
+> **Plan update (27 Sept 2026):** the build now follows the team's **NidhiNetra** blueprint — four engines (guideline compliance, cost, duplicate & split, delay) → one explained 0–100 risk score → alerts, role dashboards and a daily **Inspection Planner** → learning from field verdicts. Summary: [`docs/specs/2026-09-27-nidhinetra-blueprint.md`](docs/specs/2026-09-27-nidhinetra-blueprint.md).
+
 ## In one minute
 
 - Every Member of Parliament gets **₹5 crore a year** to recommend local works: roads, lights, handpumps, halls.

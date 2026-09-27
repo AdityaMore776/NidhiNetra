@@ -109,7 +109,7 @@ def board(me: str) -> None:
     for i in ready:
         need = [d for d in deps.get(task_id(i["title"]), []) if d not in done]
         (waiting if need else free).append((i, need))
-    section("Claimable now (dependencies done; T100 first, else the lowest ID)")
+    section("Claimable now (dependencies done; T010 first, else the lowest ID; core T0xx before side track)")
     show([i for i, _ in free], with_who=False)
     section("Waiting on other tasks")
     for i, need in sorted(waiting, key=lambda x: x[0]["title"]):
