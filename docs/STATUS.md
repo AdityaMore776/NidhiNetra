@@ -2,6 +2,8 @@
 
 **Read this first. It is the single source of truth for where the build is.**
 
+**Plan changed 27 Sept 2026: the main architecture is now the NidhiNetra blueprint** ([`specs/2026-09-27-nidhinetra-blueprint.md`](specs/2026-09-27-nidhinetra-blueprint.md)): four engines → risk score → alerts, dashboards, Inspection Planner, field app → learning loop. The roadmap and v2 notes below are history / side track; the live task order is [`team/TASKS.md`](team/TASKS.md).
+
 **Working as a team (from 27 Sept 2026):** tasks, claims and progress now live in the team system: [`AGENTS.md`](../AGENTS.md) (manual), [`team/TASKS.md`](team/TASKS.md) (plan), GitHub Issues (who), [`team/log/`](team/log/) (what happened). This file stays milestone-level: update it only when a milestone moves, and only the lines about your milestone.
 
 ## At a glance (26 Sept 2026)

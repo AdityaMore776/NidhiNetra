@@ -103,7 +103,7 @@ def data_pack() -> bool:
                   key=lambda p: p.stat().st_mtime, reverse=True)
     if not zips:
         print("  not found. Ask the owner for DRISHTI-team-pack.zip (private Google Drive), put it in\n"
-              "  Downloads and re-run. You can already work on tasks that need no data (e.g. T100).")
+              "  Downloads and re-run. You can already work on tasks that need no data (e.g. T010).")
         return False
     try:
         sh([sys.executable, str(ROOT / "scripts" / "team" / "install_pack.py"), str(zips[0])])

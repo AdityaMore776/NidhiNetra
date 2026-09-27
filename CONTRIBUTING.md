@@ -24,12 +24,12 @@ progress log, handoffs and the project rules. Humans new to GitHub: [`docs/team/
 7. **Be polite to eSAKSHI:** 1 request per 1.5 s, one harvester at a time.
 8. **`main` is the live site:** changes arrive only through a pull request with green CI.
 
-## Adding a checker (a DRISHTI "agent")
+## Adding an engine or checker
 
 1. Create `apps/engine/drishti/agents/<id>/` returning an `AgentResult` (see `agents/statistical/agent.py`
    and `agents/contract.py`).
-2. Register it: until task T100 lands, add it to `pipeline/orchestrator.py` (`AGENT_ORDER`, `QUESTIONS`) and
-   give it a label and reliability prior in `fusion/fuse.py`. After T100, the folder is enough (T100 updates
+2. Register it: until task T010 lands, add it to `pipeline/orchestrator.py` (`AGENT_ORDER`, `QUESTIONS`) and
+   give it a label and reliability prior in `fusion/fuse.py`. After T010, the folder is enough (T010 updates
    this step).
 3. Tests under `apps/engine/tests/agents/<id>/`, including `NOT_ASSESSABLE` and `NOT_APPLICABLE` cases.
 4. A trial script in `data/trial/` with its saved (sanitised) result, and its section in

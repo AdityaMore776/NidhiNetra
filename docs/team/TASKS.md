@@ -15,8 +15,10 @@ reads these, so write them as task IDs on the heading line). **Data** = what you
 from the private team pack ([`DATA-PACK.md`](DATA-PACK.md)). **Done when** = every box must be true, with
 command output to show it, before the PR is marked ready.
 
-**Order:** T100 first (it unblocks parallel work). After that, milestones are a priority order, not a queue:
-M1–M4 tasks can run side by side because each checker lives in its own folder. Target dates are aims, not
+**Architecture:** the NidhiNetra blueprint ([`docs/specs/2026-09-27-nidhinetra-blueprint.md`](../specs/2026-09-27-nidhinetra-blueprint.md))
+is the main plan: four engines → risk score → alerts, dashboards, Inspection Planner, field app → learning loop.
+**Order:** T010 first (it unblocks the four engines). Core tasks (T0xx) come before side-track tasks (M9). After
+T010, the four engines can be built side by side. Target dates are aims, not
 deadlines. Editing this file (adding a task, fixing a spec) is fine in any PR: say so in your log entry.
 
 ### Rules every checker task shares
@@ -34,30 +36,7 @@ A **checker** (the design calls them "agents"; not to be confused with your AI) 
 
 ---
 
-## M0.5 — Team foundations
-
-### T100 · Checker registry: 12 slots, one folder each  ·  M  ·  engine  ·  **do first**
-**Why:** the pipeline still has the old 4 hard-coded slots (`site_progress`, `image_reuse`,
-`duplicate_project`, `statistical`) in `pipeline/orchestrator.py` and `fusion/fuse.py`. If four people each
-add a checker by editing those lists, every PR conflicts.
-**What:** make adding a checker a one-folder change.
-- Each `agents/<id>/__init__.py` declares `ID`, `LABEL`, `QUESTION`, `STAGE` (A/B/C/D), `PRIOR_RELIABILITY`
-  and `run(work, ctx) -> AgentResult`. The orchestrator discovers the folders; a missing checker reports
-  `NOT_BUILT`, exactly as today.
-- The 12 v2 slots, in stage order: `eligibility`, `duplicate_split`, `statistical` (label "Cost"; keep the
-  id, the stored assessments use it), `site_progress`, `photo_forensics`, `geo_location`, `document`,
-  `satellite`, `delay`, `fund_flow`, `contractor_network`, `citizen_verification`.
-- `Context` gets a way for a checker to receive precomputed lookups (e.g. split groups, vendor
-  concentration) loaded once per batch, like `StatsStore` today.
-- The web work page renders whatever checkers the engine returns, grouped by stage (read
-  `apps/web/src/components/AgentCard.tsx`, `FusionPanel.tsx`).
-- Old ids `image_reuse`/`duplicate_project` in stored assessments: map them to the new ids when reading.
-**Done when:**
-- [ ] all existing tests pass unchanged in meaning; new tests: discovery, NOT_BUILT for empty slots, an agent
-      raising → ERROR, old-id mapping
-- [ ] a throwaway dummy checker added in a test proves "one folder, no central edit"
-- [ ] `data/dry_run.py` runs; the local web app shows 12 cards in 4 stage groups
-- [ ] `CONTRIBUTING.md` "Adding an agent" updated to the new one-folder recipe
+## M0 — Foundations
 
 ### T001 · Verify the 2023 guideline limits (45 vs 75 days; Annexure-II)  ·  S  ·  research  ·  human task
 **Why:** mplads.gov.in refuses connections from outside India, so the 2023 guidelines PDF was never read.
@@ -71,12 +50,122 @@ prohibited-works annexure, inspection share (para 6.4 in 2016).
       wording where it differs (clause ids cited); tests still pass
 - [ ] FINDINGS and CATALOG say which clock the checks use
 
-### T002 · Summary tables for a fast dashboard  ·  S–M  ·  engine + data
-**Why:** the first load after a deploy takes seconds (cold start + aggregation over 2.1 lakh rows).
-**What:** precompute the dashboard aggregates (`/summary`, `/districts`) in `batch_assess.py` into summary
-tables (new migration), read those in `api/routes.py`.
-**Done when:** [ ] API tests cover the summary tables · [ ] results identical to the live aggregates on a
-local load · [ ] timing before/after written in the log entry
+## M1 — Core: detect (four engines)  ·  target Oct wk 1–2
+
+### T010 · Engine contract + registry for the four engines  ·  M  ·  engine  ·  **do first**
+**What:** one place that lists the blueprint's four engines (compliance, cost, dup_split, delay) plus the
+outlier signal, each returning per work `signal` 0–1 + `evidence`, so four people can build four engines in
+separate folders without editing the same lines. Keep the existing `AgentResult` contract if it fits (`risk` =
+signal) and the stored id `statistical` for cost; map old ids when reading stored assessments. Discovery by
+folder (`apps/engine/drishti/agents/<engine>/`), a missing engine reports `NOT_BUILT`. The web work page shows
+the engines that exist.
+**Done when:** [ ] tests: discovery, NOT_BUILT, an engine raising → ERROR, a dummy engine added in a test
+without editing central files · [ ] `data/dry_run.py` runs · [ ] `CONTRIBUTING.md` "Adding" recipe updated
+
+### T011 · Guideline Compliance engine (rules.json, R01–R11)  ·  M  ·  engine  ·  Depends on: T010
+**What:** `reference/rules.json` with the 11 starter rules from the blueprint spec (id, title, guideline_ref,
+condition, severity, message_en, message_hi) and a vectorised evaluator. Severity → signal (1.0/0.6/0.3), highest
+wins; evidence lists each broken rule with value vs limit. R07 reuses the Eligibility v2 patterns from
+`data/trial/eligibility_trial.py` (worded "verify"). R06 reuses `validation/timeline.py` (impossible dates judged
+by quarter). Add PII masking (phones, "S/o", "W/o", "Shri …") to the prepare step if not already masked.
+**Done when:** [ ] one test per rule · [ ] counts per rule on the real corpus in the log · [ ] guideline_ref filled
+(para numbers from T001; "TBC" until then) · [ ] no rule text uses accusing words
+
+### T020 · Cost Anomaly engine (version A, then B + outlier)  ·  M–L  ·  engine + data  ·  Depends on: T010
+**What:** start from the live cost agent (`agents/statistical/`); add the blueprint's signal
+`clip((ratio-1.3)/1.7, 0, 1)` against leave-one-out peers (type + state + ±2 yrs, fallback national). Then
+version B: LightGBM quantile models (out-of-fold) + Isolation Forest `s_outlier` as a separate signal.
+**Done when:** [ ] `data/trial/cost_trial.py` re-run: catch rate at 2×/3×/5× and false alarms vs today's 63% /
+1.5%; keep whichever is better and say so · [ ] tests · [ ] `s_outlier` exposed for T050
+
+### T030 · Duplicate & Split-Work engine  ·  L  ·  engine + data  ·  Depends on: T010
+**What:** multilingual embeddings (`paraphrase-multilingual-MiniLM-L12-v2`, free, local), district blocking,
+pair score and split groups exactly as in the spec; embeddings precomputed by a data job (pgvector available).
+Start from `data/trial/split_trial.py` and `dup_trial.py` (136 bulk groups / 744 works; 48 repeat pairs). A group
+counts once in the score. Every flag says "verify".
+**Done when:** [ ] plan in `docs/plans/` · [ ] hand-read top 50 pairs: share that look real, in FINDINGS · [ ]
+the Nanded 3 × ₹4,96,000 split found · [ ] tests
+
+### T040 · Delay Prediction engine (XGBoost + SHAP)  ·  M  ·  engine + data  ·  Depends on: T010
+**What:** label and features per the spec; strict time-based backtest (train only on outcomes known then, as
+`data/trial/delay_trial.py` does) and held-out districts; SHAP top reasons as evidence. Report the real AUC even
+if under 0.80, and compare with the office's own record (0.68).
+**Done when:** [ ] AUC + "late among riskiest 10%" in FINDINGS · [ ] wording never says "will be late" ·
+[ ] model file loading tested; training script in `data/`
+
+## M2 — Core: explain + act  ·  target Oct wk 3 – Nov wk 1
+
+### T050 · Risk score 0–100, bands, top-3 reasons (EN + HI)  ·  M  ·  engine  ·  Depends on: T011, T020
+**What:** replace fusion v1 with the blueprint formula (weights 0.30/0.20/0.20/0.20/0.10, safety floors 70/85,
+bands Low/Medium/High/Critical); contributions add up to the score; per-engine sentence templates in English and
+Hindi. Tune cut-offs so High + Critical ≈ 5–10%. Engines not built yet count 0 and are shown as "not built".
+**Done when:** [ ] tests for formula, floors, bands, reasons · [ ] band shares on the real corpus in the log ·
+[ ] `batch_assess.py` + API + work page show score, band and 3 reasons
+
+### T060 · Alerts, lifecycle, audit log  ·  M  ·  engine + web  ·  Depends on: T050
+**What:** tables `alerts` (New → Triaged → In plan → Inspected → Issue confirmed / Cleared → Closed) and
+hash-chained `audit_log`; `GET /alerts`, `PATCH /alerts/{id}`; district queue UI with triage actions; daily digest
+to console.
+**Done when:** [ ] every state change audited, chain verified by a test · [ ] role scoping tested
+
+### T061 · Location lookup  ·  S–M  ·  data  ·  Data: LGD / PIN files
+**What:** work → approximate lat/lon: village or place token → block → district centroid, with a precision flag
+("approximate"). Our LGD outlines + PIN file + district crosswalk are the starting point.
+**Done when:** [ ] share of works at each precision level in the log · [ ] never joins census and LGD codes by number
+
+### T062 · Inspection Planner (headline)  ·  L  ·  engine + web  ·  Depends on: T050, T061
+**What:** exactly the spec's algorithm (candidates risk ≥ 40 + 10% random, value = risk × money weight, greedy
+by value per extra minute within 8 h, OR-Tools TSP, per-stop checklist from the reasons). `POST /plans/generate`,
+`GET /plans/{id}`; map + stop list on the district dashboard.
+**Done when:** [ ] plan in `docs/plans/` · [ ] km saved vs visiting the top sites in list order, measured on real
+districts · [ ] tests for the greedy step and the budget
+
+### T063 · Field verification app (mobile web)  ·  M  ·  web + engine  ·  Depends on: T062
+**What:** today's route, site card, checklist, photo + GPS + time, verdict (OK / Issue / Not found / Can't verify);
+GPS > 2 km from site → "location mismatch"; perceptual-hash reuse check (port from `data/trial/photo_trial.py`).
+Submissions labelled `source = LIVE`, written to the audit log.
+**Done when:** [ ] works on a phone browser · [ ] verdict reaches the alert and the audit chain
+
+### T064 · Pre-sanction check  ·  M  ·  engine + web  ·  Depends on: T011, T020, T030
+**What:** one screen / API: run compliance (category, location), dup/split search and expected cost on a new
+recommendation → Green / Amber / Red with reasons. Never blocks.
+**Done when:** [ ] one test per colour · [ ] demo case from real data in the log
+
+### T065 · Role dashboards: Ministry, State, District, MP, Field  ·  L  ·  web + engine  ·  Depends on: T050
+**What:** the spec's screens per role, row-level scoping (a district officer's API answers "not found" outside
+their district). MP view is a neutral status view of their own works: no reviewer tools, no risk wording, and
+MPs are never scored. Includes the dashboard-speed summary tables (was T002).
+**Done when:** [ ] plan in `docs/plans/` · [ ] each role checked with demo logins · [ ] screenshots in the PR
+
+## M3 — Core: learn + prove  ·  target Nov wk 2–3
+
+### T070 · Learning loop (simulated verdicts)  ·  M  ·  engine  ·  Depends on: T060, T063
+**What:** reliability = (1 + a)/(2 + a + b) per engine over alerts where it was a top-3 reason; weights re-tuned
+and renormalised; "what changed" note; 10% exploration visits in the planner. Demo with simulated verdicts on
+planted cases, labelled "mechanism demo, not field accuracy".
+**Done when:** [ ] tests for the reliability maths · [ ] before/after weights shown on the Ministry dashboard
+
+### T080 · Planted-anomaly test (50 fakes)  ·  M  ·  data + eval  ·  Depends on: T050
+**What:** script that copies the works, plants 50 labelled fakes (inflated cost, reworded/translated duplicates,
+splits, rule breaches, impossible timelines, `source = SCENARIO`), runs the pipeline blind, reports the share in
+the top 5% of each engine and overall. Never mixes planted rows into the live database silently.
+**Done when:** [ ] result JSON in `data/trial/results/` · [ ] numbers in FINDINGS and the deck, reported honestly
+
+### T090 · Five-minute demo script + judge Q&A  ·  S  ·  docs  ·  Depends on: T062, T080
+**Done when:** [ ] script walks the loop by role on the live site · [ ] every number from FINDINGS
+
+### T091 · Rename user-facing text to NidhiNetra  ·  S  ·  web + docs  ·  **needs-owner** (confirm the name)
+**What:** app title, logo text, README, docs headers. Repo/folder names and env vars stay (they carry deploy ids).
+
+---
+
+## M9 — Side track: real-evidence checkers (after the core; they feed its engines)
+
+These come from the earlier 12-checker design and our real-evidence trial. Build them only when the core task you
+could take is blocked or done. Where they fit the core: Document feeds R03/R04/R05 with real payment dates;
+Photo Forensics and Geo feed the field app; Contractor Network and Fund Flow are extra dashboard facts.
+In each spec below, read "checker" as an engine plugged in through T010's registry: where a spec says `Depends
+on: T100`, it now means T010.
 
 ### T003 · Harvest more evidence (one person at a time)  ·  M  ·  data  ·  **needs-owner** (picks the districts)
 **Why:** the pilot is 837 works (Pratapgarh + 400 random). Photo, geo and document checkers need more
@@ -89,9 +178,7 @@ districts, works, files, MB and minutes · [ ] pack updated
 
 ---
 
-## M1 — Document + Contractor (free local reading of certificates)  ·  target Oct wk 1–2
-
-### T101 · Evidence tables + loader  ·  M  ·  engine + data  ·  Depends on: T100  ·  Data: evidence + OCR cache
+### T101 · Evidence tables + loader  ·  M  ·  engine + data  ·  Depends on: T010  ·  Data: evidence + OCR cache
 **What:** migration for the evidence-derived tables (design §7: `evidence_files`, `doc_fields`,
 `photo_hashes`, `overlay_geo`, `contractors`, `contractor_links`; create only what M1 needs, leave the rest
 for their tasks) and `data/load_evidence.py` that fills them from `data/evidence/manifest.jsonl` + the OCR
@@ -101,7 +188,7 @@ names or account numbers. The engine loads a work's evidence facts into the chec
 [ ] loads all 837 pilot works locally; counts in the log · [ ] a masking test proves account numbers never
 reach a table
 
-### T102 · Certificate reader in the engine  ·  M  ·  engine  ·  Depends on: T100
+### T102 · Certificate reader in the engine  ·  M  ·  engine  ·  Depends on: T010
 **What:** port the UP Utilisation Certificate parser from `data/trial/document_trial.py` (`parse_uc`,
 `parse_uc_p2`, `page_kind`, `after_colon`, `ordered_lines`, `to_date`) into
 `apps/engine/drishti/agents/document/reader.py` as pure functions over OCR output. Keep both form versions
@@ -143,49 +230,6 @@ checks the live site, updates STATUS.
 
 ---
 
-## M2 — Eligibility v2, split works, funded-twice  ·  target Oct wk 2–3
-
-### T201 · A1 Eligibility v2 as a checker  ·  M  ·  engine  ·  Depends on: T100
-**What:** today eligibility is a validation note (`validation/prohibited.py`, v1, 12% precision). Port v2 from
-`data/trial/eligibility_trial.py` (`v2()` and its patterns: PDS shops, landmark-after-name, institution
-names like Shishu Mandir, temple premises) into `agents/eligibility/`, raise it from note to finding, cite
-the Annexure-II item.
-**Done when:** [ ] flags 458 works on the corpus (±2%, explain any change) · [ ] the 50-work fresh sample
-still gives ≥ 56% plainly prohibited, 80% worth a look (labels are in the trial script) · [ ] one test per
-pattern, including the false-positive cases v2 fixed
-
-### T202 · A2 Split works + bulk orders under the limit  ·  M  ·  engine + data  ·  Depends on: T100
-**What:** from `data/trial/split_trial.py` (`bunching`, `identical_groups`): a data job precomputes groups;
-the checker reads them from the context.
-- same-site split: same named-site text, same district, same day, each piece just under ₹5 lakh
-  (e.g. Nanded, 3 × ₹4,96,000 on 13 May 2025)
-- bulk order under the limit: identical text, same district + work type, each within 60 days of the last,
-  every piece ₹4–5 lakh, total over ₹5 lakh
-- a group counts **once** in fusion (don't let 48 works each score high for one pattern)
-**Done when:** [ ] reproduces 136 groups / 744 works · [ ] the Nanded group found · [ ] queue impact in
-the log · [ ] test that a group adds one signal, not N
-
-### T203 · A2 Same named asset funded twice  ·  S–M  ·  engine + data  ·  Depends on: T202
-**What:** from `data/trial/dup_trial.py`: exact named-site text in the same district, recommended again
-more than 60 days later while the first is still open. Exclude repairs/extensions/phases (`REPAIR` pattern).
-**Done when:** [ ] reproduces the 48 pairs · [ ] the 19 hand-read "same asset" pairs are all flagged and the
-9 no-real-site pairs are not (or FINDINGS updated with why) · [ ] tests
-
-### T204 · Matching by meaning for reworded repeats  ·  L  ·  research + engine  ·  Depends on: T203
-**Why:** exact wording finds 0 repeats after completion; real repeats are reworded.
-**What:** try a free, local multilingual text-embedding model (store vectors with pgvector, already in
-Supabase and pgserver). Candidates: same district, same work type, rare shared place names. **Kill
-criterion:** if a hand-read sample of 50 top candidates has fewer than 1 in 3 real repeats, it stays off.
-**Done when:** [ ] plan in `docs/plans/` · [ ] measured on a hand-read sample, numbers in FINDINGS · [ ]
-shipped behind the kill criterion or documented as off
-
-### T205 · Web: linked works on split/duplicate cards  ·  S  ·  web  ·  Depends on: T202
-**Done when:** [ ] the card lists the other works in the group with links · [ ] screenshots in the PR
-
----
-
-## M3 — Photo Forensics + Geo-Location  ·  target Oct wk 3–4
-
 ### T301 · Photo fingerprints data job  ·  M  ·  data + engine  ·  Depends on: T101  ·  Data: evidence
 **What:** from `data/trial/photo_trial.py` (`phash256`, `orb_features`, `orb_inliers`): compute for every
 evidence **photo** (not PDFs/certificates: fingerprints don't work on forms) a SHA-256, a 256-bit
@@ -225,32 +269,12 @@ by work ID) and cards for B2/B3.
 
 ---
 
-## M4 — Delay, Fund Flow, role dashboards  ·  target Nov wk 1–2
-
-### T401 · C1 Delay: office track records + stuck works  ·  M  ·  engine + data  ·  Depends on: T100
-**What:** from `data/trial/delay_trial.py` (`stuck_now`, `office_load`): per office, share of works
-finished within a year vs the same period nationally; per work, "stuck" (recommended Apr 2023–May 2024 and
-still not complete; split sanctioned-never-finished vs never-sanctioned). The model is only a ranking aid
-(0.71 vs 0.68 for the office's record): never present it as a prediction.
-**Done when:** [ ] reproduces 40,489 stuck works (₹2,178 cr), 37,658 / 2,831 split · [ ] wording test: no
-"will be late" · [ ] tests
-
-### T402 · C2 Fund Flow: sanction backlog + term-end leftovers  ·  M  ·  engine + data  ·  Depends on: T100  ·  Data: fund files
+### T402 · C2 Fund Flow: sanction backlog + term-end leftovers  ·  M  ·  engine + data  ·  Depends on: T010  ·  Data: fund files
 **What:** from `data/trial/fund_flow_trial.py` (`sanction_backlog`, `funnel`, `timing`): works waiting for
 sanction past the clock (21,323 works, ₹1,361 cr, median 239 days); those recommended under a Lok Sabha term
 that has ended (3,331, ₹169 cr). MP-level money is summed by term and **never scored per MP**. Compare
 offices only with the same period nationally (the "March rush" was a portal cycle).
 **Done when:** [ ] reproduces the figures above · [ ] tests · [ ] no MP name in any finding
-
-### T403 · Role dashboards v1  ·  L  ·  web + engine  ·  Depends on: T002
-**What:** Ministry = national picture + worst districts; District officer = their queue, map zoomed to their
-district, office track records; Field = their inspection list. Role scoping exists already; keep it.
-**Done when:** [ ] plan in `docs/plans/` · [ ] each role checked with the demo logins (owner shares them
-privately) · [ ] screenshots in the PR
-
----
-
-## M5 — AI reading (needs the owner's paid-key decision)  ·  target Nov wk 3
 
 ### T501 · Gemini provider with a quota ledger  ·  M  ·  engine  ·  **needs-owner** (key)
 **What:** one provider class behind a switch: free tier by default, a hard daily cap, every call logged to a
@@ -270,8 +294,6 @@ plaque visible (CAG found 4,918 works without one). A reused photo (B2) voids pr
 **Done when:** [ ] plan in `docs/plans/` · [ ] the decisive test: photos of a half-built thing + a claim the
 photos plainly don't show ("roof slab cast", no roof) → "not shown" · [ ] measured on real evidence
 
-### T504 · Field app page (camera + GPS)  ·  M  ·  web  ·  Depends on: T503
-**Done when:** [ ] works on a phone browser · [ ] submissions labelled `source = LIVE`
 
 ### T505 · D1 Citizen Verification demo  ·  S–M  ·  web  ·  Depends on: T302, T304
 **What:** QR/link → simple form (photo + GPS) checked by B2/B3. eSAKSHI ratings are unused (21,789 of 21,793
@@ -279,32 +301,9 @@ are zero), so this is shown only as a **clearly labelled demo**.
 
 ---
 
-## M6 — Decisions, finale  ·  target Nov wk 4 – Dec
-
-### T601 · Fusion v2: conflict rules  ·  M  ·  engine  ·  Depends on: T103, T104, T201, T202, T302, T304
-Rules (design §3): a reused photo voids progress confirmations; a bulk order counts once; satellite may only
-withdraw a finding, never create one; plus R4–R6 from the design. One test per rule; score parts still add
-up exactly.
-
-### T602 · Inspection Planner  ·  M  ·  engine + web  ·  Depends on: T601
-The District Authority's mandatory 10% of inspections: ~80% by risk × money, ~20% at random (keeps base
-rates honest, deters gaming), grouped into day trips.
-
-### T603 · Ask DRISHTI  ·  L  ·  engine + web  ·  Depends on: T601
-Plain-language questions answered only from checked database queries; guideline answers quote the clause
-verbatim; drafts inspection notes in English/Hindi. Needs T501 for the language model.
-
 ### T604 · B5 Satellite go/no-go (big works only)  ·  L  ·  research  ·  Depends on: T003
 Only ponds, roads over 1 km, large buildings, and only with coordinates. Go/no-go test first: if built vs not
 built can't be told apart on real sites, it stays off and the docs say so.
-
-### T605 · Evaluation report + demo script  ·  M  ·  docs  ·  Depends on: T106, T203, T302, T304, T401, T402
-One page per checker: target, measured result, kill criterion, known limits. A 5-minute demo walk-through
-of the live site by role.
-
-### T606 · Final deck  ·  M  ·  deck  ·  Depends on: T605
-Deck sources: `docs/deck/`. Rules: pictorial, plain words, no file paths or test counts on slides, no
-competitor talk except the one chart on the final References slide. Numbers only from FINDINGS.
 
 ---
 

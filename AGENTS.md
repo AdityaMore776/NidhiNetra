@@ -69,7 +69,7 @@ https://github.com/AdityaMore776/drishti/issues and have your human click "assig
 
 1. List what's free: `gh issue list --label ready --state open`
 2. `python scripts/team/sync.py` lists the tasks that are **claimable now** (their "Depends on" tasks are
-   closed). Take **T100 first** while it's open (it unblocks most others), otherwise the lowest-numbered
+   closed). Take **T010 first** while it's open (it unblocks the four engines), otherwise the lowest-numbered
    claimable task, unless your human asks for a specific one. `human-task` tasks need your person to do
    part of it (e.g. download from an Indian internet connection); ask before claiming. Tasks labelled `needs-owner` wait for the owner's decision or
    accounts: skip them.
@@ -189,8 +189,11 @@ Bigger than one session? That's normal. Push at the end of every session.
 
 ## 8. Decisions already made (don't re-ask the owner)
 
-- 12 checkers in 4 stages plus 4 decision tools (design: `docs/specs/2026-09-25-drishti-v2-full-agents-design.md`).
-- Build order = `docs/team/TASKS.md` (M1 Document + Contractor, then M2 … M6).
+- **Main architecture = the NidhiNetra blueprint** (`docs/specs/2026-09-27-nidhinetra-blueprint.md`, decided
+  2026-09-27): four engines (Compliance, Cost, Duplicate & Split, Delay) → 0–100 risk score with top-3 reasons →
+  alerts, role dashboards, **Inspection Planner (headline)**, field app, pre-sanction check → learning loop, proven
+  by a planted-anomaly test. The earlier 12-checker design is a **side track** (TASKS.md M9), built after the core.
+- Build order = `docs/team/TASKS.md`: core T0xx tasks first, lowest ID first.
 - Site Progress judges the officer's **own free-text claims** against the photos (shown / not shown / can't
   tell). Never describe it as a fixed yes/no checklist.
 - Pre-2023 and post-2023 works are different populations (eSAKSHI went digital ~2023); never pool them.
