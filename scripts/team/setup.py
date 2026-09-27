@@ -40,10 +40,24 @@ def sh(cmd: list[str], cwd: Path = ROOT) -> None:
     subprocess.run([exe, *cmd[1:]], cwd=cwd, check=True)
 
 
+def engine_python() -> list[str] | None:
+    """A Python 3.12+ to build the engine venv with. 3.12 first: CI uses it and every wheel exists for it."""
+    candidates = [["py", "-3.12"], ["python3.12"], ["py", "-3.13"], ["python3.13"]]
+    if sys.version_info >= (3, 12):
+        candidates.insert(1, [sys.executable])
+    for cmd in candidates:
+        out = run(*cmd, "-c", "import sys; print(sys.version_info >= (3, 12))")
+        if out == "True":
+            return cmd
+    return None
+
+
 def check_tools() -> list[str]:
     problems = []
-    if sys.version_info < (3, 12):
-        problems.append(f"Python 3.12+ needed (this is {sys.version.split()[0]}): "
+    if VENV_PY.exists() or engine_python():
+        pass
+    else:
+        problems.append(f"Python 3.12+ needed (found {sys.version.split()[0]}): "
                         "winget install --id Python.Python.3.12 -e")
     node = run("node", "--version")
     if not node or int(node.lstrip("v").split(".")[0]) < 20:
@@ -63,7 +77,8 @@ def check_tools() -> list[str]:
 def engine() -> None:
     step("Engine (Python)")
     if not VENV_PY.exists():
-        sh([sys.executable, "-m", "venv", str(ENGINE / ".venv")])
+        py = engine_python()
+        sh([*py, "-m", "venv", str(ENGINE / ".venv")])
     sh([str(VENV_PY), "-m", "pip", "install", "--quiet", "--upgrade", "pip"])
     sh([str(VENV_PY), "-m", "pip", "install", "--quiet", "-e", ".", "-r", "requirements-dev.txt",
         "-r", str(ROOT / "data" / "requirements.txt")], cwd=ENGINE)
