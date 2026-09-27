@@ -34,10 +34,21 @@ automatic checks on a PR. **Claim** = assigning a task's issue to your human so 
 
 ## 2. Session start (do this every time, before anything else)
 
+**First session on a new machine?** (no `apps/engine/.venv` folder yet) Run the one-command setup, and fix
+anything it reports as missing with your human before going on:
+```bash
+python scripts/team/setup.py          # tools check, engine + web installs, data pack if its zip is in Downloads, tests
+python scripts/team/setup.py --db     # once the data pack is installed: build the local database (~10 min)
+python scripts/dev/start.py           # later, to run the whole app locally: http://localhost:3000
+```
+
+Every session:
 ```bash
 git checkout main && git pull            # get everyone's latest work
 python scripts/team/sync.py              # prints: newest log entries, tasks in progress, tasks ready
 ```
+Claude Code users can type `/start` (and `/wrapup` at the end, `/review <PR>` to review); the commands
+live in `.claude/commands/` and do exactly what this file says.
 
 Then:
 1. **Read the newest 5–10 files in `docs/team/log/`** (the sync script lists them). They tell you

@@ -6,16 +6,11 @@ Drive folder**, shared by the owner with teammates only.
 
 ## Install (teammates)
 
-1. Download `DRISHTI-team-pack.zip` from the team Drive folder (link from the owner).
-2. From the repo root:
-   ```powershell
-   python scripts/team/install_pack.py "$HOME\Downloads\DRISHTI-team-pack.zip"
-   ```
-   It never overwrites files you already have (add `--force` to refresh from a newer pack).
-3. Optional, to run the app locally with the real corpus (after the engine setup in [`docs/SETUP.md`](../SETUP.md)):
-   ```powershell
-   apps\engine\.venv\Scripts\python.exe scripts\dev\local_db.py --load
-   ```
+1. Download `DRISHTI-team-pack.zip` from the team Drive folder (link from the owner) into **Downloads**.
+2. `python scripts/team/setup.py` finds it there and unpacks it (it calls `scripts/team/install_pack.py`,
+   which never overwrites your files; run that directly with `--force` to refresh from a newer pack).
+3. `python scripts/team/setup.py --db` builds the local database from it; `python scripts/dev/start.py`
+   runs the app.
 
 ## What's inside, and which tasks need it
 
