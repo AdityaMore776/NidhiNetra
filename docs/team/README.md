@@ -50,12 +50,13 @@ as much as you like, but a decision only counts once it's in an issue comment or
    gh repo clone AdityaMore776/drishti
    cd drishti
    ```
-5. **Get the private data pack** from the team's Google Drive folder (the owner shares it with you) and unpack
-   it: `python scripts/team/install_pack.py "$HOME\Downloads\DRISHTI-team-pack.zip"`.
-   Details: [`DATA-PACK.md`](DATA-PACK.md). *Never upload these files anywhere else.*
-6. **Install your AI tool** (Claude Code, Codex, Cursor, Gemini CLI, Copilot, …) and open it **in the
-   `drishti` folder**. Then say the start sentence below. It sets up the rest (Python and web packages) by
-   following [`docs/SETUP.md`](../SETUP.md).
+5. **Download the private data pack** `DRISHTI-team-pack.zip` from the team's Google Drive folder (the owner
+   shares it with you) into your **Downloads** folder. Leave it zipped. *Never upload it anywhere else.*
+6. **Install your AI tool** (Claude Code, Codex, Cursor, Gemini CLI, Copilot, …), open it **in the `drishti`
+   folder** and say the start sentence below. On the first run it executes `python scripts/team/setup.py`,
+   which installs everything, unpacks the data pack from Downloads, runs the tests, and tells you if anything
+   is missing. Then `python scripts/team/setup.py --db` builds your local copy of the database (~10 min), and
+   `python scripts/dev/start.py` runs the whole app at http://localhost:3000.
 
 ---
 

@@ -3,6 +3,15 @@
 The live prototype is at **https://drishti-lyart.vercel.app**. This page is for running it on your own
 machine, running the tests, and deploying.
 
+## The quick way (teammates)
+
+```powershell
+python scripts/team/setup.py         # installs engine + web, unpacks the data pack from Downloads, runs tests
+python scripts/team/setup.py --db    # builds the local database with the real corpus (~10 min, once)
+python scripts/dev/start.py          # database + engine + web together: http://localhost:3000
+```
+The sections below are the same steps by hand.
+
 ## Prerequisites
 
 - Python **3.12+**
