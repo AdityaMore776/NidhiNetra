@@ -97,4 +97,6 @@ def assess_all(url: str, ctx: Context, work_ids: Iterable[str] | None = None,
             with con.cursor() as cur:
                 cur.executemany(UPSERT, batch)
             con.commit()
+        con.execute("DELETE FROM dashboard_cache")   # saved dashboard answers are now stale
+        con.commit()
     return bands
