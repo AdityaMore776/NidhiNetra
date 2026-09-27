@@ -197,7 +197,7 @@ database. LOW works with nothing to show are stored **compact** (summary only) a
   validation and impossible dates, orchestrator (an agent crash never becomes a finding), config, migrations,
   API and auth (scoping, dev-mode refusal on Vercel).
 - **Web:** typecheck, lint and production build in CI.
-- **Agents on real data:** `data/trial/*.py` — every number in [AGENTS.md](AGENTS.md) comes from a saved
+- **Agents on real data:** `data/trial/*.py` — every number in [AGENT-CATALOG.md](AGENT-CATALOG.md) comes from a saved
   output in `data/trial/results/`.
 
 ## 12. Known limits of the current build

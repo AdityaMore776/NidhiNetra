@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import itertools
 import tempfile
+from urllib.parse import urlsplit, urlunsplit
 
 import psycopg
 import pytest
@@ -31,7 +32,10 @@ def db_url(pg_server) -> str:
     with psycopg.connect(admin, autocommit=True) as con:
         con.execute(f"DROP DATABASE IF EXISTS {name}")
         con.execute(f"CREATE DATABASE {name}")
-    return admin.rsplit("/", 1)[0] + f"/{name}"
+    # Swap only the database name. On Linux pgserver answers on a socket
+    # ("...@/postgres?host=/tmp/x"), so cutting at the last "/" would land
+    # inside the socket path; that broke every database test in CI.
+    return urlunsplit(urlsplit(admin)._replace(path=f"/{name}"))
 
 
 @pytest.fixture()

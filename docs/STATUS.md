@@ -2,13 +2,15 @@
 
 **Read this first. It is the single source of truth for where the build is.**
 
+**Working as a team (from 27 Sept 2026):** tasks, claims and progress now live in the team system: [`AGENTS.md`](../AGENTS.md) (manual), [`team/TASKS.md`](team/TASKS.md) (plan), GitHub Issues (who), [`team/log/`](team/log/) (what happened). This file stays milestone-level: update it only when a milestone moves, and only the lines about your milestone.
+
 ## At a glance (26 Sept 2026)
 
 | | |
 |---|---|
 | **Live** | https://drishti-lyart.vercel.app — all 2,09,993 real works assessed; review queue 276 (0.13%); Ministry / District / Field logins |
 | **In the live engine** | Cost agent, Data Validation, Risk Fusion v1, role scoping, India map on LGD outlines |
-| **Proven on real data, being ported** | Eligibility v2, Split & Duplicate, Photo Forensics, Geo-Location, Document, Contractor Network, Delay (as track records), Fund Flow (facts) — see [AGENTS.md](AGENTS.md) |
+| **Proven on real data, being ported** | Eligibility v2, Split & Duplicate, Photo Forensics, Geo-Location, Document, Contractor Network, Delay (as track records), Fund Flow (facts) — see [AGENT-CATALOG.md](AGENT-CATALOG.md) |
 | **Needs a decision** | paid AI key (capped) for Hindi/handwritten papers, Site Progress and plaque check |
 | **Gated off** | Satellite (no large works with coordinates yet); Citizen Verification is demo-only (no real ratings) |
 

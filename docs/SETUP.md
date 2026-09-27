@@ -47,6 +47,12 @@ calls the engine with the role you set.
 
 ## 3. Load data into a database
 
+**Teammates, the quick way:** install the private data pack ([`team/DATA-PACK.md`](team/DATA-PACK.md)), then
+`apps\engine\.venv\Scripts\python.exe scripts\dev\local_db.py --load` starts a local Postgres, loads the
+built data and assesses every work; it prints the `DATABASE_URL` for the engine. Later runs: drop `--load`.
+
+The full pipeline, from the raw export:
+
 ```bash
 python data/build_corpus.py      # needs the raw export (DRISHTI_OLD_REPO, see docs/DATA.md)
 python data/build_stats.py       # asserts it reproduces the measured statistics
@@ -99,5 +105,6 @@ The harvester is deliberately slow (1 request / 1.5 s). Please keep it that way.
 | Map paints works on the wrong district | re-run `data/boundaries.py` **then** `data/district_crosswalk.py` |
 | `invalid connection option "supa"` | use `config.database_url()` — it strips pooler hints libpq rejects |
 | Map is blank in dev | `npm run dev` copies the MapLibre worker to `public/maplibre` (`scripts/copy-maplibre.mjs`) |
+| `local_db.py`: "Timeout starting server", log says "sharing violation" | the database was not shut down cleanly (window closed instead of Ctrl+C). Stop leftovers with `pg_ctl stop -D data/cache/pg -m fast` (pg_ctl is under `apps/engine/.venv/Lib/site-packages/pgserver/pginstall/bin/`); if it still fails, delete `data/cache/pg` and re-run with `--load` |
 | First load after deploy is slow | expected: cold start + aggregation over 2.1 lakh rows |
 | Windows: "WinError 6 handle is invalid" in OCR | run OCR as single-process shards (`--shard i/n`) |

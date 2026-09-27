@@ -1,0 +1,23 @@
+# One line-ending style for everyone (the team mixes Windows and other machines).
+# Git stores text with LF; Windows editors cope. Without this, one Windows save
+# turns a one-line change into a whole-file diff and causes needless merge conflicts.
+* text=auto eol=lf
+
+# Windows scripts keep CRLF in the working copy
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Binary files: never touch
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.pptx binary
+*.docx binary
+*.xlsx binary
+*.parquet binary
+*.zip binary
+*.duckdb binary

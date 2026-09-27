@@ -9,4 +9,4 @@ DATABASE_URL=... DRISHTI_AUTH=dev uvicorn drishti.main:app --port 8000
 ```
 
 API docs at `/api/v1/docs`. Structure, scoring maths, auth and schema: [`docs/ARCHITECTURE.md`](../../docs/ARCHITECTURE.md).
-Agents: [`docs/AGENTS.md`](../../docs/AGENTS.md).
+Agents: [`docs/AGENT-CATALOG.md`](../../docs/AGENT-CATALOG.md).
