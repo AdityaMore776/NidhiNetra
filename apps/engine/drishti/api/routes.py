@@ -10,6 +10,7 @@ from datetime import date
 from functools import lru_cache
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from psycopg.types.json import Jsonb
 
 from drishti import config
 from drishti.agents.statistical.cohort import StatsStore
@@ -69,8 +70,32 @@ def me(user: Principal = Depends(current_user)) -> dict:
             "name": user.name}
 
 
+def _cached(key: str, compute):
+    """Serve a saved dashboard answer; compute and save it on a miss (migration 005).
+
+    Aggregating all works took 4-9 s per request on the hosted database. The cache is
+    emptied whenever works are re-assessed, so it never shows stale scores.
+    """
+    with connect() as con:
+        row = con.execute("SELECT payload FROM dashboard_cache WHERE key = %s", (key,)).fetchone()
+    if row is not None:
+        return row["payload"]
+    payload = compute()
+    with connect() as con:
+        con.execute("INSERT INTO dashboard_cache (key, payload) VALUES (%s, %s) "
+                    "ON CONFLICT (key) DO UPDATE "
+                    "SET payload = EXCLUDED.payload, computed_at = now()",
+                    (key, Jsonb(payload)))
+        con.commit()
+    return payload
+
+
 @router.get("/dashboard/summary")
 def summary(user: Principal = Depends(current_user)) -> dict:
+    return _cached(f"summary:{user.scope_district() or 'ALL'}", lambda: _summary(user))
+
+
+def _summary(user: Principal) -> dict:
     where, params = _scope(user)
     with connect() as con:
         totals = con.execute(f"SELECT count(*) AS works, coalesce(sum(amount), 0) AS amount "
@@ -94,6 +119,10 @@ def summary(user: Principal = Depends(current_user)) -> dict:
 
 @router.get("/dashboard/districts")
 def districts(user: Principal = Depends(current_user)) -> list[dict]:
+    return _cached(f"districts:{user.scope_district() or 'ALL'}", lambda: _districts(user))
+
+
+def _districts(user: Principal) -> list[dict]:
     where, params = _scope(user)
     with connect() as con:
         rows = con.execute(
