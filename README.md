@@ -49,7 +49,7 @@ MPLAD Scheme. It checks every MPLADS work, flags the ones an officer should look
 | **Document** | reads sanction date, payments and contractor off 431 UP certificates **for free** (local text reading); 16% sanctioned after the 75-day limit |
 
 Weak or untested results are reported just as plainly (delay prediction is only slightly better than an
-office's past record; satellite is a no-go for now). See [`docs/AGENTS.md`](docs/AGENTS.md).
+office's past record; satellite is a no-go for now). See [`docs/AGENT-CATALOG.md`](docs/AGENT-CATALOG.md).
 
 ---
 
@@ -58,13 +58,15 @@ office's past record; satellite is a no-go for now). See [`docs/AGENTS.md`](docs
 | If you want… | Read |
 |---|---|
 | **How DRISHTI works, in plain words** (no code) | [`docs/HOW-IT-WORKS.md`](docs/HOW-IT-WORKS.md) |
-| **Every agent**: what it checks, how, how it was tested, where it stands | [`docs/AGENTS.md`](docs/AGENTS.md) |
+| **Every agent**: what it checks, how, how it was tested, where it stands | [`docs/AGENT-CATALOG.md`](docs/AGENT-CATALOG.md) |
 | **Real-data trial**, agent by agent, with every number | [`docs/trial/FINDINGS.md`](docs/trial/FINDINGS.md) |
 | **Technical architecture**: components, scoring maths, API, database, security | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) |
 | **Data**: sources, the evidence harvester, privacy, known traps | [`docs/DATA.md`](docs/DATA.md) |
 | **Run it yourself**: local setup, tests, deployment | [`docs/SETUP.md`](docs/SETUP.md) |
 | **Where the build is and what's next** | [`docs/STATUS.md`](docs/STATUS.md) |
 | **MPLADS and project terms** | [`docs/GLOSSARY.md`](docs/GLOSSARY.md) |
+| **Joining the team?** How we work together (humans + their AI agents) | [`docs/team/README.md`](docs/team/README.md) · AI manual: [`AGENTS.md`](AGENTS.md) |
+| **The task plan** and who's doing what | [`docs/team/TASKS.md`](docs/team/TASKS.md) · [Issues](https://github.com/AdityaMore776/drishti/issues) · [progress log](docs/team/log/) |
 | **Team rules** for working on the repo | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
 | Design documents | [`docs/specs/`](docs/specs/) (v2 = current design) |
 | The SIH idea-submission deck | [`docs/deck/DRISHTI_SIH26102_v2.pdf`](docs/deck/DRISHTI_SIH26102_v2.pdf) |
@@ -88,7 +90,11 @@ drishti/
 │   ├── harvest/         download eSAKSHI evidence politely (pilot sample)
 │   └── trial/           the real-data trial of every agent, and its results (JSON)
 ├── docs/                everything a reader needs (see the table above)
-├── .github/workflows/   CI: lint + tests for the engine, typecheck + lint + build for the web
+│   └── team/            the team system: task plan, progress log, data pack, how we work
+├── scripts/team/        sync (session briefing), new_log, check_pr, data-pack tools
+├── scripts/dev/         local_db.py: local Postgres with the real corpus
+├── AGENTS.md            the operating manual every AI agent on the team follows
+├── .github/             CI (tests, team checks, secret scan), issue and PR templates
 └── vercel.json          hosting: web and engine as two services on one domain
 ```
 

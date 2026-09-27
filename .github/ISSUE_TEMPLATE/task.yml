@@ -1,0 +1,31 @@
+name: Task
+description: A piece of planned work. Its full spec lives in docs/team/TASKS.md.
+title: "T___: "
+labels: ["ready"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One issue per task in `docs/team/TASKS.md`. Title = `T<id>: <task title>`.
+        **Claim** a task by assigning yourself and moving the label from `ready` to `in-progress`
+        (AGENTS.md section 3). Link the PR with "Closes #<this issue>".
+  - type: input
+    id: spec
+    attributes:
+      label: Spec
+      description: Where the task is described
+      value: "docs/team/TASKS.md, section T___"
+    validations:
+      required: true
+  - type: input
+    id: depends
+    attributes:
+      label: Depends on
+      description: Issues that must be closed first (e.g. #3, #7), or "none"
+      value: "none"
+  - type: textarea
+    id: done
+    attributes:
+      label: Done when
+      description: Copy the "Done when" boxes from TASKS.md
+      value: "- [ ] "

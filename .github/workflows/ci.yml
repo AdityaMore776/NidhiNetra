@@ -5,7 +5,34 @@ on:
     branches: [main]
   pull_request:
 
+# a newer push to the same branch cancels the older run
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  # AGENTS.md rules that a machine can check: log entry present, no private data,
+  # no oversized files, no backspace byte from the heredoc trap
+  team:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 scripts/team/check_pr.py --base origin/${{ github.base_ref }}
+
+  # keys and passwords must never reach this public repo
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   engine:
     runs-on: ubuntu-latest
     defaults:
