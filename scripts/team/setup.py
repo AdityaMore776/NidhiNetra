@@ -105,7 +105,11 @@ def data_pack() -> bool:
         print("  not found. Ask the owner for DRISHTI-team-pack.zip (private Google Drive), put it in\n"
               "  Downloads and re-run. You can already work on tasks that need no data (e.g. T100).")
         return False
-    sh([sys.executable, str(ROOT / "scripts" / "team" / "install_pack.py"), str(zips[0])])
+    try:
+        sh([sys.executable, str(ROOT / "scripts" / "team" / "install_pack.py"), str(zips[0])])
+    except subprocess.CalledProcessError:
+        print("  could not install the pack (message above); carrying on without it")
+        return False
     return True
 
 
