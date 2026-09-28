@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./globals.css";
 
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
-
 export const metadata: Metadata = {
-  title: "DRISHTI — Evidence-based monitoring for MPLADS",
+  title: {
+    default: "DRISHTI — Risk Intelligence System",
+    template: "%s · DRISHTI",
+  },
   description:
-    "AI agents that check MPLADS works against photos, maps and prices, and rank what officers should verify first. SIH 2026 · SIH26102 · Team NeuralNexus.",
+    "Risk-intelligence platform for MPLADS works. AI agents check works against prices, records, maps and photos and rank what an officer should verify first. SIH 2026 · SIH26102 · Team NeuralNexus.",
+  robots: { index: false, follow: false },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
+    <html lang="en" className="h-full antialiased">
       <body className="min-h-full">{children}</body>
     </html>
   );

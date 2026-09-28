@@ -27,7 +27,7 @@ export function IndiaMap({ rows }: { rows: DistrictRow[] }) {
     const byCode = new Map(rows.map((r) => [r.district_lgd, r]));
     const map = new maplibregl.Map({
       container: ref.current,
-      style: { version: 8, sources: {}, layers: [{ id: "bg", type: "background", paint: { "background-color": "#eef1f7" } }] },
+      style: { version: 8, sources: {}, layers: [{ id: "bg", type: "background", paint: { "background-color": "#f5f5f2" } }] },
       bounds: [
         [67.5, 6.2],
         [97.8, 37.4],
@@ -64,14 +64,14 @@ export function IndiaMap({ rows }: { rows: DistrictRow[] }) {
           "fill-color": [
             "case",
             ["<", ["get", "share"], 0],
-            "#dfe3ea",
-            ["interpolate", ["linear"], ["get", "share"], 0, "#e8f5ee", 0.004, "#fde9b8", 0.012, "#f7a35c", 0.03, "#d6344a"],
+            "#e3e3df",
+            ["interpolate", ["linear"], ["get", "share"], 0, "#e7f3ea", 0.004, "#fbf0e3", 0.012, "#e79a4a", 0.03, "#b42318"],
           ],
-          "fill-opacity": 0.95,
+          "fill-opacity": 1,
         },
       });
       map.addLayer({ id: "districts-line", type: "line", source: "districts", paint: { "line-color": "#ffffff", "line-width": 0.4 } });
-      map.addLayer({ id: "states-line", type: "line", source: "states", paint: { "line-color": "#5d6475", "line-width": 0.9 } });
+      map.addLayer({ id: "states-line", type: "line", source: "states", paint: { "line-color": "#767671", "line-width": 0.8 } });
 
       map.on("mousemove", "districts-fill", (e) => {
         const p = e.features?.[0]?.properties;
@@ -96,16 +96,16 @@ export function IndiaMap({ rows }: { rows: DistrictRow[] }) {
   }, [rows, router]);
 
   return (
-    <div className="relative">
-      <div ref={ref} className="h-[460px] w-full rounded-xl overflow-hidden" />
-      <div className="absolute left-3 bottom-3 rounded-lg bg-surface/90 px-3 py-2 text-[11px] text-muted space-y-1">
-        <div className="font-medium text-foreground">Share of works needing review</div>
-        <div className="flex items-center gap-1">
-          {["#e8f5ee", "#fde9b8", "#f7a35c", "#d6344a"].map((c) => (
-            <span key={c} className="h-2.5 w-6 rounded-sm" style={{ background: c }} />
+    <div className="relative border border-line">
+      <div ref={ref} className="h-[380px] w-full overflow-hidden sm:h-[460px]" />
+      <div className="absolute bottom-3 left-3 space-y-1 border border-strong bg-surface px-3 py-2 text-[11px] text-muted">
+        <div className="label">Share of works needing review</div>
+        <div className="flex items-center gap-0.5">
+          {["#e7f3ea", "#fbf0e3", "#e79a4a", "#b42318"].map((c) => (
+            <span key={c} className="h-2.5 w-6" style={{ background: c }} />
           ))}
         </div>
-        <div className="flex justify-between">
+        <div className="tnum flex justify-between">
           <span>0%</span>
           <span>3%+</span>
         </div>
