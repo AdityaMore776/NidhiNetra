@@ -38,6 +38,12 @@ export const BAND_LABEL: Record<Band, string> = {
   LOW: "Low risk",
 };
 
+export const BAND_TONE: Record<Band, "high" | "medium" | "low"> = {
+  HIGH: "high",
+  MEDIUM: "medium",
+  LOW: "low",
+};
+
 /** Work type names (mirror of apps/engine/drishti/reference/work_types.yaml). */
 export const WORK_TYPES: Record<string, string> = {
   ROAD_CC: "Cement concrete road",

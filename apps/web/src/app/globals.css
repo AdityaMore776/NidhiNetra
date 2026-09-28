@@ -1,56 +1,165 @@
 @import "tailwindcss";
 
-/* Colours sampled from the team's SIH deck, so each agent on screen carries the
-   colour of the feature it delivers on the Proposed Solution slide. */
+/*
+  DRISHTI design system — brutalist / government-operations.
+  Flat surfaces, sharp corners, borders over shadows, restrained colour.
+  Risk colour is meaningful and always paired with a text label, never colour alone.
+*/
 :root {
-  --background: #f6f7fb;
+  /* Type — system stacks: fast, offline-safe, institutional (Segoe UI on gov Windows). */
+  --font-sans-stack: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono-stack: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Neutral surfaces */
+  --background: #f5f5f2;
   --surface: #ffffff;
-  --foreground: #1b1f2a;
-  --muted: #5d6475;
-  --line: #e3e6ee;
-  --navy: #1e3a6e;
-  --site: #70c6ab;
-  --reuse: #9469e5;
-  --duplicate: #ef558a;
-  --statistical: #f48137;
-  --fusion: #2fb0ae;
-  --inputs: #2e9adf;
-  --high: #d6344a;
-  --medium: #f0a020;
-  --low: #3aa76d;
+  --surface-2: #fafaf8;
+  --foreground: #111111;
+  --muted: #555555;
+  --faint: #767671;
+  --line: #d4d4d0;
+  --line-strong: #111111;
+
+  /* Risk / status — flat, restrained, accessible on white and on their tint */
+  --high: #b42318;
+  --high-bg: #fbeae8;
+  --medium: #b54708;
+  --medium-bg: #fbf0e3;
+  --low: #1a7f37;
+  --low-bg: #e7f3ea;
+  --info: #1d4ed8;
+  --info-bg: #e8edfb;
+
+  /* Legacy aliases kept so existing component references keep resolving.
+     Retuned to the flat palette; used as small solid accents only. */
+  --navy: #111111;
+  --inputs: #1d4ed8;
+  --fusion: #0f766e;
+  --site: #0f766e;
+  --reuse: #6d28d9;
+  --duplicate: #be185d;
+  --statistical: #c2410c;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
+  --color-faint: var(--faint);
   --color-line: var(--line);
+  --color-strong: var(--line-strong);
+
+  --color-high: var(--high);
+  --color-high-bg: var(--high-bg);
+  --color-medium: var(--medium);
+  --color-medium-bg: var(--medium-bg);
+  --color-low: var(--low);
+  --color-low-bg: var(--low-bg);
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+
   --color-navy: var(--navy);
+  --color-inputs: var(--inputs);
+  --color-fusion: var(--fusion);
   --color-site: var(--site);
   --color-reuse: var(--reuse);
   --color-duplicate: var(--duplicate);
   --color-statistical: var(--statistical);
-  --color-fusion: var(--fusion);
-  --color-inputs: var(--inputs);
-  --color-high: var(--high);
-  --color-medium: var(--medium);
-  --color-low: var(--low);
-  --font-sans: var(--font-inter);
+
+  --font-sans: var(--font-sans-stack);
+  --font-mono: var(--font-mono-stack);
+}
+
+* {
+  border-color: var(--line);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), "Segoe UI", system-ui, sans-serif;
+  font-family: var(--font-sans-stack);
 }
 
+/* Numeric data reads as a column: aligned, tabular figures. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono-stack);
+}
+
+/* A flat bordered panel — the single surface primitive. Sharp by default. */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0;
+}
+
+/* Back-compat: existing markup uses .card. Now flat and sharp. */
 .card {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 0;
+}
+
+/* Uppercase machine label used for field names, table heads, KPI captions. */
+.label {
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Visible, high-contrast focus for every interactive element. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--info);
+  outline-offset: 2px;
+}
+
+/* Native controls kept rectangular. */
+input,
+select,
+textarea,
+button {
+  border-radius: 0;
 }
 
 .maplibregl-ctrl-attrib {
   font-size: 10px;
+}
+.maplibregl-ctrl-group,
+.maplibregl-ctrl-group button {
+  border-radius: 0 !important;
+}
+.maplibregl-popup-content {
+  border-radius: 0 !important;
+  border: 1px solid var(--line-strong);
+  box-shadow: none !important;
+  padding: 8px 10px !important;
+}
+.maplibregl-popup-tip {
+  display: none;
+}
+
+/* Thin, unobtrusive scrollbars for dense data surfaces. */
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

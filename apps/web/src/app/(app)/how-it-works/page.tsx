@@ -1,16 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Panel, StatusLabel } from "@/components/kit";
 import { api, type Summary } from "@/lib/api";
 import { AGENTS, AGENT_ORDER } from "@/lib/format";
 
 const STEPS = [
-  { n: 1, title: "Work enters DRISHTI", text: "Records, progress claims and site photos come in.", color: "var(--inputs)" },
-  { n: 2, title: "Data validation", text: "Clean and check the record: impossible dates, missing fields, guideline notes.", color: "var(--inputs)" },
-  { n: 3, title: "Four agents, in parallel", text: "Each independently checks for a different kind of problem.", color: "var(--navy)" },
-  { n: 4, title: "Risk fusion", text: "Combine the checks by their strength and confidence into one score.", color: "var(--fusion)" },
-  { n: 5, title: "Risk review", text: "Rank works Low, Medium or High, and queue the ones that need a look.", color: "var(--medium)" },
-  { n: 6, title: "Officer verification", text: "An officer reviews the evidence and makes the decision.", color: "var(--low)" },
+  { n: 1, title: "Work enters DRISHTI", text: "Records, progress claims and site photos come in." },
+  { n: 2, title: "Data validation", text: "Clean and check the record: impossible dates, missing fields, guideline notes." },
+  { n: 3, title: "Four agents, in parallel", text: "Each independently checks for a different kind of problem." },
+  { n: 4, title: "Risk fusion", text: "Combine the checks by their strength and confidence into one score." },
+  { n: 5, title: "Risk review", text: "Rank works Low, Medium or High, and queue the ones that need a look." },
+  { n: 6, title: "Officer verification", text: "An officer reviews the evidence and makes the decision." },
 ];
 
 const FACETS: Record<string, string[]> = {
@@ -39,58 +40,85 @@ const FACETS: Record<string, string[]> = {
 export default function HowItWorks() {
   const [s, setS] = useState<Summary | null>(null);
   useEffect(() => {
-    api<Summary>("/dashboard/summary").then(setS);
+    api<Summary>("/dashboard/summary").then(setS).catch(() => setS(null));
   }, []);
   const built = new Set(s?.agents.filter((a) => a.built).map((a) => a.id) ?? []);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">How DRISHTI works</h1>
-        <p className="text-sm text-muted">The six steps from the team&apos;s design, and where each agent stands today.</p>
-      </div>
-      <ol className="grid md:grid-cols-3 lg:grid-cols-6 gap-3">
-        {STEPS.map((st) => (
-          <li key={st.n} className="card p-4">
-            <span className="rounded-full w-7 h-7 grid place-items-center text-white text-xs font-bold" style={{ background: st.color }}>
-              {st.n}
-            </span>
-            <div className="mt-2 font-semibold text-sm">{st.title}</div>
-            <p className="mt-1 text-xs text-muted">{st.text}</p>
-          </li>
-        ))}
-      </ol>
-      <div className="grid md:grid-cols-2 gap-4">
-        {AGENT_ORDER.map((id) => {
-          const meta = AGENTS[id];
-          return (
-            <section key={id} className="card overflow-hidden">
-              <header className="flex items-center gap-3 px-5 py-3" style={{ background: `color-mix(in srgb, ${meta.color} 14%, white)` }}>
-                <span className="rounded-full w-8 h-8 grid place-items-center text-white text-xs font-bold" style={{ background: meta.color }}>
-                  {meta.n}
-                </span>
-                <div>
-                  <div className="font-semibold">{meta.name} Agent</div>
-                  <div className="text-xs text-muted">{meta.question}</div>
-                </div>
-                <span className={`ml-auto rounded-md px-2 py-1 text-[11px] font-medium ${built.has(id) ? "bg-low text-white" : "bg-background text-muted"}`}>
-                  {built.has(id) ? "Live" : "In development"}
-                </span>
-              </header>
-              <ol className="px-5 py-4 space-y-2 text-sm">
-                {FACETS[id].map((f, i) => (
-                  <li key={f} className="flex gap-2">
-                    <span className="font-bold" style={{ color: meta.color }}>
-                      {String.fromCharCode(65 + i)}
-                    </span>
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ol>
-            </section>
-          );
-        })}
-      </div>
+    <div className="space-y-8">
+      <header className="border-b-2 border-strong pb-4">
+        <h1 className="text-2xl font-bold tracking-tight md:text-3xl">How DRISHTI works</h1>
+        <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-muted">
+          The six steps from the team&apos;s design, and where each agent stands today.
+        </p>
+      </header>
+
+      {/* Pipeline */}
+      <section>
+        <div className="label mb-3">Pipeline</div>
+        <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          {STEPS.map((st) => (
+            <li key={st.n} className="relative border border-line bg-surface p-4">
+              <span className="tnum grid h-8 w-8 place-items-center border-2 border-strong text-sm font-bold">
+                {st.n}
+              </span>
+              <div className="mt-2.5 text-sm font-semibold">{st.title}</div>
+              <p className="mt-1 text-xs leading-relaxed text-muted">{st.text}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* Agents */}
+      <section className="space-y-3">
+        <div className="label">The four agents</div>
+        <div className="grid gap-4 md:grid-cols-2">
+          {AGENT_ORDER.map((id) => {
+            const meta = AGENTS[id];
+            return (
+              <Panel key={id} as="section">
+                <header className="flex items-center gap-3 border-b border-line p-4">
+                  <span
+                    className="tnum grid h-8 w-8 shrink-0 place-items-center border text-xs font-bold"
+                    style={{ borderColor: meta.color, color: meta.color }}
+                  >
+                    {meta.n}
+                  </span>
+                  <div className="min-w-0">
+                    <div className="text-sm font-semibold">{meta.name} Agent</div>
+                    <div className="text-xs text-muted">{meta.question}</div>
+                  </div>
+                  <span className="ml-auto">
+                    {built.has(id) ? (
+                      <StatusLabel tone="low">Live</StatusLabel>
+                    ) : (
+                      <StatusLabel tone="neutral">In development</StatusLabel>
+                    )}
+                  </span>
+                </header>
+                <ol className="space-y-2.5 p-4 text-sm">
+                  {FACETS[id].map((f, i) => (
+                    <li key={f} className="flex gap-3">
+                      <span
+                        className="tnum grid h-5 w-5 shrink-0 place-items-center border text-[11px] font-bold"
+                        style={{ borderColor: meta.color, color: meta.color }}
+                      >
+                        {String.fromCharCode(65 + i)}
+                      </span>
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ol>
+              </Panel>
+            );
+          })}
+        </div>
+      </section>
+
+      <p className="border-t border-line pt-4 text-xs text-muted">
+        DRISHTI never says &quot;fraud&quot;. Every finding is phrased as something to verify, with the evidence and the
+        rule behind it. An officer always decides.
+      </p>
     </div>
   );
 }
