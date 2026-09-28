@@ -1,52 +1,54 @@
+"use client";
+
 import Link from "next/link";
 import type { Band, WorkRow } from "@/lib/api";
-import { AGENTS, BAND_COLOR, BAND_LABEL, inr, workHref, workType } from "@/lib/format";
+import { AGENTS, BAND_LABEL, BAND_TONE, inr, workHref, workType } from "@/lib/format";
+import { IconArrowRight } from "./icons";
+import { type Column, DataTable, StatusLabel } from "./kit";
 
+/** Risk band as a rectangular, text-labelled badge. */
 export function BandBadge({ band, limited }: { band: Band | null; limited?: boolean | null }) {
-  if (!band) return <span className="text-xs text-muted">not assessed</span>;
+  if (!band) return <span className="text-xs text-muted">Not assessed</span>;
   return (
     <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
-      <span
-        className="rounded-full px-2.5 py-0.5 text-xs font-semibold text-white"
-        style={{ background: BAND_COLOR[band] }}
-      >
+      <StatusLabel tone={BAND_TONE[band]} solid>
         {BAND_LABEL[band]}
-      </span>
-      {limited && band === "LOW" && <span className="text-[11px] text-muted">limited evidence</span>}
+      </StatusLabel>
+      {limited && band === "LOW" && <span className="text-[11px] text-muted">limited</span>}
     </span>
   );
 }
 
 export function SourceBadge({ source }: { source: string }) {
-  const map: Record<string, [string, string]> = {
-    REAL: ["Real eSAKSHI record", "var(--inputs)"],
-    SCENARIO: ["Demo scenario", "var(--reuse)"],
-    LIVE: ["Live submission", "var(--fusion)"],
+  const map: Record<string, string> = {
+    REAL: "Real eSAKSHI record",
+    SCENARIO: "Demo scenario",
+    LIVE: "Live submission",
   };
-  const [label, color] = map[source] ?? [source, "var(--muted)"];
-  return (
-    <span className="rounded-md border px-2 py-0.5 text-[11px] font-medium" style={{ color, borderColor: color }}>
-      {label}
-    </span>
-  );
+  return <StatusLabel tone="neutral">{map[source] ?? source}</StatusLabel>;
 }
 
+/** Compact square codes for the agents (and DV) that flagged a work. */
 export function AgentDots({ alerts }: { alerts: string[] | null }) {
   const list = (alerts ?? []).filter((a) => a in AGENTS) as (keyof typeof AGENTS)[];
+  const hasValidation = alerts?.includes("validation");
+  if (list.length === 0 && !hasValidation) return <span className="text-xs text-muted">—</span>;
   return (
-    <span className="flex gap-1">
+    <span className="flex flex-wrap gap-1">
       {list.map((a) => (
         <span
           key={a}
-          title={AGENTS[a].name}
-          className="rounded px-1.5 text-[10px] font-bold text-white"
-          style={{ background: AGENTS[a].color }}
+          title={`${AGENTS[a].name} agent`}
+          className="tnum border border-line bg-surface-2 px-1.5 text-[11px] font-bold text-foreground"
         >
           {AGENTS[a].n}
         </span>
       ))}
-      {alerts?.includes("validation") && (
-        <span title="Data Validation" className="rounded px-1.5 text-[10px] font-bold text-white bg-inputs">
+      {hasValidation && (
+        <span
+          title="Data Validation"
+          className="border border-info bg-info-bg px-1.5 text-[11px] font-bold uppercase text-info"
+        >
           DV
         </span>
       )}
@@ -54,70 +56,148 @@ export function AgentDots({ alerts }: { alerts: string[] | null }) {
   );
 }
 
-export function WorkTable({ items, showWhy = true }: { items: WorkRow[]; showWhy?: boolean }) {
+/** The primary works table. Priority-ranked, dense, sortable on the loaded page. */
+export function WorkTable({
+  items,
+  loading,
+  error,
+  onRetry,
+  showRank = false,
+  showFinding = true,
+  empty,
+}: {
+  items: WorkRow[];
+  loading?: boolean;
+  error?: string | null;
+  onRetry?: () => void;
+  showRank?: boolean;
+  showFinding?: boolean;
+  empty?: React.ReactNode;
+}) {
+  const columns: Column<WorkRow>[] = [];
+
+  if (showRank) {
+    columns.push({
+      key: "rank",
+      header: "#",
+      align: "right",
+      className: "tnum text-muted w-10",
+      headClassName: "w-10",
+      cell: (_w) => {
+        const i = items.indexOf(_w);
+        return String(i + 1).padStart(2, "0");
+      },
+    });
+  }
+
+  columns.push(
+    {
+      key: "score",
+      header: "Score",
+      align: "right",
+      sortValue: (w) => w.score ?? -1,
+      cell: (w) =>
+        w.score == null ? (
+          <span className="text-muted">—</span>
+        ) : (
+          <span
+            className={`tnum text-base font-bold ${
+              w.band === "HIGH" ? "text-high" : w.band === "MEDIUM" ? "text-medium" : "text-low"
+            }`}
+          >
+            {Math.round(w.score * 100)}
+          </span>
+        ),
+    },
+    {
+      key: "work",
+      header: "Work",
+      sortValue: (w) => workType(w.work_type_code),
+      cell: (w) => (
+        <div className="max-w-md">
+          <Link
+            href={workHref(w.work_id)}
+            className="font-semibold text-foreground underline-offset-2 hover:underline focus-visible:underline"
+          >
+            {workType(w.work_type_code)}
+          </Link>
+          <div className="tnum text-[11px] text-muted">{w.work_id}</div>
+          {w.description && <div className="mt-0.5 line-clamp-1 text-xs text-muted">{w.description}</div>}
+        </div>
+      ),
+    },
+    {
+      key: "district",
+      header: "District",
+      hideBelowMd: true,
+      sortValue: (w) => w.district_name ?? "",
+      cell: (w) => (
+        <div className="whitespace-nowrap">
+          <div>{w.district_name ?? "—"}</div>
+          <div className="text-[11px] text-muted">{w.state_name}</div>
+        </div>
+      ),
+    },
+    {
+      key: "amount",
+      header: "Amount",
+      align: "right",
+      sortValue: (w) => w.amount ?? -1,
+      cell: (w) => <span className="tnum whitespace-nowrap">{inr(w.amount)}</span>,
+    },
+    {
+      key: "band",
+      header: "Risk band",
+      sortValue: (w) => (w.band === "HIGH" ? 3 : w.band === "MEDIUM" ? 2 : w.band === "LOW" ? 1 : 0),
+      cell: (w) => <BandBadge band={w.band} limited={w.limited} />,
+    },
+  );
+
+  if (showFinding) {
+    columns.push({
+      key: "finding",
+      header: "Primary finding",
+      hideBelowMd: true,
+      cell: (w) =>
+        w.headline ? <span className="text-xs text-foreground">{w.headline}</span> : <span className="text-muted">—</span>,
+    });
+  }
+
+  columns.push(
+    {
+      key: "flagged",
+      header: "Flagged by",
+      cell: (w) => <AgentDots alerts={w.alerts} />,
+    },
+    {
+      key: "__go",
+      header: "",
+      align: "right",
+      cell: (w) => (
+        <a
+          href={workHref(w.work_id)}
+          aria-label={`Open ${workType(w.work_type_code)} ${w.work_id}`}
+          className="inline-flex text-muted hover:text-foreground"
+        >
+          <IconArrowRight />
+        </a>
+      ),
+    },
+  );
+
   return (
-    <div className="card overflow-x-auto">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="text-left text-xs text-muted border-b border-line">
-            <th className="px-4 py-3 font-medium">Work</th>
-            <th className="px-4 py-3 font-medium">District</th>
-            <th className="px-4 py-3 font-medium text-right">Amount</th>
-            <th className="px-4 py-3 font-medium">Risk</th>
-            <th className="px-4 py-3 font-medium">Flagged by</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((w) => (
-            <tr key={w.work_id} className="border-b border-line last:border-0 hover:bg-background align-top">
-              <td className="px-4 py-3 max-w-md">
-                <Link href={workHref(w.work_id)} className="font-medium text-navy hover:underline">
-                  {workType(w.work_type_code)}
-                </Link>
-                <div className="text-xs text-muted line-clamp-2">{w.description}</div>
-                {showWhy && w.headline && <div className="mt-1 text-xs">{w.headline}</div>}
-              </td>
-              <td className="px-4 py-3 whitespace-nowrap">
-                {w.district_name}
-                <div className="text-xs text-muted">{w.state_name}</div>
-              </td>
-              <td className="px-4 py-3 text-right whitespace-nowrap">{inr(w.amount)}</td>
-              <td className="px-4 py-3">
-                <BandBadge band={w.band} limited={w.limited} />
-              </td>
-              <td className="px-4 py-3">
-                <AgentDots alerts={w.alerts} />
-              </td>
-            </tr>
-          ))}
-          {items.length === 0 && (
-            <tr>
-              <td colSpan={5} className="px-4 py-10 text-center text-muted">
-                Nothing here.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
+    <DataTable
+      columns={columns}
+      rows={items}
+      getRowKey={(w) => w.work_id}
+      caption="Works ranked by review priority"
+      loading={loading}
+      error={error}
+      onRetry={onRetry}
+      empty={empty}
+    />
   );
 }
 
-export function Pager({ page, total, size, onPage }: { page: number; total: number; size: number; onPage: (p: number) => void }) {
-  const last = Math.max(1, Math.ceil(total / size));
-  return (
-    <div className="flex items-center justify-between text-sm text-muted">
-      <span>
-        {total.toLocaleString("en-IN")} works · page {page} of {last.toLocaleString("en-IN")}
-      </span>
-      <div className="flex gap-2">
-        <button disabled={page <= 1} onClick={() => onPage(page - 1)} className="rounded-lg border border-line px-3 py-1 disabled:opacity-40">
-          Previous
-        </button>
-        <button disabled={page >= last} onClick={() => onPage(page + 1)} className="rounded-lg border border-line px-3 py-1 disabled:opacity-40">
-          Next
-        </button>
-      </div>
-    </div>
-  );
-}
+// Back-compat pager wrapper (pages now use Pagination from kit directly).
+export { Pagination as Pager } from "./kit";
