@@ -25,8 +25,8 @@ The signal (risk) grows with how far above the top of the range the work sits, s
 flags no longer all score the same. A peer range is not a schedule of rates: every
 finding here is soft, and says "check", never that the amount is wrong.
 
-Still carried here until their engines exist: the outside-constituency ceiling (moves to
-compliance, T011) and the overdue check (moves to compliance / delay, T011, T040).
+The outside-constituency ceiling and the overdue check moved to Guideline Compliance
+(R08, R02, T011); `as_of` stays in the signature for the engine contract.
 """
 
 from __future__ import annotations
@@ -41,15 +41,12 @@ from drishti.agents.statistical.band import Cohort
 from drishti.agents.statistical.cohort import StatsStore
 from drishti.agents.statistical.scope import read
 from drishti.agents.statistical.text import stated_length
-from drishti.agents.statistical.timeline import delay_check
 from drishti.agents.statistical.unit_rate import road_check
 
 AGENT = "statistical"
 VERSION = "statistical-2.0.0"
 QUESTION = "Is the project cost unusual for similar works?"
 
-OUTSIDE_CEILING_INR = 2_500_000.0      # para 2.9, verified clause OUTSIDE_CONSTITUENCY_CEILING
-CEILING_RISK = 0.70
 LEVEL_CONFIDENCE = {"type_district": 0.85, "type_state": 0.7, "type": 0.55}
 
 TOP_FACTOR = 2.0          # flag above 2x the top (p90) of the usual range
@@ -162,37 +159,12 @@ def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
     elif count:
         reading = "per_unit"
 
-    # -- ceiling (hard, cited): arithmetic against a clause, needs no peers
-    if work.get("is_outside_constituency") and amount > OUTSIDE_CEILING_INR:
-        findings.append(Finding(
-            "CEILING_BREACH",
-            f"A work outside the constituency is capped at Rs 25 lakh "
-            f"({reference.citation('OUTSIDE_CONSTITUENCY_CEILING')}); this one is "
-            f"{inr(amount)}.",
-            hard=True, risk=CEILING_RISK, evidence={"ceiling": OUTSIDE_CEILING_INR}))
-
-    # -- delay (until the compliance / delay engines carry it)
-    dc = delay_check(work.get("status"), work.get("recommended_date"), as_of,
-                     stats.p98(wtype))
-    if dc and dc["verdict"] == "DELAYED":
-        findings.append(Finding(
-            "DELAYED",
-            f"Still open {dc['days']:,} days after recommendation; 98% of completed "
-            f"{type_name} works finished within {dc['norm_days']:,.0f} days.",
-            hard=False, risk=dc["risk"], evidence=dc))
-
+    # The outside-constituency ceiling and the overdue check moved to Guideline Compliance
+    # (R08, R02): carrying them here too counted one fact twice in the risk score.
     if reading == "undescribed":
-        if findings:
-            return _result(findings, ["The description does not say what is built or bought, "
-                                      "so the cost is not compared."], comparison, None,
-                           type_name, work, t0, "COST_NOT_COMPARED", 0.5)
         return _not_assessable("the description does not say what is built or bought, so "
                                "its cost cannot be compared with anything", t0)
     if not chain:
-        if findings:
-            return _result(findings, [f"Fewer than 20 comparable {type_name} works exist, so "
-                                      "the cost is not compared."], comparison, None,
-                           type_name, work, t0, "COST_NOT_COMPARED", 0.5)
         return _not_assessable(
             f"fewer than 20 comparable {type_name} works exist to compare against", t0)
 
