@@ -12,7 +12,7 @@
 |---|---|
 | **Live** | https://drishti-lyart.vercel.app — all 2,09,993 real works assessed; review queue 276 (0.13%); Ministry / District / Field logins |
 | **In the live engine** | Cost agent, Data Validation, Risk Fusion v1, role scoping, India map on LGD outlines |
-| **Core engines, ready to go live (30 Sept)** | Guideline Compliance, Cost v2, Duplicate & Split, Delay (shown, not counted) + the 0–100 risk score with top-3 reasons in English and Hindi (T010–T050). Queue becomes 1,524 works (0.73%; 24 of 30 random ones worth checking). Stacked PRs #56 → #57 → #58 → #59 → #60 → T050; going live = merge in order **and** reload the hosted database (migrations 006 + 007, `load_db.py`, `batch_assess.py`). Checked on a full local copy: 313 MB. |
+| **Core engines, MERGED to main 30 Sept (live once the hosted DB is reloaded: see `team/log/2026-09-30-2301-*`)** | Guideline Compliance, Cost v2, Duplicate & Split, Delay (shown, not counted) + the 0–100 risk score with top-3 reasons in English and Hindi (T010–T050). Queue becomes 1,524 works (0.73%; 24 of 30 random ones worth checking). Stacked PRs #56 → #57 → #58 → #59 → #60 → T050; going live = merge in order **and** reload the hosted database (migrations 006 + 007, `load_db.py`, `batch_assess.py`). Checked on a full local copy: 313 MB. |
 | **Proven on real data, being ported** | Eligibility v2, Split & Duplicate, Photo Forensics, Geo-Location, Document, Contractor Network, Delay (as track records), Fund Flow (facts) — see [AGENT-CATALOG.md](AGENT-CATALOG.md) |
 | **Needs a decision** | paid AI key (capped) for Hindi/handwritten papers, Site Progress and plaque check |
 | **Gated off** | Satellite (no large works with coordinates yet); Citizen Verification is demo-only (no real ratings) |
