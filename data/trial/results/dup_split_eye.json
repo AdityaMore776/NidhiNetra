@@ -1,0 +1,26 @@
+{
+  "pairs_top50_dev": {
+    "read": 50,
+    "same": 29,
+    "share": 0.58
+  },
+  "pairs_random_test1_before_place_fix": {
+    "read": 40,
+    "same": 7,
+    "share": 0.175
+  },
+  "pairs_random_test2_rules_frozen": {
+    "read": 40,
+    "same": 15,
+    "share": 0.375
+  },
+  "groups_same_site_test": {
+    "read": 15,
+    "split": 10,
+    "share": 0.667
+  },
+  "groups_bulk_order_test": {
+    "read": 15,
+    "read_as_series": 15
+  }
+}

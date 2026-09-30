@@ -35,8 +35,8 @@ MPLAD Scheme. It checks every MPLADS work, flags the ones an officer should look
 | | State |
 |---|---|
 | **Live web app** | Dashboard with India map, review queue, works search, work detail page with the agent cards and the score breakdown. Three roles (Ministry, District, Field), each seeing only what it should. |
-| **Real data** | All **2,09,993** real eSAKSHI works loaded and assessed. **276 works (0.13%)** in the review queue — a list a district can actually clear. |
-| **Built agent** | **Cost** (peer cost bands per work type and district, road price per metre, outside-constituency ceiling), plus **Data Validation** and **Risk Fusion**. |
+| **Real data** | All **2,09,993** real eSAKSHI works loaded and assessed. **1,524 works (0.73%)** in the review queue (High + Critical): works where two checks agree. 24 of 30 random queue works, read by eye, are worth checking. |
+| **Built engines** | **Guideline Compliance** (rules R01–R11, English + Hindi), **Cost** (like-for-like peers, price per metre and per unit, a description-based price model that must agree), **Duplicate & Split** (matching by meaning within each district), **Delay Prediction** (shown, not counted: below its accuracy target), and the **0–100 risk score** with its top three reasons in English and Hindi. |
 | **Real-evidence trial** | Every planned agent was tried on **real evidence for 837 completed works** (905 files downloaded from eSAKSHI's public endpoints, 1,925 pages read). Results: [`docs/trial/FINDINGS.md`](docs/trial/FINDINGS.md). |
 
 ### Headline results from the real-data trial
@@ -78,7 +78,7 @@ office's past record; satellite is a no-go for now). See [`docs/AGENT-CATALOG.md
 ```
 drishti/
 ├── apps/
-│   ├── engine/          Python FastAPI service: agents, validation, fusion, API  (141 tests)
+│   ├── engine/          Python FastAPI service: agents, validation, fusion, API  (259 tests)
 │   │   └── drishti/
 │   │       ├── agents/          agent contract + the Cost ("statistical") agent
 │   │       ├── validation/      data checks: impossible dates, prohibited-work notes

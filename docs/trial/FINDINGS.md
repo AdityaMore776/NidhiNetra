@@ -147,6 +147,50 @@ same-site split. Generic text points to a bulk purchase cut under the tender lim
 - **What didn't work:** the same exact text recommended again *after* the first was
   completed: 0 cases. Real repeats are reworded, so the next step is matching by meaning.
 
+#### Duplicate & Split engine (T030, 30 Sept 2026): matching by meaning
+
+Every description (207,881 with readable text) is turned into a meaning vector by a free
+multilingual model, so "CC road at X" and "X me CC sadak" match. Works are compared only within
+their district. Script `data/build_dup_split.py`, results `results/dup_split.json`, by-eye
+labels `data/trial/dup_split_labels.py` → `results/dup_split_eye.json`.
+
+| What it finds | Count |
+|---|---|
+| Pairs that read as the same work twice | 953 (121 after the first was completed, 740 while it was open, 92 staged and not flagged) |
+| Same-site splits (2+ near-equal pieces naming one place) | 1,993 groups |
+| Bulk orders (3+ near-equal pieces naming no place) | 1,114 groups |
+| Groups with every piece ₹4–5 lakh and a total over ₹5 lakh | 456 |
+| Works carrying any flag | 23,236 (11%) |
+
+The Nanded Sapti split (3 × ₹4,96,000, same day) is found and marked "every piece just under
+₹5 lakh".
+
+**Read by eye (fresh samples, rules frozen):**
+
+| Sample | Real repeats / splits |
+|---|---|
+| 40 random duplicate pairs | **15 / 40 (38%)** |
+| 15 random same-site splits | **10 / 15 (67%)** |
+| 15 random bulk orders | 15 / 15 correctly read as a series of identical purchases |
+| Top 50 pairs by score (development sample) | 29 / 50 |
+
+**What reading the output fixed** (each fix was followed by a fresh sample):
+1. The first version put 31% of all works in "groups". It chained an MP's batch of alike works for
+   *different* villages ("CC road at Sapti", "at Walki", ...) and then threw the whole chain away
+   because the amounts differed, losing the Sapti split with it. Groups are now cut by place.
+2. Different survey numbers, property numbers or road stretches ("0–300 m" vs "301–600 m") had
+   matched, because place words ignored numbers. Different numbers now mean different sites.
+3. Wording one MP filed 3+ times (7 identical water coolers) is a series, not a duplicate: a real
+   duplicate is a pair.
+4. A shared panchayat name made two villages "the same place". The first random test read only
+   7/40 real; after requiring the whole place list to match, a new random test read 15/40.
+
+**Still wrong, known:** generic text with an unusual word taken as a place ("Yatri pratikshalaya",
+"Disposal of sullage water"); "Construction of..." followed by "Completion of..." (a staged
+payment); "East side" and "West side" of one street (direction words are too common to count as
+place words). Every flag says "check", never more: the district is the finest location in the
+record, so only the files or a visit can confirm two works are one.
+
 ### A1 Eligibility (prohibited works): works after a rewrite
 
 | Reader | Works flagged | Plainly prohibited | Worth an officer's look |
@@ -402,6 +446,39 @@ Can't be tested on real data. 21,789 of the 21,793 eSAKSHI citizen ratings are z
 only be shown as a labelled demo.
 
 ---
+
+### The risk score (T050, 30 Sept 2026): all four engines together
+
+Every real work was run through the four engines and the blueprint's weighted score
+(`data/dry_run.py` → `results/risk_score_bands.json`; by-eye labels `data/trial/risk_score_labels.py`
+→ `results/risk_score_eye.json`).
+
+**What the first run showed:** with the old scoring, the four engines would have put **43,646 works (21%)**
+in the review queue. Two causes: the old scoring counted every flag as strong evidence (21,323 works are
+simply "waiting for sanction too long", a system-wide delay), and it ignored "shown, not counted", so the
+Delay engine, below its accuracy target, still added weight (it was on 16,529 of the queued works). A second double count was found: 13,158 of the cost engine's
+16,010 flags were only its old "overdue" note, the same fact Guideline Compliance reports; it was removed
+from the cost engine.
+
+**With the blueprint score:**
+
+| Band | Works | Meaning |
+|---|---|---|
+| Critical (≥ 33) | 129 | a guideline issue plus a split under ₹5 lakh or a repeat after completion, or three engines |
+| High (≥ 22) | 1,395 | two engines each with a meaningful signal |
+| Medium (≥ 15) | 35,086 | one strong signal (mostly a long wait for sanction) |
+| Low | 173,383 | |
+
+- **Review queue (High + Critical): 1,524 works (0.73%).** Read by eye, **24 of 30 random queue works are
+  worth checking**. The misses: village-level "solar light in village X" entries (two lights in one village
+  is normal), a list of 47 Wi-Fi locations read as one price, "GP and other villages".
+- **The blueprint's cut-offs (40/70/85) cannot be used as written:** the highest real score is 37 (Delay counts 0,
+  Outlier is not built). Its target of 5–10% High + Critical has no cut-off in the data either: the scores
+  come in steps, and the next step below 2.3% is 17% (one guideline delay on its own).
+- **What reading the queue fixed** (each followed by a fresh sample): at a High cut of 20, a weak second signal
+  (a routine bulk order, a work flagged for being cheap) made High → cut at 22; 16, 23 and 50 identical works
+  sharing a typo ("tenker", "publiic") read as "one site" → a same-place group of 6+ is a series; Critical at 30
+  was reached by any delay plus any repeat, down to ₹20,000 lights → Critical at 33.
 
 ## Bugs and data problems found along the way
 

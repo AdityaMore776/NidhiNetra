@@ -56,9 +56,13 @@ work record ─► 2 DATA VALIDATION ─► 3 AGENTS (each returns an AgentResul
 | Module | Purpose |
 |---|---|
 | `agents/contract.py` | `AgentResult` / `Finding` / `Status`; the banned-word guard; `not_built()` placeholder |
-| `agents/statistical/` | the **Cost** agent: `cohort.py` (peer statistics store), `band.py` (z-score → risk), `text.py` (bundle & length reading), `unit_rate.py` (road ₹/m), `timeline.py` (overdue works), `agent.py` (puts it together) |
+| `agents/registry.py` | finds engines by folder (`agents/<id>/engine.py`); the five blueprint slots and their weights |
+| `agents/compliance/` | **Guideline Compliance**: rules R01–R11 from `reference/rules.json` (English + Hindi), eligibility v2 reader |
+| `agents/statistical/` | the **Cost** engine: `scope.py` (what a description covers: goods/works, bundles, counts), `cohort.py` (peer statistics store), `text.py` (length reading), `unit_rate.py` (road ₹/m), `agent.py` (like-for-like peers + the stored price model must agree) |
+| `agents/dup_split/` | **Duplicate & Split Work**: reads the pairs and groups found offline by `data/build_dup_split.py` |
+| `agents/delay/` | **Delay Prediction**: reads scores from `data/build_delay_model.py`; shown, not counted |
 | `validation/` | `checks.py` (issues: BLOCK / WARN / INFO), `timeline.py` (impossible dates judged by quarter and office, Wilson lower bound), `prohibited.py` (object-of-work matcher) |
-| `fusion/fuse.py` | Risk Fusion (below) |
+| `fusion/fuse.py`, `fusion/reasons.py` | the risk score, bands and top-3 reasons in English and Hindi (below) |
 | `pipeline/orchestrator.py` | `assess_work()`: validate → run agents → fuse → priority; an agent that raises becomes an `ERROR` result, never a finding |
 | `api/routes.py` | REST endpoints (below) |
 | `auth.py` | token verification, `Principal`, district scoping, dev mode |
@@ -82,36 +86,38 @@ AgentResult(agent, status, verdict, risk, confidence, hard, headline, version,
 - Agents not yet built report `NOT_BUILT`, so every screen shows every slot from day one and nothing pretends
   to have been checked.
 
-## 4. Risk Fusion
+## 4. Risk score (fusion v2, T050)
 
-`fusion/fuse.py`, ported from the research build's calibrated case builder.
+`fusion/fuse.py`, the NidhiNetra blueprint formula
+([`specs/2026-09-27-nidhinetra-blueprint.md`](specs/2026-09-27-nidhinetra-blueprint.md)).
 
 ```
-weight(agent)   = risk × confidence × reliability(agent)          reliability prior = 0.8
-                  soft findings capped at 0.45                     (price alone can't make a work HIGH)
-validation      = min(0.30, Σ issue risk)                          (the record alone reaches MEDIUM at most)
-
-score           = strongest weight + 0.45 × (sum of the others)    (corroboration uplift)
-                  normalised to ≤ 1.0; shown as 0–100
-
-band            HIGH    score ≥ 0.60, or any HARD finding with risk ≥ 0.60 at confidence ≥ 0.70
-                MEDIUM  score ≥ 0.30
-                LOW     otherwise
-limited         true when 2+ agents could not assess — a low score on thin evidence is not a clean chit
-
-priority        score × (1 + log10(amount / ₹1 lakh)), money factor clamped to 0–3
-                (₹1 lakh ×1, ₹10 lakh ×2, ₹1 crore ×3, ₹10 crore ×4)
+score     = 0.30 compliance + 0.20 cost + 0.20 duplicate/split + 0.20 delay + 0.10 outlier
+            each term = the engine's risk (0–1) when it ASSESSED the work, else 0
+            weights from the engine registry: not built = 0; below its accuracy target = 0
+            ("shown, not counted": Delay today, AUC 0.71 vs 0.80)
+floors    1 serious rule breach (hard finding, risk ≥ 0.6) lifts the score to the High cut,
+          2+ to the Critical cut; the lift is its own part, so parts still add up exactly
+bands     CRITICAL ≥ 0.33 · HIGH ≥ 0.22 · MEDIUM ≥ 0.15 · LOW   (shown as 0–100)
+reasons   the top three contributions, English (the engine's own sentence) + Hindi
+limited   a counted engine could not assess the work: a LOW score is not a clean chit
+priority  score × (1 + log10(amount / ₹1 lakh)), money factor clamped to 0–3
 ```
 
-**Attribution:** the stored `parts` add up **exactly** to the score, so an officer sees how much each agent
-contributed and can disagree with any single part. The **review queue** is every work with band MEDIUM or
-HIGH, ordered by priority.
+**Why these cut-offs:** tuned on all 2,09,993 works (`data/dry_run.py` →
+`data/trial/results/risk_score_bands.json`). The blueprint's 40/70/85 can't be used as written: with
+Delay at weight 0 and Outlier not built, the highest real score is 37. Scores come in steps; High needs two
+engines each with a meaningful signal, Critical a guideline issue plus a split under the ₹5 lakh limit or a
+repeat after completion (or three engines). Result: Critical 129, High 1,395, Medium 35,086.
 
-**Planned (v2):** reliability learned from officer verdicts; a stronger uplift when agents from *different
-stages* agree; conflict rules R1–R6 (a reused or misplaced photo voids progress confirmations; each location
-fact counts once; a bulk order counts once across Cost and Duplicate; a declared repair downgrades a
-duplicate; a document that disagrees with the portal shows both sides; satellite may only withdraw a
-finding, never create one).
+**Review queue** = High + Critical (1,524 works, 0.73%), ordered by priority; 24 of 30 random queue works
+read by eye are worth checking (`results/risk_score_eye.json`). The queue list's one-line summary is the
+reason that sets the work apart (a sanction or completion delay only leads when nothing else counts).
+
+**Not counted:** Data Validation issues are shown on the work page, but Guideline Compliance reports the same
+facts (R06 impossible dates, R11 missing data), so they no longer add to the score.
+
+**Planned:** reliability learned from officer verdicts (T070); a group counted once across engines.
 
 ## 5. Data Validation
 
@@ -166,11 +172,13 @@ your area returns 404.
 | `unit_rate_models` | road price-per-metre curve and published rate anchors |
 | `timeline_quarters`, `timeline_agencies` | impossible-date base rates by quarter and office |
 | `assessments` | per work: score, band, limited, priority, parts, validation, agents, versions, summary `alerts[]`/`headline`, and `compact` |
+| `work_signals` | per work and engine: facts computed offline (the price model's expected range, the delay score, duplicate pairs and groups), read with the work |
+| `dashboard_cache` | saved dashboard answers, emptied whenever works are re-assessed |
 | `profiles` | user → role, district, display name |
 
 **Fitting the free tier:** storing full agent detail for all 2.1 lakh works took 489 MB of the 500 MB free
-database. LOW works with nothing to show are stored **compact** (summary only) and rebuilt when opened →
-193 MB.
+database. LOW and MEDIUM works are stored **compact** (summary only) and rebuilt when opened →
+312 MB with the four engines and their offline signals (measured on a full local load, 30 Sept 2026).
 
 ## 9. Deployment
 
@@ -193,7 +201,8 @@ database. LOW works with nothing to show are stored **compact** (summary only) a
 
 ## 11. Testing
 
-- **Engine:** 141 tests (`pytest`) — agent contract and banned words, every Cost facet, fusion maths,
+- **Engine:** 260 tests (`pytest`) — agent contract and banned words, every engine (Compliance, Cost, Duplicate
+  & Split, Delay) including NOT_ASSESSABLE cases, the risk score, bands and reasons, migrations, fusion maths,
   validation and impossible dates, orchestrator (an agent crash never becomes a finding), config, migrations,
   API and auth (scoping, dev-mode refusal on Vercel).
 - **Web:** typecheck, lint and production build in CI.
@@ -202,8 +211,12 @@ database. LOW works with nothing to show are stored **compact** (summary only) a
 
 ## 12. Known limits of the current build
 
-- Only the Cost agent, Data Validation and Fusion v1 run in the live engine; the other agents are proven in
-  the trial scripts and are being ported one by one (order in [STATUS.md](STATUS.md)).
+- The four core engines (Compliance, Cost, Duplicate & Split, Delay) and the risk score run in the engine; the
+  Outlier slot and the side-track checkers (photos, documents, …) are proven in the trial scripts and being ported
+  (order in [`team/TASKS.md`](team/TASKS.md)).
+- Heavy work (the price model, the delay model, matching by meaning) runs offline in `data/` and is stored per
+  work in `work_signals` (migration 006); the hosted engine only reads it, so after a data rebuild the hosted
+  database must be reloaded (`load_db.py` → `batch_assess.py`).
 - The data is a snapshot (26 May 2026); "today" for real works is that date (`DRISHTI_SNAPSHOT_DATE`).
 - First load after a deploy takes a few seconds (cold start + aggregation over 2.1 lakh rows).
 - Rebuilding the corpus from scratch needs the raw eSAKSHI export from the team's research build

@@ -16,8 +16,9 @@ WORKS = [
     # work_id, district, name, type, amount, description, status, recommended
     ("W-TYPICAL", "639", "Anand", "ROAD_CC", 160_000, "CC road in village Bijdih",
      "SANCTIONED", date(2026, 1, 10)),
+    # overpriced AND waiting for sanction for a year (R01): two engines agree -> in the queue
     ("W-COSTLY", "639", "Anand", "ROAD_CC", 1_000_000, "CC road in village Vasad",
-     "SANCTIONED", date(2026, 1, 10)),
+     "RECOMMENDED", date(2025, 6, 1)),
     ("W-OTHER-DISTRICT", "640", "Kheda", "ROAD_CC", 2_500_000, "CC road near Kheda market",
      "SANCTIONED", date(2026, 1, 10)),
     ("W-NO-TYPE", "639", "Anand", None, 300_000, "Letter as per attached",

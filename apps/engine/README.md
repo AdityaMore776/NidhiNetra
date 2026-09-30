@@ -4,7 +4,7 @@ Python 3.12 + FastAPI service: data validation, the agents, risk fusion and the 
 
 ```bash
 pip install -e . -r requirements-dev.txt
-ruff check drishti tests && pytest -q          # 141 tests
+ruff check drishti tests && pytest -q          # 259 tests
 DATABASE_URL=... DRISHTI_AUTH=dev uvicorn drishti.main:app --port 8000
 ```
 

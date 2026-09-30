@@ -26,6 +26,9 @@ SIGNALS_COLUMNS = "sig.signals AS signals"
 SIGNALS_JOIN = ("LEFT JOIN LATERAL (SELECT jsonb_object_agg(s.engine, s.data) AS signals "
                 "FROM work_signals s WHERE s.work_id = works.work_id) sig ON true")
 
+# Guideline Compliance's delay rules (R01, R02): real, but common to a third of all works
+TIMING_CODES = frozenset({"SANCTION_OVERDUE", "COMPLETION_OVERDUE"})
+
 UPSERT = """
 INSERT INTO assessments (work_id, assessed_at, score, band, limited, priority, parts,
                          validation, agents, versions, alerts, headline, compact)
@@ -57,10 +60,16 @@ def row_for(a: Assessment) -> dict:
     top = max((r for r in a.agents if r.assessed and r.risk > 0), key=lambda r: r.risk,
               default=None)
     row["alerts"] = alerts
-    row["headline"] = top.headline if top else None
-    # LOW works keep only their summary; the detail is rebuilt when opened
+    # the headline is the score's reason that sets the work apart: a sanction or completion
+    # delay is shared by a third of all works, so in the queue list it only leads when
+    # nothing else counts (read on the local copy of the site, 30 Sept 2026)
+    reasons = a.fused.reasons
+    specific = [r for r in reasons if r["code"] not in TIMING_CODES]
+    lead = (specific or reasons or [None])[0]
+    row["headline"] = lead["text_en"] if lead else (top.headline if top else None)
+    # LOW and MEDIUM works keep only their summary; the detail is rebuilt when opened
     # (keeps the free 500 MB database at a fraction of that - measured 489 MB without).
-    row["compact"] = a.fused.band == "LOW"
+    row["compact"] = a.fused.band in ("LOW", "MEDIUM")
     if row["compact"]:
         row["parts"], row["validation"], row["agents"] = {}, [], []
     for k in ("parts", "validation", "agents", "versions"):

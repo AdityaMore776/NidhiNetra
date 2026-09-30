@@ -46,9 +46,9 @@ note on the ones an officer should look at.
 3. **Specialist agents look at the work.** Each agent answers one question — *Is this cost unusual? Has this
    photo been used on another work? Was the photo taken in the right district?* (the full list is below).
 4. **The answers are combined into one score from 0 to 100**, with the **top reasons** and the evidence.
-   Low / Medium / High.
+   Low / Medium / High / Critical. A work reaches High only when two different checks agree.
 5. **The officer gets a short, ranked list**, not thousands of alerts. Today, on all 2.1 lakh real works,
-   the list is **276 works (0.13%)**.
+   the list is **1,524 works (0.73%)**, and 24 of 30 picked at random were worth checking.
 6. **The officer decides.** They open a work, see exactly why it was flagged, check it, and record their
    verdict. (Planned: those verdicts teach the agents which of their alerts were right.)
 
@@ -58,9 +58,9 @@ Grouped by the step of a work's life they watch. ✅ = built into the live app �
 🧪 = tested on real data in our trial, being built · 📝 = planned.
 
 **Before the money moves**
-- ✅/🧪 **Cost** — *Is the cost unusual for similar works in this district?*
-- 🧪 **Eligibility** — *Is this work allowed under the MPLADS rules?* (e.g. works inside a temple campus)
-- 🧪 **Duplicate & Split** — *Is this already funded, or one work cut into pieces to stay under ₹5 lakh?*
+- ✅ **Cost** — *Is the cost unusual for similar works in this district?*
+- ✅ **Guideline Compliance** (includes Eligibility) — *Does the work follow the MPLADS rules?* (e.g. waiting for sanction past 75 days, works inside a temple campus)
+- ✅ **Duplicate & Split** — *Is this already funded, or one work cut into pieces to stay under ₹5 lakh?*
 
 **While the work is built**
 - 📝 **Site Progress** — *Do the photos show what was claimed? Is the plaque there?*
@@ -70,7 +70,7 @@ Grouped by the step of a work's life they watch. ✅ = built into the live app �
 - 📝 **Satellite** — *Did a large pond or long road actually change the ground?* (big works only)
 
 **Money and time**
-- 🧪 **Delay** — *Which works are stuck, and which offices usually run late?*
+- ✅ **Delay** — *Which open works are most likely to run late?* (shown on each work, not counted in the score until it meets its accuracy target)
 - 🧪 **Fund Flow** — *Where is money waiting for sanction too long?*
 - 🧪 **Contractor Network** — *Is a small circle of contractors getting most of the works?*
 
