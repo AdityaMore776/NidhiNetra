@@ -61,8 +61,11 @@ def main() -> None:
            "max_score": float(df.score.max())}
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "risk_score_bands.json").write_text(json.dumps(res, indent=2), encoding="utf-8")
-    queue.sample(n=min(30, len(queue)), random_state=50).sort_values(
-        "priority", ascending=False).to_csv(OUT / "risk_score_queue_sample.csv", index=False)
+    # the sample is labelled by eye (risk_score_labels.py): a re-run must not redraw it
+    sample_path = OUT / "risk_score_queue_sample.csv"
+    if not sample_path.exists():
+        queue.sample(n=min(30, len(queue)), random_state=50).sort_values(
+            "priority", ascending=False).to_csv(sample_path, index=False)
     print(json.dumps(res, indent=2))
     for r in queue.sort_values("priority", ascending=False).head(25).itertuples():
         print(f"{r.band:8} {r.score:5.1f} p={r.priority:.2f} Rs{r.amount:>12,.0f} "

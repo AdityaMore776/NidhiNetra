@@ -13,10 +13,10 @@
           be used as written: with Delay at weight 0 and Outlier not built, the highest real
           score is 37 of 100. Scores come in steps, so the cut-offs sit where evidence changes:
             CRITICAL >= 0.33  a guideline issue plus a split under the Rs 5 lakh limit or a
-                              repeat after completion, or three engines (129 works)
-            HIGH     >= 0.22  two engines each with a meaningful signal (1,395)
+                              repeat after completion, or three engines (128 works)
+            HIGH     >= 0.22  two engines each with a meaningful signal (1,396)
             MEDIUM   >= 0.15  one strong signal, e.g. waiting for sanction past the limit
-                              (35,086)
+                              (35,085)
             LOW      otherwise
           Review queue = CRITICAL + HIGH: 1,524 works (0.73%); 24 of 30 random queue works
           read by eye are worth checking (results/risk_score_eye.json). The blueprint's target
