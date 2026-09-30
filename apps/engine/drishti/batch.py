@@ -20,6 +20,11 @@ WORK_COLUMNS = ("work_id, source, house, term, state_lgd, state_name, district_l
                 "district_name, constituency, mp_name, agency_name, fy, work_type_code, "
                 "category, description, amount, recommended_date, completed_date, status, "
                 "quantity, quantity_unit, is_outside_constituency")
+# Offline engine facts for the work (migration 006, table work_signals), as one JSON object
+# keyed by engine: {"cost_model": {...}, "delay": {...}}.
+SIGNALS_COLUMNS = "sig.signals AS signals"
+SIGNALS_JOIN = ("LEFT JOIN LATERAL (SELECT jsonb_object_agg(s.engine, s.data) AS signals "
+                "FROM work_signals s WHERE s.work_id = works.work_id) sig ON true")
 
 UPSERT = """
 INSERT INTO assessments (work_id, assessed_at, score, band, limited, priority, parts,
@@ -40,6 +45,7 @@ def _normalise(work: dict) -> dict:
     for k in ("amount", "quantity"):
         if w.get(k) is not None:
             w[k] = float(w[k])
+    w["signals"] = w.get("signals") or {}
     return w
 
 
@@ -63,8 +69,8 @@ def row_for(a: Assessment) -> dict:
 
 
 def assess_one(con: psycopg.Connection, work_id: str, ctx: Context) -> Assessment | None:
-    work = con.execute(f"SELECT {WORK_COLUMNS} FROM works WHERE work_id = %s",
-                       (work_id,)).fetchone()
+    work = con.execute(f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works "
+                       f"{SIGNALS_JOIN} WHERE work_id = %s", (work_id,)).fetchone()
     if work is None:
         return None
     a = assess_work(_normalise(dict(work)), ctx)
@@ -77,7 +83,7 @@ def assess_all(url: str, ctx: Context, work_ids: Iterable[str] | None = None,
     """Assess every work (or the given ones). Returns counts per band."""
     bands: dict[str, int] = {}
     with psycopg.connect(url, prepare_threshold=None, row_factory=dict_row) as con:
-        sql = f"SELECT {WORK_COLUMNS} FROM works"
+        sql = f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works {SIGNALS_JOIN}"
         params: tuple = ()
         if work_ids is not None:
             sql += " WHERE work_id = ANY(%s)"

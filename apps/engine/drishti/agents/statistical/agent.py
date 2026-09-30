@@ -1,16 +1,32 @@
-"""Agent 04 - Statistical: is the project cost unusual for similar works?
+"""Cost Anomaly engine (stored id `statistical`): is the cost unusual for the same kind of work?
 
-Facets (design section 5, agent 04):
-  cost vs peers       log-cost band per type x district, backing off to state and
-                      country; soft, capped at 0.45 (AD-107)
-  bundle reading      a count or a list in the description explains an outlier
-  price per metre     ROAD_CC works with a stated length, vs the fitted curve and
-                      published rural CC road rates
-  ceiling             outside-constituency works over Rs 25 lakh (para 2.9) - the
-                      only hard signal, because it is arithmetic against a clause
-  delay               open works past their type's 98th-percentile duration
-  money vs site       needs a verified progress reading from agent 01; until that
-                      agent exists it is stated as a limitation, not skipped quietly
+v2 (T020, 30 Sept 2026). v1 compared every work with the median of its work type in its
+district and flagged three spreads above it. On the real corpus that produced the owner's
+complaint: a library building judged against book orders ("typical Rs 10,000", 1,000x),
+2,582 flags of which 179 read exactly 5.0x and 138 exactly 2.0x, and every queued work
+at the same score. v2 changes what is compared and how:
+
+  what it buys   peers are the same kind of work: a type is split into GOODS / WORKS
+                 where the two differ in price (scope.py, data/build_stats.py)
+  can it judge   an undescribed sanction ("Letter as per attached") is NOT_ASSESSABLE;
+                 a many-site sanction (whole constituency, "various villages") is a
+                 bundle, not a mark-up
+  scale          roads with a stated length are judged per metre; counted items
+                 ("50 nos street lights") per unit, against single-unit works
+  how high       flagged only above twice the TOP of the usual range (p90) of its
+                 district peers AND above the top for the state (or country): a round
+                 Rs 5 lakh road next to Rs 1 lakh district peers is not a mark-up when
+                 Rs 5 lakh is ordinary for the state
+  how far        far above every similar work (25x the median) is worded as a scope
+                 question ("check what it covers and that its type is right"), not a
+                 mark-up: at that distance it is almost always a bigger or different job
+
+The signal (risk) grows with how far above the top of the range the work sits, so
+flags no longer all score the same. A peer range is not a schedule of rates: every
+finding here is soft, and says "check", never that the amount is wrong.
+
+Still carried here until their engines exist: the outside-constituency ceiling (moves to
+compliance, T011) and the overdue check (moves to compliance / delay, T011, T040).
 """
 
 from __future__ import annotations
@@ -21,20 +37,34 @@ from datetime import date
 
 from drishti import reference
 from drishti.agents.contract import AgentResult, Finding, Status
-from drishti.agents.statistical.band import cost_risk, cost_verdict, zscore
+from drishti.agents.statistical.band import Cohort
 from drishti.agents.statistical.cohort import StatsStore
-from drishti.agents.statistical.text import reads_as_bundle, stated_length
+from drishti.agents.statistical.scope import read
+from drishti.agents.statistical.text import stated_length
 from drishti.agents.statistical.timeline import delay_check
 from drishti.agents.statistical.unit_rate import road_check
 
 AGENT = "statistical"
-VERSION = "statistical-1.0.0"
+VERSION = "statistical-2.0.0"
 QUESTION = "Is the project cost unusual for similar works?"
 
 OUTSIDE_CEILING_INR = 2_500_000.0      # para 2.9, verified clause OUTSIDE_CONSTITUENCY_CEILING
 CEILING_RISK = 0.70
 LEVEL_CONFIDENCE = {"type_district": 0.85, "type_state": 0.7, "type": 0.55}
-COUNTABLE_CONFIDENCE = 0.6
+
+TOP_FACTOR = 2.0          # flag above 2x the top (p90) of the usual range
+SCOPE_RATIO = 10.0        # this far above the median it is a scope question
+LOW_FACTOR = 3.0          # below a third of the bottom (p10) of the range
+BUNDLE_RISK = 0.15
+SCOPE_RISK = 0.35
+BELOW_RISK = 0.10
+UNIT_TOP_FACTOR = 2.0     # per unit, against single-unit works of the type
+MODEL_TOP_FACTOR = 2.0    # version B: above twice the learned top (q90) for the description
+USE_PEERS = True          # trial switch (cost_trial_v2.py): False = judge by the model alone
+# How a type's GOODS peers are named in officer-facing text (scope.py splits them off).
+GOODS_LABEL = {"LIBRARY": "library book and equipment purchase",
+               "STREET_LIGHT": "street light purchase",
+               "ROAD_CC": "road equipment purchase"}
 
 
 def inr(v: float) -> str:
@@ -45,15 +75,27 @@ def inr(v: float) -> str:
     return f"Rs {v:,.0f}"
 
 
+def above_risk(top_ratio: float) -> float:
+    """0.35 at twice the top of the range, rising to 0.9 at 16x (log scale)."""
+    if top_ratio < TOP_FACTOR:
+        return 0.0
+    return min(0.9, 0.35 + 0.183 * math.log2(top_ratio / TOP_FACTOR))
+
+
 def _place(work: dict) -> str:
     return work.get("district_name") or "this district"
 
 
-def _not_assessable(reason: str, t0: float) -> AgentResult:
+def _where(cohort: Cohort, work: dict) -> str:
+    return {"type_district": f"in {_place(work)}", "type_state": "in this state",
+            "type": "across the scheme"}.get(cohort.level, "")
+
+
+def _not_assessable(reason: str, t0: float, **extra) -> AgentResult:
     return AgentResult(agent=AGENT, status=Status.NOT_ASSESSABLE, verdict="NOT_ASSESSABLE",
                        risk=0.0, confidence=0.0, hard=False, version=VERSION,
                        headline=f"Cannot be assessed: {reason}. This is not a clean chit.",
-                       duration_ms=int((time.perf_counter() - t0) * 1000))
+                       evidence=extra, duration_ms=int((time.perf_counter() - t0) * 1000))
 
 
 def _length_m(work: dict) -> float:
@@ -63,6 +105,26 @@ def _length_m(work: dict) -> float:
     if q and unit == "km":
         return float(q) * 1000.0
     return stated_length(work.get("description"), allow_km=True)
+
+
+def _expected(work: dict) -> dict | None:
+    """Version B's learned range for this work (data/build_cost_model.py), if loaded."""
+    exp = work.get("cost_expected") or (work.get("signals") or {}).get("cost_model")
+    if not exp or any(exp.get(k) is None for k in ("q10", "q50", "q90")):
+        return None
+    return exp
+
+
+def _range_text(c: Cohort) -> str:
+    lo, hi = c.range_inr()
+    return f"{inr(lo)} to {inr(hi)}"
+
+
+def _row(metric: str, amount: float, c: Cohort, unit: str = "Rs") -> dict:
+    lo, hi = c.range_inr()
+    return {"metric": metric, "unit": unit, "this_work": amount, "typical_low": lo,
+            "typical_high": hi, "median": c.median_inr(),
+            "deviation_pct": (amount / c.median_inr() - 1.0) * 100.0}
 
 
 def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
@@ -75,52 +137,72 @@ def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
     amount = float(amount)
     if not wtype:
         return _not_assessable("the record carries no work type", t0)
-    cohort = stats.cohort(wtype, work.get("district_lgd"), work.get("state_lgd"))
-    if cohort is None:
-        return _not_assessable(
-            f"fewer than 20 comparable {type_name} works exist to compare against", t0)
+    desc = work.get("description")
 
     findings: list[Finding] = []
     limitations: list[str] = []
-
-    # -- cost vs peers
-    z = zscore(amount, cohort)
-    bundle = reads_as_bundle(work.get("description"))
-    verdict = cost_verdict(z, bundle)
-    risk = cost_risk(z, verdict)
-    ratio = amount / cohort.median_inr()
-    lo, hi = cohort.range_inr()
-    comparison = [{
-        "metric": "Total cost", "unit": "Rs", "this_work": amount, "typical_low": lo,
-        "typical_high": hi, "median": cohort.median_inr(),
-        "deviation_pct": (ratio - 1.0) * 100.0,
-    }]
-    compared = f"compared with {cohort.n:,} {cohort.description}"
-    countable = reference.is_countable(wtype)
-    if verdict == "COST_ABOVE_PEERS":
-        text = (f"Costs {ratio:.1f}x the typical amount for {type_name} works in "
-                f"{_place(work)} ({compared}).")
-        if countable:
-            text += (" For items counted in units, this can also mean many units filed "
-                     "as one work; the description does not say how many.")
-        findings.append(Finding("COST_ABOVE_PEERS", text, hard=False, risk=risk,
-                                evidence={"z": z, "ratio": ratio}))
-    elif verdict == "COST_BELOW_PEERS":
-        text = (f"Costs {ratio:.2f}x the typical amount, well below similar works; "
-                f"under-costed works are often revised upward later ({compared}).")
-        findings.append(Finding("COST_BELOW_PEERS", text, hard=False, risk=risk,
-                                evidence={"z": z, "ratio": ratio}))
-    elif verdict == "BUNDLED_SANCTION":
-        text = (f"The amount is {ratio:.1f}x the typical {type_name} work, and the "
-                "description lists many units: most likely several works filed as one, "
-                "each of which escaped separate scrutiny.")
-        findings.append(Finding("BUNDLED_SANCTION", text, hard=False, risk=risk,
-                                evidence={"z": z, "ratio": ratio}))
-
-    # -- price per metre (roads with a known length)
+    comparison: list[dict] = []
+    rd = read(wtype, desc)
+    ptype = stats.peer_type(wtype, rd.scope)
+    chain = stats.chain(ptype, work.get("district_lgd"), work.get("state_lgd"))
+    reading = "total"
+    if rd.undescribed:
+        reading = "undescribed"
+    elif rd.bundle:
+        reading = "bundle"
+    count = rd.count
+    if ptype.endswith("|GOODS"):
+        type_name = GOODS_LABEL.get(wtype, f"{type_name} (items bought)")
+    elif ptype.endswith("|MAST"):
+        type_name = "high mast light"
     model = stats.unit_models.get(wtype)
     length = _length_m(work) if model else math.nan
     if model and not math.isnan(length):
+        reading = "per_metre"
+    elif count:
+        reading = "per_unit"
+
+    # -- ceiling (hard, cited): arithmetic against a clause, needs no peers
+    if work.get("is_outside_constituency") and amount > OUTSIDE_CEILING_INR:
+        findings.append(Finding(
+            "CEILING_BREACH",
+            f"A work outside the constituency is capped at Rs 25 lakh "
+            f"({reference.citation('OUTSIDE_CONSTITUENCY_CEILING')}); this one is "
+            f"{inr(amount)}.",
+            hard=True, risk=CEILING_RISK, evidence={"ceiling": OUTSIDE_CEILING_INR}))
+
+    # -- delay (until the compliance / delay engines carry it)
+    dc = delay_check(work.get("status"), work.get("recommended_date"), as_of,
+                     stats.p98(wtype))
+    if dc and dc["verdict"] == "DELAYED":
+        findings.append(Finding(
+            "DELAYED",
+            f"Still open {dc['days']:,} days after recommendation; 98% of completed "
+            f"{type_name} works finished within {dc['norm_days']:,.0f} days.",
+            hard=False, risk=dc["risk"], evidence=dc))
+
+    if reading == "undescribed":
+        if findings:
+            return _result(findings, ["The description does not say what is built or bought, "
+                                      "so the cost is not compared."], comparison, None,
+                           type_name, work, t0, "COST_NOT_COMPARED", 0.5)
+        return _not_assessable("the description does not say what is built or bought, so "
+                               "its cost cannot be compared with anything", t0)
+    if not chain:
+        if findings:
+            return _result(findings, [f"Fewer than 20 comparable {type_name} works exist, so "
+                                      "the cost is not compared."], comparison, None,
+                           type_name, work, t0, "COST_NOT_COMPARED", 0.5)
+        return _not_assessable(
+            f"fewer than 20 comparable {type_name} works exist to compare against", t0)
+
+    local, broad = chain[0], (chain[1] if len(chain) > 1 else None)
+    top_local = amount / local.range_inr()[1]
+    comparison.append(_row("Total cost", amount, local))
+    peers = f"{local.n:,} similar works {_where(local, work)}"
+    verdict = "COST_TYPICAL"
+
+    if reading == "per_metre":
         rc = road_check(amount, length, model)
         spread = 2 * model.resid_sd
         comparison.append({
@@ -132,53 +214,123 @@ def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
             "anchor_low": model.anchor_low, "anchor_high": model.anchor_high,
         })
         if rc["verdict"] == "UNIT_RATE_ABOVE":
+            verdict = "UNIT_RATE_ABOVE"
             findings.append(Finding(
                 "UNIT_RATE_ABOVE",
-                f"{inr(rc['per_metre'])} per metre for {length:,.0f} m, against a fitted "
-                f"{inr(rc['predicted'] / length)} per metre and published rates of "
-                f"Rs {model.anchor_low:,.0f}-{model.anchor_high:,.0f} per metre.",
-                hard=False, risk=cost_risk(rc["z"], "COST_ABOVE_PEERS"), evidence=rc))
-
-    # -- ceiling (hard, cited)
-    if work.get("is_outside_constituency") and amount > OUTSIDE_CEILING_INR:
-        findings.append(Finding(
-            "CEILING_BREACH",
-            f"A work outside the constituency is capped at Rs 25 lakh "
-            f"({reference.citation('OUTSIDE_CONSTITUENCY_CEILING')}); this one is "
-            f"{inr(amount)}.",
-            hard=True, risk=CEILING_RISK, evidence={"ceiling": OUTSIDE_CEILING_INR}))
-
-    # -- delay
-    dc = delay_check(work.get("status"), work.get("recommended_date"), as_of,
-                     stats.p98(wtype))
-    if dc and dc["verdict"] == "DELAYED":
-        findings.append(Finding(
-            "DELAYED",
-            f"Still open {dc['days']:,} days after recommendation; 98% of completed "
-            f"{type_name} works finished within {dc['norm_days']:,.0f} days.",
-            hard=False, risk=dc["risk"], evidence=dc))
-
-    limitations.append(
-        "Money released against verified site progress is checked once the Site Progress "
-        "agent is built; the published export carries no payment dates.")
-    if cohort.level != "type_district":
-        limitations.append(f"Fewer than 20 such works in {_place(work)}, so the comparison "
-                           f"uses {cohort.description}.")
-    limitations.append("A peer median is not a schedule of rates: an unusual amount can "
-                       "have an ordinary explanation (terrain, specification, scope).")
-
-    confidence = LEVEL_CONFIDENCE[cohort.level]
-    if countable and verdict == "COST_ABOVE_PEERS":
-        # The unit count is missing, so the outlier is ambiguous between a mispriced
-        # item and a bulk order; it is read with less confidence, not suppressed.
-        confidence = min(confidence, COUNTABLE_CONFIDENCE)
-
-    top = max(findings, key=lambda f: f.risk, default=None)
-    if top is None:
-        headline = (f"Cost is within the usual range for {type_name} works in "
-                    f"{_place(work)} ({compared}).")
+                f"{inr(rc['per_metre'])} per metre for {length:,.0f} m, against a usual "
+                f"{inr(rc['predicted'] / length)} per metre for roads of this length and "
+                f"published rates of Rs {model.anchor_low:,.0f}-{model.anchor_high:,.0f} "
+                f"per metre. Check the length and the specification.",
+                hard=False, risk=above_risk(amount / rc["predicted"] / (10 ** model.resid_sd)),
+                evidence={**rc, "reading": reading}))
+        limitations.append(f"Judged per metre for {length:,.0f} m; the total is not compared "
+                           "with roads of other lengths.")
+    elif reading == "per_unit":
+        single = (stats.chain(ptype, None, work.get("state_lgd")) or chain)[0]
+        per_unit = amount / count
+        unit_top = per_unit / single.range_inr()[1]
+        comparison.append(_row("Cost per unit", per_unit, single, unit="Rs/unit"))
+        if unit_top >= UNIT_TOP_FACTOR and per_unit >= 3 * single.median_inr():
+            verdict = "UNIT_PRICE_ABOVE"
+            findings.append(Finding(
+                "UNIT_PRICE_ABOVE",
+                f"{inr(per_unit)} per unit for the {count} units the description names; a "
+                f"single-unit {type_name} work usually costs {_range_text(single)} "
+                f"{_where(single, work)}. Check the specification and the count.",
+                hard=False, risk=above_risk(unit_top),
+                evidence={"count": count, "per_unit": per_unit, "top_ratio": unit_top,
+                          "reading": reading}))
+        limitations.append(f"Priced per unit for the {count} units named in the description.")
+    elif reading == "bundle":
+        if top_local >= TOP_FACTOR:
+            verdict = "BUNDLED_SANCTION"
+            findings.append(Finding(
+                "BUNDLED_SANCTION",
+                f"{inr(amount)} for what the description says covers several sites or "
+                f"units; one {type_name} work usually costs {_range_text(local)} "
+                f"{_where(local, work)}. The cost per site cannot be judged until the list "
+                f"of sites is checked.",
+                hard=False, risk=BUNDLE_RISK,
+                evidence={"top_ratio": top_local, "reading": reading}))
+        limitations.append("The description covers several sites or units, so the total is "
+                           "not read as a price.")
     else:
+        broad_ok = broad is None or amount > broad.range_inr()[1]
+        ratio_med = amount / local.median_inr()
+        exp = _expected(work)
+        model_top = None
+        if exp is not None:
+            lo_b, mid_b, hi_b = (10 ** exp["q10"], 10 ** exp["q50"], 10 ** exp["q90"])
+            model_top = amount / hi_b
+            comparison.append({"metric": "Expected for this description", "unit": "Rs",
+                               "this_work": amount, "typical_low": lo_b, "typical_high": hi_b,
+                               "median": mid_b, "deviation_pct": (amount / mid_b - 1.0) * 100})
+            # the peers and the description-based range must agree before anything is said
+            broad_ok = broad_ok and model_top >= MODEL_TOP_FACTOR
+        if not USE_PEERS and model_top is not None:      # trial switch: model alone
+            top_local, broad_ok = model_top * TOP_FACTOR / MODEL_TOP_FACTOR, True
+        if top_local >= TOP_FACTOR and broad_ok and ratio_med >= SCOPE_RATIO:
+            verdict = "SCOPE_FAR_LARGER"
+            findings.append(Finding(
+                "SCOPE_FAR_LARGER",
+                f"{inr(amount)} is far above any usual {type_name} work {_where(local, work)} "
+                f"(most cost {_range_text(local)}; {peers}). A work this large is more often "
+                f"a bigger or different kind of project than a price problem: check what it "
+                f"covers and that its type is right.",
+                hard=False, risk=SCOPE_RISK,
+                evidence={"top_ratio": top_local, "median_ratio": ratio_med,
+                          "reading": reading}))
+        elif top_local >= TOP_FACTOR and broad_ok:
+            verdict = "COST_ABOVE_PEERS"
+            wider = "" if broad is None else (
+                f", and above the usual top for {_where(broad, work).replace('in ', '')} "
+                f"({inr(broad.range_inr()[1])})")
+            learned = "" if model_top is None else (
+                f" Works described like this one usually cost up to {inr(amount / model_top)}.")
+            findings.append(Finding(
+                "COST_ABOVE_PEERS",
+                f"{inr(amount)}: similar {type_name} works {_where(local, work)} usually cost "
+                f"{_range_text(local)} ({peers}). This is {top_local:.1f} times the top of "
+                f"that range{wider}.{learned} Check the estimate and what it includes.",
+                hard=False, risk=above_risk(min(top_local, model_top or top_local) if
+                                            model_top else top_local),
+                evidence={"top_ratio": top_local, "median_ratio": ratio_med,
+                          "model_top_ratio": model_top, "reading": reading}))
+        elif amount * LOW_FACTOR < local.range_inr()[0] and (
+                broad is None or amount < broad.range_inr()[0]):
+            verdict = "COST_BELOW_PEERS"
+            findings.append(Finding(
+                "COST_BELOW_PEERS",
+                f"{inr(amount)} is well below similar works {_where(local, work)} "
+                f"(usually {_range_text(local)}); under-costed works are often revised "
+                f"upward later.",
+                hard=False, risk=BELOW_RISK, evidence={"reading": reading}))
+
+    if local.level != "type_district":
+        limitations.append(f"Fewer than 20 such works in {_place(work)}, so the comparison "
+                           f"uses works {_where(local, work)}.")
+    limitations.append("A peer range is not a schedule of rates: an unusual amount can have an "
+                       "ordinary explanation (terrain, specification, scope).")
+    return _result(findings, limitations, comparison, local, type_name, work, t0, verdict,
+                   LEVEL_CONFIDENCE[local.level], peers=peers, reading=reading, ptype=ptype)
+
+
+def _result(findings, limitations, comparison, cohort, type_name, work, t0, verdict,
+            confidence, peers=None, reading=None, ptype=None) -> AgentResult:
+    top = max(findings, key=lambda f: f.risk, default=None)
+    if top is not None:
         headline = top.text
+    elif cohort is not None:
+        headline = (f"Cost is within the usual range for similar {type_name} works "
+                    f"{_where(cohort, work)} ({peers}).")
+    else:
+        headline = "Cost not compared."
+    evidence = {"comparison": comparison, "work_type_name": type_name, "reading": reading,
+                "peer_type": ptype}
+    if cohort is not None:
+        evidence["cohort"] = {"level": cohort.level, "description": cohort.description,
+                              "n": cohort.n, "p10": cohort.p10, "p50": cohort.p50,
+                              "p90": cohort.p90, "sd": cohort.sd}
     return AgentResult(
         agent=AGENT, status=Status.ASSESSED,
         verdict=top.code if top else verdict,
@@ -186,9 +338,4 @@ def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
         confidence=confidence,
         hard=any(f.hard for f in findings),
         headline=headline, version=VERSION, findings=findings, limitations=limitations,
-        evidence={"comparison": comparison,
-                  "cohort": {"level": cohort.level, "description": cohort.description,
-                             "n": cohort.n, "p10": cohort.p10, "p50": cohort.p50,
-                             "p90": cohort.p90, "sd": cohort.sd, "z": z},
-                  "work_type_name": type_name},
-        duration_ms=int((time.perf_counter() - t0) * 1000))
+        evidence=evidence, duration_ms=int((time.perf_counter() - t0) * 1000))

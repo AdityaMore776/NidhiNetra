@@ -20,6 +20,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "apps" / "engine"))
 from drishti.agents.statistical.band import MIN_COHORT, P10_P90_SD, SD_FLOOR, SHRINK_K  # noqa: E402
+from drishti.agents.statistical.scope import GOODS, MAST, WORKS, read  # noqa: E402
 from drishti.agents.statistical.text import reads_as_bundle, stated_length  # noqa: E402
 
 BUILD = Path(__file__).resolve().parent / "build"
@@ -29,22 +30,77 @@ BUILD = Path(__file__).resolve().parent / "build"
 ROAD_ANCHOR = (4000.0, 6500.0, "published rural single-lane CC road rates")
 
 
-def cohorts(w: pd.DataFrame) -> pd.DataFrame:
-    sd_type = w.groupby("work_type_code").l.std()
+def cohorts(w: pd.DataFrame, type_col: str = "work_type_code") -> pd.DataFrame:
+    """Peer bands per type x district, type x state and type. `type_col` names the peer
+    type: the plain work type (v1, AD-106) or the scope-aware peer type (v2)."""
+    w = w.assign(_t=w[type_col])
+    sd_type = w.groupby("_t").l.std()
     out = []
-    for level, keys in (("type_district", ["work_type_code", "district_lgd"]),
-                        ("type_state", ["work_type_code", "state_lgd"]),
-                        ("type", ["work_type_code"])):
+    for level, keys in (("type_district", ["_t", "district_lgd"]),
+                        ("type_state", ["_t", "state_lgd"]),
+                        ("type", ["_t"])):
         g = w.groupby(keys).l
         s = pd.DataFrame({"n": g.size(), "p10": g.quantile(0.10), "p50": g.median(),
                           "p90": g.quantile(0.90)}).reset_index()
         s["sd_raw"] = (s.p90 - s.p10) / P10_P90_SD
-        st = s.work_type_code.map(sd_type)
+        st = s["_t"].map(sd_type).fillna(s.sd_raw)
         s["sd"] = ((s.n * s.sd_raw + SHRINK_K * st) / (s.n + SHRINK_K)).clip(lower=SD_FLOOR)
         s["level"] = level
         s["key"] = s[keys[1]] if len(keys) == 2 else ""
+        s["work_type_code"] = s["_t"]
         out.append(s[["level", "work_type_code", "key", "n", "p10", "p50", "p90", "sd"]])
     return pd.concat(out, ignore_index=True)
+
+
+# ---- v2 peers (T020, 30 Sept 2026): compare like with like --------------------------
+# A work type mixes jobs of very different size (LIBRARY: book orders median Rs 1 lakh,
+# buildings Rs 7 lakh). A type is split into GOODS / WORKS peers when both halves have
+# SPLIT_MIN_N clean works and their medians differ by SPLIT_MIN_RATIO or more.
+SPLIT_MIN_N = 50
+SPLIT_MIN_RATIO = 2.0
+
+
+def scope_frame(w: pd.DataFrame) -> pd.DataFrame:
+    """Per work, the engine's own reading (scope.read): scope, undescribed, many sites,
+    bundle, unit count, and whether it is clean (one described job at one site)."""
+    rows = [read(t, d) for t, d in zip(w.work_type_code, w.description, strict=True)]
+    return pd.DataFrame({
+        "scope": [r.scope for r in rows], "undescribed": [r.undescribed for r in rows],
+        "many_sites": [r.many_sites for r in rows], "bundle": [r.bundle for r in rows],
+        "count": [r.count for r in rows], "clean": [r.clean for r in rows]}, index=w.index)
+
+
+def clean_mask(sf: pd.DataFrame) -> pd.Series:
+    """One job at one site, described: the only works that can set a price for peers."""
+    return sf["clean"]
+
+
+def split_types(w: pd.DataFrame, sf: pd.DataFrame) -> set[str]:
+    c = w[clean_mask(sf) & (sf.scope != MAST)].assign(scope=sf.scope)
+    out = set()
+    for t, g in c.groupby("work_type_code"):
+        goods, works = g[g.scope == GOODS].l, g[g.scope == WORKS].l
+        if len(goods) >= SPLIT_MIN_N and len(works) >= SPLIT_MIN_N and \
+                abs(goods.median() - works.median()) >= np.log10(SPLIT_MIN_RATIO):
+            out.add(t)
+    return out
+
+
+def peer_type(w: pd.DataFrame, sf: pd.DataFrame, split: set[str]) -> pd.Series:
+    """Masts always get their own peers (scope MAST); other types split GOODS / WORKS
+    only when `split_types` found the two priced apart."""
+    t = w.work_type_code
+    split_on = t.isin(split) | (sf.scope == MAST)
+    return t.where(~split_on, t + "|" + sf.scope)
+
+
+def cost_cohorts(w: pd.DataFrame, sf: pd.DataFrame | None = None) -> pd.DataFrame:
+    """v2 peer bands: scope-aware peer types, built from clean works only."""
+    sf = scope_frame(w) if sf is None else sf
+    split = split_types(w, sf)
+    ww = w.assign(peer_type=peer_type(w, sf, split))[clean_mask(sf)]
+    c = cohorts(ww, type_col="peer_type")
+    return c[c.n >= MIN_COHORT]
 
 
 def check_against_ad106(w: pd.DataFrame, c: pd.DataFrame) -> None:
@@ -112,9 +168,15 @@ def main() -> None:
     works = pd.read_parquet(BUILD / "works.parquet")
     w = works[(works.amount > 0) & works.work_type_code.notna()].copy()
     w["l"] = np.log10(w.amount.astype(float))
-    c = cohorts(w)
-    check_against_ad106(w, c)
-    c = c[c.n >= MIN_COHORT]
+    check_against_ad106(w, cohorts(w))     # the corpus and v1 method are unchanged
+    sf = scope_frame(w)
+    split = split_types(w, sf)
+    clean = clean_mask(sf)
+    print(f"v2 peers: {clean.mean():.1%} of works are one described job at one site; "
+          f"{sf.undescribed.sum():,} undescribed, {sf.many_sites.sum():,} many-site, "
+          f"{sf.bundle.sum():,} bundles, {sf['count'].notna().sum():,} with a unit count, "
+          f"{(sf.scope == MAST).sum():,} masts; split by scope: {sorted(split)}")
+    c = cost_cohorts(w, sf)
     d = durations(works)
     u = road_curve(w)
     tq, ta = timeline_counts(works)

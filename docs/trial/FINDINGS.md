@@ -69,6 +69,34 @@ queue a work.
 Mark-ups under 2× hide inside normal price variation, so they need a second signal, such as
 the document agent reading quantities.
 
+#### Cost engine v2 (T020, 30 Sept 2026): fixing the odd prices
+
+The live version's strangest flags were not price questions at all. A library building was judged
+against book orders ("hundreds of times typical"), many works showed the same "5.0x", and every
+queued work was "Medium". Version 2 compares like with like: a library building is judged against
+other library buildings, not book orders. Works with no real description are marked "can't tell".
+Lists of sites are read as several jobs, not one inflated price. A work is flagged only above 2× the
+top of its district peers and above the state/national top. A second check, a price model learned
+from description words, must agree (inside its 10–90% range for 80.2% of works, tested
+constituency by constituency).
+Script `data/trial/cost_trial_v2.py`, results `results/cost_trial_v2.json`, labels `cost_v2_labels.py`.
+
+| | live v1 | v2 (rules + model) |
+|---|---|---|
+| 5× mark-ups caught | 63% | 55% |
+| 10× mark-ups caught | 82% | 82% |
+| False alarms on 20,000 untouched works | 1.7% | **1.3%** |
+| Real price questions among the 30 highest-ranked flags (fresh sample, rules frozen) | **0 / 30** | **10 / 30** |
+| Real price questions among 30 random flags (same sample) | 10 / 30 | 5 / 30 |
+
+"Real price question" = read by eye: one described job at one site, compared with the same kind of
+work, and the amount looks high. **Meaning:** v2 fixes the top of the list, which is what an officer
+reads first. It is not yet better on a random flag: half of its random flags are "several sites
+bundled" or "check what it covers" notes, which by design make no price claim (0/12 and 3/11). Among
+flags that do claim a price is high, both versions score about a third (v2 11/32, v1 10/32). v2 also
+catches fewer 5× mark-ups because the model must agree. Two earlier samples were used to fix the
+rules and are not counted here.
+
 ### A2 Split works and duplicates: a real pattern
 
 **Bunching at the limits:**

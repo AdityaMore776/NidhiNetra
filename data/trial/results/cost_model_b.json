@@ -1,0 +1,11 @@
+{
+  "model_version": "cost-model-b-2",
+  "works": 203330,
+  "features": 20119,
+  "folds": "GroupKFold(5) by constituency",
+  "median_abs_error_log10": 0.2346,
+  "median_abs_error_factor": 1.716,
+  "share_inside_q10_q90_after_calibration": 0.8016,
+  "share_above_q90": 0.0994,
+  "seconds": 1365
+}

@@ -37,8 +37,11 @@ class EngineSpec:
     name: str
     question: str
     assess: Assess | None = None
-    weight: float = 0.0          # blueprint risk-score weight (fusion reads it)
+    # blueprint risk-score weight (fusion reads it). None = the core slot's weight; an engine
+    # sets 0.0 to be shown but not counted, e.g. until it meets its accuracy target
+    weight: float | None = None
     order: int = 100             # display order; core engines first
+    weight_note: str = ""        # why the weight differs from the blueprint, shown on screen
 
 
 # The blueprint's slots. Weights from the spec: 0.30 / 0.20 / 0.20 / 0.20 / 0.10.
@@ -94,8 +97,9 @@ def discover(package: str = "drishti.agents") -> tuple[EngineSpec, ...]:
             # unless the folder sets its own
             engines.append(EngineSpec(
                 id=slot.id, name=spec.name or slot.name, question=spec.question or slot.question,
-                assess=spec.assess, weight=spec.weight or slot.weight,
-                order=slot.order))
+                assess=spec.assess,
+                weight=slot.weight if spec.weight is None else spec.weight,
+                order=slot.order, weight_note=spec.weight_note))
     engines.extend(sorted(found.values(), key=lambda s: (s.order, s.id)))
     return tuple(engines)
 

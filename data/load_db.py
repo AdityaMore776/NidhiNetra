@@ -10,13 +10,14 @@ Run:
 
 from __future__ import annotations
 
+import json
 import os
 import time
 
 import pandas as pd
 import psycopg
 
-from common import BUILD, clean
+from common import BUILD, clean, signal_rows
 from drishti import migrate
 
 TABLES = {
@@ -33,14 +34,26 @@ TABLES = {
     "timeline_quarters": ["quarter", "n", "bad"],
     "timeline_agencies": ["agency_name", "completed", "bad"],
 }
+MAX_DB_MB_NOTE = "free tier is 500 MB"
 MAX_DB_MB = 400
+
+
+def load_signals(con: psycopg.Connection) -> None:
+    """Offline engine facts (common.SIGNALS) into work_signals; a signal not built is skipped."""
+    t0 = time.time()
+    n = 0
+    with con.cursor().copy("COPY work_signals (work_id, engine, data, version) FROM STDIN") as cp:
+        for work_id, engine, data, version in signal_rows():
+            cp.write_row([work_id, engine, json.dumps(data), version])
+            n += 1
+    print(f"work_signals: {n:,} rows in {time.time() - t0:.0f}s")
 
 
 def load(url: str) -> None:
     print("migrations applied:", migrate.apply(url) or "none pending")
     with psycopg.connect(url, prepare_threshold=None) as con:
-        con.execute("TRUNCATE assessments, works, districts, cohort_stats, duration_stats, "
-                    "unit_rate_models, timeline_quarters, timeline_agencies")
+        con.execute("TRUNCATE assessments, work_signals, works, districts, cohort_stats, "
+                    "duration_stats, unit_rate_models, timeline_quarters, timeline_agencies")
         for table, cols in TABLES.items():
             t0 = time.time()
             df = pd.read_parquet(BUILD / f"{table}.parquet")
@@ -49,6 +62,7 @@ def load(url: str) -> None:
                     r = clean(rec)
                     cp.write_row([r[c] for c in cols])
             print(f"{table}: {len(df):,} rows in {time.time() - t0:.0f}s")
+        load_signals(con)
         con.commit()
         con.execute("ANALYZE")
         mb = con.execute("SELECT pg_database_size(current_database()) / 1e6").fetchone()[0]
