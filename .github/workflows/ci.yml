@@ -25,6 +25,11 @@ jobs:
   # keys and passwords must never reach this public repo
   secrets:
     runs-on: ubuntu-latest
+    # gitleaks lists the PR's commits through the API; since 30 Sept the default token is
+    # refused that ("403 Resource not accessible by integration") unless it is asked for
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
       - uses: actions/checkout@v4
         with:
