@@ -1,0 +1,54 @@
+{
+  "works": 209993,
+  "status": {
+    "ASSESSED": 209993
+  },
+  "works_breaking_rule": {
+    "R01": {
+      "works": 21323,
+      "share": 0.1015,
+      "title": "Waiting for sanction past the time limit"
+    },
+    "R02": {
+      "works": 61920,
+      "share": 0.2949,
+      "title": "Open far longer than similar works"
+    },
+    "R06": {
+      "works": 1114,
+      "share": 0.0053,
+      "title": "Dates in an impossible order"
+    },
+    "R07": {
+      "works": 458,
+      "share": 0.0022,
+      "title": "May be a work the guidelines do not allow"
+    },
+    "R11": {
+      "works": 7576,
+      "share": 0.0361,
+      "title": "Key details missing from the record"
+    }
+  },
+  "findings_by_rule_and_severity": {
+    "R01 MEDIUM": 21323,
+    "R02 LOW": 49855,
+    "R02 MEDIUM": 12065,
+    "R06 LOW": 1093,
+    "R06 MEDIUM": 21,
+    "R07 MEDIUM": 458,
+    "R11 LOW": 7576
+  },
+  "works_by_highest_severity": {
+    "none": 120512,
+    "LOW": 55686,
+    "MEDIUM": 33795
+  },
+  "not_checkable": [
+    "R03",
+    "R04",
+    "R05",
+    "R09",
+    "R10"
+  ]
+}
