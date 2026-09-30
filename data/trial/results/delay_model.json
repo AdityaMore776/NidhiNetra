@@ -1,0 +1,37 @@
+{
+  "model_version": "delay-model-1",
+  "label": "not completed within 365 days of recommendation",
+  "strict_backtest": {
+    "train": "recommended 2023-04-01 .. 2023-12-31",
+    "test": "recommended 2025-01-01 .. 2025-05-26",
+    "train_works": 52315,
+    "test_works": 27924,
+    "late_rate_test": 0.709,
+    "model": {
+      "auc": 0.7095,
+      "late_in_riskiest_10pct": 0.8005,
+      "late_in_safest_10pct": 0.2113
+    },
+    "baseline_office_record": {
+      "auc": 0.6791,
+      "late_in_riskiest_10pct": 0.7822,
+      "late_in_safest_10pct": 0.2919
+    }
+  },
+  "held_out_districts": {
+    "works": 52315,
+    "folds": "GroupKFold(5) by district",
+    "model": {
+      "auc": 0.5883,
+      "late_in_riskiest_10pct": 0.8371,
+      "late_in_safest_10pct": 0.6538
+    },
+    "baseline_office_record": {
+      "auc": 0.4191,
+      "late_in_riskiest_10pct": 0.8524,
+      "late_in_safest_10pct": 0.8098
+    }
+  },
+  "scored_open_works": 54485,
+  "scored_mean_p_late": 0.6528
+}
