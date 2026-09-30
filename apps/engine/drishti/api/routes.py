@@ -16,9 +16,16 @@ from drishti import config
 from drishti.agents import registry
 from drishti.agents.statistical.cohort import StatsStore
 from drishti.auth import Principal, current_user
-from drishti.batch import WORK_COLUMNS, _normalise, assess_one
+from drishti.batch import (
+    SIGNALS_COLUMNS,
+    SIGNALS_JOIN,
+    WORK_COLUMNS,
+    _normalise,
+    assess_one,
+)
 from drishti.db import connect
 from drishti.pipeline.orchestrator import Context, assess_work
+from drishti.validation import pii
 
 router = APIRouter(prefix="/api/v1")
 
@@ -37,10 +44,17 @@ def _scope(user: Principal, alias: str = "w") -> tuple[str, tuple]:
     return f"{alias}.district_lgd = %s", (d,)
 
 
+def _where_works(where: str) -> str:
+    """The scope clause written for alias w, for a query on the bare works table."""
+    return where.replace("w.", "works.")
+
+
 def _jsonable(row: dict) -> dict:
     out = {}
     for k, v in row.items():
-        if isinstance(v, date):
+        if k == "description":
+            out[k] = pii.mask(v)          # the site shows the work, not the people
+        elif isinstance(v, date):
             out[k] = v.isoformat()
         elif v is not None and type(v).__name__ == "Decimal":
             out[k] = float(v)
@@ -113,6 +127,7 @@ def _summary(user: Principal) -> dict:
         "bands": {b: 0 for b in ("HIGH", "MEDIUM", "LOW")} | {r["band"]: r["n"] for r in bands},
         "agents": [{"id": e.id, "name": e.name, "question": e.question,
                     "built": e.assess is not None, "weight": e.weight,
+                    "weight_note": e.weight_note,
                     "alerts": alert_n.get(e.id, 0)} for e in registry.engines()],
         "validation_alerts": alert_n.get("validation", 0),
         "snapshot_date": config.snapshot_date().isoformat(),
@@ -216,8 +231,9 @@ def queue(district: str | None = None, band: str | None = None,
 def work(work_id: str, user: Principal = Depends(current_user)) -> dict:
     where, params = _scope(user)
     with connect() as con:
-        row = con.execute(f"SELECT {WORK_COLUMNS} FROM works w WHERE w.work_id = %s "
-                          f"AND {where}", (work_id, *params)).fetchone()
+        row = con.execute(f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works "
+                          f"{SIGNALS_JOIN} WHERE works.work_id = %s AND {_where_works(where)}",
+                          (work_id, *params)).fetchone()
         if row is None:
             raise HTTPException(404, "no such work in your area")
         a = con.execute("SELECT * FROM assessments WHERE work_id = %s", (work_id,)).fetchone()
@@ -233,7 +249,8 @@ def work(work_id: str, user: Principal = Depends(current_user)) -> dict:
         for k in ("parts", "validation", "agents"):
             assessment[k] = full[k]
     assessment["agents"] = _described(assessment.get("agents") or [])
-    return {"work": _jsonable(dict(row)), "assessment": assessment}
+    work_row = {k: v for k, v in dict(row).items() if k != "signals"}
+    return {"work": _jsonable(work_row), "assessment": assessment}
 
 
 def _described(agents: list[dict]) -> list[dict]:

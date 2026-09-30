@@ -27,10 +27,14 @@ class StatsStore:
     unit_models: dict[str, UnitRateModel] = field(default_factory=dict)
     # How common impossible dates were per quarter and per office (validation/timeline.py).
     timeline: TimelineRates | None = None
+    # Offline engine signals that have been computed (work_signals.engine): lets an engine
+    # tell "compared, nothing found" from "never compared".
+    signals_built: frozenset[str] = frozenset()
 
     @classmethod
-    def from_rows(cls, cohorts, durations, unit_models, quarters=(), agencies=()) -> StatsStore:
-        s = cls()
+    def from_rows(cls, cohorts, durations, unit_models, quarters=(), agencies=(),
+                  signals_built=()) -> StatsStore:
+        s = cls(signals_built=frozenset(signals_built))
         quarters, agencies = list(quarters), list(agencies)
         if quarters:
             s.timeline = TimelineRates.from_counts(
@@ -57,7 +61,9 @@ class StatsStore:
                 con.execute("SELECT * FROM duration_stats").fetchall(),
                 con.execute("SELECT * FROM unit_rate_models").fetchall(),
                 con.execute("SELECT * FROM timeline_quarters").fetchall(),
-                con.execute("SELECT * FROM timeline_agencies").fetchall())
+                con.execute("SELECT * FROM timeline_agencies").fetchall(),
+                [r["engine"] for r in con.execute(
+                    "SELECT DISTINCT engine FROM work_signals").fetchall()])
 
     def cohort(self, work_type: str | None, district: str | None,
                state: str | None) -> Cohort | None:
@@ -71,6 +77,28 @@ class StatsStore:
             if c is not None:
                 return c
         return None
+
+    def peer_type(self, work_type: str, scope: str) -> str:
+        """The type's scope-split peer group ("LIBRARY|GOODS") when the stats have one."""
+        split = f"{work_type}|{scope}"
+        if ("type", split, "") in self.cohorts:
+            return split
+        return work_type
+
+    def chain(self, work_type: str | None, district: str | None,
+              state: str | None) -> list[Cohort]:
+        """Every usable cohort from narrowest to broadest (district, state, scheme)."""
+        if not work_type:
+            return []
+        keys = {"type_district": district or "", "type_state": state or "", "type": ""}
+        out = []
+        for level in BACKOFF:
+            if level != "type" and not keys[level]:
+                continue
+            c = self.cohorts.get((level, work_type, keys[level]))
+            if c is not None:
+                out.append(c)
+        return out
 
     def p98(self, work_type: str | None) -> float | None:
         row = self.durations.get(work_type or "")

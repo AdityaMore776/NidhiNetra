@@ -16,7 +16,7 @@ WORKS = [
     # work_id, district, name, type, amount, description, status, recommended
     ("W-TYPICAL", "639", "Anand", "ROAD_CC", 160_000, "CC road in village Bijdih",
      "SANCTIONED", date(2026, 1, 10)),
-    ("W-COSTLY", "639", "Anand", "ROAD_CC", 2_000_000, "CC road in village Vasad",
+    ("W-COSTLY", "639", "Anand", "ROAD_CC", 1_000_000, "CC road in village Vasad",
      "SANCTIONED", date(2026, 1, 10)),
     ("W-OTHER-DISTRICT", "640", "Kheda", "ROAD_CC", 2_500_000, "CC road near Kheda market",
      "SANCTIONED", date(2026, 1, 10)),

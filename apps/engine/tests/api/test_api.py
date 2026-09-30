@@ -26,11 +26,11 @@ def test_me(client):
 def test_summary_counts_real_works_and_money(client):
     s = client.get("/api/v1/dashboard/summary", headers=MINISTRY).json()
     assert s["works"] == 4
-    assert s["amount"] == pytest.approx(160_000 + 2_000_000 + 2_500_000 + 300_000)
+    assert s["amount"] == pytest.approx(160_000 + 1_000_000 + 2_500_000 + 300_000)
     assert sum(s["bands"].values()) == 4
     agents = {a["id"]: a for a in s["agents"]}
     assert agents["statistical"]["built"] is True
-    assert agents["delay"]["built"] is False
+    assert agents["outlier"]["built"] is False
     assert list(agents)[:5] == ["compliance", "statistical", "dup_split", "delay", "outlier"]
 
 
