@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "edition_note": "Paragraph numbers are from the MPLADS Guidelines (June 2016), the latest edition we could read (T001 will check the 2023 wording). Every threshold comes from guidelines_clauses.yaml.",
+  "severity_signal": {"HIGH": 1.0, "MEDIUM": 0.6, "LOW": 0.3},
+  "rules": [
+    {
+      "id": "R01", "code": "SANCTION_OVERDUE", "title": "Waiting for sanction past the time limit",
+      "guideline_ref": "para 3.12", "clause": "SANCTION_PERIOD", "severity": "MEDIUM",
+      "condition": "status is RECOMMENDED and days since recommendation, less days under the 2024 general-election model code of conduct, exceed 75",
+      "evaluable": true,
+      "message_en": "Recommended {days} days ago and still not sanctioned; the guidelines ({ref}) ask for a sanction within {limit} days. Needs checking with the district office.",
+      "message_hi": "{days} दिन पहले अनुशंसित, अभी तक स्वीकृति नहीं मिली; दिशानिर्देश ({ref}) {limit} दिनों में स्वीकृति कहते हैं। ज़िला कार्यालय से जाँच आवश्यक।"
+    },
+    {
+      "id": "R02", "code": "COMPLETION_OVERDUE", "title": "Open far longer than similar works",
+      "guideline_ref": "para 3.13", "clause": "COMPLETION_PERIOD", "severity": "MEDIUM",
+      "condition": "status is SANCTIONED and days since recommendation exceed the 98th percentile completion time of its work type (LOW when only past the one-year norm)",
+      "evaluable": true,
+      "message_en": "Still open {days} days after recommendation; 98% of completed {type} works finished within {limit} days. Needs a progress check.",
+      "message_hi": "अनुशंसा के {days} दिन बाद भी अधूरा; पूरे हुए {type} कार्यों में 98% {limit} दिनों में पूरे हुए। प्रगति की जाँच आवश्यक।",
+      "low_message_en": "Open {days} days after recommendation, past the one-year norm ({ref}); the guidelines allow longer when the sanction letter records why.",
+      "low_message_hi": "अनुशंसा के {days} दिन बाद भी अधूरा, एक वर्ष की सामान्य अवधि ({ref}) से अधिक; स्वीकृति पत्र में कारण दर्ज हो तो अधिक समय मान्य है।"
+    },
+    {
+      "id": "R03", "code": "SPEND_ABOVE_SANCTION", "title": "Spent more than sanctioned",
+      "guideline_ref": "TBC", "severity": "HIGH", "evaluable": false,
+      "needs": "expenditure per work (not in the public export; utilisation certificates carry it for some works - task T103)",
+      "condition": "expenditure > sanctioned amount",
+      "message_en": "Spent {spent} against a sanction of {sanctioned}. Needs checking.",
+      "message_hi": "{sanctioned} की स्वीकृति के विरुद्ध {spent} खर्च। जाँच आवश्यक।"
+    },
+    {
+      "id": "R04", "code": "COMPLETED_NOTHING_SPENT", "title": "Marked complete with nothing spent",
+      "guideline_ref": "TBC", "severity": "HIGH", "evaluable": false,
+      "needs": "expenditure per work (not in the public export)",
+      "condition": "status COMPLETED and expenditure = 0",
+      "message_en": "Marked complete but no expenditure is recorded. Needs checking.",
+      "message_hi": "पूर्ण दर्ज है पर कोई खर्च दर्ज नहीं। जाँच आवश्यक।"
+    },
+    {
+      "id": "R05", "code": "PAID_NOT_STARTED", "title": "Most money released, work not started",
+      "guideline_ref": "TBC", "severity": "HIGH", "evaluable": false,
+      "needs": "expenditure and physical progress per work (not in the public export)",
+      "condition": "expenditure >= 90% of sanction and progress = not started",
+      "message_en": "{share} of the sanction is spent but the work is recorded as not started. Needs a site check.",
+      "message_hi": "स्वीकृत राशि का {share} खर्च, पर कार्य शुरू नहीं दर्ज। स्थल जाँच आवश्यक।"
+    },
+    {
+      "id": "R06", "code": "IMPOSSIBLE_TIMELINE", "title": "Dates in an impossible order",
+      "guideline_ref": "record rule", "severity": "MEDIUM", "evaluable": true,
+      "condition": "completed 7+ days before recommended, in a quarter where this is not a bulk-entry artefact (LOW when it is); or a completion date after the data was published (LOW)",
+      "message_en": "{detail}",
+      "message_hi": "{detail_hi}"
+    },
+    {
+      "id": "R07", "code": "POSSIBLY_INADMISSIBLE", "title": "May be a work the guidelines do not allow",
+      "guideline_ref": "para 2.4, Annexure-II", "clause": "PROHIBITED_WORKS", "severity": "MEDIUM",
+      "evaluable": true,
+      "condition": "the description reads as an Annexure-II item being the work itself (Eligibility v2 reader, 56% precision measured on a fresh sample)",
+      "message_en": "The description reads as \"{keyword}\" being the work itself; Annexure-II item {item} lists this as not permitted ({text}). Verify against the 2023 guidelines before any action.",
+      "message_hi": "विवरण से लगता है कि कार्य स्वयं \"{keyword}\" है; परिशिष्ट-II मद {item} इसे अनुमति नहीं देता। कोई कार्रवाई से पहले 2023 दिशानिर्देशों से सत्यापन करें।"
+    },
+    {
+      "id": "R08", "code": "OUTSIDE_AREA_CEILING", "title": "Outside the constituency, above the ceiling",
+      "guideline_ref": "para 2.9", "clause": "OUTSIDE_CONSTITUENCY_CEILING", "severity": "HIGH",
+      "evaluable": true,
+      "condition": "work outside the MP's constituency with an amount above Rs 25 lakh",
+      "message_en": "A work outside the constituency is capped at {limit} a year ({ref}); this one is {amount}. Needs checking.",
+      "message_hi": "निर्वाचन क्षेत्र से बाहर के कार्य की सीमा {limit} प्रति वर्ष है ({ref}); यह कार्य {amount} का है। जाँच आवश्यक।"
+    },
+    {
+      "id": "R09", "code": "STALLED", "title": "No progress for six months",
+      "guideline_ref": "TBC", "severity": "MEDIUM", "evaluable": false,
+      "needs": "dated progress updates per work (not in the public export)",
+      "condition": "no progress update for 180 days on an open work",
+      "message_en": "No progress recorded for {days} days. Needs a progress check.",
+      "message_hi": "{days} दिनों से कोई प्रगति दर्ज नहीं। प्रगति जाँच आवश्यक।"
+    },
+    {
+      "id": "R10", "code": "SC_ST_SHARE_LOW", "title": "SC/ST area share below the earmark",
+      "guideline_ref": "para 2.5", "clause": "SC_ST_EARMARK", "severity": "LOW", "evaluable": false,
+      "needs": "an SC/ST-area tag per work (not in the public export); judged per MP-year, never used to score an MP",
+      "condition": "share of an MP-year's money in SC areas < 15% or ST areas < 7.5%",
+      "message_en": "SC/ST area share below the earmark for this MP-year.",
+      "message_hi": "इस सांसद-वर्ष में अनुसूचित जाति/जनजाति क्षेत्र का हिस्सा निर्धारित से कम।"
+    },
+    {
+      "id": "R11", "code": "MISSING_KEY_DATA", "title": "Key details missing from the record",
+      "guideline_ref": "record rule", "severity": "LOW", "evaluable": true,
+      "condition": "no amount, no work type, no recommendation date, or a description that does not say what is built or bought",
+      "message_en": "The record is missing {missing}, so parts of it cannot be checked.",
+      "message_hi": "रिकॉर्ड में {missing_hi} नहीं है, इसलिए इसके कुछ हिस्सों की जाँच नहीं हो सकती।"
+    }
+  ]
+}
