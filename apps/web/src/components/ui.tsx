@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Band, WorkRow } from "@/lib/api";
-import { AGENTS, BAND_COLOR, BAND_LABEL, inr, workHref, workType } from "@/lib/format";
+import { agentMeta, BAND_COLOR, BAND_LABEL, inr, workHref, workType } from "@/lib/format";
 
 export function BandBadge({ band, limited }: { band: Band | null; limited?: boolean | null }) {
   if (!band) return <span className="text-xs text-muted">not assessed</span>;
@@ -32,17 +32,12 @@ export function SourceBadge({ source }: { source: string }) {
 }
 
 export function AgentDots({ alerts }: { alerts: string[] | null }) {
-  const list = (alerts ?? []).filter((a) => a in AGENTS) as (keyof typeof AGENTS)[];
+  const list = (alerts ?? []).filter((a) => a !== "validation").map((a) => agentMeta(a));
   return (
     <span className="flex gap-1">
-      {list.map((a) => (
-        <span
-          key={a}
-          title={AGENTS[a].name}
-          className="rounded px-1.5 text-[10px] font-bold text-white"
-          style={{ background: AGENTS[a].color }}
-        >
-          {AGENTS[a].n}
+      {list.map((m) => (
+        <span key={m.name} title={m.name} className="rounded px-1.5 text-[10px] font-bold text-white" style={{ background: m.color }}>
+          {m.n}
         </span>
       ))}
       {alerts?.includes("validation") && (

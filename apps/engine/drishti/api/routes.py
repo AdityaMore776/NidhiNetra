@@ -13,17 +13,15 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from psycopg.types.json import Jsonb
 
 from drishti import config
+from drishti.agents import registry
 from drishti.agents.statistical.cohort import StatsStore
 from drishti.auth import Principal, current_user
 from drishti.batch import WORK_COLUMNS, _normalise, assess_one
 from drishti.db import connect
-from drishti.pipeline.orchestrator import AGENT_ORDER, QUESTIONS, Context, assess_work
+from drishti.pipeline.orchestrator import Context, assess_work
 
 router = APIRouter(prefix="/api/v1")
 
-BUILT = {"statistical"}
-AGENT_NAMES = {"site_progress": "Site Progress", "image_reuse": "Image Reuse",
-               "duplicate_project": "Duplicate Project", "statistical": "Statistical"}
 PAGE = 25
 
 
@@ -106,12 +104,16 @@ def _summary(user: Principal) -> dict:
         alerts = con.execute(
             f"SELECT unnest(a.alerts) AS agent, count(*) AS n FROM assessments a "
             f"JOIN works w USING (work_id) WHERE {where} GROUP BY 1", params).fetchall()
-    alert_n = {r["agent"]: r["n"] for r in alerts}
+    alert_n: dict[str, int] = {}
+    for r in alerts:
+        key = registry.canonical_id(r["agent"])
+        alert_n[key] = alert_n.get(key, 0) + r["n"]
     return {
         "works": totals["works"], "amount": float(totals["amount"]),
         "bands": {b: 0 for b in ("HIGH", "MEDIUM", "LOW")} | {r["band"]: r["n"] for r in bands},
-        "agents": [{"id": a, "name": AGENT_NAMES[a], "question": QUESTIONS[a],
-                    "built": a in BUILT, "alerts": alert_n.get(a, 0)} for a in AGENT_ORDER],
+        "agents": [{"id": e.id, "name": e.name, "question": e.question,
+                    "built": e.assess is not None, "weight": e.weight,
+                    "alerts": alert_n.get(e.id, 0)} for e in registry.engines()],
         "validation_alerts": alert_n.get("validation", 0),
         "snapshot_date": config.snapshot_date().isoformat(),
     }
@@ -230,4 +232,17 @@ def work(work_id: str, user: Principal = Depends(current_user)) -> dict:
                            Context(stats=_stats(), as_of=config.snapshot_date())).to_row()
         for k in ("parts", "validation", "agents"):
             assessment[k] = full[k]
+    assessment["agents"] = _described(assessment.get("agents") or [])
     return {"work": _jsonable(dict(row)), "assessment": assessment}
+
+
+def _described(agents: list[dict]) -> list[dict]:
+    """Stored results under today's engine ids, each with its display name and question."""
+    specs = registry.by_id()
+    out = []
+    for r in agents:
+        aid = registry.canonical_id(r.get("agent", ""))
+        spec = specs.get(aid)
+        out.append({**r, "agent": aid, "name": spec.name if spec else aid,
+                    "question": spec.question if spec else ""})
+    return out

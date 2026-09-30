@@ -40,13 +40,15 @@ export async function api<T>(path: string, params?: Record<string, string | numb
 // ---- response shapes (mirror apps/engine/drishti/api/routes.py) ----------------
 
 export type Band = "HIGH" | "MEDIUM" | "LOW";
-export type AgentId = "site_progress" | "image_reuse" | "duplicate_project" | "statistical";
+/** Engine ids come from the engine registry (apps/engine/drishti/agents/registry.py). */
+export type AgentId = string;
 
 export interface AgentSummary {
   id: AgentId;
   name: string;
   question: string;
   built: boolean;
+  weight?: number;
   alerts: number;
 }
 
@@ -128,6 +130,8 @@ export interface ComparisonRow {
 
 export interface AgentResult {
   agent: AgentId;
+  name?: string;
+  question?: string;
   status: "ASSESSED" | "NOT_APPLICABLE" | "NOT_ASSESSABLE" | "NOT_BUILT" | "ERROR";
   verdict: string;
   risk: number;

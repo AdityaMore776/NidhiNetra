@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { IndiaMap } from "@/components/IndiaMap";
 import { WorkTable } from "@/components/ui";
 import { api, type DistrictRow, type OfficeRow, type Page, type Summary, type WorkRow } from "@/lib/api";
-import { AGENTS, BAND_COLOR, count, inr } from "@/lib/format";
+import { agentMeta, BAND_COLOR, count, inr } from "@/lib/format";
 
 export default function Dashboard() {
   const [s, setS] = useState<Summary | null>(null);
@@ -41,16 +41,16 @@ export default function Dashboard() {
         <Kpi label="Record issues found" value={count(s.validation_alerts)} color="var(--inputs)" />
       </div>
 
-      <div className="grid lg:grid-cols-4 gap-3">
+      <div className="grid lg:grid-cols-5 gap-3">
         {s.agents.map((a) => {
-          const meta = AGENTS[a.id];
+          const meta = agentMeta(a.id, a.name, a.question);
           return (
             <div key={a.id} className={`card p-4 ${a.built ? "" : "opacity-70"}`}>
               <div className="flex items-center gap-2">
                 <span className="rounded-full w-7 h-7 grid place-items-center text-white text-[11px] font-bold" style={{ background: meta.color }}>
                   {meta.n}
                 </span>
-                <span className="font-semibold text-sm">{meta.name} Agent</span>
+                <span className="font-semibold text-sm">{meta.name}</span>
               </div>
               <p className="mt-2 text-xs text-muted">{a.question}</p>
               <div className="mt-3 text-sm">

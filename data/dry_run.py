@@ -26,7 +26,7 @@ def main() -> None:
     verdicts, bands, issues = Counter(), Counter(), Counter()
     for w in works_records(works):
         a = assess_work(w, ctx)
-        stat = a.agents[-1]
+        stat = next(r for r in a.agents if r.agent == "statistical")
         verdicts[stat.verdict] += 1
         bands[a.fused.band] += 1
         for i in a.validation:

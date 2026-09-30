@@ -26,13 +26,12 @@ def _work(**kw):
     return w
 
 
-def test_four_agents_in_deck_order(ctx):
+def test_engines_in_registry_order(ctx):
     a = assess_work(_work(), ctx)
     assert [r.agent for r in a.agents] == list(AGENT_ORDER)
-    assert AGENT_ORDER == ("site_progress", "image_reuse", "duplicate_project", "statistical")
+    assert AGENT_ORDER[:5] == ("compliance", "statistical", "dup_split", "delay", "outlier")
     status = {r.agent: r.status for r in a.agents}
     assert status["statistical"] == Status.ASSESSED
-    assert status["site_progress"] == Status.NOT_BUILT
 
 
 def test_clean_work_is_low_with_limited_evidence(ctx):
@@ -44,7 +43,10 @@ def test_an_agent_that_crashes_becomes_an_error_not_a_crash(ctx, monkeypatch):
     def boom(*_a, **_k):
         raise RuntimeError("disk on fire")
 
-    monkeypatch.setattr(orchestrator.statistical, "assess", boom)
+    from drishti.agents.statistical import agent as statistical
+
+    monkeypatch.setattr(statistical, "assess", boom)
+    assert orchestrator.PIPELINE_VERSION
     a = assess_work(_work(), ctx)
     r = next(r for r in a.agents if r.agent == "statistical")
     assert r.status == Status.ERROR
