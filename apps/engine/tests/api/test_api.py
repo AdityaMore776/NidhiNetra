@@ -30,8 +30,8 @@ def test_summary_counts_real_works_and_money(client):
     assert sum(s["bands"].values()) == 4
     agents = {a["id"]: a for a in s["agents"]}
     assert agents["statistical"]["built"] is True
-    assert agents["site_progress"]["built"] is False
-    assert list(agents) == ["site_progress", "image_reuse", "duplicate_project", "statistical"]
+    assert agents["delay"]["built"] is False
+    assert list(agents)[:5] == ["compliance", "statistical", "dup_split", "delay", "outlier"]
 
 
 def test_district_officer_sees_only_their_district(client):
@@ -59,13 +59,14 @@ def test_works_search_and_filters(client):
     assert r["total"] == 2
 
 
-def test_work_detail_carries_all_four_agents_and_the_parts(client):
+def test_work_detail_carries_every_engine_and_the_parts(client):
     w = client.get("/api/v1/works/W-COSTLY", headers=MINISTRY).json()
     assert w["work"]["district_name"] == "Anand"
     a = w["assessment"]
-    assert [r["agent"] for r in a["agents"]] == ["site_progress", "image_reuse",
-                                               "duplicate_project", "statistical"]
-    stat = a["agents"][3]
+    assert [r["agent"] for r in a["agents"]][:5] == ["compliance", "statistical", "dup_split",
+                                                   "delay", "outlier"]
+    stat = next(r for r in a["agents"] if r["agent"] == "statistical")
+    assert stat["name"] == "Cost Anomaly" and stat["question"]
     assert stat["verdict"] == "COST_ABOVE_PEERS"
     assert stat["evidence"]["comparison"][0]["metric"] == "Total cost"
     assert sum(p["contribution"] for p in a["parts"]["parts"]) == pytest.approx(a["score"])
@@ -99,8 +100,17 @@ def test_quiet_works_are_stored_compact_and_rebuilt_when_opened(client, api_db):
     assert compact is True and agents == []
     assert flagged is False
     w = client.get("/api/v1/works/W-TYPICAL", headers=MINISTRY).json()["assessment"]
-    assert [r["agent"] for r in w["agents"]][-1] == "statistical"
-    assert w["agents"][-1]["verdict"] == "COST_TYPICAL"
+    stat = next(r for r in w["agents"] if r["agent"] == "statistical")
+    assert stat["verdict"] == "COST_TYPICAL"
+
+
+def test_stored_legacy_agent_ids_are_read_as_engine_ids():
+    from drishti.api.routes import _described
+
+    out = _described([{"agent": "duplicate_project", "status": "NOT_BUILT"},
+                      {"agent": "statistical", "status": "ASSESSED"}])
+    assert [r["agent"] for r in out] == ["dup_split", "statistical"]
+    assert out[0]["name"] == "Duplicate & Split Work"
 
 
 def test_offices_with_unreliable_completion_dates(client, api_db):

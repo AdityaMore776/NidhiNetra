@@ -1,5 +1,5 @@
 import type { AgentResult } from "@/lib/api";
-import { AGENTS } from "@/lib/format";
+import { agentMeta } from "@/lib/format";
 import { StatisticalEvidence } from "./StatisticalEvidence";
 
 const STATUS_NOTE: Record<AgentResult["status"], string> = {
@@ -11,7 +11,7 @@ const STATUS_NOTE: Record<AgentResult["status"], string> = {
 };
 
 export function AgentCard({ result }: { result: AgentResult }) {
-  const meta = AGENTS[result.agent];
+  const meta = agentMeta(result.agent, result.name, result.question);
   const quiet = result.status !== "ASSESSED";
   return (
     <section className={`card overflow-hidden ${result.status === "NOT_BUILT" ? "opacity-70" : ""}`}>
@@ -20,7 +20,7 @@ export function AgentCard({ result }: { result: AgentResult }) {
           {meta.n}
         </span>
         <div>
-          <div className="font-semibold">{meta.name} Agent</div>
+          <div className="font-semibold">{meta.name}</div>
           <div className="text-xs text-muted">{meta.question}</div>
         </div>
         <div className="ml-auto text-right">

@@ -2,37 +2,42 @@
 
 import { useEffect, useState } from "react";
 import { api, type Summary } from "@/lib/api";
-import { AGENTS, AGENT_ORDER } from "@/lib/format";
+import { AGENT_ORDER, agentMeta } from "@/lib/format";
 
 const STEPS = [
   { n: 1, title: "Work enters DRISHTI", text: "Records, progress claims and site photos come in.", color: "var(--inputs)" },
   { n: 2, title: "Data validation", text: "Clean and check the record: impossible dates, missing fields, guideline notes.", color: "var(--inputs)" },
-  { n: 3, title: "Four agents, in parallel", text: "Each independently checks for a different kind of problem.", color: "var(--navy)" },
+  { n: 3, title: "Five engines, in parallel", text: "Each independently checks for a different kind of problem.", color: "var(--navy)" },
   { n: 4, title: "Risk fusion", text: "Combine the checks by their strength and confidence into one score.", color: "var(--fusion)" },
   { n: 5, title: "Risk review", text: "Rank works Low, Medium or High, and queue the ones that need a look.", color: "var(--medium)" },
   { n: 6, title: "Officer verification", text: "An officer reviews the evidence and makes the decision.", color: "var(--low)" },
 ];
 
 const FACETS: Record<string, string[]> = {
-  site_progress: [
-    "The officer writes, in their own words, what changed since the last visit",
-    "AI checks each claim against the photos: shown, not shown, or can't tell",
-    "GPS and photo time checked against the work's location and the reporting period",
-  ],
-  image_reuse: [
-    "Every photo gets a visual fingerprint",
-    "Search all photos nationally, even resized or cropped copies",
-    "Photo data checked for editing, old dates and a location elsewhere",
-  ],
-  duplicate_project: [
-    "The work's location becomes a DIGIPIN code (India Post's address grid)",
-    "Find works already recorded in the same small squares nearby",
-    "Compare the records: same type, similar amount, money still in flight",
+  compliance: [
+    "Each MPLADS guideline rule written as a check with its paragraph number",
+    "Late sanctions, overdue or stalled works, impossible dates, missing key data",
+    "Works that may not be allowed under the guidelines are marked \"verify\"",
   ],
   statistical: [
-    "Compare the cost with works of the same type in the same district",
-    "Price per metre for roads, against published rates",
-    "Spot bulk orders, delays and guideline ceilings",
+    "Compare the cost with the same kind of work (a library building with library buildings, books with books)",
+    "Price per metre for roads with a stated length, against published rates",
+    "Undescribed or many-site sanctions are set aside, not scored as a mark-up",
+  ],
+  dup_split: [
+    "Find works that describe the same asset again, even when reworded",
+    "Find one job cut into several works just under a limit",
+    "Every match says \"verify\": two works can be alike for good reasons",
+  ],
+  delay: [
+    "Learn from past works which ones finished more than a year late",
+    "Score each open work, with the reasons behind the score",
+    "Tested only on outcomes that were known at the time",
+  ],
+  outlier: [
+    "Look at the whole record at once: type, place, amount, dates",
+    "Raise records that are unusual in combination",
+    "A weak signal on its own; it adds to the others",
   ],
 };
 
@@ -62,7 +67,7 @@ export default function HowItWorks() {
       </ol>
       <div className="grid md:grid-cols-2 gap-4">
         {AGENT_ORDER.map((id) => {
-          const meta = AGENTS[id];
+          const meta = agentMeta(id);
           return (
             <section key={id} className="card overflow-hidden">
               <header className="flex items-center gap-3 px-5 py-3" style={{ background: `color-mix(in srgb, ${meta.color} 14%, white)` }}>
@@ -70,7 +75,7 @@ export default function HowItWorks() {
                   {meta.n}
                 </span>
                 <div>
-                  <div className="font-semibold">{meta.name} Agent</div>
+                  <div className="font-semibold">{meta.name}</div>
                   <div className="text-xs text-muted">{meta.question}</div>
                 </div>
                 <span className={`ml-auto rounded-md px-2 py-1 text-[11px] font-medium ${built.has(id) ? "bg-low text-white" : "bg-background text-muted"}`}>
@@ -78,7 +83,7 @@ export default function HowItWorks() {
                 </span>
               </header>
               <ol className="px-5 py-4 space-y-2 text-sm">
-                {FACETS[id].map((f, i) => (
+                {(FACETS[id] ?? []).map((f, i) => (
                   <li key={f} className="flex gap-2">
                     <span className="font-bold" style={{ color: meta.color }}>
                       {String.fromCharCode(65 + i)}

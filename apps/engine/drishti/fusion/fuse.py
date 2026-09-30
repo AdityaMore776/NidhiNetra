@@ -27,6 +27,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 
+from drishti.agents import registry
 from drishti.agents.contract import AgentResult, Status
 from drishti.validation.checks import Issue
 
@@ -35,12 +36,10 @@ VALIDATION_CAP = 0.30
 CORROBORATION = 0.45
 HIGH, MEDIUM = 0.60, 0.30
 HARD_RISK, HARD_CONFIDENCE = 0.60, 0.70
-PRIOR_RELIABILITY = {"site_progress": 0.8, "image_reuse": 0.8, "duplicate_project": 0.8,
-                     "statistical": 0.8}
+DEFAULT_RELIABILITY = 0.8
+PRIOR_RELIABILITY = {e.id: DEFAULT_RELIABILITY for e in registry.engines()}
 
-LABELS = {"site_progress": "Site Progress", "image_reuse": "Image Reuse",
-          "duplicate_project": "Duplicate Project", "statistical": "Statistical",
-          "validation": "Data Validation"}
+LABELS = {**{e.id: e.name for e in registry.engines()}, "validation": "Data Validation"}
 
 
 @dataclass
@@ -75,7 +74,7 @@ def fuse(results: list[AgentResult], issues: list[Issue],
     rel = {**PRIOR_RELIABILITY, **(reliability or {})}
     weights: dict[str, float] = {}
     for r in results:
-        weights[r.agent] = _weight(r, rel.get(r.agent, 0.8))
+        weights[r.agent] = _weight(r, rel.get(r.agent, DEFAULT_RELIABILITY))
     weights["validation"] = min(VALIDATION_CAP, sum(i.risk for i in issues))
 
     ranked = sorted(weights.items(), key=lambda kv: kv[1], reverse=True)

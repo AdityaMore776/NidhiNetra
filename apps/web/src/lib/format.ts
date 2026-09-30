@@ -17,14 +17,27 @@ export function pct(v: number, digits = 1): string {
   return `${(v * 100).toFixed(digits)}%`;
 }
 
-export const AGENTS: Record<AgentId, { n: string; name: string; color: string; question: string }> = {
-  site_progress: { n: "01", name: "Site Progress", color: "var(--site)", question: "Does the site evidence match the claimed progress?" },
-  image_reuse: { n: "02", name: "Image Reuse", color: "var(--reuse)", question: "Has the same image appeared elsewhere?" },
-  duplicate_project: { n: "03", name: "Duplicate Project", color: "var(--duplicate)", question: "Is a similar work already recorded nearby?" },
-  statistical: { n: "04", name: "Statistical", color: "var(--statistical)", question: "Is the project cost unusual for similar works?" },
+type AgentMeta = { n: string; name: string; color: string; question: string };
+
+/** Display names and colours per engine. The engine registry is the source of truth; an engine
+ *  missing here still renders, with the name and question the API sends. */
+export const AGENTS: Record<AgentId, AgentMeta> = {
+  compliance: { n: "01", name: "Guideline Compliance", color: "var(--navy)", question: "Does the work follow the MPLADS guidelines?" },
+  statistical: { n: "02", name: "Cost Anomaly", color: "var(--statistical)", question: "Is the project cost unusual for similar works?" },
+  dup_split: { n: "03", name: "Duplicate & Split Work", color: "var(--duplicate)", question: "Is this work repeated, or one job cut into pieces?" },
+  delay: { n: "04", name: "Delay Prediction", color: "var(--site)", question: "Is this work likely to run late?" },
+  outlier: { n: "05", name: "Odd Overall", color: "var(--reuse)", question: "Is this record unusual taken as a whole?" },
 };
 
-export const AGENT_ORDER: AgentId[] = ["site_progress", "image_reuse", "duplicate_project", "statistical"];
+// Ids stored before the engine registry (the deck's four agents).
+const LEGACY: Record<string, string> = { duplicate_project: "dup_split", image_reuse: "photo_forensics" };
+
+export function agentMeta(id: string, name?: string, question?: string): AgentMeta {
+  const key = LEGACY[id] ?? id;
+  return AGENTS[key] ?? { n: "··", name: name ?? key, color: "var(--muted)", question: question ?? "" };
+}
+
+export const AGENT_ORDER: AgentId[] = ["compliance", "statistical", "dup_split", "delay", "outlier"];
 
 export const BAND_COLOR: Record<Band, string> = {
   HIGH: "var(--high)",

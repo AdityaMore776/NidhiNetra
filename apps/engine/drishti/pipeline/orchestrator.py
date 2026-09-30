@@ -1,10 +1,10 @@
-"""The deck's pipeline for one work: validate, run the four agents, fuse.
+"""The pipeline for one work: validate, run every engine, fuse.
 
-    2 DATA VALIDATION -> 3 FOUR AGENTS (01 site progress, 02 image reuse,
-    03 duplicate project, 04 statistical) -> 4 RISK FUSION
+    2 DATA VALIDATION -> 3 ENGINES (agents/registry.py: compliance, cost,
+    duplicate & split, delay, outlier, then any extra engine folders) -> 4 RISK FUSION
 
-Agents that are not built yet report NOT_BUILT, so every screen shows all four
-slots from the first milestone and nothing pretends to have been checked.
+Engines that are not built yet report NOT_BUILT, so every screen shows every
+slot from the first milestone and nothing pretends to have been checked.
 
 An agent that raises becomes an ERROR result with the exception's type in its
 limitations. It never takes the whole assessment down, and an error never
@@ -17,21 +17,17 @@ import math
 import time
 from dataclasses import dataclass, field
 from datetime import date
+from typing import Any
 
+from drishti.agents import registry
 from drishti.agents.contract import AgentResult, Status, not_built
-from drishti.agents.statistical import agent as statistical
 from drishti.agents.statistical.cohort import StatsStore
 from drishti.fusion.fuse import Fused, fuse
 from drishti.validation.checks import Issue, validate
 
-AGENT_ORDER = ("site_progress", "image_reuse", "duplicate_project", "statistical")
-QUESTIONS = {
-    "site_progress": "Does the site evidence match the claimed progress?",
-    "image_reuse": "Has the same image appeared elsewhere?",
-    "duplicate_project": "Is a similar work already recorded nearby?",
-    "statistical": "Is the project cost unusual for similar works?",
-}
-PIPELINE_VERSION = "pipeline-0.1.0"
+AGENT_ORDER = tuple(e.id for e in registry.engines())
+QUESTIONS = {e.id: e.question for e in registry.engines()}
+PIPELINE_VERSION = "pipeline-0.2.0"
 
 
 @dataclass
@@ -39,6 +35,8 @@ class Context:
     stats: StatsStore
     as_of: date
     reliability: dict[str, float] = field(default_factory=dict)
+    # Engine-specific stores (loaded once per process), keyed by engine id.
+    data: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -89,11 +87,11 @@ def _run(agent: str, fn, *args) -> AgentResult:
 def assess_work(work: dict, ctx: Context) -> Assessment:
     issues = validate(work, ctx.as_of, ctx.stats.timeline)
     results = []
-    for agent in AGENT_ORDER:
-        if agent == "statistical":
-            results.append(_run(agent, statistical.assess, work, ctx.stats, ctx.as_of))
+    for engine in registry.engines():
+        if engine.assess is None:
+            results.append(not_built(engine.id, engine.question))
         else:
-            results.append(not_built(agent, QUESTIONS[agent]))
+            results.append(_run(engine.id, engine.assess, work, ctx))
     fused = fuse(results, issues, ctx.reliability)
     return Assessment(work_id=work["work_id"], validation=issues, agents=results,
                       fused=fused, priority=priority(fused.score, work.get("amount")))

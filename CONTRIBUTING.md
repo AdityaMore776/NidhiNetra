@@ -27,10 +27,12 @@ progress log, handoffs and the project rules. Humans new to GitHub: [`docs/team/
 ## Adding an engine or checker
 
 1. Create `apps/engine/drishti/agents/<id>/` returning an `AgentResult` (see `agents/statistical/agent.py`
-   and `agents/contract.py`).
-2. Register it: until task T010 lands, add it to `pipeline/orchestrator.py` (`AGENT_ORDER`, `QUESTIONS`) and
-   give it a label and reliability prior in `fusion/fuse.py`. After T010, the folder is enough (T010 updates
-   this step).
+   and `agents/contract.py`). `risk` is the engine's per-work signal 0–1; `evidence` its evidence dict.
+2. Add `agents/<id>/engine.py` defining `ENGINE = EngineSpec(id=..., name=..., question=..., assess=fn)`
+   where `fn(work, ctx)` returns the `AgentResult` (`ctx` is `pipeline.orchestrator.Context`; put any
+   store your engine loads once per process in `ctx.data["<id>"]`). That is all: `agents/registry.py`
+   finds the folder. The five core slots (`compliance`, `statistical`, `dup_split`, `delay`, `outlier`)
+   show as NOT_BUILT until their folder has an `engine.py`; don't edit the orchestrator or fusion to add one.
 3. Tests under `apps/engine/tests/agents/<id>/`, including `NOT_ASSESSABLE` and `NOT_APPLICABLE` cases.
 4. A trial script in `data/trial/` with its saved (sanitised) result, and its section in
    [`docs/AGENT-CATALOG.md`](docs/AGENT-CATALOG.md).
