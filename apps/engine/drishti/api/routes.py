@@ -30,6 +30,9 @@ from drishti.validation import pii
 router = APIRouter(prefix="/api/v1")
 
 PAGE = 25
+# Saved dashboard answers are keyed by the scoring version: a preview deployment of new
+# scoring shares the live database, and must never overwrite the live site's answers.
+CACHE_VERSION = "risk-v2"
 
 
 @lru_cache(maxsize=1)
@@ -44,15 +47,10 @@ def _scope(user: Principal, alias: str = "w") -> tuple[str, tuple]:
     return f"{alias}.district_lgd = %s", (d,)
 
 
-def _where_works(where: str) -> str:
-    """The scope clause written for alias w, for a query on the bare works table."""
-    return where.replace("w.", "works.")
-
-
 def _jsonable(row: dict) -> dict:
     out = {}
     for k, v in row.items():
-        if k == "description":
+        if k in ("description", "headline"):
             out[k] = pii.mask(v)          # the site shows the work, not the people
         elif isinstance(v, date):
             out[k] = v.isoformat()
@@ -104,7 +102,8 @@ def _cached(key: str, compute):
 
 @router.get("/dashboard/summary")
 def summary(user: Principal = Depends(current_user)) -> dict:
-    return _cached(f"summary:{user.scope_district() or 'ALL'}", lambda: _summary(user))
+    key = f"{CACHE_VERSION}:summary:{user.scope_district() or 'ALL'}"
+    return _cached(key, lambda: _summary(user))
 
 
 def _summary(user: Principal) -> dict:
@@ -137,7 +136,8 @@ def _summary(user: Principal) -> dict:
 
 @router.get("/dashboard/districts")
 def districts(user: Principal = Depends(current_user)) -> list[dict]:
-    return _cached(f"districts:{user.scope_district() or 'ALL'}", lambda: _districts(user))
+    key = f"{CACHE_VERSION}:districts:{user.scope_district() or 'ALL'}"
+    return _cached(key, lambda: _districts(user))
 
 
 def _districts(user: Principal) -> list[dict]:
@@ -230,10 +230,10 @@ def queue(district: str | None = None, band: str | None = None,
 
 @router.get("/works/{work_id:path}")
 def work(work_id: str, user: Principal = Depends(current_user)) -> dict:
-    where, params = _scope(user)
+    where, params = _scope(user, alias="works")     # the signals join needs the bare name
     with connect() as con:
         row = con.execute(f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works "
-                          f"{SIGNALS_JOIN} WHERE works.work_id = %s AND {_where_works(where)}",
+                          f"{SIGNALS_JOIN} WHERE works.work_id = %s AND {where}",
                           (work_id, *params)).fetchone()
         if row is None:
             raise HTTPException(404, "no such work in your area")
