@@ -13,16 +13,16 @@
     "outlier": 0.1
   },
   "bands": {
-    "CRITICAL": 129,
-    "HIGH": 1395,
-    "MEDIUM": 35086,
-    "LOW": 173383
+    "CRITICAL": 128,
+    "HIGH": 1396,
+    "MEDIUM": 35085,
+    "LOW": 173384
   },
   "shares": {
     "CRITICAL": 0.00061,
-    "HIGH": 0.00664,
+    "HIGH": 0.00665,
     "MEDIUM": 0.16708,
-    "LOW": 0.82566
+    "LOW": 0.82567
   },
   "review_queue": 1524,
   "review_share": 0.00726,

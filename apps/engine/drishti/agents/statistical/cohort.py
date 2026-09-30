@@ -17,6 +17,17 @@ from drishti.agents.statistical.band import MIN_COHORT, Cohort
 from drishti.agents.statistical.unit_rate import UnitRateModel
 from drishti.validation.timeline import TimelineRates
 
+# Stored statistics are rounded when loaded so every copy of the database gives the same
+# verdict. The hosted Postgres returns doubles with 15 significant digits, a local one with
+# 17 (p90 5.19033169817029 vs 5.190331698170292); a work at exactly twice its peers' top
+# (Rs 3,10,000 against Rs 1,55,000) then flipped between "typical" and "above the range".
+# Found comparing the hosted and local runs, 30 Sept 2026: 241 works differed.
+PRECISION = 9
+
+
+def _fixed(v):
+    return round(v, PRECISION) if isinstance(v, float) else v
+
 BACKOFF = ("type_district", "type_state", "type")
 
 
@@ -44,13 +55,13 @@ class StatsStore:
             if r["n"] < MIN_COHORT:
                 continue
             s.cohorts[(r["level"], r["work_type_code"], r["key"])] = Cohort(
-                level=r["level"], n=int(r["n"]), p10=r["p10"], p50=r["p50"], p90=r["p90"],
-                sd=r["sd"])
+                level=r["level"], n=int(r["n"]), p10=_fixed(r["p10"]), p50=_fixed(r["p50"]),
+                p90=_fixed(r["p90"]), sd=_fixed(r["sd"]))
         for r in durations:
-            s.durations[r["work_type_code"]] = dict(r)
+            s.durations[r["work_type_code"]] = {k: _fixed(v) for k, v in dict(r).items()}
         for r in unit_models:
             s.unit_models[r["work_type_code"]] = UnitRateModel(**{
-                k: r[k] for k in UnitRateModel.__dataclass_fields__})
+                k: _fixed(r[k]) for k in UnitRateModel.__dataclass_fields__})
         return s
 
     @classmethod

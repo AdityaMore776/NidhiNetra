@@ -108,7 +108,7 @@ priority  score × (1 + log10(amount / ₹1 lakh)), money factor clamped to 0–
 `data/trial/results/risk_score_bands.json`). The blueprint's 40/70/85 can't be used as written: with
 Delay at weight 0 and Outlier not built, the highest real score is 37. Scores come in steps; High needs two
 engines each with a meaningful signal, Critical a guideline issue plus a split under the ₹5 lakh limit or a
-repeat after completion (or three engines). Result: Critical 129, High 1,395, Medium 35,086.
+repeat after completion (or three engines). Result: Critical 128, High 1,396, Medium 35,085.
 
 **Review queue** = High + Critical (1,524 works, 0.73%), ordered by priority; 24 of 30 random queue works
 read by eye are worth checking (`results/risk_score_eye.json`). The queue list's one-line summary is the

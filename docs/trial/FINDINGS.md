@@ -464,10 +464,10 @@ from the cost engine.
 
 | Band | Works | Meaning |
 |---|---|---|
-| Critical (≥ 33) | 129 | a guideline issue plus a split under ₹5 lakh or a repeat after completion, or three engines |
-| High (≥ 22) | 1,395 | two engines each with a meaningful signal |
-| Medium (≥ 15) | 35,086 | one strong signal (mostly a long wait for sanction) |
-| Low | 173,383 | |
+| Critical (≥ 33) | 128 | a guideline issue plus a split under ₹5 lakh or a repeat after completion, or three engines |
+| High (≥ 22) | 1,396 | two engines each with a meaningful signal |
+| Medium (≥ 15) | 35,085 | one strong signal (mostly a long wait for sanction) |
+| Low | 173,384 | |
 
 - **Review queue (High + Critical): 1,524 works (0.73%).** Read by eye, **24 of 30 random queue works are
   worth checking**. The misses: village-level "solar light in village X" entries (two lights in one village

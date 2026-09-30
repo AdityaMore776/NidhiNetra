@@ -69,3 +69,28 @@ def test_timeline_rates_come_from_the_database(migrated_url):
 def test_no_timeline_tables_means_no_rates():
     s = StatsStore.from_rows(cohorts=[], durations=[], unit_models=[])
     assert s.timeline is None
+
+
+def test_a_database_returning_fewer_digits_gives_the_same_verdict():
+    # hosted Postgres: 15 significant digits; local: 17. At exactly twice the top of the
+    # range (Rs 3,10,000 vs Rs 1,55,000) that last digit flipped the verdict.
+    from datetime import date
+
+    from drishti.agents.statistical.agent import assess
+
+    def store(p90):
+        rows = [{"level": lvl, "work_type_code": "STREET_LIGHT|MAST", "key": key, "n": n,
+                 "p10": 5.128837863996165, "p50": 5.1303337684950066, "p90": p90, "sd": 0.2}
+                for lvl, key, n in (("type_district", "533", 152), ("type_state", "36", 2046),
+                                    ("type", "", 26384))]
+        return StatsStore.from_rows(rows, [], [])
+
+    local, hosted = store(5.190331698170292), store(5.19033169817029)
+    assert local.chain("STREET_LIGHT|MAST", "533", "36")[0].p90 == \
+        hosted.chain("STREET_LIGHT|MAST", "533", "36")[0].p90
+    work = {"work_id": "W", "amount": 310000.0, "work_type_code": "STREET_LIGHT",
+            "district_lgd": "533", "state_lgd": "36", "district_name": "Nizamabad",
+            "description": "Installation of 2 High Mast Lights near Ramalayam Temple",
+            "status": "RECOMMENDED", "recommended_date": date(2025, 1, 1)}
+    a, b = (assess(dict(work), s, date(2026, 5, 26)) for s in (local, hosted))
+    assert (a.verdict, a.risk) == (b.verdict, b.risk)
