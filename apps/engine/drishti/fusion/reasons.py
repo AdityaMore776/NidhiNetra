@@ -1,0 +1,38 @@
+"""Hindi sentences for the risk score's reasons, one per finding code.
+
+The English reason is the engine's own sentence, with its numbers. Guideline Compliance
+carries a Hindi message per rule (reference/rules.json); the other engines' codes get the
+plain sentences below: what was seen and what to check, never an accusation.
+"""
+
+from __future__ import annotations
+
+HINDI = {
+    # Cost Anomaly
+    "COST_ABOVE_PEERS": "लागत इसी प्रकार के कार्यों की सामान्य सीमा से काफ़ी अधिक है। "
+                        "अनुमान और उसमें शामिल कार्य की जाँच करें।",
+    "SCOPE_FAR_LARGER": "राशि इस प्रकार के सामान्य कार्यों से बहुत अधिक है। जाँचें कि कार्य "
+                        "में क्या शामिल है और उसका प्रकार सही दर्ज है।",
+    "BUNDLED_SANCTION": "विवरण में कई स्थल या इकाइयाँ शामिल हैं। प्रति स्थल लागत के लिए "
+                        "स्थलों की सूची जाँचें।",
+    "UNIT_PRICE_ABOVE": "प्रति इकाई लागत इसी प्रकार की एकल इकाइयों से अधिक है। दरों की जाँच करें।",
+    "UNIT_RATE_ABOVE": "प्रति मीटर लागत सामान्य दरों से अधिक है। माप और दरों की जाँच करें।",
+    "COST_BELOW_PEERS": "लागत इसी प्रकार के कार्यों से बहुत कम है। ऐसे कार्य अक्सर बाद में "
+                        "संशोधित होते हैं।",
+    # Duplicate & Split Work
+    "FUNDED_AGAIN_AFTER_COMPLETION": "यह कार्य एक पहले पूर्ण हो चुके कार्य जैसा पढ़ता है। जाँचें "
+                                     "कि वही कार्य दोबारा स्वीकृत तो नहीं हुआ।",
+    "REPEATED_WHILE_OPEN": "यह कार्य एक चालू कार्य जैसा पढ़ता है। जाँचें कि दोनों एक ही कार्य "
+                           "तो नहीं हैं।",
+    "SPLIT_AT_ONE_SITE": "एक ही स्थल के लिए कई समान कार्य लगभग एक साथ स्वीकृत हुए। जाँचें कि "
+                         "एक कार्य को टुकड़ों में तो नहीं बाँटा गया।",
+    "BULK_ORDER": "कई समान कार्य एक साथ दर्ज हुए; प्रायः एक ही खरीद कई कार्यों के रूप में।",
+    # Delay Prediction
+    "LIKELY_LATE": "यह खुला कार्य देर से पूरा होने की सबसे अधिक संभावना वाले कार्यों में है। "
+                   "प्रगति की शीघ्र जाँच करें।",
+}
+FALLBACK = "इस कार्य पर एक जाँच ने ध्यान देने योग्य बात पाई है। विवरण देखें।"
+
+
+def hindi(code: str | None) -> str:
+    return HINDI.get(code or "", FALLBACK)

@@ -8,8 +8,8 @@ const STEPS = [
   { n: 1, title: "Work enters DRISHTI", text: "Records, progress claims and site photos come in.", color: "var(--inputs)" },
   { n: 2, title: "Data validation", text: "Clean and check the record: impossible dates, missing fields, guideline notes.", color: "var(--inputs)" },
   { n: 3, title: "Five engines, in parallel", text: "Each independently checks for a different kind of problem.", color: "var(--navy)" },
-  { n: 4, title: "Risk fusion", text: "Combine the checks by their strength and confidence into one score.", color: "var(--fusion)" },
-  { n: 5, title: "Risk review", text: "Rank works Low, Medium or High, and queue the ones that need a look.", color: "var(--medium)" },
+  { n: 4, title: "Risk fusion", text: "Add up the checks, each by its fixed weight, into one 0-100 score with its top three reasons.", color: "var(--fusion)" },
+  { n: 5, title: "Risk review", text: "Rank works Low, Medium, High or Critical, and queue High and Critical for a look.", color: "var(--medium)" },
   { n: 6, title: "Officer verification", text: "An officer reviews the evidence and makes the decision.", color: "var(--low)" },
 ];
 

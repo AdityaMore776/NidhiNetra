@@ -447,6 +447,39 @@ only be shown as a labelled demo.
 
 ---
 
+### The risk score (T050, 30 Sept 2026): all four engines together
+
+Every real work was run through the four engines and the blueprint's weighted score
+(`data/dry_run.py` → `results/risk_score_bands.json`; by-eye labels `data/trial/risk_score_labels.py`
+→ `results/risk_score_eye.json`).
+
+**What the first run showed:** with the old scoring, the four engines would have put **43,646 works (21%)**
+in the review queue. Two causes: the old scoring counted every flag as strong evidence (21,323 works are
+simply "waiting for sanction too long", a system-wide delay), and it ignored "shown, not counted", so the
+Delay engine, below its accuracy target, still added weight (it was on 16,529 of the queued works). A second double count was found: 13,158 of the cost engine's
+16,010 flags were only its old "overdue" note, the same fact Guideline Compliance reports; it was removed
+from the cost engine.
+
+**With the blueprint score:**
+
+| Band | Works | Meaning |
+|---|---|---|
+| Critical (≥ 33) | 129 | a guideline issue plus a split under ₹5 lakh or a repeat after completion, or three engines |
+| High (≥ 22) | 1,395 | two engines each with a meaningful signal |
+| Medium (≥ 15) | 35,086 | one strong signal (mostly a long wait for sanction) |
+| Low | 173,383 | |
+
+- **Review queue (High + Critical): 1,524 works (0.73%).** Read by eye, **24 of 30 random queue works are
+  worth checking**. The misses: village-level "solar light in village X" entries (two lights in one village
+  is normal), a list of 47 Wi-Fi locations read as one price, "GP and other villages".
+- **The blueprint's cut-offs (40/70/85) cannot be used as written:** the highest real score is 37 (Delay counts 0,
+  Outlier is not built). Its target of 5–10% High + Critical has no cut-off in the data either: the scores
+  come in steps, and the next step below 2.3% is 17% (one guideline delay on its own).
+- **What reading the queue fixed** (each followed by a fresh sample): at a High cut of 20, a weak second signal
+  (a routine bulk order, a work flagged for being cheap) made High → cut at 22; 16, 23 and 50 identical works
+  sharing a typo ("tenker", "publiic") read as "one site" → a same-place group of 6+ is a series; Critical at 30
+  was reached by any delay plus any repeat, down to ₹20,000 lights → Critical at 33.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

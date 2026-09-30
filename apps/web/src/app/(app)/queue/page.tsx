@@ -18,15 +18,15 @@ export default function Queue() {
       <div>
         <h1 className="text-2xl font-bold">Review queue</h1>
         <p className="text-sm text-muted">
-          Step 5 of the pipeline: works flagged Medium or High, most important first. Importance is the risk score weighted by the money
+          Step 5 of the pipeline: works flagged Critical or High, most important first. Importance is the risk score weighted by the money
           at stake. Every entry is a request to look, not a finding of wrongdoing.
         </p>
       </div>
       <div className="flex gap-2 text-sm">
         {[
           ["", "All"],
+          ["CRITICAL", "Critical"],
           ["HIGH", "High"],
-          ["MEDIUM", "Medium"],
         ].map(([v, l]) => (
           <button
             key={v}

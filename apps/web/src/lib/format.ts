@@ -40,12 +40,14 @@ export function agentMeta(id: string, name?: string, question?: string): AgentMe
 export const AGENT_ORDER: AgentId[] = ["compliance", "statistical", "dup_split", "delay", "outlier"];
 
 export const BAND_COLOR: Record<Band, string> = {
+  CRITICAL: "var(--critical)",
   HIGH: "var(--high)",
   MEDIUM: "var(--medium)",
   LOW: "var(--low)",
 };
 
 export const BAND_LABEL: Record<Band, string> = {
+  CRITICAL: "Critical",
   HIGH: "High risk",
   MEDIUM: "Medium risk",
   LOW: "Low risk",

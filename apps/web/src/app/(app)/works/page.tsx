@@ -61,6 +61,7 @@ function Works() {
         </select>
         <select value={band} onChange={(e) => { setBand(e.target.value); setPage(1); }} className="rounded-lg border border-line bg-surface px-3 py-2">
           <option value="">Any risk</option>
+          <option value="CRITICAL">Critical</option>
           <option value="HIGH">High</option>
           <option value="MEDIUM">Medium</option>
           <option value="LOW">Low</option>

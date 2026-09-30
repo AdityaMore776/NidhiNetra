@@ -78,10 +78,13 @@ def test_unknown_work_is_404(client):
 
 def test_queue_holds_only_works_needing_review_in_priority_order(client):
     items = client.get("/api/v1/queue", headers=MINISTRY).json()["items"]
-    assert items and all(i["band"] in ("HIGH", "MEDIUM") for i in items)
+    assert items and all(i["band"] in ("CRITICAL", "HIGH") for i in items)
     assert [i["priority"] for i in items] == sorted((i["priority"] for i in items),
                                                     reverse=True)
     assert "W-TYPICAL" not in {i["work_id"] for i in items}
+    # W-COSTLY is late for sanction AND overpriced: the list leads with what sets it apart
+    costly = next(i for i in items if i["work_id"] == "W-COSTLY")
+    assert "Rs 10.00 lakh" in costly["headline"] and "sanction" not in costly["headline"]
 
 
 def test_keepalive_touches_the_database(client):

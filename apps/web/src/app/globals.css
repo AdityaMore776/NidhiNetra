@@ -15,6 +15,7 @@
   --statistical: #f48137;
   --fusion: #2fb0ae;
   --inputs: #2e9adf;
+  --critical: #8e1330;
   --high: #d6344a;
   --medium: #f0a020;
   --low: #3aa76d;
@@ -33,6 +34,7 @@
   --color-statistical: var(--statistical);
   --color-fusion: var(--fusion);
   --color-inputs: var(--inputs);
+  --color-critical: var(--critical);
   --color-high: var(--high);
   --color-medium: var(--medium);
   --color-low: var(--low);

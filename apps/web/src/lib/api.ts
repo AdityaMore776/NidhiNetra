@@ -39,7 +39,7 @@ export async function api<T>(path: string, params?: Record<string, string | numb
 
 // ---- response shapes (mirror apps/engine/drishti/api/routes.py) ----------------
 
-export type Band = "HIGH" | "MEDIUM" | "LOW";
+export type Band = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
 /** Engine ids come from the engine registry (apps/engine/drishti/agents/registry.py). */
 export type AgentId = string;
 
@@ -49,6 +49,8 @@ export interface AgentSummary {
   question: string;
   built: boolean;
   weight?: number;
+  /** why the weight differs from the blueprint, e.g. "Shown, not counted: ..." */
+  weight_note?: string;
   alerts: number;
 }
 
@@ -164,6 +166,16 @@ export interface Part {
   contribution: number;
 }
 
+/** One of the score's top three reasons (fusion/fuse.py), in English and Hindi. */
+export interface Reason {
+  source: string;
+  label: string;
+  contribution: number;
+  code: string;
+  text_en: string;
+  text_hi: string;
+}
+
 export interface WorkDetail {
   work: {
     work_id: string;
@@ -190,7 +202,7 @@ export interface WorkDetail {
     band: Band;
     limited: boolean;
     priority: number;
-    parts: { parts: Part[]; hard_trigger: string | null };
+    parts: { parts: Part[]; hard_trigger: string | null; reasons?: Reason[] };
     validation: Issue[];
     agents: AgentResult[];
     assessed_at: string;

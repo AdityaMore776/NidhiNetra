@@ -124,7 +124,8 @@ def _summary(user: Principal) -> dict:
         alert_n[key] = alert_n.get(key, 0) + r["n"]
     return {
         "works": totals["works"], "amount": float(totals["amount"]),
-        "bands": {b: 0 for b in ("HIGH", "MEDIUM", "LOW")} | {r["band"]: r["n"] for r in bands},
+        "bands": {b: 0 for b in ("CRITICAL", "HIGH", "MEDIUM", "LOW")}
+        | {r["band"]: r["n"] for r in bands},
         "agents": [{"id": e.id, "name": e.name, "question": e.question,
                     "built": e.assess is not None, "weight": e.weight,
                     "weight_note": e.weight_note,
@@ -145,7 +146,7 @@ def _districts(user: Principal) -> list[dict]:
         rows = con.execute(
             f"SELECT w.district_lgd, max(w.district_name) AS name, max(w.state_name) AS state, "
             f"count(*) AS works, coalesce(sum(w.amount), 0) AS amount, "
-            f"count(*) FILTER (WHERE a.band IN ('HIGH', 'MEDIUM')) AS review "
+            f"count(*) FILTER (WHERE a.band IN ('CRITICAL', 'HIGH')) AS review "
             f"FROM works w LEFT JOIN assessments a USING (work_id) "
             f"WHERE {where} AND w.district_lgd IS NOT NULL GROUP BY w.district_lgd", params
         ).fetchall()
@@ -196,7 +197,7 @@ def _list(user: Principal, *, q: str | None, district: str | None, wtype: str | 
         clauses.append("a.band = %s")
         args.append(band)
     if review_only:
-        clauses.append("a.band IN ('HIGH', 'MEDIUM')")
+        clauses.append("a.band IN ('CRITICAL', 'HIGH')")
     cond = " AND ".join(clauses)
     with connect() as con:
         total = con.execute(f"SELECT count(*) AS n FROM works w LEFT JOIN assessments a "

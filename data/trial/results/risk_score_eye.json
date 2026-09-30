@@ -1,0 +1,7 @@
+{
+  "queue_random_sample": {
+    "read": 30,
+    "worth_checking": 24,
+    "share": 0.8
+  }
+}

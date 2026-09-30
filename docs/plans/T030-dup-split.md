@@ -24,7 +24,8 @@
 | repeated after the first was completed | 0.85 |
 | repeated while the first was open | 0.60 |
 | split at one site | 0.60 (+0.20 under the limit) |
-| bulk order | 0.35 (+0.20 under the limit) |
+| bulk order | 0.15 (+0.20 under the limit); lowered from 0.35 in T050: all 15 read were ordinary series |
+| same-place group of 6+ | read as a bulk order (T050: typos like "publiic" made 23-work series look like one site) |
 
 The strongest case wins; each group member carries the group id so fusion counts a group once.
 Not run, or no description/date/amount → NOT_ASSESSABLE (never a clean chit).

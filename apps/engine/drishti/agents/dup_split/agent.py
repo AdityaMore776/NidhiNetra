@@ -16,7 +16,8 @@ This engine only reads them and turns them into a signal:
   pair after_completed   0.85   the strongest case: the same work funded again
   pair while_open        0.60
   group same_site_split  0.60   one job at one site in pieces
-  group bulk_order       0.35   usually a legitimate bulk order, worth a look
+  group bulk_order       0.15   a series of identical purchases (15/15 read so by eye);
+                                what matters is the under-limit pattern below
   +0.20 when every piece is Rs 4-5 lakh and the total passes Rs 5 lakh (amounts pile up
   just under that limit nationally)
 
@@ -39,8 +40,12 @@ AGENT = "dup_split"
 VERSION = "dup-split-1.0.0"
 QUESTION = "Is this work repeated, or one job cut into pieces?"
 PAIR_RISK = {"after_completed": 0.85, "while_open": 0.60}
-GROUP_RISK = {"same_site_split": 0.60, "bulk_order": 0.35}
+GROUP_RISK = {"same_site_split": 0.60, "bulk_order": 0.15}
 UNDER_LIMIT_BONUS = 0.20
+# A "same place" group this large is a series, not one job in pieces: the splits read by
+# eye had 2-5 pieces, while 16, 23 and 50 identical works sharing a typo ("tenker",
+# "publiic", "knowledgew") were purchases filed as many works (queue sample, 30 Sept).
+SERIES_SIZE = 6
 CONFIDENCE = 0.6       # text similarity finds candidates; only a site visit or file confirms
 
 
@@ -82,8 +87,9 @@ def _group_finding(g: dict) -> Finding:
     span = "on the same day" if days == 0 else f"within {days} days"
     if g["kind"] == "same_site_split":
         code = "SPLIT_AT_ONE_SITE"
-        text = (f"One of {size} alike works for the same place "
-                f"(\"{g.get('shared_place', '')}\") recommended {span}, "
+        # the matched place words stay in the evidence, not the sentence: they are rare
+        # words of the description, and can be a person's name ("near X's house")
+        text = (f"One of {size} alike works naming the same place, recommended {span}, "
                 f"{_lakh(total)} in all. Check whether one job was cut into pieces.")
     else:
         code = "BULK_ORDER"
@@ -113,6 +119,8 @@ def assess(work: dict, built: bool) -> AgentResult:
     s = (work.get("signals") or {}).get("dup_split") or {}
     pairs = [p for p in s.get("pairs") or [] if p.get("kind") in PAIR_RISK]
     group = s.get("group") if (s.get("group") or {}).get("kind") in GROUP_RISK else None
+    if group and group["kind"] == "same_site_split" and int(group["size"]) >= SERIES_SIZE:
+        group = {**group, "kind": "bulk_order"}
 
     findings = [_pair_finding(p, amount) for p in pairs]
     if group:

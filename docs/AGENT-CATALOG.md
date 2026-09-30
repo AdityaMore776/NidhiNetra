@@ -12,24 +12,39 @@ them: what each checks, how, what we measured, and where it stands.
 
 | # | Agent | Stage | State | Trial verdict on real data |
 |---|---|---|---|---|
-| A1 | Eligibility | Before sanction | 🧪 v1 in engine as a note; v2 proven in trial | **Works** — 56% precision on a fresh sample |
-| A2 | Duplicate & Split | Before sanction | 🧪 trial | **Split: works. Duplicates: partly** (reworded repeats need matching by meaning) |
-| A3 | Cost | Before sanction | ✅ **live** | **Works for big mark-ups** — 63% of 5× mark-ups caught at 1.5% false alarms |
+| A1 | Eligibility | Before sanction | ✅ **in the engine** as Guideline Compliance rule R07 (v2 reader) | **Works** — 56% precision on a fresh sample |
+| A2 | Duplicate & Split | Before sanction | ✅ **in the engine** (T030, matching by meaning) | random pairs 15/40 real repeats, same-site splits 10/15, Nanded split found |
+| A3 | Cost | Before sanction | ✅ **live** (v2 ready, T020) | v2: top 30 flags 10/30 real price questions (v1 0/30); 55% of 5× mark-ups caught at 1.3% false alarms |
 | B1 | Site Progress (+ plaque) | During construction | 📝 planned | Not tested — needs an AI vision key |
 | B2 | Photo Forensics | During construction | 🧪 trial | **Works** — 99.9% of edited copies recognised |
 | B3 | Geo-Location | During construction | 🧪 trial | **Works** — stamps read on 170 works; 3 real timing findings |
 | B4 | Document | During construction | 🧪 trial | **Works on typed certificates, free**; Hindi/handwritten needs AI |
 | B5 | Satellite (big works only) | During construction | ⛔ no-go for now | Pilot has no large works with coordinates |
-| C1 | Delay | Money & time | 🧪 trial | **Weak** as a prediction (0.71 vs 0.68) → shipped as track records + stuck works |
+| C1 | Delay | Money & time | ✅ **in the engine, shown, not counted** (T040) | **Weak** as a prediction (AUC 0.71 vs 0.68 office record; target 0.80) |
 | C2 | Fund Flow | Money & time | 🧪 trial | **Facts work**; forecasts can't be tested on a single snapshot |
 | C3 | Contractor Network | Money & time | 🧪 trial | **Works where certificates exist** (vendor code = exact identity) |
 | D1 | Citizen Verification | After completion | 📝 planned | Can't be tested — 21,789 of 21,793 eSAKSHI ratings are zero |
-| — | Data Validation | every work | ✅ live | impossible dates judged by quarter and office |
-| — | Risk Fusion | every work | ✅ live (v1) | parts add up exactly to the score |
+| — | Guideline Compliance | every work | ✅ **in the engine** (T011) | rules R01–R11 in English + Hindi; 5 of 11 not checkable from the export |
+| — | Data Validation | every work | ✅ live | impossible dates judged by quarter and office; shown, not counted in the v2 score |
+| — | Risk score | every work | ✅ v2 ready (T050) | blueprint weights, 4 bands, top-3 reasons EN + HI; queue 1,524 (0.73%), 24/30 random queue works worth checking |
 | — | Inspection Planner | every work | 📝 planned | — |
 | — | Ask DRISHTI | every work | 📝 planned | — |
 
-✅ built and live · 🧪 method proven on real data, not yet in the live engine · 📝 planned · ⛔ gated off
+✅ built into the engine (the T011–T050 ones go live when their stacked PRs are merged and the hosted database is reloaded) · 🧪 method proven on real data, not yet in the engine · 📝 planned · ⛔ gated off
+
+## The four core engines (NidhiNetra blueprint, built 30 Sept 2026)
+
+| Engine | Folder | Weight in the score | How it was checked on real works |
+|---|---|---|---|
+| Guideline Compliance | `agents/compliance/` | 0.30 | all 2,09,993 works: R01 21,323 · R02 61,920 · R06 1,114 · R07 458 · R11 7,576; no HIGH-severity rule fires |
+| Cost Anomaly | `agents/statistical/` | 0.20 | planted mark-ups + a frozen fresh sample read by eye (FINDINGS A3, "Cost engine v2") |
+| Duplicate & Split Work | `agents/dup_split/` | 0.20 | fresh random samples read by eye after each rule change (FINDINGS A2, "matching by meaning") |
+| Delay Prediction | `agents/delay/` | **0** (shown, not counted) | strict time-based backtest AUC 0.71, held-out districts 0.59; target 0.80 |
+| Odd Overall (outlier) | — | 0.10 | not built yet |
+
+Heavy steps run offline in `data/` (`build_cost_model.py`, `build_dup_split.py`, `build_delay_model.py`) and
+are stored per work in `work_signals`; the engines only read them. The risk score that combines them is in
+[ARCHITECTURE.md §4](ARCHITECTURE.md#4-risk-score-fusion-v2-t050).
 
 ---
 
@@ -180,6 +195,6 @@ Two rules are enforced in code, not trusted to each agent:
 | Tool | What it does | State |
 |---|---|---|
 | **Data Validation** | impossible dates judged against their own recommendation quarter and office (bulk entry when eSAKSHI opened explains most); missing fields; prohibited-work notes. Its total weight is capped so the record alone can never make a work HIGH. | ✅ |
-| **Risk Fusion** | combines all agents into the 0–100 score with an exact breakdown — see [ARCHITECTURE.md](ARCHITECTURE.md#risk-fusion). Planned v2: conflict rules (a reused photo voids progress confirmations; a bulk order counts once; satellite may only withdraw a finding, never create one). | ✅ v1 |
+| **Risk score** | combines the engines into the 0–100 score by the blueprint weights, with an exact breakdown and the top three reasons in English and Hindi — see [ARCHITECTURE.md §4](ARCHITECTURE.md#4-risk-score-fusion-v2-t050). Planned: conflict rules (a reused photo voids progress confirmations; a bulk order counts once; satellite may only withdraw a finding, never create one). | ✅ v2 |
 | **Inspection Planner** | picks the District Authority's mandatory 10% of inspections (para 6.4): mostly by risk × money, ~20% at random to keep base rates honest and deter gaming, grouped into day trips. | 📝 |
 | **Ask DRISHTI** | plain-language questions answered from checked database queries; guideline answers quote the clause verbatim; drafts inspection notes in English/Hindi. | 📝 |

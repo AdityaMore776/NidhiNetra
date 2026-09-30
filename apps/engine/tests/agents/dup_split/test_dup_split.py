@@ -48,13 +48,20 @@ def test_split_under_the_limit_gets_the_bonus_and_carries_its_group_id():
     r = assess(_work(pairs=[], group=_group(under=True)), True)
     assert r.verdict == "SPLIT_AT_ONE_SITE" and r.risk == pytest.approx(0.80)
     assert r.evidence["group_id"] == "G00001"
-    assert "sapti" in r.headline and "between Rs 4 and 5 lakh" in r.headline
+    assert "naming the same place" in r.headline and "sapti" not in r.headline
+    assert "between Rs 4 and 5 lakh" in r.headline
+    assert r.findings[0].evidence["shared_place"] == "sapti"
     assert "W2, W3" in r.headline
+
+
+def test_a_large_same_place_group_is_read_as_a_series():
+    r = assess(_work(group=_group() | {"size": 23, "shared_place": "publiic"}), True)
+    assert r.verdict == "BULK_ORDER" and r.risk == pytest.approx(0.15)
 
 
 def test_bulk_order_is_a_mild_signal():
     r = assess(_work(pairs=[], group=_group("bulk_order")), True)
-    assert r.verdict == "BULK_ORDER" and r.risk == pytest.approx(0.35)
+    assert r.verdict == "BULK_ORDER" and r.risk == pytest.approx(0.15)
 
 
 def test_staged_pairs_and_unknown_kinds_are_ignored():

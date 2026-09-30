@@ -21,8 +21,11 @@ _counter = itertools.count()
 def pg_server():
     import pgserver
 
-    srv = pgserver.get_server(tempfile.mkdtemp(prefix="drishti-pg-"), cleanup_mode="stop")
+    # "delete", not "stop": each run's cluster is ~316 MB, and stopped ones piled up in the
+    # temp folder until the disk was full (58 of them, 30 Sept 2026)
+    srv = pgserver.get_server(tempfile.mkdtemp(prefix="drishti-pg-"), cleanup_mode="delete")
     yield srv
+    srv.cleanup()
 
 
 @pytest.fixture()

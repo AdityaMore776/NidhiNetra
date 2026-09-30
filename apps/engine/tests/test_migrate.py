@@ -37,3 +37,18 @@ def test_row_level_security_is_on_everywhere(migrated_url):
             "WHERE n.nspname = 'public' AND c.relkind = 'r' AND NOT c.relrowsecurity"
         ).fetchall()
     assert rows == []
+
+
+def test_assessments_accept_every_band_the_risk_score_gives(migrated_url):
+    from drishti.fusion.fuse import band_of
+
+    bands = sorted({band_of(s) for s in (0.0, 0.16, 0.25, 0.5)})
+    assert bands == ["CRITICAL", "HIGH", "LOW", "MEDIUM"]
+    with psycopg.connect(migrated_url) as con:
+        for band in bands:
+            con.execute("INSERT INTO works (work_id, source) VALUES (%s, 'REAL')", (band,))
+            con.execute("INSERT INTO assessments (work_id, score, band, parts, validation, "
+                        "agents, versions) VALUES (%s, 0, %s, '{}', '[]', '[]', '{}')",
+                        (band, band))
+        n = con.execute("SELECT count(*) FROM assessments").fetchone()[0]
+    assert n == 4

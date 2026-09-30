@@ -33,7 +33,7 @@
 | **Hard / soft finding** | Hard = arithmetic against a rule or an exact match (e.g. over a ceiling, byte-identical photo). Soft = a statistical signal (e.g. unusual cost); capped so it can't make a work HIGH alone. |
 | **Confidence** | How sure an agent is of its own reading (0–1). |
 | **Risk score** | 0–100, the fused result of all agents. Bands: Low / Medium / High. |
-| **Review queue** | Works in the Medium or High band, ordered by score × money at stake. |
+| **Review queue** | Works in the High or Critical band (two or more checks agree), ordered by score × money at stake. |
 | **Limited evidence** | Two or more agents could not assess the work — a low score here is not a clean chit. |
 | **NOT_ASSESSABLE / NOT_APPLICABLE / NOT_BUILT** | "Couldn't check with this data" / "question doesn't arise yet" / "agent still in development". None of them counts as low risk. |
 | **Peer band / cohort** | The spread of costs of similar works (same type, same district — or state/country if too few). |

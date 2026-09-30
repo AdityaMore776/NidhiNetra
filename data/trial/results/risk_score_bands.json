@@ -1,0 +1,30 @@
+{
+  "works": 209993,
+  "cutoffs": {
+    "CRITICAL": 0.33,
+    "HIGH": 0.22,
+    "MEDIUM": 0.15
+  },
+  "weights": {
+    "compliance": 0.3,
+    "statistical": 0.2,
+    "dup_split": 0.2,
+    "delay": 0.0,
+    "outlier": 0.1
+  },
+  "bands": {
+    "CRITICAL": 129,
+    "HIGH": 1395,
+    "MEDIUM": 35086,
+    "LOW": 173383
+  },
+  "shares": {
+    "CRITICAL": 0.00061,
+    "HIGH": 0.00664,
+    "MEDIUM": 0.16708,
+    "LOW": 0.82566
+  },
+  "review_queue": 1524,
+  "review_share": 0.00726,
+  "max_score": 37.0
+}

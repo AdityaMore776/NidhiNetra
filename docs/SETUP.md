@@ -28,7 +28,7 @@ python -m venv .venv
 pip install -e . -r requirements-dev.txt
 
 ruff check drishti tests        # lint
-pytest -q                       # 141 tests
+pytest -q                       # 259 tests
 ```
 
 Run the API against a database with the data loaded:

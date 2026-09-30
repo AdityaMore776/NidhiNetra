@@ -21,7 +21,7 @@ export default function Dashboard() {
   }, []);
 
   if (!s) return <p className="text-muted text-sm">Loading…</p>;
-  const review = s.bands.HIGH + s.bands.MEDIUM;
+  const review = (s.bands.CRITICAL ?? 0) + s.bands.HIGH;
 
   return (
     <div className="space-y-6">
@@ -37,7 +37,7 @@ export default function Dashboard() {
         <Kpi label="Works" value={count(s.works)} />
         <Kpi label="Money recommended" value={inr(s.amount)} />
         <Kpi label="Need review" value={count(review)} sub={`${((review / s.works) * 100).toFixed(2)}% of works`} color="var(--medium)" />
-        <Kpi label="High risk" value={count(s.bands.HIGH)} color={BAND_COLOR.HIGH} />
+        <Kpi label="Critical" value={count(s.bands.CRITICAL ?? 0)} color={BAND_COLOR.CRITICAL} />
         <Kpi label="Record issues found" value={count(s.validation_alerts)} color="var(--inputs)" />
       </div>
 
@@ -60,6 +60,7 @@ export default function Dashboard() {
                       {count(a.alerts)}
                     </span>{" "}
                     works with a finding
+                    {a.weight_note && <p className="mt-1 text-[11px] text-muted">{a.weight_note}</p>}
                   </>
                 ) : (
                   <span className="rounded-md bg-background px-2 py-1 text-xs text-muted">In development</span>
@@ -79,17 +80,17 @@ export default function Dashboard() {
         <section className="card p-4 lg:col-span-2 space-y-3 text-sm">
           <h2 className="font-semibold">What the published data can and cannot tell us</h2>
           <p>
-            The eSAKSHI export gives each work&apos;s type, description, amount, dates and district. That is enough for the price check
-            and the record checks, which run on every work today.
+            The eSAKSHI export gives each work&apos;s type, description, amount, dates and district. That is enough for the guideline,
+            price, duplicate and delay checks, which run on every work today.
           </p>
           <p>
-            It carries <b>no GPS location, no quantities and no site photos</b>. Those are what the Site Progress, Image Reuse and
-            Duplicate Project agents need. eSAKSHI already collects them internally, so turning those agents on for real works is an
-            export away, not a new model.
+            It carries <b>no GPS location, no quantities and no site photos</b>. Those are what the Site Progress, Photo Forensics and
+            Geo-Location checks need. eSAKSHI already publishes them for completed works, so those checks are being built on real
+            evidence. Without a location, two works can only be matched by their wording, so every repeat is &quot;check&quot;, never proof.
           </p>
           <p className="text-muted text-xs">
-            A low score built on one agent is not a clean chit. Works are marked &quot;limited evidence&quot; until more checks can look
-            at them.
+            A work reaches High only when two checks agree. A low score where a check could not look at the work is marked
+            &quot;limited evidence&quot;: it is not a clean chit.
           </p>
         </section>
       </div>
