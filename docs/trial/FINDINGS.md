@@ -147,6 +147,50 @@ same-site split. Generic text points to a bulk purchase cut under the tender lim
 - **What didn't work:** the same exact text recommended again *after* the first was
   completed: 0 cases. Real repeats are reworded, so the next step is matching by meaning.
 
+#### Duplicate & Split engine (T030, 30 Sept 2026): matching by meaning
+
+Every description (207,881 with readable text) is turned into a meaning vector by a free
+multilingual model, so "CC road at X" and "X me CC sadak" match. Works are compared only within
+their district. Script `data/build_dup_split.py`, results `results/dup_split.json`, by-eye
+labels `data/trial/dup_split_labels.py` → `results/dup_split_eye.json`.
+
+| What it finds | Count |
+|---|---|
+| Pairs that read as the same work twice | 953 (121 after the first was completed, 740 while it was open, 92 staged and not flagged) |
+| Same-site splits (2+ near-equal pieces naming one place) | 1,993 groups |
+| Bulk orders (3+ near-equal pieces naming no place) | 1,114 groups |
+| Groups with every piece ₹4–5 lakh and a total over ₹5 lakh | 456 |
+| Works carrying any flag | 23,236 (11%) |
+
+The Nanded Sapti split (3 × ₹4,96,000, same day) is found and marked "every piece just under
+₹5 lakh".
+
+**Read by eye (fresh samples, rules frozen):**
+
+| Sample | Real repeats / splits |
+|---|---|
+| 40 random duplicate pairs | **15 / 40 (38%)** |
+| 15 random same-site splits | **10 / 15 (67%)** |
+| 15 random bulk orders | 15 / 15 correctly read as a series of identical purchases |
+| Top 50 pairs by score (development sample) | 29 / 50 |
+
+**What reading the output fixed** (each fix was followed by a fresh sample):
+1. The first version put 31% of all works in "groups". It chained an MP's batch of alike works for
+   *different* villages ("CC road at Sapti", "at Walki", ...) and then threw the whole chain away
+   because the amounts differed, losing the Sapti split with it. Groups are now cut by place.
+2. Different survey numbers, property numbers or road stretches ("0–300 m" vs "301–600 m") had
+   matched, because place words ignored numbers. Different numbers now mean different sites.
+3. Wording one MP filed 3+ times (7 identical water coolers) is a series, not a duplicate: a real
+   duplicate is a pair.
+4. A shared panchayat name made two villages "the same place". The first random test read only
+   7/40 real; after requiring the whole place list to match, a new random test read 15/40.
+
+**Still wrong, known:** generic text with an unusual word taken as a place ("Yatri pratikshalaya",
+"Disposal of sullage water"); "Construction of..." followed by "Completion of..." (a staged
+payment); "East side" and "West side" of one street (direction words are too common to count as
+place words). Every flag says "check", never more: the district is the finest location in the
+record, so only the files or a visit can confirm two works are one.
+
 ### A1 Eligibility (prohibited works): works after a rewrite
 
 | Reader | Works flagged | Plainly prohibited | Worth an officer's look |

@@ -1,0 +1,35 @@
+{
+  "version": "dup-split-1",
+  "works_compared": 207881,
+  "duplicate_pairs": {
+    "total": 953,
+    "by_kind": {
+      "while_open": 740,
+      "after_completed": 121,
+      "staged": 92
+    }
+  },
+  "groups": {
+    "total": 3107,
+    "by_kind": {
+      "same_site_split": 1993,
+      "bulk_order": 1114
+    },
+    "works": 21878,
+    "under_limit": 456
+  },
+  "works_flagged": 23236,
+  "nanded_sapti_split_found": [
+    {
+      "group_id": "G02172",
+      "size": 3,
+      "total": 1488000.0,
+      "amounts": [
+        496000.0,
+        496000.0,
+        496000.0
+      ]
+    }
+  ],
+  "seconds": 914
+}
