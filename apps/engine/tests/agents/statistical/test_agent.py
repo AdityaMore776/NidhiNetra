@@ -185,16 +185,14 @@ def test_well_below_district_and_state_is_a_soft_note(stats):
     assert r.verdict == "COST_BELOW_PEERS" and r.risk == pytest.approx(cost.BELOW_RISK)
 
 
-def test_delay_is_a_soft_finding(stats):
-    r = assess(_work(recommended_date=date(2023, 1, 1)), stats, AS_OF)
-    assert any(f.code == "DELAYED" and f.risk == pytest.approx(0.20) for f in r.findings)
-
-
-def test_outside_constituency_ceiling_is_the_only_hard_signal(stats):
-    r = assess(_work(amount=3_000_000.0, is_outside_constituency=True), stats, AS_OF)
-    f = next(f for f in r.findings if f.code == "CEILING_BREACH")
-    assert f.hard and f.risk == pytest.approx(0.70) and "para 2.9" in f.text
-    assert r.hard
+def test_overdue_and_ceiling_are_left_to_compliance(stats):
+    # R02 / R08 in Guideline Compliance report these; the cost engine carrying them too
+    # counted one fact twice in the risk score (13,158 "cost" flags were only DELAYED)
+    old = assess(_work(recommended_date=date(2023, 1, 1)), stats, AS_OF)
+    outside = assess(_work(amount=3_000_000.0, is_outside_constituency=True), stats, AS_OF)
+    for r in (old, outside):
+        assert not {f.code for f in r.findings} & {"DELAYED", "CEILING_BREACH"}
+        assert not r.hard
 
 
 @pytest.mark.parametrize("kw,reason", [({"amount": None}, "amount"),
