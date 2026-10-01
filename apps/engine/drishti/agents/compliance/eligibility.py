@@ -52,9 +52,72 @@ class Inadmissible:
     text: str
 
 
+# ---- Devanagari descriptions (T051) --------------------------------------------------
+# The export garbles Hindi to "????", so the corpus has no Devanagari text, but a live
+# recommendation can carry it. Hindi puts the object before the verb: "मंदिर का निर्माण"
+# (construction of a temple), "मंदिर परिसर में शेड" (a shed inside the temple premises). The
+# keyword must be followed by a verb or a premises word, and NOT by a landmark postposition
+# ("मंदिर के पास सड़क" = a road near the temple). Python's \b breaks inside Devanagari words
+# (vowel signs are not alphanumeric), so word edges are written as explicit lookarounds.
+DEV = "ऀ-ॿ"
+_EDGE_L, _EDGE_R = rf"(?<![{DEV}])", rf"(?![{DEV}])"
+HI_VERB = (r"(?:नव\s*)?(?:निर्माण|पुनर्निर्माण|जीर्णोद्धार|मरम्मत|सौंदर्यीकरण|सुंदरीकरण|सौन्दर्यीकरण|"
+           r"विस्तार|स्थापना)")
+HI_PREMISES = r"(?:परिसर|प्रांगण|प्रागंण|अहाते|आंगन)"
+HI_LANDMARK = re.compile(r"^\s*(?:के\s+(?:पास|सामने|पीछे|निकट|बगल)|से|तक|की\s+(?:ओर|तरफ)|"
+                         r"मार्ग|रोड|गली|चौक|वाली\s+सड़क)" + _EDGE_R)
+HI_INSTITUTION = re.compile(rf"(?:शिशु|विद्या|सरस्वती|ज्ञान|बाल)\s*मंदिर{_EDGE_R}")
+
+
+def _hi_patterns() -> list[tuple[dict, str, re.Pattern]]:
+    from drishti import reference
+
+    out = []
+    for item in reference.prohibited_items():
+        if item.get("superseded_likely"):
+            continue
+        for kw in item.get("keywords_hi") or []:
+            words = r"\s*".join(re.escape(w) for w in kw.split())
+            out.append((item, kw, re.compile(
+                rf"{_EDGE_L}(?P<kw>{words}){_EDGE_R}\s*(?:[{DEV}]+\s+){{0,2}}?(?:(?:का|की|के)\s+)?"
+                rf"(?:{HI_VERB}|{HI_PREMISES}){_EDGE_R}")))
+    return out
+
+
+def script(text: str | None) -> str:
+    """'latin', 'devanagari', 'other' (a script this reader cannot read) or 'none'."""
+    t = text or ""
+    latin = sum(ch.isascii() and ch.isalpha() for ch in t)
+    dev = sum("ऀ" <= ch <= "ॿ" for ch in t)
+    other = sum(ch.isalpha() and not ch.isascii() and not ("ऀ" <= ch <= "ॿ")
+                for ch in t)
+    if not (latin or dev or other):
+        return "none"
+    best = max((latin, "latin"), (dev, "devanagari"), (other, "other"))
+    return best[1]
+
+
+def v2_hindi(text: str | None) -> Inadmissible | None:
+    t = text or ""
+    if HI_INSTITUTION.search(t):
+        return None
+    for item, kw, rx in _hi_patterns():
+        for m in rx.finditer(t):
+            # a landmark right after the keyword ("मंदिर के पास ... निर्माण") is not the object
+            if HI_LANDMARK.search(t[m.end("kw"):]):
+                continue
+            return Inadmissible(item["id"], str(item.get("annexure_ii_2016_item", "")), kw,
+                                " ".join(item["text"].split()))
+    return None
+
+
 def v2(text: str | None) -> Inadmissible | None:
     """The Annexure-II item a description reads as, else None."""
     t = text or ""
+    if re.search(f"[{DEV}]", t):
+        hit = v2_hindi(t)
+        if hit:
+            return hit
     for item, kw, rx in _patterns():
         for m in rx.finditer(t):
             if LANDMARK.search(m.group(1) or ""):

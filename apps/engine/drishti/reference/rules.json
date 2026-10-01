@@ -2,24 +2,33 @@
   "version": 1,
   "edition_note": "Paragraph numbers are from the MPLADS Guidelines (June 2016), the latest edition we could read (T001 will check the 2023 wording). Every threshold comes from guidelines_clauses.yaml.",
   "severity_signal": {"HIGH": 1.0, "MEDIUM": 0.6, "LOW": 0.3},
+  "grading_note": "T051: a rule broken by a little and a rule broken by a lot must not score the same. R01 grows from 0.30 just past the clock to its severity (0.60) at four times the clock; R02 from 0.15 at one year to 0.30 at the type's 98th percentile, then to 0.60 at twice that (log scale). One delay alone can still never make a work High.",
+  "election_pauses": {
+    "note": "Model code of conduct periods left out of the sanction clock, as para 3.12 says. Add each Lok Sabha general election (and, when the data says which works are affected, state assembly elections) as the Election Commission announces it. The engine says when a work's waiting time runs past the last date this list was checked.",
+    "checked_until": "2026-10-01",
+    "periods": [
+      {"name": "2024 Lok Sabha general election", "from": "2024-03-16", "to": "2024-06-06",
+       "source": "Election Commission of India press notes, 16 March and 6 June 2024"}
+    ]
+  },
   "rules": [
     {
       "id": "R01", "code": "SANCTION_OVERDUE", "title": "Waiting for sanction past the time limit",
       "guideline_ref": "para 3.12", "clause": "SANCTION_PERIOD", "severity": "MEDIUM",
       "condition": "status is RECOMMENDED and days since recommendation, less days under the 2024 general-election model code of conduct, exceed 75",
       "evaluable": true,
-      "message_en": "Recommended {days} days ago and still not sanctioned; the guidelines ({ref}) ask for a sanction within {limit} days. Needs checking with the district office.",
-      "message_hi": "{days} दिन पहले अनुशंसित, अभी तक स्वीकृति नहीं मिली; दिशानिर्देश ({ref}) {limit} दिनों में स्वीकृति कहते हैं। ज़िला कार्यालय से जाँच आवश्यक।"
+      "message_en": "Waiting {days} days for sanction, {over} days past the {limit}-day limit ({ref}) and {times} times the time allowed. Needs checking with the district office.",
+      "message_hi": "स्वीकृति की प्रतीक्षा {days} दिनों से, {limit} दिन की सीमा ({ref}) से {over} दिन अधिक (अनुमत समय का {times} गुना)। ज़िला कार्यालय से जाँच आवश्यक।"
     },
     {
       "id": "R02", "code": "COMPLETION_OVERDUE", "title": "Open far longer than similar works",
       "guideline_ref": "para 3.13", "clause": "COMPLETION_PERIOD", "severity": "MEDIUM",
       "condition": "status is SANCTIONED and days since recommendation exceed the 98th percentile completion time of its work type (LOW when only past the one-year norm)",
       "evaluable": true,
-      "message_en": "Still open {days} days after recommendation; 98% of completed {type} works finished within {limit} days. Needs a progress check.",
-      "message_hi": "अनुशंसा के {days} दिन बाद भी अधूरा; पूरे हुए {type} कार्यों में 98% {limit} दिनों में पूरे हुए। प्रगति की जाँच आवश्यक।",
-      "low_message_en": "Open {days} days after recommendation, past the one-year norm ({ref}); the guidelines allow longer when the sanction letter records why.",
-      "low_message_hi": "अनुशंसा के {days} दिन बाद भी अधूरा, एक वर्ष की सामान्य अवधि ({ref}) से अधिक; स्वीकृति पत्र में कारण दर्ज हो तो अधिक समय मान्य है।"
+      "message_en": "Still open {days} days after recommendation: {over} days beyond the {limit} days by which 98% of completed {type} works had finished. Needs a progress check.",
+      "message_hi": "अनुशंसा के {days} दिन बाद भी अधूरा: पूरे हुए {type} कार्यों में 98% जिस अवधि ({limit} दिन) में पूरे हुए, उससे {over} दिन अधिक। प्रगति की जाँच आवश्यक।",
+      "low_message_en": "Open {days} days after recommendation, {over} days past the one-year norm ({ref}); 98% of completed {type} works finished within {p98}. The guidelines allow longer when the sanction letter records why.",
+      "low_message_hi": "अनुशंसा के {days} दिन बाद भी अधूरा, एक वर्ष की सामान्य अवधि ({ref}) से {over} दिन अधिक; पूरे हुए {type} कार्यों में 98% {p98} में पूरे हुए। स्वीकृति पत्र में कारण दर्ज हो तो अधिक समय मान्य है।"
     },
     {
       "id": "R03", "code": "SPEND_ABOVE_SANCTION", "title": "Spent more than sanctioned",
