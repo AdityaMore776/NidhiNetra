@@ -286,6 +286,16 @@ recommended in 2023), and test on works recommended from January to May 2025.
 snapshot with no payment dates. The certificates below do carry payment dates, so the
 Document agent can fill this gap.
 
+#### Delay & Fund Flow engine (T410, 1 Oct 2026): Fund Flow inside the Delay engine
+
+`data/trial/delay_fund_flow_trial.py` → `results/delay_fund_flow.json`, all 2,09,993 works: **3,331 works (₹168.9
+crore) recommended under the ended 17th Lok Sabha are still not sanctioned**, exactly the trial's figure; the term's
+end date is reference data (`rules.json` "terms"; Rajya Sabha terms are per member and not modelled). 131 works of
+3 offices hold at least twice their district's share of old recommendations still waiting (e.g. 59 of 125, 47%,
+against 268 of 1,841, 15%, in its district); read by eye, each sentence carries that office's own counts. The
+first cut for "likely late" (estimate ≥ 0.90) warned on 23,476 open works (43%): most offices finish few works
+within a year. The cut is now the riskiest tenth of open works, stored with the counts (5,475 works).
+
 ### B4 Document: works on typed certificates, with free local text reading
 
 **What the certificates contain.** Uttar Pradesh uploads the portal's own Utilisation

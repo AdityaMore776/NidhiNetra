@@ -1,5 +1,5 @@
 {
-  "version": "delay-rates-1",
+  "version": "delay-rates-2",
   "label": "not completed within 365 days of recommendation",
   "strict_backtest": {
     "train": "recommended 2023-04-01 .. 2023-12-31",
@@ -36,7 +36,7 @@
     "strict_backtest_auc": 0.7095,
     "held_out_districts_auc": 0.5883
   },
-  "rows": 9682,
+  "rows": 9683,
   "base_rate_known": 0.7385,
   "open_works_scored": 54485,
   "estimate_rests_on": {

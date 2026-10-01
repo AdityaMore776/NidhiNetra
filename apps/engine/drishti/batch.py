@@ -15,6 +15,7 @@ import psycopg
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 
+from drishti.agents.delay.backlog import OfficeBacklog
 from drishti.agents.dup_split.match import DupIndex
 from drishti.agents.paperwork.vendors import VendorIndex
 from drishti.agents.photo_evidence.index import PhotoIndex
@@ -89,7 +90,7 @@ def indexes(works: list[dict]) -> dict:
     """The cross-work views engines need, from the same rows: the Duplicate & Split index and
     the vendors holding the certified works (Paperwork, T110)."""
     return {"dup_split": DupIndex.build(works), "vendors": VendorIndex.build(works),
-            "photos": PhotoIndex.build(works)}
+            "photos": PhotoIndex.build(works), "backlog": OfficeBacklog.build(works)}
 
 
 def with_index(ctx: Context, con: psycopg.Connection, work: dict) -> Context:

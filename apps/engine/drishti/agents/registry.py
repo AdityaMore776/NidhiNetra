@@ -52,8 +52,8 @@ CORE: tuple[EngineSpec, ...] = (
                "Is the project cost unusual for similar works?", weight=0.20, order=2),
     EngineSpec("dup_split", "Duplicate & Split Work",
                "Is this work repeated, or one job cut into pieces?", weight=0.20, order=3),
-    EngineSpec("delay", "Delay Prediction",
-               "Is this work likely to run late?", weight=0.20, order=4),
+    EngineSpec("delay", "Delay & Fund Flow",          # Fund Flow merged in (T410)
+               "Is time or money stuck on this work?", weight=0.20, order=4),
     EngineSpec("outlier", "Odd Overall",
                "Is this record unusual taken as a whole?", weight=0.10, order=5),
 )

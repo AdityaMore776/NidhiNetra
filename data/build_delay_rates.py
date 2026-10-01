@@ -35,7 +35,7 @@ OUT = ROOT / "data" / "trial" / "results"
 SNAP = pd.Timestamp("2026-05-26")
 T0 = pd.Timestamp("2025-01-01")
 HORIZON = 365
-VERSION = "delay-rates-1"
+VERSION = "delay-rates-2"
 
 
 def prepare() -> pd.DataFrame:
@@ -126,11 +126,15 @@ def main() -> None:
 
     known = w[w.known]
     rows = counts(known)
-    pd.DataFrame(rows).assign(version=VERSION).to_parquet(BUILD / "delay_rates.parquet",
-                                                         index=False)
     live = DelayRates.from_rows(rows)
     todo = w[~w.known & (w.status != "COMPLETED")]
     est = [live.estimate(r) for r in todo.to_dict("records")]
+    # T410: the riskiest tenth of open works, stored with the counts (a fixed p >= 0.90 cut
+    # flagged 43% of open works: most offices finish few works within a year)
+    p90 = float(np.quantile([e.p_late for e in est], 0.90))
+    rows.append({"level": "flag", "key": "p90", "n": 1_000_000, "late": int(p90 * 1_000_000)})
+    pd.DataFrame(rows).assign(version=VERSION).to_parquet(BUILD / "delay_rates.parquet",
+                                                         index=False)
     v1 = json.loads((OUT / "delay_model.json").read_text(encoding="utf-8"))
     res = {"version": VERSION, "label": "not completed within 365 days of recommendation",
            "strict_backtest": backtest, "held_out_districts": held,
