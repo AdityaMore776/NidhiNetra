@@ -18,11 +18,11 @@
           (1,802 distinct values, was 55 in the whole queue) and the cut-offs sit where the
           evidence changes:
             CRITICAL >= 0.30  a guideline issue plus a strong repeat or split, or three
-                              engines (50 works)
+                              engines (5 works)
             HIGH     >= 0.22  two engines each with a meaningful signal; nothing scores this
-                              high on one engine (443)
-            MEDIUM   >= 0.15  one strong signal, e.g. waiting for sanction twice the limit
-                              (14,581)
+                              high on one engine (126)
+            MEDIUM   >= 0.15  one strong signal, e.g. a near-certain repeat, or a wait that
+                              1 in 25 works that old share (2,197)
             LOW      otherwise
           Review queue = CRITICAL + HIGH: 493 works (0.23%). T053 removed the cost notes
           that were almost never a real price question (several sites 0/48, far bigger
@@ -32,6 +32,8 @@
           are still queued and 19 of those have
           a reason beyond a delay; the 8 that left were big projects carried only by "far
           bigger than usual" plus a sanction wait (results/risk_score_eye.json).
+          T054 scored the timing rules by how unusual the wait is (a few days past the limit
+          is the norm): queue 493 -> 131, a fresh 30 read 28/30 worth checking (QUEUE_T054).
           The blueprint's 5-10% High + Critical has no cut-off in the data.
   limited a LOW score where a counted engine could not assess the work is not a clean chit.
   reasons the top three contributions, each with the engine's own sentence in English and a

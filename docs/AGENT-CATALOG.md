@@ -37,7 +37,7 @@ them: what each checks, how, what we measured, and where it stands.
 
 | Engine | Folder | Weight in the score | How it was checked on real works |
 |---|---|---|---|
-| Guideline Compliance | `agents/compliance/` | 0.30 | all 2,09,993 works: R01 21,323 · R02 61,920 · R06 1,114 · R07 458 · R11 7,576; no HIGH-severity rule fires. T051: timing rules graded (447 distinct signals, was 3), Hindi-script R07; T053: R12 big sum that does not say what or where (697 works, 28/30 by eye), R13 built in days (13, 13/13) |
+| Guideline Compliance | `agents/compliance/` | 0.30 | all 2,09,993 works: R01 21,323 · R02 61,920 · R06 1,114 · R07 458 · R11 7,576; no HIGH-severity rule fires. T051: timing rules graded (447 distinct signals, was 3), Hindi-script R07; T053: R12 big sum that does not say what or where (697 works, 28/30 by eye), R13 built in days (13, 13/13); T054: R01/R02 score by how unusual the wait is (at 75 days 63 in 100 works still wait), ended-term leftovers LOW on the para 3.15 clock, R02 always LOW |
 | Cost Anomaly | `agents/statistical/` | 0.20 | planted mark-ups + frozen fresh samples read by eye. T051: the word-price model judges any description: 5× mark-ups caught 42-45% (was 55%), false alarms 1.2%. T053: explicit comfort zone (asks only above the highest of 2× the district top, the state top, 2× the described-like-this top); flags that read almost never right removed (several sites 0/48, far bigger project 3/18, per unit 0/3, below peers unmeasured); kept: above the comfort limit (54/128) and road cost per metre |
 | Duplicate & Split Work | `agents/dup_split/` | 0.20 | T051: rules run live for any work. Fresh frozen samples read by eye: pairs 20/40 real repeats (T030: 15/40), same-site splits 9/15 (T030: 10/15) |
 | Fund Flow (was Delay Prediction) | `agents/delay/` | **0** (shown, not counted) | T053: the forecast was removed (LightGBM 0.710, ladder 0.705 AUC against 0.80; 73% of works run late anyway). Kept: 3,331 works (₹168.9 cr) of the ended 17th Lok Sabha still unsanctioned, office sanction backlog vs its district |
@@ -49,7 +49,7 @@ stored tables, coefficients or reference files (`cohort_stats`, `engine_models`,
 data was built meets exactly the same rules. Learning jobs: `data/build_stats.py`, `build_price_model.py`,
 `build_evidence.py`, `build_generic_words.py`. The risk score that combines them is in
 [ARCHITECTURE.md §4](ARCHITECTURE.md#4-risk-score-fusion-v2-t050); its cut-offs were re-tuned for T051
-(CRITICAL 0.30, HIGH 0.22). After T053: queue 493.
+(CRITICAL 0.30, HIGH 0.22). After T053: queue 493. After T054 (timing rules by how unusual the wait is): queue 131, 28/30 read worth checking. Planted-anomaly test (T080): 39 of 50 fakes in the top 5% of the score (target 75%), 37/50 caught by the engine meant for them (rules, dates and splits 30/30, reworded repeats 7/10, prices 2-3× 0/10), 4/50 in the review queue.
 
 ## Twelve checkers merged into six (T051, trimmed in T053, owner's requests 1 Oct 2026)
 

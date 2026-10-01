@@ -1,0 +1,130 @@
+{
+  "as_of": "2026-05-26",
+  "window_days": 15,
+  "r01_still_waiting": [
+    {
+      "days": 75,
+      "works": 4993,
+      "share": 0.63
+    },
+    {
+      "days": 90,
+      "works": 5748,
+      "share": 0.585
+    },
+    {
+      "days": 120,
+      "works": 6839,
+      "share": 0.53
+    },
+    {
+      "days": 150,
+      "works": 3865,
+      "share": 0.309
+    },
+    {
+      "days": 180,
+      "works": 4492,
+      "share": 0.251
+    },
+    {
+      "days": 240,
+      "works": 6213,
+      "share": 0.204
+    },
+    {
+      "days": 300,
+      "works": 6668,
+      "share": 0.148
+    },
+    {
+      "days": 365,
+      "works": 7431,
+      "share": 0.127
+    },
+    {
+      "days": 450,
+      "works": 5078,
+      "share": 0.103
+    },
+    {
+      "days": 540,
+      "works": 4291,
+      "share": 0.042
+    },
+    {
+      "days": 730,
+      "works": 848,
+      "share": 0.037
+    },
+    {
+      "days": 900,
+      "works": 622,
+      "share": 0.037
+    }
+  ],
+  "r02_still_open": [
+    {
+      "days": 75,
+      "works": 1848,
+      "share": 0.959
+    },
+    {
+      "days": 90,
+      "works": 2386,
+      "share": 0.954
+    },
+    {
+      "days": 120,
+      "works": 3214,
+      "share": 0.919
+    },
+    {
+      "days": 150,
+      "works": 2793,
+      "share": 0.942
+    },
+    {
+      "days": 180,
+      "works": 3375,
+      "share": 0.92
+    },
+    {
+      "days": 240,
+      "works": 4970,
+      "share": 0.835
+    },
+    {
+      "days": 300,
+      "works": 5681,
+      "share": 0.729
+    },
+    {
+      "days": 365,
+      "works": 6484,
+      "share": 0.686
+    },
+    {
+      "days": 450,
+      "works": 4556,
+      "share": 0.581
+    },
+    {
+      "days": 540,
+      "works": 4254,
+      "share": 0.387
+    },
+    {
+      "days": 900,
+      "works": 12843,
+      "share": 0.428
+    },
+    {
+      "days": 1100,
+      "works": 112,
+      "share": 0.571
+    }
+  ],
+  "ended_term_still_waiting": 3331,
+  "reading": "R01: at 75 days most works still wait; a wait is unusual only when few works that old still wait. R02: at every age past a year a large share is still open, so a long-open work is common in this data."
+}

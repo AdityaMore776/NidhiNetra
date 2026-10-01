@@ -10,11 +10,16 @@ Measured choices (real export, see data/trial/compliance_trial.py):
   R01  the 75-day sanction clock (para 3.12) leaves out days under a model code of conduct,
        as the paragraph itself says to; the periods are reference data (rules.json), and a
        wait running past the date that list was last checked is stated as a limitation.
-       State assembly elections are not modelled (a limitation, stated). Signal 0.30 just
-       past the clock, 0.60 at four times it.
-  R02  the one-year norm (para 3.13) says "generally" and 7 in 10 works exceed it, so
-       past one year is LOW (0.15 rising to 0.30 at the type's 98th percentile); past the
-       type's own 98th percentile MEDIUM (0.30 rising to 0.60 at twice it).
+       State assembly elections are not modelled (a limitation, stated). Passing the clock
+       is the norm (at 75 days 63 in 100 works still wait), so the signal follows how few
+       works that old still wait (T054, data/trial/wait_curves_trial.py): 0.05 when most do,
+       0.30 at 1 in 10 (about a year), 0.60 at 1 in 25 (about 18 months). A work of an ended
+       Lok Sabha term runs on the para 3.15 clock (75 days from the term's end) and is LOW:
+       a record never closed, usually a rejection the public data does not show.
+  R02  the one-year norm (para 3.13) says "generally", and at every age past a year 39-69
+       in 100 works are still shown open (completion often not entered), so R02 is always
+       LOW (0.05-0.08). The old "past 98% of finished works" MEDIUM line was an artefact:
+       the data starts in 2023, so no finished work can show a longer time.
   R06  an impossible date from a bulk-entry quarter is LOW, elsewhere MEDIUM
        (validation/timeline.py measured why).
   R07  the Eligibility v2 reader (56% precision on a fresh sample): MEDIUM, says "verify".
@@ -43,22 +48,21 @@ from drishti import reference
 from drishti.agents.compliance.eligibility import script
 from drishti.agents.compliance.eligibility import v2 as inadmissible
 from drishti.agents.contract import AgentResult, Finding, Status
+from drishti.agents.delay.agent import ended_terms
 from drishti.agents.dup_split.match import place_words
 from drishti.agents.statistical.scope import GOODS, scope, undescribed
 from drishti.validation.timeline import impossible_date, quarter_of
 
 AGENT = "compliance"
-VERSION = "compliance-1.2.0"
+VERSION = "compliance-1.3.0"
 QUESTION = "Does the work follow the MPLADS guidelines?"
 RULES_FILE = Path(reference.__file__).resolve().parent / "rules.json"
 
 CONFIDENCE = 0.9
 
-# T051: graded signals. A rule broken by a little and by a lot must not score the same (the
-# real run gave 3 risk values for 2,09,993 works: 80 and 718 days waiting both scored 0.6).
-R01_FULL_TIMES = 4.0         # R01 reaches its severity at four times the sanction clock
-R02_LOW = (0.15, 0.30)       # one year .. the type's 98th percentile
-R02_FULL_TIMES = 2.0         # R02 reaches MEDIUM at twice the type's 98th percentile
+# T054: a timing rule scores by how unusual the wait is (rules.json "wait_curves" and
+# "rarity_signal"), not by how far past the clock: at 75 days 63 in 100 works still wait.
+ENDED_TERM_RISK = 0.15       # an ended term's leftover: a record never closed (para 3.15)
 
 # R12 / R13: the record checks that replaced the Odd Overall engine (T053, owner's choice)
 SCOPE_MIN_RS, SCOPE_MAX_WORDS = 1_000_000, 6
@@ -109,12 +113,36 @@ def calendar_checked_until() -> date:
     return date.fromisoformat(_pauses()["checked_until"])
 
 
-def graded(value: float, start: float, full: float, lo: float, hi: float) -> float:
-    """lo at `start`, rising on a log scale to hi at `full`, flat after."""
-    if value <= start:
-        return lo
-    span = math.log(full / start)
-    return lo + (hi - lo) * min(1.0, math.log(value / start) / span)
+@cache
+def _curves() -> dict:
+    data = json.loads(RULES_FILE.read_text(encoding="utf-8"))
+    return {"r01": tuple(map(tuple, data["wait_curves"]["r01"])),
+            "r02": tuple(map(tuple, data["wait_curves"]["r02"])),
+            "rarity": tuple(map(tuple, data["rarity_signal"]["points"]))}
+
+
+def share_at(curve: str, days: float) -> float:
+    """Share of works this old still waiting (r01) or still open (r02), read on a straight
+    line between the measured points; flat before the first and after the last."""
+    pts = _curves()[curve]
+    if days <= pts[0][0]:
+        return pts[0][1]
+    for (d0, s0), (d1, s1) in zip(pts, pts[1:], strict=False):
+        if days <= d1:
+            return s0 + (s1 - s0) * (days - d0) / (d1 - d0)
+    return pts[-1][1]
+
+
+def rarity(share: float) -> float:
+    """Signal from how common the wait is: 0.05 when half of same-age works share it, up to
+    0.60 when 1 in 25 or fewer do (log scale between the points in rules.json)."""
+    pts = _curves()["rarity"]
+    if share >= pts[0][0]:
+        return pts[0][1]
+    for (s0, r0), (s1, r1) in zip(pts, pts[1:], strict=False):
+        if share >= s1:
+            return r0 + (r1 - r0) * math.log(s0 / share) / math.log(s0 / s1)
+    return pts[-1][1]
 
 
 def mcc_days(start: date, end: date) -> int:
@@ -141,7 +169,7 @@ def _finding(rule_id: str, severity: str, text: str, text_hi: str, risk: float |
                              **evidence})
 
 
-def evaluate(work: dict, as_of: date, p98: float | None = None, timeline=None,
+def evaluate(work: dict, as_of: date, timeline=None,
              type_top: float | None = None) -> list[Finding]:
     out: list[Finding] = []
     status = work.get("status")
@@ -151,41 +179,45 @@ def evaluate(work: dict, as_of: date, p98: float | None = None, timeline=None,
     # R01 waiting for sanction
     if status == "RECOMMENDED" and rec:
         limit = int(_clause("SANCTION_PERIOD", "sanction_period_days"))
-        waited = (as_of - rec).days - mcc_days(rec, as_of)
-        if waited > limit:
-            r = rules()["R01"]
-            sev = signal_of()[r["severity"]]
-            risk = graded(waited, limit, limit * R01_FULL_TIMES, signal_of()["LOW"], sev)
-            fmt = {"days": f"{waited:,}", "limit": limit, "ref": r["guideline_ref"],
-                   "over": f"{waited - limit:,}", "times": f"{waited / limit:.1f}"}
-            out.append(_finding("R01", r["severity"], r["message_en"].format(**fmt),
-                                r["message_hi"].format(**fmt), risk=risk, value=waited,
-                                limit=limit, mcc_days_excluded=mcc_days(rec, as_of)))
+        r = rules()["R01"]
+        ended = ended_terms().get(work.get("term") or "")
+        if ended and (as_of - ended).days > limit:
+            # para 3.15: an outgoing MP's works are decided within 75 days of the term's end
+            fmt = {"term": work["term"], "ended": f"{ended:%d %b %Y}", "ref": "para 3.15",
+                   "days": f"{(as_of - ended).days:,}"}
+            out.append(_finding("R01", "LOW", r["ended_message_en"].format(**fmt),
+                                r["ended_message_hi"].format(**fmt), risk=ENDED_TERM_RISK,
+                                value=(as_of - ended).days, limit=limit,
+                                term_ended=ended.isoformat()))
+        else:
+            waited = (as_of - rec).days - mcc_days(rec, as_of)
+            if waited > limit:
+                share = share_at("r01", waited)
+                risk = rarity(share)
+                sev = "MEDIUM" if risk >= 0.30 else "LOW"
+                pct = max(1, round(share * 100))
+                key = "unusual" if sev == "MEDIUM" else "common"
+                fmt = {"days": f"{waited:,}", "limit": limit, "ref": r["guideline_ref"],
+                       "over": f"{waited - limit:,}",
+                       "how_common": r[f"{key}_en"].format(share=pct),
+                       "how_common_hi": r[f"{key}_hi"].format(share=pct)}
+                out.append(_finding("R01", sev, r["message_en"].format(**fmt),
+                                    r["message_hi"].format(**fmt), risk=risk, value=waited,
+                                    limit=limit, mcc_days_excluded=mcc_days(rec, as_of),
+                                    share_still_waiting=round(share, 3)))
 
-    # R02 open too long
+    # R02 open past the one-year norm: always LOW, common on the portal (T054)
     if status == "SANCTIONED" and rec:
         days = (as_of - rec).days
         norm = int(_clause("COMPLETION_PERIOD", "completion_period_days"))
-        r = rules()["R02"]
-        type_name = reference.work_type_name(work.get("work_type_code"))
-        if p98 is not None and days > p98:
-            risk = graded(days, p98, p98 * R02_FULL_TIMES, R02_LOW[1], signal_of()["MEDIUM"])
-            fmt = {"days": f"{days:,}", "limit": f"{p98:,.0f}", "type": type_name,
-                   "over": f"{days - p98:,.0f}"}
-            out.append(_finding("R02", "MEDIUM", r["message_en"].format(**fmt),
-                                r["message_hi"].format(**fmt), risk=risk, value=days,
-                                limit=p98))
-        elif days > norm:
-            # one year -> the type's own 98th percentile (or twice the norm when unknown)
-            top = p98 if p98 is not None and p98 > norm else 2 * norm
-            risk = graded(days, norm, top, *R02_LOW)
-            fmt = {"days": f"{days:,}", "ref": "para 3.13", "over": f"{days - norm:,}",
-                   "type": type_name,
-                   "p98": f"{p98:,.0f} days" if p98 is not None else "a time not yet measured"}
-            fmt_hi = {**fmt, "p98": f"{p98:,.0f} दिन" if p98 is not None else "अज्ञात अवधि"}
-            out.append(_finding("R02", "LOW", r["low_message_en"].format(**fmt),
-                                r["low_message_hi"].format(**fmt_hi), risk=risk, value=days,
-                                limit=norm))
+        if days > norm:
+            r = rules()["R02"]
+            share = share_at("r02", days)
+            fmt = {"days": f"{days:,}", "ref": r["guideline_ref"],
+                   "share": max(1, round(share * 100))}
+            out.append(_finding("R02", "LOW", r["message_en"].format(**fmt),
+                                r["message_hi"].format(**fmt), risk=rarity(share),
+                                value=days, limit=norm, share_still_open=round(share, 3)))
 
     # R06 impossible order of dates
     imp = impossible_date(rec, done, work.get("agency_name"), timeline)
@@ -270,8 +302,7 @@ def not_checked() -> list[str]:
             if not r["evaluable"]]
 
 
-def assess(work: dict, as_of: date, p98: float | None = None, timeline=None,
-           type_top: float | None = None) -> AgentResult:
+def assess(work: dict, as_of: date, timeline=None, type_top: float | None = None) -> AgentResult:
     t0 = time.perf_counter()
     if not work.get("status"):
         return AgentResult(agent=AGENT, status=Status.NOT_ASSESSABLE, verdict="NOT_ASSESSABLE",
@@ -280,7 +311,7 @@ def assess(work: dict, as_of: date, p98: float | None = None, timeline=None,
                                     "stage cannot be checked against the guidelines. This is "
                                     "not a clean chit.",
                            duration_ms=int((time.perf_counter() - t0) * 1000))
-    findings = evaluate(work, as_of, p98, timeline, type_top)
+    findings = evaluate(work, as_of, timeline, type_top)
     names = ", ".join(p["name"] for p in _pauses()["periods"])
     limitations = ["Could not check (the public export does not carry the data): "
                    + " ".join(not_checked()),

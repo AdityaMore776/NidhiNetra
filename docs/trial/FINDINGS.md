@@ -659,6 +659,76 @@ engine can reach HIGH in the blueprint's weights (owner's call whether an exact 
 sanitiser missed phone numbers before a full stop; fixed, and `identical_groups.json` on main carried 12
 such numbers until this branch.
 
+## T054 (1 Oct 2026): the timing rules, scored by how unusual the wait is
+
+**Asked (owner):** "most works are past the 75-day limit or aren't removed, or they get too high a risk score for
+just being a few days past". All three were true.
+
+**Measured** (`data/trial/wait_curves_trial.py` → `results/wait_curves.json`; the export has no sanction date,
+so the wait is read off the snapshot: of the works recommended N days before it, how many still wait):
+
+| Days since recommendation | 75 | 120 | 180 | 365 | 540 | 730 |
+|---|---|---|---|---|---|---|
+| still waiting for sanction (R01, per 100) | 63 | 53 | 25 | 13 | 4 | 4 |
+| still shown open, of sanctioned works (R02, per 100) | – | – | – | 69 | 39 | 43 (at 900) |
+
+- **R01** fired on 21,323 of the 28,433 waiting works, and day 76 scored 0.30 (half the rule's maximum) although
+  6 in 10 works that old still wait. 3,331 of the waiting works belong to the 17th Lok Sabha (ended 5 June
+  2024); the public data has **no rejected status**, so a recommendation the district turned down stays
+  "waiting" for ever. 9 in 10 recommendations are eventually sanctioned (by recommendation quarter, 2023-25).
+- **R02** fired on 61,920 of 94,662 open works; 12,060 of them as MEDIUM "past the time by which 98% of finished
+  works of its type had finished". That line is an artefact: the data starts in 2023, so no finished work can
+  show a longer time, and 36-57 in 100 works recommended 2-3 years ago are still shown open.
+- 364 of the 493 queue works were not yet sanctioned; 356 were led by R01, mostly R01 + a repeat/split signal
+  (a refiling of an earlier recommendation, often after an unrecorded rejection).
+
+**Cross-check against real sanction dates:** 226 portal certificates (almost all Pratapgarh, UP) give a median
+sanction time of 71 days, 14.5% past 75. The snapshot method on Pratapgarh alone gives 12 in 100 works aged 60-90
+days still waiting, so the two methods agree; districts differ widely (nationally 63 in 100 at that age).
+
+**Changed:** R01's signal follows how few works that old still wait (0.05 when most do, 0.30 at 1 in 10,
+0.60 at 1 in 25; `rules.json` `wait_curves` + `rarity_signal`), and its sentence says how common the wait is. An
+ended term's leftover runs on the para 3.15 clock (75 days from the term's end), is LOW (0.15) and says the
+record needs closing. R02 is always LOW (0.05-0.08) and says long-open works are common on the portal.
+
+**After** (`dry_run.py` → `risk_score_bands.json`): CRITICAL 5, HIGH 126, MEDIUM 2,197 (was 50 / 443 / 14,581);
+**queue 131** (0.06%). A fresh 30 from the new queue read by eye (`risk_score_queue_sample_t054.csv`, labels
+`QUEUE_T054`): **28/30 worth checking**, 2/30 record clean-up (an unsanctioned work refiled later). Of the 57
+works in the earlier eye samples, 5 stay queued; the rest had been lifted by a delay note and now sit in MEDIUM
+on their repeat/split signal alone (one engine cannot reach HIGH: the owner's open question).
+
+**Not settled:** the 2023 guidelines may set 45 days for sanction (para 3.2.4 as quoted in the press); the 2023
+PDF still cannot be fetched from outside India (T001). With 45 days R01 would fire on more works but score
+the same, since the signal now follows the wait curve, not the clock.
+
+## T080 (1 Oct 2026): the planted-anomaly test, 50 known problems run blind
+
+`data/trial/planted_test.py` → `results/planted_test.json`, `planted_test_rows.csv`. 50 fakes built from real
+works (seed 80), 10 of each kind, run through the whole pipeline with all 2,09,993 works, in memory only
+(nothing reaches a database). Measured after T054.
+
+| Kind (10 each) | Meant to be caught by | Caught by that engine | In the top 5% of the risk score | In the review queue |
+|---|---|---|---|---|
+| Rule breaches (3 temple R07, 3 outside the area R08, 2 big vague sums R12, 2 built in days R13) | Guideline Compliance | **10/10** | 10/10 | 4/10 (the 3 R08 CRITICAL, 1 R12 HIGH) |
+| Completed before recommended (R06) | Guideline Compliance | **10/10** | 10/10 | 0/10 (MEDIUM) |
+| Split into 3-4 pieces just under Rs 5 lakh, same day | Duplicate & Split | **10/10** | 10/10 | 0/10 (LOW) |
+| Filed again 60-300 days later, reworded | Duplicate & Split | **7/10** | 8/10 | 0/10 |
+| Price raised 2-3× | Cost Anomaly | **0/10** | 1/10 | 0/10 |
+| **All 50** | | **37/50** | **39/50 (78%; target 75%)** | **4/50** |
+
+- **Top 5% met the blueprint's target (78%).** The top 5% of scores starts at 0.09, which is still the LOW band.
+- **The review queue holds 4 of 50.** One engine alone cannot reach HIGH (0.22) by the blueprint's weights, and a
+  planted fake usually breaks one thing. Same open owner question as T054.
+- **Cost at 2-3× is not questioned by design**: the engine asks only beyond its comfort limit (about twice the
+  usual top, T053). The same 10 fakes through the Cost engine alone: 2× 0/10, 3× 0/10, 5× 3/10, 10× 5/10. Of the 5
+  missed at 10×, 3 read as "a far bigger project, not a price question" (a single semi-high-mast light at Rs 22
+  lakh; a CC road at Rs 50 lakh), 1 sits inside a wide state comfort zone (library), 1 has no work type. "Far
+  bigger" stopped counting in T053 because it read right 3/18 on real works; a planted mark-up that keeps a small
+  stated scope ("one light") is exactly the case it now lets through.
+- Reworded repeats missed (3/10): a transliterated Hindi description with no word to swap (order rotated), and two
+  where "at/near/village" swaps plus the original's district boilerplate left too few shared place words.
+- Not planted: translated repeats (no offline translator; the duplicate rules compare words).
+
 ## T064 (1 Oct 2026): the pre-sanction check on real recommendations
 
 `data/trial/presanction_demo.py` → `results/presanction_demo.json`. Each real recommendation is checked as it stood

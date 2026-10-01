@@ -79,7 +79,8 @@ def test_late_sanction_is_graded_and_leaves_out_election_pauses():
     assert "SANCTION_LATE" not in {f.code for f in r.findings}
     r2 = assess(_work(recommended_date=date(2023, 6, 1)) | {"evidence": _evidence(_cert())})
     f2 = next(f for f in r2.findings if f.code == "SANCTION_LATE")
-    assert 0.30 < f2.risk <= 0.60 and "para 3.12" in f2.text
+    # T054: scored by how few works wait this long (288 days: about 1 in 6), not 0.30 at once
+    assert 0.15 < f2.risk < 0.30 and "para 3.12" in f2.text and "in 100 works" in f2.text
 
 
 def test_sanction_dated_before_the_recommendation_needs_checking():
