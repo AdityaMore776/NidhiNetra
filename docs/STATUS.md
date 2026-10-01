@@ -44,6 +44,11 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
+**1 Oct 2026 night: T054 + T080 + T064 merged and LIVE; hosted DB re-assessed (CRITICAL 5, HIGH 126, MEDIUM
+2,197; queue 131).** Start from `docs/team/log/2026-10-01-2352-adityamore776-T054.md` (handoff, three open owner
+questions: HIGH cut-off, cost "far bigger", 45 vs 75 days). Guideline timing rules now score by how unusual the
+wait is; planted-anomaly test 39/50 in the top 5%; new **Pre-sanction check** page.
+
 **1 Oct 2026, T051 (PR #67): the four engines now work on ANY recommendation, not just the 2,09,993 they were
 built on, and the 12 planned checkers are merged into 8** (`docs/AGENT-CATALOG.md`). Newest log entry in
 `docs/team/log/` has the exact next step. Rebuild data after merging: `data/build_generic_words.py` (only if
