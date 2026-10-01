@@ -1,0 +1,56 @@
+{
+  "history": "recommended 2023-04-01 .. 2024-06-30",
+  "test": "recommended from 2024-07-01",
+  "test_works": 109213,
+  "test_works_whose_mp_has_no_history": 84509,
+  "outcomes": {
+    "late": {
+      "works": 47807,
+      "rate": 0.7302,
+      "auc_alone": {
+        "mp": 0.5593,
+        "district": 0.7084,
+        "office": 0.7085
+      },
+      "district_plus_office": 0.7367,
+      "plus_mp_history": 0.7402,
+      "gain_from_mp": 0.0035
+    },
+    "repeat_split": {
+      "works": 109213,
+      "rate": 0.0228,
+      "auc_alone": {
+        "mp": 0.4972,
+        "district": 0.5569,
+        "office": 0.5589
+      },
+      "district_plus_office": 0.5496,
+      "plus_mp_history": 0.5442,
+      "gain_from_mp": -0.0055
+    },
+    "cost": {
+      "works": 109213,
+      "rate": 0.0069,
+      "auc_alone": {
+        "mp": 0.5711,
+        "district": 0.6214,
+        "office": 0.6216
+      },
+      "district_plus_office": 0.6151,
+      "plus_mp_history": 0.55,
+      "gain_from_mp": -0.0651
+    },
+    "guideline": {
+      "works": 109213,
+      "rate": 0.0023,
+      "auc_alone": {
+        "mp": 0.5492,
+        "district": 0.6373,
+        "office": 0.6357
+      },
+      "district_plus_office": 0.3714,
+      "plus_mp_history": 0.3476,
+      "gain_from_mp": -0.0238
+    }
+  }
+}

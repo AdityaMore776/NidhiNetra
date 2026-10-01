@@ -51,6 +51,14 @@ def test_a_new_work_with_no_match_says_how_many_it_was_compared_with():
     assert r.verdict == "NO_REPEAT_FOUND" and "5 other works" in r.headline
 
 
+def test_a_description_naming_no_place_never_reads_as_no_repeat_found():
+    # 19% of real works name no place; a repeat of them can be neither confirmed nor ruled out
+    idx = DupIndex.build(_filler(5))
+    r = assess(_w("NEW-9", "Construction of community hall", rec=date(2024, 9, 1)), idx)
+    assert r.verdict == "NO_SITE_NAMED" and r.risk == 0
+    assert "cannot be ruled out" in r.headline and "no repeat" not in r.headline.lower()
+
+
 def test_without_an_index_it_says_it_could_not_compare():
     r = assess(_w("NEW-3", ROAD), None)
     assert r.status == Status.NOT_ASSESSABLE and "not a clean chit" in r.headline

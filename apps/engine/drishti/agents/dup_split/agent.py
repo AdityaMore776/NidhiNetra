@@ -138,6 +138,21 @@ def assess(work: dict, index: DupIndex | None) -> AgentResult:
     if group:
         findings.append(_group_finding(group))
     findings.sort(key=lambda f: -f.risk)
+    if not findings and not found.get("place_named", True):
+        # 1 Oct 2026: 39,616 works (19%) name no place ("Construction of Community Hall."). A
+        # repeat needs the same site named twice, so for these none can be ruled out; saying
+        # "no repeat found" overstated what was checked.
+        n = found.get("compared", 0)
+        return AgentResult(
+            agent=AGENT, status=Status.ASSESSED, verdict="NO_SITE_NAMED", risk=0.0,
+            confidence=0.3, hard=False, version=VERSION,
+            headline=(f"The description names no place, so a repeat of an earlier work cannot "
+                      f"be ruled out; checked against the {n:,} other works of its district for "
+                      "splits and bulk orders only."),
+            evidence={"compared": n, "place_named": False},
+            limitations=["Ask for the site (village, ward, landmark) to be written in the "
+                         "recommendation: without it no repeat can be confirmed or ruled out."],
+            duration_ms=int((time.perf_counter() - t0) * 1000))
     if not findings:
         n = found.get("compared", 0)
         return AgentResult(

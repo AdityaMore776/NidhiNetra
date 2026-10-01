@@ -526,6 +526,46 @@ from the cost engine.
   sharing a typo ("tenker", "publiic") read as "one site" → a same-place group of 6+ is a series; Critical at 30
   was reached by any delay plus any repeat, down to ₹20,000 lights → Critical at 33.
 
+### MP history (1 Oct 2026): tested, not adopted
+
+**The owner's question:** should DRISHTI look at an MP's history, e.g. a hidden MP risk score that sets how
+thoroughly that MP's recommendations are checked? **What an MP's record holds** (eSAKSHI's public data, MP files in
+the research build): per MP and term, money allocated / recommended / sanctioned / completed / spent and counts;
+per work, the letter number, implementing office, dates, amount, description, a citizen rating (unused: 21,789 of
+21,793 are zero). No audit, complaint or verified-problem history, so an MP "risk" could only be built from
+DRISHTI's own flags.
+
+**Does MP history predict problems?** `data/trial/mp_history_trial.py` → `results/mp_history_trial.json`. Past
+(works recommended before 1 July 2024) predicting the future (after), each history shrunk toward the overall rate:
+
+| Outcome in later works | MP history alone | District alone | Office alone | Adding MP history to district + office |
+|---|---|---|---|---|
+| finished more than a year late (a real outcome) | 0.56 | 0.71 | 0.71 | +0.004 |
+| repeat or split found | 0.50 | 0.56 | 0.56 | −0.006 |
+| price question | 0.57 | 0.62 | 0.62 | −0.065 |
+
+(AUC: 0.5 = chance.) And **84,509 of 109,213 later works (77%) come from MPs with no history at all** (the June 2024
+election changed most MPs; Rajya Sabha terms are individual).
+
+**Decision: no MP score, no scrutiny that varies by MP.** It is not proven (it adds nothing to the district and the
+office, which the engines already use), and it opens loopholes: a "low-risk" MP's works would get lighter checks,
+which is where misuse would move; three in four new works would start with no history; more checks on high-score
+MPs find more flags and raise the score further (a loop built on DRISHTI's own flags); and the project's rule 5 (never
+score MPs) stays. Every check already runs on every work (they cost nothing); the only scarce depth is human
+inspection and paid AI reads, and those follow the **work's own** risk × money plus a random share (Inspection
+Planner, T062), which keeps a clean-looking record from buying less scrutiny.
+
+**What MP history already does, where it is proven:** the Duplicate engine compares each recommendation with every
+earlier work of its district, the MP's own included (fresh by-eye sample 20/40 real repeats). The same-MP "series"
+rule (identical wording filed 3+ times = a series, not repeats) hides only 1 set of 4 works that name a place
+(read: one water tanker per village), so it is not a loophole. **Letter numbers** (one MP letter, several works):
+117,611 works sit on letters carrying several works, and a third of the real same-site splits span different
+letters, so grouping by letter would miss splits and simplify nothing; not adopted.
+
+**The one gap found and fixed:** 39,616 comparable works (19%) name no place ("Construction of Community Hall."), so a
+repeat can be neither confirmed nor ruled out; the Duplicate engine said "no repeat found" for them. It now says
+"names no place, so a repeat cannot be ruled out" (21,852 works; the rest sit in bulk-order groups).
+
 ### Odd Overall (#63, 1 Oct 2026): unusual in two ways at once
 
 `data/build_outlier.py` → `results/outlier_trial.json`. Three fields judged within the work type: amount, days from
