@@ -30,7 +30,7 @@ REVIEW = ("CRITICAL", "HIGH")
 
 def main() -> None:
     works = pd.read_parquet(BUILD / "works.parquet")
-    ctx = load_context()
+    ctx = load_context(works)
     t0 = time.time()
     rows = []
     bands, issues = Counter(), Counter()

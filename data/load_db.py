@@ -17,7 +17,7 @@ import time
 import pandas as pd
 import psycopg
 
-from common import BUILD, clean, signal_rows
+from common import BUILD, clean, model_rows, signal_rows
 from drishti import migrate
 
 TABLES = {
@@ -33,7 +33,10 @@ TABLES = {
                          "anchor_low", "anchor_high", "anchor_label"],
     "timeline_quarters": ["quarter", "n", "bad"],
     "timeline_agencies": ["agency_name", "completed", "bad"],
+    "delay_rates": ["level", "key", "n", "late", "version"],
 }
+# Built by a later data job (T051); an older data pack may not have them yet.
+OPTIONAL = {"delay_rates": "data/build_delay_rates.py"}
 MAX_DB_MB_NOTE = "free tier is 500 MB"
 MAX_DB_MB = 400
 
@@ -53,9 +56,14 @@ def load(url: str) -> None:
     print("migrations applied:", migrate.apply(url) or "none pending")
     with psycopg.connect(url, prepare_threshold=None) as con:
         con.execute("TRUNCATE assessments, work_signals, works, districts, cohort_stats, "
-                    "duration_stats, unit_rate_models, timeline_quarters, timeline_agencies")
+                    "duration_stats, unit_rate_models, timeline_quarters, timeline_agencies, "
+                    "delay_rates")
         for table, cols in TABLES.items():
             t0 = time.time()
+            if table in OPTIONAL and not (BUILD / f"{table}.parquet").exists():
+                print(f"{table}: no data/build/{table}.parquet - run {OPTIONAL[table]}; the "
+                      "engine will report NOT_ASSESSABLE where it needs it")
+                continue
             df = pd.read_parquet(BUILD / f"{table}.parquet")
             with con.cursor().copy(f"COPY {table} ({', '.join(cols)}) FROM STDIN") as cp:
                 for rec in df[cols].to_dict("records"):
@@ -63,6 +71,11 @@ def load(url: str) -> None:
                     cp.write_row([r[c] for c in cols])
             print(f"{table}: {len(df):,} rows in {time.time() - t0:.0f}s")
         load_signals(con)
+        con.execute("TRUNCATE engine_models")
+        for m in model_rows():
+            con.execute("INSERT INTO engine_models (name, version, data) VALUES (%s, %s, %s)",
+                        (m["name"], m["version"], json.dumps(m["data"])))
+            print(f"engine_models: {m['name']} {m['version']}")
         con.commit()
         con.execute("ANALYZE")
         mb = con.execute("SELECT pg_database_size(current_database()) / 1e6").fetchone()[0]

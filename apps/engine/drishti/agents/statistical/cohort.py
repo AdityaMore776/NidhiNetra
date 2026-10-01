@@ -13,7 +13,9 @@ from dataclasses import dataclass, field
 import psycopg
 from psycopg.rows import dict_row
 
+from drishti.agents.delay.rates import DelayRates
 from drishti.agents.statistical.band import MIN_COHORT, Cohort
+from drishti.agents.statistical.price_model import PriceModel
 from drishti.agents.statistical.unit_rate import UnitRateModel
 from drishti.validation.timeline import TimelineRates
 
@@ -41,11 +43,21 @@ class StatsStore:
     # Offline engine signals that have been computed (work_signals.engine): lets an engine
     # tell "compared, nothing found" from "never compared".
     signals_built: frozenset[str] = frozenset()
+    # Past late counts per step of the Delay engine's ladder (agents/delay/rates.py, T051).
+    delay: DelayRates | None = None
+    # The cost engine's word-price model (agents/statistical/price_model.py, T051).
+    price_model: PriceModel | None = None
 
     @classmethod
     def from_rows(cls, cohorts, durations, unit_models, quarters=(), agencies=(),
-                  signals_built=()) -> StatsStore:
+                  signals_built=(), delay_rates=(), models=()) -> StatsStore:
         s = cls(signals_built=frozenset(signals_built))
+        delay_rates = list(delay_rates)
+        if delay_rates:
+            s.delay = DelayRates.from_rows(delay_rates)
+        for m in models:
+            if m["name"] == "price_model":
+                s.price_model = PriceModel.from_json(m["data"])
         quarters, agencies = list(quarters), list(agencies)
         if quarters:
             s.timeline = TimelineRates.from_counts(
@@ -74,7 +86,9 @@ class StatsStore:
                 con.execute("SELECT * FROM timeline_quarters").fetchall(),
                 con.execute("SELECT * FROM timeline_agencies").fetchall(),
                 [r["engine"] for r in con.execute(
-                    "SELECT DISTINCT engine FROM work_signals").fetchall()])
+                    "SELECT DISTINCT engine FROM work_signals").fetchall()],
+                con.execute("SELECT level, key, n, late FROM delay_rates").fetchall(),
+                con.execute("SELECT name, data FROM engine_models").fetchall())
 
     def cohort(self, work_type: str | None, district: str | None,
                state: str | None) -> Cohort | None:

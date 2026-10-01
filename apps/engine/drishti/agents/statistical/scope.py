@@ -43,7 +43,9 @@ _UNDESCRIBED = re.compile(
     r"mplads[\s\-:]*\d*|as\s+per\s+\w+|see\s+mp\s+letter\b.*|"
     r"(?:the\s+)?(?:letter|list|details?|works?|proposal)?\s*(?:is\s+)?(?:as\s+per|as\s+par|"
     r"see|please\s+see|refer(?:\s+to)?|vide)\s+(?:the\s+)?(?:attached|attachment|attechment|"
-    r"atech|enclosed|annexure|list|letter)(?:\s+(?:list|letter|annexure|sheet))?)$",
+    r"atech|enclosed|annexure|list|letter)"
+    # "Please see the attached documents." (read by eye, dup/split TEST, 1 Oct 2026)
+    r"(?:\s+(?:list|letter|annexure|sheet|documents?|files?|pdf))?)$",
     re.I)
 
 _MANY_SITES = re.compile(

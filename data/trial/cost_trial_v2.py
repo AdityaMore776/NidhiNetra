@@ -58,6 +58,7 @@ V1_FLAGS = {"COST_ABOVE_PEERS", "BUNDLED_SANCTION", "UNIT_RATE_ABOVE"}
 V2_FLAGS = {"COST_ABOVE_PEERS", "BUNDLED_SANCTION", "UNIT_RATE_ABOVE", "UNIT_PRICE_ABOVE",
             "SCOPE_FAR_LARGER"}
 AS_OF = date(2026, 5, 26)
+LINEAR = "--linear" in sys.argv
 
 
 
@@ -96,7 +97,10 @@ def main() -> None:
     w = pd.read_parquet(BUILD / "works.parquet")
     w = w[(w.amount > 0) & w.work_type_code.notna()].copy()
     w["l"] = np.log10(w.amount.astype(float))
-    exp = pd.read_parquet(BUILD / "cost_expected.parquet").set_index("work_id")
+    # T051: `--linear` runs the same test with the word-price model's out-of-fold ranges
+    # (data/build_price_model.py) and writes results/cost_trial_v2_linear.json instead
+    exp = pd.read_parquet(BUILD / ("cost_expected_linear.parquet" if LINEAR else
+                                   "cost_expected.parquet")).set_index("work_id")
     sf = scope_frame(w)
 
     # ---- pools (trial 1's pool is rebuilt exactly as trial 1 did)
@@ -201,7 +205,8 @@ def main() -> None:
                                 "text": x["A+B_text"] if name != "v1" else ""})
     sample = pd.DataFrame(samples)
     OUT.mkdir(parents=True, exist_ok=True)
-    sample.to_csv(OUT / "cost_v2_flag_sample_test.csv", index=False)
+    sample.to_csv(OUT / ("cost_v2_flag_sample_linear.csv" if LINEAR else
+                         "cost_v2_flag_sample_test.csv"), index=False)
 
     def precision(df: pd.DataFrame, lab_of) -> dict:
         out = {}
@@ -227,7 +232,8 @@ def main() -> None:
               "planted": planted, "real_corpus": corpus,
               "precision_by_eye": {"dev_sample_1": dev_p, "dev_sample_2": dev2_p,
                                    "test_sample_rules_frozen": test_p or "not read yet"}}
-    (OUT / "cost_trial_v2.json").write_text(json.dumps(result, indent=2))
+    (OUT / ("cost_trial_v2_linear.json" if LINEAR else "cost_trial_v2.json")).write_text(
+        json.dumps(result, indent=2))
     print(json.dumps({"precision_by_eye": result["precision_by_eye"]}, indent=2))
 
 

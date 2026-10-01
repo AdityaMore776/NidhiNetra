@@ -180,6 +180,39 @@ def test_learned_range_that_agrees_keeps_the_flag_and_says_so(stats):
     assert r.verdict == "COST_ABOVE_PEERS" and "described like this one" in r.headline
 
 
+PRICE = {"version": "test", "intercept": 5.0,
+         "weights": {"w=building": 1.6, "w=skill": 0.6, "t=ROAD_CC": 0.2, "w=road": 0.0},
+         "spread": {"ROAD_CC": [-0.3, 0.3]}, "default_spread": [-0.4, 0.4]}
+
+
+def _with_price(stats):
+    from drishti.agents.statistical.price_model import PriceModel
+    stats.price_model = PriceModel.from_json(PRICE)
+    return stats
+
+
+def test_the_word_price_model_judges_a_work_it_has_never_seen(stats):
+    # T051: version B used to exist only for works in the training file; a new work was
+    # judged by peers alone. Now any description gets a range from stored word weights.
+    s = _with_price(stats)
+    big = assess(_work(work_id="NEW-1", amount=53_000_000.0,
+                       description="Construction of Skill Hub Building near Government ITI"),
+                 s, AS_OF)
+    assert not _cost_findings(big)                     # words say: a big building
+    plain = assess(_work(work_id="NEW-2", amount=1_300_000.0), s, AS_OF)
+    assert plain.verdict == "COST_ABOVE_PEERS"         # words say: an ordinary road
+    assert "described like this one" in plain.headline
+
+
+def test_price_model_features_ignore_numbers_and_read_size():
+    from drishti.agents.statistical.price_model import features
+    f = features({"work_type_code": "ROAD_CC", "state_lgd": "24",
+                  "description": "CC road 450 mtr at Rs 5 lakh in ward 12",
+                  "recommended_date": date(2025, 1, 1)})
+    assert "w=road" in f and not any(k.startswith("w=") and k[2:].isdigit() for k in f)
+    assert f["has_length"] == 1.0 and f["year"] == 25.0
+
+
 def test_well_below_district_and_state_is_a_soft_note(stats):
     r = assess(_work(amount=15_000.0), stats, AS_OF)
     assert r.verdict == "COST_BELOW_PEERS" and r.risk == pytest.approx(cost.BELOW_RISK)
