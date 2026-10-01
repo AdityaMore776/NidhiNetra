@@ -36,12 +36,23 @@ def clean(rec: dict) -> dict:
 # Offline engine facts, one parquet per engine (built by the engine's data job), read with
 # each work as work["signals"][engine] - locally here, from the work_signals table live.
 #   engine -> (file in data/build, the columns that form its data, version column)
-SIGNALS = {
-    "cost_model": ("cost_expected.parquet", ("q10", "q50", "q90"), "model_version"),
-    "delay": ("delay_scores.parquet", ("p_late", "rank_pct", "base_rate", "reasons"),
-              "model_version"),
-    "dup_split": ("dup_split.parquet", ("pairs", "group"), "model_version"),
+SIGNALS: dict[str, tuple] = {
+    # T051: no engine reads a per-work answer any more. Cost uses the word-price model
+    # (engine_models), Delay the delay_rates table, Duplicate & Split a live district
+    # comparison (match.py): each computes for ANY work, so new works meet the same rules.
 }
+# Small learned models an engine applies to any work: name -> file in data/build
+MODELS = {"price_model": "price_model.json"}
+
+
+def model_rows() -> list[dict]:
+    out = []
+    for name, file in MODELS.items():
+        path = BUILD / file
+        if path.exists():
+            data = json.loads(path.read_text(encoding="utf-8"))
+            out.append({"name": name, "version": data.get("version", ""), "data": data})
+    return out
 JSON_COLUMNS = {"pairs", "group"}          # stored as JSON text in the parquet
 
 
@@ -77,12 +88,21 @@ def works_records(works: pd.DataFrame):
         yield r
 
 
-def load_context() -> Context:
+def load_context(works: pd.DataFrame | None = None) -> Context:
+    """Statistics + the Duplicate & Split comparison index over every work (T051)."""
+    from drishti.agents.dup_split.match import DupIndex
+
+    if works is None:
+        works = pd.read_parquet(BUILD / "works.parquet")
+    index = DupIndex.build(clean(r) for r in works.to_dict("records"))
     stats = StatsStore.from_rows(
         pd.read_parquet(BUILD / "cohort_stats.parquet").to_dict("records"),
         pd.read_parquet(BUILD / "duration_stats.parquet").to_dict("records"),
         pd.read_parquet(BUILD / "unit_rate_models.parquet").to_dict("records"),
         pd.read_parquet(BUILD / "timeline_quarters.parquet").to_dict("records"),
         pd.read_parquet(BUILD / "timeline_agencies.parquet").to_dict("records"),
-        [e for e, (name, _c, _v) in SIGNALS.items() if (BUILD / name).exists()])
-    return Context(stats=stats, as_of=config.snapshot_date())
+        [e for e, (name, _c, _v) in SIGNALS.items() if (BUILD / name).exists()],
+        pd.read_parquet(BUILD / "delay_rates.parquet").to_dict("records")
+        if (BUILD / "delay_rates.parquet").exists() else (),
+        model_rows())
+    return Context(stats=stats, as_of=config.snapshot_date(), data={"dup_split": index})

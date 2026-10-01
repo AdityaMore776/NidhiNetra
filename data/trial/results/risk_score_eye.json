@@ -3,5 +3,11 @@
     "read": 30,
     "worth_checking": 24,
     "share": 0.8
+  },
+  "queue_t051_random_sample": {
+    "read": 30,
+    "worth_checking_same_meaning_as_above": 30,
+    "worth_checking_beyond_a_delay": 27,
+    "old_sample_still_queued": "7 of the 24 worth_checking, 0 of the 6 explained"
   }
 }

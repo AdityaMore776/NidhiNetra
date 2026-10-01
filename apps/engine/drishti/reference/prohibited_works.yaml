@@ -195,6 +195,7 @@ items:
   - id: NAMED_ASSET
     text: Assets to be named after any person.
     keywords: [named after, statue, memorial, smarak, pratima, murti, bust]
+    keywords_hi: [प्रतिमा, मूर्ति, स्मारक]
     verified_against_2023: false
     annexure_ii_2016_item: "7"
     verified_against_2016: true
@@ -256,6 +257,9 @@ items:
       Works within the places of religious worship and on land belonging
       to or owned by religious faith/group.
     keywords: [temple, mandir, mosque, masjid, church, gurudwara, religious]
+    # Devanagari descriptions (T051): read by agents/compliance/eligibility.py's Hindi reader
+    keywords_hi: [मंदिर, मन्दिर, देवालय, मस्जिद, गुरुद्वारा, गुरूद्वारा, गिरजाघर, चर्च, दरगाह,
+                  ईदगाह, धार्मिक स्थल, धर्मस्थल]
     verified_against_2023: false
     annexure_ii_2016_item: "13"
     verified_against_2016: true
@@ -277,6 +281,7 @@ items:
     text: Construction of Swagat Dwars.
     keywords: [swagat dwar, swagat dwaar, swagat gate, welcome gate,
                welcome arch, welcome gateway, pravesh dwar, entrance arch]
+    keywords_hi: [स्वागत द्वार, तोरण द्वार, प्रवेश द्वार]
     verified_against_2023: false
     annexure_ii_2016_item: "15"
     verified_against_2016: true

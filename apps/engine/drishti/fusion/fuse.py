@@ -4,25 +4,28 @@
           each term = the engine's signal (its risk, 0-1) when it ASSESSED the work, else 0.
           Weights come from the engine registry: an engine not built counts 0, and an
           engine below its accuracy target is registered "shown, not counted" (weight 0,
-          today: Delay, AUC 0.71 against 0.80).
+          today: Delay, AUC 0.70 against 0.80).
   floors  1 serious-rule breach (a hard finding, risk >= 0.6) lifts the score to the
           High cut; 2 or more to the Critical cut. The lift is its own part ("floor"), so
           the parts still add up exactly to the score.
-  bands   cut-offs tuned on the real score distribution (all 2,09,993 works, 30 Sept 2026;
-          data/dry_run.py -> results/risk_score_bands.json). The blueprint's 40/70/85 cannot
-          be used as written: with Delay at weight 0 and Outlier not built, the highest real
-          score is 37 of 100. Scores come in steps, so the cut-offs sit where evidence changes:
-            CRITICAL >= 0.33  a guideline issue plus a split under the Rs 5 lakh limit or a
-                              repeat after completion, or three engines (128 works)
-            HIGH     >= 0.22  two engines each with a meaningful signal (1,396)
-            MEDIUM   >= 0.15  one strong signal, e.g. waiting for sanction past the limit
-                              (35,085)
+  bands   cut-offs tuned on the real score distribution (all 2,09,993 works, re-tuned 1 Oct
+          2026 for T051; data/dry_run.py -> results/risk_score_bands.json). The blueprint's
+          40/70/85 cannot be used as written: with Delay at weight 0 and Outlier not built, the
+          highest real score is 36 of 100. Since T051 the engines' signals grow with the
+          evidence (a 76-day wait no longer scores like a 718-day one), so scores spread out
+          (1,802 distinct values, was 55 in the whole queue) and the cut-offs sit where the
+          evidence changes:
+            CRITICAL >= 0.30  a guideline issue plus a strong repeat or split, or three
+                              engines (54 works)
+            HIGH     >= 0.22  two engines each with a meaningful signal; nothing scores this
+                              high on one engine (448)
+            MEDIUM   >= 0.15  one strong signal, e.g. waiting for sanction twice the limit
+                              (14,140)
             LOW      otherwise
-          Review queue = CRITICAL + HIGH: 1,524 works (0.73%); 24 of 30 random queue works
-          read by eye are worth checking (results/risk_score_eye.json). The blueprint's target
-          of 5-10% High + Critical has no cut-off in the data: the next step down is 17%, one
-          guideline delay on its own. At 0.20 a weak second signal (a routine bulk order, a
-          cheap work) made High, so the cut is 0.22.
+          Review queue = CRITICAL + HIGH: 502 works (0.24%). 30 random queue works read by
+          eye: all 30 have a reason that survives reading, 27 a reason other than a delay
+          (results/risk_score_eye.json; T050's queue of 1,524 read 24/30 on the first test).
+          The blueprint's 5-10% High + Critical has no cut-off in the data.
   limited a LOW score where a counted engine could not assess the work is not a clean chit.
   reasons the top three contributions, each with the engine's own sentence in English and a
           Hindi sentence (the rule's own Hindi message for compliance, else reasons.py).
@@ -40,7 +43,7 @@ from drishti.agents.contract import AgentResult, Status
 from drishti.fusion.reasons import hindi
 from drishti.validation.checks import Issue
 
-CRITICAL, HIGH, MEDIUM = 0.33, 0.22, 0.15
+CRITICAL, HIGH, MEDIUM = 0.30, 0.22, 0.15
 HARD_RISK = 0.60
 MAX_REASONS = 3
 

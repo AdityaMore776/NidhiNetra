@@ -44,7 +44,7 @@ from drishti.agents.statistical.text import stated_length
 from drishti.agents.statistical.unit_rate import road_check
 
 AGENT = "statistical"
-VERSION = "statistical-2.0.0"
+VERSION = "statistical-2.1.0"
 QUESTION = "Is the project cost unusual for similar works?"
 
 LEVEL_CONFIDENCE = {"type_district": 0.85, "type_state": 0.7, "type": 0.55}
@@ -104,9 +104,16 @@ def _length_m(work: dict) -> float:
     return stated_length(work.get("description"), allow_km=True)
 
 
-def _expected(work: dict) -> dict | None:
-    """Version B's learned range for this work (data/build_cost_model.py), if loaded."""
-    exp = work.get("cost_expected") or (work.get("signals") or {}).get("cost_model")
+def _expected(work: dict, stats: StatsStore) -> dict | None:
+    """Version B's range for what works described like this cost.
+
+    T051: computed for ANY work from the word-price model (price_model.py) when it is
+    loaded. A range handed in with the work (`cost_expected`, the planted test) wins, so the
+    trial can give out-of-fold ranges; the per-work LightGBM answers stored by the T020
+    job are no longer read, because a new work never had one."""
+    exp = work.get("cost_expected")
+    if not exp and stats.price_model is not None:
+        exp = stats.price_model.predict(work)
     if not exp or any(exp.get(k) is None for k in ("q10", "q50", "q90")):
         return None
     return exp
@@ -229,7 +236,10 @@ def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
     else:
         broad_ok = broad is None or amount > broad.range_inr()[1]
         ratio_med = amount / local.median_inr()
-        exp = _expected(work)
+        exp = _expected(work, stats)
+        if exp is None:
+            limitations.append("The description-based price check is not loaded, so the cost "
+                               "was compared with similar works only.")
         model_top = None
         if exp is not None:
             lo_b, mid_b, hi_b = (10 ** exp["q10"], 10 ** exp["q50"], 10 ** exp["q90"])

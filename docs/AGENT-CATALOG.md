@@ -13,14 +13,14 @@ them: what each checks, how, what we measured, and where it stands.
 | # | Agent | Stage | State | Trial verdict on real data |
 |---|---|---|---|---|
 | A1 | Eligibility | Before sanction | ✅ **in the engine** as Guideline Compliance rule R07 (v2 reader) | **Works** — 56% precision on a fresh sample |
-| A2 | Duplicate & Split | Before sanction | ✅ **in the engine** (T030, matching by meaning) | random pairs 15/40 real repeats, same-site splits 10/15, Nanded split found |
+| A2 | Duplicate & Split | Before sanction | ✅ **in the engine**, compares any work live (T051) | fresh pairs 20/40 real repeats, same-site splits 9/15 |
 | A3 | Cost | Before sanction | ✅ **live** (v2 ready, T020) | v2: top 30 flags 10/30 real price questions (v1 0/30); 55% of 5× mark-ups caught at 1.3% false alarms |
 | B1 | Site Progress (+ plaque) | During construction | 📝 planned | Not tested — needs an AI vision key |
 | B2 | Photo Forensics | During construction | 🧪 trial | **Works** — 99.9% of edited copies recognised |
 | B3 | Geo-Location | During construction | 🧪 trial | **Works** — stamps read on 170 works; 3 real timing findings |
 | B4 | Document | During construction | 🧪 trial | **Works on typed certificates, free**; Hindi/handwritten needs AI |
 | B5 | Satellite (big works only) | During construction | ⛔ no-go for now | Pilot has no large works with coordinates |
-| C1 | Delay | Money & time | ✅ **in the engine, shown, not counted** (T040) | **Weak** as a prediction (AUC 0.71 vs 0.68 office record; target 0.80) |
+| C1 | Delay | Money & time | ✅ **in the engine, shown, not counted** (T051 ladder) | **Weak** as a prediction (AUC 0.705; unseen districts 0.685; target 0.80) |
 | C2 | Fund Flow | Money & time | 🧪 trial | **Facts work**; forecasts can't be tested on a single snapshot |
 | C3 | Contractor Network | Money & time | 🧪 trial | **Works where certificates exist** (vendor code = exact identity) |
 | D1 | Citizen Verification | After completion | 📝 planned | Can't be tested — 21,789 of 21,793 eSAKSHI ratings are zero |
@@ -36,15 +36,38 @@ them: what each checks, how, what we measured, and where it stands.
 
 | Engine | Folder | Weight in the score | How it was checked on real works |
 |---|---|---|---|
-| Guideline Compliance | `agents/compliance/` | 0.30 | all 2,09,993 works: R01 21,323 · R02 61,920 · R06 1,114 · R07 458 · R11 7,576; no HIGH-severity rule fires |
-| Cost Anomaly | `agents/statistical/` | 0.20 | planted mark-ups + a frozen fresh sample read by eye (FINDINGS A3, "Cost engine v2") |
-| Duplicate & Split Work | `agents/dup_split/` | 0.20 | fresh random samples read by eye after each rule change (FINDINGS A2, "matching by meaning") |
-| Delay Prediction | `agents/delay/` | **0** (shown, not counted) | strict time-based backtest AUC 0.71, held-out districts 0.59; target 0.80 |
+| Guideline Compliance | `agents/compliance/` | 0.30 | all 2,09,993 works: R01 21,323 · R02 61,920 · R06 1,114 · R07 458 · R11 7,576; no HIGH-severity rule fires. T051: timing rules graded (447 distinct signals, was 3), Hindi-script R07 |
+| Cost Anomaly | `agents/statistical/` | 0.20 | planted mark-ups + frozen fresh samples read by eye. T051: the word-price model judges any description: 5× mark-ups caught 42-45% (was 55%), false alarms 1.2%, top-30 flags 11/30 real price questions (was 10/30) |
+| Duplicate & Split Work | `agents/dup_split/` | 0.20 | T051: rules run live for any work. Fresh frozen samples read by eye: pairs 20/40 real repeats (T030: 15/40), same-site splits 9/15 (T030: 10/15) |
+| Delay Prediction | `agents/delay/` | **0** (shown, not counted) | T051 late-rate ladder: strict backtest AUC 0.705 (LightGBM 0.710), **unseen districts 0.685 (LightGBM 0.588)**; target 0.80 |
 | Odd Overall (outlier) | — | 0.10 | not built yet |
 
-Heavy steps run offline in `data/` (`build_cost_model.py`, `build_dup_split.py`, `build_delay_model.py`) and
-are stored per work in `work_signals`; the engines only read them. The risk score that combines them is in
-[ARCHITECTURE.md §4](ARCHITECTURE.md#4-risk-score-fusion-v2-t050).
+**One brain per engine (T051, 1 Oct 2026).** Each engine computes its answer for ANY recommendation from
+stored tables, coefficients or reference files (`cohort_stats`, `delay_rates`, `engine_models`,
+`reference/generic_words.txt`). No engine reads an answer stored per work, so a work recommended after the
+data was built meets exactly the same rules. Learning jobs: `data/build_stats.py`, `build_price_model.py`,
+`build_delay_rates.py`, `build_generic_words.py`. The risk score that combines them is in
+[ARCHITECTURE.md §4](ARCHITECTURE.md#4-risk-score-fusion-v2-t050); its cut-offs were re-tuned for T051
+(CRITICAL 0.30, HIGH 0.22: queue 502, 30/30 read by eye worth checking, 27/30 beyond a delay).
+
+## Twelve checkers merged into eight (T051, owner's request 1 Oct 2026)
+
+| # | Engine | Merges | Inputs | State |
+|---|---|---|---|---|
+| 1 | Guideline Compliance | A1 Eligibility + rules R01-R11 | the export | ✅ live, counted |
+| 2 | Cost Anomaly | A3 | the export | ✅ live, counted |
+| 3 | Duplicate & Split | A2 | the export | ✅ live, counted |
+| 4 | Delay & Fund Flow | C1 Delay + C2 Fund Flow | the export, Lok Sabha term dates | Delay built (shown); Fund Flow being merged (T410) |
+| 5 | Paperwork | B4 Document + C3 Contractor Network | certificates read by local OCR | being built (T110) |
+| 6 | Photo Evidence | B2 Photo Forensics + B3 Geo-Location + D1 Citizen photos | photos, GPS stamps | being built (T310) |
+| 7 | Site Progress | B1 Site Progress + plaque + B5 Satellite | an AI vision key; satellite only for big works | frame only, off until the owner adds a key (T510) |
+| 8 | Odd Overall | the blueprint's outlier slot | the export | being built (#63) |
+
+Why these merges: Delay and Fund Flow both ask "is time or money stuck?" from the same dates. Document and
+Contractor read the same certificates (the vendor code comes from the certificate). Photo Forensics,
+Geo-Location and citizen photos all judge the same photos (new? from this place? from this time?). Site
+Progress and Satellite both ask "was it physically built?" and both need inputs we don't have yet.
+Plan: [`plans/T051-engines-any-recommendation.md`](plans/T051-engines-any-recommendation.md).
 
 ---
 

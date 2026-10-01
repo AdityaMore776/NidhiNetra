@@ -1,0 +1,19 @@
+{
+  "version": "price-linear-1",
+  "works": 203330,
+  "features": 2356,
+  "words": 2236,
+  "folds": "GroupKFold(5) by constituency",
+  "median_abs_error_log10": 0.261,
+  "median_abs_error_factor": 1.824,
+  "share_inside_q10_q90": 0.8002,
+  "share_above_q90": 0.0999,
+  "lightgbm_for_comparison": {
+    "median_abs_error_log10": 0.2346,
+    "median_abs_error_factor": 1.716,
+    "share_inside_q10_q90_after_calibration": 0.8016,
+    "share_above_q90": 0.0994
+  },
+  "model_kb": 54,
+  "seconds": 34
+}

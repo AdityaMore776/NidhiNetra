@@ -58,9 +58,14 @@ work record ─► 2 DATA VALIDATION ─► 3 AGENTS (each returns an AgentResul
 | `agents/contract.py` | `AgentResult` / `Finding` / `Status`; the banned-word guard; `not_built()` placeholder |
 | `agents/registry.py` | finds engines by folder (`agents/<id>/engine.py`); the five blueprint slots and their weights |
 | `agents/compliance/` | **Guideline Compliance**: rules R01–R11 from `reference/rules.json` (English + Hindi), eligibility v2 reader |
-| `agents/statistical/` | the **Cost** engine: `scope.py` (what a description covers: goods/works, bundles, counts), `cohort.py` (peer statistics store), `text.py` (length reading), `unit_rate.py` (road ₹/m), `agent.py` (like-for-like peers + the stored price model must agree) |
-| `agents/dup_split/` | **Duplicate & Split Work**: reads the pairs and groups found offline by `data/build_dup_split.py` |
-| `agents/delay/` | **Delay Prediction**: reads scores from `data/build_delay_model.py`; shown, not counted |
+| `agents/statistical/` | the **Cost** engine: `scope.py` (what a description covers: goods/works, bundles, counts), `cohort.py` (peer statistics store), `text.py` (length reading), `unit_rate.py` (road ₹/m), `price_model.py` (word-price model, applied to any description, T051), `agent.py` (like-for-like peers + the price model must agree) |
+| `agents/dup_split/` | **Duplicate & Split Work**: `match.py` holds the rules and compares ANY work with its district live (stdlib only; the batch builds one index of every work, the API one per district, T051) |
+| `agents/delay/` | **Delay Prediction**: `rates.py` late-rate ladder office → district × type → state × type → type, from the `delay_rates` table, so any work is scored (T051); shown, not counted |
+
+**One brain per engine (T051).** An engine's reasoning is a function of the work plus stored tables or
+coefficients (`cohort_stats`, `delay_rates`, `engine_models`, `reference/*`). No engine reads an answer stored
+per work by an offline job: a recommendation the system has never seen goes through exactly the same code
+as a corpus work, and "compared, nothing found" is only said after a comparison ran.
 | `validation/` | `checks.py` (issues: BLOCK / WARN / INFO), `timeline.py` (impossible dates judged by quarter and office, Wilson lower bound), `prohibited.py` (object-of-work matcher) |
 | `fusion/fuse.py`, `fusion/reasons.py` | the risk score, bands and top-3 reasons in English and Hindi (below) |
 | `pipeline/orchestrator.py` | `assess_work()`: validate → run agents → fuse → priority; an agent that raises becomes an `ERROR` result, never a finding |
@@ -172,7 +177,9 @@ your area returns 404.
 | `unit_rate_models` | road price-per-metre curve and published rate anchors |
 | `timeline_quarters`, `timeline_agencies` | impossible-date base rates by quarter and office |
 | `assessments` | per work: score, band, limited, priority, parts, validation, agents, versions, summary `alerts[]`/`headline`, and `compact` |
-| `work_signals` | per work and engine: facts computed offline (the price model's expected range, the delay score, duplicate pairs and groups), read with the work |
+| `work_signals` | per work and engine: facts computed offline. Since T051 no core engine uses it (kept for evidence-based checkers) |
+| `delay_rates` | past late counts per step of the Delay ladder: all / type / state×type / district×type / office (migration 008, `data/build_delay_rates.py`) |
+| `engine_models` | small learned models an engine applies to any work, as JSON: the cost engine's word-price model (migration 008, `data/build_price_model.py`) |
 | `dashboard_cache` | saved dashboard answers, emptied whenever works are re-assessed |
 | `profiles` | user → role, district, display name |
 
@@ -214,9 +221,9 @@ database. LOW and MEDIUM works are stored **compact** (summary only) and rebuilt
 - The four core engines (Compliance, Cost, Duplicate & Split, Delay) and the risk score run in the engine; the
   Outlier slot and the side-track checkers (photos, documents, …) are proven in the trial scripts and being ported
   (order in [`team/TASKS.md`](team/TASKS.md)).
-- Heavy work (the price model, the delay model, matching by meaning) runs offline in `data/` and is stored per
-  work in `work_signals` (migration 006); the hosted engine only reads it, so after a data rebuild the hosted
-  database must be reloaded (`load_db.py` → `batch_assess.py`).
+- Learning runs offline in `data/` (`build_stats.py`, `build_price_model.py`, `build_delay_rates.py`,
+  `build_generic_words.py`) and is stored as tables, coefficients or reference files, never as per-work
+  answers (T051); after a data rebuild the hosted database must be reloaded (`load_db.py` → `batch_assess.py`).
 - The data is a snapshot (26 May 2026); "today" for real works is that date (`DRISHTI_SNAPSHOT_DATE`).
 - First load after a deploy takes a few seconds (cold start + aggregation over 2.1 lakh rows).
 - Rebuilding the corpus from scratch needs the raw eSAKSHI export from the team's research build

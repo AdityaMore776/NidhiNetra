@@ -15,7 +15,8 @@ from drishti.agents.statistical.scope import (
 @pytest.mark.parametrize("text", ["Letter as per attached.", "List as per attached.", "NA", "n/a",
                                   "(no description)", "As per attechment", "", None,
                                   "Please see the attached list.", "???? ???? ?????",
-                                  "MPLADS - 218"])
+                                  "MPLADS - 218", "Please see the attached documents.",
+                                  "see attached file"])
 def test_undescribed(text):
     assert undescribed(text)
 

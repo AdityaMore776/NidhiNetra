@@ -16,8 +16,10 @@ import re
 from pathlib import Path
 
 RESULTS = Path(__file__).resolve().parent / "results"
-PHONE = re.compile(r"(?<![\d/V.])(?:\+91[\s-]?)?[6-9]\d{9}(?![\d.])")
-ACCOUNT = re.compile(r"(?<![\d/V.])\d{11,18}(?![\d.])")
+# A number may end a sentence ("Contact:8896852222. Executing agency"): a full stop after it
+# is not a decimal point unless a digit follows (missed until 1 Oct 2026).
+PHONE = re.compile(r"(?<![\d/V.])(?:\+91[\s-]?)?[6-9]\d{9}(?!\d|\.\d)")
+ACCOUNT = re.compile(r"(?<![\d/V.])\d{11,18}(?!\d|\.\d)")
 
 
 def main() -> None:

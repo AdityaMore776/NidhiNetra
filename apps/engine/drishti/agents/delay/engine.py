@@ -7,12 +7,13 @@ from drishti.agents.registry import EngineSpec
 
 
 def _assess(work: dict, ctx):
-    return agent.assess(work, ctx.as_of)
+    return agent.assess(work, ctx.as_of, ctx.stats.delay)
 
 
-# Shown on every open work, but not counted in the risk score: its measured AUC (0.71 on a
-# strict time-based backtest, 0.59 in unseen districts) misses the blueprint's 0.80 target,
-# and the project ships no weight without a met target (AGENTS.md rule 4).
+# Shown on every open work, but not counted in the risk score: its measured AUC (0.70 on a
+# strict time-based backtest, 0.68 in unseen districts; results/delay_rates.json) misses the
+# blueprint's 0.80 target, and the project ships no weight without a met target (AGENTS.md
+# rule 4).
 ENGINE = EngineSpec(id=agent.AGENT, name="Delay Prediction", question=agent.QUESTION,
                     assess=_assess, weight=0.0,
-                    weight_note="Shown, not counted: accuracy 0.71 against a 0.80 target.")
+                    weight_note="Shown, not counted: accuracy 0.70 against a 0.80 target.")
