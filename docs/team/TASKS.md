@@ -159,7 +159,21 @@ the top 5% of each engine and overall. Never mixes planted rows into the live da
 
 ---
 
+### T051 · Every engine works on any recommendation (generalisation review)  ·  L  ·  engine + data  ·  Depends on: T050
+**Owner's request, 1 Oct 2026.** Plan: `docs/plans/T051-engines-any-recommendation.md`. One brain per engine: no
+engine reads a per-work answer stored by an offline job; signals grow with the evidence; band cut-offs re-tuned.
+**Done when:** [x] made-up unseen recommendations get the same rules as corpus works · [x] every engine measured
+before/after (FINDINGS "T051") · [x] fresh by-eye samples with rules frozen · [x] queue re-read by eye
+
 ## M9 — Side track: real-evidence checkers (after the core; they feed its engines)
+
+**Merged 12 → 8 (T051).** The owner asked for about eight checkers. The merged tasks below replace the old ones
+(which stay in this file as the detailed specs): **T110 Paperwork** = T101 + T102 + T103 + T104 (Document +
+Contractor read the same certificates) · **T310 Photo Evidence** = T301 + T302 + T303 + T304 + T505 (one photo:
+new? from this place? from this time?) · **T410 Delay & Fund Flow** = T402 folded into the Delay engine ·
+**T510 Site Progress** = T503 + T604 (frame + tests now; live only with the owner's AI key, satellite only after
+its go/no-go). Every merged checker follows T051's rule: its reasoning runs in the engine on any work's evidence;
+offline jobs only extract facts with the engine's own reader.
 
 These come from the earlier 12-checker design and our real-evidence trial. Build them only when the core task you
 could take is blocked or done. Where they fit the core: Document feeds R03/R04/R05 with real payment dates;

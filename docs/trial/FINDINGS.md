@@ -480,6 +480,44 @@ from the cost engine.
   sharing a typo ("tenker", "publiic") read as "one site" → a same-place group of 6+ is a series; Critical at 30
   was reached by any delay plus any repeat, down to ₹20,000 lights → Critical at 33.
 
+## T051 (1 Oct 2026): do the engines work on recommendations they have never seen?
+
+**The owner's question:** are the engines good only because they were built on these 2,09,993 works? A
+system check, not a tuning pass: eight made-up recommendations the engines had never seen, plus every real
+work, before and after. Plan and design rule: [`plans/T051-engines-any-recommendation.md`](../plans/T051-engines-any-recommendation.md).
+
+**What was wrong (before):**
+- **Duplicate & Split** read answers stored once, offline, for the 2026 export. An exact copy of a completed
+  work under a new id was told "compared with every work in its district: no repeat found". Nothing had been compared.
+- **Delay** could not score any new work (its scores were stored per work), and its model fell to 0.59 in
+  districts it had not seen (0.5 = chance).
+- **Cost** version B (the "described like this" range) existed only for works in its training file, so a new
+  work met a looser rule than the measured one.
+- **Guideline Compliance** gave 3 risk values to 2,09,993 works (80 days waiting = 718 days), repeated
+  "98% of completed street light works finished within 881 days" word for word across the queue, never read
+  Hindi script, and had the 2024 election pause written into code.
+- **The queue:** 802 of 1,524 works shared one score (0.30).
+
+**What changed, and what it measured (after):**
+
+| Engine | Change | Measured (script → result) |
+|---|---|---|
+| Duplicate & Split | rules moved into the engine (`match.py`, stdlib only); any work is compared with its district live; place words = not in a generic-word list (5% of districts), minus each district's own boilerplate; opposite sides of a road = two works; a typo is not a place; a same-site split needs near-identical text | fresh pairs read by eye with rules frozen: **20/40 real repeats** (T030: 15/40); same-site groups **9/15** (T030: 10/15). Two development samples (1/40, then 19/40) led to the rules and are not counted. `dup_split_v2_trial.py` → `dup_split_v2.json`, labels `dup_split_v2_labels.py` |
+| Delay | LightGBM per-work scores → a late-rate ladder (office → district × type → state × type → type) stored as counts | strict backtest **0.705** (LightGBM 0.710); **unseen districts 0.685 (LightGBM 0.588)**. Still below 0.80: shown, not counted. `build_delay_rates.py` → `delay_rates.json` |
+| Cost | LightGBM ranges → a word-price model (words used in 20+ constituencies) the engine applies to any description | typical miss ×1.82 (LightGBM ×1.72), 80% of works inside the range (same). Planted test: 5× mark-ups caught **42-45%** (was 55%), 10× **80%** (82%), false alarms **1.2%** (1.3%). Top-30 flags read by eye **11/30** real price questions (was 10/30), random 3/30 (5/30). `build_price_model.py`, `cost_trial_v2.py --linear` → `cost_trial_v2_linear.json`, `cost_linear_eye.json` |
+| Guideline Compliance | signals grow with how far past the limit (R01 0.30 → 0.60 at 4× the clock; R02 0.15 → 0.60); sentences give this work's overrun; Hindi-script R07; election pauses in `rules.json` | **447 distinct signals** (was 3) |
+| Risk score | cut-offs re-tuned: CRITICAL 0.30, HIGH 0.22 | queue **502** (0.24%); largest share of one score **9%** (was 53%); 30 random queue works read by eye: **30/30** have a reason that survives reading, **27/30** a reason other than a delay. Of T050's 24 "worth checking" sample works, 7 stay queued; all 6 "explained" ones leave. `dry_run.py` → `risk_score_bands.json`, `risk_score_eye.json` |
+
+**After, on the made-up works:** the exact copy is found ("descriptions 100% alike, the same place named");
+80 and 718 days waiting score 0.31 and 0.60; the Hindi temple is caught like the English one; a new office
+is scored from its district's record and says so; a new work with no match says how many works it was
+compared with.
+
+**Still true / open:** a duplicate found by the Duplicate engine alone stays LOW or MEDIUM, because no one
+engine can reach HIGH in the blueprint's weights (owner's call whether an exact repeat should). The
+sanitiser missed phone numbers before a full stop; fixed, and `identical_groups.json` on main carried 12
+such numbers until this branch.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**
