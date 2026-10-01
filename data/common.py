@@ -42,7 +42,7 @@ SIGNALS: dict[str, tuple] = {
     # comparison (match.py): each computes for ANY work, so new works meet the same rules.
 }
 # Small learned models an engine applies to any work: name -> file in data/build
-MODELS = {"price_model": "price_model.json"}
+MODELS = {"price_model": "price_model.json", "outlier_stats": "outlier_model.json"}
 
 
 def model_rows() -> list[dict]:
