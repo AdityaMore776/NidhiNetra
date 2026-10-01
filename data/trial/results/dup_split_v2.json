@@ -1,0 +1,70 @@
+{
+  "seconds": {
+    "index": 49,
+    "solve_all_districts": 21
+  },
+  "works_compared": 207881,
+  "pairs": {
+    "v2": 622,
+    "v2_by_kind": {
+      "while_open": 531,
+      "after_completed": 91
+    },
+    "v1": 861,
+    "in_both": 355
+  },
+  "groups": {
+    "v2": 2157,
+    "v2_by_kind": {
+      "bulk_order": 1323,
+      "same_site_split": 834
+    },
+    "v2_works": 19985,
+    "v1_works": 21878,
+    "works_in_both": 18045
+  },
+  "t030_labelled_pairs_still_flagged": {
+    "same": {
+      "kept": 33,
+      "of": 51
+    },
+    "different": {
+      "kept": 21,
+      "of": 79
+    }
+  },
+  "t030_labelled_groups_still_grouped": {
+    "explained": {
+      "sum": 3,
+      "count": 5
+    },
+    "series": {
+      "sum": 13,
+      "count": 15
+    },
+    "split": {
+      "sum": 7,
+      "count": 10
+    }
+  },
+  "v2_labels_still_flagged": {
+    "TEST": {
+      "same": 17,
+      "different": 21
+    },
+    "DEV2": {
+      "same": 18,
+      "different": 13
+    },
+    "DEV1": {
+      "same": 0,
+      "different": 1
+    }
+  },
+  "fresh_samples_written": {
+    "pairs": 40,
+    "groups": 15,
+    "pairs_only_in_v2": 498,
+    "site_groups_only_in_v2": 794
+  }
+}

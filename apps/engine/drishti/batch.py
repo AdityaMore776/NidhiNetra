@@ -9,11 +9,13 @@ from __future__ import annotations
 
 import json
 from collections.abc import Iterable
+from dataclasses import replace
 
 import psycopg
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 
+from drishti.agents.dup_split.match import DupIndex
 from drishti.pipeline.orchestrator import Assessment, Context, assess_work
 
 WORK_COLUMNS = ("work_id, source, house, term, state_lgd, state_name, district_lgd, "
@@ -77,12 +79,30 @@ def row_for(a: Assessment) -> dict:
     return row
 
 
+def district_index(con: psycopg.Connection, district_lgd) -> DupIndex:
+    """The Duplicate & Split comparison index for one district (T051): what the API needs to
+    compare one work, saved or new, with every other work of its district."""
+    rows = con.execute(f"SELECT {WORK_COLUMNS} FROM works WHERE district_lgd = %s",
+                       (district_lgd,)).fetchall() if district_lgd else []
+    return DupIndex.build(_normalise(dict(r)) for r in rows)
+
+
+def with_index(ctx: Context, con: psycopg.Connection, work: dict) -> Context:
+    """The context with a comparison index covering this work's district."""
+    idx = (ctx.data or {}).get("dup_split")
+    if idx is not None and idx.covers(work.get("district_lgd")):
+        return ctx
+    return replace(ctx, data={**(ctx.data or {}),
+                              "dup_split": district_index(con, work.get("district_lgd"))})
+
+
 def assess_one(con: psycopg.Connection, work_id: str, ctx: Context) -> Assessment | None:
     work = con.execute(f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works "
                        f"{SIGNALS_JOIN} WHERE work_id = %s", (work_id,)).fetchone()
     if work is None:
         return None
-    a = assess_work(_normalise(dict(work)), ctx)
+    work = _normalise(dict(work))
+    a = assess_work(work, with_index(ctx, con, work))
     con.execute(UPSERT, row_for(a))
     return a
 
@@ -97,10 +117,15 @@ def assess_all(url: str, ctx: Context, work_ids: Iterable[str] | None = None,
         if work_ids is not None:
             sql += " WHERE work_id = ANY(%s)"
             params = (list(work_ids),)
-        works = con.execute(sql, params).fetchall()
+        works = [_normalise(dict(w)) for w in con.execute(sql, params).fetchall()]
+        if "dup_split" not in (ctx.data or {}):
+            # every work of the database, so each is compared with its whole district
+            everything = works if work_ids is None else [
+                _normalise(dict(w)) for w in con.execute(f"SELECT {WORK_COLUMNS} FROM works")]
+            ctx = replace(ctx, data={**(ctx.data or {}), "dup_split": DupIndex.build(everything)})
         batch: list[dict] = []
         for w in works:
-            a = assess_work(_normalise(dict(w)), ctx)
+            a = assess_work(w, ctx)
             bands[a.fused.band] = bands.get(a.fused.band, 0) + 1
             batch.append(row_for(a))
             if len(batch) >= chunk:

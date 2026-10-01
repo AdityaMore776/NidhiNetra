@@ -40,7 +40,7 @@ SIGNALS = {
     "cost_model": ("cost_expected.parquet", ("q10", "q50", "q90"), "model_version"),
     "delay": ("delay_scores.parquet", ("p_late", "rank_pct", "base_rate", "reasons"),
               "model_version"),
-    "dup_split": ("dup_split.parquet", ("pairs", "group"), "model_version"),
+    # dup_split is no longer stored per work (T051): the engine compares live (match.py)
 }
 JSON_COLUMNS = {"pairs", "group"}          # stored as JSON text in the parquet
 
@@ -77,7 +77,13 @@ def works_records(works: pd.DataFrame):
         yield r
 
 
-def load_context() -> Context:
+def load_context(works: pd.DataFrame | None = None) -> Context:
+    """Statistics + the Duplicate & Split comparison index over every work (T051)."""
+    from drishti.agents.dup_split.match import DupIndex
+
+    if works is None:
+        works = pd.read_parquet(BUILD / "works.parquet")
+    index = DupIndex.build(clean(r) for r in works.to_dict("records"))
     stats = StatsStore.from_rows(
         pd.read_parquet(BUILD / "cohort_stats.parquet").to_dict("records"),
         pd.read_parquet(BUILD / "duration_stats.parquet").to_dict("records"),
@@ -85,4 +91,4 @@ def load_context() -> Context:
         pd.read_parquet(BUILD / "timeline_quarters.parquet").to_dict("records"),
         pd.read_parquet(BUILD / "timeline_agencies.parquet").to_dict("records"),
         [e for e, (name, _c, _v) in SIGNALS.items() if (BUILD / name).exists()])
-    return Context(stats=stats, as_of=config.snapshot_date())
+    return Context(stats=stats, as_of=config.snapshot_date(), data={"dup_split": index})

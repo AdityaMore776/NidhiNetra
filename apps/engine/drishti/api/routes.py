@@ -22,6 +22,7 @@ from drishti.batch import (
     WORK_COLUMNS,
     _normalise,
     assess_one,
+    with_index,
 )
 from drishti.db import connect
 from drishti.pipeline.orchestrator import Context, assess_work
@@ -242,11 +243,14 @@ def work(work_id: str, user: Principal = Depends(current_user)) -> dict:
             assess_one(con, work_id, Context(stats=_stats(), as_of=config.snapshot_date()))
             a = con.execute("SELECT * FROM assessments WHERE work_id = %s",
                             (work_id,)).fetchone()
+        ctx = None
+        if a["compact"]:
+            w = _normalise(dict(row))
+            ctx = with_index(Context(stats=_stats(), as_of=config.snapshot_date()), con, w)
     assessment = _jsonable(dict(a))
     assessment["assessed_at"] = str(a["assessed_at"])
     if a["compact"]:
-        full = assess_work(_normalise(dict(row)),
-                           Context(stats=_stats(), as_of=config.snapshot_date())).to_row()
+        full = assess_work(w, ctx).to_row()
         for k in ("parts", "validation", "agents"):
             assessment[k] = full[k]
     assessment["agents"] = _described(assessment.get("agents") or [])
