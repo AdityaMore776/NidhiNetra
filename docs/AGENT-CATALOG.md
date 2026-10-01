@@ -16,14 +16,14 @@ them: what each checks, how, what we measured, and where it stands.
 | A2 | Duplicate & Split | Before sanction | ✅ **in the engine**, compares any work live (T051) | fresh pairs 20/40 real repeats, same-site splits 9/15 |
 | A3 | Cost | Before sanction | ✅ **live** (v2 ready, T020) | v2: top 30 flags 10/30 real price questions (v1 0/30); 55% of 5× mark-ups caught at 1.3% false alarms |
 | B1 | Site Progress (+ plaque) | During construction | 📝 planned | Not tested — needs an AI vision key |
-| B2 | Photo Forensics | During construction | 🧪 trial | **Works** — 99.9% of edited copies recognised |
-| B3 | Geo-Location | During construction | 🧪 trial | **Works** — stamps read on 170 works; 3 real timing findings |
+| B2 | Photo Forensics | During construction | ✅ **in the engine as Photo Evidence** (T310), shown, not counted | exact copies + fingerprint; reproduces the 2 real reuse cases, 0 of 3 combined files flagged |
+| B3 | Geo-Location | During construction | ✅ **in the engine as Photo Evidence** (T310), shown, not counted | 190 stamps on 170 works; 187 inside, 2 at the border, 0 outside; the 3 photos older than the recommendation |
 | B4 | Document | During construction | ✅ **in the engine as Paperwork** (T110), shown, not counted | reproduces the trial: 431 certificates, 32 sanctioned late, 1 before recommendation; Hindi/handwritten needs AI |
 | B5 | Satellite (big works only) | During construction | ⛔ no-go for now | Pilot has no large works with coordinates |
 | C1 | Delay | Money & time | ✅ **in the engine, shown, not counted** (T051 ladder) | **Weak** as a prediction (AUC 0.705; unseen districts 0.685; target 0.80) |
 | C2 | Fund Flow | Money & time | 🧪 trial | **Facts work**; forecasts can't be tested on a single snapshot |
 | C3 | Contractor Network | Money & time | ✅ **in the engine as Paperwork** (T110): a fact, not a finding | Pratapgarh 261 works, 7 vendors, top 39%, top three 84% (reproduced) |
-| D1 | Citizen Verification | After completion | 📝 planned | Can't be tested — 21,789 of 21,793 eSAKSHI ratings are zero |
+| D1 | Citizen Verification | After completion | 📝 merged into Photo Evidence: a citizen's photo meets the same checks (demo only) | Can't be tested — 21,789 of 21,793 eSAKSHI ratings are zero |
 | — | Guideline Compliance | every work | ✅ **in the engine** (T011) | rules R01–R11 in English + Hindi; 5 of 11 not checkable from the export |
 | — | Data Validation | every work | ✅ live | impossible dates judged by quarter and office; shown, not counted in the v2 score |
 | — | Risk score | every work | ✅ v2 ready (T050) | blueprint weights, 4 bands, top-3 reasons EN + HI; queue 1,524 (0.73%), 24/30 random queue works worth checking |
@@ -59,7 +59,7 @@ data was built meets exactly the same rules. Learning jobs: `data/build_stats.py
 | 3 | Duplicate & Split | A2 | the export | ✅ live, counted |
 | 4 | Delay & Fund Flow | C1 Delay + C2 Fund Flow | the export, Lok Sabha term dates | Delay built (shown); Fund Flow being merged (T410) |
 | 5 | Paperwork | B4 Document + C3 Contractor Network | certificates read by local OCR | ✅ built (T110), shown, not counted: papers exist for the 837 pilot works only |
-| 6 | Photo Evidence | B2 Photo Forensics + B3 Geo-Location + D1 Citizen photos | photos, GPS stamps | being built (T310) |
+| 6 | Photo Evidence | B2 Photo Forensics + B3 Geo-Location + D1 Citizen photos | photos, GPS stamps | ✅ built (T310), shown, not counted: photos exist for the 837 pilot works only |
 | 7 | Site Progress | B1 Site Progress + plaque + B5 Satellite | an AI vision key; satellite only for big works | frame only, off until the owner adds a key (T510) |
 | 8 | Odd Overall | the blueprint's outlier slot | the export | being built (#63) |
 
