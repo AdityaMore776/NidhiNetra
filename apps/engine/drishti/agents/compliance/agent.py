@@ -113,14 +113,6 @@ def calendar_checked_until() -> date:
     return date.fromisoformat(_pauses()["checked_until"])
 
 
-def graded(value: float, start: float, full: float, lo: float, hi: float) -> float:
-    """lo at `start`, rising on a log scale to hi at `full`, flat after."""
-    if value <= start:
-        return lo
-    span = math.log(full / start)
-    return lo + (hi - lo) * min(1.0, math.log(value / start) / span)
-
-
 @cache
 def _curves() -> dict:
     data = json.loads(RULES_FILE.read_text(encoding="utf-8"))

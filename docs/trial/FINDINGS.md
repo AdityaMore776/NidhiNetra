@@ -682,6 +682,10 @@ so the wait is read off the snapshot: of the works recommended N days before it,
 - 364 of the 493 queue works were not yet sanctioned; 356 were led by R01, mostly R01 + a repeat/split signal
   (a refiling of an earlier recommendation, often after an unrecorded rejection).
 
+**Cross-check against real sanction dates:** 226 portal certificates (almost all Pratapgarh, UP) give a median
+sanction time of 71 days, 14.5% past 75. The snapshot method on Pratapgarh alone gives 12 in 100 works aged 60-90
+days still waiting, so the two methods agree; districts differ widely (nationally 63 in 100 at that age).
+
 **Changed:** R01's signal follows how few works that old still wait (0.05 when most do, 0.30 at 1 in 10,
 0.60 at 1 in 25; `rules.json` `wait_curves` + `rarity_signal`), and its sentence says how common the wait is. An
 ended term's leftover runs on the para 3.15 clock (75 days from the term's end), is LOW (0.15) and says the

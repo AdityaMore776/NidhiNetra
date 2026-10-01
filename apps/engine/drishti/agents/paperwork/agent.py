@@ -10,7 +10,8 @@ belongs when its sanction covers the payment (within 10%), when a payment equals
 its location is named in the description (the trial's rule; 284 of 286 files belong).
 
   P1 SANCTION_LATE           the certificate's sanction date is past the 75-day clock (para
-                             3.12, election pauses left out); 0.30 rising to 0.60 at 4x
+                             3.12, election pauses left out); scored like Guideline Compliance
+                             R01, by how few works wait that long (T054): 0.05 just past it
   P2 SANCTIONED_BEFORE_RECOMMENDATION  sanction dated 7+ days before the recommendation: one
                              of the dates is wrong (0.50; OCR can misread, so never "hard")
   P3 PAID_MORE_ON_PAPER       the certificates show more paid than the portal amount, by
@@ -34,7 +35,7 @@ import time
 from datetime import date
 
 from drishti import reference
-from drishti.agents.compliance.agent import graded, mcc_days
+from drishti.agents.compliance.agent import mcc_days, rarity, share_at
 from drishti.agents.contract import AgentResult, Finding, Status
 
 AGENT = "paperwork"
@@ -150,13 +151,16 @@ def assess(work: dict, vendors=None) -> AgentResult:
         elif days >= 0:
             waited = days - mcc_days(rec, s)
             if waited > limit:
+                share = share_at("r01", waited)
                 findings.append(Finding(
                     "SANCTION_LATE",
                     f"Sanctioned {waited:,} days after recommendation (certificate dated "
                     f"{s.isoformat()}; election pauses left out), {waited - limit:,} days past "
-                    f"the {limit}-day limit (para 3.12).",
-                    hard=False, risk=graded(waited, limit, 4 * limit, 0.30, 0.60),
-                    evidence={"sanction_date": str(s), "days": waited, "limit": limit}))
+                    f"the {limit}-day limit (para 3.12). About {max(1, round(share * 100))} in "
+                    "100 works wait this long for sanction.",
+                    hard=False, risk=rarity(share),
+                    evidence={"sanction_date": str(s), "days": waited, "limit": limit,
+                              "share_waiting_this_long": round(share, 3)}))
     # one certificate is issued per payment (an instalment), and a file can carry the same
     # certificate twice: count each (date, amount) once (read by eye, 1 Oct 2026: 12 of 12
     # "differences" were part payments or a repeated page)
