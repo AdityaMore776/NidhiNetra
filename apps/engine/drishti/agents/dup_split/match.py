@@ -408,17 +408,20 @@ class DupIndex:
             self._solve_district(r.district)
             return {"pairs": _top(self._pairs.get(r.work_id, [])),
                     "group": _public(self._groups.get(r.work_id), r.work_id),
-                    "compared": len(self.by_district.get(r.district, [])) - 1}
+                    "compared": len(self.by_district.get(r.district, [])) - 1,
+                    "place_named": bool(known.place)}
         recs = [x for x in self.by_district.get(r.district, []) if x.work_id != r.work_id]
         _localise(recs + [r])
         _count_copies(recs + [r])
         pairs = [p for x in recs if (p := _pair(r, x)) and p["kind"] != "staged"]
         block = [x for x in recs if x.work_type == r.work_type and x.mp == r.mp] + [r]
         group = next((g for g in groups_in_block(block) if r.work_id in g["members"]), None)
+        place_named = bool(r.place)
         _localise(recs)                              # leave the index as it was
         _count_copies(recs)
         return {"pairs": _top([_side(p, r.work_id) for p in pairs]),
-                "group": _public(group, r.work_id), "compared": len(recs)}
+                "group": _public(group, r.work_id), "compared": len(recs),
+                "place_named": place_named}
 
 
 def _localise(recs: list[Rec]) -> None:
