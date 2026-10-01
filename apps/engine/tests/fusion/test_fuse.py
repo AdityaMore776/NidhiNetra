@@ -2,7 +2,6 @@ import pytest
 
 from drishti.agents.contract import AgentResult, Finding, Status, not_built
 from drishti.fusion.fuse import CRITICAL, HIGH, MEDIUM, band_of, fuse, weights
-from drishti.validation.checks import Issue, Severity
 
 
 def _r(agent, risk, hard=False, status=Status.ASSESSED, code="X", evidence=None):
@@ -43,9 +42,8 @@ def test_only_assessed_results_count():
     assert f.score == 0.0
 
 
-def test_validation_issues_are_shown_not_counted():
-    f = fuse(_all(), [Issue("IMPOSSIBLE_TIMELINE", Severity.WARN, "m", risk=0.3)])
-    assert f.score == 0.0
+def test_no_engine_signal_scores_zero():
+    assert fuse(_all()).score == 0.0
 
 
 @pytest.mark.parametrize("score,band", [(0.0, "LOW"), (MEDIUM - 1e-9, "LOW"), (MEDIUM, "MEDIUM"),

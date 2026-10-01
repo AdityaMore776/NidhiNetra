@@ -17,22 +17,25 @@
           (1,802 distinct values, was 55 in the whole queue) and the cut-offs sit where the
           evidence changes:
             CRITICAL >= 0.30  a guideline issue plus a strong repeat or split, or three
-                              engines (54 works)
+                              engines (49 works)
             HIGH     >= 0.22  two engines each with a meaningful signal; nothing scores this
-                              high on one engine (448)
+                              high on one engine (393)
             MEDIUM   >= 0.15  one strong signal, e.g. waiting for sanction twice the limit
-                              (14,140)
+                              (14,001)
             LOW      otherwise
-          Review queue = CRITICAL + HIGH: 502 works (0.24%). 30 random queue works read by
-          eye: all 30 have a reason that survives reading, 27 a reason other than a delay
-          (results/risk_score_eye.json; T050's queue of 1,524 read 24/30 on the first test).
+          Review queue = CRITICAL + HIGH: 442 works (0.21%), after T053 removed the cost
+          notes that were almost never a real price question (several sites 0/48, far bigger
+          project 3/18). Of 30 random queue works read by eye for T051 (all 30 with a reason
+          that survives reading, 27 beyond a delay), 22 are still queued and 19 of those have
+          a reason beyond a delay; the 8 that left were big projects carried only by "far
+          bigger than usual" plus a sanction wait (results/risk_score_eye.json).
           The blueprint's 5-10% High + Critical has no cut-off in the data.
   limited a LOW score where a counted engine could not assess the work is not a clean chit.
   reasons the top three contributions, each with the engine's own sentence in English and a
           Hindi sentence (the rule's own Hindi message for compliance, else reasons.py).
 
-Data Validation issues are shown on the work page but no longer counted: Guideline
-Compliance reports the same facts (R06 impossible dates, R11 missing data).
+The separate Data Validation step was removed (T053): Guideline Compliance reports the same
+facts (R06 impossible dates, R11 missing data) with the better prohibited-work reader.
 """
 
 from __future__ import annotations
@@ -42,7 +45,6 @@ from dataclasses import asdict, dataclass, field
 from drishti.agents import registry
 from drishti.agents.contract import AgentResult, Status
 from drishti.fusion.reasons import hindi
-from drishti.validation.checks import Issue
 
 CRITICAL, HIGH, MEDIUM = 0.30, 0.22, 0.15
 HARD_RISK = 0.60
@@ -95,10 +97,10 @@ def _reason(r: AgentResult, contribution: float) -> dict:
             "text_en": text, "text_hi": hi or hindi(top.code if top else r.verdict)}
 
 
-def fuse(results: list[AgentResult], issues: list[Issue],
+def fuse(results: list[AgentResult], issues: list | tuple = (),
          reliability: dict[str, float] | None = None) -> Fused:
-    """`issues` and `reliability` are kept for the call signature: validation is shown,
-    not counted, and learned reliability arrives with the learning loop (T070)."""
+    """`issues` and `reliability` are kept for the call signature: the Data Validation step
+    was removed (T053), and learned reliability arrives with the learning loop (T070)."""
     w = weights()
     parts: list[Part] = []
     reasons: list[dict] = []

@@ -52,10 +52,11 @@ CORE: tuple[EngineSpec, ...] = (
                "Is the project cost unusual for similar works?", weight=0.20, order=2),
     EngineSpec("dup_split", "Duplicate & Split Work",
                "Is this work repeated, or one job cut into pieces?", weight=0.20, order=3),
-    EngineSpec("delay", "Delay & Fund Flow",          # Fund Flow merged in (T410)
-               "Is time or money stuck on this work?", weight=0.20, order=4),
+    EngineSpec("delay", "Fund Flow",          # was Delay Prediction; prediction removed (T053)
+               "Is money stuck waiting for sanction?", weight=0.20, order=4),
     EngineSpec("outlier", "Odd Overall",
-               "Is this record unusual taken as a whole?", weight=0.10, order=5),
+               "Do the amount, the days taken and the description look wrong together?",
+               weight=0.10, order=5),
 )
 
 # Ids used by assessments stored before the registry (the deck's four agents).

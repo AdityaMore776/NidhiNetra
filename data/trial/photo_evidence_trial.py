@@ -50,7 +50,7 @@ def main() -> None:
     photos = PhotoIndex.build(works)
     results = {x["work_id"]: assess(x, AS_OF, photos) for x in works}
 
-    inside = border = far = pin_ok = pin_bad = 0
+    inside = border = far = 0
     for x in works:
         o = geo.outlines().get(str(x.get("district_lgd") or "").zfill(3))
         for f in x["evidence"]["files"]:
@@ -61,10 +61,6 @@ def main() -> None:
                 inside += km == 0
                 border += 0 < km <= geo.BORDER_KM
                 far += km > geo.BORDER_KM
-                p = geo.pin_district().get(s.get("pin") or "")
-                if p:
-                    pin_ok += int(p) == int(x["district_lgd"])
-                    pin_bad += int(p) != int(x["district_lgd"])
     codes = Counter(f.code for r in results.values() for f in r.findings)
     flagged = lambda code: sorted(wid for wid, r in results.items()  # noqa: E731
                                   if code in {f.code for f in r.findings})
@@ -74,9 +70,8 @@ def main() -> None:
            "works_with_stamps": sum(1 for x in works
                                     if any(f.get("stamps") for f in x["evidence"]["files"])),
            "place": {"inside_own_district": inside, "within_5km_of_border": border,
-                     "further_outside": far, "pin_agrees": pin_ok, "pin_differs": pin_bad},
+                     "further_outside": far},
            "photo_before_recommendation": flagged("PHOTO_BEFORE_RECOMMENDATION"),
-           "same_spot_same_day": flagged("SAME_SPOT_SAME_DAY"),
            "reuse_flagged": sorted(reuse),
            "reuse_check": {"needs_checking_flagged": len(NEEDS_CHECKING & reuse),
                            "needs_checking_total": len(NEEDS_CHECKING),

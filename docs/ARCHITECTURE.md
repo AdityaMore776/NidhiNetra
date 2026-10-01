@@ -60,15 +60,16 @@ work record ─► 2 DATA VALIDATION ─► 3 AGENTS (each returns an AgentResul
 | `agents/compliance/` | **Guideline Compliance**: rules R01–R11 from `reference/rules.json` (English + Hindi), eligibility v2 reader |
 | `agents/statistical/` | the **Cost** engine: `scope.py` (what a description covers: goods/works, bundles, counts), `cohort.py` (peer statistics store), `text.py` (length reading), `unit_rate.py` (road ₹/m), `price_model.py` (word-price model, applied to any description, T051), `agent.py` (like-for-like peers + the price model must agree) |
 | `agents/dup_split/` | **Duplicate & Split Work**: `match.py` holds the rules and compares ANY work with its district live (stdlib only; the batch builds one index of every work, the API one per district, T051) |
-| `agents/delay/` | **Delay Prediction**: `rates.py` late-rate ladder office → district × type → state × type → type, from the `delay_rates` table, so any work is scored (T051); shown, not counted |
+| `agents/delay/` | **Fund Flow** (stored id `delay`): ended-term works still unsanctioned, office sanction backlog against its district (`backlog.py`, counted live); the delay forecast was removed in T053; shown, not counted |
+| `agents/paperwork/`, `agents/photo_evidence/`, `agents/outlier/` | **Paperwork** (certificates vs the portal), **Photo Evidence** (reuse, place, time of photos), **Odd Overall**; all shown, not counted (see AGENT-CATALOG) |
 
 **One brain per engine (T051).** An engine's reasoning is a function of the work plus stored tables or
-coefficients (`cohort_stats`, `delay_rates`, `engine_models`, `reference/*`). No engine reads an answer stored
+coefficients (`cohort_stats`, `engine_models`, `reference/*`). No engine reads an answer stored
 per work by an offline job: a recommendation the system has never seen goes through exactly the same code
 as a corpus work, and "compared, nothing found" is only said after a comparison ran.
-| `validation/` | `checks.py` (issues: BLOCK / WARN / INFO), `timeline.py` (impossible dates judged by quarter and office, Wilson lower bound), `prohibited.py` (object-of-work matcher) |
+| `validation/` | helpers Guideline Compliance uses: `timeline.py` (impossible dates judged by quarter and office, Wilson lower bound), `prohibited.py` (object-of-work patterns), `pii.py`. The separate Data Validation step was removed in T053 |
 | `fusion/fuse.py`, `fusion/reasons.py` | the risk score, bands and top-3 reasons in English and Hindi (below) |
-| `pipeline/orchestrator.py` | `assess_work()`: validate → run agents → fuse → priority; an agent that raises becomes an `ERROR` result, never a finding |
+| `pipeline/orchestrator.py` | `assess_work()`: run agents → fuse → priority; an agent that raises becomes an `ERROR` result, never a finding |
 | `api/routes.py` | REST endpoints (below) |
 | `auth.py` | token verification, `Principal`, district scoping, dev mode |
 | `reference/*.yaml` | guideline clauses (quoted verbatim), prohibited works (Annexure-II), work categories and types |
@@ -124,13 +125,10 @@ facts (R06 impossible dates, R11 missing data), so they no longer add to the sco
 
 **Planned:** reliability learned from officer verdicts (T070); a group counted once across engines.
 
-## 5. Data Validation
+## 5. Record checks (inside Guideline Compliance)
 
-`validation/checks.py` returns `Issue`s with a severity:
-
-- **BLOCK** — the record cannot be processed.
-- **WARN** — a record inconsistency with weight in fusion (e.g. completed before recommended).
-- **INFO** — worth a human's read, almost no weight (e.g. a prohibited-work keyword as the object of the work).
+The separate Data Validation step was removed in T053: it was shown, not counted, and repeated Guideline
+Compliance (R06 impossible dates, R11 missing data) with the older prohibited-work matcher.
 
 **Impossible dates are judged in context** (`validation/timeline.py`): most "completed before recommended"
 records come from bulk entry when eSAKSHI opened in 2023. Each is judged against the rate for its own
@@ -178,7 +176,6 @@ your area returns 404.
 | `timeline_quarters`, `timeline_agencies` | impossible-date base rates by quarter and office |
 | `assessments` | per work: score, band, limited, priority, parts, validation, agents, versions, summary `alerts[]`/`headline`, and `compact` |
 | `work_signals` | per work and engine: facts computed offline. Since T051 no core engine uses it (kept for evidence-based checkers) |
-| `delay_rates` | past late counts per step of the Delay ladder: all / type / state×type / district×type / office (migration 008, `data/build_delay_rates.py`) |
 | `engine_models` | small learned models an engine applies to any work, as JSON: the cost engine's word-price model (migration 008, `data/build_price_model.py`) |
 | `dashboard_cache` | saved dashboard answers, emptied whenever works are re-assessed |
 | `profiles` | user → role, district, display name |
@@ -221,7 +218,7 @@ database. LOW and MEDIUM works are stored **compact** (summary only) and rebuilt
 - The four core engines (Compliance, Cost, Duplicate & Split, Delay) and the risk score run in the engine; the
   Outlier slot and the side-track checkers (photos, documents, …) are proven in the trial scripts and being ported
   (order in [`team/TASKS.md`](team/TASKS.md)).
-- Learning runs offline in `data/` (`build_stats.py`, `build_price_model.py`, `build_delay_rates.py`,
+- Learning runs offline in `data/` (`build_stats.py`, `build_price_model.py`, `build_outlier.py`,
   `build_generic_words.py`) and is stored as tables, coefficients or reference files, never as per-work
   answers (T051); after a data rebuild the hosted database must be reloaded (`load_db.py` → `batch_assess.py`).
 - The data is a snapshot (26 May 2026); "today" for real works is that date (`DRISHTI_SNAPSHOT_DATE`).

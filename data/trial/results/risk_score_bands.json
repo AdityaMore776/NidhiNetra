@@ -10,21 +10,23 @@
     "statistical": 0.2,
     "dup_split": 0.2,
     "delay": 0.0,
-    "outlier": 0.1
+    "outlier": 0.0,
+    "paperwork": 0.0,
+    "photo_evidence": 0.0
   },
   "bands": {
-    "CRITICAL": 54,
-    "HIGH": 448,
-    "MEDIUM": 14140,
-    "LOW": 195351
+    "CRITICAL": 49,
+    "HIGH": 393,
+    "MEDIUM": 14001,
+    "LOW": 195550
   },
   "shares": {
-    "CRITICAL": 0.00026,
-    "HIGH": 0.00213,
-    "MEDIUM": 0.06734,
-    "LOW": 0.93027
+    "CRITICAL": 0.00023,
+    "HIGH": 0.00187,
+    "MEDIUM": 0.06667,
+    "LOW": 0.93122
   },
-  "review_queue": 502,
-  "review_share": 0.00239,
+  "review_queue": 442,
+  "review_share": 0.0021,
   "max_score": 36.4
 }

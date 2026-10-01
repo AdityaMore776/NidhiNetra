@@ -2,7 +2,6 @@ from datetime import date
 
 import pytest
 
-from drishti.validation.checks import validate
 from drishti.validation.timeline import TimelineRates, impossible_date, quarter_of
 
 # National figures measured on the real export, 2026-09-25 (1,096 of 85,773 = 1.28%).
@@ -69,13 +68,9 @@ def test_small_offices_are_not_called_out(rates):
     assert rates.agency_concentration("Anand(DISTRICT COLLECTOR)") is None
 
 
-def test_validate_uses_the_rates_when_given(rates):
-    work = {"work_id": "W", "amount": 5e5, "work_type_code": "ROAD_CC", "description": "CC road",
-            "recommended_date": date(2024, 2, 1), "completed_date": date(2023, 11, 1),
-            "status": "COMPLETED", "agency_name": "Anand(DISTRICT COLLECTOR)"}
-    issue = next(i for i in validate(work, date(2026, 5, 26), rates)
-                 if i.code == "IMPOSSIBLE_TIMELINE")
-    assert issue.risk == pytest.approx(0.10)
+def test_the_rates_set_the_risk_when_given(rates):
+    i = impossible_date(date(2024, 2, 1), date(2023, 11, 1), "Anand(DISTRICT COLLECTOR)", rates)
+    assert i.risk == pytest.approx(0.10)
 
 
 def test_a_concentrated_office_is_one_finding_not_many_queue_items(rates):

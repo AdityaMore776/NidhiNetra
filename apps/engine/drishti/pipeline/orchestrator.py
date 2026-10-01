@@ -1,7 +1,11 @@
-"""The pipeline for one work: validate, run every engine, fuse.
+"""The pipeline for one work: run every engine, fuse.
 
-    2 DATA VALIDATION -> 3 ENGINES (agents/registry.py: compliance, cost,
-    duplicate & split, delay, outlier, then any extra engine folders) -> 4 RISK FUSION
+    ENGINES (agents/registry.py: compliance, cost, duplicate & split, fund flow, outlier,
+    then any extra engine folders) -> RISK FUSION
+
+T053 removed the separate Data Validation step: it was shown, not counted, and repeated
+Guideline Compliance (R06 impossible dates, R11 missing data) with the older prohibited-work
+matcher (12% precision against R07's 56%). Stored rows keep an empty `validation` list.
 
 Engines that are not built yet report NOT_BUILT, so every screen shows every
 slot from the first milestone and nothing pretends to have been checked.
@@ -23,11 +27,10 @@ from drishti.agents import registry
 from drishti.agents.contract import AgentResult, Status, not_built
 from drishti.agents.statistical.cohort import StatsStore
 from drishti.fusion.fuse import Fused, fuse
-from drishti.validation.checks import Issue, validate
 
 AGENT_ORDER = tuple(e.id for e in registry.engines())
 QUESTIONS = {e.id: e.question for e in registry.engines()}
-PIPELINE_VERSION = "pipeline-0.2.0"
+PIPELINE_VERSION = "pipeline-0.3.0"
 
 
 @dataclass
@@ -42,7 +45,7 @@ class Context:
 @dataclass
 class Assessment:
     work_id: str
-    validation: list[Issue]
+    validation: list
     agents: list[AgentResult]
     fused: Fused
     priority: float
@@ -57,7 +60,7 @@ class Assessment:
             "parts": {"parts": [p.__dict__ for p in self.fused.parts],
                       "hard_trigger": self.fused.hard_trigger,
                       "reasons": self.fused.reasons},
-            "validation": [i.to_json() for i in self.validation],
+            "validation": list(self.validation),
             "agents": [r.to_json() for r in self.agents],
             "versions": {"pipeline": PIPELINE_VERSION,
                          **{r.agent: r.version for r in self.agents}},
@@ -86,13 +89,12 @@ def _run(agent: str, fn, *args) -> AgentResult:
 
 
 def assess_work(work: dict, ctx: Context) -> Assessment:
-    issues = validate(work, ctx.as_of, ctx.stats.timeline)
     results = []
     for engine in registry.engines():
         if engine.assess is None:
             results.append(not_built(engine.id, engine.question))
         else:
             results.append(_run(engine.id, engine.assess, work, ctx))
-    fused = fuse(results, issues, ctx.reliability)
-    return Assessment(work_id=work["work_id"], validation=issues, agents=results,
+    fused = fuse(results, [], ctx.reliability)
+    return Assessment(work_id=work["work_id"], validation=[], agents=results,
                       fused=fused, priority=priority(fused.score, work.get("amount")))

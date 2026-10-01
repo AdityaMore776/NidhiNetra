@@ -27,7 +27,8 @@ from drishti.agents.outlier.model import OutlierStats
 
 AGENT = "outlier"
 VERSION = "outlier-1.0.0"
-QUESTION = "Is this record unusual taken as a whole?"
+QUESTION = ("Do the amount, the days taken to finish and the description look wrong together "
+            "(e.g. a big amount finished in days with almost no description)?")
 CONFIDENCE = 0.5
 
 
@@ -54,6 +55,18 @@ def _describe(f: str, work: dict, lo: float, hi: float) -> str:
     return f"a description of {n:,} characters (most have {10 ** lo:,.0f} to {10 ** hi:,.0f})"
 
 
+def _usual(work: dict, type_name: str) -> str:
+    bits = [f"amount {_inr(float(work['amount']))}"] if work.get("amount") else []
+    rec, done = work.get("recommended_date"), work.get("completed_date")
+    if rec is not None and done is not None and done >= rec:
+        bits.append(f"finished {(done - rec).days:,} days after recommendation")
+    n = len((work.get("description") or "").strip())
+    if n:
+        bits.append(f"a description of {n:,} characters")
+    return (f"Checked together against other {type_name} works ({', '.join(bits)}): nothing "
+            "looks wrong together.")
+
+
 def assess(work: dict, stats: OutlierStats | None) -> AgentResult:
     t0 = time.perf_counter()
     if stats is None or stats.forest is None:
@@ -78,16 +91,16 @@ def assess(work: dict, stats: OutlierStats | None) -> AgentResult:
         risk = 0.30 + 0.40 * min(1.0, (score - cut) / (top_score - cut))
         findings.append(Finding(
             "ODD_COMBINATION",
-            f"Unusual in two ways at once for a {type_name} work: " + " and ".join(parts)
-            + ". Check that the record is right.",
+            f"Looks wrong together for a {type_name} work: " + " and ".join(parts)
+            + ". Records like this are often entered wrongly or after the work was done: "
+            "check the dates, the amount and what was built against the files.",
             hard=False, risk=risk, evidence={"score": score, "z": z, "threshold": cut}))
     return AgentResult(
         agent=AGENT, status=Status.ASSESSED,
         verdict="ODD_COMBINATION" if findings else "USUAL_RECORD",
         risk=findings[0].risk if findings else 0.0, confidence=CONFIDENCE, hard=False,
         headline=findings[0].text if findings else
-        f"Amount, completion time and description are not unusual together for a {type_name} "
-        "work.",
+        _usual(work, type_name),
         version=VERSION, findings=findings,
         limitations=["Judges three fields of the record against works of the same type; an "
                      "unusual record often has an ordinary explanation (a list of sites, a "

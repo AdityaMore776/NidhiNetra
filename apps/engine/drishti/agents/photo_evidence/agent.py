@@ -16,15 +16,12 @@ REUSE (another work carries the same file or picture)
 PLACE (the stamp's coordinates against the work's own district outline)
   G1 PHOTO_OUTSIDE_DISTRICT       more than 5 km outside: 0.50 (0 of 187 pilot points)
                                   within 5 km: "at the border", never a finding
-  G2 PIN_ELSEWHERE                the stamp's PIN belongs to another district: a note (0.05);
-                                  the PIN file predates newer districts
 TIME (the stamp's date against the record)
   T1 PHOTO_BEFORE_RECOMMENDATION  a stamped date 7+ days before recommendation: 0.40
-  T2 PHOTO_DATE_AFTER_DATA        a stamped date after the data date: the camera clock is
-                                  wrong or a digit misread: a note (0.0)
-  T3 PHOTO_LONG_AFTER_COMPLETION  more than a year after completion: a note (0.05)
-  T4 SAME_SPOT_SAME_DAY           another work's photo stamped at the same spot (4 decimals)
-                                  the same day: a weak note (0.05)
+                                  (3 pilot works: their own photos show them finished before
+                                  the MP recommended them)
+Removed in T053, as notes an officer could not act on: a PIN of another district, a camera
+clock ahead of the data date, a photo long after completion, the same spot the same day.
 
   NOT_APPLICABLE  no photo and no stamped page attached
   ASSESSED        otherwise; a photo without a readable stamp is still checked for reuse
@@ -40,7 +37,7 @@ from drishti.agents.photo_evidence import geo
 from drishti.agents.photo_evidence.index import PHOTO_EXT, PhotoIndex
 
 AGENT = "photo_evidence"
-VERSION = "photo-evidence-1.0.0"
+VERSION = "photo-evidence-1.1.0"
 QUESTION = "Are the work's photos new, from its place and from its time?"
 CONFIDENCE = 0.7
 EARLY_DAYS = 7
@@ -107,7 +104,7 @@ def _place_time(work: dict, stamps: list[dict], as_of: date,
     facts = {"stamped": len(stamps), "inside": 0, "at_border": 0}
     code = str(work.get("district_lgd") or "").zfill(3)
     outline = geo.outlines().get(code)
-    rec, done = _d(work.get("recommended_date")), _d(work.get("completed_date"))
+    rec = _d(work.get("recommended_date"))
     for s in stamps:
         lat, lon, when = s.get("lat"), s.get("lon"), _d(s.get("date"))
         if lat is not None and outline is not None:
@@ -123,45 +120,18 @@ def _place_time(work: dict, stamps: list[dict], as_of: date,
                     f"The photo's printed GPS stamp ({lat:.5f}, {lon:.5f}) is {km:,.0f} km outside "
                     f"the work's district, in {where}. Check where the photo was taken.",
                     hard=False, risk=0.50, evidence={"lat": lat, "lon": lon, "km": round(km, 1)}))
-            pin = s.get("pin")
-            pin_d = geo.pin_district().get(pin) if pin else None
-            # the PIN file's district codes are Census-2011 codes, like the works' (the
-            # district-code trap again, 1 Oct 2026): compare with the work's own code
-            if pin_d and int(pin_d) != int(code):
-                out.append(Finding(
-                    "PIN_ELSEWHERE",
-                    f"The stamp's PIN code ({pin}) belongs to another district; PIN areas "
-                    "predate some newer districts, so this is a note.",
-                    hard=False, risk=0.05, evidence={"pin": pin}))
-        if when is None:
-            continue
-        if when > as_of:
-            out.append(Finding(
-                "PHOTO_DATE_AFTER_DATA",
-                f"The stamp is dated {when.isoformat()}, after the data date "
-                f"({as_of.isoformat()}): the camera clock is wrong or a digit was misread.",
-                hard=False, risk=0.0, evidence={"date": str(when)}))
-        elif rec and (rec - when).days >= EARLY_DAYS:
+        if when is None or when > as_of:
+            continue                 # no date, or a camera clock ahead of the data: not judged
+        if rec and (rec - when).days >= EARLY_DAYS:
             out.append(Finding(
                 "PHOTO_BEFORE_RECOMMENDATION",
                 f"The work's own photo is stamped {when.isoformat()}, {(rec - when).days:,} days "
                 f"before the MP recommended it ({rec.isoformat()}). Check whether the work was "
                 "already built, or the photo shows another work.",
                 hard=False, risk=0.40, evidence={"date": str(when), "recommended": str(rec)}))
-        elif done and (when - done).days > 365:
-            out.append(Finding(
-                "PHOTO_LONG_AFTER_COMPLETION",
-                f"The photo is stamped {when.isoformat()}, more than a year after completion "
-                f"({done.isoformat()}).",
-                hard=False, risk=0.05, evidence={"date": str(when), "completed": str(done)}))
-        if photos is not None and lat is not None:
-            twins = [w for w in photos.same_spot(lat, lon, when) if w != work["work_id"]]
-            if twins:
-                out.append(Finding(
-                    "SAME_SPOT_SAME_DAY",
-                    f"Work {', '.join(sorted(twins)[:3])} has a photo stamped at the same spot "
-                    "the same day; two works side by side, or one photo session for both.",
-                    hard=False, risk=0.05, evidence={"others": sorted(twins)}))
+    # T053: weak notes removed (a PIN of another district, a clock after the data date, a
+    # photo long after completion, the same spot the same day as another work): none said
+    # anything an officer could act on.
     return out, facts
 
 

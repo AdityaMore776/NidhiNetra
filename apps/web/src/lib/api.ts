@@ -59,7 +59,6 @@ export interface Summary {
   amount: number;
   bands: Record<Band, number>;
   agents: AgentSummary[];
-  validation_alerts: number;
   snapshot_date: string;
 }
 
@@ -128,6 +127,8 @@ export interface ComparisonRow {
   deviation_pct: number;
   anchor_low?: number;
   anchor_high?: number;
+  /** the line above which the cost engine asks a question; up to it is the comfort zone */
+  comfort_high?: number | null;
 }
 
 export interface AgentResult {
@@ -147,6 +148,7 @@ export interface AgentResult {
     comparison?: ComparisonRow[];
     cohort?: { level: string; description: string; n: number; p10: number; p50: number; p90: number; sd: number; z: number };
     work_type_name?: string;
+    comfort_high?: number | null;
   };
   duration_ms: number;
 }

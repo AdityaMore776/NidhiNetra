@@ -526,6 +526,37 @@ from the cost engine.
   sharing a typo ("tenker", "publiic") read as "one site" → a same-place group of 6+ is a series; Critical at 30
   was reached by any delay plus any repeat, down to ₹20,000 lights → Critical at 33.
 
+### T053 (1 Oct 2026): only agents that find real problems
+
+**The owner:** the cost agent "always flags the money as high even on low-risk works"; Odd Overall must say what it
+looks for; agents and notes that barely add anything go.
+
+**Cost.** The engine flags 1.1% of works, but its card coloured anything above the top of the usual range red (1 in
+10 works by definition). Every flag type was scored against all cost flags read by eye (`cost_v2_labels.py`):
+several sites in one amount **0/48** real price questions, far above every similar work **3/18**, per unit above
+**0/3**, above the comfort limit **54/128**; "well below similar works" was never measured. The first three are now
+plain statements with no risk and "below" is gone. The comfort zone is explicit: from the top of the usual range up
+to the comfort limit (the highest of twice the district's top, the state's top, twice the top for works described
+like this), room for a bigger scope or a contingency margin. The card shows usual range, comfort zone and comfort
+limit, and only beyond it a question. Widening the limit further did not raise precision (2-2.5× over 3/7, 3-4× 9/13,
+6×+ 17/59).
+
+**Removed.** The delay forecast (two methods, 0.71 and 0.70 AUC against 0.80; with 73% of works late it added little
+to R02's real overdue count); Fund Flow stays (exact: 3,331 works, ₹168.9 cr). Site Progress (it could never run
+without a key). The separate Data Validation step (it repeated Guideline Compliance with the 12%-precision matcher).
+Notes on nearly every work: Paperwork's "in progress on paper" (282/285), blank certification boxes (427/429),
+instalment-only certificates, vendor-share note; Photo Evidence's PIN, camera-clock, long-after-completion and
+same-spot notes. Queue 502 → **442**: the 60 that left were carried by the removed cost notes; of the 30 queue works
+read for T051, 22 stay and 19 of those have a reason beyond a delay.
+
+**Odd Overall.** A fresh random 30 of the forest's 214 flags read **9/30** worth a look (9 of the 30 were one prefab
+bus-stop series). The two kinds of real case became plain rules (`data/trial/odd_rules_trial.py`,
+`odd_rules_labels.py`): **a big amount with no stated scope** (₹10 lakh+, above its type's national top, at most six
+words, no number, no place: 618 works, **30/30** read as a question the record cannot answer: what and where?) and
+**built in days** (a building, road or drain of ₹5 lakh+ recorded complete 0-14 days after recommendation, outside a
+bulk-entry quarter, not a backfilled older work: 13 works, **13/13**). Both are checks on the record, so they would
+fit inside Guideline Compliance rather than a separate engine; awaiting the owner's decision.
+
 ### MP history (1 Oct 2026): tested, not adopted
 
 **The owner's question:** should DRISHTI look at an MP's history, e.g. a hidden MP risk score that sets how

@@ -6,11 +6,10 @@ import { AGENT_ORDER, agentMeta } from "@/lib/format";
 
 const STEPS = [
   { n: 1, title: "Work enters DRISHTI", text: "Records, progress claims and site photos come in.", color: "var(--inputs)" },
-  { n: 2, title: "Data validation", text: "Clean and check the record: impossible dates, missing fields, guideline notes.", color: "var(--inputs)" },
-  { n: 3, title: "Eight checkers, in parallel", text: "Each independently checks for a different kind of problem.", color: "var(--navy)" },
-  { n: 4, title: "Risk fusion", text: "Add up the checks, each by its fixed weight, into one 0-100 score with its top three reasons.", color: "var(--fusion)" },
-  { n: 5, title: "Risk review", text: "Rank works Low, Medium, High or Critical, and queue High and Critical for a look.", color: "var(--medium)" },
-  { n: 6, title: "Officer verification", text: "An officer reviews the evidence and makes the decision.", color: "var(--low)" },
+  { n: 2, title: "Seven checkers, in parallel", text: "Each independently checks for a different kind of problem.", color: "var(--navy)" },
+  { n: 3, title: "Risk fusion", text: "Add up the checks, each by its fixed weight, into one 0-100 score with its top three reasons.", color: "var(--fusion)" },
+  { n: 4, title: "Risk review", text: "Rank works Low, Medium, High or Critical, and queue High and Critical for a look.", color: "var(--medium)" },
+  { n: 5, title: "Officer verification", text: "An officer reviews the evidence and makes the decision.", color: "var(--low)" },
 ];
 
 const FACETS: Record<string, string[]> = {
@@ -30,9 +29,9 @@ const FACETS: Record<string, string[]> = {
     "Every match says \"verify\": two works can be alike for good reasons",
   ],
   delay: [
-    "How often works like this one (same office, else district and type) finished more than a year late",
     "Works recommended under a Lok Sabha term that has ended and still not sanctioned",
     "Offices holding far more unsanctioned recommendations than their district",
+    "Counts from the record only: no forecasts",
   ],
   paperwork: [
     "Read the work's own utilisation certificates: sanction date, payments, status",
@@ -44,15 +43,10 @@ const FACETS: Record<string, string[]> = {
     "The photo's printed GPS stamp inside the work's own district",
     "A photo dated before the MP recommended the work",
   ],
-  site_progress: [
-    "Each claim in the officer's own words judged against the photos: shown, not shown, can't tell",
-    "The MPLADS plaque visible on a finished work",
-    "Satellite only for big works, and only after its go/no-go test (off until then)",
-  ],
   outlier: [
-    "Look at the whole record at once: type, place, amount, dates",
-    "Raise records that are unusual in combination",
-    "A weak signal on its own; it adds to the others",
+    "Looks at three things together, against works of the same type: the amount, the days from recommendation to completion, and how much the description says",
+    "Raises a record only when they look wrong together, e.g. a big amount finished in days with almost no description",
+    "Such records are usually entered wrongly or after the work was done: check them against the files",
   ],
 };
 
@@ -67,9 +61,9 @@ export default function HowItWorks() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">How DRISHTI works</h1>
-        <p className="text-sm text-muted">The six steps from the team&apos;s design, and where each agent stands today.</p>
+        <p className="text-sm text-muted">The five steps from the team&apos;s design, and where each agent stands today.</p>
       </div>
-      <ol className="grid md:grid-cols-3 lg:grid-cols-6 gap-3">
+      <ol className="grid md:grid-cols-3 lg:grid-cols-5 gap-3">
         {STEPS.map((st) => (
           <li key={st.n} className="card p-4">
             <span className="rounded-full w-7 h-7 grid place-items-center text-white text-xs font-bold" style={{ background: st.color }}>

@@ -47,8 +47,11 @@ The sections below are the working notes the team resumes from.
 **1 Oct 2026, T051 (PR #67): the four engines now work on ANY recommendation, not just the 2,09,993 they were
 built on, and the 12 planned checkers are merged into 8** (`docs/AGENT-CATALOG.md`). Newest log entry in
 `docs/team/log/` has the exact next step. Rebuild data after merging: `data/build_generic_words.py` (only if
-the corpus changes), `data/build_delay_rates.py`, `.venv-trial` `data/build_price_model.py`, then
-`load_db.py` → `batch_assess.py` (migration 008 adds `delay_rates`, `engine_models`).
+the corpus changes), `.venv-trial` `data/build_price_model.py`, `data/build_outlier.py`, `data/build_evidence.py`,
+then `load_db.py` → `batch_assess.py`.
+**T053 (1 Oct 2026): only agents that find real problems.** Cost shows an explicit comfort zone and dropped the
+flags that were almost never right; Delay's forecast, Site Progress and the separate Data Validation step were
+removed; Paperwork and Photo Evidence keep only real findings. Seven engines (`docs/AGENT-CATALOG.md`).
 
 **REAL-WORKS TRIAL DONE 2026-09-26: read `docs/trial/FINDINGS.md` first.** Every agent was
 tested on the real export plus real eSAKSHI evidence for 837 completed works (all 435 in

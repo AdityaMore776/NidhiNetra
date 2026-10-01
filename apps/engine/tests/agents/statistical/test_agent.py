@@ -3,7 +3,6 @@ from datetime import date
 import pytest
 
 from drishti.agents.contract import Status
-from drishti.agents.statistical import agent as cost
 from drishti.agents.statistical.agent import above_risk, assess
 from drishti.agents.statistical.cohort import StatsStore
 
@@ -119,7 +118,8 @@ def test_many_site_sanction_is_a_bundle_not_a_mark_up(stats):
     r = assess(_work(amount=10_000_000.0,
                      description="Roads construction in Allahabad loksabha kshetra"),
                stats, AS_OF)
-    assert r.verdict == "BUNDLED_SANCTION" and r.risk == pytest.approx(cost.BUNDLE_RISK)
+    # T053: read 0/48 as a real price question, so it is said, never flagged
+    assert r.verdict == "SEVERAL_SITES_NOT_PRICED" and r.risk == 0 and not r.findings
     assert "several sites" in r.headline
 
 
@@ -133,7 +133,8 @@ def test_counted_units_are_priced_per_unit(stats):
     dear = assess(_work(work_type_code="STREET_LIGHT", amount=20_000_000.0,
                         description="Installation of 50 nos solar street lights in village X"),
                   stats, AS_OF)
-    assert dear.verdict == "UNIT_PRICE_ABOVE" and "per unit" in dear.headline
+    # T053: a per-unit flag read 0/3 as real; the per-unit cost is shown, not flagged
+    assert dear.verdict == "PRICED_PER_UNIT" and dear.risk == 0
 
 
 def test_road_with_a_length_is_judged_per_metre_not_by_total(stats):
@@ -160,9 +161,9 @@ def test_far_above_every_similar_work_is_a_scope_question_not_a_mark_up(stats):
     r = assess(_work(amount=53_000_000.0,
                      description="Construction of Skill Hub Building near Government ITI"),
                stats, AS_OF)
-    assert r.verdict == "SCOPE_FAR_LARGER" and r.risk == pytest.approx(cost.SCOPE_RISK)
-    assert "check what it covers and that its type is right" in r.headline
-    assert "times" not in r.headline
+    # T053: read 3/18 as a real price question: a bigger project, said and not flagged
+    assert r.verdict == "BIGGER_PROJECT_THAN_PEERS" and r.risk == 0 and not r.findings
+    assert "bigger project" in r.headline
 
 
 def test_learned_range_that_expects_a_big_job_clears_it(stats):
@@ -213,9 +214,23 @@ def test_price_model_features_ignore_numbers_and_read_size():
     assert f["has_length"] == 1.0 and f["year"] == 25.0
 
 
-def test_well_below_district_and_state_is_a_soft_note(stats):
+def test_a_cheap_work_is_not_flagged(stats):
+    # T053: "well below similar works" was never shown to be a real problem
     r = assess(_work(amount=15_000.0), stats, AS_OF)
-    assert r.verdict == "COST_BELOW_PEERS" and r.risk == pytest.approx(cost.BELOW_RISK)
+    assert r.risk == 0 and not r.findings
+
+
+def test_the_comfort_zone_is_explicit_and_only_beyond_it_is_a_question(stats):
+    # district usual top Rs 3.16 lakh, state top Rs 10 lakh: comfort limit = Rs 10 lakh
+    inside = assess(_work(amount=600_000.0), stats, AS_OF)
+    assert inside.risk == 0 and inside.evidence["comfort_high"] == pytest.approx(10 ** 6.0)
+    assert "comfort zone" in inside.headline and "Rs 10.00 lakh" in inside.headline
+    row = inside.evidence["comparison"][0]
+    assert row["typical_high"] < row["this_work"] < row["comfort_high"]
+    usual = assess(_work(amount=160_000.0), stats, AS_OF)
+    assert "inside the usual range" in usual.headline
+    over = assess(_work(amount=1_300_000.0), stats, AS_OF)
+    assert over.verdict == "COST_ABOVE_PEERS" and "comfort limit" in over.headline
 
 
 def test_overdue_and_ceiling_are_left_to_compliance(stats):

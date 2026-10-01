@@ -56,7 +56,7 @@ def test_an_agent_that_crashes_becomes_an_error_not_a_crash(ctx, monkeypatch):
 
 def test_priority_grows_with_money(ctx):
     small = assess_work(_work(amount=1_000_000.0, description="CC road"), ctx)
-    big = assess_work(_work(amount=10_000_000.0, description="CC road"), ctx)
+    big = assess_work(_work(amount=1_500_000.0, description="CC road"), ctx)
     assert small.fused.score > 0 and big.fused.score > 0
     assert big.priority / big.fused.score > small.priority / small.fused.score
 
@@ -69,13 +69,16 @@ def test_row_is_json_ready(ctx):
     assert row["band"] in ("HIGH", "MEDIUM", "LOW")
 
 
-def test_validation_is_judged_against_the_quarter(ctx):
+def test_an_impossible_date_is_judged_against_the_quarter_by_compliance(ctx):
+    # T053: the Data Validation step was removed; Guideline Compliance R06 carries it
     from drishti.validation.timeline import TimelineRates
 
     ctx.stats.timeline = TimelineRates.from_counts({"2024-Q1": (25086, 443)}, {},
                                                    overall=(85773, 1096))
     a = assess_work(_work(recommended_date=date(2024, 2, 1), completed_date=date(2023, 11, 1),
                           status="COMPLETED", amount=158_000.0), ctx)
-    issue = next(i for i in a.validation if i.code == "IMPOSSIBLE_TIMELINE")
-    assert issue.risk == pytest.approx(0.10)
+    assert a.validation == []
+    comp = next(r for r in a.agents if r.agent == "compliance")
+    f = next(f for f in comp.findings if f.evidence["rule"] == "R06")
+    assert f.evidence["severity"] == "LOW"
     assert a.fused.band == "LOW"

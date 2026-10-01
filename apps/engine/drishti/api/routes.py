@@ -130,7 +130,6 @@ def _summary(user: Principal) -> dict:
                     "built": e.assess is not None, "weight": e.weight,
                     "weight_note": e.weight_note,
                     "alerts": alert_n.get(e.id, 0)} for e in registry.engines()],
-        "validation_alerts": alert_n.get("validation", 0),
         "snapshot_date": config.snapshot_date().isoformat(),
     }
 

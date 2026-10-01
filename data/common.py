@@ -38,7 +38,7 @@ def clean(rec: dict) -> dict:
 #   engine -> (file in data/build, the columns that form its data, version column)
 SIGNALS: dict[str, tuple] = {
     # T051: no engine reads a per-work answer any more. Cost uses the word-price model
-    # (engine_models), Delay the delay_rates table, Duplicate & Split a live district
+    # (engine_models), Fund Flow live counts, Duplicate & Split a live district
     # comparison (match.py): each computes for ANY work, so new works meet the same rules.
 }
 # Small learned models an engine applies to any work: name -> file in data/build
@@ -113,7 +113,5 @@ def load_context(works: pd.DataFrame | None = None) -> Context:
         pd.read_parquet(BUILD / "timeline_quarters.parquet").to_dict("records"),
         pd.read_parquet(BUILD / "timeline_agencies.parquet").to_dict("records"),
         [e for e, (name, _c, _v) in SIGNALS.items() if (BUILD / name).exists()],
-        pd.read_parquet(BUILD / "delay_rates.parquet").to_dict("records")
-        if (BUILD / "delay_rates.parquet").exists() else (),
         model_rows())
     return Context(stats=stats, as_of=config.snapshot_date(), data=data)
