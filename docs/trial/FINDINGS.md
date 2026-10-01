@@ -471,6 +471,13 @@ trial; ORB, 99.4%, needs OpenCV and stays out). The trial's stamp-year window en
 Not tested. It needs an AI vision key, and nothing in the free local toolset judges "does this
 photo show a finished road".
 
+**T510 (1 Oct 2026):** the engine frame exists (`agents/site_progress/`, merged with the plaque check and the
+satellite gate): each claim in the officer's own words judged shown / not shown / can't tell, a reused photo voids
+every confirmation, a complete work without a visible plaque is a note. Tested with a stand-in provider only, so
+it reports "cannot be assessed yet" on every work with photos and carries no weight. The satellite gate (ponds and
+check dams, roads over 1 km, buildings over ₹50 lakh) finds 2,822 qualifying works in the export (2,167 ponds), of
+which only 1 has a GPS-stamped photo in the pilot: the go/no-go test needs more harvested evidence (T003).
+
 ### B5 Satellite
 No-go for now.
 - Of the 170 works with GPS points, the median cost is ₹2.8 lakh and only one exceeds
