@@ -402,6 +402,20 @@ the **byte-identical file**:
 - **Combined files are normal.** An exact copy only matters when the file names a single work
   or person.
 
+#### Photo Evidence engine (T310, 1 Oct 2026): B2 + B3 + citizen photos in the engine
+
+The stamp reader, the district check (pure Python, `agents/photo_evidence/geo.py`) and the reuse checks now live in
+the engine; `data/build_evidence.py` stores each file's stamp facts and 256-bit fingerprint.
+`data/trial/photo_evidence_trial.py` → `results/photo_evidence_trial.json` reproduces B2 and B3: 190 stamps on 170
+works; 187 inside the work's district, 2 within 5 km of its border, 0 further; PIN agrees 66, differs 3; the 3
+works whose own photos predate the recommendation (WS/MP070/2023-2024/7171, WS/MP720/2024-2025/124252 and 124508);
+the one shared spot and day; the 2 byte-identical files that need checking flagged (the road photo on two
+Pratapgarh works, the completion certificate on two Narmadapuram works) and 0 of the 3 combined files. Two traps
+found: works with papers but no photo were skipped by the first version (now checked for reuse), and the PIN file
+carries Census-2011 district codes like the works do. The combined-file rule (3+ pages or 50+ text lines) rests on
+these 5 cases only. Edited copies are matched by fingerprint alone in the engine (70% of edited copies in the
+trial; ORB, 99.4%, needs OpenCV and stays out). The trial's stamp-year window ended in 2026; it is now relative.
+
 ### B3 Geo-location
 
 - **Phone GPS data is gone.** 0 of 321 photos carry it (Pratapgarh and national alike); upload

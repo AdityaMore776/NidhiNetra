@@ -17,6 +17,7 @@ from psycopg.types.json import Jsonb
 
 from drishti.agents.dup_split.match import DupIndex
 from drishti.agents.paperwork.vendors import VendorIndex
+from drishti.agents.photo_evidence.index import PhotoIndex
 from drishti.pipeline.orchestrator import Assessment, Context, assess_work
 
 WORK_COLUMNS = ("work_id, source, house, term, state_lgd, state_name, district_lgd, "
@@ -87,7 +88,8 @@ def row_for(a: Assessment) -> dict:
 def indexes(works: list[dict]) -> dict:
     """The cross-work views engines need, from the same rows: the Duplicate & Split index and
     the vendors holding the certified works (Paperwork, T110)."""
-    return {"dup_split": DupIndex.build(works), "vendors": VendorIndex.build(works)}
+    return {"dup_split": DupIndex.build(works), "vendors": VendorIndex.build(works),
+            "photos": PhotoIndex.build(works)}
 
 
 def with_index(ctx: Context, con: psycopg.Connection, work: dict) -> Context:
@@ -98,8 +100,12 @@ def with_index(ctx: Context, con: psycopg.Connection, work: dict) -> Context:
     d = work.get("district_lgd")
     rows = con.execute(f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works {SIGNALS_JOIN} "
                        "WHERE works.district_lgd = %s", (d,)).fetchall() if d else []
-    return replace(ctx, data={**(ctx.data or {}),
-                              **indexes([_normalise(dict(r)) for r in rows])})
+    data = indexes([_normalise(dict(r)) for r in rows])
+    # a photo can be reused in another district: every work's evidence, not the district's
+    data["photos"] = PhotoIndex.build(
+        {"work_id": r["work_id"], "evidence": r["data"]}
+        for r in con.execute("SELECT work_id, data FROM evidence_facts").fetchall())
+    return replace(ctx, data={**(ctx.data or {}), **data})
 
 
 def assess_one(con: psycopg.Connection, work_id: str, ctx: Context) -> Assessment | None:

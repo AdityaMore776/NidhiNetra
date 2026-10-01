@@ -1,0 +1,45 @@
+{
+  "works_with_files": 836,
+  "stamps": 190,
+  "works_with_stamps": 170,
+  "place": {
+    "inside_own_district": 187,
+    "within_5km_of_border": 2,
+    "further_outside": 0,
+    "pin_agrees": 66,
+    "pin_differs": 3
+  },
+  "photo_before_recommendation": [
+    "WS/MP070/2023-2024/7171",
+    "WS/MP720/2024-2025/124252",
+    "WS/MP720/2024-2025/124508"
+  ],
+  "same_spot_same_day": [
+    "WS/MP811/2023-2024/50082",
+    "WS/MP811/2023-2024/50089"
+  ],
+  "reuse_flagged": [
+    "WS/MP18104/2025-2026/152189",
+    "WS/MP18104/2025-2026/154228",
+    "WS/MP807/2023-2024/32921",
+    "WS/MP807/2023-2024/32924"
+  ],
+  "reuse_check": {
+    "needs_checking_flagged": 4,
+    "needs_checking_total": 4,
+    "combined_files_flagged": 0,
+    "combined_files_total": 7
+  },
+  "engine": {
+    "status": {
+      "ASSESSED": 836
+    },
+    "findings": {
+      "PIN_ELSEWHERE": 3,
+      "SAME_FILE_ON_ANOTHER_WORK": 2,
+      "PHOTO_BEFORE_RECOMMENDATION": 3,
+      "SAME_SPOT_SAME_DAY": 2,
+      "SAME_PHOTO_ON_ANOTHER_WORK": 2
+    }
+  }
+}
