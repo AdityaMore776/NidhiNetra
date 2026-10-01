@@ -1,0 +1,51 @@
+work_id,kind,rule,donor,times,score,band,top5_overall,queued,medium_or_above,meant_engine,meant_engine_caught,top5_in_engine,engines_fired
+SCENARIO-COST-00,COST,,WS/MP433/2023-2024/11084,2.0,0.0,LOW,False,False,False,statistical,False,False,[]
+SCENARIO-COST-01,COST,,WS/MP797/2024-2025/151014,2.5,0.0,LOW,False,False,False,statistical,False,False,[]
+SCENARIO-COST-02,COST,,WS/MP699/2023-2024/42841,3.0,0.0,LOW,False,False,False,statistical,False,False,[]
+SCENARIO-COST-03,COST,,WS/MP18054/2025-2026/236343,2.0,0.0,LOW,False,False,False,statistical,False,False,[]
+SCENARIO-COST-04,COST,,WS/MP768/2024-2025/92360,2.5,0.0,LOW,False,False,False,statistical,False,False,[]
+SCENARIO-COST-05,COST,,WS/MP541/2025-2026/179671,3.0,0.015,LOW,False,False,False,statistical,False,False,['compliance']
+SCENARIO-COST-06,COST,,WS/MP18322/2024-2025/140643,2.0,0.0251,LOW,False,False,False,statistical,False,False,['compliance']
+SCENARIO-COST-07,COST,,WS/MP651/2023-2024/57226,2.5,0.0216,LOW,False,False,False,statistical,False,False,['compliance']
+SCENARIO-COST-08,COST,,WS/MP793/2025-2026/259586,3.0,0.09,LOW,True,False,False,statistical,False,False,['compliance']
+SCENARIO-COST-09,COST,,WS/MP18338/2025-2026/250211,2.0,0.0,LOW,False,False,False,statistical,False,False,[]
+SCENARIO-REPEAT-00,REPEAT,,WS/MP18026/2025-2026/183600,,0.1913,MEDIUM,True,False,True,dup_split,True,True,"['compliance', 'dup_split']"
+SCENARIO-REPEAT-01,REPEAT,,WS/MP18403/2025-2026/157876,,0.2177,MEDIUM,True,False,True,dup_split,True,True,"['compliance', 'dup_split']"
+SCENARIO-REPEAT-02,REPEAT,,WS/MP18334/2024-2025/145215,,0.1292,LOW,True,False,False,dup_split,False,False,['compliance']
+SCENARIO-REPEAT-03,REPEAT,,NOREF-76c842ef0e822f,,0.1646,MEDIUM,True,False,True,dup_split,True,True,"['compliance', 'dup_split']"
+SCENARIO-REPEAT-04,REPEAT,,WS/MP558/2025-2026/191041,,0.0675,LOW,False,False,False,dup_split,False,False,['compliance']
+SCENARIO-REPEAT-05,REPEAT,,WS/MP042/2025-2026/225488,,0.015,LOW,False,False,False,dup_split,False,False,['compliance']
+SCENARIO-REPEAT-06,REPEAT,,WS/MP18192/2025-2026/226302,,0.1732,MEDIUM,True,False,True,dup_split,True,True,"['compliance', 'dup_split']"
+SCENARIO-REPEAT-07,REPEAT,,NOREF-a058c951042194,,0.1264,LOW,True,False,False,dup_split,True,True,['dup_split']
+SCENARIO-REPEAT-08,REPEAT,,WS/MP643/2024-2025/146416,,0.1912,MEDIUM,True,False,True,dup_split,True,True,"['compliance', 'dup_split']"
+SCENARIO-REPEAT-09,REPEAT,,WS/MP225/2025-2026/231498,,0.1327,LOW,True,False,False,dup_split,True,True,"['compliance', 'dup_split']"
+SCENARIO-SPLIT-00,SPLIT,,WS/MP18202/2025-2026/161849,,0.1384,LOW,True,False,False,dup_split,True,True,"['compliance', 'dup_split']"
+SCENARIO-SPLIT-01,SPLIT,,WS/MP18202/2025-2026/161849,,0.1384,LOW,True,False,False,dup_split,True,True,"['compliance', 'dup_split']"
+SCENARIO-SPLIT-02,SPLIT,,WS/MP18202/2025-2026/161849,,0.1384,LOW,True,False,False,dup_split,True,True,"['compliance', 'dup_split']"
+SCENARIO-SPLIT-03,SPLIT,,WS/MP18211/2025-2026/215169,,0.1238,LOW,True,False,False,dup_split,True,True,['dup_split']
+SCENARIO-SPLIT-04,SPLIT,,WS/MP18211/2025-2026/215169,,0.1238,LOW,True,False,False,dup_split,True,True,['dup_split']
+SCENARIO-SPLIT-05,SPLIT,,WS/MP18211/2025-2026/215169,,0.1238,LOW,True,False,False,dup_split,True,True,['dup_split']
+SCENARIO-SPLIT-06,SPLIT,,WS/MP18277/2025-2026/240711,,0.1324,LOW,True,False,False,dup_split,True,True,['dup_split']
+SCENARIO-SPLIT-07,SPLIT,,WS/MP18277/2025-2026/240711,,0.1324,LOW,True,False,False,dup_split,True,True,['dup_split']
+SCENARIO-SPLIT-08,SPLIT,,WS/MP18277/2025-2026/240711,,0.1324,LOW,True,False,False,dup_split,True,True,['dup_split']
+SCENARIO-SPLIT-09,SPLIT,,WS/MP18277/2025-2026/240711,,0.1324,LOW,True,False,False,dup_split,True,True,['dup_split']
+SCENARIO-RULE-00,RULE,R07,WS/MP466/2023-2024/65760,,0.18,MEDIUM,True,False,True,compliance,True,True,['compliance']
+SCENARIO-RULE-01,RULE,R07,WS/MP070/2023-2024/73387,,0.18,MEDIUM,True,False,True,compliance,True,True,['compliance']
+SCENARIO-RULE-02,RULE,R07,WS/MP402/2023-2024/72404,,0.18,MEDIUM,True,False,True,compliance,True,True,['compliance']
+SCENARIO-RULE-03,RULE,R08,WS/MP019/2025-2026/248794,,0.3,CRITICAL,True,True,True,compliance,True,True,['compliance']
+SCENARIO-RULE-04,RULE,R08,WS/MP496/2023-2024/32522,,0.3,CRITICAL,True,True,True,compliance,True,True,['compliance']
+SCENARIO-RULE-05,RULE,R08,WS/MP18373/2025-2026/201286,,0.3,CRITICAL,True,True,True,compliance,True,True,['compliance']
+SCENARIO-RULE-06,RULE,R12,NOREF-bafe241ba0b965,,0.18,MEDIUM,True,False,True,compliance,True,True,['compliance']
+SCENARIO-RULE-07,RULE,R12,NOREF-a6d05916ba87ca,,0.2616,HIGH,True,True,True,compliance,True,True,"['compliance', 'statistical']"
+SCENARIO-RULE-08,RULE,R13,WS/MP18265/2025-2026/157239,,0.18,MEDIUM,True,False,True,compliance,True,True,['compliance']
+SCENARIO-RULE-09,RULE,R13,WS/MP18108/2024-2025/162836,,0.18,MEDIUM,True,False,True,compliance,True,True,['compliance']
+SCENARIO-TIMELINE-00,TIMELINE,R06,WS/MP195/2024-2025/144831,,0.18,MEDIUM,True,False,True,compliance,True,True,['compliance']
+SCENARIO-TIMELINE-01,TIMELINE,R06,WS/MP18217/2024-2025/136864,,0.18,MEDIUM,True,False,True,compliance,True,True,['compliance']
+SCENARIO-TIMELINE-02,TIMELINE,R06,WS/MP18377/2025-2026/269543,,0.18,MEDIUM,True,False,True,compliance,True,True,['compliance']
+SCENARIO-TIMELINE-03,TIMELINE,R06,WS/MP053/2024-2025/156992,,0.18,MEDIUM,True,False,True,compliance,True,True,['compliance']
+SCENARIO-TIMELINE-04,TIMELINE,R06,WS/MP423/2025-2026/207785,,0.18,MEDIUM,True,False,True,compliance,True,True,['compliance']
+SCENARIO-TIMELINE-05,TIMELINE,R06,WS/MP18083/2024-2025/165674,,0.18,MEDIUM,True,False,True,compliance,True,True,['compliance']
+SCENARIO-TIMELINE-06,TIMELINE,R06,WS/MP010/2025-2026/208451,,0.18,MEDIUM,True,False,True,compliance,True,True,['compliance']
+SCENARIO-TIMELINE-07,TIMELINE,R06,WS/MP18113/2025-2026/180320,,0.18,MEDIUM,True,False,True,compliance,True,True,['compliance']
+SCENARIO-TIMELINE-08,TIMELINE,R06,WS/MP18225/2024-2025/144615,,0.18,MEDIUM,True,False,True,compliance,True,True,['compliance']
+SCENARIO-TIMELINE-09,TIMELINE,R06,WS/MP18326/2024-2025/160249,,0.18,MEDIUM,True,False,True,compliance,True,True,['compliance']
