@@ -81,3 +81,24 @@ QUEUE_T051 = {
     'NOREF-51e939664e824d': "worth_checking",
     'NOREF-2f57d7228d9395': "worth_checking",
 }
+
+# T053: 15 random works of the final queue (493) whose reasons include the new Guideline rules R12 or
+# R13 (52 such works; results/queue_r12_r13_sample.csv): 15/15 worth checking (a big sum naming no
+# site or size, mostly also priced far above similar works; a cremation ground done the same day).
+QUEUE_T053_R12_R13 = {
+    'WS/MP113/2024-2025/142033': "worth_checking",
+    'WS/MP18311/2024-2025/136624': "worth_checking",
+    'WS/MP196/2025-2026/200404': "worth_checking",
+    'WS/MP755/2025-2026/241554': "worth_checking",
+    'WS/MP317/2025-2026/218824': "worth_checking",
+    'WS/MP456/2023-2024/40002': "worth_checking",
+    'WS/MP18416/2026-2027/274636': "worth_checking",
+    'WS/MP564/2023-2024/103254': "worth_checking",
+    'NOREF-840ee6aa1b9fe3': "worth_checking",
+    'WS/MP027/2023-2024/5065': "worth_checking",
+    'NOREF-b3faa28404cba0': "worth_checking",
+    'WS/MP18004/2024-2025/151986': "worth_checking",
+    'WS/MP113/2025-2026/184382': "worth_checking",
+    'NOREF-27015968d3a1ab': "worth_checking",
+    'WS/MP18004/2024-2025/152146': "worth_checking",
+}

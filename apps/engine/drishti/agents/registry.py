@@ -1,8 +1,8 @@
 """The one list of engines, found by folder, so four people can build four engines apart.
 
-The NidhiNetra blueprint has four detection engines plus an "odd overall" outlier
-signal. Each is a folder `drishti/agents/<id>/` with a module `engine.py` that
-defines
+The NidhiNetra blueprint has four detection engines (its "odd overall" outlier slot was
+replaced by two Guideline Compliance rules, R12 and R13, in T053). Each is a folder
+`drishti/agents/<id>/` with a module `engine.py` that defines
 
     ENGINE = EngineSpec(id=..., name=..., question=..., assess=<fn(work, ctx)>)
 
@@ -44,7 +44,7 @@ class EngineSpec:
     weight_note: str = ""        # why the weight differs from the blueprint, shown on screen
 
 
-# The blueprint's slots. Weights from the spec: 0.30 / 0.20 / 0.20 / 0.20 / 0.10.
+# The blueprint's slots. Weights from the spec: 0.30 / 0.20 / 0.20 / 0.20.
 CORE: tuple[EngineSpec, ...] = (
     EngineSpec("compliance", "Guideline Compliance",
                "Does the work follow the MPLADS guidelines?", weight=0.30, order=1),
@@ -52,10 +52,8 @@ CORE: tuple[EngineSpec, ...] = (
                "Is the project cost unusual for similar works?", weight=0.20, order=2),
     EngineSpec("dup_split", "Duplicate & Split Work",
                "Is this work repeated, or one job cut into pieces?", weight=0.20, order=3),
-    EngineSpec("delay", "Delay & Fund Flow",          # Fund Flow merged in (T410)
-               "Is time or money stuck on this work?", weight=0.20, order=4),
-    EngineSpec("outlier", "Odd Overall",
-               "Is this record unusual taken as a whole?", weight=0.10, order=5),
+    EngineSpec("delay", "Fund Flow",          # was Delay Prediction; prediction removed (T053)
+               "Is money stuck waiting for sanction?", weight=0.20, order=4),
 )
 
 # Ids used by assessments stored before the registry (the deck's four agents).

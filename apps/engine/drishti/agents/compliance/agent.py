@@ -18,6 +18,11 @@ Measured choices (real export, see data/trial/compliance_trial.py):
   R06  an impossible date from a bulk-entry quarter is LOW, elsewhere MEDIUM
        (validation/timeline.py measured why).
   R07  the Eligibility v2 reader (56% precision on a fresh sample): MEDIUM, says "verify".
+  R12  a big sum that does not say what or where (Rs 10 lakh+, above its type's national
+       top, at most six words, no number, no place name): MEDIUM. R13 a construction of
+       Rs 5 lakh+ recorded complete 0-14 days after recommendation, outside a bulk-entry
+       quarter and not a backfilled older work: MEDIUM. Both replaced the Odd Overall engine
+       (T053, owner's choice): read by eye 30/30 and 13/13 (data/trial/odd_rules_trial.py).
   R03 R04 R05 R09 R10 need expenditure, progress or SC/ST-area data that the public
        export does not carry: listed as "could not check", never as passed.
 
@@ -28,6 +33,7 @@ from __future__ import annotations
 
 import json
 import math
+import re
 import time
 from datetime import date
 from functools import cache
@@ -37,11 +43,12 @@ from drishti import reference
 from drishti.agents.compliance.eligibility import script
 from drishti.agents.compliance.eligibility import v2 as inadmissible
 from drishti.agents.contract import AgentResult, Finding, Status
-from drishti.agents.statistical.scope import undescribed
-from drishti.validation.timeline import impossible_date
+from drishti.agents.dup_split.match import place_words
+from drishti.agents.statistical.scope import GOODS, scope, undescribed
+from drishti.validation.timeline import impossible_date, quarter_of
 
 AGENT = "compliance"
-VERSION = "compliance-1.1.0"
+VERSION = "compliance-1.2.0"
 QUESTION = "Does the work follow the MPLADS guidelines?"
 RULES_FILE = Path(reference.__file__).resolve().parent / "rules.json"
 
@@ -52,6 +59,19 @@ CONFIDENCE = 0.9
 R01_FULL_TIMES = 4.0         # R01 reaches its severity at four times the sanction clock
 R02_LOW = (0.15, 0.30)       # one year .. the type's 98th percentile
 R02_FULL_TIMES = 2.0         # R02 reaches MEDIUM at twice the type's 98th percentile
+
+# R12 / R13: the record checks that replaced the Odd Overall engine (T053, owner's choice)
+SCOPE_MIN_RS, SCOPE_MAX_WORDS = 1_000_000, 6
+# a size written as a word is a stated size ("Purchase of Two Ambulance": read by eye, T053)
+WORD_NUMBER = re.compile(r"\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|"
+                         r"twenty|thirty|forty|fifty|hundred|dozen|ek|do|teen|char|paanch)\b",
+                         re.I)
+FAST_MIN_RS, FAST_DAYS = 500_000, 14
+CONSTRUCTION_TYPES = {"ROAD_CC", "ROAD_BT", "FOOTPATH", "CULVERT", "BRIDGE", "COMMUNITY_HALL",
+                      "SCHOOL_BUILDING", "HEALTH_BUILDING", "LIBRARY", "BOUNDARY_WALL",
+                      "TOILET_BLOCK", "DRAIN", "POND", "CHECK_DAM", "CREMATORIUM",
+                      "PLAYGROUND", "BUS_SHELTER"}
+OLD_FY = re.compile(r"\b(20[01]\d|202[0-3])\s*[-/]\s*(\d{2}|20\d{2})\b")   # "(2019-2020)"
 
 
 @cache
@@ -121,7 +141,8 @@ def _finding(rule_id: str, severity: str, text: str, text_hi: str, risk: float |
                              **evidence})
 
 
-def evaluate(work: dict, as_of: date, p98: float | None = None, timeline=None) -> list[Finding]:
+def evaluate(work: dict, as_of: date, p98: float | None = None, timeline=None,
+             type_top: float | None = None) -> list[Finding]:
     out: list[Finding] = []
     status = work.get("status")
     rec, done = work.get("recommended_date"), work.get("completed_date")
@@ -217,6 +238,30 @@ def evaluate(work: dict, as_of: date, p98: float | None = None, timeline=None) -
                             r["message_en"].format(missing=", ".join(missing)),
                             r["message_hi"].format(missing_hi=", ".join(missing_hi)),
                             missing=missing))
+
+    # R12, R13: the two record checks that replaced the Odd Overall engine (T053)
+    desc = work.get("description") or ""
+    type_name = reference.work_type_name(work.get("work_type_code"))
+    if (type_top and amount >= SCOPE_MIN_RS and amount >= type_top
+            and len(desc.split()) <= SCOPE_MAX_WORDS and not re.search(r"\d", desc)
+            and not WORD_NUMBER.search(desc)
+            and not undescribed(desc) and not place_words(desc)):
+        r = rules()["R12"]
+        fmt = {"amount": inr(amount), "text": " ".join(desc.split()), "type": type_name,
+               "top": inr(type_top)}
+        out.append(_finding("R12", r["severity"], r["message_en"].format(**fmt),
+                            r["message_hi"].format(**fmt), value=amount, limit=type_top))
+    if (status == "COMPLETED" and rec and done and amount >= FAST_MIN_RS
+            and work.get("work_type_code") in CONSTRUCTION_TYPES
+            and scope(desc) != GOODS and 0 <= (done - rec).days <= FAST_DAYS
+            and not OLD_FY.search(desc)
+            and (timeline is None or timeline.distinctiveness(quarter_of(rec)) >= 0.8)):
+        r = rules()["R13"]
+        fmt = {"amount": inr(amount), "type": type_name, "days": (done - rec).days,
+               "rec": rec.isoformat(), "done": done.isoformat()}
+        out.append(_finding("R13", r["severity"], r["message_en"].format(**fmt),
+                            r["message_hi"].format(**fmt), value=(done - rec).days,
+                            limit=FAST_DAYS))
     return out
 
 
@@ -225,7 +270,8 @@ def not_checked() -> list[str]:
             if not r["evaluable"]]
 
 
-def assess(work: dict, as_of: date, p98: float | None = None, timeline=None) -> AgentResult:
+def assess(work: dict, as_of: date, p98: float | None = None, timeline=None,
+           type_top: float | None = None) -> AgentResult:
     t0 = time.perf_counter()
     if not work.get("status"):
         return AgentResult(agent=AGENT, status=Status.NOT_ASSESSABLE, verdict="NOT_ASSESSABLE",
@@ -234,7 +280,7 @@ def assess(work: dict, as_of: date, p98: float | None = None, timeline=None) -> 
                                     "stage cannot be checked against the guidelines. This is "
                                     "not a clean chit.",
                            duration_ms=int((time.perf_counter() - t0) * 1000))
-    findings = evaluate(work, as_of, p98, timeline)
+    findings = evaluate(work, as_of, p98, timeline, type_top)
     names = ", ".join(p["name"] for p in _pauses()["periods"])
     limitations = ["Could not check (the public export does not carry the data): "
                    + " ".join(not_checked()),

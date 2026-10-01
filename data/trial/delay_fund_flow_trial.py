@@ -30,7 +30,7 @@ def main() -> None:
     status, codes, money = Counter(), Counter(), Counter()
     backlog = []
     for w in works_records(works):
-        r = assess(w, ctx.as_of, ctx.stats.delay, ctx.data.get("backlog"))
+        r = assess(w, ctx.as_of, ctx.data.get("backlog"))
         status[r.status.value] += 1
         for f in r.findings:
             codes[f.code] += 1

@@ -3,8 +3,7 @@
 Outlines: reference/district_outlines.json (data/build_geo_reference.py, from the LGD
 district boundaries the map uses). Works carry Census-2011 district codes in `district_lgd`
 (a trap found 26 Sept 2026), so outlines are keyed by that census code, with the real LGD code
-kept. PINs: reference/pin_district.json (India Post PIN -> district; its codes are Census-2011
-codes too, so a PIN is compared with the work's own code).
+kept.
 
 The published outlines are simplified: a point within 5 km outside is "at the border", never a
 finding (the trial's rule).
@@ -27,11 +26,6 @@ BORDER_KM = 5.0
 @cache
 def outlines() -> dict[str, dict]:
     return json.loads((REF / "district_outlines.json").read_text(encoding="utf-8"))
-
-
-@cache
-def pin_district() -> dict[str, str]:
-    return json.loads((REF / "pin_district.json").read_text(encoding="utf-8"))
 
 
 def _rings(geom: dict) -> list[list[list[float]]]:

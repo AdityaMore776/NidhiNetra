@@ -14,17 +14,13 @@ its location is named in the description (the trial's rule; 284 of 286 files bel
   P2 SANCTIONED_BEFORE_RECOMMENDATION  sanction dated 7+ days before the recommendation: one
                              of the dates is wrong (0.50; OCR can misread, so never "hard")
   P3 PAID_MORE_ON_PAPER       the certificates show more paid than the portal amount, by
-                             more than 10% and Rs 10,000 (0.30); less paid = only an
-                             instalment's certificate attached: a note (0.05)
+                             more than 10% and Rs 10,000 (0.30)
   P4 OTHER_WORKS_PAPERS      papers attached, none of them this work's (0.30)
-  P5 STILL_IN_PROGRESS_ON_PAPER  portal says complete, every own certificate says "in
-                             progress": a note (0.05), because 282 of 285 completed pilot works
-                             do this (portal habit, not a finding about the work)
-  P6 CERTIFICATION_BLANK     the officer's certification boxes are all empty: a note (0.0),
-                             427 of 429 pilot pages
-  C1 VENDOR_CONCENTRATION    the vendor (by its unique code, never a name) holds a large share
-                             of the district's certified works: a FACT; it only adds a small
-                             note (0.10) when another paperwork finding exists
+  facts     the vendor's share of the district's certified works, by its unique code (never a
+            name), is kept as evidence, never a finding
+  removed (T053) notes found on nearly every certificate, so they said nothing about the
+            work: "in progress" on paper (282/285), blank certification boxes (427/429), an
+            instalment-only certificate, a vendor-share note
 
   NOT_APPLICABLE  no papers attached on eSAKSHI (most works: the pilot covers 837)
   NOT_ASSESSABLE  papers attached, but the local reader can read none of them (Hindi,
@@ -42,12 +38,11 @@ from drishti.agents.compliance.agent import graded, mcc_days
 from drishti.agents.contract import AgentResult, Finding, Status
 
 AGENT = "paperwork"
-VERSION = "paperwork-1.0.0"
+VERSION = "paperwork-1.1.0"
 QUESTION = "Do the work's own papers agree with the portal?"
 CONFIDENCE = 0.8              # typed portal forms, read by OCR: 6 compared field by field all right
 EARLY_DAYS = 7
 PAY_TOL, PAY_MIN = 0.10, 10_000.0
-VENDOR_SHARE, VENDOR_MIN_WORKS = 0.30, 10
 
 
 def _d(x) -> date | None:
@@ -167,16 +162,14 @@ def assess(work: dict, vendors=None) -> AgentResult:
     # "differences" were part payments or a repeated page)
     paid = {(str(d0), a) for c in own for d0, a in c.get("payments") or [] if a}
     places = {(c.get("location") or "").strip().lower() for c in own if c.get("location")}
+    notes: list[str] = []
     if len(places) > 1 and not any(names_its_place(c, work) for c in own):
         # several works' certificates in one file, and the description names none of their
         # places: which payments are this work's cannot be told (read by eye: Malakpur and
         # Sherpur, Rs 1.07 lakh each, in one file)
-        findings.append(Finding(
-            "PAPERS_OF_SEVERAL_WORKS",
-            f"The attached file carries certificates for {len(places)} places, and the "
-            "description names none of them, so this work's own payments cannot be picked "
-            "out. Ask for this work's own certificate.",
-            hard=False, risk=0.05, evidence={"places": len(places)}))
+        notes.append(f"The attached file carries certificates for {len(places)} places and the "
+                     "description names none of them, so this work's own payments were not "
+                     "added up.")
         paid = set()
     if own and paid and amount > 0:
         total = sum(a for _d0, a in paid)
@@ -186,25 +179,9 @@ def assess(work: dict, vendors=None) -> AgentResult:
                 f"The certificates show {_lakh(total)} paid; the portal records "
                 f"{_lakh(amount)}. Check which figure is right.",
                 hard=False, risk=0.30, evidence={"paid_on_papers": total, "portal": amount}))
-        elif total < amount - max(PAY_MIN, PAY_TOL * amount):
-            findings.append(Finding(
-                "PART_PAYMENT_PAPERS_ONLY",
-                f"The attached certificates cover {_lakh(total)} ({total / amount:.0%}) of the "
-                f"{_lakh(amount)} on the portal; the certificate for the rest is not attached.",
-                hard=False, risk=0.05, evidence={"paid_on_papers": total, "portal": amount}))
-    statuses = [c.get("status") for c in own if c.get("status")]
-    if work.get("status") == "COMPLETED" and statuses and all(s == "inprogress" for s in statuses):
-        findings.append(Finding(
-            "STILL_IN_PROGRESS_ON_PAPER",
-            "The portal says complete, but every certificate attached says \"in progress\". "
-            "Most completed works in the pilot do this; ask for the final certificate.",
-            hard=False, risk=0.05, evidence={"certificates": len(statuses)}))
-    cert_pages = [p for f in files for p in f.get("certification_pages") or []]
-    if cert_pages and not any(p.get("boxes_marked") for p in cert_pages):
-        findings.append(Finding(
-            "CERTIFICATION_BLANK",
-            "The officer's certification boxes on the certificate are all empty.",
-            hard=False, risk=0.0, evidence={"pages": len(cert_pages)}))
+    # T053: notes that sit on nearly every certificate say nothing about this work and were
+    # removed: "in progress" on paper while complete on the portal (282 of 285), blank
+    # certification boxes (427 of 429), a certificate for one instalment only (most works).
 
     codes = sorted({c["vendor_code"] for c in own if c.get("vendor_code")})
     vendor_facts = []
@@ -213,17 +190,7 @@ def assess(work: dict, vendors=None) -> AgentResult:
             share, n = vendors.share(work.get("district_lgd"), code)
             vendor_facts.append({"vendor_code": code, "district_share": share,
                                  "district_works": n})
-    serious = [f for f in findings if f.risk >= 0.30]
-    strong = [v for v in vendor_facts if v["district_works"] >= VENDOR_MIN_WORKS
-              and v["district_share"] >= VENDOR_SHARE]
-    if serious and strong:
-        v = strong[0]
-        findings.append(Finding(
-            "VENDOR_CONCENTRATION",
-            f"The vendor ({v['vendor_code']}) holds {v['district_share']:.0%} of the "
-            f"{v['district_works']:,} works with certificates in this district. A fact, worth "
-            "knowing alongside the finding above.",
-            hard=False, risk=0.10, evidence=v))
+    # the vendor's share of the district is a fact (evidence), never a finding of its own
 
     findings.sort(key=lambda f: -f.risk)
     top = findings[0] if findings else None
@@ -232,7 +199,7 @@ def assess(work: dict, vendors=None) -> AgentResult:
                     "the portal as far as they can be read.")
     else:
         headline = top.text
-    limitations = ["Read from scanned papers by local OCR; a misread date or amount is "
+    limitations = notes + ["Read from scanned papers by local OCR; a misread date or amount is "
                    "possible, so every finding says check."]
     if not any(_d(c.get("sanction_date")) for c in own):
         limitations.append("No sanction date could be read on this work's certificates (the "

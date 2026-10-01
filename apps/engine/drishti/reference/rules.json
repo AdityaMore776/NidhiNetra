@@ -109,6 +109,20 @@
       "condition": "no amount, no work type, no recommendation date, or a description that does not say what is built or bought",
       "message_en": "The record is missing {missing}, so parts of it cannot be checked.",
       "message_hi": "रिकॉर्ड में {missing_hi} नहीं है, इसलिए इसके कुछ हिस्सों की जाँच नहीं हो सकती।"
+    },
+    {
+      "id": "R12", "code": "NO_STATED_SCOPE", "title": "Big sanction that does not say what or where",
+      "guideline_ref": "record rule", "severity": "MEDIUM", "evaluable": true,
+      "condition": "Rs 10 lakh or more, above the top (p90) of its work type nationally, and a description of at most six words with no number (count, length, plot) and no place name. Replaces the Odd Overall engine (T053): 30 of 30 read by eye as a question the record cannot answer.",
+      "message_en": "{amount} for \"{text}\": the record does not say where, or how much is built or bought, so the work cannot be checked or inspected. Most {type} works cost up to {top}. Ask for the site and the size.",
+      "message_hi": "\"{text}\" के लिए {amount}: रिकॉर्ड में न स्थान है, न यह कि कितना बनाया या खरीदा गया, इसलिए कार्य की जाँच या निरीक्षण नहीं हो सकता। स्थान और मात्रा माँगें।"
+    },
+    {
+      "id": "R13", "code": "BUILT_IN_DAYS", "title": "Construction recorded complete within days",
+      "guideline_ref": "record rule", "severity": "MEDIUM", "evaluable": true,
+      "condition": "a building, road, drain, pond or similar of Rs 5 lakh or more recorded complete 0-14 days after recommendation, outside a bulk-entry quarter, and not a backfilled older work. Replaces the Odd Overall engine (T053): 13 of 13 read by eye as dates that cannot be right.",
+      "message_en": "{amount} {type} work recorded complete {days} days after it was recommended ({rec} to {done}); a construction of this size cannot be finished that fast. Check the completion certificate and the dates.",
+      "message_hi": "{amount} का {type} कार्य अनुशंसा के {days} दिन बाद ({rec} से {done}) पूर्ण दर्ज है; इस आकार का निर्माण इतनी जल्दी पूरा नहीं हो सकता। पूर्णता प्रमाणपत्र और तिथियों की जाँच करें।"
     }
   ]
 }

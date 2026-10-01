@@ -2,7 +2,6 @@ import pytest
 
 from drishti.agents.contract import AgentResult, Finding, Status, not_built
 from drishti.fusion.fuse import CRITICAL, HIGH, MEDIUM, band_of, fuse, weights
-from drishti.validation.checks import Issue, Severity
 
 
 def _r(agent, risk, hard=False, status=Status.ASSESSED, code="X", evidence=None):
@@ -20,9 +19,9 @@ def _all(*results):
 def test_blueprint_weights_come_from_the_registry():
     w = weights()
     assert w["compliance"] == 0.30 and w["statistical"] == 0.20 and w["dup_split"] == 0.20
-    # shown, not counted: Delay is below its accuracy target, Odd Overall's random flags read
-    # 3/30 worth a look (#63), and the evidence engines have pilot evidence only
-    assert w["outlier"] == 0.0 and w["delay"] == 0.0
+    # shown, not counted: Fund Flow's wait is R01's, the evidence engines have pilot evidence
+    # only; the outlier slot was replaced by Compliance R12/R13 (T053)
+    assert "outlier" not in w and w["delay"] == 0.0
     assert w["paperwork"] == 0.0 and w["photo_evidence"] == 0.0
 
 
@@ -43,9 +42,8 @@ def test_only_assessed_results_count():
     assert f.score == 0.0
 
 
-def test_validation_issues_are_shown_not_counted():
-    f = fuse(_all(), [Issue("IMPOSSIBLE_TIMELINE", Severity.WARN, "m", risk=0.3)])
-    assert f.score == 0.0
+def test_no_engine_signal_scores_zero():
+    assert fuse(_all()).score == 0.0
 
 
 @pytest.mark.parametrize("score,band", [(0.0, "LOW"), (MEDIUM - 1e-9, "LOW"), (MEDIUM, "MEDIUM"),
@@ -106,4 +104,4 @@ def test_limited_when_a_counted_engine_could_not_assess():
     assert f.limited is True
     g = fuse(_all(_r("compliance", 0.0), _r("statistical", 0.0), _r("dup_split", 0.0),
                   _r("delay", 0.0, status=Status.NOT_APPLICABLE)), [])
-    assert g.limited is False       # delay is not counted; outlier is not built
+    assert g.limited is False       # fund flow is not counted

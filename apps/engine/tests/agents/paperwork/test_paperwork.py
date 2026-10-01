@@ -87,11 +87,11 @@ def test_sanction_dated_before_the_recommendation_needs_checking():
     assert r.verdict == "SANCTIONED_BEFORE_RECOMMENDATION" and not r.hard
 
 
-def test_an_instalment_certificate_is_a_note_and_a_repeated_page_counts_once():
-    part = _cert(payments=[["2024-07-15", 100_000.0]])
+def test_an_instalment_certificate_is_not_a_finding_and_a_repeated_page_counts_once():
+    # T053: an instalment-only certificate is normal; a repeated page must not look like more
+    part = _cert(payments=[["2024-07-15", 200_000.0]])
     r = assess(_work(recommended_date=date(2024, 3, 1)) | {"evidence": _evidence(part, part)})
-    f = next(f for f in r.findings if f.code == "PART_PAYMENT_PAPERS_ONLY")
-    assert f.risk == pytest.approx(0.05) and "Rs 1.00 lakh (34%)" in f.text
+    assert r.risk == 0 and not r.findings
 
 
 def test_more_paid_on_paper_than_on_the_portal_is_a_finding():
@@ -109,18 +109,17 @@ def test_another_works_papers_and_a_file_of_several_works():
     w = _work(description="High mast light in my constituency")
     assert len(own_certificates([a, b], w)) == 2
     r = assess(w | {"evidence": _evidence(a, b)})
-    assert "PAPERS_OF_SEVERAL_WORKS" in {f.code for f in r.findings}
-    assert "PAID_MORE_ON_PAPER" not in {f.code for f in r.findings}
+    assert not r.findings                      # said in the limitations, not a finding
+    assert any("certificates for 2 places" in lim for lim in r.limitations)
 
 
-def test_completed_on_the_portal_in_progress_on_paper_is_only_a_note():
+def test_notes_found_on_nearly_every_certificate_are_not_raised():
+    # T053: "in progress" on paper (282/285) and blank boxes (427/429) say nothing about a work
     r = assess(_work(recommended_date=date(2024, 3, 1)) | {"evidence": _evidence(_cert())})
-    f = next(f for f in r.findings if f.code == "STILL_IN_PROGRESS_ON_PAPER")
-    assert f.risk == pytest.approx(0.05)
-    assert "CERTIFICATION_BLANK" in {f.code for f in r.findings}
+    assert r.verdict == "PAPERS_AGREE" and not r.findings
 
 
-def test_vendor_concentration_is_a_fact_that_only_joins_another_finding():
+def test_vendor_concentration_is_a_fact_never_a_finding():
     works = [_work(work_id=f"W{i}") | {"evidence": _evidence(_cert())} for i in range(12)]
     vendors = VendorIndex.build(works)
     assert vendors.share("162", "V123456789012") == (1.0, 12)
@@ -130,7 +129,7 @@ def test_vendor_concentration_is_a_fact_that_only_joins_another_finding():
     assert quiet.evidence["vendors"][0]["district_share"] == 1.0
     loud = assess(_work(recommended_date=date(2023, 6, 1)) | {"evidence": _evidence(_cert())},
                   vendors)
-    assert "VENDOR_CONCENTRATION" in {f.code for f in loud.findings}
+    assert {f.code for f in loud.findings} == {"SANCTION_LATE"}   # the vendor stays a fact
 
 
 def test_no_papers_is_not_applicable_and_unreadable_papers_not_assessable():

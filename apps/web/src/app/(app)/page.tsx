@@ -33,12 +33,11 @@ export default function Dashboard() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <Kpi label="Works" value={count(s.works)} />
         <Kpi label="Money recommended" value={inr(s.amount)} />
         <Kpi label="Need review" value={count(review)} sub={`${((review / s.works) * 100).toFixed(2)}% of works`} color="var(--medium)" />
         <Kpi label="Critical" value={count(s.bands.CRITICAL ?? 0)} color={BAND_COLOR.CRITICAL} />
-        <Kpi label="Record issues found" value={count(s.validation_alerts)} color="var(--inputs)" />
       </div>
 
       <div className="grid lg:grid-cols-5 gap-3">

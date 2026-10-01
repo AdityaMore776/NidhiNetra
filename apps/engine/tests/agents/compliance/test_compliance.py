@@ -157,3 +157,37 @@ def test_compliance_always_applies_so_there_is_no_not_applicable_case():
     # every record has a stage the guidelines speak to; a recommended-only work is assessed
     r = assess(_work(status="RECOMMENDED", recommended_date=date(2026, 5, 1)), AS_OF)
     assert r.status == Status.ASSESSED
+
+
+def test_r12_a_big_sum_that_does_not_say_what_or_where():
+    # T053: replaced the Odd Overall engine; 30/30 read as a question the record cannot answer
+    big = _work(amount=5_000_000.0, description="Building")
+    f = next(f for f in evaluate(big, AS_OF, type_top=1_000_000.0) if f.evidence["rule"] == "R12")
+    assert f.evidence["severity"] == "MEDIUM" and "does not say where" in f.text
+    # a place, a number, a small sum, or a sum ordinary for the type: not raised
+    for kw in ({"description": "Building at Sitapur village"},
+               {"description": "Building of 2 rooms"},
+               {"amount": 900_000.0},
+               {"description": "Building", "amount": 900_000.0}):
+        fs = evaluate(_work(**({"amount": 5_000_000.0, "description": "Building"} | kw)), AS_OF,
+                      type_top=1_000_000.0 if kw.get("amount", 0) != 900_000.0 else 2_000_000.0)
+        assert "R12" not in _codes(fs), kw
+
+
+def test_r13_a_building_recorded_complete_within_days():
+    done = _work(work_type_code="COMMUNITY_HALL", amount=1_500_000.0, status="COMPLETED",
+                 description="Construction of community hall at Kayakkunnu colony",
+                 recommended_date=date(2025, 12, 15), completed_date=date(2025, 12, 15))
+    f = next(f for f in evaluate(done, AS_OF) if f.evidence["rule"] == "R13")
+    assert "0 days after it was recommended" in f.text
+    # a purchase, a slow build, a cheap job, or a backfilled older work: not raised
+    for kw in ({"work_type_code": "STREET_LIGHT"}, {"completed_date": date(2026, 3, 1)},
+               {"amount": 300_000.0},
+               {"description": "Community hall at Kayakkunnu (2019-2020)"}):
+        assert "R13" not in _codes(evaluate(done | kw, AS_OF)), kw
+
+
+def test_r12_a_size_written_as_a_word_is_a_stated_size():
+    fs = evaluate(_work(amount=5_300_000.0, description="Purchase of Two Ambulance"), AS_OF,
+                  type_top=1_000_000.0)
+    assert "R12" not in _codes(fs)

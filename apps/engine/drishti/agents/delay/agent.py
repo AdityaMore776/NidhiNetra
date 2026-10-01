@@ -1,32 +1,22 @@
-"""Delay & Fund Flow engine: is time or money stuck on this work? (stored id `delay`)
+"""Fund Flow engine: is money stuck waiting for sanction? (stored id `delay`)
 
-T410 merged the 12-checker plan's C2 Fund Flow into the Delay engine (T051, 12 -> 8): both ask
-whether a work's time or money is stuck, from the same dates.
+T053 (1 Oct 2026). This slot held the blueprint's Delay Prediction, then Delay & Fund Flow
+(T410). The prediction was removed: two methods (LightGBM, then a late-rate ladder) both
+ranked works at about 0.70 AUC against a 0.80 target, and with 73% of works finishing late
+anyway, "likely to run late" told an officer little that Guideline Compliance R02 (how
+overdue an open work really is) does not. What stays is what was exact on real data
+(data/trial/delay_fund_flow_trial.py, FINDINGS C2):
 
-DELAY (open works under a year old). v2 (T051): the late-rate ladder in rates.py (office ->
-district x type -> state x type -> type), computed for any work from stored counts. Measured
-(results/delay_rates.json): strict backtest 0.705, unseen districts 0.685, both below the 0.80
-target, so the engine is shown, not counted.
-  signal   how much likelier to run late than the average work: (p - base) / (1 - base)
-  finding  only when p reaches the riskiest tenth of open works (a cut stored with the
-           counts, never below max(base + 0.15, 0.90)) AND the estimate rests on at least 30 past
-           works; the sentence quotes those works' own record ("this office finished 3 of its
-           212 past works within a year"), never a bare repeated percentage
-
-FUND FLOW (works still waiting for sanction). From data/trial/fund_flow_trial.py (FINDINGS C2):
   TERM_ENDED_UNSANCTIONED  recommended under a Lok Sabha term that has ended (reference/
-                           rules.json "terms") and still not sanctioned: the money of a dissolved
-                           House waiting (3,331 works, Rs 169 crore in the export): 0.40
-  OFFICE_SANCTION_BACKLOG  the implementing office still has at least twice its district's share
-                           of old recommendations waiting (20+ of them): 0.20; the office's and
-                           the district's counts are always given as facts
-How long this work has waited is Guideline Compliance's R01, so it is not counted here again.
+                           rules.json "terms") and still not sanctioned: the money of a
+                           dissolved House waiting (3,331 works, Rs 168.9 crore): 0.40
+  OFFICE_SANCTION_BACKLOG  the implementing office still has at least twice its district's
+                           share of recommendations older than the sanction clock waiting
+                           (20+ of them): 0.20; the counts are always given as facts
+How long this work has waited is Guideline Compliance's R01, so it is not counted again.
 
-Wording never says a work "will be late"; it says how works like it have gone.
-
-  NOT_APPLICABLE  completed works, and open works past one year with no fund-flow fact (their
-                  delay is Guideline Compliance R02's)
-  NOT_ASSESSABLE  no recommendation date, or no late-rate table loaded for an open young work
+  NOT_APPLICABLE  sanctioned or completed works: no money is waiting for sanction
+  NOT_ASSESSABLE  a recommended work with no recommendation date
 """
 
 from __future__ import annotations
@@ -40,15 +30,12 @@ from pathlib import Path
 from drishti import reference
 from drishti.agents.contract import AgentResult, Finding, Status
 from drishti.agents.delay.backlog import OfficeBacklog
-from drishti.agents.delay.rates import DelayRates
 
 AGENT = "delay"
-VERSION = "delay-fund-flow-1.0.0"
-QUESTION = "Is time or money stuck on this work?"
-HORIZON_DAYS = 365
-FLAG_MARGIN, FLAG_FLOOR, FLAG_MIN_WORKS = 0.15, 0.90, 30
+VERSION = "fund-flow-1.0.0"
+QUESTION = "Is money stuck waiting for sanction?"
 BACKLOG_TIMES, BACKLOG_MIN = 2.0, 20
-CONFIDENCE = 0.6       # AUC ~0.70 on a strict backtest: a ranking aid, not a forecast
+CONFIDENCE = 0.9       # dates and counts from the record, no prediction
 
 
 @cache
@@ -64,116 +51,53 @@ def _quiet(status: Status, text: str, t0: float) -> AgentResult:
                        duration_ms=int((time.perf_counter() - t0) * 1000))
 
 
-def _whose(level: str, work: dict) -> str:
-    t = reference.work_type_name(work.get("work_type_code"))
-    return {"office": "this implementing office",
-            "district_type": f"{t} works in this district",
-            "state_type": f"{t} works in this state",
-            "type": f"{t} works across the scheme"}.get(level, "all works")
-
-
-def _record(level: str, n: int, rate: float, work: dict) -> str:
-    on_time = round(n * (1 - rate))
-    if level == "office":
-        return (f"{_whose(level, work)} finished {on_time:,} of its {n:,} past works within a "
-                "year of recommendation")
-    return f"{on_time:,} of {n:,} past {_whose(level, work)} finished within a year"
-
-
-def fund_flow(work: dict, as_of: date, backlog: OfficeBacklog | None) -> tuple[list[Finding],
-                                                                             dict]:
-    """Facts and findings for a work still waiting for sanction."""
-    out: list[Finding] = []
-    facts: dict = {}
+def assess(work: dict, as_of: date, backlog: OfficeBacklog | None = None) -> AgentResult:
+    t0 = time.perf_counter()
     if work.get("status") != "RECOMMENDED":
-        return out, facts
+        return _quiet(Status.NOT_APPLICABLE, "Sanctioned or complete: no money is waiting for "
+                      "sanction on this work.", t0)
     rec = work.get("recommended_date")
+    if rec is None:
+        return _quiet(Status.NOT_ASSESSABLE, "Cannot be assessed: the record carries no "
+                      "recommendation date. This is not a clean chit.", t0)
+    findings: list[Finding] = []
+    facts: dict = {"days_waiting": (as_of - rec).days}
+    limitations: list[str] = []
     term = work.get("term")
     ended = ended_terms().get(term or "")
-    if ended and rec and as_of > ended:
-        out.append(Finding(
+    if ended and as_of > ended:
+        findings.append(Finding(
             "TERM_ENDED_UNSANCTIONED",
             f"Recommended under the {term}, whose term ended on {ended:%d %b %Y}; still not "
             f"sanctioned {(as_of - ended).days:,} days later. Check whether the work will go "
             "ahead or its money should be released.",
             hard=False, risk=0.40, evidence={"term": term, "term_ended": str(ended)}))
-    if backlog is not None and work.get("agency_name"):
-        clock = int(reference.clause("SANCTION_PERIOD")["establishes"]["sanction_period_days"])
-        ow, on = backlog.office(work.get("district_lgd"), work.get("agency_name"), as_of, clock)
-        dw, dn = backlog.district(work.get("district_lgd"), as_of, clock)
-        facts = {"office_waiting": ow, "office_recommended": on, "district_waiting": dw,
-                 "district_recommended": dn}
-        o_share, d_share = (ow / on if on else 0.0), (dw / dn if dn else 0.0)
-        if ow >= BACKLOG_MIN and d_share > 0 and o_share >= BACKLOG_TIMES * d_share:
-            out.append(Finding(
-                "OFFICE_SANCTION_BACKLOG",
-                f"This implementing office still has {ow:,} of its {on:,} recommendations older "
-                f"than {clock} days waiting for sanction ({o_share:.0%}); across the district "
-                f"{dw:,} of {dn:,} ({d_share:.0%}). Check the office's sanction pipeline.",
-                hard=False, risk=0.20, evidence=facts))
-    return out, facts
-
-
-def assess(work: dict, as_of: date, rates: DelayRates | None,
-           backlog: OfficeBacklog | None = None) -> AgentResult:
-    t0 = time.perf_counter()
-    if work.get("status") == "COMPLETED":
-        return _quiet(Status.NOT_APPLICABLE, "The work is complete; no time or money is "
-                      "waiting on it.", t0)
-    rec = work.get("recommended_date")
-    if rec is None:
-        return _quiet(Status.NOT_ASSESSABLE, "Cannot be assessed: the record carries no "
-                      "recommendation date. This is not a clean chit.", t0)
-    age = (as_of - rec).days
-    findings, facts = fund_flow(work, as_of, backlog)
-    limitations = []
-    if work.get("status") == "RECOMMENDED" and work.get("house") == "Rajya Sabha":
+    if work.get("house") == "Rajya Sabha":
         limitations.append("Rajya Sabha members' terms are individual and not in the data, so "
                            "an ended term is not checked for this work.")
-
-    p = base = None
-    est = None
-    headline = None
-    if age <= HORIZON_DAYS:
-        est = rates.estimate(work) if rates is not None else None
-        if est is None and not findings:
-            return _quiet(Status.NOT_ASSESSABLE, "Cannot be assessed: no record of past "
-                          "completion times is loaded. This is not a clean chit.", t0)
-    if est is not None:
-        base, p = rates.base, est.p_late
-        signal = max(0.0, min(1.0, (p - base) / (1 - base))) if base < 1 else 0.0
-        record = _record(est.level, est.n, est.rate, work)
-        limitations.append("Learned from how past works went; it cannot see site conditions, "
-                           "and most MPLADS works miss the one-year norm anyway.")
-        if est.level != "office":
-            limitations.append(f"No past record for this implementing office yet; the estimate "
-                               f"uses {_whose(est.level, work)}.")
-        cut = max(base + FLAG_MARGIN, FLAG_FLOOR, rates.flag_p or 0.0)
-        if p >= cut and est.n >= FLAG_MIN_WORKS:
-            findings.append(Finding(
-                "LIKELY_LATE",
-                f"Open {age:,} days. Works like it usually run past the one-year norm: "
-                f"{record} (all works: {1 - base:.0%} within a year). Worth an early progress "
-                "check.",
-                hard=False, risk=signal,
-                evidence={"p_late": p, "base_rate": base, "level": est.level, "n": est.n,
-                          "rate": est.rate, "steps": [list(s) for s in est.steps]}))
-        else:
-            headline = (f"Open {age:,} days; {record}. Not among the works most likely to run "
-                        "late.")
-    elif not findings:
-        return _quiet(Status.NOT_APPLICABLE, f"Already open {age:,} days, past the one-year "
-                      "norm; Guideline Compliance reports how overdue it is.", t0)
-
+    clock = int(reference.clause("SANCTION_PERIOD")["establishes"]["sanction_period_days"])
+    sentence = ""
+    if backlog is not None and work.get("agency_name"):
+        ow, on = backlog.office(work.get("district_lgd"), work.get("agency_name"), as_of, clock)
+        dw, dn = backlog.district(work.get("district_lgd"), as_of, clock)
+        facts |= {"office_waiting": ow, "office_recommended": on, "district_waiting": dw,
+                  "district_recommended": dn}
+        o_share, d_share = (ow / on if on else 0.0), (dw / dn if dn else 0.0)
+        sentence = (f"This implementing office still has {ow:,} of its {on:,} recommendations "
+                    f"older than {clock} days waiting for sanction ({o_share:.0%}); across the "
+                    f"district {dw:,} of {dn:,} ({d_share:.0%}).")
+        if ow >= BACKLOG_MIN and d_share > 0 and o_share >= BACKLOG_TIMES * d_share:
+            findings.append(Finding("OFFICE_SANCTION_BACKLOG",
+                                    sentence + " Check the office's sanction pipeline.",
+                                    hard=False, risk=0.20, evidence=dict(facts)))
     findings.sort(key=lambda f: -f.risk)
     top = findings[0] if findings else None
-    risk = max([f.risk for f in findings] + ([signal] if est is not None else []))
+    headline = top.text if top else (
+        f"Waiting {facts['days_waiting']:,} days for sanction (Guideline Compliance judges the "
+        "wait); its term has not ended" + (f". {sentence}" if sentence else "."))
     return AgentResult(
         agent=AGENT, status=Status.ASSESSED,
-        verdict=top.code if top else "ORDINARY_DELAY_RISK",
-        risk=risk, confidence=CONFIDENCE, hard=False,
-        headline=top.text if top else headline, version=VERSION,
-        findings=findings, limitations=limitations,
-        evidence={"p_late": p, "base_rate": base, "level": est.level if est else None,
-                  "n": est.n if est else None, "days_open": age, **facts},
+        verdict=top.code if top else "NOTHING_STUCK_BEYOND_THE_WAIT",
+        risk=top.risk if top else 0.0, confidence=CONFIDENCE, hard=False, headline=headline,
+        version=VERSION, findings=findings, limitations=limitations, evidence=facts,
         duration_ms=int((time.perf_counter() - t0) * 1000))

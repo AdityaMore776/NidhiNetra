@@ -64,8 +64,6 @@ def _normalise(work: dict) -> dict:
 def row_for(a: Assessment) -> dict:
     row = a.to_row()
     alerts = [r.agent for r in a.agents if r.assessed and r.risk > 0]
-    if any(i.risk > 0 for i in a.validation):
-        alerts.append("validation")
     top = max((r for r in a.agents if r.assessed and r.risk > 0), key=lambda r: r.risk,
               default=None)
     row["alerts"] = alerts

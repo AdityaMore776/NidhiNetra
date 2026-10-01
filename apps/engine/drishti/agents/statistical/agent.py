@@ -17,13 +17,26 @@ at the same score. v2 changes what is compared and how:
                  district peers AND above the top for the state (or country): a round
                  Rs 5 lakh road next to Rs 1 lakh district peers is not a mark-up when
                  Rs 5 lakh is ordinary for the state
-  how far        far above every similar work (25x the median) is worded as a scope
-                 question ("check what it covers and that its type is right"), not a
-                 mark-up: at that distance it is almost always a bigger or different job
+  how far        far above every similar work (10x the median) is a bigger or different
+                 job, said and not flagged
 
-The signal (risk) grows with how far above the top of the range the work sits, so
-flags no longer all score the same. A peer range is not a schedule of rates: every
-finding here is soft, and says "check", never that the amount is wrong.
+T053 (1 Oct 2026), the owner: "it always flags the money as high even on low-risk works".
+The card coloured anything above the usual top red although the engine asks nothing there,
+and three kinds of flag were almost never a real price question when read by eye:
+"several sites in one amount" 0/48, "far above every similar work" 3/18, "per unit above"
+0/3; "well below similar works" was never shown to matter. Those four are now plain
+statements with no risk. What is left:
+
+  COST_ABOVE_PEERS  above the COMFORT LIMIT: the highest of twice the district's usual top,
+                    the state's (or country's) top, and twice the top for works described
+                    like this. Up to it is the comfort zone: room for a bigger scope or a
+                    contingency margin, never questioned. 54/128 read as real price questions.
+  UNIT_RATE_ABOVE   a road's cost per metre far above the length curve and published rates.
+
+Every result carries `comfort_high` (per comparison row and overall), so the card shows
+the usual range, the comfort zone and only beyond it a question. The signal grows with how
+far above the range the work sits. A peer range is not a schedule of rates: every finding
+says "check", never that the amount is wrong.
 
 The outside-constituency ceiling and the overdue check moved to Guideline Compliance
 (R08, R02, T011); `as_of` stays in the signature for the engine contract.
@@ -41,21 +54,17 @@ from drishti.agents.statistical.band import Cohort
 from drishti.agents.statistical.cohort import StatsStore
 from drishti.agents.statistical.scope import read
 from drishti.agents.statistical.text import stated_length
-from drishti.agents.statistical.unit_rate import road_check
+from drishti.agents.statistical.unit_rate import Z_FLAG, road_check
 
 AGENT = "statistical"
-VERSION = "statistical-2.1.0"
+VERSION = "statistical-2.2.0"
 QUESTION = "Is the project cost unusual for similar works?"
 
 LEVEL_CONFIDENCE = {"type_district": 0.85, "type_state": 0.7, "type": 0.55}
 
 TOP_FACTOR = 2.0          # flag above 2x the top (p90) of the usual range
-SCOPE_RATIO = 10.0        # this far above the median it is a scope question
-LOW_FACTOR = 3.0          # below a third of the bottom (p10) of the range
-BUNDLE_RISK = 0.15
-SCOPE_RISK = 0.35
-BELOW_RISK = 0.10
-UNIT_TOP_FACTOR = 2.0     # per unit, against single-unit works of the type
+SCOPE_RATIO = 10.0        # this far above the median it is a bigger project, not a price
+Z_ROAD = Z_FLAG           # the per-metre flag line, in residual spreads above the curve
 MODEL_TOP_FACTOR = 2.0    # version B: above twice the learned top (q90) for the description
 USE_PEERS = True          # trial switch (cost_trial_v2.py): False = judge by the model alone
 # How a type's GOODS peers are named in officer-facing text (scope.py splits them off).
@@ -177,9 +186,11 @@ def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
 
     local, broad = chain[0], (chain[1] if len(chain) > 1 else None)
     top_local = amount / local.range_inr()[1]
-    comparison.append(_row("Total cost", amount, local))
+    total_row = _row("Total cost", amount, local)
+    comparison.append(total_row)
     peers = f"{local.n:,} similar works {_where(local, work)}"
     verdict = "COST_TYPICAL"
+    comfort = None
 
     if reading == "per_metre":
         rc = road_check(amount, length, model)
@@ -191,6 +202,9 @@ def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
             "median": rc["predicted"] / length,
             "deviation_pct": (amount / rc["predicted"] - 1.0) * 100.0,
             "anchor_low": model.anchor_low, "anchor_high": model.anchor_high,
+            # the per-metre flag line (z >= 3 against the road-length curve)
+            "comfort_high": 10 ** (math.log10(rc["predicted"])
+                                   + Z_ROAD * model.resid_sd) / length,
         })
         if rc["verdict"] == "UNIT_RATE_ABOVE":
             verdict = "UNIT_RATE_ABOVE"
@@ -205,32 +219,18 @@ def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
         limitations.append(f"Judged per metre for {length:,.0f} m; the total is not compared "
                            "with roads of other lengths.")
     elif reading == "per_unit":
+        # T053: a per-unit price flag read 0/3 as a real price question (a count misread, a
+        # different unit); the per-unit cost is shown, never flagged
         single = (stats.chain(ptype, None, work.get("state_lgd")) or chain)[0]
         per_unit = amount / count
-        unit_top = per_unit / single.range_inr()[1]
         comparison.append(_row("Cost per unit", per_unit, single, unit="Rs/unit"))
-        if unit_top >= UNIT_TOP_FACTOR and per_unit >= 3 * single.median_inr():
-            verdict = "UNIT_PRICE_ABOVE"
-            findings.append(Finding(
-                "UNIT_PRICE_ABOVE",
-                f"{inr(per_unit)} per unit for the {count} units the description names; a "
-                f"single-unit {type_name} work usually costs {_range_text(single)} "
-                f"{_where(single, work)}. Check the specification and the count.",
-                hard=False, risk=above_risk(unit_top),
-                evidence={"count": count, "per_unit": per_unit, "top_ratio": unit_top,
-                          "reading": reading}))
-        limitations.append(f"Priced per unit for the {count} units named in the description.")
+        verdict = "PRICED_PER_UNIT"
+        limitations.append(f"Priced per unit for the {count} units named in the description; "
+                           "the total is not compared with single-unit works.")
     elif reading == "bundle":
-        if top_local >= TOP_FACTOR:
-            verdict = "BUNDLED_SANCTION"
-            findings.append(Finding(
-                "BUNDLED_SANCTION",
-                f"{inr(amount)} for what the description says covers several sites or "
-                f"units; one {type_name} work usually costs {_range_text(local)} "
-                f"{_where(local, work)}. The cost per site cannot be judged until the list "
-                f"of sites is checked.",
-                hard=False, risk=BUNDLE_RISK,
-                evidence={"top_ratio": top_local, "reading": reading}))
+        # T053: "several sites in one amount" read 0/48 as a real price question; it is a
+        # statement of what was not judged, never a flag
+        verdict = "SEVERAL_SITES_NOT_PRICED"
         limitations.append("The description covers several sites or units, so the total is "
                            "not read as a price.")
     else:
@@ -246,22 +246,28 @@ def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
             model_top = amount / hi_b
             comparison.append({"metric": "Expected for this description", "unit": "Rs",
                                "this_work": amount, "typical_low": lo_b, "typical_high": hi_b,
-                               "median": mid_b, "deviation_pct": (amount / mid_b - 1.0) * 100})
+                               "median": mid_b, "deviation_pct": (amount / mid_b - 1.0) * 100,
+                               "comfort_high": MODEL_TOP_FACTOR * hi_b})
             # the peers and the description-based range must agree before anything is said
             broad_ok = broad_ok and model_top >= MODEL_TOP_FACTOR
+        # The comfort zone: everything up to the line where a question is asked. Twice the
+        # top of the district's usual range, the state's (or country's) own top, and twice the
+        # top for works described like this, whichever is highest: room for a bigger scope or
+        # a contingency margin without a question.
+        comfort = max([TOP_FACTOR * local.range_inr()[1]]
+                      + ([broad.range_inr()[1]] if broad is not None else [])
+                      + ([MODEL_TOP_FACTOR * hi_b] if exp is not None else []))
+        total_row["comfort_high"] = comfort
         if not USE_PEERS and model_top is not None:      # trial switch: model alone
             top_local, broad_ok = model_top * TOP_FACTOR / MODEL_TOP_FACTOR, True
         if top_local >= TOP_FACTOR and broad_ok and ratio_med >= SCOPE_RATIO:
-            verdict = "SCOPE_FAR_LARGER"
-            findings.append(Finding(
-                "SCOPE_FAR_LARGER",
-                f"{inr(amount)} is far above any usual {type_name} work {_where(local, work)} "
-                f"(most cost {_range_text(local)}; {peers}). A work this large is more often "
-                f"a bigger or different kind of project than a price problem: check what it "
-                f"covers and that its type is right.",
-                hard=False, risk=SCOPE_RISK,
-                evidence={"top_ratio": top_local, "median_ratio": ratio_med,
-                          "reading": reading}))
+            # T053: "far above every similar work" read 3/18 as a real price question: it is
+            # almost always a bigger or different project. Said, never flagged.
+            verdict = "BIGGER_PROJECT_THAN_PEERS"
+            limitations.append(
+                f"{inr(amount)} is far above every usual {type_name} work "
+                f"{_where(local, work)}; at that distance it is almost always a bigger or "
+                "different project, so it is not treated as a price question.")
         elif top_local >= TOP_FACTOR and broad_ok:
             verdict = "COST_ABOVE_PEERS"
             wider = "" if broad is None else (
@@ -273,20 +279,14 @@ def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
                 "COST_ABOVE_PEERS",
                 f"{inr(amount)}: similar {type_name} works {_where(local, work)} usually cost "
                 f"{_range_text(local)} ({peers}). This is {top_local:.1f} times the top of "
-                f"that range{wider}.{learned} Check the estimate and what it includes.",
+                f"that range{wider}, and {amount / comfort:.1f} times the comfort limit of "
+                f"{inr(comfort)}.{learned} Check the estimate and what it includes.",
                 hard=False, risk=above_risk(min(top_local, model_top or top_local) if
                                             model_top else top_local),
                 evidence={"top_ratio": top_local, "median_ratio": ratio_med,
-                          "model_top_ratio": model_top, "reading": reading}))
-        elif amount * LOW_FACTOR < local.range_inr()[0] and (
-                broad is None or amount < broad.range_inr()[0]):
-            verdict = "COST_BELOW_PEERS"
-            findings.append(Finding(
-                "COST_BELOW_PEERS",
-                f"{inr(amount)} is well below similar works {_where(local, work)} "
-                f"(usually {_range_text(local)}); under-costed works are often revised "
-                f"upward later.",
-                hard=False, risk=BELOW_RISK, evidence={"reading": reading}))
+                          "model_top_ratio": model_top, "comfort_high": comfort,
+                          "reading": reading}))
+        # T053: "well below similar works" was never shown to be a real problem; removed
 
     if local.level != "type_district":
         limitations.append(f"Fewer than 20 such works in {_place(work)}, so the comparison "
@@ -294,21 +294,43 @@ def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
     limitations.append("A peer range is not a schedule of rates: an unusual amount can have an "
                        "ordinary explanation (terrain, specification, scope).")
     return _result(findings, limitations, comparison, local, type_name, work, t0, verdict,
-                   LEVEL_CONFIDENCE[local.level], peers=peers, reading=reading, ptype=ptype)
+                   LEVEL_CONFIDENCE[local.level], peers=peers, reading=reading, ptype=ptype,
+                   comfort=comfort)
+
+
+def _headline(verdict: str, work: dict, cohort: Cohort, type_name: str, peers: str,
+              comfort: float | None) -> str:
+    amount = float(work["amount"])
+    where = _where(cohort, work)
+    if verdict == "SEVERAL_SITES_NOT_PRICED":
+        return (f"{inr(amount)} covers several sites or units, so it is not compared as one "
+                f"price; one {type_name} work usually costs {_range_text(cohort)} {where}.")
+    if verdict == "PRICED_PER_UNIT":
+        return "Priced per unit for the units the description names; nothing to question."
+    if verdict == "BIGGER_PROJECT_THAN_PEERS":
+        return (f"{inr(amount)} is far bigger than usual {type_name} works {where} (most cost "
+                f"{_range_text(cohort)}): a bigger project, not treated as a price question.")
+    if comfort is None:
+        return f"Cost is within the usual range for similar {type_name} works {where}."
+    lo, hi = cohort.range_inr()
+    zone = ("inside the usual range" if amount <= hi else "above the usual range but inside "
+            "the comfort zone")
+    return (f"{inr(amount)} is {zone} for similar {type_name} works {where} (most cost "
+            f"{inr(lo)} to {inr(hi)}; {peers}). DRISHTI asks only above {inr(comfort)}, which "
+            "leaves room for a bigger scope or a contingency margin.")
 
 
 def _result(findings, limitations, comparison, cohort, type_name, work, t0, verdict,
-            confidence, peers=None, reading=None, ptype=None) -> AgentResult:
+            confidence, peers=None, reading=None, ptype=None, comfort=None) -> AgentResult:
     top = max(findings, key=lambda f: f.risk, default=None)
     if top is not None:
         headline = top.text
     elif cohort is not None:
-        headline = (f"Cost is within the usual range for similar {type_name} works "
-                    f"{_where(cohort, work)} ({peers}).")
+        headline = _headline(verdict, work, cohort, type_name, peers or "", comfort)
     else:
         headline = "Cost not compared."
     evidence = {"comparison": comparison, "work_type_name": type_name, "reading": reading,
-                "peer_type": ptype}
+                "peer_type": ptype, "comfort_high": comfort}
     if cohort is not None:
         evidence["cohort"] = {"level": cohort.level, "description": cohort.description,
                               "n": cohort.n, "p10": cohort.p10, "p50": cohort.p50,

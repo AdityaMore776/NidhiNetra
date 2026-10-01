@@ -1,38 +1,44 @@
 """Risk Fusion v2 (T050): the blueprint's weighted risk score, bands and top-3 reasons.
 
-  score = 0.30 compliance + 0.20 cost + 0.20 duplicate/split + 0.20 delay + 0.10 outlier
+  score = 0.30 compliance + 0.20 cost + 0.20 duplicate/split + 0.20 fund flow
+          (the blueprint's 0.10 outlier slot became Guideline Compliance R12 and R13, T053)
           each term = the engine's signal (its risk, 0-1) when it ASSESSED the work, else 0.
           Weights come from the engine registry: an engine not built counts 0, and an
           engine below its accuracy target is registered "shown, not counted" (weight 0,
-          today: Delay & Fund Flow, AUC 0.70 against 0.80; Odd Overall, 3/30 random flags
-          worth a look; Paperwork and Photo Evidence, pilot evidence only).
+          today: Fund Flow, whose wait is already R01's; Paperwork and Photo Evidence, pilot
+          evidence only).
   floors  1 serious-rule breach (a hard finding, risk >= 0.6) lifts the score to the
           High cut; 2 or more to the Critical cut. The lift is its own part ("floor"), so
           the parts still add up exactly to the score.
   bands   cut-offs tuned on the real score distribution (all 2,09,993 works, re-tuned 1 Oct
           2026 for T051; data/dry_run.py -> results/risk_score_bands.json). The blueprint's
-          40/70/85 cannot be used as written: with Delay at weight 0 and Outlier not built, the
+          40/70/85 cannot be used as written: with Fund Flow at weight 0 and no outlier slot, the
           highest real score is 36 of 100. Since T051 the engines' signals grow with the
           evidence (a 76-day wait no longer scores like a 718-day one), so scores spread out
           (1,802 distinct values, was 55 in the whole queue) and the cut-offs sit where the
           evidence changes:
             CRITICAL >= 0.30  a guideline issue plus a strong repeat or split, or three
-                              engines (54 works)
+                              engines (50 works)
             HIGH     >= 0.22  two engines each with a meaningful signal; nothing scores this
-                              high on one engine (448)
+                              high on one engine (443)
             MEDIUM   >= 0.15  one strong signal, e.g. waiting for sanction twice the limit
-                              (14,140)
+                              (14,581)
             LOW      otherwise
-          Review queue = CRITICAL + HIGH: 502 works (0.24%). 30 random queue works read by
-          eye: all 30 have a reason that survives reading, 27 a reason other than a delay
-          (results/risk_score_eye.json; T050's queue of 1,524 read 24/30 on the first test).
+          Review queue = CRITICAL + HIGH: 493 works (0.23%). T053 removed the cost notes
+          that were almost never a real price question (several sites 0/48, far bigger
+          project 3/18: 502 -> 442) and added Guideline Compliance R12/R13 (-> 493; 15/15 of
+          the queue works they lift read as worth checking). Of 30 random queue works read by
+          eye for T051 (all 30 with a reason that survives reading, 27 beyond a delay), 22
+          are still queued and 19 of those have
+          a reason beyond a delay; the 8 that left were big projects carried only by "far
+          bigger than usual" plus a sanction wait (results/risk_score_eye.json).
           The blueprint's 5-10% High + Critical has no cut-off in the data.
   limited a LOW score where a counted engine could not assess the work is not a clean chit.
   reasons the top three contributions, each with the engine's own sentence in English and a
           Hindi sentence (the rule's own Hindi message for compliance, else reasons.py).
 
-Data Validation issues are shown on the work page but no longer counted: Guideline
-Compliance reports the same facts (R06 impossible dates, R11 missing data).
+The separate Data Validation step was removed (T053): Guideline Compliance reports the same
+facts (R06 impossible dates, R11 missing data) with the better prohibited-work reader.
 """
 
 from __future__ import annotations
@@ -42,7 +48,6 @@ from dataclasses import asdict, dataclass, field
 from drishti.agents import registry
 from drishti.agents.contract import AgentResult, Status
 from drishti.fusion.reasons import hindi
-from drishti.validation.checks import Issue
 
 CRITICAL, HIGH, MEDIUM = 0.30, 0.22, 0.15
 HARD_RISK = 0.60
@@ -95,10 +100,10 @@ def _reason(r: AgentResult, contribution: float) -> dict:
             "text_en": text, "text_hi": hi or hindi(top.code if top else r.verdict)}
 
 
-def fuse(results: list[AgentResult], issues: list[Issue],
+def fuse(results: list[AgentResult], issues: list | tuple = (),
          reliability: dict[str, float] | None = None) -> Fused:
-    """`issues` and `reliability` are kept for the call signature: validation is shown,
-    not counted, and learned reliability arrives with the learning loop (T070)."""
+    """`issues` and `reliability` are kept for the call signature: the Data Validation step
+    was removed (T053), and learned reliability arrives with the learning loop (T070)."""
     w = weights()
     parts: list[Part] = []
     reasons: list[dict] = []
