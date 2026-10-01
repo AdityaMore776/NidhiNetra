@@ -102,3 +102,45 @@ QUEUE_T053_R12_R13 = {
     'NOREF-27015968d3a1ab': "worth_checking",
     'WS/MP18004/2024-2025/152146': "worth_checking",
 }
+
+
+# T054 (1 Oct 2026): 30 random works from the queue after the timing rules were scored by how
+# unusual the wait is (seed 54, results/risk_score_queue_sample_t054.csv; queue 493 -> 131).
+# "worth_checking": a question an officer should look into (no place or size for a big sum,
+# many alike works filed together, a prohibited-work reading, an exact repeat, dates that
+# cannot be right): 28/30. "record_cleanup": an unsanctioned work waiting 18+ months that
+# reads like a later recommendation of the same thing, i.e. probably a refiling after a
+# rejection the public data does not show (2/30). Seven of the 30 are one Rae Bareli group of
+# 25 temple-campus solar lights, three one Alluri Sitarama Raju street-light purchase.
+QUEUE_T054 = {
+    'WS/MP421/2023-2024/645': "worth_checking",
+    'NOREF-e73d65799b3b64': "worth_checking",
+    'WS/MP476/2024-2025/72649': "worth_checking",
+    'WS/MP18040/2025-2026/213842': "worth_checking",
+    'NOREF-21a072e09d4fb5': "record_cleanup",
+    'WS/MP18004/2024-2025/156137': "worth_checking",
+    'WS/MP476/2024-2025/71276': "worth_checking",
+    'NOREF-23f20abdd57f00': "worth_checking",
+    'WS/MP099/2023-2024/101459': "worth_checking",
+    'WS/MP476/2024-2025/77346': "worth_checking",
+    'NOREF-ca838bf058e40c': "worth_checking",
+    'WS/MP476/2024-2025/77238': "worth_checking",
+    'NOREF-ded608cae79da1': "worth_checking",
+    'NOREF-840ee6aa1b9fe3': "worth_checking",
+    'WS/MP476/2024-2025/77388': "worth_checking",
+    'WS/MP181/2024-2025/166044': "worth_checking",
+    'WS/MP476/2024-2025/72602': "worth_checking",
+    'NOREF-c1e322e34679f0': "worth_checking",
+    'NOREF-e39d5880f092e0': "worth_checking",
+    'WS/MP18004/2024-2025/157508': "worth_checking",
+    'NOREF-d161a3449cab41': "worth_checking",
+    'NOREF-27015968d3a1ab': "worth_checking",
+    'WS/MP104/2025-2026/238322': "worth_checking",
+    'WS/MP18416/2026-2027/274636': "worth_checking",
+    'NOREF-09ece7c467f97f': "record_cleanup",
+    'WS/MP18004/2024-2025/152144': "worth_checking",
+    'NOREF-08fbcb35895eff': "worth_checking",
+    'WS/MP18311/2024-2025/136624': "worth_checking",
+    'WS/MP18040/2025-2026/213854': "worth_checking",
+    'NOREF-32cc40988a3c87': "worth_checking",
+}
