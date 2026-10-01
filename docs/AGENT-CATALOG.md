@@ -21,7 +21,7 @@ them: what each checks, how, what we measured, and where it stands.
 | B4 | Document | During construction | ✅ **in the engine as Paperwork** (T110), shown, not counted | reproduces the trial: 431 certificates, 32 sanctioned late, 1 before recommendation; Hindi/handwritten needs AI |
 | B5 | Satellite (big works only) | During construction | ⛔ no-go for now | Pilot has no large works with coordinates |
 | C1 | Delay | Money & time | ✅ **in the engine, shown, not counted** (T051 ladder) | **Weak** as a prediction (AUC 0.705; unseen districts 0.685; target 0.80) |
-| C2 | Fund Flow | Money & time | 🧪 trial | **Facts work**; forecasts can't be tested on a single snapshot |
+| C2 | Fund Flow | Money & time | ✅ **in the engine as Delay & Fund Flow** (T410), shown, not counted | 3,331 works (₹168.9 cr) of the ended 17th Lok Sabha still unsanctioned (reproduced); office backlog vs its district |
 | C3 | Contractor Network | Money & time | ✅ **in the engine as Paperwork** (T110): a fact, not a finding | Pratapgarh 261 works, 7 vendors, top 39%, top three 84% (reproduced) |
 | D1 | Citizen Verification | After completion | 📝 merged into Photo Evidence: a citizen's photo meets the same checks (demo only) | Can't be tested — 21,789 of 21,793 eSAKSHI ratings are zero |
 | — | Guideline Compliance | every work | ✅ **in the engine** (T011) | rules R01–R11 in English + Hindi; 5 of 11 not checkable from the export |
@@ -57,7 +57,7 @@ data was built meets exactly the same rules. Learning jobs: `data/build_stats.py
 | 1 | Guideline Compliance | A1 Eligibility + rules R01-R11 | the export | ✅ live, counted |
 | 2 | Cost Anomaly | A3 | the export | ✅ live, counted |
 | 3 | Duplicate & Split | A2 | the export | ✅ live, counted |
-| 4 | Delay & Fund Flow | C1 Delay + C2 Fund Flow | the export, Lok Sabha term dates | Delay built (shown); Fund Flow being merged (T410) |
+| 4 | Delay & Fund Flow | C1 Delay + C2 Fund Flow | the export, Lok Sabha term dates | ✅ built (T051 + T410), shown, not counted (accuracy 0.70 < 0.80) |
 | 5 | Paperwork | B4 Document + C3 Contractor Network | certificates read by local OCR | ✅ built (T110), shown, not counted: papers exist for the 837 pilot works only |
 | 6 | Photo Evidence | B2 Photo Forensics + B3 Geo-Location + D1 Citizen photos | photos, GPS stamps | ✅ built (T310), shown, not counted: photos exist for the 837 pilot works only |
 | 7 | Site Progress | B1 Site Progress + plaque + B5 Satellite | an AI vision key; satellite only for big works | frame only, off until the owner adds a key (T510) |
