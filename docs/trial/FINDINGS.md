@@ -701,6 +701,34 @@ on their repeat/split signal alone (one engine cannot reach HIGH: the owner's op
 PDF still cannot be fetched from outside India (T001). With 45 days R01 would fire on more works but score
 the same, since the signal now follows the wait curve, not the clock.
 
+## T080 (1 Oct 2026): the planted-anomaly test, 50 known problems run blind
+
+`data/trial/planted_test.py` → `results/planted_test.json`, `planted_test_rows.csv`. 50 fakes built from real
+works (seed 80), 10 of each kind, run through the whole pipeline with all 2,09,993 works, in memory only
+(nothing reaches a database). Measured after T054.
+
+| Kind (10 each) | Meant to be caught by | Caught by that engine | In the top 5% of the risk score | In the review queue |
+|---|---|---|---|---|
+| Rule breaches (3 temple R07, 3 outside the area R08, 2 big vague sums R12, 2 built in days R13) | Guideline Compliance | **10/10** | 10/10 | 4/10 (the 3 R08 CRITICAL, 1 R12 HIGH) |
+| Completed before recommended (R06) | Guideline Compliance | **10/10** | 10/10 | 0/10 (MEDIUM) |
+| Split into 3-4 pieces just under Rs 5 lakh, same day | Duplicate & Split | **10/10** | 10/10 | 0/10 (LOW) |
+| Filed again 60-300 days later, reworded | Duplicate & Split | **7/10** | 8/10 | 0/10 |
+| Price raised 2-3× | Cost Anomaly | **0/10** | 1/10 | 0/10 |
+| **All 50** | | **37/50** | **39/50 (78%; target 75%)** | **4/50** |
+
+- **Top 5% met the blueprint's target (78%).** The top 5% of scores starts at 0.09, which is still the LOW band.
+- **The review queue holds 4 of 50.** One engine alone cannot reach HIGH (0.22) by the blueprint's weights, and a
+  planted fake usually breaks one thing. Same open owner question as T054.
+- **Cost at 2-3× is not questioned by design**: the engine asks only beyond its comfort limit (about twice the
+  usual top, T053). The same 10 fakes through the Cost engine alone: 2× 0/10, 3× 0/10, 5× 3/10, 10× 5/10. Of the 5
+  missed at 10×, 3 read as "a far bigger project, not a price question" (a single semi-high-mast light at Rs 22
+  lakh; a CC road at Rs 50 lakh), 1 sits inside a wide state comfort zone (library), 1 has no work type. "Far
+  bigger" stopped counting in T053 because it read right 3/18 on real works; a planted mark-up that keeps a small
+  stated scope ("one light") is exactly the case it now lets through.
+- Reworded repeats missed (3/10): a transliterated Hindi description with no word to swap (order rotated), and two
+  where "at/near/village" swaps plus the original's district boilerplate left too few shared place words.
+- Not planted: translated repeats (no offline translator; the duplicate rules compare words).
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

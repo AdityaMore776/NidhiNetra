@@ -48,7 +48,7 @@ stored tables, coefficients or reference files (`cohort_stats`, `engine_models`,
 data was built meets exactly the same rules. Learning jobs: `data/build_stats.py`, `build_price_model.py`,
 `build_evidence.py`, `build_generic_words.py`. The risk score that combines them is in
 [ARCHITECTURE.md §4](ARCHITECTURE.md#4-risk-score-fusion-v2-t050); its cut-offs were re-tuned for T051
-(CRITICAL 0.30, HIGH 0.22). After T053: queue 493. After T054 (timing rules by how unusual the wait is): queue 131, 28/30 read worth checking.
+(CRITICAL 0.30, HIGH 0.22). After T053: queue 493. After T054 (timing rules by how unusual the wait is): queue 131, 28/30 read worth checking. Planted-anomaly test (T080): 39 of 50 fakes in the top 5% of the score (target 75%), 37/50 caught by the engine meant for them (rules, dates and splits 30/30, reworded repeats 7/10, prices 2-3× 0/10), 4/50 in the review queue.
 
 ## Twelve checkers merged into six (T051, trimmed in T053, owner's requests 1 Oct 2026)
 
