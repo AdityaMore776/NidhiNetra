@@ -16,6 +16,7 @@ from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 
 from drishti.agents.dup_split.match import DupIndex
+from drishti.agents.paperwork.vendors import VendorIndex
 from drishti.pipeline.orchestrator import Assessment, Context, assess_work
 
 WORK_COLUMNS = ("work_id, source, house, term, state_lgd, state_name, district_lgd, "
@@ -24,9 +25,13 @@ WORK_COLUMNS = ("work_id, source, house, term, state_lgd, state_name, district_l
                 "quantity, quantity_unit, is_outside_constituency")
 # Offline engine facts for the work (migration 006, table work_signals), as one JSON object
 # keyed by engine: {"cost_model": {...}, "delay": {...}}.
-SIGNALS_COLUMNS = "sig.signals AS signals"
+# ... and the facts read from its attached papers and photos (migration 009, T110), as
+# work["evidence"] = {"files": [...]} (data/build_evidence.py, the engines' own readers).
+SIGNALS_COLUMNS = "sig.signals AS signals, ev.evidence AS evidence"
 SIGNALS_JOIN = ("LEFT JOIN LATERAL (SELECT jsonb_object_agg(s.engine, s.data) AS signals "
-                "FROM work_signals s WHERE s.work_id = works.work_id) sig ON true")
+                "FROM work_signals s WHERE s.work_id = works.work_id) sig ON true "
+                "LEFT JOIN LATERAL (SELECT e.data AS evidence FROM evidence_facts e "
+                "WHERE e.work_id = works.work_id) ev ON true")
 
 # Guideline Compliance's delay rules (R01, R02): real, but common to a third of all works
 TIMING_CODES = frozenset({"SANCTION_OVERDUE", "COMPLETION_OVERDUE"})
@@ -79,21 +84,22 @@ def row_for(a: Assessment) -> dict:
     return row
 
 
-def district_index(con: psycopg.Connection, district_lgd) -> DupIndex:
-    """The Duplicate & Split comparison index for one district (T051): what the API needs to
-    compare one work, saved or new, with every other work of its district."""
-    rows = con.execute(f"SELECT {WORK_COLUMNS} FROM works WHERE district_lgd = %s",
-                       (district_lgd,)).fetchall() if district_lgd else []
-    return DupIndex.build(_normalise(dict(r)) for r in rows)
+def indexes(works: list[dict]) -> dict:
+    """The cross-work views engines need, from the same rows: the Duplicate & Split index and
+    the vendors holding the certified works (Paperwork, T110)."""
+    return {"dup_split": DupIndex.build(works), "vendors": VendorIndex.build(works)}
 
 
 def with_index(ctx: Context, con: psycopg.Connection, work: dict) -> Context:
-    """The context with a comparison index covering this work's district."""
+    """The context with indexes covering this work's district."""
     idx = (ctx.data or {}).get("dup_split")
     if idx is not None and idx.covers(work.get("district_lgd")):
         return ctx
+    d = work.get("district_lgd")
+    rows = con.execute(f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works {SIGNALS_JOIN} "
+                       "WHERE works.district_lgd = %s", (d,)).fetchall() if d else []
     return replace(ctx, data={**(ctx.data or {}),
-                              "dup_split": district_index(con, work.get("district_lgd"))})
+                              **indexes([_normalise(dict(r)) for r in rows])})
 
 
 def assess_one(con: psycopg.Connection, work_id: str, ctx: Context) -> Assessment | None:
@@ -121,8 +127,9 @@ def assess_all(url: str, ctx: Context, work_ids: Iterable[str] | None = None,
         if "dup_split" not in (ctx.data or {}):
             # every work of the database, so each is compared with its whole district
             everything = works if work_ids is None else [
-                _normalise(dict(w)) for w in con.execute(f"SELECT {WORK_COLUMNS} FROM works")]
-            ctx = replace(ctx, data={**(ctx.data or {}), "dup_split": DupIndex.build(everything)})
+                _normalise(dict(w)) for w in con.execute(
+                    f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works {SIGNALS_JOIN}")]
+            ctx = replace(ctx, data={**(ctx.data or {}), **indexes(everything)})
         batch: list[dict] = []
         for w in works:
             a = assess_work(w, ctx)

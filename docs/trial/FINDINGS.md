@@ -339,6 +339,21 @@ Certificate (Annexure-VI), printed, signed and scanned. It carries:
   estimate.
 - Some scans are upside down or sideways.
 
+#### Paperwork engine (T110, 1 Oct 2026): Document + Contractor in the engine
+
+The certificate reader now lives in the engine (`agents/paperwork/reader.py`); `data/build_evidence.py` runs it
+over the pilot's OCR pages and stores only derived facts (dates, amounts, status, vendor CODE, the location line).
+`data/trial/paperwork_trial.py` → `results/paperwork_trial.json` reproduces this section: 431 certificates; fields
+read 99.8% amounts / status, 97.7% vendor code, 69.4% sanction date; 33 works sanctioned past 75 days on the raw
+calendar (**32** once the 2024 election pause is left out, as para 3.12 says), 1 sanctioned before it was
+recommended; 282 of 285 completed works with every own certificate "in progress"; 2 of 429 certification pages
+marked; Pratapgarh 261 works, 7 vendors, top 39.1%, top three 83.9%.
+Read by eye while building it: 12 of 12 first "payments differ" cases were one certificate per instalment (a
+₹9,000 instalment of ₹1.86 lakh) or the same certificate twice in one file, so less-paid-on-paper is a note
+(0.05) and only more-paid-on-paper is a finding; one file carried two works' certificates (Malakpur, Sherpur,
+₹1.07 lakh each) with a description naming neither, so such files say so (9 works) instead of adding the
+payments. Shown, not counted: papers exist for the 837 pilot works only.
+
 ### C3 Contractor network: works where certificates exist
 
 - The **vendor unique code** (e.g. V9174…) identifies a contractor exactly, so no name
