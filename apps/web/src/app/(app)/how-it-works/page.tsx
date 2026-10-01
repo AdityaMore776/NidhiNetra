@@ -7,7 +7,7 @@ import { AGENT_ORDER, agentMeta } from "@/lib/format";
 const STEPS = [
   { n: 1, title: "Work enters DRISHTI", text: "Records, progress claims and site photos come in.", color: "var(--inputs)" },
   { n: 2, title: "Data validation", text: "Clean and check the record: impossible dates, missing fields, guideline notes.", color: "var(--inputs)" },
-  { n: 3, title: "Five engines, in parallel", text: "Each independently checks for a different kind of problem.", color: "var(--navy)" },
+  { n: 3, title: "Eight checkers, in parallel", text: "Each independently checks for a different kind of problem.", color: "var(--navy)" },
   { n: 4, title: "Risk fusion", text: "Add up the checks, each by its fixed weight, into one 0-100 score with its top three reasons.", color: "var(--fusion)" },
   { n: 5, title: "Risk review", text: "Rank works Low, Medium, High or Critical, and queue High and Critical for a look.", color: "var(--medium)" },
   { n: 6, title: "Officer verification", text: "An officer reviews the evidence and makes the decision.", color: "var(--low)" },
@@ -30,9 +30,19 @@ const FACETS: Record<string, string[]> = {
     "Every match says \"verify\": two works can be alike for good reasons",
   ],
   delay: [
-    "Learn from past works which ones finished more than a year late",
-    "Score each open work, with the reasons behind the score",
-    "Tested only on outcomes that were known at the time",
+    "How often works like this one (same office, else district and type) finished more than a year late",
+    "Works recommended under a Lok Sabha term that has ended and still not sanctioned",
+    "Offices holding far more unsanctioned recommendations than their district",
+  ],
+  paperwork: [
+    "Read the work's own utilisation certificates: sanction date, payments, status",
+    "Sanctioned late or before the recommendation; papers of another work",
+    "The vendor's share of the district's certified works, by vendor code (a fact)",
+  ],
+  photo_evidence: [
+    "The same photo or paper attached to another work",
+    "The photo's printed GPS stamp inside the work's own district",
+    "A photo dated before the MP recommended the work",
   ],
   outlier: [
     "Look at the whole record at once: type, place, amount, dates",

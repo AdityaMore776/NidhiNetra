@@ -3,6 +3,12 @@
   "edition_note": "Paragraph numbers are from the MPLADS Guidelines (June 2016), the latest edition we could read (T001 will check the 2023 wording). Every threshold comes from guidelines_clauses.yaml.",
   "severity_signal": {"HIGH": 1.0, "MEDIUM": 0.6, "LOW": 0.3},
   "grading_note": "T051: a rule broken by a little and a rule broken by a lot must not score the same. R01 grows from 0.30 just past the clock to its severity (0.60) at four times the clock; R02 from 0.15 at one year to 0.30 at the type's 98th percentile, then to 0.60 at twice that (log scale). One delay alone can still never make a work High.",
+  "terms": {
+    "note": "Lok Sabha terms that have ended (Delay & Fund Flow engine, T410). A work recommended under an ended term and still not sanctioned is money of a dissolved House waiting. Rajya Sabha members' terms are individual and not in the export, so they are not modelled.",
+    "ended": {
+      "17th Lok Sabha": {"date": "2024-06-05", "source": "17th Lok Sabha dissolved by the President on 5 June 2024"}
+    }
+  },
   "split_limits": {
     "note": "Amounts pile up just under these sums nationally (12.1x more works just under Rs 5 lakh than just over, 11.5x at Rs 10 lakh; data/trial/split_trial.py). A group whose every piece sits within 80-100% of one while the total passes it is read as possibly kept under a limit (Duplicate & Split engine).",
     "rupees": [500000, 1000000]

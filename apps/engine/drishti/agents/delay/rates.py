@@ -34,6 +34,9 @@ class DelayRates:
     base: float = 0.0
     n_base: int = 0
     rows: dict[tuple[str, str], tuple[int, int]] = field(default_factory=dict)
+    # the estimate above which a work is among the riskiest tenth of open works, stored with
+    # the counts (level "flag", key "p90", late / n) so any new work meets the same cut
+    flag_p: float | None = None
 
     @classmethod
     def from_rows(cls, rows) -> DelayRates:
@@ -42,6 +45,8 @@ class DelayRates:
             n, late = int(row["n"]), int(row["late"])
             if row["level"] == "all":
                 r.base, r.n_base = (late / n if n else 0.0), n
+            elif row["level"] == "flag":
+                r.flag_p = late / n if n else None
             else:
                 r.rows[(row["level"], row["key"])] = (n, late)
         return r

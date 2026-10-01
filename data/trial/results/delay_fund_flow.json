@@ -1,0 +1,97 @@
+{
+  "status": {
+    "NOT_APPLICABLE": 152171,
+    "ASSESSED": 57820,
+    "NOT_ASSESSABLE": 2
+  },
+  "findings": {
+    "LIKELY_LATE": 5475,
+    "TERM_ENDED_UNSANCTIONED": 3331,
+    "OFFICE_SANCTION_BACKLOG": 131
+  },
+  "value_cr": {
+    "LIKELY_LATE": 259.5,
+    "TERM_ENDED_UNSANCTIONED": 168.9,
+    "OFFICE_SANCTION_BACKLOG": 4.3
+  },
+  "offices_flagged": 3,
+  "target_term_ended_works": 3331,
+  "target_term_ended_value_cr": 168.9,
+  "backlog_sample_for_reading": [
+    {
+      "work_id": "NOREF-c17bc259fe3e2e",
+      "district": null,
+      "text": "This implementing office still has 59 of its 125 recommendations older than 75 days waiting for sanction (47%); across the district 268 of 1,841 (15%). Check the office's sanction pipeline."
+    },
+    {
+      "work_id": "NOREF-eaefca6e152da2",
+      "district": null,
+      "text": "This implementing office still has 42 of its 94 recommendations older than 75 days waiting for sanction (45%); across the district 268 of 1,841 (15%). Check the office's sanction pipeline."
+    },
+    {
+      "work_id": "NOREF-e8f0452acc4ac9",
+      "district": null,
+      "text": "This implementing office still has 59 of its 125 recommendations older than 75 days waiting for sanction (47%); across the district 268 of 1,841 (15%). Check the office's sanction pipeline."
+    },
+    {
+      "work_id": "NOREF-fe45ba6f943f8b",
+      "district": null,
+      "text": "This implementing office still has 42 of its 94 recommendations older than 75 days waiting for sanction (45%); across the district 268 of 1,841 (15%). Check the office's sanction pipeline."
+    },
+    {
+      "work_id": "NOREF-a287cc0089acce",
+      "district": null,
+      "text": "This implementing office still has 42 of its 94 recommendations older than 75 days waiting for sanction (45%); across the district 268 of 1,841 (15%). Check the office's sanction pipeline."
+    },
+    {
+      "work_id": "NOREF-8e2d48bbf1637d",
+      "district": null,
+      "text": "This implementing office still has 42 of its 94 recommendations older than 75 days waiting for sanction (45%); across the district 268 of 1,841 (15%). Check the office's sanction pipeline."
+    },
+    {
+      "work_id": "NOREF-a7ffaa33aabfb2",
+      "district": null,
+      "text": "This implementing office still has 59 of its 125 recommendations older than 75 days waiting for sanction (47%); across the district 268 of 1,841 (15%). Check the office's sanction pipeline."
+    },
+    {
+      "work_id": "NOREF-b7768ca291e0cc",
+      "district": null,
+      "text": "This implementing office still has 42 of its 94 recommendations older than 75 days waiting for sanction (45%); across the district 268 of 1,841 (15%). Check the office's sanction pipeline."
+    },
+    {
+      "work_id": "NOREF-191d3e48937e57",
+      "district": null,
+      "text": "This implementing office still has 59 of its 125 recommendations older than 75 days waiting for sanction (47%); across the district 268 of 1,841 (15%). Check the office's sanction pipeline."
+    },
+    {
+      "work_id": "NOREF-4a29f2805fc6df",
+      "district": null,
+      "text": "This implementing office still has 29 of its 54 recommendations older than 75 days waiting for sanction (54%); across the district 268 of 1,841 (15%). Check the office's sanction pipeline."
+    },
+    {
+      "work_id": "NOREF-fcb04f958817d1",
+      "district": null,
+      "text": "This implementing office still has 59 of its 125 recommendations older than 75 days waiting for sanction (47%); across the district 268 of 1,841 (15%). Check the office's sanction pipeline."
+    },
+    {
+      "work_id": "NOREF-cddb4d931f958a",
+      "district": null,
+      "text": "This implementing office still has 42 of its 94 recommendations older than 75 days waiting for sanction (45%); across the district 268 of 1,841 (15%). Check the office's sanction pipeline."
+    },
+    {
+      "work_id": "NOREF-f627e18baa225f",
+      "district": null,
+      "text": "This implementing office still has 59 of its 125 recommendations older than 75 days waiting for sanction (47%); across the district 268 of 1,841 (15%). Check the office's sanction pipeline."
+    },
+    {
+      "work_id": "NOREF-ae3fc4a1774ac1",
+      "district": null,
+      "text": "This implementing office still has 59 of its 125 recommendations older than 75 days waiting for sanction (47%); across the district 268 of 1,841 (15%). Check the office's sanction pipeline."
+    },
+    {
+      "work_id": "NOREF-382c881e1f1cb0",
+      "district": null,
+      "text": "This implementing office still has 29 of its 54 recommendations older than 75 days waiting for sanction (54%); across the district 268 of 1,841 (15%). Check the office's sanction pipeline."
+    }
+  ]
+}
