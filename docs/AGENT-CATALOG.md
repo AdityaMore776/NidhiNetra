@@ -15,11 +15,11 @@ them: what each checks, how, what we measured, and where it stands.
 | A1 | Eligibility | Before sanction | ✅ **in the engine** as Guideline Compliance rule R07 (v2 reader) | **Works** — 56% precision on a fresh sample |
 | A2 | Duplicate & Split | Before sanction | ✅ **in the engine**, compares any work live (T051) | fresh pairs 20/40 real repeats, same-site splits 9/15 |
 | A3 | Cost | Before sanction | ✅ **live** (v2 ready, T020) | v2: top 30 flags 10/30 real price questions (v1 0/30); 55% of 5× mark-ups caught at 1.3% false alarms |
-| B1 | Site Progress (+ plaque) | During construction | 📝 planned | Not tested — needs an AI vision key |
+| B1 | Site Progress (+ plaque) | During construction | 🔧 frame in the engine as Site Progress (T510), **off** | rules tested with a stand-in provider; needs the owner's AI vision key (T501) and a measured test |
 | B2 | Photo Forensics | During construction | ✅ **in the engine as Photo Evidence** (T310), shown, not counted | exact copies + fingerprint; reproduces the 2 real reuse cases, 0 of 3 combined files flagged |
 | B3 | Geo-Location | During construction | ✅ **in the engine as Photo Evidence** (T310), shown, not counted | 190 stamps on 170 works; 187 inside, 2 at the border, 0 outside; the 3 photos older than the recommendation |
 | B4 | Document | During construction | ✅ **in the engine as Paperwork** (T110), shown, not counted | reproduces the trial: 431 certificates, 32 sanctioned late, 1 before recommendation; Hindi/handwritten needs AI |
-| B5 | Satellite (big works only) | During construction | ⛔ no-go for now | Pilot has no large works with coordinates |
+| B5 | Satellite (big works only) | During construction | ⛔ no-go for now; gate in Site Progress (T510) | 2,822 works qualify (2,167 ponds); only 1 has a GPS-stamped photo in the pilot |
 | C1 | Delay | Money & time | ✅ **in the engine, shown, not counted** (T051 ladder) | **Weak** as a prediction (AUC 0.705; unseen districts 0.685; target 0.80) |
 | C2 | Fund Flow | Money & time | ✅ **in the engine as Delay & Fund Flow** (T410), shown, not counted | 3,331 works (₹168.9 cr) of the ended 17th Lok Sabha still unsanctioned (reproduced); office backlog vs its district |
 | C3 | Contractor Network | Money & time | ✅ **in the engine as Paperwork** (T110): a fact, not a finding | Pratapgarh 261 works, 7 vendors, top 39%, top three 84% (reproduced) |
@@ -60,7 +60,7 @@ data was built meets exactly the same rules. Learning jobs: `data/build_stats.py
 | 4 | Delay & Fund Flow | C1 Delay + C2 Fund Flow | the export, Lok Sabha term dates | ✅ built (T051 + T410), shown, not counted (accuracy 0.70 < 0.80) |
 | 5 | Paperwork | B4 Document + C3 Contractor Network | certificates read by local OCR | ✅ built (T110), shown, not counted: papers exist for the 837 pilot works only |
 | 6 | Photo Evidence | B2 Photo Forensics + B3 Geo-Location + D1 Citizen photos | photos, GPS stamps | ✅ built (T310), shown, not counted: photos exist for the 837 pilot works only |
-| 7 | Site Progress | B1 Site Progress + plaque + B5 Satellite | an AI vision key; satellite only for big works | frame only, off until the owner adds a key (T510) |
+| 7 | Site Progress | B1 Site Progress + plaque + B5 Satellite | an AI vision key; satellite only for big works | 🔧 frame built and tested (T510), off until the owner adds a key; satellite gate says who would qualify |
 | 8 | Odd Overall | the blueprint's outlier slot | the export | ✅ built (#63), shown, not counted: random flags mostly explained (3/30) |
 
 Why these merges: Delay and Fund Flow both ask "is time or money stuck?" from the same dates. Document and

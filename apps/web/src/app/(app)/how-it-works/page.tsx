@@ -44,6 +44,11 @@ const FACETS: Record<string, string[]> = {
     "The photo's printed GPS stamp inside the work's own district",
     "A photo dated before the MP recommended the work",
   ],
+  site_progress: [
+    "Each claim in the officer's own words judged against the photos: shown, not shown, can't tell",
+    "The MPLADS plaque visible on a finished work",
+    "Satellite only for big works, and only after its go/no-go test (off until then)",
+  ],
   outlier: [
     "Look at the whole record at once: type, place, amount, dates",
     "Raise records that are unusual in combination",
