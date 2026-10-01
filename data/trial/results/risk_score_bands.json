@@ -1,7 +1,7 @@
 {
   "works": 209993,
   "cutoffs": {
-    "CRITICAL": 0.33,
+    "CRITICAL": 0.3,
     "HIGH": 0.22,
     "MEDIUM": 0.15
   },
@@ -13,18 +13,18 @@
     "outlier": 0.1
   },
   "bands": {
-    "CRITICAL": 128,
-    "HIGH": 1396,
-    "MEDIUM": 35085,
-    "LOW": 173384
+    "CRITICAL": 54,
+    "HIGH": 448,
+    "MEDIUM": 14140,
+    "LOW": 195351
   },
   "shares": {
-    "CRITICAL": 0.00061,
-    "HIGH": 0.00665,
-    "MEDIUM": 0.16708,
-    "LOW": 0.82567
+    "CRITICAL": 0.00026,
+    "HIGH": 0.00213,
+    "MEDIUM": 0.06734,
+    "LOW": 0.93027
   },
-  "review_queue": 1524,
-  "review_share": 0.00726,
-  "max_score": 37.0
+  "review_queue": 502,
+  "review_share": 0.00239,
+  "max_score": 36.4
 }

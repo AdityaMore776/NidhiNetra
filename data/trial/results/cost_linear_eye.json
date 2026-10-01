@@ -1,0 +1,23 @@
+{
+  "what": "cost engine A+B with the word-price model (T051), flags read by eye; labels in cost_v2_labels.LINEAR (+ earlier labels for flags read before)",
+  "A+B_linear": {
+    "random": {
+      "read": 30,
+      "like_for_like": 3
+    },
+    "top": {
+      "read": 30,
+      "like_for_like": 11
+    }
+  },
+  "A+B_lightgbm_test_for_comparison": {
+    "top": {
+      "read": 30,
+      "like_for_like": 10
+    },
+    "random": {
+      "read": 30,
+      "like_for_like": 5
+    }
+  }
+}

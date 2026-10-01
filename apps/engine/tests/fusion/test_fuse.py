@@ -59,8 +59,10 @@ def test_one_guideline_delay_alone_is_medium_two_engines_agreeing_is_high():
     assert weak.band == "MEDIUM"
     two = fuse(_all(_r("compliance", 0.6), _r("statistical", 0.35)), [])    # 25
     assert two.band == "HIGH"
-    repeat = fuse(_all(_r("compliance", 0.6), _r("dup_split", 0.6)), [])    # 30
+    repeat = fuse(_all(_r("compliance", 0.6), _r("dup_split", 0.45)), [])   # 27: weak repeat
     assert repeat.band == "HIGH"
+    strong = fuse(_all(_r("compliance", 0.6), _r("dup_split", 0.6)), [])    # 30 (T051 cut)
+    assert strong.band == "CRITICAL"
     split = fuse(_all(_r("compliance", 0.6), _r("dup_split", 0.8)), [])     # 34: under limit
     assert split.band == "CRITICAL"
 
