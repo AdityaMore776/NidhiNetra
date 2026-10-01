@@ -32,11 +32,12 @@ def _work(**kw):
 
 def test_core_slots_come_first_in_blueprint_order():
     ids = [e.id for e in discover()]
-    assert ids[:5] == ["compliance", "statistical", "dup_split", "delay", "outlier"]
+    assert ids[:4] == ["compliance", "statistical", "dup_split", "delay"]
 
 
-def test_blueprint_weights_add_to_one():
-    assert sum(e.weight for e in CORE) == pytest.approx(1.0)
+def test_blueprint_weights_without_the_outlier_slot():
+    # the blueprint's 0.10 outlier slot became Guideline Compliance R12/R13 (T053)
+    assert sum(e.weight for e in CORE) == pytest.approx(0.90)
 
 
 def test_statistical_folder_is_discovered_as_built():
@@ -93,8 +94,8 @@ def test_a_new_engine_folder_is_found_without_editing_central_files(tmp_path, mo
             del sys.modules[m]
     ids = [e.id for e in found]
     assert ids[-1] == "dummy" and "notanengine" not in ids
-    # the five core slots are still listed, unbuilt, when a package has none of them
-    assert all(e.assess is None for e in found[:5])
+    # the four core slots are still listed, unbuilt, when a package has none of them
+    assert all(e.assess is None for e in found[:4])
 
 
 def test_new_engine_runs_in_the_pipeline(ctx, monkeypatch):

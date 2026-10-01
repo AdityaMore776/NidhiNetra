@@ -29,7 +29,7 @@ def _work(**kw):
 def test_engines_in_registry_order(ctx):
     a = assess_work(_work(), ctx)
     assert [r.agent for r in a.agents] == list(AGENT_ORDER)
-    assert AGENT_ORDER[:5] == ("compliance", "statistical", "dup_split", "delay", "outlier")
+    assert AGENT_ORDER[:4] == ("compliance", "statistical", "dup_split", "delay")
     status = {r.agent: r.status for r in a.agents}
     assert status["statistical"] == Status.ASSESSED
 

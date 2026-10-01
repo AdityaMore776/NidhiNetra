@@ -61,7 +61,7 @@ work record ─► 2 DATA VALIDATION ─► 3 AGENTS (each returns an AgentResul
 | `agents/statistical/` | the **Cost** engine: `scope.py` (what a description covers: goods/works, bundles, counts), `cohort.py` (peer statistics store), `text.py` (length reading), `unit_rate.py` (road ₹/m), `price_model.py` (word-price model, applied to any description, T051), `agent.py` (like-for-like peers + the price model must agree) |
 | `agents/dup_split/` | **Duplicate & Split Work**: `match.py` holds the rules and compares ANY work with its district live (stdlib only; the batch builds one index of every work, the API one per district, T051) |
 | `agents/delay/` | **Fund Flow** (stored id `delay`): ended-term works still unsanctioned, office sanction backlog against its district (`backlog.py`, counted live); the delay forecast was removed in T053; shown, not counted |
-| `agents/paperwork/`, `agents/photo_evidence/`, `agents/outlier/` | **Paperwork** (certificates vs the portal), **Photo Evidence** (reuse, place, time of photos), **Odd Overall**; all shown, not counted (see AGENT-CATALOG) |
+| `agents/paperwork/`, `agents/photo_evidence/` | **Paperwork** (certificates vs the portal), **Photo Evidence** (reuse, place, time of photos); shown, not counted (see AGENT-CATALOG) |
 
 **One brain per engine (T051).** An engine's reasoning is a function of the work plus stored tables or
 coefficients (`cohort_stats`, `engine_models`, `reference/*`). No engine reads an answer stored
@@ -218,7 +218,7 @@ database. LOW and MEDIUM works are stored **compact** (summary only) and rebuilt
 - The four core engines (Compliance, Cost, Duplicate & Split, Delay) and the risk score run in the engine; the
   Outlier slot and the side-track checkers (photos, documents, …) are proven in the trial scripts and being ported
   (order in [`team/TASKS.md`](team/TASKS.md)).
-- Learning runs offline in `data/` (`build_stats.py`, `build_price_model.py`, `build_outlier.py`,
+- Learning runs offline in `data/` (`build_stats.py`, `build_price_model.py`, `build_evidence.py`,
   `build_generic_words.py`) and is stored as tables, coefficients or reference files, never as per-work
   answers (T051); after a data rebuild the hosted database must be reloaded (`load_db.py` → `batch_assess.py`).
 - The data is a snapshot (26 May 2026); "today" for real works is that date (`DRISHTI_SNAPSHOT_DATE`).

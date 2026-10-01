@@ -555,7 +555,12 @@ bus-stop series). The two kinds of real case became plain rules (`data/trial/odd
 words, no number, no place: 618 works, **30/30** read as a question the record cannot answer: what and where?) and
 **built in days** (a building, road or drain of ₹5 lakh+ recorded complete 0-14 days after recommendation, outside a
 bulk-entry quarter, not a backfilled older work: 13 works, **13/13**). Both are checks on the record, so they would
-fit inside Guideline Compliance rather than a separate engine; awaiting the owner's decision.
+fit inside Guideline Compliance rather than a separate engine. **The owner chose that:** the Odd Overall engine is
+removed and the rules are Guideline Compliance **R12** (big sum that does not say what or where) and **R13** (built in
+days). In the engine (like-for-like type tops, plain place words) R12 raises 697 works and R13 13; a fresh random 30 of
+R12's engine flags read **28/30** (the misses: a size written as a word, now read; a common village name taken as a
+generic word). Final queue **493** (50 CRITICAL, 443 HIGH); of the 52 queue works carrying R12/R13, 15 random read
+**15/15** worth checking.
 
 ### MP history (1 Oct 2026): tested, not adopted
 

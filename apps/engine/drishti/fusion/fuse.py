@@ -1,32 +1,35 @@
 """Risk Fusion v2 (T050): the blueprint's weighted risk score, bands and top-3 reasons.
 
-  score = 0.30 compliance + 0.20 cost + 0.20 duplicate/split + 0.20 delay + 0.10 outlier
+  score = 0.30 compliance + 0.20 cost + 0.20 duplicate/split + 0.20 fund flow
+          (the blueprint's 0.10 outlier slot became Guideline Compliance R12 and R13, T053)
           each term = the engine's signal (its risk, 0-1) when it ASSESSED the work, else 0.
           Weights come from the engine registry: an engine not built counts 0, and an
           engine below its accuracy target is registered "shown, not counted" (weight 0,
-          today: Delay & Fund Flow, AUC 0.70 against 0.80; Odd Overall, 3/30 random flags
-          worth a look; Paperwork and Photo Evidence, pilot evidence only).
+          today: Fund Flow, whose wait is already R01's; Paperwork and Photo Evidence, pilot
+          evidence only).
   floors  1 serious-rule breach (a hard finding, risk >= 0.6) lifts the score to the
           High cut; 2 or more to the Critical cut. The lift is its own part ("floor"), so
           the parts still add up exactly to the score.
   bands   cut-offs tuned on the real score distribution (all 2,09,993 works, re-tuned 1 Oct
           2026 for T051; data/dry_run.py -> results/risk_score_bands.json). The blueprint's
-          40/70/85 cannot be used as written: with Delay at weight 0 and Outlier not built, the
+          40/70/85 cannot be used as written: with Fund Flow at weight 0 and no outlier slot, the
           highest real score is 36 of 100. Since T051 the engines' signals grow with the
           evidence (a 76-day wait no longer scores like a 718-day one), so scores spread out
           (1,802 distinct values, was 55 in the whole queue) and the cut-offs sit where the
           evidence changes:
             CRITICAL >= 0.30  a guideline issue plus a strong repeat or split, or three
-                              engines (49 works)
+                              engines (50 works)
             HIGH     >= 0.22  two engines each with a meaningful signal; nothing scores this
-                              high on one engine (393)
+                              high on one engine (443)
             MEDIUM   >= 0.15  one strong signal, e.g. waiting for sanction twice the limit
-                              (14,001)
+                              (14,581)
             LOW      otherwise
-          Review queue = CRITICAL + HIGH: 442 works (0.21%), after T053 removed the cost
-          notes that were almost never a real price question (several sites 0/48, far bigger
-          project 3/18). Of 30 random queue works read by eye for T051 (all 30 with a reason
-          that survives reading, 27 beyond a delay), 22 are still queued and 19 of those have
+          Review queue = CRITICAL + HIGH: 493 works (0.23%). T053 removed the cost notes
+          that were almost never a real price question (several sites 0/48, far bigger
+          project 3/18: 502 -> 442) and added Guideline Compliance R12/R13 (-> 493; 15/15 of
+          the queue works they lift read as worth checking). Of 30 random queue works read by
+          eye for T051 (all 30 with a reason that survives reading, 27 beyond a delay), 22
+          are still queued and 19 of those have
           a reason beyond a delay; the 8 that left were big projects carried only by "far
           bigger than usual" plus a sanction wait (results/risk_score_eye.json).
           The blueprint's 5-10% High + Critical has no cut-off in the data.

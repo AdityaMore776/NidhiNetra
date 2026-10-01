@@ -26,9 +26,8 @@ export const AGENTS: Record<AgentId, AgentMeta> = {
   statistical: { n: "02", name: "Cost Anomaly", color: "var(--statistical)", question: "Is the project cost unusual for similar works?" },
   dup_split: { n: "03", name: "Duplicate & Split Work", color: "var(--duplicate)", question: "Is this work repeated, or one job cut into pieces?" },
   delay: { n: "04", name: "Fund Flow", color: "var(--site)", question: "Is money stuck waiting for sanction?" },
-  outlier: { n: "05", name: "Odd Overall", color: "var(--reuse)", question: "Do the amount, the days taken and the description look wrong together?" },
-  paperwork: { n: "06", name: "Paperwork", color: "var(--inputs)", question: "Do the work's own papers agree with the portal?" },
-  photo_evidence: { n: "07", name: "Photo Evidence", color: "var(--fusion)", question: "Are the work's photos new, from its place and from its time?" },
+  paperwork: { n: "05", name: "Paperwork", color: "var(--inputs)", question: "Do the work's own papers agree with the portal?" },
+  photo_evidence: { n: "06", name: "Photo Evidence", color: "var(--fusion)", question: "Are the work's photos new, from its place and from its time?" },
 };
 
 // Ids stored before the engine registry (the deck's four agents).
@@ -39,7 +38,7 @@ export function agentMeta(id: string, name?: string, question?: string): AgentMe
   return AGENTS[key] ?? { n: "··", name: name ?? key, color: "var(--muted)", question: question ?? "" };
 }
 
-export const AGENT_ORDER: AgentId[] = ["compliance", "statistical", "dup_split", "delay", "outlier",
+export const AGENT_ORDER: AgentId[] = ["compliance", "statistical", "dup_split", "delay",
   "paperwork", "photo_evidence"];
 
 export const BAND_COLOR: Record<Band, string> = {

@@ -30,8 +30,8 @@ def test_summary_counts_real_works_and_money(client):
     assert sum(s["bands"].values()) == 4
     agents = {a["id"]: a for a in s["agents"]}
     assert agents["statistical"]["built"] is True
-    assert agents["outlier"]["built"] is True
-    assert list(agents)[:5] == ["compliance", "statistical", "dup_split", "delay", "outlier"]
+    assert "outlier" not in agents                 # replaced by Compliance R12/R13 (T053)
+    assert list(agents)[:4] == ["compliance", "statistical", "dup_split", "delay"]
 
 
 def test_district_officer_sees_only_their_district(client):
@@ -63,8 +63,8 @@ def test_work_detail_carries_every_engine_and_the_parts(client):
     w = client.get("/api/v1/works/W-COSTLY", headers=MINISTRY).json()
     assert w["work"]["district_name"] == "Anand"
     a = w["assessment"]
-    assert [r["agent"] for r in a["agents"]][:5] == ["compliance", "statistical", "dup_split",
-                                                   "delay", "outlier"]
+    assert [r["agent"] for r in a["agents"]][:4] == ["compliance", "statistical", "dup_split",
+                                                   "delay"]
     stat = next(r for r in a["agents"] if r["agent"] == "statistical")
     assert stat["name"] == "Cost Anomaly" and stat["question"]
     assert stat["verdict"] == "COST_ABOVE_PEERS"

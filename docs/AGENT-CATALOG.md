@@ -36,21 +36,21 @@ them: what each checks, how, what we measured, and where it stands.
 
 | Engine | Folder | Weight in the score | How it was checked on real works |
 |---|---|---|---|
-| Guideline Compliance | `agents/compliance/` | 0.30 | all 2,09,993 works: R01 21,323 · R02 61,920 · R06 1,114 · R07 458 · R11 7,576; no HIGH-severity rule fires. T051: timing rules graded (447 distinct signals, was 3), Hindi-script R07 |
+| Guideline Compliance | `agents/compliance/` | 0.30 | all 2,09,993 works: R01 21,323 · R02 61,920 · R06 1,114 · R07 458 · R11 7,576; no HIGH-severity rule fires. T051: timing rules graded (447 distinct signals, was 3), Hindi-script R07; T053: R12 big sum that does not say what or where (697 works, 28/30 by eye), R13 built in days (13, 13/13) |
 | Cost Anomaly | `agents/statistical/` | 0.20 | planted mark-ups + frozen fresh samples read by eye. T051: the word-price model judges any description: 5× mark-ups caught 42-45% (was 55%), false alarms 1.2%. T053: explicit comfort zone (asks only above the highest of 2× the district top, the state top, 2× the described-like-this top); flags that read almost never right removed (several sites 0/48, far bigger project 3/18, per unit 0/3, below peers unmeasured); kept: above the comfort limit (54/128) and road cost per metre |
 | Duplicate & Split Work | `agents/dup_split/` | 0.20 | T051: rules run live for any work. Fresh frozen samples read by eye: pairs 20/40 real repeats (T030: 15/40), same-site splits 9/15 (T030: 10/15) |
 | Fund Flow (was Delay Prediction) | `agents/delay/` | **0** (shown, not counted) | T053: the forecast was removed (LightGBM 0.710, ladder 0.705 AUC against 0.80; 73% of works run late anyway). Kept: 3,331 works (₹168.9 cr) of the ended 17th Lok Sabha still unsanctioned, office sanction backlog vs its district |
-| Odd Overall (outlier) | `agents/outlier/` | **0** (shown, not counted) | #63: Isolation Forest on amount, completion speed and description length within the type, scored in plain Python; planted two-field oddities caught 100% / 75% / 100% at 1.5% flagged (robust z 51% / 51% / 100%); read by eye the oddest 30 are 22/30 worth a look, 30 random flags 3/30, so it reports the oddest 0.1% only |
+| ~~Odd Overall~~ | — | — | removed in T053: Isolation Forest flags read 9/30 worth a look; replaced by Guideline Compliance R12 and R13 |
 
 **One brain per engine (T051, 1 Oct 2026).** Each engine computes its answer for ANY recommendation from
 stored tables, coefficients or reference files (`cohort_stats`, `engine_models`,
 `reference/generic_words.txt`). No engine reads an answer stored per work, so a work recommended after the
 data was built meets exactly the same rules. Learning jobs: `data/build_stats.py`, `build_price_model.py`,
-`build_outlier.py`, `build_generic_words.py`. The risk score that combines them is in
+`build_evidence.py`, `build_generic_words.py`. The risk score that combines them is in
 [ARCHITECTURE.md §4](ARCHITECTURE.md#4-risk-score-fusion-v2-t050); its cut-offs were re-tuned for T051
-(CRITICAL 0.30, HIGH 0.22). After T053: queue 442.
+(CRITICAL 0.30, HIGH 0.22). After T053: queue 493.
 
-## Twelve checkers merged into seven (T051, trimmed in T053, owner's requests 1 Oct 2026)
+## Twelve checkers merged into six (T051, trimmed in T053, owner's requests 1 Oct 2026)
 
 | # | Engine | Merges | Inputs | State |
 |---|---|---|---|---|
@@ -61,7 +61,7 @@ data was built meets exactly the same rules. Learning jobs: `data/build_stats.py
 | 5 | Paperwork | B4 Document + C3 Contractor Network | certificates read by local OCR | ✅ shown, not counted (pilot only); T053 kept only real findings (late or early sanction, another work's papers, more paid on paper) |
 | 6 | Photo Evidence | B2 Photo Forensics + B3 Geo-Location + D1 Citizen photos | photos, GPS stamps | ✅ shown, not counted (pilot only); T053 kept only real findings (reuse, outside the district, photo before the recommendation) |
 | — | ~~Site Progress~~ | B1 + plaque + B5 Satellite | an AI vision key | ❌ removed in T053: it could not run without a key, so it only ever said "cannot be assessed". Rebuild from git (T510) once a key exists and a test can be run |
-| 7 | Odd Overall | the blueprint's outlier slot | the export | ⚠️ shown, not counted; 9/30 of its 214 flags worth a look. A two-rule replacement (big amount with no stated scope, built in days) read 30/30 and 13/13: awaiting the owner's decision (T053) |
+| — | ~~Odd Overall~~ | the blueprint's outlier slot | the export | ❌ removed in T053 (the forest's flags read 9/30); replaced, by the owner's choice, by Guideline Compliance R12 (big sum that does not say what or where, 28/30) and R13 (built in days, 13/13) |
 
 Why these merges: Delay and Fund Flow both ask "is time or money stuck?" from the same dates. Document and
 Contractor read the same certificates (the vendor code comes from the certificate). Photo Forensics,

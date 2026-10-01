@@ -1,7 +1,7 @@
 """The pipeline for one work: run every engine, fuse.
 
-    ENGINES (agents/registry.py: compliance, cost, duplicate & split, fund flow, outlier,
-    then any extra engine folders) -> RISK FUSION
+    ENGINES (agents/registry.py: compliance, cost, duplicate & split, fund flow, then any
+    extra engine folders: paperwork, photo evidence) -> RISK FUSION
 
 T053 removed the separate Data Validation step: it was shown, not counted, and repeated
 Guideline Compliance (R06 impossible dates, R11 missing data) with the older prohibited-work

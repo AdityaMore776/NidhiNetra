@@ -13,7 +13,6 @@ from dataclasses import dataclass, field
 import psycopg
 from psycopg.rows import dict_row
 
-from drishti.agents.outlier.model import OutlierStats
 from drishti.agents.statistical.band import MIN_COHORT, Cohort
 from drishti.agents.statistical.price_model import PriceModel
 from drishti.agents.statistical.unit_rate import UnitRateModel
@@ -45,8 +44,6 @@ class StatsStore:
     signals_built: frozenset[str] = frozenset()
     # The cost engine's word-price model (agents/statistical/price_model.py, T051).
     price_model: PriceModel | None = None
-    # The Odd Overall engine's statistics and forest (agents/outlier/model.py, #63).
-    outlier: OutlierStats | None = None
 
     @classmethod
     def from_rows(cls, cohorts, durations, unit_models, quarters=(), agencies=(),
@@ -55,8 +52,6 @@ class StatsStore:
         for m in models:
             if m["name"] == "price_model":
                 s.price_model = PriceModel.from_json(m["data"])
-            elif m["name"] == "outlier_stats":
-                s.outlier = OutlierStats.from_json(m["data"])
         quarters, agencies = list(quarters), list(agencies)
         if quarters:
             s.timeline = TimelineRates.from_counts(

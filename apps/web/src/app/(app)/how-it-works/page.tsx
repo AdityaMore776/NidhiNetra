@@ -6,7 +6,7 @@ import { AGENT_ORDER, agentMeta } from "@/lib/format";
 
 const STEPS = [
   { n: 1, title: "Work enters DRISHTI", text: "Records, progress claims and site photos come in.", color: "var(--inputs)" },
-  { n: 2, title: "Seven checkers, in parallel", text: "Each independently checks for a different kind of problem.", color: "var(--navy)" },
+  { n: 2, title: "Six checkers, in parallel", text: "Each independently checks for a different kind of problem.", color: "var(--navy)" },
   { n: 3, title: "Risk fusion", text: "Add up the checks, each by its fixed weight, into one 0-100 score with its top three reasons.", color: "var(--fusion)" },
   { n: 4, title: "Risk review", text: "Rank works Low, Medium, High or Critical, and queue High and Critical for a look.", color: "var(--medium)" },
   { n: 5, title: "Officer verification", text: "An officer reviews the evidence and makes the decision.", color: "var(--low)" },
@@ -15,7 +15,7 @@ const STEPS = [
 const FACETS: Record<string, string[]> = {
   compliance: [
     "Each MPLADS guideline rule written as a check with its paragraph number",
-    "Late sanctions, overdue or stalled works, impossible dates, missing key data",
+    "Late sanctions, overdue works, impossible dates, missing key data, big sums that do not say what or where, buildings \"finished\" in days",
     "Works that may not be allowed under the guidelines are marked \"verify\"",
   ],
   statistical: [
@@ -42,11 +42,6 @@ const FACETS: Record<string, string[]> = {
     "The same photo or paper attached to another work",
     "The photo's printed GPS stamp inside the work's own district",
     "A photo dated before the MP recommended the work",
-  ],
-  outlier: [
-    "Looks at three things together, against works of the same type: the amount, the days from recommendation to completion, and how much the description says",
-    "Raises a record only when they look wrong together, e.g. a big amount finished in days with almost no description",
-    "Such records are usually entered wrongly or after the work was done: check them against the files",
   ],
 };
 

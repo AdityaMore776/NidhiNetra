@@ -52,3 +52,38 @@ LABELS = {
     'WS/MP681/2023-2024/38928': "worth",
     'WS/MP456/2023-2024/40003': "worth",
 }
+
+# R12 as built in the engine (like-for-like type tops, plain place words): a fresh random 30 of
+# its 697 flags outside the sample above (results/r12_engine_sample.csv): 28/30 worth.
+R12_ENGINE = {
+    'WS/MP792/2025-2026/225865': "worth",
+    'WS/MP827/2025-2026/152382': "worth",
+    'WS/MP235/2025-2026/263615': "worth",
+    'WS/MP18363/2024-2025/147459': "worth",
+    'WS/MP18036/2025-2026/262925': "worth",
+    'WS/MP18252/2025-2026/173908': "worth",
+    'WS/MP18030/2025-2026/199410': "worth",
+    'WS/MP18124/2025-2026/226190': "worth",
+    'WS/MP715/2023-2024/12472': "worth",
+    'NOREF-36eb319d5e7b81': "worth",
+    'WS/MP18375/2025-2026/187698': "worth",
+    'WS/MP572/2024-2025/110745': "worth",
+    'WS/MP431/2024-2025/152154': "worth",
+    'WS/MP18207/2025-2026/174856': "worth",
+    'WS/MP18004/2024-2025/152096': "worth",
+    'WS/MP792/2023-2024/112235': "worth",
+    'WS/MP18375/2025-2026/187764': "worth",
+    'WS/MP564/2023-2024/99135': "explained",
+    'NOREF-00ef2c88d261ce': "worth",
+    'WS/MP709/2023-2024/52984': "explained",
+    'WS/MP549/2025-2026/214114': "worth",
+    'NOREF-bee480c22b0fe1': "worth",
+    'WS/MP18124/2025-2026/162417': "worth",
+    'WS/MP664/2025-2026/105154': "worth",
+    'WS/MP18124/2025-2026/162323': "worth",
+    'WS/MP107/2023-2024/102047': "worth",
+    'WS/MP755/2025-2026/196031': "worth",
+    'WS/MP18335/2025-2026/150741': "worth",
+    'WS/MP422/2025-2026/202632': "worth",
+    'WS/MP018/2023-2024/537': "worth",
+}
