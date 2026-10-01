@@ -659,6 +659,22 @@ engine can reach HIGH in the blueprint's weights (owner's call whether an exact 
 sanitiser missed phone numbers before a full stop; fixed, and `identical_groups.json` on main carried 12
 such numbers until this branch.
 
+## T064 (1 Oct 2026): the pre-sanction check on real recommendations
+
+`data/trial/presanction_demo.py` → `results/presanction_demo.json`. Each real recommendation is checked as it stood
+on the day it arrived (not yet sanctioned, compared only with its district's earlier works):
+
+| Case | Work | Answer | Why |
+|---|---|---|---|
+| ordinary | WS/MP618/2024-2025/156175, Rs 4.98 lakh community hall | **Green** | nothing the checks can see |
+| refiled | NOREF-b14cbede407a6e, Rs 10 lakh sabhamandap | **Amber** | reads like WS/MP18114/2025-2026/157479, recommended 225 days earlier, still open |
+| temple | WS/MP476/2024-2025/72649, solar light at a temple campus | **Amber** | Annexure-II item 13 reading |
+| vague big | NOREF-840ee6aa1b9fe3, Rs 25 lakh "Construction of Community Hall" | **Red** | no place or size (R12) and 2.5× the top of the state's usual range |
+
+**Trap:** re-dating a real work to the data's "today" hid its earlier copy (gap 225 → 533 days; the repeat score
+weighs time and fell from 0.80 to 0.74, under the 0.75 flag). A live check dates a new recommendation the day it
+is typed, so this only matters for demos built from old works.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

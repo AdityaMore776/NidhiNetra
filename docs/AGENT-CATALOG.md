@@ -27,6 +27,7 @@ them: what each checks, how, what we measured, and where it stands.
 | — | Guideline Compliance | every work | ✅ **in the engine** (T011) | rules R01–R11 in English + Hindi; 5 of 11 not checkable from the export |
 | — | Data Validation | every work | ✅ live | impossible dates judged by quarter and office; shown, not counted in the v2 score |
 | — | Risk score | every work | ✅ v2 ready (T050) | blueprint weights, 4 bands, top-3 reasons EN + HI; queue 1,524 (0.73%), 24/30 random queue works worth checking |
+| — | Pre-sanction check | before sanction | ✅ **in the engine + site** (T064) | every engine on a recommendation before sanction → Green / Amber / Red with reasons; never blocks, nothing stored. Real demo: ordinary hall Green, refiled hall Amber, temple-campus light Amber, Rs 25 lakh hall with no place Red |
 | — | Inspection Planner | every work | 📝 planned | — |
 | — | Ask DRISHTI | every work | 📝 planned | — |
 

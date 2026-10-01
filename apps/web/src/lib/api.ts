@@ -217,3 +217,62 @@ export interface Me {
   district_lgd: string | null;
   name: string | null;
 }
+
+/** POST JSON to the engine at /api/v1 with the same sign-in headers as api() (T064). */
+export async function apiPost<T>(path: string, body: unknown): Promise<T> {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  const sb = supabase();
+  if (sb) {
+    const { data } = await sb.auth.getSession();
+    if (data.session) headers.Authorization = `Bearer ${data.session.access_token}`;
+  } else {
+    const role = devRole();
+    if (role) headers["X-Dev-Role"] = role;
+    const district = process.env.NEXT_PUBLIC_DEV_DISTRICT;
+    if (district) headers["X-Dev-District"] = district;
+  }
+  const res = await fetch(new URL(`/api/v1${path}`, window.location.origin), {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    let detail = res.statusText;
+    try {
+      const d = (await res.json()).detail;
+      detail = typeof d === "string" ? d : "Please check the details entered.";
+    } catch {}
+    throw new ApiError(res.status, detail);
+  }
+  return res.json() as Promise<T>;
+}
+
+// ---- pre-sanction check (mirror apps/engine/drishti/presanction.py) -------------
+
+export type PreColour = "GREEN" | "AMBER" | "RED";
+
+export interface PreReason {
+  engine: string;
+  code: string;
+  text: string;
+  risk: number;
+  serious: boolean;
+}
+
+export interface PreSanction {
+  colour: PreColour;
+  advice: string;
+  score: number;
+  band: Band;
+  reasons: PreReason[];
+  not_checked: { engine: string; why: string }[];
+  as_of: string;
+  district_name: string;
+}
+
+export interface PreOptions {
+  districts: { district_lgd: string; name: string; state_name: string }[];
+  work_types: { code: string; name: string }[];
+  as_of: string;
+}

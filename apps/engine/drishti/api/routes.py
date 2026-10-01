@@ -6,13 +6,15 @@ is scoped to that user's district when their role has one.
 
 from __future__ import annotations
 
+from dataclasses import asdict
 from datetime import date
 from functools import lru_cache
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from psycopg.types.json import Jsonb
+from pydantic import BaseModel, Field
 
-from drishti import config
+from drishti import config, reference
 from drishti.agents import registry
 from drishti.agents.statistical.cohort import StatsStore
 from drishti.auth import Principal, current_user
@@ -26,6 +28,7 @@ from drishti.batch import (
 )
 from drishti.db import connect
 from drishti.pipeline.orchestrator import Context, assess_work
+from drishti.presanction import judge as presanction_judge
 from drishti.validation import pii
 
 router = APIRouter(prefix="/api/v1")
@@ -267,3 +270,54 @@ def _described(agents: list[dict]) -> list[dict]:
         out.append({**r, "agent": aid, "name": spec.name if spec else aid,
                     "question": spec.question if spec else ""})
     return out
+
+
+class Recommendation(BaseModel):
+    """A recommendation not yet sanctioned, as typed into the pre-sanction form (T064)."""
+
+    district_lgd: str = Field(min_length=1, max_length=8)
+    description: str = Field(min_length=3, max_length=2000)
+    amount: float = Field(gt=0, le=1e10)
+    work_type_code: str | None = Field(default=None, max_length=40)
+    agency_name: str | None = Field(default=None, max_length=300)
+    is_outside_constituency: bool = False
+
+
+@router.post("/presanction")
+def presanction(rec: Recommendation, user: Principal = Depends(current_user)) -> dict:
+    """Every engine on a recommendation before sanction -> Green / Amber / Red with the
+    engines' own sentences. Nothing is stored and nothing is blocked."""
+    scope = user.scope_district()
+    if scope is not None and rec.district_lgd != scope:
+        raise HTTPException(404, "no such district in your area")
+    as_of = config.snapshot_date()
+    with connect() as con:
+        d = con.execute("SELECT district_lgd, name, state_lgd, state_name FROM districts "
+                        "WHERE district_lgd = %s", (rec.district_lgd,)).fetchone()
+        if d is None:
+            raise HTTPException(404, "no such district")
+        work = {"work_id": "PRE-SANCTION", "source": "SCENARIO", "house": None, "term": None,
+                "state_lgd": d["state_lgd"], "state_name": d["state_name"],
+                "district_lgd": d["district_lgd"], "district_name": d["name"],
+                "constituency": None, "mp_name": None, "agency_name": rec.agency_name,
+                "fy": None, "work_type_code": rec.work_type_code or None, "category": None,
+                "description": rec.description.strip(), "amount": float(rec.amount),
+                "recommended_date": as_of, "completed_date": None, "status": "RECOMMENDED",
+                "quantity": None, "quantity_unit": None,
+                "is_outside_constituency": rec.is_outside_constituency, "signals": {}}
+        ctx = with_index(Context(stats=_stats(), as_of=as_of), con, work)
+    result = presanction_judge(assess_work(work, ctx))
+    return {**asdict(result), "as_of": as_of.isoformat(), "district_name": d["name"]}
+
+
+@router.get("/presanction/options")
+def presanction_options(user: Principal = Depends(current_user)) -> dict:
+    """What the pre-sanction form offers: the user's districts and the work types."""
+    where, params = _scope(user, alias="d")
+    with connect() as con:
+        rows = con.execute(f"SELECT d.district_lgd, d.name, d.state_name FROM districts d "
+                           f"WHERE {where} ORDER BY d.state_name, d.name", params).fetchall()
+    types = sorted(({"code": c, "name": s["name"]} for c, s in reference.work_types().items()),
+                   key=lambda t: t["name"])
+    return {"districts": [dict(r) for r in rows], "work_types": types,
+            "as_of": config.snapshot_date().isoformat()}

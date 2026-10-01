@@ -1,0 +1,53 @@
+{
+  "ordinary": {
+    "work_id": "WS/MP618/2024-2025/156175",
+    "district": "Bagalkot",
+    "checked_on": "2024-11-30",
+    "description": "Construction of Community Hall in MURANAL RC Village, Property No.POW-01",
+    "amount": 497947.0,
+    "colour": "GREEN",
+    "band": "LOW",
+    "score": 0,
+    "reasons": []
+  },
+  "refiled": {
+    "work_id": "NOREF-b14cbede407a6e",
+    "district": "Beed",
+    "checked_on": "2025-07-22",
+    "description": "Construction of Sabhamandap on Gram Panchayat land near Sri Kshetra Narsih Temple.",
+    "amount": 1000000.0,
+    "colour": "AMBER",
+    "band": "LOW",
+    "score": 0.0851,
+    "reasons": [
+      "Duplicate & Split Work: Reads like work WS/MP18114/2025-2026/157479 (Rs 6.99 lakh, recommended 225 days before this one; descriptions 100% alike, the same place named, amounts 30% apart) while that work was still open. Check whether both are the same work."
+    ]
+  },
+  "temple": {
+    "work_id": "WS/MP476/2024-2025/72649",
+    "district": "Rae Bareli",
+    "checked_on": "2023-12-31",
+    "description": "Installation of Solar Light At Hanuman Temple Campus.",
+    "amount": 18644.0,
+    "colour": "AMBER",
+    "band": "MEDIUM",
+    "score": 0.18,
+    "reasons": [
+      "Guideline Compliance: The description reads as \"Temple Campus\" being the work itself; Annexure-II item 13 lists this as not permitted (Works within the places of religious worship and on land belonging to or owned by religious faith/group.). Verify against the 2023 guidelines before any action."
+    ]
+  },
+  "vague big": {
+    "work_id": "NOREF-840ee6aa1b9fe3",
+    "district": "Mancherial",
+    "checked_on": "2026-05-15",
+    "description": "Construction of Community Hall",
+    "amount": 2500000.0,
+    "colour": "RED",
+    "band": "HIGH",
+    "score": 0.2519,
+    "reasons": [
+      "Guideline Compliance: Rs 25.00 lakh for \"Construction of Community Hall\": the record does not say where, or how much is built or bought, so the work cannot be checked or inspected. Most Community hall / bhavan works cost up to Rs 13.00 lakh. Ask for the site and the size.",
+      "Cost Anomaly: Rs 25.00 lakh: similar Community hall / bhavan works in this state usually cost Rs 3.00 lakh to Rs 10.00 lakh (1,358 similar works in this state). This is 2.5 times the top of that range, and above the usual top for across the scheme (Rs 13.00 lakh), and 1.0 times the comfort limit of Rs 24.13 lakh. Works described like this one usually cost up to Rs 12.06 lakh. Check the estimate and what it includes."
+    ]
+  }
+}
