@@ -9,5 +9,13 @@
     "worth_checking_same_meaning_as_above": 30,
     "worth_checking_beyond_a_delay": 27,
     "old_sample_still_queued": "7 of the 24 worth_checking, 0 of the 6 explained"
+  },
+  "queue_t054_random_sample": {
+    "read": 30,
+    "worth_checking": 28,
+    "record_cleanup": 2,
+    "queue": 131,
+    "note": "after T054 (timing rules scored by how unusual the wait is); 7 of 30 from one Rae Bareli group, 3 from one Alluri Sitarama Raju group",
+    "earlier_samples_still_queued": "5 of 57 (T050+T051 samples); the rest were lifted by a delay note, most now MEDIUM on their repeat/split signal"
   }
 }

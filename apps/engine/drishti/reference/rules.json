@@ -2,7 +2,16 @@
   "version": 1,
   "edition_note": "Paragraph numbers are from the MPLADS Guidelines (June 2016), the latest edition we could read (T001 will check the 2023 wording). Every threshold comes from guidelines_clauses.yaml.",
   "severity_signal": {"HIGH": 1.0, "MEDIUM": 0.6, "LOW": 0.3},
-  "grading_note": "T051: a rule broken by a little and a rule broken by a lot must not score the same. R01 grows from 0.30 just past the clock to its severity (0.60) at four times the clock; R02 from 0.15 at one year to 0.30 at the type's 98th percentile, then to 0.60 at twice that (log scale). One delay alone can still never make a work High.",
+  "grading_note": "T054: a timing rule scores by how unusual the wait is, not by how far past the clock. Most works pass the clock (at 75 days 63 in 100 are still waiting), so a few days past is the norm and scores almost nothing. The signal is read off the share of works of the same age that still wait (R01) or are still open (R02), on the 'rarity_signal' scale below. One delay alone can still never make a work High.",
+  "wait_curves": {
+    "note": "Of the works recommended N days before the data was taken, the share still waiting for sanction (r01, works of terms that have not ended, wait less election-code days) and, of the sanctioned ones, the share still open (r02). Measured by data/trial/wait_curves_trial.py -> results/wait_curves.json (snapshot 26 May 2026, +-15 days around each point). Between points the share is read on a straight line; past the last point it stays at the last value. Re-measure with each new snapshot.",
+    "r01": [[75, 0.63], [90, 0.585], [120, 0.53], [150, 0.309], [180, 0.251], [240, 0.204], [300, 0.148], [365, 0.127], [450, 0.103], [540, 0.042], [730, 0.037], [900, 0.037]],
+    "r02": [[365, 0.686], [450, 0.581], [540, 0.387], [900, 0.428], [1100, 0.571]]
+  },
+  "rarity_signal": {
+    "note": "Signal for a timing rule from the share of same-age works nationally (still waiting / still open): half or more of them -> 0.05 (normal), a quarter -> 0.15, one in ten -> 0.30, one in 25 or fewer -> 0.60 (the rule's ceiling). Read on a log scale between the points. A timing finding is MEDIUM from 0.30, LOW below.",
+    "points": [[0.50, 0.05], [0.25, 0.15], [0.10, 0.30], [0.04, 0.60]]
+  },
   "terms": {
     "note": "Lok Sabha terms that have ended (Delay & Fund Flow engine, T410). A work recommended under an ended term and still not sanctioned is money of a dissolved House waiting. Rajya Sabha members' terms are individual and not in the export, so they are not modelled.",
     "ended": {
@@ -25,20 +34,24 @@
     {
       "id": "R01", "code": "SANCTION_OVERDUE", "title": "Waiting for sanction past the time limit",
       "guideline_ref": "para 3.12", "clause": "SANCTION_PERIOD", "severity": "MEDIUM",
-      "condition": "status is RECOMMENDED and days since recommendation, less days under the 2024 general-election model code of conduct, exceed 75",
+      "condition": "status is RECOMMENDED and days since recommendation, less days under the 2024 general-election model code of conduct, exceed 75. Signal by how many works that old still wait (wait_curves.r01): 0.05 when most do, 0.60 when 1 in 25 or fewer do. A work of an ended Lok Sabha term is read on the para 3.15 clock instead (75 days from the term's end) and scores LOW: the record was never closed.",
       "evaluable": true,
-      "message_en": "Waiting {days} days for sanction, {over} days past the {limit}-day limit ({ref}) and {times} times the time allowed. Needs checking with the district office.",
-      "message_hi": "स्वीकृति की प्रतीक्षा {days} दिनों से, {limit} दिन की सीमा ({ref}) से {over} दिन अधिक (अनुमत समय का {times} गुना)। ज़िला कार्यालय से जाँच आवश्यक।"
+      "message_en": "Waiting {days} days for sanction, {over} days past the {limit}-day limit ({ref}). {how_common}",
+      "message_hi": "स्वीकृति की प्रतीक्षा {days} दिनों से, {limit} दिन की सीमा ({ref}) से {over} दिन अधिक। {how_common_hi}",
+      "common_en": "This is common: {share} in 100 works recommended this long ago were also still waiting.",
+      "common_hi": "यह सामान्य है: इतने समय पहले अनुशंसित 100 में से {share} कार्य भी प्रतीक्षा में थे।",
+      "unusual_en": "Only {share} in 100 works recommended this long ago were still waiting. The public data does not show rejections: check with the district office whether it was sanctioned, turned down, or is held up.",
+      "unusual_hi": "इतने समय पहले अनुशंसित 100 में से केवल {share} कार्य प्रतीक्षा में थे। सार्वजनिक डेटा में अस्वीकृति नहीं दिखती: ज़िला कार्यालय से पता करें कि कार्य स्वीकृत हुआ, अस्वीकृत हुआ या रुका है।",
+      "ended_message_en": "Recommended under the {term}, whose term ended on {ended}; the district had to sanction it or tell the former MP it was turned down within 75 days of that date ({ref}). {days} days later nothing is recorded. If it was turned down, the record needs closing.",
+      "ended_message_hi": "{term} के दौरान अनुशंसित, जिसका कार्यकाल {ended} को समाप्त हुआ; ज़िले को उस तिथि से 75 दिनों में स्वीकृति देनी थी या अस्वीकृति की सूचना देनी थी ({ref})। {days} दिन बाद भी कुछ दर्ज नहीं। अस्वीकृत हुआ हो तो रिकॉर्ड बंद करना आवश्यक।"
     },
     {
-      "id": "R02", "code": "COMPLETION_OVERDUE", "title": "Open far longer than similar works",
-      "guideline_ref": "para 3.13", "clause": "COMPLETION_PERIOD", "severity": "MEDIUM",
-      "condition": "status is SANCTIONED and days since recommendation exceed the 98th percentile completion time of its work type (LOW when only past the one-year norm)",
+      "id": "R02", "code": "COMPLETION_OVERDUE", "title": "Open past the one-year norm",
+      "guideline_ref": "para 3.13", "clause": "COMPLETION_PERIOD", "severity": "LOW",
+      "condition": "status is SANCTIONED and days since recommendation exceed one year. Always LOW (T054): at every age past a year 39-69 in 100 works are still shown open (wait_curves.r02), often because completion is not entered, so a long-open work cannot be told from a finished one not yet updated. The earlier 'past 98% of finished works' line was an artefact of the data starting in 2023 (no finished work can show a longer time).",
       "evaluable": true,
-      "message_en": "Still open {days} days after recommendation: {over} days beyond the {limit} days by which 98% of completed {type} works had finished. Needs a progress check.",
-      "message_hi": "अनुशंसा के {days} दिन बाद भी अधूरा: पूरे हुए {type} कार्यों में 98% जिस अवधि ({limit} दिन) में पूरे हुए, उससे {over} दिन अधिक। प्रगति की जाँच आवश्यक।",
-      "low_message_en": "Open {days} days after recommendation, {over} days past the one-year norm ({ref}); 98% of completed {type} works finished within {p98}. The guidelines allow longer when the sanction letter records why.",
-      "low_message_hi": "अनुशंसा के {days} दिन बाद भी अधूरा, एक वर्ष की सामान्य अवधि ({ref}) से {over} दिन अधिक; पूरे हुए {type} कार्यों में 98% {p98} में पूरे हुए। स्वीकृति पत्र में कारण दर्ज हो तो अधिक समय मान्य है।"
+      "message_en": "Still open {days} days after recommendation, past the one-year norm ({ref}). This is common on the portal: {share} in 100 works recommended this long ago are also still shown as open, often because completion is not entered. The guidelines allow longer when the sanction letter records why.",
+      "message_hi": "अनुशंसा के {days} दिन बाद भी अधूरा, एक वर्ष की सामान्य अवधि ({ref}) से अधिक। पोर्टल पर यह सामान्य है: इतने समय पहले अनुशंसित 100 में से {share} कार्य भी अधूरे दिखते हैं, अक्सर इसलिए कि पूर्णता दर्ज नहीं होती। स्वीकृति पत्र में कारण दर्ज हो तो अधिक समय मान्य है।"
     },
     {
       "id": "R03", "code": "SPEND_ABOVE_SANCTION", "title": "Spent more than sanctioned",

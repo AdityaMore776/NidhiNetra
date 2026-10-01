@@ -17,8 +17,7 @@ def type_top(work: dict, stats) -> float | None:
 
 
 def _assess(work: dict, ctx):
-    return agent.assess(work, ctx.as_of, ctx.stats.p98(work.get("work_type_code")),
-                        ctx.stats.timeline, type_top(work, ctx.stats))
+    return agent.assess(work, ctx.as_of, ctx.stats.timeline, type_top(work, ctx.stats))
 
 
 ENGINE = EngineSpec(id=agent.AGENT, name="Guideline Compliance", question=agent.QUESTION,

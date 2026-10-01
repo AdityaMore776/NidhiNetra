@@ -14,18 +14,18 @@
     "photo_evidence": 0.0
   },
   "bands": {
-    "CRITICAL": 50,
-    "HIGH": 443,
-    "MEDIUM": 14581,
-    "LOW": 194919
+    "CRITICAL": 5,
+    "HIGH": 126,
+    "MEDIUM": 2197,
+    "LOW": 207665
   },
   "shares": {
-    "CRITICAL": 0.00024,
-    "HIGH": 0.00211,
-    "MEDIUM": 0.06944,
-    "LOW": 0.92822
+    "CRITICAL": 2e-05,
+    "HIGH": 0.0006,
+    "MEDIUM": 0.01046,
+    "LOW": 0.98891
   },
-  "review_queue": 493,
-  "review_share": 0.00235,
-  "max_score": 36.4
+  "review_queue": 131,
+  "review_share": 0.00062,
+  "max_score": 34.3
 }
