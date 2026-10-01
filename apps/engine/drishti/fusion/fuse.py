@@ -4,7 +4,8 @@
           each term = the engine's signal (its risk, 0-1) when it ASSESSED the work, else 0.
           Weights come from the engine registry: an engine not built counts 0, and an
           engine below its accuracy target is registered "shown, not counted" (weight 0,
-          today: Delay, AUC 0.70 against 0.80).
+          today: Delay & Fund Flow, AUC 0.70 against 0.80; Odd Overall, 3/30 random flags
+          worth a look; Paperwork and Photo Evidence, pilot evidence only).
   floors  1 serious-rule breach (a hard finding, risk >= 0.6) lifts the score to the
           High cut; 2 or more to the Critical cut. The lift is its own part ("floor"), so
           the parts still add up exactly to the score.

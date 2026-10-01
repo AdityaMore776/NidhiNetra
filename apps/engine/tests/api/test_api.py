@@ -30,7 +30,7 @@ def test_summary_counts_real_works_and_money(client):
     assert sum(s["bands"].values()) == 4
     agents = {a["id"]: a for a in s["agents"]}
     assert agents["statistical"]["built"] is True
-    assert agents["outlier"]["built"] is False
+    assert agents["outlier"]["built"] is True
     assert list(agents)[:5] == ["compliance", "statistical", "dup_split", "delay", "outlier"]
 
 

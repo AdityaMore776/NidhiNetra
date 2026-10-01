@@ -519,6 +519,25 @@ from the cost engine.
   sharing a typo ("tenker", "publiic") read as "one site" → a same-place group of 6+ is a series; Critical at 30
   was reached by any delay plus any repeat, down to ₹20,000 lights → Critical at 33.
 
+### Odd Overall (#63, 1 Oct 2026): unusual in two ways at once
+
+`data/build_outlier.py` → `results/outlier_trial.json`. Three fields judged within the work type: amount, days from
+recommendation to completion, length of the description. Two methods at the same 1.5% of real works flagged:
+
+| Planted on 1,000 ordinary works | Isolation Forest | Robust z (second-largest) |
+|---|---|---|
+| amount ×5 + completed in 2 days | **100%** | 51% |
+| amount ×5 + description cut to one word | **75%** | 51% |
+| completed in 2 days + one-word description | **100%** | 100% |
+| amount ×5 alone (the cost engine's job) | 6% | 0% |
+| false alarms on 20,000 untouched works | 1.6% | 1.7% |
+
+The forest is kept, exported as numbers and scored in plain Python (equal to sklearn within 1e-16). Read by eye
+(`outlier_labels.py`): the 30 oddest real works **22/30 worth a look** (a ₹49 lakh lab purchase "completed" 8 days
+after recommendation; ₹1-1.35 crore roads with no description done in two months), but 30 random works at the 1.5%
+cut only **3/30** (mostly light installations done in a fortnight, cheap jobs, backfilled 2022-23 works). So the
+engine reports only the oddest 0.1% (214 works) and is shown, not counted.
+
 ## T051 (1 Oct 2026): do the engines work on recommendations they have never seen?
 
 **The owner's question:** are the engines good only because they were built on these 2,09,993 works? A

@@ -40,7 +40,7 @@ them: what each checks, how, what we measured, and where it stands.
 | Cost Anomaly | `agents/statistical/` | 0.20 | planted mark-ups + frozen fresh samples read by eye. T051: the word-price model judges any description: 5× mark-ups caught 42-45% (was 55%), false alarms 1.2%, top-30 flags 11/30 real price questions (was 10/30) |
 | Duplicate & Split Work | `agents/dup_split/` | 0.20 | T051: rules run live for any work. Fresh frozen samples read by eye: pairs 20/40 real repeats (T030: 15/40), same-site splits 9/15 (T030: 10/15) |
 | Delay Prediction | `agents/delay/` | **0** (shown, not counted) | T051 late-rate ladder: strict backtest AUC 0.705 (LightGBM 0.710), **unseen districts 0.685 (LightGBM 0.588)**; target 0.80 |
-| Odd Overall (outlier) | — | 0.10 | not built yet |
+| Odd Overall (outlier) | `agents/outlier/` | **0** (shown, not counted) | #63: Isolation Forest on amount, completion speed and description length within the type, scored in plain Python; planted two-field oddities caught 100% / 75% / 100% at 1.5% flagged (robust z 51% / 51% / 100%); read by eye the oddest 30 are 22/30 worth a look, 30 random flags 3/30, so it reports the oddest 0.1% only |
 
 **One brain per engine (T051, 1 Oct 2026).** Each engine computes its answer for ANY recommendation from
 stored tables, coefficients or reference files (`cohort_stats`, `delay_rates`, `engine_models`,
@@ -61,7 +61,7 @@ data was built meets exactly the same rules. Learning jobs: `data/build_stats.py
 | 5 | Paperwork | B4 Document + C3 Contractor Network | certificates read by local OCR | ✅ built (T110), shown, not counted: papers exist for the 837 pilot works only |
 | 6 | Photo Evidence | B2 Photo Forensics + B3 Geo-Location + D1 Citizen photos | photos, GPS stamps | ✅ built (T310), shown, not counted: photos exist for the 837 pilot works only |
 | 7 | Site Progress | B1 Site Progress + plaque + B5 Satellite | an AI vision key; satellite only for big works | frame only, off until the owner adds a key (T510) |
-| 8 | Odd Overall | the blueprint's outlier slot | the export | being built (#63) |
+| 8 | Odd Overall | the blueprint's outlier slot | the export | ✅ built (#63), shown, not counted: random flags mostly explained (3/30) |
 
 Why these merges: Delay and Fund Flow both ask "is time or money stuck?" from the same dates. Document and
 Contractor read the same certificates (the vendor code comes from the certificate). Photo Forensics,

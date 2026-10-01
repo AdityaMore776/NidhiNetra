@@ -1,0 +1,37 @@
+{
+  "version": "outlier-1",
+  "works": 209993,
+  "flag_share": 0.015,
+  "threshold_robust_z": 1.779,
+  "threshold_forest": 0.6108,
+  "engine_threshold_oddest_0_1pct": 0.6842,
+  "engine_findings_real_works": 214,
+  "flagged_real_works": {
+    "robust_z": 3156,
+    "isolation_forest": 3150
+  },
+  "kept": "isolation_forest (catches more planted two-field oddities)",
+  "pure_python_forest_max_difference_from_sklearn": 1.1102230246251565e-16,
+  "false_alarms_on_control": {
+    "robust_z": 0.0171,
+    "isolation_forest": 0.016
+  },
+  "planted_two_field_caught": {
+    "amount+fast": {
+      "robust_z": 0.511,
+      "isolation_forest": 1.0
+    },
+    "amount+short": {
+      "robust_z": 0.511,
+      "isolation_forest": 0.752
+    },
+    "fast+short": {
+      "robust_z": 1.0,
+      "isolation_forest": 1.0
+    }
+  },
+  "planted_single_field_amount_x5_caught": {
+    "robust_z": 0.0,
+    "isolation_forest": 0.059
+  }
+}

@@ -1,0 +1,42 @@
+work_id,score,type,amount,recommended,completed,status,description,z
+WS/MP418/2023-2024/20663,0.765,COMPUTER,4930184.0,2023-09-15,2023-09-23,COMPLETED,"Purchase of 1-1 sets of Equipments and furniture/accessories for setting up Laboratories as per enclosed list in following schools/institutions:
+1.+2 Rajkiyakrit Uchch Vidyalay Bardaha, Sikti.
+2. +2 P","{""amount"": 3.5, ""speed"": -3.6, ""words"": 3.1}"
+WS/MP418/2023-2024/69772,0.764,COMPUTER,4930184.0,2023-12-26,2024-01-02,COMPLETED,Purchase of 1-1 sets of Equipments and furniture/accessories for setting up Laboratories as per enclosed list in following schools/institutions: 1.+2 UCCh Vidyala Kaliyagang Plasi 2. +2 Jakir Acadmi U,"{""amount"": 3.5, ""speed"": -3.7, ""words"": 2.9}"
+WS/MP368/2023-2024/5882,0.76,ROAD_CC,10000000.0,2023-07-24,2023-09-29,COMPLETED,N/A,"{""amount"": 4.3, ""speed"": -2.3, ""words"": -7.5}"
+WS/MP368/2023-2024/5883,0.76,ROAD_CC,11000000.0,2023-07-24,2023-09-30,COMPLETED,N/A,"{""amount"": 4.4, ""speed"": -2.3, ""words"": -7.5}"
+WS/MP418/2023-2024/20642,0.757,COMPUTER,4930184.0,2023-09-15,2023-09-15,COMPLETED,"1. Utkramit Madhyamik Vidyalaya Kaparphora Kursakanta
+2.  +2 Maharshi Mehi Project Kanya uchch vidyalaya Pahushi Kursakanta.
+3.  Utkramit Uchch  Vidyalaya Haldharahaat Kursakanta 
+4. .+2 Uchch Vidyala","{""amount"": 3.5, ""speed"": -6.0, ""words"": 2.1}"
+WS/MP368/2023-2024/5877,0.756,ROAD_CC,13500000.0,2023-07-24,2023-10-03,COMPLETED,N/A,"{""amount"": 4.7, ""speed"": -2.3, ""words"": -7.5}"
+WS/MP418/2023-2024/20629,0.755,COMPUTER,4930184.0,2023-09-15,2023-09-21,COMPLETED,"1.  Utkramit Madhyamik Vidyalaya Basmatiya Narpatganj
+2.  Utkramit Uchch Madhyamik  Vidyalaya Fatehpur Pithaura  Narpatganj.
+3.  Utkramit Uchch Madhyamik  Vidyalaya Bardaha Noniya Tola  Narpatganj.
+4.","{""amount"": 3.5, ""speed"": -3.8, ""words"": 2.4}"
+WS/MP18039/2025-2026/240375,0.751,ROAD_CC,1197237.0,2026-01-07,2026-01-14,COMPLETED,PCC ROAD,"{""amount"": 1.3, ""speed"": -5.2, ""words"": -5.4}"
+WS/MP361/2024-2025/121114,0.749,COMMUNITY_HALL,797296.0,2024-03-05,2024-03-26,COMPLETED,N/A,"{""amount"": 0.6, ""speed"": -5.9, ""words"": -7.0}"
+WS/MP361/2024-2025/121063,0.747,COMMUNITY_HALL,997889.0,2024-03-05,2024-03-29,COMPLETED,N/A,"{""amount"": 0.9, ""speed"": -5.6, ""words"": -7.0}"
+WS/MP505/2023-2024/74296,0.737,COMMUNITY_HALL,11023.0,2024-01-03,2024-01-15,COMPLETED,COMPLETION OF REMAINING WORK OF COMMUNITY HALL NEAR SAVELAL HOUSE IN DUMRA DIARA IN KASHA PANCHAYAT AT KHATA NO. 84 KHAS MAHAL,"{""amount"": -5.1, ""speed"": -6.8, ""words"": 1.2}"
+WS/MP361/2024-2025/123381,0.736,COMMUNITY_HALL,500000.0,2024-03-08,2024-04-29,COMPLETED,N/A,"{""amount"": 0.0, ""speed"": -4.3, ""words"": -7.0}"
+WS/MP361/2024-2025/121064,0.734,COMMUNITY_HALL,997834.0,2024-03-05,2024-06-11,COMPLETED,N/A,"{""amount"": 0.9, ""speed"": -3.2, ""words"": -7.0}"
+WS/MP585/2024-2025/14785,0.733,COMPUTER,17499549.0,2023-09-01,2025-07-07,COMPLETED,"Saraspur Primary School No.3/4 managed by Nagar Primary Education Committee, Ahmedabad, transform it as Smart School (Including Joyful Learning Classroom-1, Smart Panel-8, Science and Math Lab, Furnit","{""amount"": 5.2, ""speed"": 1.2, ""words"": 4.0}"
+WS/MP18108/2024-2025/143811,0.732,BUS_SHELTER,2599420.0,2024-09-26,2024-11-07,COMPLETED,"Pre fabricated  bus shelter  model number 3 with two LED solar light
+1.Gram Panchayat sarkhedi Mein barghat ticketda per
+2. Gram Panchayat barcha mein tigada per
+3. Gram Panchayat chamari Mein school ","{""amount"": 2.9, ""speed"": -2.9, ""words"": 3.8}"
+WS/MP361/2024-2025/121025,0.731,ROAD_CC,700000.0,2024-03-05,2024-04-06,COMPLETED,N/A,"{""amount"": 0.5, ""speed"": -3.3, ""words"": -7.5}"
+WS/MP442/2023-2024/109933,0.729,SCHOOL_BUILDING,25000.0,2024-02-20,2024-03-10,COMPLETED,Choupal nirman 2022-23 Gram Mehanda GP Boriya,"{""amount"": -3.7, ""speed"": -5.7, ""words"": -1.5}"
+WS/MP413/2023-2024/15700,0.728,CCTV,4881825.0,2023-09-02,2026-01-17,COMPLETED,"Under the Members of Parliament Local Area Development Scheme, an amount of up to forty nine lakh fifty thousand is recommended for the supply and installation of 70 CCTV cameras at the following plac","{""amount"": 3.4, ""speed"": 1.4, ""words"": 3.5}"
+WS/MP413/2023-2024/15701,0.728,CCTV,4881825.0,2023-09-02,2026-01-17,COMPLETED,"Under the Members of Parliament Local Area Development Scheme, an amount of up to forty nine lakh fifty thousand is recommended for the supply and installation of 70 CCTV cameras at the following plac","{""amount"": 3.4, ""speed"": 1.4, ""words"": 3.5}"
+WS/MP009/2023-2024/117633,0.727,WATER_TANK,10641925.0,2024-02-29,2024-03-22,COMPLETED,G.I. Coated Water Tanker capacity 5000 Litre with firefighting pump with 900*20 tyre (Along with tera fill water filter capacity 30 litre x 11 nos for each tanker) Drinking water plant.,"{""amount"": 5.3, ""speed"": -2.8, ""words"": 1.4}"
+WS/MP361/2024-2025/120683,0.726,COMMUNITY_HALL,400000.0,2024-03-05,2024-06-10,COMPLETED,N/A,"{""amount"": -0.3, ""speed"": -3.3, ""words"": -7.0}"
+WS/MP317/2023-2024/1846,0.721,CCTV,4992706.0,2023-06-29,2023-08-18,COMPLETED,Installation of CCTV Camera in different blocks at 38 locations that comes under vaishali loksabha constituency,"{""amount"": 3.4, ""speed"": -2.9, ""words"": 1.5}"
+WS/MP647/2023-2024/119459,0.72,BUS_SHELTER,306328.0,2024-03-03,2024-03-21,COMPLETED,MAIN ROAD PER,"{""amount"": -0.8, ""speed"": -3.9, ""words"": -3.6}"
+WS/MP418/2024-2025/147613,0.718,COMPUTER,2475000.0,2024-10-16,2024-10-20,COMPLETED,"Purchase of  Equipment and furniture/accessories for setting up Laboratories as per enclosed list in following schools/institutions: 1 UTKARMIT  MADHYAMIK VIDYALAY , SONAMANI GODAM","{""amount"": 2.6, ""speed"": -4.2, ""words"": 1.7}"
+WS/MP418/2024-2025/147612,0.718,COMPUTER,2475000.0,2024-10-16,2024-10-20,COMPLETED,"Purchase of  Equipment and furniture/accessories for setting up Laboratories as per enclosed list in following schools/institutions: 1 UCHCH MADHYAMIK VIDYALYA, RAMPUR MOHANPUR WEST","{""amount"": 2.6, ""speed"": -4.2, ""words"": 1.7}"
+WS/MP759/2024-2025/125931,0.717,ROAD_CC,500000.0,2024-03-12,2024-03-21,COMPLETED,Laying of CC Road,"{""amount"": 0.0, ""speed"": -4.9, ""words"": -3.7}"
+WS/MP762/2024-2025/71935,0.716,BOREWELL,1669204.0,2023-12-30,2026-01-31,COMPLETED,"""Drilling of 6 1/2"""" dia Power Borewell and fixing of motor with pump set along with required cable etc., at Aliabad, Ali Nagar Road, near ACP office, Chatrinaka in Bahadurpura Assembly Constituency &","{""amount"": 3.3, ""speed"": 1.1, ""words"": 3.3}"
+WS/MP368/2023-2024/6142,0.715,POND,2000000.0,2023-07-25,2023-11-23,COMPLETED,N/A,"{""amount"": 2.6, ""speed"": -1.7, ""words"": -6.6}"
+WS/MP368/2023-2024/5949,0.714,BOREWELL,1500000.0,2023-07-24,2023-12-15,COMPLETED,N/A,"{""amount"": 3.1, ""speed"": -0.7, ""words"": -7.1}"
+WS/MP759/2024-2025/126486,0.714,ROAD_CC,500000.0,2024-03-12,2024-03-29,COMPLETED,Laying of CC Road,"{""amount"": 0.0, ""speed"": -4.1, ""words"": -3.7}"

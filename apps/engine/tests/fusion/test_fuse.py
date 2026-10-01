@@ -20,8 +20,10 @@ def _all(*results):
 def test_blueprint_weights_come_from_the_registry():
     w = weights()
     assert w["compliance"] == 0.30 and w["statistical"] == 0.20 and w["dup_split"] == 0.20
-    assert w["outlier"] == 0.10
-    assert w["delay"] == 0.0            # shown, not counted: below its accuracy target
+    # shown, not counted: Delay is below its accuracy target, Odd Overall's random flags read
+    # 3/30 worth a look (#63), and the evidence engines have pilot evidence only
+    assert w["outlier"] == 0.0 and w["delay"] == 0.0
+    assert w["paperwork"] == 0.0 and w["photo_evidence"] == 0.0
 
 
 def test_score_is_the_weighted_sum_and_parts_add_up_exactly():
