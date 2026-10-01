@@ -82,19 +82,30 @@ def works_records(works: pd.DataFrame):
     signals: dict[str, dict] = {}
     for work_id, engine, data, _v in signal_rows():
         signals.setdefault(work_id, {})[engine] = data
+    evidence = evidence_facts()
     for rec in works.to_dict("records"):
         r = clean(rec)
         r["signals"] = signals.get(r["work_id"], {})
+        if r["work_id"] in evidence:
+            r["evidence"] = evidence[r["work_id"]]
         yield r
 
 
+def evidence_facts() -> dict[str, dict]:
+    """Facts read from attached papers and photos (data/build_evidence.py), by work id."""
+    path = BUILD / "evidence_facts.parquet"
+    if not path.exists():
+        return {}
+    return {r.work_id: json.loads(r.data) for r in pd.read_parquet(path).itertuples()}
+
+
 def load_context(works: pd.DataFrame | None = None) -> Context:
-    """Statistics + the Duplicate & Split comparison index over every work (T051)."""
-    from drishti.agents.dup_split.match import DupIndex
+    """Statistics + the cross-work indexes (Duplicate & Split, vendors) over every work."""
+    from drishti.batch import indexes
 
     if works is None:
         works = pd.read_parquet(BUILD / "works.parquet")
-    index = DupIndex.build(clean(r) for r in works.to_dict("records"))
+    data = indexes(list(works_records(works)))
     stats = StatsStore.from_rows(
         pd.read_parquet(BUILD / "cohort_stats.parquet").to_dict("records"),
         pd.read_parquet(BUILD / "duration_stats.parquet").to_dict("records"),
@@ -105,4 +116,4 @@ def load_context(works: pd.DataFrame | None = None) -> Context:
         pd.read_parquet(BUILD / "delay_rates.parquet").to_dict("records")
         if (BUILD / "delay_rates.parquet").exists() else (),
         model_rows())
-    return Context(stats=stats, as_of=config.snapshot_date(), data={"dup_split": index})
+    return Context(stats=stats, as_of=config.snapshot_date(), data=data)

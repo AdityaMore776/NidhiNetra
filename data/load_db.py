@@ -34,9 +34,11 @@ TABLES = {
     "timeline_quarters": ["quarter", "n", "bad"],
     "timeline_agencies": ["agency_name", "completed", "bad"],
     "delay_rates": ["level", "key", "n", "late", "version"],
+    "evidence_facts": ["work_id", "data", "version"],
 }
 # Built by a later data job (T051); an older data pack may not have them yet.
-OPTIONAL = {"delay_rates": "data/build_delay_rates.py"}
+OPTIONAL = {"delay_rates": "data/build_delay_rates.py",
+            "evidence_facts": "data/build_evidence.py (needs the evidence + OCR cache)"}
 MAX_DB_MB_NOTE = "free tier is 500 MB"
 MAX_DB_MB = 400
 
@@ -57,7 +59,7 @@ def load(url: str) -> None:
     with psycopg.connect(url, prepare_threshold=None) as con:
         con.execute("TRUNCATE assessments, work_signals, works, districts, cohort_stats, "
                     "duration_stats, unit_rate_models, timeline_quarters, timeline_agencies, "
-                    "delay_rates")
+                    "delay_rates, evidence_facts")
         for table, cols in TABLES.items():
             t0 = time.time()
             if table in OPTIONAL and not (BUILD / f"{table}.parquet").exists():

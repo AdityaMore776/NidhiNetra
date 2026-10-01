@@ -1,0 +1,66 @@
+{
+  "works_with_files": 836,
+  "certificates": 431,
+  "fields_read_share": {
+    "sanction_date": 0.694,
+    "sanctioned_amount": 0.998,
+    "status": 0.998,
+    "payments": 0.998,
+    "vendor_code": 0.977,
+    "location": 0.993
+  },
+  "certificates_with_several_payments": 0,
+  "sanction_delay": {
+    "works_with_a_sanction_date": 229,
+    "past_75_days_raw_calendar": 33,
+    "sanctioned_before_recommended": 1
+  },
+  "status": {
+    "completed_works_with_own_certificate": 285,
+    "all_own_certificates_say_in_progress": 282
+  },
+  "certification_pages": 429,
+  "certification_pages_with_a_box_marked": 2,
+  "pratapgarh_vendors": {
+    "works": 261,
+    "vendors": 7,
+    "top_share": 0.391,
+    "top3_share": 0.839
+  },
+  "engine": {
+    "status": {
+      "NOT_ASSESSABLE": 157,
+      "NOT_APPLICABLE": 274,
+      "ASSESSED": 405
+    },
+    "verdicts": {
+      "NO_CERTIFICATE_READ": 120,
+      "SANCTION_LATE": 32,
+      "PART_PAYMENT_PAPERS_ONLY": 33,
+      "STILL_IN_PROGRESS_ON_PAPER": 209,
+      "PAPERS_OF_SEVERAL_WORKS": 9,
+      "PAPERS_AGREE": 1,
+      "SANCTIONED_BEFORE_RECOMMENDATION": 1
+    },
+    "findings": {
+      "SANCTION_LATE": 32,
+      "PART_PAYMENT_PAPERS_ONLY": 37,
+      "STILL_IN_PROGRESS_ON_PAPER": 282,
+      "CERTIFICATION_BLANK": 281,
+      "PAPERS_OF_SEVERAL_WORKS": 9,
+      "VENDOR_CONCENTRATION": 3,
+      "SANCTIONED_BEFORE_RECOMMENDATION": 1
+    }
+  },
+  "targets_from_document_trial": {
+    "certificates": 431,
+    "sanction_date_share": 0.694,
+    "vendor_code_share": 0.977,
+    "works_with_a_sanction_date": 211,
+    "past_75_days": 33,
+    "before": 1,
+    "in_progress": "282 of 285",
+    "boxes_marked": "2 of 429",
+    "pratapgarh": "261 works, 7 vendors, top 0.391, top3 0.839"
+  }
+}
