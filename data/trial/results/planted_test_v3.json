@@ -1,0 +1,178 @@
+{
+  "as_of": "2026-05-26",
+  "seed": 80,
+  "works_scored": 210010,
+  "top5_score_cut": 0.2,
+  "real_bands": {
+    "LOW": 203410,
+    "MEDIUM": 5120,
+    "HIGH": 1347,
+    "CRITICAL": 83
+  },
+  "overall": {
+    "top5": {
+      "n": 50,
+      "hit": 39,
+      "share": 0.78
+    },
+    "queue": {
+      "n": 50,
+      "hit": 11,
+      "share": 0.22
+    },
+    "medium_or_above": {
+      "n": 50,
+      "hit": 38,
+      "share": 0.76
+    },
+    "meant_engine_caught": {
+      "n": 50,
+      "hit": 39,
+      "share": 0.78
+    },
+    "top5_in_meant_engine": {
+      "n": 50,
+      "hit": 39,
+      "share": 0.78
+    }
+  },
+  "by_kind": {
+    "top5": {
+      "COST": {
+        "n": 10,
+        "hit": 1,
+        "share": 0.1
+      },
+      "REPEAT": {
+        "n": 10,
+        "hit": 8,
+        "share": 0.8
+      },
+      "RULE": {
+        "n": 10,
+        "hit": 10,
+        "share": 1.0
+      },
+      "SPLIT": {
+        "n": 10,
+        "hit": 10,
+        "share": 1.0
+      },
+      "TIMELINE": {
+        "n": 10,
+        "hit": 10,
+        "share": 1.0
+      }
+    },
+    "queue": {
+      "COST": {
+        "n": 10,
+        "hit": 0,
+        "share": 0.0
+      },
+      "REPEAT": {
+        "n": 10,
+        "hit": 1,
+        "share": 0.1
+      },
+      "RULE": {
+        "n": 10,
+        "hit": 10,
+        "share": 1.0
+      },
+      "SPLIT": {
+        "n": 10,
+        "hit": 0,
+        "share": 0.0
+      },
+      "TIMELINE": {
+        "n": 10,
+        "hit": 0,
+        "share": 0.0
+      }
+    },
+    "meant_engine_caught": {
+      "COST": {
+        "n": 10,
+        "hit": 1,
+        "share": 0.1
+      },
+      "REPEAT": {
+        "n": 10,
+        "hit": 8,
+        "share": 0.8
+      },
+      "RULE": {
+        "n": 10,
+        "hit": 10,
+        "share": 1.0
+      },
+      "SPLIT": {
+        "n": 10,
+        "hit": 10,
+        "share": 1.0
+      },
+      "TIMELINE": {
+        "n": 10,
+        "hit": 10,
+        "share": 1.0
+      }
+    }
+  },
+  "cost_sweep": {
+    "2x": {
+      "n": 10,
+      "hit": 0,
+      "share": 0.0
+    },
+    "3x": {
+      "n": 10,
+      "hit": 1,
+      "share": 0.1
+    },
+    "5x": {
+      "n": 10,
+      "hit": 3,
+      "share": 0.3
+    },
+    "10x": {
+      "n": 10,
+      "hit": 6,
+      "share": 0.6
+    }
+  },
+  "rules": {
+    "-": {
+      "n": 30,
+      "hit": 19,
+      "share": 0.633
+    },
+    "R06": {
+      "n": 10,
+      "hit": 10,
+      "share": 1.0
+    },
+    "R07": {
+      "n": 3,
+      "hit": 3,
+      "share": 1.0
+    },
+    "R08": {
+      "n": 3,
+      "hit": 3,
+      "share": 1.0
+    },
+    "R12": {
+      "n": 2,
+      "hit": 2,
+      "share": 1.0
+    },
+    "R13": {
+      "n": 2,
+      "hit": 2,
+      "share": 1.0
+    }
+  },
+  "target": "blueprint: 75% of fakes in the top 5% of the risk score",
+  "not_planted": "translated repeats (no offline translator)"
+}
