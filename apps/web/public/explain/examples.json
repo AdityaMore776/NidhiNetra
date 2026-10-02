@@ -1,0 +1,2370 @@
+{
+ "source": "eSAKSHI dashboard tables, 40,935 works, as of 2026-10-02",
+ "examples": [
+  {
+   "id": "ordinary",
+   "title": "An ordinary new road",
+   "story": "A plain road with its length and both ends named: what most works look like.",
+   "trace": {
+    "version": "explain-1.0.0",
+    "as_of": "2026-10-02",
+    "input": {
+     "description": "Construction of CC road 250 mtr from Panchayat Bhawan to Primary School in Ward No 4",
+     "work_type": "ROAD_CC",
+     "work_type_name": "Cement concrete road",
+     "amount": 480000.0,
+     "district": "Jaunpur",
+     "state": "Uttar Pradesh",
+     "office": "JAUNPUR(DISTRICT MAGISTRATE JAUNPUR_IDA)",
+     "status": "RECOMMENDED",
+     "recommended": "2026-10-02",
+     "sanctioned": null,
+     "completed": null,
+     "outside_constituency": false
+    },
+    "privacy": {
+     "hidden": {
+      "name": 0,
+      "phone": 0,
+      "number": 0
+     }
+    },
+    "reading": {
+     "segments": [
+      {
+       "t": "Construction",
+       "k": "build"
+      },
+      {
+       "t": " of CC ",
+       "k": null
+      },
+      {
+       "t": "road",
+       "k": "build"
+      },
+      {
+       "t": " ",
+       "k": null
+      },
+      {
+       "t": "250 mtr",
+       "k": "quantity"
+      },
+      {
+       "t": " from Panchayat Bhawan to Primary School in Ward No 4",
+       "k": null
+      }
+     ],
+     "facts": {
+      "what": "a construction or repair",
+      "says_nothing": false,
+      "place_named": false,
+      "count": null,
+      "length_m": 250.0,
+      "several_sites": false,
+      "bundle": false,
+      "not_allowed": null,
+      "era": "digital era (2023 on)"
+     }
+    },
+    "checks": [
+     {
+      "id": "compliance",
+      "name": "Guideline Compliance",
+      "question": "Does the work follow the MPLADS guidelines?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "COMPLIANT_AS_FAR_AS_CHECKED",
+      "risk": 0.0,
+      "headline": "No guideline rule that the public data can check is broken.",
+      "limitations": [
+       "Could not check (the public export does not carry the data): R03 Spent more than sanctioned: expenditure per work (not in the public export; utilisation certificates carry it for some works - task T103). R04 Marked complete with nothing spent: expenditure per work (not in the public export). R05 Most money released, work not started: expenditure and physical progress per work (not in the public export). R09 No progress for six months: dated progress updates per work (not in the public export). R10 SC/ST area share below the earmark: an SC/ST-area tag per work (not in the public export); judged per MP-year, never used to score an MP.",
+       "The sanction clock leaves out election pauses (2024 Lok Sabha general election), but not state assembly elections.",
+       "The election calendar was last checked on 2026-10-01; a pause after that date is not left out of the sanction clock yet."
+      ],
+      "findings": [],
+      "picture": {
+       "rules": [
+        {
+         "id": "R01",
+         "title": "Waiting for sanction past the time limit",
+         "ref": "para 3.12",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R02",
+         "title": "Open past the one-year norm",
+         "ref": "para 3.13",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R06",
+         "title": "Dates in an impossible order",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R07",
+         "title": "May be a work the guidelines do not allow",
+         "ref": "para 2.4, Annexure-II",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R08",
+         "title": "Outside the constituency, above the ceiling",
+         "ref": "para 2.9",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R11",
+         "title": "Key details missing from the record",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R12",
+         "title": "Big sanction that does not say what or where",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R13",
+         "title": "Construction recorded complete within days",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R14",
+         "title": "Construction recorded complete within a week of its sanction",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "statistical",
+      "name": "Cost Anomaly",
+      "question": "Is the project cost unusual for similar works?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "COST_TYPICAL",
+      "risk": 0.0,
+      "headline": "Cost is within the usual range for similar Cement concrete road works in Jaunpur.",
+      "limitations": [
+       "Judged per metre for 250 m; the total is not compared with roads of other lengths.",
+       "A peer range is not a schedule of rates: an unusual amount can have an ordinary explanation (terrain, specification, scope)."
+      ],
+      "findings": [],
+      "picture": {
+       "comparison": [
+        {
+         "metric": "Total cost",
+         "unit": "Rs",
+         "this_work": 480000.0,
+         "typical_low": 435511.0002449025,
+         "typical_high": 1160618.0006823456,
+         "median": 691494.9996829702,
+         "deviation_pct": -30.585181350542566
+        },
+        {
+         "metric": "Cost per metre",
+         "unit": "Rs/m",
+         "this_work": 1920.0,
+         "typical_low": 1294.2232924036864,
+         "typical_high": 16851.462553284833,
+         "median": 4670.070165161304,
+         "deviation_pct": -58.88712734289972,
+         "anchor_low": 4000.0,
+         "anchor_high": 6500.0,
+         "comfort_high": 32010.665017012536
+        }
+       ],
+       "cohort": {
+        "level": "type_district",
+        "description": "works of the same type in this district",
+        "n": 21,
+        "p10": 5.638999129,
+        "p50": 5.839789044,
+        "p90": 6.064689302,
+        "sd": 0.225003124
+       },
+       "work_type_name": "Cement concrete road"
+      }
+     },
+     {
+      "id": "dup_split",
+      "name": "Duplicate & Split Work",
+      "question": "Is this work repeated, or one job cut into pieces?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "NO_SITE_NAMED",
+      "risk": 0.0,
+      "headline": "The description names no place, so a repeat of an earlier work cannot be ruled out; checked against the 1,038 other works of its district for splits and bulk orders only.",
+      "limitations": [
+       "Ask for the site (village, ward, landmark) to be written in the recommendation: without it no repeat can be confirmed or ruled out."
+      ],
+      "findings": [],
+      "picture": {
+       "compared": 1038,
+       "text_min": 0.62,
+       "place_min": 85.0,
+       "flag": 0.75,
+       "nearest": [
+        {
+         "work_id": "WS/MP18222/2024-2025/165194",
+         "description": "Nahar pul se [name] ka avas se pahle tak 200mtr RCC road nirman ka kary.",
+         "amount": 1157878.0,
+         "date": "2025-07-11",
+         "likeness": 0.378,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/170969",
+         "description": "block machhlishear gram jagarnathpur me panchayat Bahwan se dhih baba sarhad tak 200 meter rcc road nirman kary",
+         "amount": 1160618.0,
+         "date": "2025-08-06",
+         "likeness": 0.368,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2025-2026/165225",
+         "description": "Ajad hind purv madhaymik Vidhayal me Construction of rooms and halls in school.",
+         "amount": 1000000.0,
+         "date": "2025-10-27",
+         "likeness": 0.32,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165198",
+         "description": "Belwar marg se [name] ke avas ke paas hanuman mandir ke pass khadanje par 120 mtr. tak RCC ka nirman kary.",
+         "amount": 691495.0,
+         "date": "2025-05-21",
+         "likeness": 0.311,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165200",
+         "description": "chhanehta me nahar pich road se [name] ke avas ke pahle tak 200 interlaking nirman kary.",
+         "amount": 752787.0,
+         "date": "2025-10-03",
+         "likeness": 0.282,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165201",
+         "description": "[name] ke avas se [name] ke avas 100 mtr interlaking ka nirman kary.",
+         "amount": 435511.0,
+         "date": "2025-08-04",
+         "likeness": 0.274,
+         "place": 0.0,
+         "flagged": false
+        }
+       ]
+      }
+     },
+     {
+      "id": "delay",
+      "name": "Fund Flow",
+      "question": "Is money stuck waiting for sanction?",
+      "counted": false,
+      "status": "ASSESSED",
+      "verdict": "NOTHING_STUCK_BEYOND_THE_WAIT",
+      "risk": 0.0,
+      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 506 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 506 (0%).",
+      "limitations": [],
+      "findings": [],
+      "picture": {
+       "recommended": "2026-10-02",
+       "sanctioned": null,
+       "completed": null,
+       "as_of": "2026-10-02",
+       "sanction_clock_days": 75,
+       "completion_clock_days": 365
+      }
+     },
+     {
+      "id": "office_patterns",
+      "name": "Office Patterns",
+      "question": "Does this work's office price or close works in an unusual way?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "OFFICE_AS_USUAL",
+      "risk": 0.0,
+      "headline": "Nothing unusual about this work's office: 2 of 1,038 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
+      "limitations": [
+       "A habit of the office, not proof about this work: look at the office's works together.",
+       "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
+      ],
+      "findings": [],
+      "picture": {}
+     },
+     {
+      "id": "paperwork",
+      "name": "Paperwork",
+      "question": "Do the work's own papers agree with the portal?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No papers are attached to this work on eSAKSHI, so there is nothing to read. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     },
+     {
+      "id": "photo_evidence",
+      "name": "Photo Evidence",
+      "question": "Are the work's photos new, from its place and from its time?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No photo or paper is attached to this work on eSAKSHI. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     }
+    ],
+    "scoring": {
+     "method": "v3",
+     "engines": [],
+     "chain": [],
+     "raw": 0.0,
+     "floor": false,
+     "score": 0.0,
+     "band": "LOW",
+     "lines": {
+      "MEDIUM": 0.25,
+      "HIGH": 0.5,
+      "CRITICAL": 0.8
+     }
+    },
+    "result": {
+     "band": "LOW",
+     "score": 0.0,
+     "in_queue": false,
+     "limited": false,
+     "colour": "GREEN",
+     "advice": "No question from the checks the record allows (rules, cost, repeats and splits). This is not a clean chit: the papers and the site are not seen here.",
+     "reasons": []
+    }
+   }
+  },
+  {
+   "id": "temple",
+   "title": "A temple as the work itself",
+   "story": "The description reads as building a temple, which the guidelines do not allow; the same words as a landmark ('road near the temple') would pass.",
+   "trace": {
+    "version": "explain-1.0.0",
+    "as_of": "2026-10-02",
+    "input": {
+     "description": "Construction of temple and boundary wall at Shiv Mandir campus, near [name] house",
+     "work_type": "COMMUNITY_HALL",
+     "work_type_name": "Community hall / bhavan",
+     "amount": 900000.0,
+     "district": "Jaunpur",
+     "state": "Uttar Pradesh",
+     "office": "JAUNPUR(DISTRICT MAGISTRATE JAUNPUR_IDA)",
+     "status": "RECOMMENDED",
+     "recommended": "2026-10-02",
+     "sanctioned": null,
+     "completed": null,
+     "outside_constituency": false
+    },
+    "privacy": {
+     "hidden": {
+      "name": 1,
+      "phone": 0,
+      "number": 0
+     }
+    },
+    "reading": {
+     "segments": [
+      {
+       "t": "Construction",
+       "k": "build"
+      },
+      {
+       "t": " of ",
+       "k": null
+      },
+      {
+       "t": "temple",
+       "k": "not_allowed"
+      },
+      {
+       "t": " and boundary wall at Shiv Mandir campus, near ",
+       "k": null
+      },
+      {
+       "t": "[name]",
+       "k": "private"
+      },
+      {
+       "t": " house",
+       "k": null
+      }
+     ],
+     "facts": {
+      "what": "a construction or repair",
+      "says_nothing": false,
+      "place_named": false,
+      "count": null,
+      "length_m": null,
+      "several_sites": false,
+      "bundle": false,
+      "not_allowed": {
+       "word": "temple",
+       "item": "13",
+       "rule": "Works within the places of religious worship and on land belonging to or owned by religious faith/group."
+      },
+      "era": "digital era (2023 on)"
+     }
+    },
+    "checks": [
+     {
+      "id": "compliance",
+      "name": "Guideline Compliance",
+      "question": "Does the work follow the MPLADS guidelines?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "POSSIBLY_INADMISSIBLE",
+      "risk": 0.6,
+      "headline": "The description reads as \"temple\" being the work itself; Annexure-II item 13 lists this as not permitted (Works within the places of religious worship and on land belonging to or owned by religious faith/group.). Verify against the 2023 guidelines before any action.",
+      "limitations": [
+       "Could not check (the public export does not carry the data): R03 Spent more than sanctioned: expenditure per work (not in the public export; utilisation certificates carry it for some works - task T103). R04 Marked complete with nothing spent: expenditure per work (not in the public export). R05 Most money released, work not started: expenditure and physical progress per work (not in the public export). R09 No progress for six months: dated progress updates per work (not in the public export). R10 SC/ST area share below the earmark: an SC/ST-area tag per work (not in the public export); judged per MP-year, never used to score an MP.",
+       "The sanction clock leaves out election pauses (2024 Lok Sabha general election), but not state assembly elections.",
+       "The election calendar was last checked on 2026-10-01; a pause after that date is not left out of the sanction clock yet."
+      ],
+      "findings": [
+       {
+        "code": "POSSIBLY_INADMISSIBLE",
+        "text": "The description reads as \"temple\" being the work itself; Annexure-II item 13 lists this as not permitted (Works within the places of religious worship and on land belonging to or owned by religious faith/group.). Verify against the 2023 guidelines before any action.",
+        "risk": 0.6,
+        "hard": false,
+        "rule": "R07",
+        "severity": "MEDIUM"
+       }
+      ],
+      "picture": {
+       "rules": [
+        {
+         "id": "R01",
+         "title": "Waiting for sanction past the time limit",
+         "ref": "para 3.12",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R02",
+         "title": "Open past the one-year norm",
+         "ref": "para 3.13",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R06",
+         "title": "Dates in an impossible order",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R07",
+         "title": "May be a work the guidelines do not allow",
+         "ref": "para 2.4, Annexure-II",
+         "raised": true,
+         "severity": "MEDIUM"
+        },
+        {
+         "id": "R08",
+         "title": "Outside the constituency, above the ceiling",
+         "ref": "para 2.9",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R11",
+         "title": "Key details missing from the record",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R12",
+         "title": "Big sanction that does not say what or where",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R13",
+         "title": "Construction recorded complete within days",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R14",
+         "title": "Construction recorded complete within a week of its sanction",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "statistical",
+      "name": "Cost Anomaly",
+      "question": "Is the project cost unusual for similar works?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "COST_TYPICAL",
+      "risk": 0.0,
+      "headline": "Rs 9.00 lakh is inside the usual range for similar Community hall / bhavan works in this state (most cost Rs 8.70 lakh to Rs 24.23 lakh; 32 similar works in this state). DRISHTI asks only above Rs 48.46 lakh, which leaves room for a bigger scope or a contingency margin.",
+      "limitations": [
+       "The description-based price check is not loaded, so the cost was compared with similar works only.",
+       "Fewer than 20 such works in Jaunpur, so the comparison uses works in this state.",
+       "A peer range is not a schedule of rates: an unusual amount can have an ordinary explanation (terrain, specification, scope)."
+      ],
+      "findings": [],
+      "picture": {
+       "comparison": [
+        {
+         "metric": "Total cost",
+         "unit": "Rs",
+         "this_work": 900000.0,
+         "typical_low": 870047.867713148,
+         "typical_high": 2422954.3007340906,
+         "median": 1348737.410868884,
+         "deviation_pct": -33.27092488520789,
+         "comfort_high": 4845908.601468181
+        }
+       ],
+       "cohort": {
+        "level": "type_state",
+        "description": "works of the same type in this state",
+        "n": 32,
+        "p10": 5.939543147,
+        "p50": 6.129927404,
+        "p90": 6.384345223,
+        "sd": 0.214127762
+       },
+       "comfort_high": 4845908.601468181,
+       "work_type_name": "Community hall / bhavan"
+      }
+     },
+     {
+      "id": "dup_split",
+      "name": "Duplicate & Split Work",
+      "question": "Is this work repeated, or one job cut into pieces?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "NO_SITE_NAMED",
+      "risk": 0.0,
+      "headline": "The description names no place, so a repeat of an earlier work cannot be ruled out; checked against the 1,038 other works of its district for splits and bulk orders only.",
+      "limitations": [
+       "Ask for the site (village, ward, landmark) to be written in the recommendation: without it no repeat can be confirmed or ruled out."
+      ],
+      "findings": [],
+      "picture": {
+       "compared": 1038,
+       "text_min": 0.62,
+       "place_min": 85.0,
+       "flag": 0.75,
+       "nearest": [
+        {
+         "work_id": "WS/MP18222/2024-2025/165201",
+         "description": "[name] ke avas se [name] ke avas 100 mtr interlaking ka nirman kary.",
+         "amount": 435511.0,
+         "date": "2025-08-04",
+         "likeness": 0.262,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165198",
+         "description": "Belwar marg se [name] ke avas ke paas hanuman mandir ke pass khadanje par 120 mtr. tak RCC ka nirman kary.",
+         "amount": 691495.0,
+         "date": "2025-05-21",
+         "likeness": 0.26,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18228/2025-2026/184203",
+         "description": "SHRI BABA INTER COLLEGE SHIVPUR, MRIYAHU, JAUNPUR ME ROOM NIRMAN HETU.",
+         "amount": 1000000.0,
+         "date": "2025-09-24",
+         "likeness": 0.222,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2025-2026/165225",
+         "description": "Ajad hind purv madhaymik Vidhayal me Construction of rooms and halls in school.",
+         "amount": 1000000.0,
+         "date": "2025-10-27",
+         "likeness": 0.214,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165194",
+         "description": "Nahar pul se [name] ka avas se pahle tak 200mtr RCC road nirman ka kary.",
+         "amount": 1157878.0,
+         "date": "2025-07-11",
+         "likeness": 0.211,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165200",
+         "description": "chhanehta me nahar pich road se [name] ke avas ke pahle tak 200 interlaking nirman kary.",
+         "amount": 752787.0,
+         "date": "2025-10-03",
+         "likeness": 0.203,
+         "place": 0.0,
+         "flagged": false
+        }
+       ]
+      }
+     },
+     {
+      "id": "delay",
+      "name": "Fund Flow",
+      "question": "Is money stuck waiting for sanction?",
+      "counted": false,
+      "status": "ASSESSED",
+      "verdict": "NOTHING_STUCK_BEYOND_THE_WAIT",
+      "risk": 0.0,
+      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 506 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 506 (0%).",
+      "limitations": [],
+      "findings": [],
+      "picture": {
+       "recommended": "2026-10-02",
+       "sanctioned": null,
+       "completed": null,
+       "as_of": "2026-10-02",
+       "sanction_clock_days": 75,
+       "completion_clock_days": 365
+      }
+     },
+     {
+      "id": "office_patterns",
+      "name": "Office Patterns",
+      "question": "Does this work's office price or close works in an unusual way?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "OFFICE_AS_USUAL",
+      "risk": 0.0,
+      "headline": "Nothing unusual about this work's office: 2 of 1,038 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
+      "limitations": [
+       "A habit of the office, not proof about this work: look at the office's works together.",
+       "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
+      ],
+      "findings": [],
+      "picture": {}
+     },
+     {
+      "id": "paperwork",
+      "name": "Paperwork",
+      "question": "Do the work's own papers agree with the portal?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No papers are attached to this work on eSAKSHI, so there is nothing to read. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     },
+     {
+      "id": "photo_evidence",
+      "name": "Photo Evidence",
+      "question": "Are the work's photos new, from its place and from its time?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No photo or paper is attached to this work on eSAKSHI. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     }
+    ],
+    "scoring": {
+     "method": "v3",
+     "engines": [
+      {
+       "engine": "compliance",
+       "name": "Guideline Compliance",
+       "chance": 0.8182,
+       "findings": [
+        {
+         "code": "POSSIBLY_INADMISSIBLE",
+         "risk": 0.6,
+         "ref_risk": 0.6,
+         "strength": 1.0,
+         "hit_rate": 0.8182,
+         "basis": "measured",
+         "read": [
+          53,
+          62
+         ],
+         "chance": 0.8182
+        }
+       ]
+      }
+     ],
+     "chain": [
+      {
+       "engine": "compliance",
+       "chance": 0.8182,
+       "score": 0.8182
+      }
+     ],
+     "raw": 0.8182,
+     "floor": false,
+     "score": 0.8182,
+     "band": "HIGH",
+     "lines": {
+      "MEDIUM": 0.25,
+      "HIGH": 0.5,
+      "CRITICAL": 0.8
+     }
+    },
+    "result": {
+     "band": "HIGH",
+     "score": 0.8182,
+     "in_queue": true,
+     "limited": false,
+     "colour": "RED",
+     "advice": "Needs checking before sanction: at least one serious question below. This check never blocks a sanction; the district authority decides.",
+     "reasons": [
+      {
+       "engine": "Guideline Compliance",
+       "text": "The description reads as \"temple\" being the work itself; Annexure-II item 13 lists this as not permitted (Works within the places of religious worship and on land belonging to or owned by religious faith/group.). Verify against the 2023 guidelines before any action.",
+       "text_hi": "विवरण से लगता है कि कार्य स्वयं \"temple\" है; परिशिष्ट-II मद 13 इसे अनुमति नहीं देता। कोई कार्रवाई से पहले 2023 दिशानिर्देशों से सत्यापन करें।",
+       "chance": 0.8182,
+       "basis": "measured",
+       "read": [
+        53,
+        62
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "vague",
+   "title": "A large sum that says nothing",
+   "story": "Rs 26 lakh with no word on what or where: nobody could check it on the ground.",
+   "trace": {
+    "version": "explain-1.0.0",
+    "as_of": "2026-10-02",
+    "input": {
+     "description": "As per recommendation letter attached",
+     "work_type": "COMMUNITY_HALL",
+     "work_type_name": "Community hall / bhavan",
+     "amount": 2600000.0,
+     "district": "Jaunpur",
+     "state": "Uttar Pradesh",
+     "office": "JAUNPUR(DISTRICT MAGISTRATE JAUNPUR_IDA)",
+     "status": "RECOMMENDED",
+     "recommended": "2026-10-02",
+     "sanctioned": null,
+     "completed": null,
+     "outside_constituency": false
+    },
+    "privacy": {
+     "hidden": {
+      "name": 0,
+      "phone": 0,
+      "number": 0
+     }
+    },
+    "reading": {
+     "segments": [
+      {
+       "t": "As per recommendation letter attached",
+       "k": null
+      }
+     ],
+     "facts": {
+      "what": "a construction or repair",
+      "says_nothing": false,
+      "place_named": false,
+      "count": null,
+      "length_m": null,
+      "several_sites": false,
+      "bundle": false,
+      "not_allowed": null,
+      "era": "digital era (2023 on)"
+     }
+    },
+    "checks": [
+     {
+      "id": "compliance",
+      "name": "Guideline Compliance",
+      "question": "Does the work follow the MPLADS guidelines?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "NO_STATED_SCOPE",
+      "risk": 0.6,
+      "headline": "Rs 26.00 lakh for \"As per recommendation letter attached\": the record does not say where, or how much is built or bought, so the work cannot be checked or inspected. Most Community hall / bhavan works cost up to Rs 14.62 lakh. Ask for the site and the size.",
+      "limitations": [
+       "Could not check (the public export does not carry the data): R03 Spent more than sanctioned: expenditure per work (not in the public export; utilisation certificates carry it for some works - task T103). R04 Marked complete with nothing spent: expenditure per work (not in the public export). R05 Most money released, work not started: expenditure and physical progress per work (not in the public export). R09 No progress for six months: dated progress updates per work (not in the public export). R10 SC/ST area share below the earmark: an SC/ST-area tag per work (not in the public export); judged per MP-year, never used to score an MP.",
+       "The sanction clock leaves out election pauses (2024 Lok Sabha general election), but not state assembly elections.",
+       "The election calendar was last checked on 2026-10-01; a pause after that date is not left out of the sanction clock yet."
+      ],
+      "findings": [
+       {
+        "code": "NO_STATED_SCOPE",
+        "text": "Rs 26.00 lakh for \"As per recommendation letter attached\": the record does not say where, or how much is built or bought, so the work cannot be checked or inspected. Most Community hall / bhavan works cost up to Rs 14.62 lakh. Ask for the site and the size.",
+        "risk": 0.6,
+        "hard": false,
+        "rule": "R12",
+        "severity": "MEDIUM"
+       }
+      ],
+      "picture": {
+       "rules": [
+        {
+         "id": "R01",
+         "title": "Waiting for sanction past the time limit",
+         "ref": "para 3.12",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R02",
+         "title": "Open past the one-year norm",
+         "ref": "para 3.13",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R06",
+         "title": "Dates in an impossible order",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R07",
+         "title": "May be a work the guidelines do not allow",
+         "ref": "para 2.4, Annexure-II",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R08",
+         "title": "Outside the constituency, above the ceiling",
+         "ref": "para 2.9",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R11",
+         "title": "Key details missing from the record",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R12",
+         "title": "Big sanction that does not say what or where",
+         "ref": "record rule",
+         "raised": true,
+         "severity": "MEDIUM"
+        },
+        {
+         "id": "R13",
+         "title": "Construction recorded complete within days",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R14",
+         "title": "Construction recorded complete within a week of its sanction",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "statistical",
+      "name": "Cost Anomaly",
+      "question": "Is the project cost unusual for similar works?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "COST_TYPICAL",
+      "risk": 0.0,
+      "headline": "Rs 26.00 lakh is above the usual range but inside the comfort zone for similar Community hall / bhavan works in this state (most cost Rs 8.70 lakh to Rs 24.23 lakh; 32 similar works in this state). DRISHTI asks only above Rs 48.46 lakh, which leaves room for a bigger scope or a contingency margin.",
+      "limitations": [
+       "The description-based price check is not loaded, so the cost was compared with similar works only.",
+       "Fewer than 20 such works in Jaunpur, so the comparison uses works in this state.",
+       "A peer range is not a schedule of rates: an unusual amount can have an ordinary explanation (terrain, specification, scope)."
+      ],
+      "findings": [],
+      "picture": {
+       "comparison": [
+        {
+         "metric": "Total cost",
+         "unit": "Rs",
+         "this_work": 2600000.0,
+         "typical_low": 870047.867713148,
+         "typical_high": 2422954.3007340906,
+         "median": 1348737.410868884,
+         "deviation_pct": 92.772883664955,
+         "comfort_high": 4845908.601468181
+        }
+       ],
+       "cohort": {
+        "level": "type_state",
+        "description": "works of the same type in this state",
+        "n": 32,
+        "p10": 5.939543147,
+        "p50": 6.129927404,
+        "p90": 6.384345223,
+        "sd": 0.214127762
+       },
+       "comfort_high": 4845908.601468181,
+       "work_type_name": "Community hall / bhavan"
+      }
+     },
+     {
+      "id": "dup_split",
+      "name": "Duplicate & Split Work",
+      "question": "Is this work repeated, or one job cut into pieces?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "NO_SITE_NAMED",
+      "risk": 0.0,
+      "headline": "The description names no place, so a repeat of an earlier work cannot be ruled out; checked against the 1,038 other works of its district for splits and bulk orders only.",
+      "limitations": [
+       "Ask for the site (village, ward, landmark) to be written in the recommendation: without it no repeat can be confirmed or ruled out."
+      ],
+      "findings": [],
+      "picture": {
+       "compared": 1038,
+       "text_min": 0.62,
+       "place_min": 85.0,
+       "flag": 0.75,
+       "nearest": [
+        {
+         "work_id": "WS/MP18222/2024-2025/165194",
+         "description": "Nahar pul se [name] ka avas se pahle tak 200mtr RCC road nirman ka kary.",
+         "amount": 1157878.0,
+         "date": "2025-07-11",
+         "likeness": 0.124,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18228/2025-2026/184203",
+         "description": "SHRI BABA INTER COLLEGE SHIVPUR, MRIYAHU, JAUNPUR ME ROOM NIRMAN HETU.",
+         "amount": 1000000.0,
+         "date": "2025-09-24",
+         "likeness": 0.121,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165200",
+         "description": "chhanehta me nahar pich road se [name] ke avas ke pahle tak 200 interlaking nirman kary.",
+         "amount": 752787.0,
+         "date": "2025-10-03",
+         "likeness": 0.107,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165201",
+         "description": "[name] ke avas se [name] ke avas 100 mtr interlaking ka nirman kary.",
+         "amount": 435511.0,
+         "date": "2025-08-04",
+         "likeness": 0.106,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/170969",
+         "description": "block machhlishear gram jagarnathpur me panchayat Bahwan se dhih baba sarhad tak 200 meter rcc road nirman kary",
+         "amount": 1160618.0,
+         "date": "2025-08-06",
+         "likeness": 0.105,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18228/2025-2026/257083",
+         "description": "Mere sansadiy kshetra Machhalishahr ke vidhansabha Zafrabad nagar panchayat me CCTV Camera ka adhishthapan ka kary hona hain kul 25 sthano p",
+         "amount": 997000.0,
+         "date": "2026-03-09",
+         "likeness": 0.103,
+         "place": 0.0,
+         "flagged": false
+        }
+       ]
+      }
+     },
+     {
+      "id": "delay",
+      "name": "Fund Flow",
+      "question": "Is money stuck waiting for sanction?",
+      "counted": false,
+      "status": "ASSESSED",
+      "verdict": "NOTHING_STUCK_BEYOND_THE_WAIT",
+      "risk": 0.0,
+      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 506 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 506 (0%).",
+      "limitations": [],
+      "findings": [],
+      "picture": {
+       "recommended": "2026-10-02",
+       "sanctioned": null,
+       "completed": null,
+       "as_of": "2026-10-02",
+       "sanction_clock_days": 75,
+       "completion_clock_days": 365
+      }
+     },
+     {
+      "id": "office_patterns",
+      "name": "Office Patterns",
+      "question": "Does this work's office price or close works in an unusual way?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "OFFICE_AS_USUAL",
+      "risk": 0.0,
+      "headline": "Nothing unusual about this work's office: 2 of 1,038 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
+      "limitations": [
+       "A habit of the office, not proof about this work: look at the office's works together.",
+       "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
+      ],
+      "findings": [],
+      "picture": {}
+     },
+     {
+      "id": "paperwork",
+      "name": "Paperwork",
+      "question": "Do the work's own papers agree with the portal?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No papers are attached to this work on eSAKSHI, so there is nothing to read. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     },
+     {
+      "id": "photo_evidence",
+      "name": "Photo Evidence",
+      "question": "Are the work's photos new, from its place and from its time?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No photo or paper is attached to this work on eSAKSHI. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     }
+    ],
+    "scoring": {
+     "method": "v3",
+     "engines": [
+      {
+       "engine": "compliance",
+       "name": "Guideline Compliance",
+       "chance": 0.9038,
+       "findings": [
+        {
+         "code": "NO_STATED_SCOPE",
+         "risk": 0.6,
+         "ref_risk": 0.6,
+         "strength": 1.0,
+         "hit_rate": 0.9038,
+         "basis": "measured",
+         "read": [
+          46,
+          48
+         ],
+         "chance": 0.9038
+        }
+       ]
+      }
+     ],
+     "chain": [
+      {
+       "engine": "compliance",
+       "chance": 0.9038,
+       "score": 0.9038
+      }
+     ],
+     "raw": 0.9038,
+     "floor": false,
+     "score": 0.9038,
+     "band": "HIGH",
+     "lines": {
+      "MEDIUM": 0.25,
+      "HIGH": 0.5,
+      "CRITICAL": 0.8
+     }
+    },
+    "result": {
+     "band": "HIGH",
+     "score": 0.9038,
+     "in_queue": true,
+     "limited": false,
+     "colour": "RED",
+     "advice": "Needs checking before sanction: at least one serious question below. This check never blocks a sanction; the district authority decides.",
+     "reasons": [
+      {
+       "engine": "Guideline Compliance",
+       "text": "Rs 26.00 lakh for \"As per recommendation letter attached\": the record does not say where, or how much is built or bought, so the work cannot be checked or inspected. Most Community hall / bhavan works cost up to Rs 14.62 lakh. Ask for the site and the size.",
+       "text_hi": "\"As per recommendation letter attached\" के लिए Rs 26.00 lakh: रिकॉर्ड में न स्थान है, न यह कि कितना बनाया या खरीदा गया, इसलिए कार्य की जाँच या निरीक्षण नहीं हो सकता। स्थान और मात्रा माँगें।",
+       "chance": 0.9038,
+       "basis": "measured",
+       "read": [
+        46,
+        48
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "price",
+   "title": "One light, priced like many",
+   "story": "One solar light for nearly Rs 5 lakh: compared with what similar lights cost here.",
+   "trace": {
+    "version": "explain-1.0.0",
+    "as_of": "2026-10-02",
+    "input": {
+     "description": "Installation of 1 solar street light at the bus stand",
+     "work_type": "STREET_LIGHT",
+     "work_type_name": "Solar / LED street light",
+     "amount": 495000.0,
+     "district": "Jaunpur",
+     "state": "Uttar Pradesh",
+     "office": "JAUNPUR(DISTRICT MAGISTRATE JAUNPUR_IDA)",
+     "status": "RECOMMENDED",
+     "recommended": "2026-10-02",
+     "sanctioned": null,
+     "completed": null,
+     "outside_constituency": false
+    },
+    "privacy": {
+     "hidden": {
+      "name": 0,
+      "phone": 0,
+      "number": 0
+     }
+    },
+    "reading": {
+     "segments": [
+      {
+       "t": "Installation of 1 solar ",
+       "k": null
+      },
+      {
+       "t": "street",
+       "k": "build"
+      },
+      {
+       "t": " light at the bus stand",
+       "k": null
+      }
+     ],
+     "facts": {
+      "what": "a construction or repair",
+      "says_nothing": false,
+      "place_named": false,
+      "count": null,
+      "length_m": null,
+      "several_sites": false,
+      "bundle": false,
+      "not_allowed": null,
+      "era": "digital era (2023 on)"
+     }
+    },
+    "checks": [
+     {
+      "id": "compliance",
+      "name": "Guideline Compliance",
+      "question": "Does the work follow the MPLADS guidelines?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "COMPLIANT_AS_FAR_AS_CHECKED",
+      "risk": 0.0,
+      "headline": "No guideline rule that the public data can check is broken.",
+      "limitations": [
+       "Could not check (the public export does not carry the data): R03 Spent more than sanctioned: expenditure per work (not in the public export; utilisation certificates carry it for some works - task T103). R04 Marked complete with nothing spent: expenditure per work (not in the public export). R05 Most money released, work not started: expenditure and physical progress per work (not in the public export). R09 No progress for six months: dated progress updates per work (not in the public export). R10 SC/ST area share below the earmark: an SC/ST-area tag per work (not in the public export); judged per MP-year, never used to score an MP.",
+       "The sanction clock leaves out election pauses (2024 Lok Sabha general election), but not state assembly elections.",
+       "The election calendar was last checked on 2026-10-01; a pause after that date is not left out of the sanction clock yet."
+      ],
+      "findings": [],
+      "picture": {
+       "rules": [
+        {
+         "id": "R01",
+         "title": "Waiting for sanction past the time limit",
+         "ref": "para 3.12",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R02",
+         "title": "Open past the one-year norm",
+         "ref": "para 3.13",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R06",
+         "title": "Dates in an impossible order",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R07",
+         "title": "May be a work the guidelines do not allow",
+         "ref": "para 2.4, Annexure-II",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R08",
+         "title": "Outside the constituency, above the ceiling",
+         "ref": "para 2.9",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R11",
+         "title": "Key details missing from the record",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R12",
+         "title": "Big sanction that does not say what or where",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R13",
+         "title": "Construction recorded complete within days",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R14",
+         "title": "Construction recorded complete within a week of its sanction",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "statistical",
+      "name": "Cost Anomaly",
+      "question": "Is the project cost unusual for similar works?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "COST_ABOVE_PEERS",
+      "risk": 0.9,
+      "headline": "Rs 4.95 lakh: similar Solar / LED street light works in Jaunpur usually cost Rs 19,989 to Rs 20,896 (769 similar works in Jaunpur). This is 23.7 times the top of that range, and above the usual top for this state (Rs 2.41 lakh), and 2.1 times the comfort limit of Rs 2.41 lakh. The description names a single unit, so a bigger project does not explain the amount. Check the estimate and what it includes.",
+      "limitations": [
+       "The description-based price check is not loaded, so the cost was compared with similar works only.",
+       "A peer range is not a schedule of rates: an unusual amount can have an ordinary explanation (terrain, specification, scope)."
+      ],
+      "findings": [
+       {
+        "code": "COST_ABOVE_PEERS",
+        "text": "Rs 4.95 lakh: similar Solar / LED street light works in Jaunpur usually cost Rs 19,989 to Rs 20,896 (769 similar works in Jaunpur). This is 23.7 times the top of that range, and above the usual top for this state (Rs 2.41 lakh), and 2.1 times the comfort limit of Rs 2.41 lakh. The description names a single unit, so a bigger project does not explain the amount. Check the estimate and what it includes.",
+        "risk": 0.9,
+        "hard": false,
+        "rule": null,
+        "severity": null
+       }
+      ],
+      "picture": {
+       "comparison": [
+        {
+         "metric": "Total cost",
+         "unit": "Rs",
+         "this_work": 495000.0,
+         "typical_low": 19989.00000056156,
+         "typical_high": 20896.000019487474,
+         "median": 19991.99999454996,
+         "deviation_pct": 2375.990396833446,
+         "comfort_high": 240914.99991451623
+        }
+       ],
+       "cohort": {
+        "level": "type_district",
+        "description": "works of the same type in this district",
+        "n": 769,
+        "p10": 4.300791068,
+        "p50": 4.300856243,
+        "p90": 4.32006316,
+        "sd": 0.1
+       },
+       "comfort_high": 240914.99991451623,
+       "work_type_name": "Solar / LED street light"
+      }
+     },
+     {
+      "id": "dup_split",
+      "name": "Duplicate & Split Work",
+      "question": "Is this work repeated, or one job cut into pieces?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "NO_SITE_NAMED",
+      "risk": 0.0,
+      "headline": "The description names no place, so a repeat of an earlier work cannot be ruled out; checked against the 1,038 other works of its district for splits and bulk orders only.",
+      "limitations": [
+       "Ask for the site (village, ward, landmark) to be written in the recommendation: without it no repeat can be confirmed or ruled out."
+      ],
+      "findings": [],
+      "picture": {
+       "compared": 1038,
+       "text_min": 0.62,
+       "place_min": 85.0,
+       "flag": 0.75,
+       "nearest": [
+        {
+         "work_id": "WS/MP18228/2024-2025/152698",
+         "description": "[name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
+         "amount": 20896.0,
+         "date": "2024-11-21",
+         "likeness": 0.286,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18228/2024-2025/152974",
+         "description": "[name] S\\O [name] K GHAR 01 SOLAR LIGHT",
+         "amount": 20896.0,
+         "date": "2024-11-21",
+         "likeness": 0.286,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18228/2024-2025/146962",
+         "description": "[name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
+         "amount": 20879.0,
+         "date": "2024-10-18",
+         "likeness": 0.278,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18228/2024-2025/149196",
+         "description": "[name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
+         "amount": 20896.0,
+         "date": "2024-11-21",
+         "likeness": 0.272,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18228/2024-2025/150615",
+         "description": "[name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
+         "amount": 20896.0,
+         "date": "2024-11-21",
+         "likeness": 0.268,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18228/2024-2025/147095",
+         "description": "[name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
+         "amount": 20879.0,
+         "date": "2024-10-18",
+         "likeness": 0.265,
+         "place": 0.0,
+         "flagged": false
+        }
+       ]
+      }
+     },
+     {
+      "id": "delay",
+      "name": "Fund Flow",
+      "question": "Is money stuck waiting for sanction?",
+      "counted": false,
+      "status": "ASSESSED",
+      "verdict": "NOTHING_STUCK_BEYOND_THE_WAIT",
+      "risk": 0.0,
+      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 506 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 506 (0%).",
+      "limitations": [],
+      "findings": [],
+      "picture": {
+       "recommended": "2026-10-02",
+       "sanctioned": null,
+       "completed": null,
+       "as_of": "2026-10-02",
+       "sanction_clock_days": 75,
+       "completion_clock_days": 365
+      }
+     },
+     {
+      "id": "office_patterns",
+      "name": "Office Patterns",
+      "question": "Does this work's office price or close works in an unusual way?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "OFFICE_AS_USUAL",
+      "risk": 0.0,
+      "headline": "Nothing unusual about this work's office: 2 of 1,038 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
+      "limitations": [
+       "A habit of the office, not proof about this work: look at the office's works together.",
+       "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
+      ],
+      "findings": [],
+      "picture": {}
+     },
+     {
+      "id": "paperwork",
+      "name": "Paperwork",
+      "question": "Do the work's own papers agree with the portal?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No papers are attached to this work on eSAKSHI, so there is nothing to read. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     },
+     {
+      "id": "photo_evidence",
+      "name": "Photo Evidence",
+      "question": "Are the work's photos new, from its place and from its time?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No photo or paper is attached to this work on eSAKSHI. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     }
+    ],
+    "scoring": {
+     "method": "v3",
+     "engines": [
+      {
+       "engine": "statistical",
+       "name": "Cost Anomaly",
+       "chance": 0.4167,
+       "findings": [
+        {
+         "code": "COST_ABOVE_PEERS",
+         "risk": 0.9,
+         "ref_risk": 0.9,
+         "strength": 1.0,
+         "hit_rate": 0.4167,
+         "basis": "measured",
+         "read": [
+          54,
+          128
+         ],
+         "chance": 0.4167
+        }
+       ]
+      }
+     ],
+     "chain": [
+      {
+       "engine": "statistical",
+       "chance": 0.4167,
+       "score": 0.4167
+      }
+     ],
+     "raw": 0.4167,
+     "floor": false,
+     "score": 0.4167,
+     "band": "MEDIUM",
+     "lines": {
+      "MEDIUM": 0.25,
+      "HIGH": 0.5,
+      "CRITICAL": 0.8
+     }
+    },
+    "result": {
+     "band": "MEDIUM",
+     "score": 0.4167,
+     "in_queue": false,
+     "limited": false,
+     "colour": "AMBER",
+     "advice": "Check the points below before sanction. They are questions, not findings.",
+     "reasons": [
+      {
+       "engine": "Cost Anomaly",
+       "text": "Rs 4.95 lakh: similar Solar / LED street light works in Jaunpur usually cost Rs 19,989 to Rs 20,896 (769 similar works in Jaunpur). This is 23.7 times the top of that range, and above the usual top for this state (Rs 2.41 lakh), and 2.1 times the comfort limit of Rs 2.41 lakh. The description names a single unit, so a bigger project does not explain the amount. Check the estimate and what it includes.",
+       "text_hi": "लागत इसी प्रकार के कार्यों की सामान्य सीमा से काफ़ी अधिक है। अनुमान और उसमें शामिल कार्य की जाँच करें।",
+       "chance": 0.4167,
+       "basis": "measured",
+       "read": [
+        54,
+        128
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "dates",
+   "title": "Completed before it was recommended",
+   "story": "The record says the road was finished four months before the MP recommended it.",
+   "trace": {
+    "version": "explain-1.0.0",
+    "as_of": "2026-10-02",
+    "input": {
+     "description": "Construction of CC road 400 mtr from main road to cremation ground",
+     "work_type": "ROAD_CC",
+     "work_type_name": "Cement concrete road",
+     "amount": 760000.0,
+     "district": "Jaunpur",
+     "state": "Uttar Pradesh",
+     "office": "JAUNPUR(DISTRICT MAGISTRATE JAUNPUR_IDA)",
+     "status": "COMPLETED",
+     "recommended": "2026-06-04",
+     "sanctioned": null,
+     "completed": "2026-03-16",
+     "outside_constituency": false
+    },
+    "privacy": {
+     "hidden": {
+      "name": 0,
+      "phone": 0,
+      "number": 0
+     }
+    },
+    "reading": {
+     "segments": [
+      {
+       "t": "Construction",
+       "k": "build"
+      },
+      {
+       "t": " of CC ",
+       "k": null
+      },
+      {
+       "t": "road",
+       "k": "build"
+      },
+      {
+       "t": " ",
+       "k": null
+      },
+      {
+       "t": "400 mtr",
+       "k": "quantity"
+      },
+      {
+       "t": " from main ",
+       "k": null
+      },
+      {
+       "t": "road",
+       "k": "build"
+      },
+      {
+       "t": " to cremation ground",
+       "k": null
+      }
+     ],
+     "facts": {
+      "what": "a construction or repair",
+      "says_nothing": false,
+      "place_named": false,
+      "count": null,
+      "length_m": 400.0,
+      "several_sites": false,
+      "bundle": false,
+      "not_allowed": null,
+      "era": "digital era (2023 on)"
+     }
+    },
+    "checks": [
+     {
+      "id": "compliance",
+      "name": "Guideline Compliance",
+      "question": "Does the work follow the MPLADS guidelines?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "IMPOSSIBLE_TIMELINE",
+      "risk": 0.6,
+      "headline": "Recorded as completed 80 days before it was recommended; one of the two dates is wrong. Only 0.00% of works recommended in 2026-Q2 carry this defect (against 0.00% across the scheme), so bulk entry does not explain it; check the completion certificate against the portal record.",
+      "limitations": [
+       "Could not check (the public export does not carry the data): R03 Spent more than sanctioned: expenditure per work (not in the public export; utilisation certificates carry it for some works - task T103). R04 Marked complete with nothing spent: expenditure per work (not in the public export). R05 Most money released, work not started: expenditure and physical progress per work (not in the public export). R09 No progress for six months: dated progress updates per work (not in the public export). R10 SC/ST area share below the earmark: an SC/ST-area tag per work (not in the public export); judged per MP-year, never used to score an MP.",
+       "The sanction clock leaves out election pauses (2024 Lok Sabha general election), but not state assembly elections.",
+       "The record carries no sanction date, so R14 (a construction recorded complete within a week of its sanction) was not checked."
+      ],
+      "findings": [
+       {
+        "code": "IMPOSSIBLE_TIMELINE",
+        "text": "Recorded as completed 80 days before it was recommended; one of the two dates is wrong. Only 0.00% of works recommended in 2026-Q2 carry this defect (against 0.00% across the scheme), so bulk entry does not explain it; check the completion certificate against the portal record.",
+        "risk": 0.6,
+        "hard": false,
+        "rule": "R06",
+        "severity": "MEDIUM"
+       }
+      ],
+      "picture": {
+       "rules": [
+        {
+         "id": "R01",
+         "title": "Waiting for sanction past the time limit",
+         "ref": "para 3.12",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R02",
+         "title": "Open past the one-year norm",
+         "ref": "para 3.13",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R06",
+         "title": "Dates in an impossible order",
+         "ref": "record rule",
+         "raised": true,
+         "severity": "MEDIUM"
+        },
+        {
+         "id": "R07",
+         "title": "May be a work the guidelines do not allow",
+         "ref": "para 2.4, Annexure-II",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R08",
+         "title": "Outside the constituency, above the ceiling",
+         "ref": "para 2.9",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R11",
+         "title": "Key details missing from the record",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R12",
+         "title": "Big sanction that does not say what or where",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R13",
+         "title": "Construction recorded complete within days",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R14",
+         "title": "Construction recorded complete within a week of its sanction",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "statistical",
+      "name": "Cost Anomaly",
+      "question": "Is the project cost unusual for similar works?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "COST_TYPICAL",
+      "risk": 0.0,
+      "headline": "Cost is within the usual range for similar Cement concrete road works in Jaunpur.",
+      "limitations": [
+       "Judged per metre for 400 m; the total is not compared with roads of other lengths.",
+       "A peer range is not a schedule of rates: an unusual amount can have an ordinary explanation (terrain, specification, scope)."
+      ],
+      "findings": [],
+      "picture": {
+       "comparison": [
+        {
+         "metric": "Total cost",
+         "unit": "Rs",
+         "this_work": 760000.0,
+         "typical_low": 435511.0002449025,
+         "typical_high": 1160618.0006823456,
+         "median": 691494.9996829702,
+         "deviation_pct": 9.906796194974255
+        },
+        {
+         "metric": "Cost per metre",
+         "unit": "Rs/m",
+         "this_work": 1900.0,
+         "typical_low": 1205.0886784200013,
+         "typical_high": 15690.88337149782,
+         "median": 4348.4371796543965,
+         "deviation_pct": -56.30614122954842,
+         "anchor_low": 4000.0,
+         "anchor_high": 6500.0,
+         "comfort_high": 29806.05450938269
+        }
+       ],
+       "cohort": {
+        "level": "type_district",
+        "description": "works of the same type in this district",
+        "n": 21,
+        "p10": 5.638999129,
+        "p50": 5.839789044,
+        "p90": 6.064689302,
+        "sd": 0.225003124
+       },
+       "work_type_name": "Cement concrete road"
+      }
+     },
+     {
+      "id": "dup_split",
+      "name": "Duplicate & Split Work",
+      "question": "Is this work repeated, or one job cut into pieces?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "NO_SITE_NAMED",
+      "risk": 0.0,
+      "headline": "The description names no place, so a repeat of an earlier work cannot be ruled out; checked against the 1,038 other works of its district for splits and bulk orders only.",
+      "limitations": [
+       "Ask for the site (village, ward, landmark) to be written in the recommendation: without it no repeat can be confirmed or ruled out."
+      ],
+      "findings": [],
+      "picture": {
+       "compared": 1038,
+       "text_min": 0.62,
+       "place_min": 85.0,
+       "flag": 0.75,
+       "nearest": [
+        {
+         "work_id": "WS/MP18222/2024-2025/165194",
+         "description": "Nahar pul se [name] ka avas se pahle tak 200mtr RCC road nirman ka kary.",
+         "amount": 1157878.0,
+         "date": "2025-07-11",
+         "likeness": 0.438,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165198",
+         "description": "Belwar marg se [name] ke avas ke paas hanuman mandir ke pass khadanje par 120 mtr. tak RCC ka nirman kary.",
+         "amount": 691495.0,
+         "date": "2025-05-21",
+         "likeness": 0.317,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/170969",
+         "description": "block machhlishear gram jagarnathpur me panchayat Bahwan se dhih baba sarhad tak 200 meter rcc road nirman kary",
+         "amount": 1160618.0,
+         "date": "2025-08-06",
+         "likeness": 0.298,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2025-2026/165225",
+         "description": "Ajad hind purv madhaymik Vidhayal me Construction of rooms and halls in school.",
+         "amount": 1000000.0,
+         "date": "2025-10-27",
+         "likeness": 0.291,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165201",
+         "description": "[name] ke avas se [name] ke avas 100 mtr interlaking ka nirman kary.",
+         "amount": 435511.0,
+         "date": "2025-08-04",
+         "likeness": 0.275,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165200",
+         "description": "chhanehta me nahar pich road se [name] ke avas ke pahle tak 200 interlaking nirman kary.",
+         "amount": 752787.0,
+         "date": "2025-10-03",
+         "likeness": 0.267,
+         "place": 0.0,
+         "flagged": false
+        }
+       ]
+      }
+     },
+     {
+      "id": "delay",
+      "name": "Fund Flow",
+      "question": "Is money stuck waiting for sanction?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "Sanctioned or complete: no money is waiting for sanction on this work.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     },
+     {
+      "id": "office_patterns",
+      "name": "Office Patterns",
+      "question": "Does this work's office price or close works in an unusual way?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "OFFICE_AS_USUAL",
+      "risk": 0.0,
+      "headline": "Nothing unusual about this work's office: 2 of 1,038 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
+      "limitations": [
+       "A habit of the office, not proof about this work: look at the office's works together.",
+       "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
+      ],
+      "findings": [],
+      "picture": {}
+     },
+     {
+      "id": "paperwork",
+      "name": "Paperwork",
+      "question": "Do the work's own papers agree with the portal?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No papers are attached to this work on eSAKSHI, so there is nothing to read. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     },
+     {
+      "id": "photo_evidence",
+      "name": "Photo Evidence",
+      "question": "Are the work's photos new, from its place and from its time?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No photo or paper is attached to this work on eSAKSHI. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     }
+    ],
+    "scoring": {
+     "method": "v3",
+     "engines": [
+      {
+       "engine": "compliance",
+       "name": "Guideline Compliance",
+       "chance": 0.7857,
+       "findings": [
+        {
+         "code": "IMPOSSIBLE_TIMELINE",
+         "risk": 0.6,
+         "ref_risk": 0.6,
+         "strength": 1.0,
+         "hit_rate": 0.7857,
+         "basis": "measured",
+         "read": [
+          10,
+          10
+         ],
+         "chance": 0.7857
+        }
+       ]
+      }
+     ],
+     "chain": [
+      {
+       "engine": "compliance",
+       "chance": 0.7857,
+       "score": 0.7857
+      }
+     ],
+     "raw": 0.7857,
+     "floor": false,
+     "score": 0.7857,
+     "band": "HIGH",
+     "lines": {
+      "MEDIUM": 0.25,
+      "HIGH": 0.5,
+      "CRITICAL": 0.8
+     }
+    },
+    "result": {
+     "band": "HIGH",
+     "score": 0.7857,
+     "in_queue": true,
+     "limited": false,
+     "colour": null,
+     "advice": null,
+     "reasons": [
+      {
+       "engine": "Guideline Compliance",
+       "text": "Recorded as completed 80 days before it was recommended; one of the two dates is wrong. Only 0.00% of works recommended in 2026-Q2 carry this defect (against 0.00% across the scheme), so bulk entry does not explain it; check the completion certificate against the portal record.",
+       "text_hi": "कार्य अनुशंसा (2026-06-04) से पहले पूर्ण (2026-03-16) दर्ज है; तारीखों की जाँच आवश्यक।",
+       "chance": 0.7857,
+       "basis": "measured",
+       "read": [
+        10,
+        10
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "repeat",
+   "title": "The same work asked for again",
+   "story": "A real work of this district (finished or still open), typed in again as a new recommendation.",
+   "trace": {
+    "version": "explain-1.0.0",
+    "as_of": "2026-10-02",
+    "input": {
+     "description": "Birpalpur me r c c marg se [name] ke avas tak interlaking ka kary. 120 mts",
+     "work_type": "ROAD_CC",
+     "work_type_name": "Cement concrete road",
+     "amount": 474533.0,
+     "district": "Jaunpur",
+     "state": "Uttar Pradesh",
+     "office": "JAUNPUR(DISTRICT MAGISTRATE JAUNPUR_IDA)",
+     "status": "RECOMMENDED",
+     "recommended": "2026-10-02",
+     "sanctioned": null,
+     "completed": null,
+     "outside_constituency": false
+    },
+    "privacy": {
+     "hidden": {
+      "name": 1,
+      "phone": 0,
+      "number": 0
+     }
+    },
+    "reading": {
+     "segments": [
+      {
+       "t": "Birpalpur",
+       "k": "place"
+      },
+      {
+       "t": " me r c c marg se ",
+       "k": null
+      },
+      {
+       "t": "[name]",
+       "k": "private"
+      },
+      {
+       "t": " ke ",
+       "k": null
+      },
+      {
+       "t": "avas",
+       "k": "place"
+      },
+      {
+       "t": " tak interlaking ka kary. 120 mts",
+       "k": null
+      }
+     ],
+     "facts": {
+      "what": "a construction or repair",
+      "says_nothing": false,
+      "place_named": true,
+      "count": null,
+      "length_m": null,
+      "several_sites": false,
+      "bundle": false,
+      "not_allowed": null,
+      "era": "digital era (2023 on)"
+     }
+    },
+    "checks": [
+     {
+      "id": "compliance",
+      "name": "Guideline Compliance",
+      "question": "Does the work follow the MPLADS guidelines?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "COMPLIANT_AS_FAR_AS_CHECKED",
+      "risk": 0.0,
+      "headline": "No guideline rule that the public data can check is broken.",
+      "limitations": [
+       "Could not check (the public export does not carry the data): R03 Spent more than sanctioned: expenditure per work (not in the public export; utilisation certificates carry it for some works - task T103). R04 Marked complete with nothing spent: expenditure per work (not in the public export). R05 Most money released, work not started: expenditure and physical progress per work (not in the public export). R09 No progress for six months: dated progress updates per work (not in the public export). R10 SC/ST area share below the earmark: an SC/ST-area tag per work (not in the public export); judged per MP-year, never used to score an MP.",
+       "The sanction clock leaves out election pauses (2024 Lok Sabha general election), but not state assembly elections.",
+       "The election calendar was last checked on 2026-10-01; a pause after that date is not left out of the sanction clock yet."
+      ],
+      "findings": [],
+      "picture": {
+       "rules": [
+        {
+         "id": "R01",
+         "title": "Waiting for sanction past the time limit",
+         "ref": "para 3.12",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R02",
+         "title": "Open past the one-year norm",
+         "ref": "para 3.13",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R06",
+         "title": "Dates in an impossible order",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R07",
+         "title": "May be a work the guidelines do not allow",
+         "ref": "para 2.4, Annexure-II",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R08",
+         "title": "Outside the constituency, above the ceiling",
+         "ref": "para 2.9",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R11",
+         "title": "Key details missing from the record",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R12",
+         "title": "Big sanction that does not say what or where",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R13",
+         "title": "Construction recorded complete within days",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R14",
+         "title": "Construction recorded complete within a week of its sanction",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "statistical",
+      "name": "Cost Anomaly",
+      "question": "Is the project cost unusual for similar works?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "COST_TYPICAL",
+      "risk": 0.0,
+      "headline": "Rs 4.75 lakh is inside the usual range for similar Cement concrete road works in Jaunpur (most cost Rs 4.36 lakh to Rs 11.61 lakh; 21 similar works in Jaunpur). DRISHTI asks only above Rs 23.21 lakh, which leaves room for a bigger scope or a contingency margin.",
+      "limitations": [
+       "The description-based price check is not loaded, so the cost was compared with similar works only.",
+       "A peer range is not a schedule of rates: an unusual amount can have an ordinary explanation (terrain, specification, scope)."
+      ],
+      "findings": [],
+      "picture": {
+       "comparison": [
+        {
+         "metric": "Total cost",
+         "unit": "Rs",
+         "this_work": 474533.0,
+         "typical_low": 435511.0002449025,
+         "typical_high": 1160618.0006823456,
+         "median": 691494.9996829702,
+         "deviation_pct": -31.375787212118787,
+         "comfort_high": 2321236.001364691
+        }
+       ],
+       "cohort": {
+        "level": "type_district",
+        "description": "works of the same type in this district",
+        "n": 21,
+        "p10": 5.638999129,
+        "p50": 5.839789044,
+        "p90": 6.064689302,
+        "sd": 0.225003124
+       },
+       "comfort_high": 2321236.001364691,
+       "work_type_name": "Cement concrete road"
+      }
+     },
+     {
+      "id": "dup_split",
+      "name": "Duplicate & Split Work",
+      "question": "Is this work repeated, or one job cut into pieces?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "FUNDED_AGAIN_AFTER_COMPLETION",
+      "risk": 0.7889,
+      "headline": "Reads like work WS/MP18222/2024-2025/165187 (Rs 4.75 lakh, recommended 490 days before this one; descriptions 100% alike, the same place named, amounts 0% apart); that work had already been completed when the other was recommended. Check whether the same work was funded again or this is a genuinely new site.",
+      "limitations": [
+       "Matched on the wording of descriptions; the district is the finest location in the record, so only a site visit or the files can confirm two works are one."
+      ],
+      "findings": [
+       {
+        "code": "FUNDED_AGAIN_AFTER_COMPLETION",
+        "text": "Reads like work WS/MP18222/2024-2025/165187 (Rs 4.75 lakh, recommended 490 days before this one; descriptions 100% alike, the same place named, amounts 0% apart); that work had already been completed when the other was recommended. Check whether the same work was funded again or this is a genuinely new site.",
+        "risk": 0.7889,
+        "hard": false,
+        "rule": null,
+        "severity": null
+       }
+      ],
+      "picture": {
+       "compared": 1038,
+       "text_min": 0.62,
+       "place_min": 85.0,
+       "flag": 0.75,
+       "nearest": [
+        {
+         "work_id": "WS/MP18222/2024-2025/165187",
+         "description": "Birpalpur me r c c marg se [name] ke avas tak interlaking ka kary. 120 mts",
+         "amount": 474533.0,
+         "date": "2025-05-30",
+         "likeness": 1.0,
+         "place": 100.0,
+         "flagged": true
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165188",
+         "description": "pich marg ke [name] ke avas ke 185 mtr interlaking kary",
+         "amount": 858853.0,
+         "date": "2025-06-02",
+         "likeness": 0.608,
+         "place": 66.7,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165189",
+         "description": "Birpalpur me pakki sadak ke saroj basti tak 120 mtr interlaking ka kary",
+         "amount": 474533.0,
+         "date": "2025-05-21",
+         "likeness": 0.547,
+         "place": 40.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165192",
+         "description": "[name] ke avas ke [name] ke avas tak 100 mtr interlaking kary",
+         "amount": 462998.0,
+         "date": "2025-06-16",
+         "likeness": 0.514,
+         "place": 66.7,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165200",
+         "description": "chhanehta me nahar pich road se [name] ke avas ke pahle tak 200 interlaking nirman kary.",
+         "amount": 752787.0,
+         "date": "2025-10-03",
+         "likeness": 0.436,
+         "place": 57.1,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165191",
+         "description": "[name] ke avas se [name] ke avas tak 70 mtr interlaking kary.",
+         "amount": 330950.0,
+         "date": "2025-05-20",
+         "likeness": 0.382,
+         "place": 40.0,
+         "flagged": false
+        }
+       ]
+      }
+     },
+     {
+      "id": "delay",
+      "name": "Fund Flow",
+      "question": "Is money stuck waiting for sanction?",
+      "counted": false,
+      "status": "ASSESSED",
+      "verdict": "NOTHING_STUCK_BEYOND_THE_WAIT",
+      "risk": 0.0,
+      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 506 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 506 (0%).",
+      "limitations": [],
+      "findings": [],
+      "picture": {
+       "recommended": "2026-10-02",
+       "sanctioned": null,
+       "completed": null,
+       "as_of": "2026-10-02",
+       "sanction_clock_days": 75,
+       "completion_clock_days": 365
+      }
+     },
+     {
+      "id": "office_patterns",
+      "name": "Office Patterns",
+      "question": "Does this work's office price or close works in an unusual way?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "OFFICE_AS_USUAL",
+      "risk": 0.0,
+      "headline": "Nothing unusual about this work's office: 2 of 1,038 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
+      "limitations": [
+       "A habit of the office, not proof about this work: look at the office's works together.",
+       "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
+      ],
+      "findings": [],
+      "picture": {}
+     },
+     {
+      "id": "paperwork",
+      "name": "Paperwork",
+      "question": "Do the work's own papers agree with the portal?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No papers are attached to this work on eSAKSHI, so there is nothing to read. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     },
+     {
+      "id": "photo_evidence",
+      "name": "Photo Evidence",
+      "question": "Are the work's photos new, from its place and from its time?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No photo or paper is attached to this work on eSAKSHI. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     }
+    ],
+    "scoring": {
+     "method": "v3",
+     "engines": [
+      {
+       "engine": "dup_split",
+       "name": "Duplicate & Split Work",
+       "chance": 0.3633,
+       "findings": [
+        {
+         "code": "FUNDED_AGAIN_AFTER_COMPLETION",
+         "risk": 0.7889,
+         "ref_risk": 0.95,
+         "strength": 0.8304,
+         "hit_rate": 0.4375,
+         "basis": "measured",
+         "read": [
+          6,
+          12
+         ],
+         "chance": 0.3633
+        }
+       ]
+      }
+     ],
+     "chain": [
+      {
+       "engine": "dup_split",
+       "chance": 0.3633,
+       "score": 0.3633
+      }
+     ],
+     "raw": 0.3633,
+     "floor": false,
+     "score": 0.3633,
+     "band": "MEDIUM",
+     "lines": {
+      "MEDIUM": 0.25,
+      "HIGH": 0.5,
+      "CRITICAL": 0.8
+     }
+    },
+    "result": {
+     "band": "MEDIUM",
+     "score": 0.3633,
+     "in_queue": false,
+     "limited": false,
+     "colour": "AMBER",
+     "advice": "Check the points below before sanction. They are questions, not findings.",
+     "reasons": [
+      {
+       "engine": "Duplicate & Split Work",
+       "text": "Reads like work WS/MP18222/2024-2025/165187 (Rs 4.75 lakh, recommended 490 days before this one; descriptions 100% alike, the same place named, amounts 0% apart); that work had already been completed when the other was recommended. Check whether the same work was funded again or this is a genuinely new site.",
+       "text_hi": "यह कार्य एक पहले पूर्ण हो चुके कार्य जैसा पढ़ता है। जाँचें कि वही कार्य दोबारा स्वीकृत तो नहीं हुआ।",
+       "chance": 0.3633,
+       "basis": "measured",
+       "read": [
+        6,
+        12
+       ]
+      }
+     ]
+    }
+   }
+  }
+ ]
+}

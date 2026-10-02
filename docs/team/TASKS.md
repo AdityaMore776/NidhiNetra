@@ -154,6 +154,14 @@ the top 5% of each engine and overall. Never mixes planted rows into the live da
 ### T090 · Five-minute demo script + judge Q&A  ·  S  ·  docs  ·  Depends on: T062, T080
 **Done when:** [ ] script walks the loop by role on the live site · [ ] every number from FINDINGS
 
+### T092 · DRISHTI Visualization Engine: what happens to a work, step by step  ·  L  ·  engine + web  ·  Depends on: T050, T064
+**Owner's request, 2 Oct 2026.** Plan: `docs/plans/T092-visualization-engine.md`. A public page (`/explain`) that shows
+judges, with animations, what DRISHTI does to a work at each step (input, privacy, reading, the seven checks, the
+score's arithmetic, the officer's result), each step replayable, with built-in examples and the judge's own example.
+Every number is real engine output (`drishti/explain.py`); built-in examples run on the dashboard's 40,935 works.
+**Done when:** [ ] `explain()` + route + tests · [ ] examples built on the dashboard data · [ ] page animated and
+replayable, own example via the API · [ ] web checks pass, checked in a browser · [ ] docs, log
+
 ### T091 · Rename user-facing text to NidhiNetra  ·  S  ·  web + docs  ·  **needs-owner** (confirm the name)
 **What:** app title, logo text, README, docs headers. Repo/folder names and env vars stay (they carry deploy ids).
 
