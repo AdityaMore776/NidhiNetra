@@ -9,21 +9,9 @@ from __future__ import annotations
 
 from collections import defaultdict
 from dataclasses import dataclass, field
-from datetime import date, datetime
+from datetime import date
 
-
-def day(x) -> date | None:
-    """A date written as a date or as ISO text ("2024-02-01"); anything else is no date."""
-    if isinstance(x, datetime):
-        return x.date()
-    if isinstance(x, date):
-        return x
-    if isinstance(x, str):
-        try:
-            return date.fromisoformat(x.strip()[:10])
-        except ValueError:
-            return None
-    return None
+from drishti.records import day
 
 
 def norm(x) -> str:

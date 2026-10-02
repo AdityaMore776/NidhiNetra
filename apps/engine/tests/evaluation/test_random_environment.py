@@ -4,12 +4,14 @@ Real records arrive with empty fields, impossible dates, scripts the readers do 
 zero or crores, and works filed in any order. None of that may crash an engine (a crash becomes an
 ERROR result, which this test forbids), break the contract (risks in 0..1, plain language, parts
 adding up to the score), or make the answer depend on things that carry no evidence: the order the
-works were loaded in, or whether a clerk typed in capitals.
+works were loaded in, whether a clerk typed in capitals, or whether a loader handed a date over as
+text. Damaged rows inside the corpus may not stop the indexes or the statistics built from it.
 """
 
 import json
 import random
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
+from decimal import Decimal
 
 import pytest
 
@@ -94,6 +96,61 @@ def test_the_order_works_are_loaded_in_changes_nothing(world):
         a, b = assess_work(w, ctx), assess_work(w, other)
         assert a.fused.band == b.fused.band
         assert a.fused.score == pytest.approx(b.fused.score)
+
+
+def _loose(rng: random.Random, w: dict) -> dict:
+    """The same work as a loader that keeps fewer types would hand it over: dates as ISO,
+    day-first or datetime values, the amount as Decimal or grouped text, codes as numbers."""
+    out = dict(w)
+    for k in ("recommended_date", "completed_date", "sanction_date"):
+        d = w.get(k)
+        if isinstance(d, date):
+            out[k] = rng.choice([d.isoformat(), d.strftime("%d/%m/%Y"),
+                                 datetime(d.year, d.month, d.day, 11, 5)])
+    if isinstance(w.get("amount"), float):
+        out["amount"] = rng.choice([Decimal(f"{w['amount']:.2f}"), f"{w['amount']:,.2f}"])
+    for k in ("district_lgd", "state_lgd"):
+        if (w.get(k) or "").isdigit():
+            out[k] = int(w[k])
+    return out
+
+
+def test_a_loosely_typed_corpus_gives_the_same_answers(world):
+    """records.work reads every column once: the indexes, the statistics and the engines must
+    give a typed record and its loosely typed twin the same answer, finding for finding."""
+    corpus, ctx = world
+    rng = random.Random(11)
+    loose = [_loose(rng, w) for w in corpus.works]
+    other = Context(stats=build_store(loose), as_of=AS_OF, data=indexes(loose))
+    for w, t in zip(corpus.works[:300], loose[:300], strict=True):
+        a, b = assess_work(w, ctx), assess_work(t, other)
+        assert a.fused.band == b.fused.band, w["work_id"]
+        assert a.fused.score == pytest.approx(b.fused.score), w["work_id"]
+        assert sorted((r.agent, f.code) for r in a.agents for f in r.findings) == \
+            sorted((r.agent, f.code) for r in b.agents for f in r.findings)
+
+
+def _damaged(rng: random.Random, w: dict, i: int) -> dict:
+    """A work with one to four columns spoiled the ways real loads spoil them."""
+    out = {**w, "work_id": f"DAMAGED-{i}"}
+    for k in rng.sample(sorted(w), rng.randint(1, 4)):
+        if k == "work_id":
+            continue
+        out[k] = rng.choice([None, float("nan"), "", 101, "2024-13-45", "01/02/2024",
+                             datetime(2024, 1, 1, 9, 0), Decimal("-1"), "1,00,000", -1, 0])
+    return out
+
+
+def test_damaged_rows_in_the_corpus_never_stop_the_indexes_or_the_statistics(world):
+    """One row the index builders could not read used to stop the whole batch (found by
+    fuzzing, 2 Oct 2026): a NaN in a text column, a code as a number, a datetime, '1,00,000'."""
+    corpus, _ctx = world
+    rng = random.Random(5)
+    damaged = [_damaged(rng, rng.choice(corpus.works), i) for i in range(300)]
+    works = corpus.works + damaged
+    ctx = Context(stats=build_store(works), as_of=AS_OF, data=indexes(works))  # must not raise
+    for w in damaged:
+        _check(assess_work(w, ctx))
 
 
 def test_capitals_change_no_finding(world):

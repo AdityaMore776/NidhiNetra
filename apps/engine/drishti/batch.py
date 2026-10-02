@@ -15,6 +15,7 @@ import psycopg
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 
+from drishti import records
 from drishti.agents.delay.backlog import OfficeBacklog
 from drishti.agents.dup_split.match import DupIndex
 from drishti.agents.office_patterns.index import JUST_UNDER, OfficeIndex, limits
@@ -56,10 +57,7 @@ ON CONFLICT (work_id) DO UPDATE SET
 
 
 def _normalise(work: dict) -> dict:
-    w = dict(work)
-    for k in ("amount", "quantity"):
-        if w.get(k) is not None:
-            w[k] = float(w[k])
+    w = dict(records.work(work))          # Decimal amounts -> numbers, and every other column
     w["signals"] = w.get("signals") or {}
     return w
 
@@ -102,7 +100,9 @@ def case_of(a: Assessment) -> tuple[str | None, int | None]:
 
 def indexes(works: list[dict]) -> dict:
     """The cross-work views engines need, from the same rows: the Duplicate & Split index and
-    the vendors holding the certified works (Paperwork, T110)."""
+    the vendors holding the certified works (Paperwork, T110). Every record is checked first
+    (records.work): one malformed row used to stop the whole build."""
+    works = [records.work(w) for w in works]
     return {"dup_split": DupIndex.build(works), "vendors": VendorIndex.build(works),
             "photos": PhotoIndex.build(works), "backlog": OfficeBacklog.build(works),
             "offices": OfficeIndex.build(works)}
