@@ -39,9 +39,10 @@ import time
 from datetime import date
 
 from drishti import reference
+from drishti.agents import evidence
 from drishti.agents.contract import AgentResult, Finding, Status, check_plain_language
 from drishti.agents.photo_evidence import geo
-from drishti.agents.photo_evidence.index import PHOTO_EXT, PhotoIndex
+from drishti.agents.photo_evidence.index import PhotoIndex
 from drishti.agents.site_progress import observe
 from drishti.agents.site_progress.claims import Claim, claims_of
 
@@ -130,13 +131,12 @@ def _plain(text: str, fallback: str) -> str:
 
 def assess(work: dict, as_of: date, photos: PhotoIndex | None = None) -> AgentResult:
     t0 = time.perf_counter()
-    evidence = work.get("evidence") or {}
-    files = [f for f in evidence.get("files") or () if f.get("ext") in PHOTO_EXT]
-    judged = {j.get("claim"): j for j in evidence.get("site_judgements") or ()}
+    files = evidence.photos(work)           # every part checked once (agents/evidence.py)
+    judged = {j["claim"]: j for j in evidence.judgements(work)}
     if not files:
         return _quiet(Status.NOT_APPLICABLE, "No photo is attached, so what was built cannot "
                       "be seen. This is not a clean chit.", t0)
-    read = [f for f in files if f.get("site", {}).get("version") == observe.VERSION]
+    read = [f for f in files if (f["site"] or {}).get("version") == observe.VERSION]
     if not read and not judged:
         return _quiet(Status.NOT_ASSESSABLE, "The work's photos have not been read yet, so what "
                       "they show cannot be compared with the record. This is not a clean chit.",

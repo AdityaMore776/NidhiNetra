@@ -139,3 +139,28 @@ def test_no_papers_is_not_applicable_and_unreadable_papers_not_assessable():
     assert assess(_work() | {"evidence": photo_only}).status == Status.NOT_APPLICABLE
     unread = assess(_work() | {"evidence": _evidence(readable=False)})
     assert unread.status == Status.NOT_ASSESSABLE and "not a clean chit" in unread.headline
+
+
+# ---- OCR noise (2 Oct 2026): the same certificate, read badly, gives the same fields
+
+def _noisy(mapper):
+    return _page([mapper(x) for _b, x, _c in UC["lines"]])
+
+
+@pytest.mark.parametrize("mapper", [
+    lambda s: s.replace(" ", ""),                                  # RapidOCR drops spaces
+    lambda s: s.replace("20/03/2024", "20-03-2024").replace("15/07/2024", "15.07.2024"),
+    lambda s: s.replace("20/03/2024", "20|03|2024"),               # "/" read as "|"
+    lambda s: s.replace("3,00,000", "3,OO,OOO").replace("20/03/2024", "2O/O3/2O24"),
+])
+def test_the_same_certificate_read_with_ocr_noise_gives_the_same_fields(mapper):
+    clean, noisy = parse_uc(UC), parse_uc(_noisy(mapper))
+    for k in ("sanction_date", "sanctioned_amount", "status", "payments", "vendor_code"):
+        assert noisy[k] == clean[k], k
+
+
+def test_letter_o_is_a_zero_only_inside_a_number():
+    from drishti.agents.paperwork.reader import zeros_in_numbers
+    assert zeros_in_numbers("Rs. 3,OO,OOO on 2O/O3/2O24") == "Rs. 3,00,000 on 20/03/2024"
+    for text in ("Block O", "No. 5 Road", "to2024", "MOHALLA", "CO-OP"):
+        assert zeros_in_numbers(text) == text

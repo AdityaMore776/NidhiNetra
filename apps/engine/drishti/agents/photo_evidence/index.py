@@ -11,9 +11,9 @@ from __future__ import annotations
 from collections import defaultdict
 from dataclasses import dataclass, field
 
+from drishti.agents import evidence
+from drishti.agents.evidence import PHOTO_EXT  # noqa: F401  (imported from here by others)
 from drishti.agents.photo_evidence.fingerprint import same_picture
-
-PHOTO_EXT = {"jpg", "jpeg", "png", "tif", "tiff", "webp", "bmp", "heic"}
 
 
 @dataclass
@@ -26,15 +26,15 @@ class PhotoIndex:
         idx = cls()
         for w in works:
             wid = w.get("work_id")
-            for f in ((w.get("evidence") or {}).get("files")) or []:
-                if f.get("sha256"):
+            for f in evidence.files(w):
+                if f["sha256"]:
                     idx.by_sha[f["sha256"]].add(wid)
-                if f.get("ext") in PHOTO_EXT and f.get("phash"):
+                if f["ext"] in PHOTO_EXT and f["phash"]:
                     idx.hashes.append((f["phash"], wid))
         return idx
 
     def same_file(self, sha: str | None) -> set[str]:
-        return set(self.by_sha.get(sha or "", ()))
+        return set(self.by_sha.get(sha, ())) if isinstance(sha, str) and sha else set()
 
     def same_picture(self, phash: str) -> set[str]:
         return {w for h, w in self.hashes if same_picture(h, phash)}

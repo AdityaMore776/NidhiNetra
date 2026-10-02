@@ -9,7 +9,26 @@ from __future__ import annotations
 
 from collections import defaultdict
 from dataclasses import dataclass, field
-from datetime import date
+from datetime import date, datetime
+
+
+def day(x) -> date | None:
+    """A date written as a date or as ISO text ("2024-02-01"); anything else is no date."""
+    if isinstance(x, datetime):
+        return x.date()
+    if isinstance(x, date):
+        return x
+    if isinstance(x, str):
+        try:
+            return date.fromisoformat(x.strip()[:10])
+        except ValueError:
+            return None
+    return None
+
+
+def norm(x) -> str:
+    """Text compared the way a person reads it: case and spacing ignored."""
+    return " ".join(str(x or "").split()).lower()
 
 
 @dataclass
@@ -23,11 +42,11 @@ class OfficeBacklog:
         off: dict = defaultdict(list)
         dis: dict = defaultdict(list)
         for w in works:
-            rec = w.get("recommended_date")
+            rec = day(w.get("recommended_date"))
             if rec is None:
                 continue
             d = str(w.get("district_lgd") or "NA")
-            item = (rec, w.get("status") == "RECOMMENDED")
+            item = (rec, norm(w.get("status")) == "recommended")
             dis[d].append(item)
             if w.get("agency_name"):
                 off[(d, str(w["agency_name"]))].append(item)
