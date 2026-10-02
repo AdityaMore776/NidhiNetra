@@ -303,7 +303,10 @@ def work(work_id: str, user: Principal = Depends(current_user)) -> dict:
         for k in ("parts", "validation", "agents"):
             assessment[k] = full[k]
     assessment["agents"] = _described(assessment.get("agents") or [])
-    work_row = {k: v for k, v in dict(row).items() if k != "signals"}
+    # the raw evidence facts stay on the server: a certificate's place line is OCR text that can
+    # name a person ("near <name> house"), and the page shows the engines' findings instead
+    # (found by tests/api/test_api_at_scale.py, T056)
+    work_row = {k: v for k, v in dict(row).items() if k not in ("signals", "evidence")}
     return {"work": _jsonable(work_row), "assessment": assessment}
 
 

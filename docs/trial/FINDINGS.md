@@ -986,6 +986,16 @@ are mostly parts of place names (all fixed). `sanitize_results.py` now runs the 
 results file (it masked numbers only): 270 lines changed across 43 files, numbers untouched, and a second run changes
 nothing. Still not caught: a name in a phrase with no home word ("from <name> to the land").
 
+**The API end to end** (`tests/api/test_api_at_scale.py`, in CI): the test country's 1,302 works across its districts,
+seven made messy (Devanagari, Tamil, a made-up name and phone number, 2,000 characters, empty, none) plus a work id a
+URL must escape, malformed evidence on 30, all assessed by the real batch; then every listing and dashboard endpoint
+for the ministry, a district officer and a field officer; the work pages of every messy work, every work with
+evidence, 20 stored in full and 40 at random; and 34 odd pre-sanction bodies. No 500; a
+district officer gets 404 for another district's work; the queue total equals the stored HIGH/CRITICAL cases, in
+priority order; no text returned holds an accusing word or anything the masker would hide. It found one leak: **every
+work page sent the raw evidence facts, whose certificate place line is OCR text that can name a person** ("near <name>
+house"). The web never reads that field, so the API no longer sends it (`api/routes.py`).
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**
