@@ -16,7 +16,10 @@ overdue an open work really is) does not. What stays is what was exact on real d
 How long this work has waited is Guideline Compliance's R01, so it is not counted again.
 
   NOT_APPLICABLE  sanctioned or completed works: no money is waiting for sanction
-  NOT_ASSESSABLE  a recommended work with no recommendation date
+  NOT_ASSESSABLE  a recommended work with no readable recommendation date, or one after the
+                  data's own date (one of the two is wrong, so the wait cannot be counted)
+Foolproofing (2 Oct 2026): status, term and house are read in any case and spacing, and a
+date written as text reads as the date (backlog.day / backlog.norm).
 """
 
 from __future__ import annotations
@@ -29,7 +32,7 @@ from pathlib import Path
 
 from drishti import reference
 from drishti.agents.contract import AgentResult, Finding, Status
-from drishti.agents.delay.backlog import OfficeBacklog
+from drishti.agents.delay.backlog import OfficeBacklog, day, norm
 
 AGENT = "delay"
 VERSION = "fund-flow-1.0.0"
@@ -45,6 +48,11 @@ def ended_terms() -> dict[str, date]:
     return {k: date.fromisoformat(v["date"]) for k, v in data.items()}
 
 
+@cache
+def _terms_by_key() -> dict[str, tuple[str, date]]:
+    return {norm(k): (k, v) for k, v in ended_terms().items()}
+
+
 def _quiet(status: Status, text: str, t0: float) -> AgentResult:
     return AgentResult(agent=AGENT, status=status, verdict=status.value, risk=0.0,
                        confidence=0.0, hard=False, version=VERSION, headline=text,
@@ -53,18 +61,22 @@ def _quiet(status: Status, text: str, t0: float) -> AgentResult:
 
 def assess(work: dict, as_of: date, backlog: OfficeBacklog | None = None) -> AgentResult:
     t0 = time.perf_counter()
-    if work.get("status") != "RECOMMENDED":
+    if norm(work.get("status")) != "recommended":
         return _quiet(Status.NOT_APPLICABLE, "Sanctioned or complete: no money is waiting for "
                       "sanction on this work.", t0)
-    rec = work.get("recommended_date")
+    rec = day(work.get("recommended_date"))
     if rec is None:
         return _quiet(Status.NOT_ASSESSABLE, "Cannot be assessed: the record carries no "
-                      "recommendation date. This is not a clean chit.", t0)
+                      "readable recommendation date. This is not a clean chit.", t0)
+    if rec > as_of:
+        return _quiet(Status.NOT_ASSESSABLE, f"Cannot be assessed: the recommendation date "
+                      f"({rec.isoformat()}) is after the data's own date ({as_of.isoformat()}), "
+                      "so one of them is wrong and the wait cannot be counted. This is not a "
+                      "clean chit.", t0)
     findings: list[Finding] = []
     facts: dict = {"days_waiting": (as_of - rec).days}
     limitations: list[str] = []
-    term = work.get("term")
-    ended = ended_terms().get(term or "")
+    term, ended = _terms_by_key().get(norm(work.get("term")), (work.get("term"), None))
     if ended and as_of > ended:
         findings.append(Finding(
             "TERM_ENDED_UNSANCTIONED",
@@ -72,7 +84,7 @@ def assess(work: dict, as_of: date, backlog: OfficeBacklog | None = None) -> Age
             f"sanctioned {(as_of - ended).days:,} days later. Check whether the work will go "
             "ahead or its money should be released.",
             hard=False, risk=0.40, evidence={"term": term, "term_ended": str(ended)}))
-    if work.get("house") == "Rajya Sabha":
+    if norm(work.get("house")) == "rajya sabha":
         limitations.append("Rajya Sabha members' terms are individual and not in the data, so "
                            "an ended term is not checked for this work.")
     clock = int(reference.clause("SANCTION_PERIOD")["establishes"]["sanction_period_days"])

@@ -16,6 +16,9 @@ What it reports, with a signal that grows with the evidence (v1 gave six fixed v
   pair repair_after_built 0.40 .. 0.70 a repair of what a work built there within 3 years
   under a limit          +0.10 .. 0.20 every piece at 80-100% of Rs 5 or 10 lakh and the
                                        total above it; more the closer the pieces sit to it
+  below every limit      0 (said, not asked): a split whose total stays under Rs 5 lakh
+                                       avoids no limit; 0 of 5 such groups read as a real
+                                       split on the dashboard (T056, 2 Oct 2026)
 
 The work's signal is the strongest of these. Every member of a group carries its group id so
 fusion can count the group once.
@@ -30,7 +33,7 @@ from __future__ import annotations
 import time
 
 from drishti.agents.contract import AgentResult, Finding, Status
-from drishti.agents.dup_split.match import FLAG, DupIndex
+from drishti.agents.dup_split.match import FLAG, DupIndex, split_limits
 
 AGENT = "dup_split"
 VERSION = "dup-split-2.1.0"
@@ -118,6 +121,16 @@ def _group_finding(g: dict) -> Finding:
     others = ", ".join(g.get("others") or [])
     span = "on the same day" if days == 0 else f"within {days} days"
     piece = total / size
+    lowest = min(split_limits())
+    if g["kind"] in ("same_site_split", "stretches") and total < lowest:
+        return Finding(
+            "ALIKE_BELOW_LIMIT",
+            f"One of {size} alike works at one place, recommended {span}: {_lakh(total)} in "
+            f"all, below the {_lakh(lowest)} limit, so splitting them avoids no limit. Shown, "
+            "not asked." + (f" Others: {others}." if others else ""),
+            hard=False, risk=0.0,
+            evidence={k: g.get(k) for k in ("group_id", "kind", "size", "total", "limit",
+                                            "shared_place", "days", "others", "segments")})
     if g["kind"] == "stretches":
         code = "SPLIT_INTO_STRETCHES"
         text = (f"One of {size} numbered pieces of one job at the same place "

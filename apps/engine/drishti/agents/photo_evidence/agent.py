@@ -32,6 +32,7 @@ from __future__ import annotations
 import time
 from datetime import date
 
+from drishti.agents import evidence
 from drishti.agents.contract import AgentResult, Finding, Status
 from drishti.agents.photo_evidence import geo
 from drishti.agents.photo_evidence.index import PHOTO_EXT, PhotoIndex
@@ -137,8 +138,8 @@ def _place_time(work: dict, stamps: list[dict], as_of: date,
 
 def assess(work: dict, as_of: date, photos: PhotoIndex | None = None) -> AgentResult:
     t0 = time.perf_counter()
-    files = ((work.get("evidence") or {}).get("files")) or []
-    stamps = [s for f in files for s in f.get("stamps") or []]
+    files = evidence.files(work)            # every part checked once (agents/evidence.py)
+    stamps = [s for f in files for s in f["stamps"]]
     photo_files = [f for f in files if f.get("ext") in PHOTO_EXT]
     if not files:
         return _quiet(Status.NOT_APPLICABLE, "No photo or paper is attached to this work on "

@@ -174,6 +174,16 @@ CI quality gate · [x] every engine measured before/after on it and on the dashb
 queue read by eye · [ ] hosted DB: migrations 011 + 012 applied and works re-assessed (**needs-owner**) · [ ]
 planted test (T080) re-run on the full 2,09,993 works with v3 (needs the data pack)
 
+### T056 · Foolproof and accuracy pass: evidence engines, Fund Flow, Paperwork reader, Cost  ·  M  ·  engine + eval  ·  Depends on: T055
+**Owner's request, 2 Oct 2026:** "work on the next few agents to make them foolproof and accurate". Malformed or
+oddly written records must never crash an engine or the batch, and the same facts written another way must give
+the same answer; accuracy changes only where real flags read by eye show a fix. Numbers in FINDINGS "T056".
+**Done when:** [x] fuzz + invariant tests for every evidence engine and index · [x] Fund Flow reads any case,
+text dates, impossible dates · [x] certificate reader survives OCR noise (tests) · [x] Cost: misses diagnosed,
+real flags read by eye, fix measured on real and test works · [x] Duplicate & Split: split flags read by eye, fixes
+measured, a fresh sample read · [ ] owner re-runs `build_evidence.py` +
+`paperwork_trial.py` to measure the reader change on real certificates
+
 ## M9 — Side track: real-evidence checkers (after the core; they feed its engines)
 
 **Merged 12 → 8 (T051).** The owner asked for about eight checkers. The merged tasks below replace the old ones

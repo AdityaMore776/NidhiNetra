@@ -17,13 +17,13 @@ class VendorIndex:
 
     @classmethod
     def build(cls, works) -> VendorIndex:
+        from drishti.agents import evidence
         from drishti.agents.paperwork.agent import belongs
 
         idx: dict[str, Counter] = defaultdict(Counter)
         for w in works:
-            files = ((w.get("evidence") or {}).get("files")) or []
-            codes = {c["vendor_code"] for f in files for c in f.get("certificates") or []
-                     if c.get("vendor_code") and belongs(c, w)}
+            codes = {c["vendor_code"] for f in evidence.files(w) for c in f["certificates"]
+                     if c["vendor_code"] and belongs(c, w)}
             for code in codes:
                 idx[str(w.get("district_lgd") or "NA")][code] += 1
         return cls(by_district=dict(idx))

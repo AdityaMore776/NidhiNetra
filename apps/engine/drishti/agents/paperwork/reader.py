@@ -20,13 +20,24 @@ from __future__ import annotations
 import re
 from datetime import date, datetime
 
-VENDOR_CODE = re.compile(r"\bV\d{12}\b")
-DATE = r"(\d{2}/\d{2}/\d{4})"
+# OCR noise (2 Oct 2026): RapidOCR drops spaces ("TESTVENDORV123456789012"), reads "/" as "|"
+# and prints dates with "-" or "."; a zero can come back as the letter O ("3,OO,OOO").
+VENDOR_CODE = re.compile(r"(?<!\d)V\d{12}(?!\d)")
+DATE = r"(\d{2}[/|.\-]\d{2}[/|.\-]\d{4})"
 AMOUNT = r"([\d,]+(?:\.\d+)?)"
+_NUMBERISH = re.compile(r"(?<![A-Za-z])[0-9Oo][0-9Oo,./|\-]*(?![A-Za-z])")
 
 
 def squash(s: str) -> str:
     return re.sub(r"\s+", "", s).lower()
+
+
+def zeros_in_numbers(text: str) -> str:
+    """The letter O read for a zero, put back, inside numbers only ("2O/O3/2O24")."""
+    def fix(m: re.Match) -> str:
+        s = m.group(0)
+        return s.replace("O", "0").replace("o", "0") if any(c.isdigit() for c in s) else s
+    return _NUMBERISH.sub(fix, text)
 
 
 def ordered_lines(page: dict) -> list[dict]:
@@ -70,7 +81,8 @@ def _money(s: str | None) -> float | None:
 
 def to_date(s: str | None) -> date | None:
     try:
-        return datetime.strptime(s, "%d/%m/%Y").date() if isinstance(s, str) else None
+        return (datetime.strptime(re.sub(r"[|.\-]", "/", s), "%d/%m/%Y").date()
+                if isinstance(s, str) else None)
     except (ValueError, TypeError):
         return None
 
@@ -97,7 +109,7 @@ def page_kind(page: dict) -> str:
 def parse_uc(page: dict) -> dict | None:
     """The typed fields of a certificate's first page, else None."""
     lines = ordered_lines(page)
-    flat = squash(" ".join(r["text"] for r in lines))
+    flat = squash(" ".join(zeros_in_numbers(r["text"]) for r in lines))
     if "utilizationcertificate" not in flat or "nameofwork" not in flat:
         return None
     f = {"agency": after_colon("Implementing Agency", lines),
@@ -127,7 +139,7 @@ def parse_uc(page: dict) -> dict | None:
 def parse_uc_p2(page: dict) -> dict | None:
     """The certification paragraph: sanction date and amount again, and whether the officer
     marked any of its boxes."""
-    text = " ".join(r["text"] for r in ordered_lines(page))
+    text = " ".join(zeros_in_numbers(r["text"]) for r in ordered_lines(page))
     flat = squash(text)
     out = {}
     if "havingbeenfullysatisfied" in flat:
