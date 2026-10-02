@@ -16,7 +16,7 @@
     "statistical:UNIT_RATE_ABOVE": {"ref_risk": 0.9, "source": "not yet read by eye: the prior"},
     "dup_split:FUNDED_AGAIN_AFTER_COMPLETION": {"worth": 6, "read": 12, "ref_risk": 0.95, "source": "T051 fresh TEST + TEST2 pairs of this kind (data/trial/dup_split_v2_labels.py); hit rate does not rise with the pair score (45-50% in every band 0.75-0.95)"},
     "dup_split:REPEATED_WHILE_OPEN": {"worth": 33, "read": 74, "ref_risk": 0.7, "source": "T051 fresh TEST + TEST2 pairs of this kind (31 of 67) + dashboard 2 of 7 (dashboard_labels.py)"},
-    "dup_split:SPLIT_AT_ONE_SITE": {"worth": 14, "read": 27, "ref_risk": 0.75, "source": "T051 GROUPS_TEST2 9 of 15 (dup_split_v2_labels.py) + dashboard 5 of 12 strict (dashboard_labels.py); ref = the strongest split (pieces just under a limit)"},
+    "dup_split:SPLIT_AT_ONE_SITE": {"worth": 18, "read": 32, "ref_risk": 0.75, "source": "T051 GROUPS_TEST2 9 of 15 (dup_split_v2_labels.py) + dashboard 5 of 12 strict (dashboard_labels.py) + T056: 4 of 5 fresh groups not used to design the T056 rules (dashboard_labels.py SPLIT_FRESH_T056); ref = the strongest split (pieces just under a limit)"},
     "dup_split:SPLIT_INTO_STRETCHES": {"worth": 14, "read": 27, "ref_risk": 0.75, "source": "a same-site split whose pieces carry part / phase / chainage numbers: read with SPLIT_AT_ONE_SITE until read on its own"},
     "dup_split:BULK_ORDER": {"ref_risk": 0.4, "source": "not read as 'worth checking' (15 of 15 read as bulk purchases, T050): the prior; under a limit it counts most"},
     "dup_split:REPAIR_SOON_AFTER_BUILT": {"ref_risk": 0.7, "source": "new 2 Oct 2026, not yet read on real works: the prior"},

@@ -139,6 +139,9 @@ Two rules are enforced in code, not trusted to each agent:
   sound keys for one village spelt two ways; Hindi/English synonyms; ~490 vetted generic words; the repeat clock starts
   at completion. The team's 159 labelled pairs: false repeats 56 → 50, true 44 → 43 (`dup_split_rescore.py`).
   A purchase or split shows once in the queue (one case).
+- **T056 (2 Oct 2026):** a men's and a women's building are two works; a split whose total stays under Rs 5 lakh
+  avoids no limit and is said, not asked. 12 real split flags read by eye: 7 yes, 2 grey, 3 no (all 3 removed by
+  these rules); on a fresh sample 4 of 5 groups are real splits. Split flags on the dashboard 76 → 48.
 
 ### A3 Cost — *Is the cost unusual for similar works?* ✅ live
 

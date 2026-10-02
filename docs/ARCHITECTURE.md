@@ -223,7 +223,7 @@ database. LOW and MEDIUM works are stored **compact** (summary only) and rebuilt
 
 ## 11. Testing
 
-- **Engine:** 464 tests (`pytest`) — agent contract and banned words, every engine (Compliance, Cost, Duplicate
+- **Engine:** 469 tests (`pytest`) — agent contract and banned words, every engine (Compliance, Cost, Duplicate
   & Split, Delay) including NOT_ASSESSABLE cases, the risk score, bands and reasons, migrations, fusion maths,
   validation and impossible dates, orchestrator (an agent crash never becomes a finding), config, migrations,
   API and auth (scoping, dev-mode refusal on Vercel).

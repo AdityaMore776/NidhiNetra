@@ -895,6 +895,22 @@ kept by a test). Measured (`dashboard_agents2.json` against `dashboard_final.jso
 Cost flags stay MEDIUM at most in fusion v3: price alone reads right less than half the time (54 of 128 in T053;
 3 clear and 5 grey of 12 here).
 
+**Duplicate & Split: its split flags read by eye** (12 random SPLIT_AT_ONE_SITE flags, `dashboard_labels.py`
+SPLIT_SAMPLE_T056): **7 real questions, 2 grey, 3 not**. The 3 "not": a men's and a women's building read as one
+job, twice ("Resting Barracks … for Men / for Women"; "Vishranthi Dhamam (Male block) / (Female block)"), and two
+Rs 34,000 street lights near two different hamlets. Two rules, each measured:
+- **Genders that differ make two works** (`match.genders`, like opposite sides of a road); two girls' toilets are
+  still alike.
+- **A split whose total stays under Rs 5 lakh avoids no limit**: said, not asked (`ALIKE_BELOW_LIMIT`, risk 0). 24
+  of the 76 split flags were such; every one of them that had a label read grey or not (0 yes of 5).
+
+Measured (`dashboard_agents3.json` against `dashboard_agents2.json`, every dropped flag read): split flags **76 →
+48**, stretches 18 → 13, bulk orders 1,334 → 1,330; review queue 427 → 427; test country unchanged on every
+measure (`synthetic_eval_agents3.json`). On the rules' own fresh sample, the groups not used to design them read
+**4 real splits of 5** (SPLIT_FRESH_T056). Only those 5 fresh reads were added to the measured hit rate
+(`reliability.json`: 14/27 → 18/32). With that rate a split of 5 or more pieces just under a limit reaches HIGH on its
+own; none on the dashboard does yet.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

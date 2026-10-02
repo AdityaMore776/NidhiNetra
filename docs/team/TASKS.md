@@ -180,7 +180,8 @@ oddly written records must never crash an engine or the batch, and the same fact
 the same answer; accuracy changes only where real flags read by eye show a fix. Numbers in FINDINGS "T056".
 **Done when:** [x] fuzz + invariant tests for every evidence engine and index · [x] Fund Flow reads any case,
 text dates, impossible dates · [x] certificate reader survives OCR noise (tests) · [x] Cost: misses diagnosed,
-real flags read by eye, fix measured on real and test works · [ ] owner re-runs `build_evidence.py` +
+real flags read by eye, fix measured on real and test works · [x] Duplicate & Split: split flags read by eye, fixes
+measured, a fresh sample read · [ ] owner re-runs `build_evidence.py` +
 `paperwork_trial.py` to measure the reader change on real certificates
 
 ## M9 — Side track: real-evidence checkers (after the core; they feed its engines)

@@ -122,8 +122,9 @@ def test_parts_add_up_exactly_and_do_not_depend_on_order():
 def test_an_office_habit_corroborates_but_never_queues_alone():
     alone = fuse(_all(_r("office_patterns", ("PRICED_AT_LIMIT", 0.3, False))))
     assert alone.band == "LOW"
-    split = fuse(_all(_r("dup_split", ("SPLIT_AT_ONE_SITE", 0.75, False))))
-    both = fuse(_all(_r("dup_split", ("SPLIT_AT_ONE_SITE", 0.75, False)),
+    # a two-piece split just under the limit (risk 0.60): MEDIUM alone, HIGH with the habit
+    split = fuse(_all(_r("dup_split", ("SPLIT_AT_ONE_SITE", 0.60, False))))
+    both = fuse(_all(_r("dup_split", ("SPLIT_AT_ONE_SITE", 0.60, False)),
                      _r("office_patterns", ("PRICED_AT_LIMIT", 0.3, False))))
     assert split.band == "MEDIUM" and both.band == "HIGH"
 

@@ -1,0 +1,739 @@
+{
+  "tag": "agents3",
+  "seeds": [
+    11,
+    12,
+    13
+  ],
+  "pooled": {
+    "works": 60951,
+    "seconds": 124.0,
+    "bands": {
+      "LOW": 58727,
+      "MEDIUM": 1702,
+      "HIGH": 493,
+      "CRITICAL": 29
+    },
+    "queue": 195,
+    "queue_share": 0.0032,
+    "unscored_queued": 327,
+    "queue_precision": 0.682,
+    "positives": 810,
+    "positives_caught_by_meant_engine": 0.737,
+    "positives_queued": 0.164,
+    "positives_medium_or_above": 0.395,
+    "positives_in_top5pct": 0.743,
+    "background_queued": 0.0011,
+    "background_engine_fire_rate": {
+      "compliance": 0.3284,
+      "delay": 0.017,
+      "dup_split": 0.0196,
+      "office_patterns": 0.0002,
+      "statistical": 0.0055
+    }
+  },
+  "pooled_by_kind": {
+    "look-alike or background": {
+      "BACKGROUND": {
+        "n": 47671,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.026,
+        "queued": 0.001,
+        "top5pct": 0.034
+      },
+      "HN_BATCH_DIFFERENT_VILLAGES": {
+        "n": 1343,
+        "positive": false,
+        "meant_code_fired": 0.021,
+        "medium_or_above": 0.03,
+        "queued": 0.001,
+        "top5pct": 0.036
+      },
+      "HN_BIG_STATED_SCOPE": {
+        "n": 36,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.056,
+        "queued": 0.0,
+        "top5pct": 0.056
+      },
+      "HN_BULK_ENTRY_BACKFILL": {
+        "n": 211,
+        "positive": false,
+        "meant_code_fired": 1.0,
+        "medium_or_above": 0.019,
+        "queued": 0.019,
+        "top5pct": 0.019
+      },
+      "HN_BULK_UNITS": {
+        "n": 3032,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.009,
+        "queued": 0.0,
+        "top5pct": 0.012
+      },
+      "HN_LANDMARK_TEMPLE": {
+        "n": 5694,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.037,
+        "queued": 0.001,
+        "top5pct": 0.05
+      },
+      "HN_OPPOSITE_SIDES": {
+        "n": 300,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.007,
+        "queued": 0.0,
+        "top5pct": 0.01
+      },
+      "HN_REPAIR_ELSEWHERE": {
+        "n": 18,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.0,
+        "queued": 0.0,
+        "top5pct": 0.0
+      },
+      "HN_SCHOOL_NAMED_MANDIR": {
+        "n": 1044,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.035,
+        "queued": 0.0,
+        "top5pct": 0.047
+      },
+      "REPAIR_ORIGINAL": {
+        "n": 36,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.028,
+        "queued": 0.0,
+        "top5pct": 0.778
+      },
+      "REPEAT_ORIGINAL": {
+        "n": 72,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.375,
+        "queued": 0.0,
+        "top5pct": 0.375
+      },
+      "UNSCORED_BIG_VAGUE": {
+        "n": 684,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.478,
+        "queued": 0.478,
+        "top5pct": 0.482
+      }
+    },
+    "planted": {
+      "COST_SMALL_SCOPE_X10": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 0.778,
+        "medium_or_above": 0.639,
+        "queued": 0.0,
+        "top5pct": 0.75
+      },
+      "COST_X10": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 0.472,
+        "medium_or_above": 0.111,
+        "queued": 0.0,
+        "top5pct": 0.361
+      },
+      "COST_X3": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 0.056,
+        "medium_or_above": 0.028,
+        "queued": 0.0,
+        "top5pct": 0.083
+      },
+      "COST_X5": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 0.417,
+        "medium_or_above": 0.111,
+        "queued": 0.0,
+        "top5pct": 0.417
+      },
+      "OFFICE_CLOSES_IN_DAYS": {
+        "n": 93,
+        "positive": true,
+        "meant_code_fired": 0.366,
+        "medium_or_above": 0.366,
+        "queued": 0.366,
+        "top5pct": 0.366
+      },
+      "OFFICE_PRICES_AT_LIMIT": {
+        "n": 237,
+        "positive": true,
+        "meant_code_fired": 1.0,
+        "medium_or_above": 0.072,
+        "queued": 0.008,
+        "top5pct": 1.0
+      },
+      "REPAIR_SOON_AFTER_BUILT": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 0.778,
+        "medium_or_above": 0.194,
+        "queued": 0.0,
+        "top5pct": 0.778
+      },
+      "REPEAT_AFTER_DONE": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 0.444,
+        "medium_or_above": 0.444,
+        "queued": 0.0,
+        "top5pct": 0.444
+      },
+      "REPEAT_WHILE_OPEN": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 0.278,
+        "medium_or_above": 0.278,
+        "queued": 0.0,
+        "top5pct": 0.278
+      },
+      "RULE_BIG_VAGUE": {
+        "n": 18,
+        "positive": true,
+        "meant_code_fired": 1.0,
+        "medium_or_above": 1.0,
+        "queued": 1.0,
+        "top5pct": 1.0
+      },
+      "RULE_BUILT_IN_DAYS": {
+        "n": 18,
+        "positive": true,
+        "meant_code_fired": 1.0,
+        "medium_or_above": 1.0,
+        "queued": 1.0,
+        "top5pct": 1.0
+      },
+      "RULE_DATES_IMPOSSIBLE": {
+        "n": 18,
+        "positive": true,
+        "meant_code_fired": 1.0,
+        "medium_or_above": 0.667,
+        "queued": 0.0,
+        "top5pct": 0.667
+      },
+      "RULE_OUTSIDE_CEILING": {
+        "n": 18,
+        "positive": true,
+        "meant_code_fired": 1.0,
+        "medium_or_above": 1.0,
+        "queued": 1.0,
+        "top5pct": 1.0
+      },
+      "RULE_TEMPLE": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 1.0,
+        "medium_or_above": 1.0,
+        "queued": 1.0,
+        "top5pct": 1.0
+      },
+      "SPLIT_SAME_SITE": {
+        "n": 60,
+        "positive": true,
+        "meant_code_fired": 0.767,
+        "medium_or_above": 0.767,
+        "queued": 0.067,
+        "top5pct": 0.95
+      },
+      "SPLIT_STRETCHES": {
+        "n": 60,
+        "positive": true,
+        "meant_code_fired": 0.933,
+        "medium_or_above": 0.933,
+        "queued": 0.05,
+        "top5pct": 1.0
+      }
+    }
+  },
+  "per_seed": {
+    "11": {
+      "works": 19746,
+      "seconds": 30.7,
+      "bands": {
+        "LOW": 19039,
+        "MEDIUM": 542,
+        "HIGH": 155,
+        "CRITICAL": 10
+      },
+      "queue": 55,
+      "queue_share": 0.0028,
+      "unscored_queued": 110,
+      "queue_precision": 0.673,
+      "positives": 272,
+      "positives_caught_by_meant_engine": 0.765,
+      "positives_queued": 0.136,
+      "positives_medium_or_above": 0.371,
+      "positives_in_top5pct": 0.75,
+      "background_queued": 0.0009,
+      "background_engine_fire_rate": {
+        "compliance": 0.3333,
+        "delay": 0.0182,
+        "dup_split": 0.0187,
+        "office_patterns": 0.0002,
+        "statistical": 0.0056
+      },
+      "recall_by_kind": {
+        "COST_SMALL_SCOPE_X10": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.917,
+          "medium_or_above": 0.833,
+          "queued": 0.0,
+          "top5pct": 0.917
+        },
+        "COST_X10": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.667,
+          "medium_or_above": 0.167,
+          "queued": 0.0,
+          "top5pct": 0.5
+        },
+        "COST_X3": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.083,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.083
+        },
+        "COST_X5": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.417,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.25
+        },
+        "OFFICE_CLOSES_IN_DAYS": {
+          "n": 28,
+          "positive": true,
+          "meant_code_fired": 0.25,
+          "medium_or_above": 0.25,
+          "queued": 0.25,
+          "top5pct": 0.25
+        },
+        "OFFICE_PRICES_AT_LIMIT": {
+          "n": 84,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 0.048,
+          "queued": 0.0,
+          "top5pct": 1.0
+        },
+        "REPAIR_SOON_AFTER_BUILT": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.917,
+          "medium_or_above": 0.083,
+          "queued": 0.0,
+          "top5pct": 0.917
+        },
+        "REPEAT_AFTER_DONE": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.583,
+          "medium_or_above": 0.583,
+          "queued": 0.0,
+          "top5pct": 0.583
+        },
+        "REPEAT_WHILE_OPEN": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.417,
+          "medium_or_above": 0.417,
+          "queued": 0.0,
+          "top5pct": 0.417
+        },
+        "RULE_BIG_VAGUE": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 1.0,
+          "top5pct": 1.0
+        },
+        "RULE_BUILT_IN_DAYS": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 1.0,
+          "top5pct": 1.0
+        },
+        "RULE_DATES_IMPOSSIBLE": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 0.333,
+          "queued": 0.0,
+          "top5pct": 0.333
+        },
+        "RULE_OUTSIDE_CEILING": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 1.0,
+          "top5pct": 1.0
+        },
+        "RULE_TEMPLE": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 1.0,
+          "top5pct": 1.0
+        },
+        "SPLIT_SAME_SITE": {
+          "n": 19,
+          "positive": true,
+          "meant_code_fired": 0.632,
+          "medium_or_above": 0.632,
+          "queued": 0.0,
+          "top5pct": 0.842
+        },
+        "SPLIT_STRETCHES": {
+          "n": 21,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 0.0,
+          "top5pct": 1.0
+        }
+      }
+    },
+    "12": {
+      "works": 20347,
+      "seconds": 32.6,
+      "bands": {
+        "LOW": 19593,
+        "MEDIUM": 567,
+        "HIGH": 175,
+        "CRITICAL": 12
+      },
+      "queue": 71,
+      "queue_share": 0.0035,
+      "unscored_queued": 116,
+      "queue_precision": 0.732,
+      "positives": 276,
+      "positives_caught_by_meant_engine": 0.728,
+      "positives_queued": 0.188,
+      "positives_medium_or_above": 0.395,
+      "positives_in_top5pct": 0.728,
+      "background_queued": 0.001,
+      "background_engine_fire_rate": {
+        "compliance": 0.3244,
+        "delay": 0.0168,
+        "dup_split": 0.0189,
+        "office_patterns": 0.0002,
+        "statistical": 0.0053
+      },
+      "recall_by_kind": {
+        "COST_SMALL_SCOPE_X10": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.75,
+          "medium_or_above": 0.583,
+          "queued": 0.0,
+          "top5pct": 0.75
+        },
+        "COST_X10": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.333,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.167
+        },
+        "COST_X3": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "COST_X5": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.417,
+          "medium_or_above": 0.167,
+          "queued": 0.0,
+          "top5pct": 0.417
+        },
+        "OFFICE_CLOSES_IN_DAYS": {
+          "n": 36,
+          "positive": true,
+          "meant_code_fired": 0.417,
+          "medium_or_above": 0.417,
+          "queued": 0.417,
+          "top5pct": 0.417
+        },
+        "OFFICE_PRICES_AT_LIMIT": {
+          "n": 82,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 0.049,
+          "queued": 0.0,
+          "top5pct": 1.0
+        },
+        "REPAIR_SOON_AFTER_BUILT": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.667,
+          "medium_or_above": 0.333,
+          "queued": 0.0,
+          "top5pct": 0.667
+        },
+        "REPEAT_AFTER_DONE": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.417,
+          "medium_or_above": 0.417,
+          "queued": 0.0,
+          "top5pct": 0.417
+        },
+        "REPEAT_WHILE_OPEN": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.167,
+          "medium_or_above": 0.167,
+          "queued": 0.0,
+          "top5pct": 0.167
+        },
+        "RULE_BIG_VAGUE": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 1.0,
+          "top5pct": 1.0
+        },
+        "RULE_BUILT_IN_DAYS": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 1.0,
+          "top5pct": 1.0
+        },
+        "RULE_DATES_IMPOSSIBLE": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 0.833,
+          "queued": 0.0,
+          "top5pct": 0.833
+        },
+        "RULE_OUTSIDE_CEILING": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 1.0,
+          "top5pct": 1.0
+        },
+        "RULE_TEMPLE": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 1.0,
+          "top5pct": 1.0
+        },
+        "SPLIT_SAME_SITE": {
+          "n": 19,
+          "positive": true,
+          "meant_code_fired": 0.842,
+          "medium_or_above": 0.842,
+          "queued": 0.211,
+          "top5pct": 1.0
+        },
+        "SPLIT_STRETCHES": {
+          "n": 19,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 0.158,
+          "top5pct": 1.0
+        }
+      }
+    },
+    "13": {
+      "works": 20858,
+      "seconds": 31.1,
+      "bands": {
+        "LOW": 20095,
+        "HIGH": 163,
+        "MEDIUM": 593,
+        "CRITICAL": 7
+      },
+      "queue": 69,
+      "queue_share": 0.0033,
+      "unscored_queued": 101,
+      "queue_precision": 0.638,
+      "positives": 262,
+      "positives_caught_by_meant_engine": 0.718,
+      "positives_queued": 0.168,
+      "positives_medium_or_above": 0.42,
+      "positives_in_top5pct": 0.748,
+      "background_queued": 0.0014,
+      "background_engine_fire_rate": {
+        "compliance": 0.3277,
+        "delay": 0.0161,
+        "dup_split": 0.0213,
+        "office_patterns": 0.0001,
+        "statistical": 0.0055
+      },
+      "recall_by_kind": {
+        "COST_SMALL_SCOPE_X10": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.667,
+          "medium_or_above": 0.5,
+          "queued": 0.0,
+          "top5pct": 0.583
+        },
+        "COST_X10": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.417,
+          "medium_or_above": 0.167,
+          "queued": 0.0,
+          "top5pct": 0.417
+        },
+        "COST_X3": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.083,
+          "medium_or_above": 0.083,
+          "queued": 0.0,
+          "top5pct": 0.167
+        },
+        "COST_X5": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.417,
+          "medium_or_above": 0.167,
+          "queued": 0.0,
+          "top5pct": 0.5
+        },
+        "OFFICE_CLOSES_IN_DAYS": {
+          "n": 29,
+          "positive": true,
+          "meant_code_fired": 0.414,
+          "medium_or_above": 0.414,
+          "queued": 0.414,
+          "top5pct": 0.414
+        },
+        "OFFICE_PRICES_AT_LIMIT": {
+          "n": 71,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 0.127,
+          "queued": 0.028,
+          "top5pct": 1.0
+        },
+        "REPAIR_SOON_AFTER_BUILT": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.75,
+          "medium_or_above": 0.167,
+          "queued": 0.0,
+          "top5pct": 0.75
+        },
+        "REPEAT_AFTER_DONE": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.333,
+          "medium_or_above": 0.333,
+          "queued": 0.0,
+          "top5pct": 0.333
+        },
+        "REPEAT_WHILE_OPEN": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.25,
+          "medium_or_above": 0.25,
+          "queued": 0.0,
+          "top5pct": 0.25
+        },
+        "RULE_BIG_VAGUE": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 1.0,
+          "top5pct": 1.0
+        },
+        "RULE_BUILT_IN_DAYS": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 1.0,
+          "top5pct": 1.0
+        },
+        "RULE_DATES_IMPOSSIBLE": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 0.833,
+          "queued": 0.0,
+          "top5pct": 0.833
+        },
+        "RULE_OUTSIDE_CEILING": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 1.0,
+          "top5pct": 1.0
+        },
+        "RULE_TEMPLE": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 1.0,
+          "top5pct": 1.0
+        },
+        "SPLIT_SAME_SITE": {
+          "n": 22,
+          "positive": true,
+          "meant_code_fired": 0.818,
+          "medium_or_above": 0.818,
+          "queued": 0.0,
+          "top5pct": 1.0
+        },
+        "SPLIT_STRETCHES": {
+          "n": 20,
+          "positive": true,
+          "meant_code_fired": 0.8,
+          "medium_or_above": 0.8,
+          "queued": 0.0,
+          "top5pct": 1.0
+        }
+      }
+    }
+  },
+  "seconds": 124
+}

@@ -62,6 +62,19 @@ COST_CHANGES        every Cost flag that changed when one amount for several str
                     grey (a Rs 27.9 lakh special repair of a link road), 1 no (drains, side
                     roads and a culvert in one work, which the "from ... to" exception let
                     through).
+SPLIT_SAMPLE_T056   the 12 random SPLIT_AT_ONE_SITE flags of dashboard_agents2_codes.csv, read 2
+                    Oct 2026: 7 yes (four Rs 5 lakh rooms at one school, two identical Rs 6.5
+                    lakh works the same day, pieces just under Rs 10 lakh, ...), 2 grey, 3 no:
+                    a men's and a women's building twice, two lights near two different paras
+                    (Rs 34,000 each). The T056 rules (genders differ: two works; a total below
+                    Rs 5 lakh: said, not asked) drop exactly the 3 "no" and 1 grey; of the 8 they
+                    keep, 7 are yes. All 24 below-limit groups that had a label read 0 yes of 5.
+SPLIT_FRESH_T056    the T056 rules' own random sample (dashboard_agents3_codes.csv), only the
+                    groups NOT used to design them: 5 groups, 4 yes (four Rs 5 lakh pieces of
+                    one hill road; a bridge approach's LHS and RHS at Rs 4.99 lakh each; a Rs 5
+                    lakh hall in two halves; two Rs 5 lakh street-lighting pieces), 1 grey (two
+                    identical Rs 2.6 lakh works at one bus stand). These, not the design sample,
+                    are added to reliability.json.
 """
 
 
@@ -300,4 +313,27 @@ COST_CHANGES = {
     'WS/MP459/2025-2026/149088': ('dropped', 'no'),
     'WS/MP18155/2024-2025/177940': ('gained', 'grey'),
     'WS/MP337/2025-2026/160005': ('gained', 'no'),
+}
+
+SPLIT_SAMPLE_T056 = {
+    'WS/MP858/2024-2025/148880': 'yes',
+    'WS/MP18227/2024-2025/148772': 'yes',
+    'WS/MP18007/2024-2025/149399': 'no',
+    'WS/MP18251/2024-2025/155505': 'no',
+    'WS/MP18328/2024-2025/148543': 'grey',
+    'WS/MP18138/2024-2025/148109': 'yes',
+    'WS/MP18003/2024-2025/163291': 'no',
+    'WS/MP574/2025-2026/145489': 'yes',
+    'WS/MP479/2024-2025/138682': 'yes',
+    'WS/MP526/2026-2027/152486': 'yes',
+    'WS/MP18351/2024-2025/158088': 'grey',
+    'WS/MP858/2024-2025/144031': 'yes',
+}
+
+SPLIT_FRESH_T056 = {
+    'WS/MP18003/2024-2025/157519': 'yes',
+    'WS/MP526/2024-2025/147539': 'yes',
+    'WS/MP761/2025-2026/146645': 'yes',
+    'WS/MP18009/2024-2025/161192': 'yes',
+    'WS/MP18109/2024-2025/150201': 'grey',
 }
