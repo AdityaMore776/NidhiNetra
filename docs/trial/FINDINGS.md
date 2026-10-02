@@ -850,9 +850,19 @@ output in `results/hosted_assess_v3.txt`): CRITICAL 83, HIGH 1,347, MEDIUM 5,112
 (1.04%). The queue shows one row per Duplicate & Split case, so it lists fewer rows than 1,430.
 
 **Planted test (T080) re-run with v3 on all 2,09,993 works** (the owner ran `data/trial/planted_test.py`, same 50
-fakes, seed 80; summary in `results/planted_test_v3.txt`): in the review queue **4 → 11 of 50**, MEDIUM or above
-**25 → 38**, caught by the engine meant for them 37 → 39, in the top 5% 39 → 39 (78%, target 75%). Most of the
-fakes that still stay out of the queue stay out on purpose: a split or a reworded repeat alone reads right about half
+fakes, seed 80; `results/planted_test_v3.json`, added in PR #87): in the review queue **4 → 11 of 50**, MEDIUM or
+above **25 → 38**, caught by the engine meant for them 37 → 39, in the top 5% 39 → 39 (78%, target 75%).
+
+| Kind (10 each) | Caught by the meant engine | Top 5% | Review queue |
+|---|---|---|---|
+| Rule breaches (R07, R08, R12, R13) | 10/10 | 10/10 | **10/10** (was 4/10) |
+| Completed before recommended (R06) | 10/10 | 10/10 | 0/10 |
+| Split into pieces just under ₹5 lakh | 10/10 | 10/10 | 0/10 |
+| Filed again, reworded | **8/10** (was 7/10) | 8/10 | 1/10 |
+| Price raised 2-3× | 1/10 (was 0/10) | 1/10 | 0/10 |
+
+The Cost engine on its own (cost sweep): 2× 0/10, 3× 1/10, 5× 3/10, **10× 6/10** (was 5/10: a stated single unit is
+no longer excused as a bigger project). Most of the fakes that still stay out of the queue stay out on purpose: a split or a reworded repeat alone reads right about half
 the time (the measured hit rates), so it stays MEDIUM until a second check agrees. Completed-before-recommended (R06)
 has never been read by eye, so it counts at the 1-in-4 prior. Prices raised 2-3× are inside the comfort zone (T053).
 
