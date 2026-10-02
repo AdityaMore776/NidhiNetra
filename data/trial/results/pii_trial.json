@@ -1,0 +1,16 @@
+{
+  "descriptions": 57508,
+  "masked": 13564,
+  "touched_by_rule": {
+    "PHONE": 1197,
+    "ACCOUNT": 11,
+    "RELATION": 2659,
+    "HONORIFIC": 349,
+    "HOUSE": 2137,
+    "POSSESSIVE": 728,
+    "HI_HOME": 5663,
+    "OWNER_HOME": 4820,
+    "BEFORE_RELATION": 2612
+  },
+  "home_word_spans_left": 10545
+}

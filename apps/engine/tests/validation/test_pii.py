@@ -32,5 +32,50 @@ def test_ordinary_text_is_untouched(text):
     assert mask(text) == text
 
 
+@pytest.mark.parametrize("text,gone,kept", [
+    # T056: a name before a home word with no possessive, read on the dashboard's descriptions
+    ("PCC Road from Ramdev Bhagat house to Shyamlal Master house at ward no 15", "Ramdev",
+     "at ward no 15"),
+    ("PCC Road from Ramdev Bhagat house to Shyamlal Master house at ward no 15", "Shyamlal",
+     "PCC Road from"),
+    ("arvi chhoti mohan kale house to sudam pande house road construction", "sudam",
+     "road construction"),
+    ("Providing CC Drains from wine shop to Venkataramana land in SC Colony", "Venkataramana",
+     "wine shop"),
+    ("BALDEV YADAV K GHAR SE MANDIR TAK SOLAR LIGHT", "BALDEV", "SOLAR LIGHT"),
+    ("gam thi Kanubhai Solanki na ghar sudhi CC road", "Kanubhai", "CC road"),
+    ("Paver block from RAHIM’S HOUSE to masjid", "RAHIM", "to masjid"),
+])
+def test_names_before_a_home_word_are_masked(text, gone, kept):
+    out = mask(text)
+    assert gone not in out and kept in out
+    assert "[name] [name]" not in out and "]'[name]" not in out
+
+
+@pytest.mark.parametrize("text", [
+    "Construction of guest house at Sitapur", "Boundary wall of panchayat land",
+    "Pump house and pipeline at Ward 7", "Barat ghar nirman gram Rampur", "Old age home building",
+    "Ration shop building", "Construction of house for flood victims",
+    "Fencing of government land near the school", "Community hall at Rampur",
+    "Maruti row house compound wall", "Construction of WRC field channel"])
+def test_ordinary_homes_and_lands_are_not_names(text):
+    assert mask(text) == text
+
+
+def test_a_name_masked_in_two_steps_reads_as_one():
+    out = mask("ASHOK PATEL S\\O DINESH PATEL K GHAR SOLAR LIGHT")
+    assert "DINESH" not in out and "[name] K GHAR" in out and "[name] [name]" not in out
+
+
+@pytest.mark.parametrize("text,gone", [
+    ("1- ASHOK PATEL S\\O DINESH PATEL K GHAR SOLAR LIGHT", "ASHOK"),
+    ("Hand pump near Meena Devi W/o Ramesh Kumar house", "Meena"),
+    ("Solar light at house of Gita Rani daughter of Hari Lal, ward 3", "Gita"),
+])
+def test_the_person_before_a_relation_marker_is_masked(text, gone):
+    out = mask(text)
+    assert gone not in out and ("S\\O" in out or "W/o" in out or "daughter of" in out)
+
+
 def test_empty():
     assert mask(None) is None and mask("") == ""

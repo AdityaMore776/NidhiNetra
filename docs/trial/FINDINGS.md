@@ -957,7 +957,34 @@ the queue alone; the records notes, which were not read as findings, carry risk 
 0.131, about the 0.125 they counted before. Measured: test country (`synthetic_eval_agents5.json` against agents4)
 planted R06 queued **0 → 12 of 18**, queue 195 → 207 with every added work a planted R06, precision 0.682 → **0.700**,
 ordinary works queued unchanged (0.11%); dashboard unchanged (R06 does not fire on its tables; `dashboard_agents5.json`).
-Expected live: at most 21 more works in the queue, measured on the next `batch_assess.py`.
+Expected live: at most 21 more works in the queue.
+
+**Live after T056** (`results/hosted_assess_t056.txt`, the owner's `batch_assess.py` after #89, #90 and #91, all T056
+changes together): CRITICAL 83 → 82, HIGH 1,347 → 1,377, MEDIUM 5,112 → **4,321**, LOW 203,451 → 204,213; review queue
+**1,430 → 1,459 (0.69%)**. The +29 cannot be split by change from band counts alone: R06 could add at most 21, and the
+MEDIUM drop of 791 fits the split and Cost fixes, which turned flags into notes.
+
+**Privacy: the masker on real descriptions** (`data/trial/pii_trial.py` on the dashboard's 57,508 descriptions; counts
+`results/pii_trial.json`). Reading the R06 cases showed names the masker did not catch. Measured, the gap was large:
+names before a home word with no possessive ("PCC road from <name> house to <name> house": "mahto house" 301 times,
+"singh house" 219), the Hindi and Gujarati genitives "k ghar" (1,332) and "na ghar" (339), and the person named
+*before* "S/O", whose father after it was masked. New rules in `validation/pii.py`: OWNER_HOME (up to three words before
+house, land, ghar, shop, farm, field and the like, unless the word before is an ordinary one read by eye among the 450
+commonest: "guest house", "panchayat land", "ration shop", "barat ghar", "old age home"), the genitives k / kai / na /
+ni / nu, and BEFORE_RELATION.
+
+| Measure (57,508 descriptions) | Before | After |
+|---|---|---|
+| Descriptions with something masked | 9,312 | **13,564** |
+| Touched by the new home-word rule / the name before S/O | - | 4,820 / 2,612 |
+| Fresh sample of 40 masked spans, read by eye (rules frozen) | - | **40 people's names** (4 also take a small word beside the name: "thi", "va", "nali") |
+| Fresh sample of 40 "word + home word" spans left unmasked | 6 names (4 before "S/O") | **0 names** |
+
+Two earlier samples were used to design the rules and are not counted: they found a double mask of "[name]'s
+house", Hindi road words and association halls read as names, and "kothi" / "haveli" / "bungalow", which on real works
+are mostly parts of place names (all fixed). `sanitize_results.py` now runs the same masker over every committed
+results file (it masked numbers only): 270 lines changed across 43 files, numbers untouched, and a second run changes
+nothing. Still not caught: a name in a phrase with no home word ("from <name> to the land").
 
 ## Bugs and data problems found along the way
 
