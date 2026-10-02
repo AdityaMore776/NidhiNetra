@@ -61,6 +61,7 @@ work record ─► 2 DATA VALIDATION ─► 3 AGENTS (each returns an AgentResul
 | `agents/statistical/` | the **Cost** engine: `scope.py` (what a description covers: goods/works, bundles, counts), `cohort.py` (peer statistics store), `text.py` (length reading), `unit_rate.py` (road ₹/m), `price_model.py` (word-price model, applied to any description, T051), `agent.py` (like-for-like peers + the price model must agree) |
 | `agents/dup_split/` | **Duplicate & Split Work**: `match.py` holds the rules and compares ANY work with its district live (stdlib only; the batch builds one index of every work, the API one per district, T051) |
 | `agents/delay/` | **Fund Flow** (stored id `delay`): ended-term works still unsanctioned, office sanction backlog against its district (`backlog.py`, counted live); the delay forecast was removed in T053; shown, not counted |
+| `records.py` | one reading of a work's record (T056): every column the engines read checked once where the indexes, the cohort statistics and the orchestrator take a work (text as written, numbers from any number type or "1,00,000", ISO and Indian day-first dates, a clear yes/no), malformed values dropped, never guessed, so no row can stop the batch; a clean row passes through uncopied |
 | `agents/evidence.py` | one reading of a work's evidence facts for every engine and index (T056): files, stamps, certificates, payments, fingerprints and photo readings checked once; malformed parts dropped, never guessed, so no evidence row can stop an engine or the batch |
 | `agents/office_patterns/` | **Office Patterns** (2 Oct 2026): `index.py` counts per office, live from all works, how many works are priced just under a limit (96-100% of ₹5 lakh, ₹10 lakh, ...) and how many constructions are recorded complete within 7 days of sanction; an office is "routine" only when its Wilson lower bound is at least 3× the national share (30+ priced works, 15+ built). `agent.py`: a work just under a limit from a routine office gets `PRICED_AT_LIMIT` (risk 0.30, weight 0.10: corroborates, never queues alone); the office's after-sanction habit is told as a fact (R14 counts the work itself) |
 | `agents/site_progress/` | **Site Progress** v2 (T510), **off** unless `DRISHTI_SITE_PROGRESS=on`: `claims.py` (the record's own words), `observe.py` (the stored per-photo reading from `reference/site_concepts.yaml`), `plaque.py` (MPLADS plaque and its dates from the photo's text), `readers.py` (offline only: a local CLIP model, an optional Gemini reader with a daily cap and cache), `agent.py` (the rules). Readings are made by `data/build_site_observations.py` |
@@ -223,7 +224,7 @@ database. LOW and MEDIUM works are stored **compact** (summary only) and rebuilt
 
 ## 11. Testing
 
-- **Engine:** 469 tests (`pytest`) — agent contract and banned words, every engine (Compliance, Cost, Duplicate
+- **Engine:** 477 tests (`pytest`) — agent contract and banned words, every engine (Compliance, Cost, Duplicate
   & Split, Delay) including NOT_ASSESSABLE cases, the risk score, bands and reasons, migrations, fusion maths,
   validation and impossible dates, orchestrator (an agent crash never becomes a finding), config, migrations,
   API and auth (scoping, dev-mode refusal on Vercel).
@@ -233,7 +234,10 @@ database. LOW and MEDIUM works are stored **compact** (summary only) and rebuilt
   opposite sides of one road, a repair of another asset) must be left alone, queue precision ≥ 0.75 and
   ordinary works queued ≤ 0.5%. `test_random_environment.py` feeds 400 malformed records (empty fields,
   impossible dates, other scripts, sums of zero or crores) and checks no engine crashes, parts add up, the
-  same work gives the same answer, and load order and capitals change nothing.
+  same work gives the same answer, and load order and capitals change nothing. Since T056 it also puts 300
+  damaged rows inside the corpus the indexes and statistics are built from (none may stop them), and gives a
+  loosely typed twin of every work (dates as text, amounts as Decimal or "1,00,000", codes as numbers) the
+  same answer finding for finding (`records.py`).
   `test_random_evidence.py` (T056) does the same for evidence: 250 works with malformed files, stamps,
   certificates and photo readings must not stop an index or an engine; the order files were attached in and a
   junk entry beside them change nothing.

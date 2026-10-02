@@ -20,6 +20,7 @@ Here every part is checked once. Anything malformed is dropped, never guessed:
 from __future__ import annotations
 
 import math
+import numbers
 import re
 from datetime import date
 
@@ -30,11 +31,15 @@ PLAQUE_LABELS = ("start", "completion", "sanction")
 
 
 def num(x) -> float | None:
-    """A finite number, or None. Text with Indian digit grouping ("1,00,000") reads too."""
+    """A finite number, or None. Text with Indian digit grouping ("1,00,000") reads too, and so
+    does any real number type (the database's Decimal, a numpy float)."""
     if isinstance(x, bool) or x is None:
         return None
-    if isinstance(x, (int, float)):
-        v = float(x)
+    if isinstance(x, numbers.Number):
+        try:
+            v = float(x)
+        except (TypeError, ValueError):                     # a complex number
+            return None
     elif isinstance(x, str):
         try:
             v = float(x.replace(",", "").strip())

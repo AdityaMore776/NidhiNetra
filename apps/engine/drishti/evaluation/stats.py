@@ -16,6 +16,7 @@ import math
 from collections import defaultdict
 from datetime import date
 
+from drishti import records
 from drishti.agents.statistical.band import MIN_COHORT, P10_P90_SD, SD_FLOOR, SHRINK_K
 from drishti.agents.statistical.cohort import StatsStore
 from drishti.agents.statistical.scope import GOODS, MAST, WORKS, read
@@ -109,10 +110,10 @@ def duration_rows(works: list[dict]) -> list[dict]:
 def road_curve_rows(works: list[dict]) -> list[dict]:
     xs, ys = [], []
     for w in works:
-        if w.get("work_type_code") != "ROAD_CC" or not w.get("amount"):
+        if w.get("work_type_code") != "ROAD_CC" or not (w.get("amount") or 0) > 0:
             continue
         length = stated_length(w.get("description"))
-        if not math.isnan(length):
+        if not math.isnan(length) and length > 0:
             xs.append(math.log10(length))
             ys.append(math.log10(float(w["amount"])))
     if len(xs) < MIN_COHORT:
@@ -150,6 +151,7 @@ def timeline_rows(works: list[dict]) -> tuple[list[dict], list[dict]]:
 
 
 def build_store(works: list[dict], models: list[dict] | None = None) -> StatsStore:
+    works = [records.work(w) for w in works]          # one malformed row must not stop it
     quarters, agencies = timeline_rows(works)
     return StatsStore.from_rows(cohort_rows(works), duration_rows(works), road_curve_rows(works),
                                 quarters, agencies, (), models or [])
