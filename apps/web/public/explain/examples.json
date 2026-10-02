@@ -4,12 +4,12 @@
   {
    "id": "ordinary",
    "title": "An ordinary new road",
-   "story": "A plain road with its length and both ends named: what most works look like.",
+   "story": "A plain road with its length, both ends and its village named: what most works look like.",
    "trace": {
     "version": "explain-1.0.0",
     "as_of": "2026-10-02",
     "input": {
-     "description": "Construction of CC road 250 mtr from Panchayat Bhawan to Primary School in Ward No 4",
+     "description": "Construction of CC road 250 mtr from Panchayat Bhawan to Primary School in village Bhagwatipur, Ward No 4",
      "work_type": "ROAD_CC",
      "work_type_name": "Cement concrete road",
      "amount": 480000.0,
@@ -52,15 +52,24 @@
        "k": "quantity"
       },
       {
-       "t": " from Panchayat Bhawan to Primary School in Ward No 4",
+       "t": " from Panchayat Bhawan to Primary School in village ",
+       "k": null
+      },
+      {
+       "t": "Bhagwatipur",
+       "k": "place"
+      },
+      {
+       "t": ", Ward No 4",
        "k": null
       }
      ],
      "facts": {
       "what": "a construction or repair",
       "says_nothing": false,
-      "place_named": false,
+      "place_named": true,
       "count": null,
+      "single_unit": false,
       "length_m": 250.0,
       "several_sites": false,
       "bundle": false,
@@ -208,11 +217,11 @@
       "question": "Is this work repeated, or one job cut into pieces?",
       "counted": true,
       "status": "ASSESSED",
-      "verdict": "NO_SITE_NAMED",
+      "verdict": "NO_REPEAT_FOUND",
       "risk": 0.0,
-      "headline": "The description names no place, so a repeat of an earlier work cannot be ruled out; checked against the 1,038 other works of its district for splits and bulk orders only.",
+      "headline": "Compared with the 1,038 other works of its district: no repeat or split found.",
       "limitations": [
-       "Ask for the site (village, ward, landmark) to be written in the recommendation: without it no repeat can be confirmed or ruled out."
+       "Compares descriptions only; two records of one site worded very differently are not matched."
       ],
       "findings": [],
       "picture": {
@@ -222,20 +231,20 @@
        "flag": 0.75,
        "nearest": [
         {
-         "work_id": "WS/MP18222/2024-2025/165194",
-         "description": "Nahar pul se [name] ka avas se pahle tak 200mtr RCC road nirman ka kary.",
-         "amount": 1157878.0,
-         "date": "2025-07-11",
-         "likeness": 0.378,
-         "place": 0.0,
-         "flagged": false
-        },
-        {
          "work_id": "WS/MP18222/2024-2025/170969",
          "description": "block machhlishear gram jagarnathpur me panchayat Bahwan se dhih baba sarhad tak 200 meter rcc road nirman kary",
          "amount": 1160618.0,
          "date": "2025-08-06",
-         "likeness": 0.368,
+         "likeness": 0.35,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165194",
+         "description": "Nahar pul se [name] ka avas se pahle tak 200mtr RCC road nirman ka kary.",
+         "amount": 1157878.0,
+         "date": "2025-07-11",
+         "likeness": 0.327,
          "place": 0.0,
          "flagged": false
         },
@@ -244,7 +253,7 @@
          "description": "Ajad hind purv madhaymik Vidhayal me Construction of rooms and halls in school.",
          "amount": 1000000.0,
          "date": "2025-10-27",
-         "likeness": 0.32,
+         "likeness": 0.303,
          "place": 0.0,
          "flagged": false
         },
@@ -253,7 +262,7 @@
          "description": "Belwar marg se [name] ke avas ke paas hanuman mandir ke pass khadanje par 120 mtr. tak RCC ka nirman kary.",
          "amount": 691495.0,
          "date": "2025-05-21",
-         "likeness": 0.311,
+         "likeness": 0.274,
          "place": 0.0,
          "flagged": false
         },
@@ -262,16 +271,16 @@
          "description": "chhanehta me nahar pich road se [name] ke avas ke pahle tak 200 interlaking nirman kary.",
          "amount": 752787.0,
          "date": "2025-10-03",
-         "likeness": 0.282,
+         "likeness": 0.247,
          "place": 0.0,
          "flagged": false
         },
         {
-         "work_id": "WS/MP18222/2024-2025/165201",
-         "description": "[name] ke avas se [name] ke avas 100 mtr interlaking ka nirman kary.",
-         "amount": 435511.0,
-         "date": "2025-08-04",
-         "likeness": 0.274,
+         "work_id": "WS/MP18222/2024-2025/170968",
+         "description": "block mugrabadshahpur gramsbha saraykewat me [name] ke awas se [name] ke awas tak 40 meter interlocking road nirman kary",
+         "amount": 161951.0,
+         "date": "2025-05-21",
+         "likeness": 0.245,
          "place": 0.0,
          "flagged": false
         }
@@ -312,7 +321,20 @@
        "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
       ],
       "findings": [],
-      "picture": {}
+      "picture": {
+       "priced_just_under_a_limit": {
+        "office": 2,
+        "of": 1038,
+        "share": 0.002,
+        "national_share": 0.0951
+       },
+       "built_within_a_week_of_sanction": {
+        "office": 0,
+        "of": 1,
+        "share": 0.0,
+        "national_share": 0.0711
+       }
+      }
      },
      {
       "id": "paperwork",
@@ -426,6 +448,7 @@
       "says_nothing": false,
       "place_named": false,
       "count": null,
+      "single_unit": false,
       "length_m": null,
       "several_sites": false,
       "bundle": false,
@@ -681,7 +704,20 @@
        "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
       ],
       "findings": [],
-      "picture": {}
+      "picture": {
+       "priced_just_under_a_limit": {
+        "office": 2,
+        "of": 1038,
+        "share": 0.002,
+        "national_share": 0.0951
+       },
+       "built_within_a_week_of_sanction": {
+        "office": 0,
+        "of": 1,
+        "share": 0.0,
+        "national_share": 0.0711
+       }
+      }
      },
      {
       "id": "paperwork",
@@ -811,9 +847,10 @@
      ],
      "facts": {
       "what": "a construction or repair",
-      "says_nothing": false,
+      "says_nothing": true,
       "place_named": false,
       "count": null,
+      "single_unit": false,
       "length_m": null,
       "several_sites": false,
       "bundle": false,
@@ -1065,7 +1102,20 @@
        "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
       ],
       "findings": [],
-      "picture": {}
+      "picture": {
+       "priced_just_under_a_limit": {
+        "office": 2,
+        "of": 1038,
+        "share": 0.002,
+        "national_share": 0.0951
+       },
+       "built_within_a_week_of_sanction": {
+        "office": 0,
+        "of": 1,
+        "share": 0.0,
+        "national_share": 0.0711
+       }
+      }
      },
      {
       "id": "paperwork",
@@ -1189,15 +1239,15 @@
     "reading": {
      "segments": [
       {
-       "t": "Installation of 1 solar ",
+       "t": "Installation of ",
        "k": null
       },
       {
-       "t": "street",
-       "k": "build"
+       "t": "1 solar street light",
+       "k": "quantity"
       },
       {
-       "t": " light at the bus stand",
+       "t": " at the bus stand",
        "k": null
       }
      ],
@@ -1206,6 +1256,7 @@
       "says_nothing": false,
       "place_named": false,
       "count": null,
+      "single_unit": true,
       "length_m": null,
       "several_sites": false,
       "bundle": false,
@@ -1456,7 +1507,20 @@
        "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
       ],
       "findings": [],
-      "picture": {}
+      "picture": {
+       "priced_just_under_a_limit": {
+        "office": 2,
+        "of": 1038,
+        "share": 0.002,
+        "national_share": 0.0951
+       },
+       "built_within_a_week_of_sanction": {
+        "office": 0,
+        "of": 1,
+        "share": 0.0,
+        "national_share": 0.0711
+       }
+      }
      },
      {
       "id": "paperwork",
@@ -1552,7 +1616,7 @@
   {
    "id": "dates",
    "title": "Completed before it was recommended",
-   "story": "The record says the road was finished four months before the MP recommended it.",
+   "story": "The record says the road was finished 80 days before the MP recommended it.",
    "trace": {
     "version": "explain-1.0.0",
     "as_of": "2026-10-02",
@@ -1617,6 +1681,7 @@
       "says_nothing": false,
       "place_named": false,
       "count": null,
+      "single_unit": false,
       "length_m": 400.0,
       "several_sites": false,
       "bundle": false,
@@ -1633,7 +1698,7 @@
       "status": "ASSESSED",
       "verdict": "IMPOSSIBLE_TIMELINE",
       "risk": 0.6,
-      "headline": "Recorded as completed 80 days before it was recommended; one of the two dates is wrong. Only 0.00% of works recommended in 2026-Q2 carry this defect (against 0.00% across the scheme), so bulk entry does not explain it; check the completion certificate against the portal record.",
+      "headline": "Recorded as completed 80 days before it was recommended; one of the two dates is wrong. No other work in the data carries this defect, so bulk entry does not explain it; check the completion certificate against the portal record.",
       "limitations": [
        "Could not check (the public export does not carry the data): R03 Spent more than sanctioned: expenditure per work (not in the public export; utilisation certificates carry it for some works - task T103). R04 Marked complete with nothing spent: expenditure per work (not in the public export). R05 Most money released, work not started: expenditure and physical progress per work (not in the public export). R09 No progress for six months: dated progress updates per work (not in the public export). R10 SC/ST area share below the earmark: an SC/ST-area tag per work (not in the public export); judged per MP-year, never used to score an MP.",
        "The sanction clock leaves out election pauses (2024 Lok Sabha general election), but not state assembly elections.",
@@ -1642,7 +1707,7 @@
       "findings": [
        {
         "code": "IMPOSSIBLE_TIMELINE",
-        "text": "Recorded as completed 80 days before it was recommended; one of the two dates is wrong. Only 0.00% of works recommended in 2026-Q2 carry this defect (against 0.00% across the scheme), so bulk entry does not explain it; check the completion certificate against the portal record.",
+        "text": "Recorded as completed 80 days before it was recommended; one of the two dates is wrong. No other work in the data carries this defect, so bulk entry does not explain it; check the completion certificate against the portal record.",
         "risk": 0.6,
         "hard": false,
         "rule": "R06",
@@ -1870,7 +1935,20 @@
        "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
       ],
       "findings": [],
-      "picture": {}
+      "picture": {
+       "priced_just_under_a_limit": {
+        "office": 2,
+        "of": 1038,
+        "share": 0.002,
+        "national_share": 0.0951
+       },
+       "built_within_a_week_of_sanction": {
+        "office": 0,
+        "of": 1,
+        "share": 0.0,
+        "national_share": 0.0711
+       }
+      }
      },
      {
       "id": "paperwork",
@@ -1950,13 +2028,471 @@
      "reasons": [
       {
        "engine": "Guideline Compliance",
-       "text": "Recorded as completed 80 days before it was recommended; one of the two dates is wrong. Only 0.00% of works recommended in 2026-Q2 carry this defect (against 0.00% across the scheme), so bulk entry does not explain it; check the completion certificate against the portal record.",
+       "text": "Recorded as completed 80 days before it was recommended; one of the two dates is wrong. No other work in the data carries this defect, so bulk entry does not explain it; check the completion certificate against the portal record.",
        "text_hi": "कार्य अनुशंसा (2026-06-04) से पहले पूर्ण (2026-03-16) दर्ज है; तारीखों की जाँच आवश्यक।",
        "chance": 0.7857,
        "basis": "measured",
        "read": [
         10,
         10
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "two",
+   "title": "Two checks agree",
+   "story": "The same costly solar light, now inside a temple's campus: two different checks each raise a question, and together they count for more than either alone.",
+   "trace": {
+    "version": "explain-1.0.0",
+    "as_of": "2026-10-02",
+    "input": {
+     "description": "Installation of 1 solar street light inside Hanuman Mandir campus",
+     "work_type": "STREET_LIGHT",
+     "work_type_name": "Solar / LED street light",
+     "amount": 495000.0,
+     "district": "Jaunpur",
+     "state": "Uttar Pradesh",
+     "office": "JAUNPUR(DISTRICT MAGISTRATE JAUNPUR_IDA)",
+     "status": "RECOMMENDED",
+     "recommended": "2026-10-02",
+     "sanctioned": null,
+     "completed": null,
+     "outside_constituency": false
+    },
+    "privacy": {
+     "hidden": {
+      "name": 0,
+      "phone": 0,
+      "number": 0
+     }
+    },
+    "reading": {
+     "segments": [
+      {
+       "t": "Installation of ",
+       "k": null
+      },
+      {
+       "t": "1 solar street light",
+       "k": "quantity"
+      },
+      {
+       "t": " inside Hanuman ",
+       "k": null
+      },
+      {
+       "t": "Mandir campus",
+       "k": "not_allowed"
+      }
+     ],
+     "facts": {
+      "what": "a construction or repair",
+      "says_nothing": false,
+      "place_named": false,
+      "count": null,
+      "single_unit": true,
+      "length_m": null,
+      "several_sites": false,
+      "bundle": false,
+      "not_allowed": {
+       "word": "Mandir campus",
+       "item": "13",
+       "rule": "Works within the places of religious worship and on land belonging to or owned by religious faith/group."
+      },
+      "era": "digital era (2023 on)"
+     }
+    },
+    "checks": [
+     {
+      "id": "compliance",
+      "name": "Guideline Compliance",
+      "question": "Does the work follow the MPLADS guidelines?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "POSSIBLY_INADMISSIBLE",
+      "risk": 0.6,
+      "headline": "The description reads as \"Mandir campus\" being the work itself; Annexure-II item 13 lists this as not permitted (Works within the places of religious worship and on land belonging to or owned by religious faith/group.). Verify against the 2023 guidelines before any action.",
+      "limitations": [
+       "Could not check (the public export does not carry the data): R03 Spent more than sanctioned: expenditure per work (not in the public export; utilisation certificates carry it for some works - task T103). R04 Marked complete with nothing spent: expenditure per work (not in the public export). R05 Most money released, work not started: expenditure and physical progress per work (not in the public export). R09 No progress for six months: dated progress updates per work (not in the public export). R10 SC/ST area share below the earmark: an SC/ST-area tag per work (not in the public export); judged per MP-year, never used to score an MP.",
+       "The sanction clock leaves out election pauses (2024 Lok Sabha general election), but not state assembly elections.",
+       "The election calendar was last checked on 2026-10-01; a pause after that date is not left out of the sanction clock yet."
+      ],
+      "findings": [
+       {
+        "code": "POSSIBLY_INADMISSIBLE",
+        "text": "The description reads as \"Mandir campus\" being the work itself; Annexure-II item 13 lists this as not permitted (Works within the places of religious worship and on land belonging to or owned by religious faith/group.). Verify against the 2023 guidelines before any action.",
+        "risk": 0.6,
+        "hard": false,
+        "rule": "R07",
+        "severity": "MEDIUM"
+       }
+      ],
+      "picture": {
+       "rules": [
+        {
+         "id": "R01",
+         "title": "Waiting for sanction past the time limit",
+         "ref": "para 3.12",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R02",
+         "title": "Open past the one-year norm",
+         "ref": "para 3.13",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R06",
+         "title": "Dates in an impossible order",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R07",
+         "title": "May be a work the guidelines do not allow",
+         "ref": "para 2.4, Annexure-II",
+         "raised": true,
+         "severity": "MEDIUM"
+        },
+        {
+         "id": "R08",
+         "title": "Outside the constituency, above the ceiling",
+         "ref": "para 2.9",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R11",
+         "title": "Key details missing from the record",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R12",
+         "title": "Big sanction that does not say what or where",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R13",
+         "title": "Construction recorded complete within days",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        },
+        {
+         "id": "R14",
+         "title": "Construction recorded complete within a week of its sanction",
+         "ref": "record rule",
+         "raised": false,
+         "severity": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "statistical",
+      "name": "Cost Anomaly",
+      "question": "Is the project cost unusual for similar works?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "COST_ABOVE_PEERS",
+      "risk": 0.9,
+      "headline": "Rs 4.95 lakh: similar Solar / LED street light works in Jaunpur usually cost Rs 19,989 to Rs 20,896 (769 similar works in Jaunpur). This is 23.7 times the top of that range, and above the usual top for this state (Rs 2.41 lakh), and 2.1 times the comfort limit of Rs 2.41 lakh. The description names a single unit, so a bigger project does not explain the amount. Check the estimate and what it includes.",
+      "limitations": [
+       "The description-based price check is not loaded, so the cost was compared with similar works only.",
+       "A peer range is not a schedule of rates: an unusual amount can have an ordinary explanation (terrain, specification, scope)."
+      ],
+      "findings": [
+       {
+        "code": "COST_ABOVE_PEERS",
+        "text": "Rs 4.95 lakh: similar Solar / LED street light works in Jaunpur usually cost Rs 19,989 to Rs 20,896 (769 similar works in Jaunpur). This is 23.7 times the top of that range, and above the usual top for this state (Rs 2.41 lakh), and 2.1 times the comfort limit of Rs 2.41 lakh. The description names a single unit, so a bigger project does not explain the amount. Check the estimate and what it includes.",
+        "risk": 0.9,
+        "hard": false,
+        "rule": null,
+        "severity": null
+       }
+      ],
+      "picture": {
+       "comparison": [
+        {
+         "metric": "Total cost",
+         "unit": "Rs",
+         "this_work": 495000.0,
+         "typical_low": 19989.00000056156,
+         "typical_high": 20896.000019487474,
+         "median": 19991.99999454996,
+         "deviation_pct": 2375.990396833446,
+         "comfort_high": 240914.99991451623
+        }
+       ],
+       "cohort": {
+        "level": "type_district",
+        "description": "works of the same type in this district",
+        "n": 769,
+        "p10": 4.300791068,
+        "p50": 4.300856243,
+        "p90": 4.32006316,
+        "sd": 0.1
+       },
+       "comfort_high": 240914.99991451623,
+       "work_type_name": "Solar / LED street light"
+      }
+     },
+     {
+      "id": "dup_split",
+      "name": "Duplicate & Split Work",
+      "question": "Is this work repeated, or one job cut into pieces?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "NO_SITE_NAMED",
+      "risk": 0.0,
+      "headline": "The description names no place, so a repeat of an earlier work cannot be ruled out; checked against the 1,038 other works of its district for splits and bulk orders only.",
+      "limitations": [
+       "Ask for the site (village, ward, landmark) to be written in the recommendation: without it no repeat can be confirmed or ruled out."
+      ],
+      "findings": [],
+      "picture": {
+       "compared": 1038,
+       "text_min": 0.62,
+       "place_min": 85.0,
+       "flag": 0.75,
+       "nearest": [
+        {
+         "work_id": "WS/MP18228/2024-2025/159962",
+         "description": "BLOCK DOBHI K ANTARGAT GRAM SABHA MARIKPUR ME HANUMAN JI K MANDIR K SAMANE  01 NAG HIGH MASK SOLAR LIGHT",
+         "amount": 107932.0,
+         "date": "2024-12-22",
+         "likeness": 0.298,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18222/2024-2025/165198",
+         "description": "Belwar marg se [name] ke avas ke paas hanuman mandir ke pass khadanje par 120 mtr. tak RCC ka nirman kary.",
+         "amount": 691495.0,
+         "date": "2025-05-21",
+         "likeness": 0.286,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18228/2024-2025/147031",
+         "description": "[name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
+         "amount": 20879.0,
+         "date": "2024-10-18",
+         "likeness": 0.275,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18228/2024-2025/152974",
+         "description": "[name] S\\O [name] K GHAR 01 SOLAR LIGHT",
+         "amount": 20896.0,
+         "date": "2024-11-21",
+         "likeness": 0.271,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18228/2024-2025/148207",
+         "description": "[name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
+         "amount": 20879.0,
+         "date": "2024-10-18",
+         "likeness": 0.268,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18228/2024-2025/159885",
+         "description": "BLOCK DOBHI K ANTARGAT GRAM SABHA CHANDWAK KOT ME BARAICHHABEER MANDIR (HANUMAN MANDIR) PAR 01 NAG SAOLAR HIGH MASK LIGHT",
+         "amount": 107932.0,
+         "date": "2024-12-22",
+         "likeness": 0.267,
+         "place": 0.0,
+         "flagged": false
+        }
+       ]
+      }
+     },
+     {
+      "id": "delay",
+      "name": "Fund Flow",
+      "question": "Is money stuck waiting for sanction?",
+      "counted": false,
+      "status": "ASSESSED",
+      "verdict": "NOTHING_STUCK_BEYOND_THE_WAIT",
+      "risk": 0.0,
+      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 506 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 506 (0%).",
+      "limitations": [],
+      "findings": [],
+      "picture": {
+       "recommended": "2026-10-02",
+       "sanctioned": null,
+       "completed": null,
+       "as_of": "2026-10-02",
+       "sanction_clock_days": 75,
+       "completion_clock_days": 365
+      }
+     },
+     {
+      "id": "office_patterns",
+      "name": "Office Patterns",
+      "question": "Does this work's office price or close works in an unusual way?",
+      "counted": true,
+      "status": "ASSESSED",
+      "verdict": "OFFICE_AS_USUAL",
+      "risk": 0.0,
+      "headline": "Nothing unusual about this work's office: 2 of 1,038 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
+      "limitations": [
+       "A habit of the office, not proof about this work: look at the office's works together.",
+       "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
+      ],
+      "findings": [],
+      "picture": {
+       "priced_just_under_a_limit": {
+        "office": 2,
+        "of": 1038,
+        "share": 0.002,
+        "national_share": 0.0951
+       },
+       "built_within_a_week_of_sanction": {
+        "office": 0,
+        "of": 1,
+        "share": 0.0,
+        "national_share": 0.0711
+       }
+      }
+     },
+     {
+      "id": "paperwork",
+      "name": "Paperwork",
+      "question": "Do the work's own papers agree with the portal?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No papers are attached to this work on eSAKSHI, so there is nothing to read. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     },
+     {
+      "id": "photo_evidence",
+      "name": "Photo Evidence",
+      "question": "Are the work's photos new, from its place and from its time?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No photo or paper is attached to this work on eSAKSHI. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     }
+    ],
+    "scoring": {
+     "method": "v3",
+     "engines": [
+      {
+       "engine": "compliance",
+       "name": "Guideline Compliance",
+       "chance": 0.8182,
+       "findings": [
+        {
+         "code": "POSSIBLY_INADMISSIBLE",
+         "risk": 0.6,
+         "ref_risk": 0.6,
+         "strength": 1.0,
+         "hit_rate": 0.8182,
+         "basis": "measured",
+         "read": [
+          53,
+          62
+         ],
+         "chance": 0.8182
+        }
+       ]
+      },
+      {
+       "engine": "statistical",
+       "name": "Cost Anomaly",
+       "chance": 0.4167,
+       "findings": [
+        {
+         "code": "COST_ABOVE_PEERS",
+         "risk": 0.9,
+         "ref_risk": 0.9,
+         "strength": 1.0,
+         "hit_rate": 0.4167,
+         "basis": "measured",
+         "read": [
+          54,
+          128
+         ],
+         "chance": 0.4167
+        }
+       ]
+      }
+     ],
+     "chain": [
+      {
+       "engine": "compliance",
+       "chance": 0.8182,
+       "score": 0.8182
+      },
+      {
+       "engine": "statistical",
+       "chance": 0.4167,
+       "score": 0.894
+      }
+     ],
+     "raw": 0.894,
+     "floor": false,
+     "score": 0.8939,
+     "band": "CRITICAL",
+     "lines": {
+      "MEDIUM": 0.25,
+      "HIGH": 0.5,
+      "CRITICAL": 0.8
+     }
+    },
+    "result": {
+     "band": "CRITICAL",
+     "score": 0.8939,
+     "in_queue": true,
+     "limited": false,
+     "colour": "RED",
+     "advice": "Needs checking before sanction: at least one serious question below. This check never blocks a sanction; the district authority decides.",
+     "reasons": [
+      {
+       "engine": "Guideline Compliance",
+       "text": "The description reads as \"Mandir campus\" being the work itself; Annexure-II item 13 lists this as not permitted (Works within the places of religious worship and on land belonging to or owned by religious faith/group.). Verify against the 2023 guidelines before any action.",
+       "text_hi": "विवरण से लगता है कि कार्य स्वयं \"Mandir campus\" है; परिशिष्ट-II मद 13 इसे अनुमति नहीं देता। कोई कार्रवाई से पहले 2023 दिशानिर्देशों से सत्यापन करें।",
+       "chance": 0.8182,
+       "basis": "measured",
+       "read": [
+        53,
+        62
+       ]
+      },
+      {
+       "engine": "Cost Anomaly",
+       "text": "Rs 4.95 lakh: similar Solar / LED street light works in Jaunpur usually cost Rs 19,989 to Rs 20,896 (769 similar works in Jaunpur). This is 23.7 times the top of that range, and above the usual top for this state (Rs 2.41 lakh), and 2.1 times the comfort limit of Rs 2.41 lakh. The description names a single unit, so a bigger project does not explain the amount. Check the estimate and what it includes.",
+       "text_hi": "लागत इसी प्रकार के कार्यों की सामान्य सीमा से काफ़ी अधिक है। अनुमान और उसमें शामिल कार्य की जाँच करें।",
+       "chance": 0.4167,
+       "basis": "measured",
+       "read": [
+        54,
+        128
        ]
       }
      ]
@@ -2023,6 +2559,7 @@
       "says_nothing": false,
       "place_named": true,
       "count": null,
+      "single_unit": false,
       "length_m": null,
       "several_sites": false,
       "bundle": false,
@@ -2273,7 +2810,20 @@
        "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
       ],
       "findings": [],
-      "picture": {}
+      "picture": {
+       "priced_just_under_a_limit": {
+        "office": 2,
+        "of": 1038,
+        "share": 0.002,
+        "national_share": 0.0951
+       },
+       "built_within_a_week_of_sanction": {
+        "office": 0,
+        "of": 1,
+        "share": 0.0,
+        "national_share": 0.0711
+       }
+      }
      },
      {
       "id": "paperwork",

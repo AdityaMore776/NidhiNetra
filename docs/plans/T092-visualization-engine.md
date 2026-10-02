@@ -36,9 +36,19 @@ Six steps on a track, each with Play / Replay, and Play all:
 
 ## Done when
 
-- [ ] `explain()` + route, tests: the trace's score equals the pipeline's; nothing private or accusing in it;
+- [x] `explain()` + route, tests: the trace's score equals the pipeline's; nothing private or accusing in it;
   odd input never fails
-- [ ] examples script run on the dashboard data; the page works with them signed out
-- [ ] page: six steps animated, each replayable, Play all; own example via the API; works on a phone
-- [ ] web `tsc`, `lint`, `build` pass; checked in a real browser (screenshots)
-- [ ] FINDINGS / ARCHITECTURE / TASKS, log entry
+- [x] examples script run on the dashboard data; the page works with them signed out
+- [x] page: six steps animated, each replayable, Play all; own example via the API; works on a phone
+- [x] web `tsc`, `lint`, `build` pass; checked in a real browser (screenshots)
+- [x] FINDINGS / ARCHITECTURE / TASKS, log entry
+
+## Built (2 Oct 2026)
+
+- Engine: `drishti/explain.py`, `POST /api/v1/explain`; tests `tests/test_explain.py` and the API test.
+- Examples: seven (an "ordinary" one, five single questions, and "two checks agree", the only CRITICAL), built by
+  `data/trial/explain_examples.py`; numbers in FINDINGS "T092".
+- Page: `apps/web/src/app/explain/` (`page.tsx`, `Explainer.tsx`, `steps.tsx`, `explain.css`), types in
+  `src/lib/explain.ts`; linked from the login page and the app's menu ("Step by step").
+- Animations are CSS only (no new library); a step replays by being mounted again; `prefers-reduced-motion` turns them
+  off. Play all moves on when each step's animation has played; the arrow keys step through.

@@ -30,6 +30,7 @@ from drishti.explain import explain  # noqa: E402
 from drishti.pipeline.orchestrator import Context  # noqa: E402
 
 OUT = ROOT / "apps" / "web" / "public" / "explain" / "examples.json"
+SUMMARY = ROOT / "data" / "trial" / "results" / "explain_examples.txt"
 
 
 def _district(works: list[dict]) -> dict:
@@ -71,7 +72,7 @@ def examples(works: list[dict], as_of, ctx) -> list[tuple[str, str, dict]]:
         ("ordinary", "An ordinary new road",
          {**base, "work_id": "EXAMPLE-1", "work_type_code": "ROAD_CC", "amount": 480000.0,
           "description": "Construction of CC road 250 mtr from Panchayat Bhawan to Primary "
-                         "School in Ward No 4"}),
+                         "School in village Bhagwatipur, Ward No 4"}),
         ("temple", "A temple as the work itself",
          {**base, "work_id": "EXAMPLE-2", "work_type_code": "COMMUNITY_HALL", "amount": 900000.0,
           "description": "Construction of temple and boundary wall at Shiv Mandir campus, "
@@ -87,6 +88,9 @@ def examples(works: list[dict], as_of, ctx) -> list[tuple[str, str, dict]]:
           "status": "COMPLETED", "recommended_date": as_of - timedelta(days=120),
           "sanction_date": None, "completed_date": as_of - timedelta(days=200),
           "description": "Construction of CC road 400 mtr from main road to cremation ground"}),
+        ("two", "Two checks agree",
+         {**base, "work_id": "EXAMPLE-7", "work_type_code": "STREET_LIGHT", "amount": 495000.0,
+          "description": "Installation of 1 solar street light inside Hanuman Mandir campus"}),
     ]
     again = _repeat_of(works, d["district_lgd"], as_of, ctx)
     if again:
@@ -98,12 +102,15 @@ def examples(works: list[dict], as_of, ctx) -> list[tuple[str, str, dict]]:
 
 
 STORIES = {
-    "ordinary": "A plain road with its length and both ends named: what most works look like.",
+    "ordinary": "A plain road with its length, both ends and its village named: what most works "
+                "look like.",
     "temple": "The description reads as building a temple, which the guidelines do not allow; the "
               "same words as a landmark ('road near the temple') would pass.",
     "vague": "Rs 26 lakh with no word on what or where: nobody could check it on the ground.",
     "price": "One solar light for nearly Rs 5 lakh: compared with what similar lights cost here.",
-    "dates": "The record says the road was finished four months before the MP recommended it.",
+    "dates": "The record says the road was finished 80 days before the MP recommended it.",
+    "two": "The same costly solar light, now inside a temple's campus: two different checks each "
+           "raise a question, and together they count for more than either alone.",
     "repeat": "A real work of this district (finished or still open), typed in again as a new "
               "recommendation.",
 }
@@ -113,13 +120,17 @@ def main() -> None:
     works, info = load()
     as_of = info["as_of"]
     ctx = Context(stats=build_store(works), as_of=as_of, data=indexes(works))
-    out = []
+    out, lines = [], []
     for key, title, work in examples(works, as_of, ctx):
         trace = explain(work, ctx)
         out.append({"id": key, "title": title, "story": STORIES[key], "trace": trace})
-        print(f"{key:9} {trace['result']['band']:8} {trace['result']['score']:.3f} "
-              f"{trace['result']['colour']} "
-              f"{[f['code'] for c in trace['checks'] for f in c['findings']]}")
+        lines.append(f"{key:9} {trace['result']['band']:8} {trace['result']['score']:.3f} "
+                     f"{trace['result']['colour']} "
+                     f"{[f['code'] for c in trace['checks'] for f in c['findings']]}")
+        print(lines[-1])
+    SUMMARY.write_text(f"{len(works):,} dashboard works, as of {as_of}; district "
+                       f"{out[0]['trace']['input']['district']}\n" + "\n".join(lines) + "\n",
+                       encoding="utf-8")
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps({"source": f"eSAKSHI dashboard tables, {len(works):,} works, "
                                          f"as of {as_of}", "examples": out},

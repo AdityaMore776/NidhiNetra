@@ -159,8 +159,8 @@ the top 5% of each engine and overall. Never mixes planted rows into the live da
 judges, with animations, what DRISHTI does to a work at each step (input, privacy, reading, the seven checks, the
 score's arithmetic, the officer's result), each step replayable, with built-in examples and the judge's own example.
 Every number is real engine output (`drishti/explain.py`); built-in examples run on the dashboard's 40,935 works.
-**Done when:** [ ] `explain()` + route + tests · [ ] examples built on the dashboard data · [ ] page animated and
-replayable, own example via the API · [ ] web checks pass, checked in a browser · [ ] docs, log
+**Done when:** [x] `explain()` + route + tests · [x] examples built on the dashboard data · [x] page animated and
+replayable, own example via the API · [x] web checks pass, checked in a browser · [x] docs, log
 
 ### T091 · Rename user-facing text to NidhiNetra  ·  S  ·  web + docs  ·  **needs-owner** (confirm the name)
 **What:** app title, logo text, README, docs headers. Repo/folder names and env vars stay (they carry deploy ids).

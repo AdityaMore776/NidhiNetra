@@ -1,0 +1,129 @@
+/* The Visualization Engine's animations (T092). Every animated element starts hidden and plays
+   once after its delay (--d); a step replays by being mounted again. */
+
+@keyframes x-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.x-in { animation: x-in 0.5s ease both; animation-delay: var(--d, 0ms); }
+
+@keyframes x-pop {
+  0% { opacity: 0; transform: scale(0.6); }
+  70% { opacity: 1; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.x-pop { animation: x-pop 0.45s ease both; animation-delay: var(--d, 0ms); }
+
+/* a word being read: a blue flash passes over it */
+@keyframes x-scanword {
+  0% { background-color: transparent; }
+  40% { background-color: color-mix(in srgb, var(--inputs) 32%, transparent); }
+  100% { background-color: transparent; }
+}
+.x-scanword { animation: x-scanword 0.5s ease both; animation-delay: var(--d, 0ms); }
+
+/* a private detail: a blurred blob until the scan reaches it, then a dark "hidden" tag */
+@keyframes x-redact {
+  0% { background: #d5dae3; color: transparent; filter: blur(2px); transform: none; }
+  50% { background: #d5dae3; color: transparent; filter: blur(2px); transform: rotateX(90deg); }
+  100% { background: var(--foreground); color: #fff; filter: none; transform: none; }
+}
+.x-redact { animation: x-redact 0.6s ease both; animation-delay: var(--d, 0ms); }
+
+/* a word lighting up in the colour of what it is */
+@keyframes x-light {
+  from { background-color: transparent; color: var(--muted); box-shadow: none; }
+  to { background-color: var(--bg); color: var(--fg); box-shadow: 0 0 0 1px var(--ring); }
+}
+.x-light { animation: x-light 0.35s ease both; animation-delay: var(--d, 0ms); border-radius: 5px; }
+
+@keyframes x-word {
+  from { opacity: 0.2; }
+  to { opacity: 1; }
+}
+.x-word { animation: x-word 0.3s ease both; animation-delay: var(--d, 0ms); }
+
+/* a fact the reader found: the "neuron" fills and glows */
+@keyframes x-neuron {
+  from { background: var(--surface); box-shadow: none; border-color: var(--line); }
+  to {
+    background: var(--c);
+    border-color: var(--c);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 25%, transparent), 0 0 18px var(--c);
+  }
+}
+.x-neuron { animation: x-neuron 0.5s ease both; animation-delay: var(--d, 0ms); }
+
+/* a check switching on, and glowing when it raises a question */
+@keyframes x-activate {
+  from { opacity: 0.25; filter: grayscale(1); transform: scale(0.97); }
+  to { opacity: 1; filter: none; transform: none; }
+}
+.x-activate { animation: x-activate 0.5s ease both; animation-delay: var(--d, 0ms); }
+
+@keyframes x-glow {
+  0% { box-shadow: 0 0 0 0 transparent; }
+  50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--c) 35%, transparent); }
+  100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 60%, transparent); }
+}
+.x-glow { animation: x-glow 0.9s ease both; animation-delay: var(--d, 0ms); }
+
+@keyframes x-grow-w {
+  from { width: 0; }
+  to { width: var(--w); }
+}
+.x-grow-w { animation: x-grow-w 0.8s ease both; animation-delay: var(--d, 0ms); }
+
+@keyframes x-grow-h {
+  from { height: 0; }
+  to { height: var(--h); }
+}
+.x-grow-h { animation: x-grow-h 0.9s ease both; animation-delay: var(--d, 0ms); }
+
+/* the work's dot sliding to its place on a scale */
+@keyframes x-slide {
+  from { left: 0%; }
+  to { left: var(--x); }
+}
+.x-slide { animation: x-slide 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: var(--d, 0ms); }
+
+/* an SVG line drawing itself (give the line pathLength="1") */
+@keyframes x-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+.x-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: x-draw 0.7s ease both; animation-delay: var(--d, 0ms); }
+
+/* the record flying into DRISHTI */
+@keyframes x-fly {
+  0% { transform: translateX(0); opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateX(var(--fx, 140px)) scale(0.4); opacity: 0; }
+}
+.x-fly { animation: x-fly 1.6s ease-in both; animation-delay: var(--d, 0ms); transform-box: fill-box; }
+
+@keyframes x-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+.x-pulse {
+  animation: x-pulse 1.2s ease-in-out 3;
+  animation-delay: var(--d, 0ms);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes x-progress {
+  from { width: 0; }
+  to { width: 100%; }
+}
+.x-progress { animation: x-progress var(--dur, 5s) linear both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .x-stage *,
+  .x-stage {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

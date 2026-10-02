@@ -51,7 +51,17 @@ def _day(x) -> str | None:
     return x.isoformat() if isinstance(x, date) else None
 
 
-def _segments(text: str, keyword: str | None) -> list[dict]:
+def _counts(text: str, typ: str | None) -> list[tuple[int, int]]:
+    """Where the cost reader finds a count of units ("50 nos street lights", "one high mast")."""
+    spans = [m.span() for m in reader._COUNT.finditer(text)
+             if not reader._NOT_A_COUNT_BEFORE.search(text[max(0, m.start() - 12):m.start()])]
+    unit = reader.SINGLE_UNITS.get(typ or "")
+    if unit:
+        spans += [m.span() for m in re.finditer(reader._ONE + unit + r"\b", text, re.I)]
+    return spans
+
+
+def _segments(text: str, keyword: str | None, typ: str | None = None) -> list[dict]:
     """The description cut into runs, each with the kind of word it is (or none)."""
     kind = [None] * len(text)
 
@@ -66,6 +76,7 @@ def _segments(text: str, keyword: str | None) -> list[dict]:
     if keyword:
         mark([m.span() for m in re.finditer(re.escape(keyword), text, re.I)], "not_allowed")
     mark([m.span() for m in LENGTH.finditer(text)], "quantity")
+    mark(_counts(text, typ), "quantity")
     mark([m.span() for m in re.finditer(r"\b\d[\d,.]*\s*(?:km|kms|nos?|nag|units?|sets?|pcs|"
                                         r"sq\.?\s*f(?:ee)?t|sqm)\b", text, re.I)], "quantity")
     mark([m.span() for m in reader._GOODS_VERB.finditer(text)], "goods")
@@ -89,12 +100,17 @@ def _reading(w: dict, text: str) -> dict:
     length = stated_length(text)
     rec = w.get("recommended_date")
     return {
-        "segments": _segments(text, na.keyword if na else None),
+        "segments": _segments(text, na.keyword if na else None, typ),
         "facts": {
             "what": SCOPE_WORDS.get(r.scope, r.scope),
-            "says_nothing": r.undescribed,
+            # no object at all, or R12's reading: a few words, no number, no place
+            "says_nothing": r.undescribed or bool(
+                text and len(text.split()) <= compliance.SCOPE_MAX_WORDS
+                and not re.search(r"\d", text) and not compliance.WORD_NUMBER.search(text)
+                and not place_words(text)),
             "place_named": bool(place_words(text)),
             "count": r.count,
+            "single_unit": reader.single_unit(typ, text),
             "length_m": None if length != length else round(length, 1),     # NaN: none stated
             "several_sites": r.many_sites,
             "bundle": r.bundle,
@@ -159,7 +175,9 @@ def _picture(r, w: dict, ctx: Context) -> dict | None:
                 "completion_clock_days": int(compliance._clause("COMPLETION_PERIOD",
                                                                 "completion_period_days"))}
     if r.agent == "office_patterns":
-        return {k: v for k, v in ev.items() if isinstance(v, (int, float, str, bool))}
+        # the office's two habits against the whole scheme: {office, of, share, national_share}
+        return {k: ev[k] for k in ("priced_just_under_a_limit", "built_within_a_week_of_sanction")
+                if isinstance(ev.get(k), dict)}
     return None
 
 

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Logo } from "@/components/Logo";
@@ -67,6 +68,9 @@ export default function LoginPage() {
         >
           {busy ? "Signing in…" : "Sign in"}
         </button>
+        <Link href="/explain" className="block text-center text-sm text-navy hover:underline">
+          See what DRISHTI does with one work, step by step (no sign-in)
+        </Link>
       </form>
     </main>
   );

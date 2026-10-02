@@ -1010,6 +1010,44 @@ priority order; no text returned holds an accusing word or anything the masker w
 work page sent the raw evidence facts, whose certificate place line is OCR text that can name a person** ("near <name>
 house"). The web never reads that field, so the API no longer sends it (`api/routes.py`).
 
+## T092 (2 Oct 2026): the Visualization Engine, one work step by step
+
+A public page (`/explain`) shows judges what DRISHTI does to one work, in six animated steps, each replayable:
+the work goes in; private details are hidden; the description is read (each word coloured by what it is, and the
+facts found light up like a network's neurons); seven checks look at once, each with its own picture (the rule
+checklist, the price dot on the band of similar works, the district's most alike works drawn closer the more alike
+they are, the dates against the guideline clocks, the office's habit against the scheme); the score adds up
+(how often that kind of question was worth a look, times how strong this one is, combined as "at least one is
+right"); the officer's result. The page computes nothing: `drishti/explain.py` runs the work through the same
+`assess_work()` as the batch, and `tests/test_explain.py` checks that the trace's score equals the pipeline's on 60
+works and that nothing private or accusing is in it.
+
+**Built-in examples** (`data/trial/explain_examples.py` → `apps/web/public/explain/examples.json`, summary in
+`results/explain_examples.txt`): made-up works placed in Jaunpur (the dashboard district with the most dated
+recommendations), checked by the real engines against the dashboard's 40,935 works.
+
+| Example | Band | Score | Pre-sanction colour | What fires |
+|---|---|---|---|---|
+| An ordinary new road (length, ends and village named) | LOW | 0.000 | Green | nothing |
+| A temple as the work itself | HIGH | 0.818 | Red | R07 not-allowed work |
+| A large sum that says nothing ("As per recommendation letter attached", Rs 26 lakh) | HIGH | 0.904 | Red | R12 |
+| One solar light for Rs 4.95 lakh | MEDIUM | 0.417 | Amber | Cost above peers |
+| Completed 80 days before it was recommended | HIGH | 0.786 | - (completed) | R06 |
+| Two checks agree (that light, inside a temple's campus) | **CRITICAL** | 0.894 | Red | R07 + Cost |
+| A real work of the district typed in again | MEDIUM | 0.363 | Amber | Duplicate & Split, funded again after completion |
+
+The vague example shows why one check alone stays HIGH even above the Critical line (0.904): Critical needs two
+different checks to agree, as in the "two checks" example.
+
+**Found while building it:** (1) the examples' real neighbour descriptions carried names in "<name> ke avas" and its
+other spellings; the masker learned them (T056 masker table above, 13,564 → 13,776). (2) R06's sentence read "0.00%
+of works ... (against 0.00% across the scheme)" when no other work in the data carries the defect (the dashboard tables:
+none of 11,577 works with both dates); it now says so in words (`validation/timeline.py`, test added).
+
+**Checked in a browser** (Chromium, the production build): all six steps of four examples at 1280 px and of one at
+390 px (a phone), no console errors; "your own example" run end to end against a local engine on the test country
+(a typed name and phone number come back hidden).
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**
