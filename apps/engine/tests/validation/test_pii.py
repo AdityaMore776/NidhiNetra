@@ -45,6 +45,19 @@ def test_ordinary_text_is_untouched(text):
     ("BALDEV YADAV K GHAR SE MANDIR TAK SOLAR LIGHT", "BALDEV", "SOLAR LIGHT"),
     ("gam thi Kanubhai Solanki na ghar sudhi CC road", "Kanubhai", "CC road"),
     ("Paver block from RAHIM’S HOUSE to masjid", "RAHIM", "to masjid"),
+    # T092: the other spellings of a residence after the genitive, read on the dashboard
+    ("Nahar pul se Arvind Maurya ka avas se pahle tak 200 mtr RCC road", "Arvind", "Nahar pul se"),
+    ("chak se Ravi Kumar Verma ke awas tak 70 mtr interlocking", "Verma", "70 mtr"),
+    ("Tigri men Manoj Dixit ke makaan se lekar Raju ke makaan ki or interlocking", "Raju",
+     "se lekar"),
+    ("Block Sasni mai Surendra Fauji kai Makaan sai Holi tak", "Surendra", "Block Sasni mai"),
+    ("gam game Sanjaybhai Rathod na ghare thi mukhya rasta", "Sanjaybhai", "mukhya rasta"),
+    ("Gudamb mein Manoj ke gher se Sunil Tyagi ke gher tak CC road", "Tyagi", "Gudamb mein"),
+    ("kishanpura me Onkarlal ke niwas ke samne paver block", "Onkarlal", "kishanpura me"),
+    ("Ahimanpur me Dinesh Mishra ki dukaan ke samne high mast", "Mishra", "Ahimanpur me"),
+    ("Paver block from Army Barack to Kashyap Niwas Ward No. 04", "Kashyap", "Ward No. 04"),
+    ("sim vistarna patel jitendrabhai kantibhai ghare thi mukhya rasta", "jitendrabhai",
+     "mukhya rasta"),
 ])
 def test_names_before_a_home_word_are_masked(text, gone, kept):
     out = mask(text)
@@ -57,7 +70,9 @@ def test_names_before_a_home_word_are_masked(text, gone, kept):
     "Pump house and pipeline at Ward 7", "Barat ghar nirman gram Rampur", "Old age home building",
     "Ration shop building", "Construction of house for flood victims",
     "Fencing of government land near the school", "Community hall at Rampur",
-    "Maruti row house compound wall", "Construction of WRC field channel"])
+    "Maruti row house compound wall", "Construction of WRC field channel",
+    "PM Awas colony road", "Indira Awas ke pas CC road", "Meghwalon ki dhani me pipeline",
+    "GOVT HSS NIWAS ME LAB SETUP"])
 def test_ordinary_homes_and_lands_are_not_names(text):
     assert mask(text) == text
 

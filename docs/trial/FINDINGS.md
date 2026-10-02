@@ -986,6 +986,20 @@ are mostly parts of place names (all fixed). `sanitize_results.py` now runs the 
 results file (it masked numbers only): 270 lines changed across 43 files, numbers untouched, and a second run changes
 nothing. Still not caught: a name in a phrase with no home word ("from <name> to the land").
 
+*Then (T092, 2 Oct 2026):* the Visualization Engine's built-in examples showed real descriptions with "<name> ke avas"
+(at <name>'s residence), which the Hindi rule did not know. The words after a genitive, counted on the 57,508
+descriptions, gave the other spellings: "ka makaan" 177 times, "ke avas" 34, "ki dukaan" 32, "na ghare" 24, "ke gher" 19,
+"ke awas" 8, "ke niwas" 3. HI_HOME now knows them; "<surname> Niwas" (a house's own name) and the Gujarati "<name> ghare"
+joined the home words. "PM Awas" and "Indira Awas" (no genitive before them) and "<clan> ki dhani" (a hamlet's name) stay.
+
+| Measure (57,508 descriptions) | Before | After |
+|---|---|---|
+| Descriptions with something masked | 13,564 | **13,776** |
+| Fresh sample of the newly masked spans, read by eye | - | **46 of 47 people's names** (1 "ration dealer ki dukaan") |
+| Every span of the new home words still unmasked (24), read by eye | - | **2 names**, each glued to a typo ("Krishnapal lke makaan"), 3 unclear ("Deepak Nagar ke makaan": a person or a place) |
+
+`sanitize_results.py` re-run: 7 more lines masked in 7 files, a second run changes nothing.
+
 **The API end to end** (`tests/api/test_api_at_scale.py`, in CI): the test country's 1,302 works across its districts,
 seven made messy (Devanagari, Tamil, a made-up name and phone number, 2,000 characters, empty, none) plus a work id a
 URL must escape, malformed evidence on 30, all assessed by the real batch; then every listing and dashboard endpoint

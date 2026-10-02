@@ -15,6 +15,10 @@ Read by eye, 2 Oct 2026 (labels by kind only, no text kept):
   final sample (seed 2027, 40 fresh spans, the rules frozen): see FINDINGS "T056"
   left unmasked (seed 7, 40 spans): 0 names; the rest are "[name] ke ghar", "near the house",
       "Panchayat Ghar" and the like
+  T092, the residence spellings "ke avas", "ka makaan", "na ghare", "ke gher", "ki dukaan",
+      "ke niwas" (the words after a genitive, counted): fresh sample of the newly masked spans
+      46 of 47 names (1 "ration dealer"); all 24 spans of these words left unmasked read: 2 names
+      glued to a typo ("lke makaan"), 3 unclear (a person or a place)
 
 Run:  apps\engine\.venv\Scripts\python.exe data\trial\pii_trial.py [--sample 40 --seed 2027]
 """
@@ -35,8 +39,9 @@ from drishti.validation import pii  # noqa: E402
 
 RAW = ROOT / "data" / "raw" / "esakshi_dashboard"
 OUT = ROOT / "data" / "trial" / "results" / "pii_trial.json"
-HOME_WORD = re.compile(r"(?:\S+\s+){0,3}[A-Za-z.']+\s+(?:house|home|residence|makan|"
-                       r"ghar|farm|field|land|shop|dukan|khet|bari)\b", re.I)
+HOME_WORD = re.compile(r"(?:\S+\s+){0,3}[A-Za-z.']+\s+(?:house|home|residence|makan|makaan|"
+                       r"ghar|ghare|gher|farm|field|land|shop|dukan|dukaan|khet|bari|avas|awas|"
+                       r"aawas|awaas|niwas|nivas)\b", re.I)
 RULES = ("PHONE", "ACCOUNT", "RELATION", "HONORIFIC", "HOUSE", "POSSESSIVE", "HI_HOME",
          "OWNER_HOME", "BEFORE_RELATION")
 
