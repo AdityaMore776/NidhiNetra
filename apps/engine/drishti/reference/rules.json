@@ -136,6 +136,17 @@
       "condition": "a building, road, drain, pond or similar of Rs 5 lakh or more recorded complete 0-14 days after recommendation, outside a bulk-entry quarter, and not a backfilled older work. Replaces the Odd Overall engine (T053): 13 of 13 read by eye as dates that cannot be right.",
       "message_en": "{amount} {type} work recorded complete {days} days after it was recommended ({rec} to {done}); a construction of this size cannot be finished that fast. Check the completion certificate and the dates.",
       "message_hi": "{amount} का {type} कार्य अनुशंसा के {days} दिन बाद ({rec} से {done}) पूर्ण दर्ज है; इस आकार का निर्माण इतनी जल्दी पूरा नहीं हो सकता। पूर्णता प्रमाणपत्र और तिथियों की जाँच करें।"
+    },
+    {
+      "id": "R14", "code": "BUILT_RIGHT_AFTER_SANCTION",
+      "title": "Construction recorded complete within a week of its sanction",
+      "guideline_ref": "record rule", "severity": "MEDIUM", "evaluable": true,
+      "needs": "a sanction date (the eSAKSHI dashboard tables carry it; the research export does not)",
+      "condition": "a building, road, drain, wall or similar (not a purchase) of Rs 3 lakh or more recorded complete 0-7 days after its sanction date, or 7+ days before it. Measured on the eSAKSHI dashboard tables of 2 Oct 2026 (data/trial/dashboard_facts.py): 7.1% of constructions with both dates, concentrated in a few offices. When the office does this routinely (Office Patterns), the work scores LOW and the office is named once, as R06 does for bulk entry.",
+      "message_en": "{amount} {type} work recorded complete {when} ({sanctioned} to {done}); a construction of this size cannot be built that fast. Check whether the work was executed before sanction, or the dates are wrong.",
+      "message_hi": "{amount} का {type} कार्य {when_hi} ({sanctioned} से {done}) पूर्ण दर्ज है; इस आकार का निर्माण इतनी जल्दी नहीं हो सकता। जाँचें कि कार्य स्वीकृति से पहले तो नहीं कराया गया, या तिथियाँ गलत हैं।",
+      "routine_en": " This office recorded {count} of its {total} constructions complete within a week of sanction ({share}, against {national} across the scheme): a recording habit of the office, listed once; its sanction dates need checking as a whole.",
+      "routine_hi": " इस कार्यालय ने अपने {total} में से {count} निर्माण स्वीकृति के एक सप्ताह में पूर्ण दर्ज किए: कार्यालय की स्वीकृति तिथियों की समग्र जाँच आवश्यक।"
     }
   ]
 }

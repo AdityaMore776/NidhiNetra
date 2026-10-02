@@ -32,6 +32,9 @@ statements with no risk. What is left:
                     like this. Up to it is the comfort zone: room for a bigger scope or a
                     contingency margin, never questioned. 54/128 read as real price questions.
   UNIT_RATE_ABOVE   a road's cost per metre far above the length curve and published rates.
+  2 Oct 2026: "far bigger than every similar work" stays a statement EXCEPT when the description
+  names a single unit of the type's own kind ("one high mast light", scope.single_unit): one unit
+  cannot be a bigger project, so it is asked as COST_ABOVE_PEERS (owner question 2, T080).
 
 Every result carries `comfort_high` (per comparison row and overall), so the card shows
 the usual range, the comfort zone and only beyond it a question. The signal grows with how
@@ -52,12 +55,12 @@ from drishti import reference
 from drishti.agents.contract import AgentResult, Finding, Status
 from drishti.agents.statistical.band import Cohort
 from drishti.agents.statistical.cohort import StatsStore
-from drishti.agents.statistical.scope import read
+from drishti.agents.statistical.scope import read, single_unit
 from drishti.agents.statistical.text import stated_length
 from drishti.agents.statistical.unit_rate import Z_FLAG, road_check
 
 AGENT = "statistical"
-VERSION = "statistical-2.2.0"
+VERSION = "statistical-2.3.0"
 QUESTION = "Is the project cost unusual for similar works?"
 
 LEVEL_CONFIDENCE = {"type_district": 0.85, "type_state": 0.7, "type": 0.55}
@@ -260,7 +263,8 @@ def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
         total_row["comfort_high"] = comfort
         if not USE_PEERS and model_top is not None:      # trial switch: model alone
             top_local, broad_ok = model_top * TOP_FACTOR / MODEL_TOP_FACTOR, True
-        if top_local >= TOP_FACTOR and broad_ok and ratio_med >= SCOPE_RATIO:
+        one = single_unit(wtype, desc)
+        if top_local >= TOP_FACTOR and broad_ok and ratio_med >= SCOPE_RATIO and not one:
             # T053: "far above every similar work" read 3/18 as a real price question: it is
             # almost always a bigger or different project. Said, never flagged.
             verdict = "BIGGER_PROJECT_THAN_PEERS"
@@ -275,6 +279,9 @@ def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
                 f"({inr(broad.range_inr()[1])})")
             learned = "" if model_top is None else (
                 f" Works described like this one usually cost up to {inr(amount / model_top)}.")
+            if one and ratio_med >= SCOPE_RATIO:
+                learned += (" The description names a single unit, so a bigger project does not "
+                            "explain the amount.")
             findings.append(Finding(
                 "COST_ABOVE_PEERS",
                 f"{inr(amount)}: similar {type_name} works {_where(local, work)} usually cost "
@@ -285,7 +292,7 @@ def assess(work: dict, stats: StatsStore, as_of: date) -> AgentResult:
                                             model_top else top_local),
                 evidence={"top_ratio": top_local, "median_ratio": ratio_med,
                           "model_top_ratio": model_top, "comfort_high": comfort,
-                          "reading": reading}))
+                          "reading": reading, "single_unit": one}))
         # T053: "well below similar works" was never shown to be a real problem; removed
 
     if local.level != "type_district":

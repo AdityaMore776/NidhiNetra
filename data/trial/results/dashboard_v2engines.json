@@ -1,0 +1,73 @@
+{
+  "tag": "v2engines",
+  "works": 40935,
+  "as_of": "2026-10-02",
+  "loader": {
+    "works": 40935,
+    "skipped": {
+      "no work id (kept, waiting for sanction)": 345,
+      "no work id": 3
+    },
+    "allocated_constituencies": 542,
+    "status": {
+      "COMPLETED": 36508,
+      "SANCTIONED": 4085,
+      "RECOMMENDED": 342
+    },
+    "with_recommended_date": 16004,
+    "with_sanction_date": 15662
+  },
+  "price_model": {
+    "version": "price-linear-dashboard",
+    "oof_median_abs_error_factor": 1.629,
+    "oof_share_inside": 0.801
+  },
+  "cutoffs": {
+    "CRITICAL": 0.3,
+    "HIGH": 0.22,
+    "MEDIUM": 0.15
+  },
+  "bands": {
+    "CRITICAL": 2,
+    "HIGH": 53,
+    "MEDIUM": 722,
+    "LOW": 40158
+  },
+  "review_queue": 55,
+  "review_share": 0.00134,
+  "engine_fired": {
+    "compliance": 29799,
+    "dup_split": 1422,
+    "office_patterns": 1445,
+    "statistical": 140
+  },
+  "finding_fired": {
+    "compliance:MISSING_KEY_DATA": 25024,
+    "compliance:COMPLETION_OVERDUE": 4084,
+    "office_patterns:PRICED_AT_LIMIT": 1311,
+    "dup_split:BULK_ORDER": 1300,
+    "compliance:SANCTION_OVERDUE": 342,
+    "compliance:BUILT_RIGHT_AFTER_SANCTION": 320,
+    "office_patterns:BUILT_AFTER_SANCTION": 149,
+    "compliance:NO_STATED_SCOPE": 143,
+    "statistical:COST_ABOVE_PEERS": 140,
+    "dup_split:SPLIT_AT_ONE_SITE": 119,
+    "compliance:POSSIBLY_INADMISSIBLE": 54,
+    "dup_split:REPEATED_WHILE_OPEN": 7,
+    "compliance:BUILT_IN_DAYS": 3
+  },
+  "engine_status": {
+    "compliance:ASSESSED": 40935,
+    "delay:ASSESSED": 342,
+    "delay:NOT_APPLICABLE": 40593,
+    "dup_split:ASSESSED": 15911,
+    "dup_split:NOT_ASSESSABLE": 25024,
+    "office_patterns:ASSESSED": 37117,
+    "office_patterns:NOT_ASSESSABLE": 3818,
+    "paperwork:NOT_APPLICABLE": 40935,
+    "photo_evidence:NOT_APPLICABLE": 40935,
+    "statistical:ASSESSED": 40722,
+    "statistical:NOT_ASSESSABLE": 213
+  },
+  "seconds": 82
+}

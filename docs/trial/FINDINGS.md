@@ -478,6 +478,14 @@ it reports "cannot be assessed yet" on every work with photos and carries no wei
 check dams, roads over 1 km, buildings over ₹50 lakh) finds 2,822 qualifying works in the export (2,167 ponds), of
 which only 1 has a GPS-stamped photo in the pilot: the go/no-go test needs more harvested evidence (T003).
 
+**T510 v2 (2 Oct 2026): free local readers, built and switched off until measured.** The first sentence of this
+section is no longer true: open CLIP models name what a photo shows on a CPU, and the local OCR reads a plaque.
+Design: [`plans/T510-site-progress-v2.md`](../plans/T510-site-progress-v2.md). Checked so far: 34 unit tests and an
+end-to-end smoke test (real RapidOCR on a drawn plaque, a stand-in for the photo model; it found and fixed a bug
+with OCR that glues words together, "MPLADS2023-24"). **No real photo has been read yet**: the pilot photos are in
+the data pack and this session could not fetch the model. The go/no-go numbers will go here from
+`data/trial/site_progress_trial.py`.
+
 ### B5 Satellite
 No-go for now.
 - Of the 170 works with GPS points, the median cost is ₹2.8 lakh and only one exceeds
@@ -744,6 +752,100 @@ on the day it arrived (not yet sanctioned, compared only with its district's ear
 **Trap:** re-dating a real work to the data's "today" hid its earlier copy (gap 225 → 533 days; the repeat score
 weighs time and fell from 0.80 to 0.74, under the 0.75 flag). A live check dates a new recommendation the day it
 is typed, so this only matters for demos built from old works.
+
+## T055 (2 Oct 2026): engine review, a test country, Office Patterns and risk fusion v3
+
+Write-up and reasoning: [`plans/T055-engine-review.md`](../plans/T055-engine-review.md). Two new measurements,
+because the old ones could not answer "does it find more, and does it stay right?":
+
+- **A test country** (`data/trial/synthetic_eval.py` → `results/synthetic_eval_<tag>.json`): three seeded made-up
+  countries (seeds 11, 12, 13; 60,951 works), 810 planted problems of 16 kinds and look-alikes the engines must
+  leave alone. The only **recall** measurement that needs no private data. "Main" = the engines on main
+  (a separate checkout), with the same test country and labels.
+- **The eSAKSHI dashboard's own tables** (`data/trial/dashboard_trial.py` → `results/dashboard_<tag>.json`,
+  `_queue.csv`, `_codes.csv`, `_flags.json`): 40,935 works downloaded 2 Oct 2026, never seen by any rule, with real
+  sanction dates for 15,662. Statistics and the price model rebuilt from them. Read by eye:
+  `data/trial/dashboard_labels.py`.
+
+**Test country, all planted problems (810):**
+
+| | Main | New engines, v2 score | **New engines, v3 score** |
+|---|---|---|---|
+| caught by the engine meant for them | 31.1% | 73.7% | **73.7%** |
+| Medium or above | 16.4% | 21.7% | **39.5%** |
+| in the review queue (High + Critical) | 4.0% | 4.6% | **16.4%** |
+| in the top 5% of the score | 33.7% | 45.9% | **74.3%** |
+| queue precision (planted problems / queue) | 61.5% | 58.7% | **68.2%** |
+| ordinary works queued (false alarms, of 47,671) | 0.03% | 0.04% | **0.11%** |
+
+`synthetic_eval_baseline.json`, `synthetic_eval_engines_v2fusion.json`, `synthetic_eval_v3.json`. The middle
+column is the same new engines scored by the old formula: the engines find the problems, the v3 score is what
+lets a well-measured finding reach the queue. Not counted in precision: 684 works the generator happened to
+make with a big sum and no place (`UNSCORED_BIG_VAGUE`); R12 queues 48% of them, rightly.
+
+**By planted kind** (caught by the meant engine → in the queue; main → v3):
+
+| Kind (n) | Caught: main → v3 | Queued: main → v3 | Note |
+|---|---|---|---|
+| Temple work, R07 (36) | 39% → **100%** | 0% → **100%** | the R07 reader fixes |
+| Big sum, no place, R12 (18) | 100% → 100% | 78% → 100% | |
+| Built in days, R13 (18) | 100% → 100% | 0% → **100%** | v3: 13 of 13 read right |
+| Outside the area, R08 (18) | 100% → 100% | 100% → 100% | |
+| Completed before recommended, R06 (18) | 100% → 100% | 0% → 0% | never read by eye: the prior, Medium at most |
+| Split at one site (60) | 77% → 77% | 0% → 7% | splits read right about half the time: Medium alone |
+| Split into numbered stretches (60) | 33% → **93%** | 0% → 5% | new `SPLIT_INTO_STRETCHES` |
+| Repair soon after built (36) | 0% → **78%** | 0% → 0% | new, never read on real works: the prior |
+| Repeat after completion (36) | 33% → 44% | 0% → 0% | Medium (44%); a repeat reads right ~50% |
+| Repeat while open (36) | 28% → 28% | 0% → 0% | Medium |
+| Office prices at the limit (237) | 0% → **100%** | 0% → 0.8% | new engine; corroborates, never queues alone |
+| Office closes works in days (93) | 37% → 37% | 0% → 37% | R13 counts each work; the habit is a fact |
+| Price ×10 on "1 unit" (36) | 28% → **78%** | 0% → 0% | a stated single unit is not "a bigger project" |
+| Price ×10 / ×5 / ×3 (36 each) | 47% / 42% / 6% (unchanged) | 0% | price alone reads right 54 of 128: Medium at most |
+
+**Look-alikes left alone** (v3, Medium or above / queued): a temple as a landmark (5,694) 3.7% / 0.1%; a school
+named "Shishu Mandir" (1,044) 3.5% / 0%; batches for different villages (1,343) 3% / 0.1%; opposite sides of one
+road (300) 0.7% / 0%; a repair of a different asset (18) 0% / 0%; bulk entry when the portal opened (211) 1.9% /
+1.9%; big projects that state their size (36) 5.6% / 0%.
+
+**The dashboard's 40,935 real works:**
+
+| | Main (`dashboard_baseline`) | **This branch, v3 (`dashboard_final`)** |
+|---|---|---|
+| Critical / High / Medium | 0 / 47 / 543 | **40 / 387 / 1,423** |
+| review queue | 47 (0.11%) | **427 (1.04%)** |
+| 40 random queue works read by eye | 38 yes, 1 grey, 1 no (25 distinct cases: 11 of the 40 are one ₹1.53 crore street-light purchase) | **39 yes, 1 grey, 0 no** |
+| by finding, in that sample | | R12 20 of 21 (+1 grey) · R14 13 of 13 · R07 3 of 3 · splits/stretches 3 of 3 |
+
+An earlier v3 run (`dashboard_v3`, before the last R07 fixes; queue 419) read 37 yes, 1 grey, 2 no, the 2 "no"
+being R07 misreads fixed the same day. New findings on the real works: R14 "built right after sanction" fires on
+**320** works, 12 random flags read **12 of 12** worth checking; `SPLIT_INTO_STRETCHES` 18; `PRICED_AT_LIMIT` 1,311
+works from **36 offices** whose routine is pricing works just under a limit (median office: 55% of its works,
+against 9.5% nationally); **6 offices** record constructions complete within 7 days of sanction as a routine
+(median 69% of their constructions, against 7.1% nationally). Offices are counted, never named, in the results.
+
+**R07 (eligibility), every changed answer read** (`dashboard_baseline_flags.json` vs `dashboard_final_flags.json`,
+labels `R07_CHANGES`): main flags 54, this branch 63. All **15 gained are right** (a church toilet, a wall for a
+temple, a hall in a temple, a temple's beautification, a solar plant in a private ITI, 10 works "table of kitchen,
+private school"); of the **6 dropped, 5 were misreads** (two roads named after a temple or church, a ration shop,
+a school, a shed "near" a temple courtyard) and 1 is grey (a platform "beside" a temple campus). On the team's
+fresh T051 eligibility TEST sample (`eligibility_rescore.py` → `eligibility_rescore.json`) the reader keeps
+all 40 right flags (28 clear, 12 grey) and drops 1 of the 10 misreads.
+
+**Duplicate & Split, the team's 159 labelled repeat pairs** (`dup_split_rescore.py` → `dup_split_rescore.json`;
+words and places only): false repeats flagged **56 → 50** of 102, true repeats **44 → 43** of 57.
+
+**How v3 reads the measured hit rates** (`apps/engine/drishti/reference/reliability.json`, each entry names its
+labels): R12 46 of 48 read right · R13 13 of 13 · R14 25 of 25 · R07 53 of 62 · cost above the comfort limit
+54 of 128 · repeat after completion 6 of 12 · repeat while open 33 of 74 · same-site split 14 of 27. A kind never
+read counts 1 in 4 and cannot queue a work alone.
+
+**Robustness** (`tests/evaluation/`): 400 malformed records (empty fields, impossible dates, Tamil and Hindi script,
+sums of 0 to ₹100 crore, SQL-looking text) never crash an engine; the same work twice gives the same answer;
+the order works are loaded in and capitals change no finding. A CI gate runs two small test countries on every
+pull request with a floor per planted kind and a ceiling per look-alike.
+
+**Not measured here:** the planted test (T080) and the full 2,09,993 works with v3 need the data pack (not in
+this session). The 2023 guideline PDF stays unreachable (network policy blocks mplads.mospi.gov.in).
 
 ## Bugs and data problems found along the way
 

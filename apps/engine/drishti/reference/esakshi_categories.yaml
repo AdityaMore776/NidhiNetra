@@ -1,0 +1,101 @@
+# eSAKSHI's own work categories (the text after the work id on the public dashboard, e.g.
+# "WS/MP620/2024-2025/133166-Construction of buildings for community cultural activities")
+# mapped to the engine's work types (work_types.yaml), so a record read straight from the
+# dashboard gets the same peers as the 2,09,993 works of the research export.
+#
+# Built 2 Oct 2026 from the dashboard's Works Recommended / Sanctioned / Completed exports
+# (data/esakshi_dashboard.py). A category missing here maps to OTHER and is reported by that
+# script, never guessed. `refine` overrides the category when the description says more
+# (a black-top road filed under "Construction of roads ..." is a bituminous road).
+version: 1
+categories:
+  "Construction of roads, link roads, pathways or any other road with or without drainage system": ROAD_CC
+  "Lighting of public spaces": STREET_LIGHT
+  "Street lights": STREET_LIGHT
+  "Construction of community centers and community halls": COMMUNITY_HALL
+  "Construction of buildings for community cultural activities": COMMUNITY_HALL
+  "Construction of additional rooms and halls in the existing public and community building": COMMUNITY_HALL
+  "Construction of buildings for crèches and anganwadies": COMMUNITY_HALL
+  "Construction of common work sheds/ common covered sitting area": BUS_SHELTER
+  "Construction of bus-sheds or bus-stops": BUS_SHELTER
+  "Construction of platforms and passenger sheds at railway stations": BUS_SHELTER
+  "Purchase of mobile water tankers": WATER_TANK
+  "Installing community drinking water plants": WATER_TANK
+  "Construction of water tanks": WATER_TANK
+  "Providing supply pipelines for drinking water": WATER_SUPPLY
+  "Installing tube-wells and borewells": BOREWELL
+  "Installing hand pumps": BOREWELL
+  "Purchase of smart boards, visual display units and projectors": COMPUTER
+  "Purchase of IT systems, including hardware and software for educational purposes": COMPUTER
+  "Setting up of laboratories": COMPUTER
+  "Purchase of books and periodicals for libraries/digitization of library books": LIBRARY
+  "Purchase Books for Library": LIBRARY
+  "Purchase of books for public libraries/ digitization of library books": LIBRARY
+  "Construction of public libraries and reading rooms": LIBRARY
+  "Construction of boundary walls of existing public and community buildings": BOUNDARY_WALL
+  "Construction of flood control embankments/ protection walls along riverbanks, hilltops, roadsides": EMBANKMENT
+  "Construction of rooms and halls in school and colleges": SCHOOL_BUILDING
+  "Crematoriums/energy efficient crematoriums or structures on burial/cremation ground": CREMATORIUM
+  "Purchase of furniture and fixtures for educational purposes": FURNITURE
+  "Fitting of Sitting RCC Benches in Public Places": FURNITURE
+  "Installation of firmly fixed waiting chairs and benches at railway stations": FURNITURE
+  "Construction of footpaths and pedestrian ways": FOOTPATH
+  "Construction of cycle tracks, cycle stand and segregated non-motorized vehicle (NMV) lanes": FOOTPATH
+  "Providing drains and gutters for public drainage": DRAIN
+  "Improvement of electricity distribution infrastructure": ELECTRICITY
+  "Construction of culverts and bridges": CULVERT
+  "Construction of road under bridge": BRIDGE
+  "Construction of foot over bridge (FOB)": BRIDGE
+  "Installation of fixed garden gym equipment": SPORTS_EQUIPMENT
+  "Installation of multi-gym equipment": SPORTS_EQUIPMENT
+  "Purchase of sports equipment": SPORTS_EQUIPMENT
+  "Providing sports equipment, except consumable items": SPORTS_EQUIPMENT
+  "Purchase of immovable sports equipment": SPORTS_EQUIPMENT
+  "Development of public parks": PLAYGROUND
+  "Development of playfields and sports grounds": PLAYGROUND
+  "Development of playground": PLAYGROUND
+  "Laying of synthetic turfs for hockey and football": PLAYGROUND
+  "Purchase of prosthetics, wheel chairs, tricycles (manual or motorized), elect scooties, hearing aids": MEDICAL_EQUIPMENT
+  "Purchase of other aids / devices required for P/ M/ V/ H impaired for differently abled persons": MEDICAL_EQUIPMENT
+  "Purchase of hospital equipment": MEDICAL_EQUIPMENT
+  "Providing CCTV camera system for security of public areas": CCTV
+  "Purchase of non-conventional energy system and devices for community use": SOLAR_PLANT
+  "Setting up public non-conventional energy plants": SOLAR_PLANT
+  "Construction of public irrigation facilities": CHECK_DAM
+  "Construction of rainwater harvesting structures": CHECK_DAM
+  "Establishing public lift irrigation projects": CHECK_DAM
+  "Establishing public ground water recharging facilities": CHECK_DAM
+  "Construction of public toilets and bathrooms": TOILET_BLOCK
+  "Construction of toilet blocks": TOILET_BLOCK
+  "Renovation of ponds and lakes": POND
+  "Creation of new ponds": POND
+  "Construction of rooms and facilities for hospitals, FWC , PHC Centers and ANM centers": HEALTH_BUILDING
+  "Purchase of ambulances (Four, three and two wheelers)": AMBULANCE
+  "Purchase of hearse van (Four, three and two wheelers)": AMBULANCE
+  "Purchase of vehicle for mobile dispensaries (Four, three and two wheelers)": AMBULANCE
+  "Purchase of ambulance to transport sick and injured animals": AMBULANCE
+  "Purchase of vans and buses for educational institutions": VEHICLE
+  "Patrolling Vehicles to government institution for Public Conveniences, Safety and Security": VEHICLE
+  "Purchase of vehicles for mobile libraries": VEHICLE
+  "Purchase of motor boats for flood and cyclone prone areas": VEHICLE
+  "Purchase of fire tenders for Government run institutions": VEHICLE
+  "Construction of public staircase/ stair ghat for public convenience": FOOTPATH
+  # seen on the dashboard, no close type: their own small groups, read as OTHER
+  "Construction of Government office buildings (Post office, Police station, Police chauki, etc.)": OTHER
+  "Construction of stadiums": OTHER
+  "Construction of buildings for sports facilities": OTHER
+  "Construction of buildings for multi-gym": OTHER
+  "Construction of shelters for animals": OTHER
+  "Construction of night shelters for homeless": OTHER
+  "Security gates in streets/public place for safety purpose": OTHER
+  "Purchase of mobile sanitation equipment": OTHER
+  "Setting up of kitchen and pantries": OTHER
+  "Purchase of training equipment": OTHER
+  "Retrofitting in essential lifeline buildings": OTHER
+  "Tree plantation for community": OTHER
+  "Providing garbage collection and disposal systems": OTHER
+# description words that move a work to a closer type, checked in order
+refine:
+  - {from: ROAD_CC, to: ROAD_BT, pattern: "\\b(?:bituminous|black\\s*top(?:ping)?|blacktop|b\\.?\\s?t\\.?\\s+road|bt\\s+road|tar\\s+road|premix|carpet(?:ing)?)\\b"}
+  - {from: ROAD_CC, to: FOOTPATH, pattern: "\\b(?:paver|interlock\\w*|footpath|pathway)\\b"}
+  - {from: CULVERT, to: BRIDGE, pattern: "\\bbridge\\b(?!.*\\bculvert)"}

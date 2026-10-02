@@ -16,6 +16,7 @@ from pydantic import BaseModel, Field
 
 from drishti import config, reference
 from drishti.agents import registry
+from drishti.agents.office_patterns.index import OfficeIndex
 from drishti.agents.statistical.cohort import StatsStore
 from drishti.auth import Principal, current_user
 from drishti.batch import (
@@ -24,6 +25,7 @@ from drishti.batch import (
     WORK_COLUMNS,
     _normalise,
     assess_one,
+    office_national,
     with_index,
 )
 from drishti.db import connect
@@ -36,7 +38,7 @@ router = APIRouter(prefix="/api/v1")
 PAGE = 25
 # Saved dashboard answers are keyed by the scoring version: a preview deployment of new
 # scoring shares the live database, and must never overwrite the live site's answers.
-CACHE_VERSION = "risk-v2"
+CACHE_VERSION = "risk-v3"
 
 
 @lru_cache(maxsize=1)
@@ -183,6 +185,36 @@ def offices(user: Principal = Depends(current_user)) -> list[dict]:
             for r in rows if r["agency_name"] in place]
 
 
+@router.get("/dashboard/office-habits")
+def office_habits(user: Principal = Depends(current_user)) -> list[dict]:
+    """Offices with a routine habit (Office Patterns, 2 Oct 2026): pricing most works just under
+    a limit, or recording constructions complete within a week of sanction. A habit of an
+    office is listed here once, never one queue item per work; never an MP."""
+    key = f"{CACHE_VERSION}:office_habits:{user.scope_district() or 'ALL'}"
+    return _cached(key, lambda: _office_habits(user))
+
+
+def _office_habits(user: Principal) -> list[dict]:
+    where, params = _scope(user)
+    with connect() as con:
+        national = office_national(con)
+        rows = con.execute(
+            f"SELECT w.district_lgd, w.agency_name, w.amount, w.work_type_code, w.status, "
+            f"w.sanction_date, w.completed_date, w.district_name, w.state_name, "
+            f"CASE WHEN w.sanction_date IS NOT NULL THEN w.description END AS description "
+            f"FROM works w WHERE {where} AND w.agency_name IS NOT NULL", params).fetchall()
+    idx = OfficeIndex.build(dict(r) for r in rows)
+    idx.national = national
+    place = {(str(r["district_lgd"] or "NA"), r["agency_name"]): (r["district_name"],
+                                                                  r["state_name"])
+             for r in rows}
+    out = []
+    for o in idx.routine_offices()[:50]:
+        name, state = place.get((o["district_lgd"], o["office"]), (None, None))
+        out.append({**o, "district_name": name, "state_name": state})
+    return out
+
+
 def _list(user: Principal, *, q: str | None, district: str | None, wtype: str | None,
           band: str | None, review_only: bool, page: int) -> dict:
     where, params = _scope(user)
@@ -202,16 +234,31 @@ def _list(user: Principal, *, q: str | None, district: str | None, wtype: str | 
     if review_only:
         clauses.append("a.band IN ('CRITICAL', 'HIGH')")
     cond = " AND ".join(clauses)
+    cols = ("w.work_id, w.source, w.district_lgd, w.district_name, w.state_name, "
+            "w.work_type_code, w.description, w.amount, w.status, w.recommended_date, "
+            "a.band, a.score, a.priority, a.limited, a.alerts, a.headline, a.case_id, "
+            "a.case_size")
     with connect() as con:
-        total = con.execute(f"SELECT count(*) AS n FROM works w LEFT JOIN assessments a "
-                            f"USING (work_id) WHERE {cond}", args).fetchone()["n"]
-        rows = con.execute(
-            f"SELECT w.work_id, w.source, w.district_lgd, w.district_name, w.state_name, "
-            f"w.work_type_code, w.description, w.amount, w.status, w.recommended_date, "
-            f"a.band, a.score, a.priority, a.limited, a.alerts, a.headline "
-            f"FROM works w LEFT JOIN assessments a USING (work_id) WHERE {cond} "
-            f"ORDER BY a.priority DESC NULLS LAST, w.work_id LIMIT %s OFFSET %s",
-            args + [PAGE, (page - 1) * PAGE]).fetchall()
+        if review_only:
+            # one row per case (migration 012): a purchase filed as 11 works is one question;
+            # the case is shown by its highest-priority work, with how many works it holds
+            case = "coalesce(a.case_id, w.work_id)"
+            total = con.execute(f"SELECT count(DISTINCT {case}) AS n FROM works w LEFT JOIN "
+                                f"assessments a USING (work_id) WHERE {cond}",
+                                args).fetchone()["n"]
+            rows = con.execute(
+                f"SELECT * FROM (SELECT DISTINCT ON ({case}) {cols} FROM works w "
+                f"LEFT JOIN assessments a USING (work_id) WHERE {cond} "
+                f"ORDER BY {case}, a.priority DESC NULLS LAST, w.work_id) one_per_case "
+                f"ORDER BY priority DESC NULLS LAST, work_id LIMIT %s OFFSET %s",
+                args + [PAGE, (page - 1) * PAGE]).fetchall()
+        else:
+            total = con.execute(f"SELECT count(*) AS n FROM works w LEFT JOIN assessments a "
+                                f"USING (work_id) WHERE {cond}", args).fetchone()["n"]
+            rows = con.execute(
+                f"SELECT {cols} FROM works w LEFT JOIN assessments a USING (work_id) "
+                f"WHERE {cond} ORDER BY a.priority DESC NULLS LAST, w.work_id "
+                f"LIMIT %s OFFSET %s", args + [PAGE, (page - 1) * PAGE]).fetchall()
     return {"total": total, "page": page, "page_size": PAGE,
             "items": [_jsonable(r) for r in rows]}
 

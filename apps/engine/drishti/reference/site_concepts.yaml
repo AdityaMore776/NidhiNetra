@@ -1,0 +1,95 @@
+# What a finished asset looks like in a site photo, and what its site looks like when the asset
+# is not there, per group of work types (Site Progress v2, T510, 2 Oct 2026).
+#
+# The local zero-shot reader (agents/site_progress/readers.py) scores every photo against every
+# line below as "a photo of <line>", once, offline; the engine keeps only those scores. A group
+# with an empty not_built list can only be "shown" or "can't tell": a playground and an empty
+# field look alike, and a light, a pump or a computer may simply be out of frame, so a photo
+# without one says nothing.
+#
+# These lines are a starting set, chosen by design. data/trial/site_progress_trial.py measures
+# them on the pilot's real photos before the engine is switched on (AGENTS.md rule 4); change a
+# line only with that trial's numbers.
+
+version: 1
+template: "a photo of {}"
+
+# a photo that is not of a site: never evidence either way
+not_site:
+  - a scanned document or certificate
+  - a screenshot of a form or a table
+  - a group of people at a meeting or a ceremony
+  - a map or a drawing
+
+groups:
+  road_cc:
+    types: [ROAD_CC]
+    built: [a finished cement concrete road, a concrete paved village lane between houses]
+    not_built: [an unpaved dirt road, a muddy village track,
+                a road under construction covered with gravel and sand]
+  road_bt:
+    types: [ROAD_BT]
+    built: [a black asphalt road]
+    not_built: [an unpaved dirt road, a gravel road with no asphalt]
+  pathway:
+    types: [FOOTPATH]
+    built: [a pathway paved with interlocking paver blocks]
+    not_built: [an unpaved dirt path]
+  drain:
+    types: [DRAIN]
+    built: [a concrete drain along a road]
+    not_built: [an open earthen ditch with no concrete lining]
+  crossing:
+    types: [CULVERT, BRIDGE]
+    built: [a concrete culvert or small bridge over a stream or drain]
+    not_built: [a stream or drain with no bridge or culvert]
+  building:
+    types: [COMMUNITY_HALL, SCHOOL_BUILDING, HEALTH_BUILDING, LIBRARY, CREMATORIUM, TOILET_BLOCK]
+    built: [a finished building with walls and a roof, a newly painted public building]
+    not_built: [an empty plot of land, a building under construction with no roof,
+                foundation work at a construction site]
+  wall:
+    types: [BOUNDARY_WALL]
+    built: [a finished boundary wall]
+    not_built: [an open plot with no boundary wall, a wall under construction with bare bricks]
+  shelter:
+    types: [BUS_SHELTER]
+    built: [a bus shelter or waiting shed beside a road]
+    not_built: [an empty roadside with no shelter]
+  pond:
+    types: [POND]
+    built: [a village pond with water and lined banks]
+    not_built: [flat dry land with no pond]
+  dam:
+    types: [CHECK_DAM, EMBANKMENT]
+    built: [a concrete check dam or embankment wall by a stream]
+    not_built: [a stream bank with no wall or dam]
+  water:
+    types: [BOREWELL, WATER_TANK, WATER_SUPPLY]
+    built: [a hand pump, a water tank on a tower, a water pipeline with taps]
+    not_built: []
+  lights:
+    types: [STREET_LIGHT, HIGH_MAST]
+    built: [a street light pole with a lamp, a solar street light, a high mast light tower]
+    not_built: []
+  solar:
+    types: [SOLAR_PLANT]
+    built: [solar panels on a roof or a frame]
+    not_built: []
+  grounds:
+    types: [PLAYGROUND, SPORTS_EQUIPMENT]
+    built: [a playground or sports ground, outdoor gym equipment]
+    not_built: []
+  equipment:
+    types: [COMPUTER, FURNITURE, MEDICAL_EQUIPMENT]
+    built: [computers on desks in a classroom, desks and benches in a classroom,
+            medical equipment in a hospital room]
+    not_built: []
+  vehicles:
+    types: [AMBULANCE, VEHICLE]
+    built: [an ambulance, a parked vehicle]
+    not_built: []
+  electric:
+    types: [ELECTRICITY, CCTV]
+    built: [an electric transformer on poles, a CCTV camera on a pole or a wall]
+    not_built: []

@@ -44,6 +44,14 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
+**2 Oct 2026, T055 (branch `claude/hopeful-feynman-4ov8y0`, not merged yet): engine review.** A seeded test
+country with planted problems measures recall (`apps/engine/drishti/evaluation/`, CI gate); new **Office Patterns**
+engine; Guideline rule **R14** (built right after sanction) and R07 fixes; Duplicate & Split reads numbered
+stretches and repairs; **risk fusion v3** (the chance a work is worth a look, from hit rates read by eye;
+`DRISHTI_FUSION=v2` rolls back); one case = one queue row. Planted problems queued 4% → 16% on the test country;
+eSAKSHI dashboard's 40,935 works: queue 47 → 427, 39/40 read worth checking. Before it goes live: apply migrations
+011 + 012 and re-run `batch_assess.py`. Start from `docs/plans/T055-engine-review.md` and the newest log entry.
+
 **1 Oct 2026 night: T054 + T080 + T064 merged and LIVE; hosted DB re-assessed (CRITICAL 5, HIGH 126, MEDIUM
 2,197; queue 131).** Start from `docs/team/log/2026-10-01-2352-adityamore776-T054.md` (handoff, three open owner
 questions: HIGH cut-off, cost "far bigger", 45 vs 75 days). Guideline timing rules now score by how unusual the
@@ -185,6 +193,11 @@ See the roadmap under "At a glance" above (the original 4-agent milestone list w
 - pandas NaN reached the engine as a truthy float; clean records via `data/common.py`.
 - MapLibre 6 needs its worker served from `public/maplibre` (`scripts/copy-maplibre.mjs`).
 - Next.js 16: middleware is now `proxy.ts`; read `apps/web/node_modules/next/dist/docs/`.
+- A word added to `generic_words.txt` also hides every place name one letter away from it (the
+  typo check): "motar" made the village "Motari" disappear and lost a planted split (2 Oct 2026). Add a
+  word only when the labelled pairs (`data/trial/dup_split_rescore.py`) or the test country show a gain.
+- Synthetic precision counts only planted problems as right: a made-up work that happens to be a real
+  rule breach (a big sum with no place) is reported apart as `UNSCORED_*`, never as a false alarm.
 
 ## Live links
 

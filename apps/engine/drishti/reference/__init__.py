@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from functools import cache
 from pathlib import Path
 
@@ -39,6 +40,34 @@ def clause(clause_id: str) -> dict:
 
 def citation(clause_id: str) -> str:
     return f"MPLADS Guidelines (June 2016), para {clause(clause_id)['paragraph']}"
+
+
+@cache
+def _esakshi() -> tuple[dict[str, str], tuple[tuple[str, str, re.Pattern], ...]]:
+    data = _load("esakshi_categories.yaml")
+    cats = {" ".join(k.split()).lower(): v for k, v in data["categories"].items()}
+    refine = tuple((r["from"], r["to"], re.compile(r["pattern"], re.I))
+                   for r in data.get("refine") or ())
+    return cats, refine
+
+
+def esakshi_type(category: str | None, description: str | None = None) -> str | None:
+    """The work type for an eSAKSHI dashboard category (esakshi_categories.yaml), refined by the
+    description; None when the category is not in the file (callers report it, never guess)."""
+    cats, refine = _esakshi()
+    code = cats.get(" ".join((category or "").split()).lower())
+    if code is None:
+        return None
+    for src, dst, rx in refine:
+        if code == src and rx.search(description or ""):
+            return dst
+    return code
+
+
+@cache
+def site_concepts() -> dict:
+    """What finished assets and unbuilt sites look like in a photo (Site Progress v2, T510)."""
+    return _load("site_concepts.yaml")
 
 
 def is_countable(code: str | None) -> bool:

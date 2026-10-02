@@ -83,6 +83,20 @@ export interface OfficeRow {
   state_name: string | null;
 }
 
+/** An office with a routine habit (Office Patterns), listed once; never an MP. */
+export interface OfficeHabit {
+  district_lgd: string;
+  office: string;
+  habit: string;
+  count: number;
+  total: number;
+  share: number;
+  national: number;
+  lift: number;
+  district_name: string | null;
+  state_name: string | null;
+}
+
 export interface WorkRow {
   work_id: string;
   source: "REAL" | "SCENARIO" | "LIVE";
@@ -100,6 +114,9 @@ export interface WorkRow {
   limited: boolean | null;
   alerts: string[] | null;
   headline: string | null;
+  /** One case per Duplicate & Split group (the queue shows the group once). */
+  case_id?: string | null;
+  case_size?: number | null;
 }
 
 export interface Page<T> {
@@ -176,6 +193,11 @@ export interface Reason {
   code: string;
   text_en: string;
   text_hi: string;
+  /** Fusion v3: this finding's chance of being worth a look, and the by-eye reads behind it. */
+  chance?: number;
+  hit_rate?: number;
+  basis?: "measured" | "design" | "prior";
+  read?: [number, number] | null;
 }
 
 export interface WorkDetail {

@@ -53,8 +53,9 @@ _MANY_SITES = re.compile(
     r"panchayats?|sites?|schools?|"
     r"public\s+places?|areas?|cd\s+blocks?)"
     r"|\bvar[io]+us\s+(?:cd\s+)?blocks?"
-    r"|\b(?:diff?e?rent|deferent|diffrent|vibhinn)\s+(?:villages|gram\s+panchayats|panchayats|"
-    r"wards|blocks|schools|places|locations?|sites|sthalon?)"
+    # "at different place of Patashpur-I Block" (singular, read by eye on the dashboard, 2 Oct 2026)
+    r"|\b(?:diff?e?rent|deferent|diffrent|vibhinn)\s+(?:villages?|gram\s+panchayats|panchayats|"
+    r"wards|blocks|schools|places?|locations?|sites|sthalon?)"
     r"|\bvarious\s+(?:\w+\s+){0,2}(?:streets?|roads|lanes|drains|wards|buildings)\b"
     r"|\b(?:[2-9]|\d{2,4})\s+(?:public\s+|govt\.?\s+|government\s+|different\s+|"
     r"sarvajanik\s+|(?!(?:rooms?|class\w*|storey\w*|floors?|bed\w*|seater|km|kms|mtrs?)\b)"
@@ -137,6 +138,37 @@ TYPE_UNITS = {
     "WATER_TANK": re.compile(r"tankers?|coolers?|ro\s*plants?|pyau", re.I),
     "TOILET_BLOCK": re.compile(r"toilets?", re.I),
 }
+
+
+# "Installation of one high mast light", "1 no. solar street light", "single room": exactly one
+# unit of the type's own kind. Such a work cannot be "a bigger project than its peers", so the
+# cost engine keeps asking about it (T080: a planted 10x "one semi-high-mast light" was waved
+# through as a bigger project; owner question 2, 1 Oct 2026). "All in one", "one side", "one
+# way" are not counts.
+_ONE = (r"(?<!in\s)(?<!in-)(?<!all\s)\b(?:one|single|ek|1(?![\d.,]))\s*"
+        r"(?:no\.?|nos\.?|number|unit|nag|adad)?\s*(?:of\s+)?"
+        r"(?:(?!side\b|way\b|time\b|phase\b|part\b)[a-z0-9.()/-]+\s+){0,3}?")
+SINGLE_UNITS = {
+    "STREET_LIGHT": r"(?:lights?|lamps?|poles?|(?:high|semi|mini)?[\s-]*(?:mast\w*|mask))",
+    "BOREWELL": r"(?:hand\s*pumps?|handpumps?|bore\s*wells?|borewells?|tube\s*wells?|pumps?)",
+    "SCHOOL_BUILDING": r"(?:rooms?|class\s*rooms?)",
+    "TOILET_BLOCK": r"(?:toilets?|urinals?)",
+    "BUS_SHELTER": r"(?:sheds?|shelters?|bus\s*stops?)",
+    "WATER_TANK": r"(?:tankers?|tanks?|coolers?|ro\s*plants?)",
+    "AMBULANCE": r"(?:ambulances?|vans?|vehicles?)",
+    "CCTV": r"(?:cameras?|cctv)",
+    "COMPUTER": r"(?:computers?|laptops?|smart\s*boards?|projectors?)",
+    "FURNITURE": r"(?:bench|benches|desks?|tables?|almirahs?)",
+    "CULVERT": r"(?:culverts?|pipe\s*culverts?)",
+}
+
+
+def single_unit(work_type: str | None, text: str | None) -> bool:
+    """The description names exactly one unit of the type's own kind ("one high mast light")."""
+    unit = SINGLE_UNITS.get(work_type or "")
+    if unit is None:
+        return False
+    return bool(re.search(_ONE + unit + r"\b", text or "", re.I))
 
 
 def stated_count(text: str | None, work_type: str | None = None) -> int | None:

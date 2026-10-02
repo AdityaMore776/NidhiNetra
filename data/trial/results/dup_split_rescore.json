@@ -1,0 +1,93 @@
+{
+  "base": "origin/main",
+  "by_label": {
+    "different": {
+      "pairs": 102,
+      "flagged_base": 56,
+      "flagged_branch": 50,
+      "share_flagged_base": 0.549,
+      "share_flagged_branch": 0.49
+    },
+    "same": {
+      "pairs": 57,
+      "flagged_base": 44,
+      "flagged_branch": 43,
+      "share_flagged_base": 0.772,
+      "share_flagged_branch": 0.754
+    }
+  },
+  "changed": [
+    {
+      "sample": "DEV1",
+      "a": "WS/MP070/2023-2024/73487",
+      "b": "WS/MP070/2024-2025/133137",
+      "label": "different",
+      "base": true,
+      "branch": false
+    },
+    {
+      "sample": "DEV1",
+      "a": "WS/MP18235/2024-2025/168574",
+      "b": "WS/MP18235/2025-2026/248463",
+      "label": "different",
+      "base": true,
+      "branch": false
+    },
+    {
+      "sample": "DEV1",
+      "a": "WS/MP408/2023-2024/38821",
+      "b": "WS/MP408/2023-2024/87450",
+      "label": "different",
+      "base": false,
+      "branch": true
+    },
+    {
+      "sample": "DEV1",
+      "a": "NOREF-16924e4e818e60",
+      "b": "WS/MP478/2025-2026/180980",
+      "label": "different",
+      "base": true,
+      "branch": false
+    },
+    {
+      "sample": "DEV2",
+      "a": "NOREF-a1b5305ed53f0d",
+      "b": "WS/MP18397/2025-2026/252417",
+      "label": "different",
+      "base": true,
+      "branch": false
+    },
+    {
+      "sample": "DEV2",
+      "a": "WS/MP18164/2025-2026/213823",
+      "b": "WS/MP18295/2025-2026/193137",
+      "label": "same",
+      "base": true,
+      "branch": false
+    },
+    {
+      "sample": "TEST2",
+      "a": "WS/MP18155/2025-2026/222961",
+      "b": "WS/MP18155/2025-2026/247640",
+      "label": "different",
+      "base": true,
+      "branch": false
+    },
+    {
+      "sample": "TEST2",
+      "a": "NOREF-2c1da1bbc9e9f8",
+      "b": "WS/MP18271/2025-2026/135006",
+      "label": "different",
+      "base": true,
+      "branch": false
+    },
+    {
+      "sample": "TEST2",
+      "a": "WS/MP070/2023-2024/73381",
+      "b": "WS/MP070/2024-2025/136481",
+      "label": "different",
+      "base": true,
+      "branch": false
+    }
+  ]
+}

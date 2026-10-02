@@ -1,7 +1,19 @@
+"""Risk fusion v2 (T050-T054), kept selectable with DRISHTI_FUSION=v2: these tests pin it.
+The default since 2 Oct 2026 is v3 (tests/fusion/test_calibrated.py)."""
+
 import pytest
 
 from drishti.agents.contract import AgentResult, Finding, Status, not_built
-from drishti.fusion.fuse import CRITICAL, HIGH, MEDIUM, band_of, fuse, weights
+from drishti.fusion.fuse import CRITICAL_V2 as CRITICAL
+from drishti.fusion.fuse import HIGH_V2 as HIGH
+from drishti.fusion.fuse import MEDIUM_V2 as MEDIUM
+from drishti.fusion.fuse import band_of_v2 as band_of
+from drishti.fusion.fuse import fuse, weights
+
+
+@pytest.fixture(autouse=True)
+def _v2(monkeypatch):
+    monkeypatch.setenv("DRISHTI_FUSION", "v2")
 
 
 def _r(agent, risk, hard=False, status=Status.ASSESSED, code="X", evidence=None):
@@ -23,6 +35,8 @@ def test_blueprint_weights_come_from_the_registry():
     # only; the outlier slot was replaced by Compliance R12/R13 (T053)
     assert "outlier" not in w and w["delay"] == 0.0
     assert w["paperwork"] == 0.0 and w["photo_evidence"] == 0.0
+    # an office's habit corroborates a little (2 Oct 2026)
+    assert w["office_patterns"] == pytest.approx(0.10)
 
 
 def test_score_is_the_weighted_sum_and_parts_add_up_exactly():

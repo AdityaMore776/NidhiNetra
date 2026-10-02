@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "note": "How often each kind of finding was worth an officer's look when the team read it by eye. Risk fusion v3 (fusion/calibrated.py) turns a finding into a chance: hit_rate x strength, where hit_rate = (worth + 1) / (read + 4) (a cautious prior of 1 in 4, so a finding read only a few times counts little) and strength = the finding's risk / ref_risk (1 for fixed-risk findings; a weaker flag of a graded kind counts in proportion). 'design' entries are not measurements: they write down a decision the team already made (a wait alone never reaches High; a missing field is a data gap). A code that is not listed counts at the prior (1 in 4) until it is read: proof before launch, in numbers. Officer verdicts (T070) add to worth/read; re-read the sources when the engines change.",
+  "prior": {"worth": 1, "read": 4},
+  "codes": {
+    "compliance:NO_STATED_SCOPE": {"worth": 46, "read": 48, "ref_risk": 0.6, "source": "T053 R12: 28 of 30 engine flags read by eye (data/trial/odd_rules_labels.py) + 18 of 18 in the dashboard v3 queue sample (data/trial/dashboard_labels.py QUEUE_V3)"},
+    "compliance:BUILT_IN_DAYS": {"worth": 13, "read": 13, "ref_risk": 0.6, "source": "T053 R13: every flag read by eye (odd_rules_labels.py)"},
+    "compliance:POSSIBLY_INADMISSIBLE": {"worth": 53, "read": 62, "ref_risk": 0.6, "source": "R07 v2 fresh TEST sample, clear or grey (data/trial/eligibility_trial.py TEST_LABELS: 40 of the 49 the 2 Oct 2026 reader still flags) + dashboard flags it still flags: 9 of 9 (dashboard_labels.py R07) and 4 of 4 (QUEUE_V3)"},
+    "compliance:BUILT_RIGHT_AFTER_SANCTION": {"worth": 25, "read": 25, "ref_risk": 0.6, "source": "R14: 12 random dashboard flags (dashboard_labels.py R14) + 13 of 13 in the v3 queue sample (QUEUE_V3), read 2 Oct 2026"},
+    "compliance:SANCTION_OVERDUE": {"design": 0.40, "ref_risk": 0.6, "source": "design (T054, rules.json grading_note): a wait alone never reaches High; the rarest waits (1 in 25) count 0.40"},
+    "compliance:COMPLETION_OVERDUE": {"design": 0.10, "ref_risk": 0.6, "source": "design (T054): open past a year is common on the portal (39-69 in 100); a note"},
+    "compliance:MISSING_KEY_DATA": {"design": 0.10, "ref_risk": 0.3, "source": "design: a data gap, not a finding about the work"},
+    "compliance:IMPOSSIBLE_TIMELINE": {"ref_risk": 0.6, "source": "not yet read by eye: the prior (1 in 4) for a quarter where bulk entry does not explain it (MEDIUM, 0.6); a bulk-entry quarter (LOW, 0.3) counts half"},
+    "compliance:OUTSIDE_AREA_CEILING": {"ref_risk": 1.0, "source": "arithmetic against para 2.9, not read by eye: the prior; a serious rule breach still lifts the score to High (the floor)"},
+    "statistical:COST_ABOVE_PEERS": {"worth": 54, "read": 128, "ref_risk": 0.9, "source": "T053 cost: above the comfort limit, 54 of 128 flags read as real price questions (docs/trial/FINDINGS.md T053; labels data/trial/cost_v2_labels.py)"},
+    "statistical:UNIT_RATE_ABOVE": {"ref_risk": 0.9, "source": "not yet read by eye: the prior"},
+    "dup_split:FUNDED_AGAIN_AFTER_COMPLETION": {"worth": 6, "read": 12, "ref_risk": 0.95, "source": "T051 fresh TEST + TEST2 pairs of this kind (data/trial/dup_split_v2_labels.py); hit rate does not rise with the pair score (45-50% in every band 0.75-0.95)"},
+    "dup_split:REPEATED_WHILE_OPEN": {"worth": 33, "read": 74, "ref_risk": 0.7, "source": "T051 fresh TEST + TEST2 pairs of this kind (31 of 67) + dashboard 2 of 7 (dashboard_labels.py)"},
+    "dup_split:SPLIT_AT_ONE_SITE": {"worth": 14, "read": 27, "ref_risk": 0.75, "source": "T051 GROUPS_TEST2 9 of 15 (dup_split_v2_labels.py) + dashboard 5 of 12 strict (dashboard_labels.py); ref = the strongest split (pieces just under a limit)"},
+    "dup_split:SPLIT_INTO_STRETCHES": {"worth": 14, "read": 27, "ref_risk": 0.75, "source": "a same-site split whose pieces carry part / phase / chainage numbers: read with SPLIT_AT_ONE_SITE until read on its own"},
+    "dup_split:BULK_ORDER": {"ref_risk": 0.4, "source": "not read as 'worth checking' (15 of 15 read as bulk purchases, T050): the prior; under a limit it counts most"},
+    "dup_split:REPAIR_SOON_AFTER_BUILT": {"ref_risk": 0.7, "source": "new 2 Oct 2026, not yet read on real works: the prior"},
+    "office_patterns:PRICED_AT_LIMIT": {"design": 0.20, "ref_risk": 0.3, "source": "design: a habit of the office corroborates a work's own findings and never queues it alone; the offices themselves are listed once"}
+  }
+}

@@ -26,11 +26,18 @@ DUPLICATES (pairs)
   Same MP within 60 days = a batch (the group rules look at it). Repair / phase / balance
   words in the later work = staged, not flagged. The first COMPLETED before the second was
   recommended = after_completed, otherwise while_open.
+  repair_after_built (2 Oct 2026, playbook B4/C19): the later work REPAIRS what the first built
+  at the same place, within three years of its completion; judged on the asset (verbs left
+  out, >= 0.75) and how soon, not the amount (a repair costs less).
+  A completed work with no recommendation date (the dashboard's Completed table) can be the
+  first of a pair, dated by its completion; it cannot be the later one.
 
 SPLITS AND BULK ORDERS (groups)
   same district, work type and MP; each recommended within 30 days of the previous; text
   >= 0.80; cut by place words and numbers; amounts alike (coefficient of variation < 0.15).
   same_site_split  2+ pieces naming the same place
+  stretches        ... whose pieces carry different part / phase / chainage labels ("part-1",
+                   "Bit-III", "chainage 0 to 250 m"): one job cut into numbered pieces
   bulk_order       3+ pieces naming no place (or goods, or "different places")
   under_limit      every piece within 80-100% of a limit (reference/rules.json) and the total
                    above it: amounts pile up just under Rs 5 and Rs 10 lakh nationally.
@@ -57,6 +64,7 @@ FLAG = 0.75
 BATCH_DAYS = 60
 SPLIT_TEXT, SPLIT_GAP_DAYS, SPLIT_MIN, SPLIT_CV = 0.80, 30, 3, 0.15
 SITE_TEXT = 0.90
+REPAIR_ASSET_MIN = 0.75
 SERIES_COPIES = 3
 
 REF = Path(reference.__file__).resolve().parent
@@ -66,7 +74,18 @@ SYNONYMS = {"sadak": "road", "sadk": "road", "sarak": "road", "marg": "road", "r
             "kaksha": "classroom", "kharanja": "khadanja", "khadanza": "khadanja",
             "pakka": "pucca", "pakki": "pucca", "handpump": "handpump", "nalkoop": "borewell",
             "सड़क": "road", "मार्ग": "road", "निर्माण": "construction", "कार्य": "work",
-            "नाली": "drain", "भवन": "building", "कक्ष": "classroom", "खड़ंजा": "khadanja"}
+            "नाली": "drain", "भवन": "building", "कक्ष": "classroom", "खड़ंजा": "khadanja",
+            # 2 Oct 2026: the same work refiled in the other language ("samudayik bhawan nirman"
+            # / "community hall ka nirman karya") or abbreviated ("Constn. of")
+            "samudayik": "community", "samuhik": "community", "sarvajanik": "public",
+            "hall": "building", "vidyalay": "school", "vidyalaya": "school",
+            "pathshala": "school", "shauchalay": "toilet", "shauchalaya": "toilet",
+            "talab": "pond", "pokhar": "pond", "pokhara": "pond", "puliya": "culvert",
+            "pulia": "culvert", "chahardiwari": "boundarywall", "chardiwari": "boundarywall",
+            "constn": "construction", "const": "construction", "constructing": "construction",
+            "installing": "installation", "adhishthapan": "installation",
+            "adhisthapan": "installation", "sthapna": "installation", "marammat": "repair",
+            "maramat": "repair"}
 FILLER = set("of the and at in on to for from near with ka ki ke me mein se tak par wa va evam "
              "का की के में से तक पर व एवं हेतु".split())
 # Hindi words that never name a place (the corpus has no Devanagari to learn them from).
@@ -116,6 +135,9 @@ def _generic_buckets() -> dict[tuple[str, int], tuple[str, ...]]:
 
 
 TYPO_MIN = 85.0
+# a long word can carry two slips ("antergart" for "antargat", 82% alike): on the team's 159
+# pairs read by eye this kept one more real repeat and added no false one (80% added one)
+TYPO_MIN_LONG, LONG_WORD = 82.0, 8
 
 
 @lru_cache(maxsize=300_000)
@@ -126,9 +148,10 @@ def misspelt_generic(x: str) -> bool:
     if len(x) < 4:
         return False
     buckets = _generic_buckets()
+    bar = TYPO_MIN_LONG if len(x) >= LONG_WORD else TYPO_MIN
     for n in range(len(x) - 2, len(x) + 3):
         for g in buckets.get((x[0], n), ()):
-            if indel_ratio(x, g) >= TYPO_MIN:
+            if indel_ratio(x, g) >= bar:
                 return True
     return False
 
@@ -159,19 +182,94 @@ def local_limit(n_works: int) -> int:
     return max(LOCAL_MAX_WORKS, int(LOCAL_MAX_SHARE * n_works))
 
 
+# One village, two clerks: "Chakwa" / "Chakva", "Ghurpur" / "Gurpur", "Belauli" / "Belaauli".
+# Two spellings are compared by their sound as well as their letters: w = v, long vowels short,
+# aspirates plain (bh = b, kh = k), z = j, ph = f, doubled letters single. Short names differ
+# by one letter (chakwa / chakva is 83% alike, under the 85% bar), so the sound key catches
+# what the letter match cannot.
+_SOUND = ((re.compile(r"w"), "v"), (re.compile(r"z"), "j"), (re.compile(r"ph"), "f"),
+          (re.compile(r"([kgcjtdpb])h"), r"\1"), (re.compile(r"aa+"), "a"),
+          (re.compile(r"ee+|ii+"), "i"), (re.compile(r"oo+|uu+"), "u"),
+          (re.compile(r"(.)\1+"), r"\1"))
+
+
+@lru_cache(maxsize=200_000)
+def sound_key(word: str) -> str:
+    k = word.lower()
+    for rx, sub in _SOUND:
+        k = rx.sub(sub, k)
+    return k
+
+
+def _same_word(x: str, y: str) -> bool:
+    return indel_ratio(x, y) >= PLACE_MIN or (
+        len(x) >= 5 and len(y) >= 5 and sound_key(x) == sound_key(y))
+
+
 def place_agreement(a: str, b: str) -> float:
     """Share (0-100) of the place words of both works that the other work also names
-    (a word matches when it is at least 85% alike, so "podumbu" = "podhumbu")."""
+    (a word matches when it is at least 85% alike, so "podumbu" = "podhumbu", or sounds the
+    same, so "chakwa" = "chakva")."""
     wa, wb = a.split(), b.split()
     if not wa or not wb:
         return 0.0
-    hits = sum(any(indel_ratio(x, y) >= PLACE_MIN for y in wb) for x in wa)
-    hits += sum(any(indel_ratio(y, x) >= PLACE_MIN for x in wa) for y in wb)
+    hits = sum(any(_same_word(x, y) for y in wb) for x in wa)
+    hits += sum(any(_same_word(y, x) for x in wa) for y in wb)
     return 100.0 * hits / (len(wa) + len(wb))
 
 
+# One job cut into numbered parts: "part-1", "Part II", "phase 2", "Bit-III", "stretch 1",
+# "package 3", "chainage 0 to 250 m", "km 1.2 to 1.8". The number names the PIECE, not the site,
+# so it is kept out of the site numbers; pieces at one site with different labels recommended
+# together are a split into stretches (read by eye on the dashboard, 2 Oct 2026: a police
+# station repair "Part-I" / "Part-II" at Rs 5.01 lakh each; a road "Bit-I/II/III").
+SEGMENT = re.compile(r"\b(part|phase|bit|stretch|reach|section|package|pkg|lot|khand)\s*[-:.#]?\s*"
+                     r"(?:no\.?\s*)?(\d{1,2}|[ivx]{1,4})(?![\w.])", re.I)
+CHAINAGE = re.compile(r"\b(?:ch(?:ainage)?|km)\.?\s*(\d+(?:[.+]\d+)?)\s*(?:m|mtrs?|km)?\s*"
+                      r"(?:to|-)\s*(\d+(?:[.+]\d+)?)", re.I)
+ROMAN = {"i": 1, "ii": 2, "iii": 3, "iv": 4, "v": 5, "vi": 6, "vii": 7, "viii": 8, "ix": 9,
+         "x": 10}
+
+
+def segment(text: str | None) -> str | None:
+    """The piece a description names ("part:2", "ch:250-500"), or None."""
+    t = text or ""
+    m = SEGMENT.search(t)
+    if m:
+        n = m.group(2).lower()
+        n = str(ROMAN.get(n, n)) if not n.isdigit() else str(int(n))
+        return f"{m.group(1).lower()}:{n}"
+    c = CHAINAGE.search(t)
+    if c:
+        return f"ch:{c.group(1)}-{c.group(2)}"
+    return None
+
+
 def site_numbers(text: str | None) -> str:
-    return " ".join(sorted(set(NUMBER.findall(text or ""))))
+    """Numbers that can tell two sites apart (plot, ward, house), not those naming a piece."""
+    t = SEGMENT.sub(" ", text or "")
+    t = CHAINAGE.sub(" ", t)
+    return " ".join(sorted(set(NUMBER.findall(t))))
+
+
+# Repair of an asset (playbook B4 / C19): a new road or hall repaired within three years of being
+# built under the scheme reads as the first work not done, or done badly. The verbs are dropped
+# when the two descriptions are compared, so "Repair of community hall at X" meets
+# "Construction of community hall at X".
+REPAIR = re.compile(r"\b(repairs?|repairing|renovation|renovat\w*|marammat|maramat|mrammat|"
+                    r"jirnoddhar|jirnodhar|jeernoddhar|resurfacing|restoration|re-?carpeting)\b",
+                    re.I)
+REPAIR_DAYS = 3 * 365
+VERBS = re.compile(r"\b(construction|constructing|construct|const|constn|c/o|nirman|nirmaan|"
+                   r"karya|work|works|providing|provision|installation|installing|laying|"
+                   r"development|new|of|ka|ki|ke|repairs?|repairing|renovation|renovat\w*|"
+                   r"marammat|maramat|mrammat|jirnoddhar|jirnodhar|jeernoddhar|resurfacing|"
+                   r"restoration|re-?carpeting)\b", re.I)
+
+
+def asset_sim(a: str | None, b: str | None) -> float:
+    """Text similarity of what is built where, the verbs ("construction", "repair") left out."""
+    return text_sim(VERBS.sub(" ", a or ""), VERBS.sub(" ", b or ""))
 
 
 @lru_cache(maxsize=100_000)
@@ -212,8 +310,8 @@ class Rec:
     district: str
     work_type: str
     mp: str
-    rec: date
-    done: date | None
+    rec: date | None               # None: a completed work whose recommendation date is
+    done: date | None              # not in the record (the dashboard's Completed table)
     status: str | None
     amount: float
     description: str
@@ -221,28 +319,35 @@ class Rec:
     place: str = ""                # ... and not boilerplate of its own district
     nums: str = ""
     copies: int = 1
+    segment: str | None = None     # the numbered piece the description names, if any
+
+    @property
+    def when(self) -> date:
+        """The work's date for ordering: recommended, else completed (it existed by then)."""
+        return self.rec or self.done  # type: ignore[return-value]
 
     @classmethod
     def of(cls, w: dict) -> Rec | None:
         amount = float(w.get("amount") or 0)
-        rec = w.get("recommended_date")
+        rec, done = w.get("recommended_date"), w.get("completed_date")
         desc = w.get("description")
-        if amount <= 0 or rec is None or undescribed(desc):
+        if amount <= 0 or (rec is None and done is None) or undescribed(desc):
             return None
         return cls(work_id=w["work_id"], district=str(w.get("district_lgd") or "NA"),
                    work_type=str(w.get("work_type_code") or "NA"),
-                   mp=str(w.get("mp_name") or "NA"), rec=rec, done=w.get("completed_date"),
+                   mp=str(w.get("mp_name") or "NA"), rec=rec, done=done,
                    status=w.get("status"), amount=amount, description=str(desc),
-                   raw_place=place_words(desc), nums=site_numbers(desc))
+                   raw_place=place_words(desc), nums=site_numbers(desc),
+                   segment=segment(desc))
 
 
 def _pair(ra: Rec, rb: Rec) -> dict | None:
     """The rules for one candidate pair; None when it is not a duplicate."""
-    if rb.rec < ra.rec:
+    if rb.when < ra.when:
         ra, rb = rb, ra
-    gap = (rb.rec - ra.rec).days
-    if gap > DUP_DAYS:
-        return None
+    if rb.rec is None:
+        return None                                   # the later work's date is unknown
+    gap = (rb.rec - ra.when).days
     if ra.mp == rb.mp and gap <= BATCH_DAYS:
         return None                                   # a batch: the group rules' business
     if not ra.place or not rb.place:
@@ -250,26 +355,47 @@ def _pair(ra: Rec, rb: Rec) -> dict | None:
     if ra.copies >= SERIES_COPIES or rb.copies >= SERIES_COPIES:
         return None                                   # a series of identical works
     if ra.nums and rb.nums and ra.nums != rb.nums:
-        return None                                   # different plot / stretch numbers
+        return None                                   # different plot / ward / house numbers
+    if ra.segment and rb.segment and ra.segment != rb.segment:
+        return None                                   # two numbered pieces: the group rules'
     sa, sb = sides(ra.description), sides(rb.description)
     if sa and sb and sa != sb:
         return None                                   # opposite sides of one road
-    text = text_sim(ra.description, rb.description)
-    if text < TEXT_MIN:
-        return None
     place = place_agreement(ra.place, rb.place)
     if place < PLACE_MIN:
         return None
     amt_diff = abs(ra.amount - rb.amount) / max(ra.amount, rb.amount, 1.0)
-    score = (0.50 * text + 0.20 * place / 100 + 0.15 * max(0.0, 1 - gap / 730)
+    built = ra.done is not None and ra.done < rb.rec
+    if (built and REPAIR.search(rb.description) and not REPAIR.search(ra.description)
+            and (rb.rec - ra.done).days <= REPAIR_DAYS):
+        # a repair of what the first work built: judged on the asset, not the amount (a repair
+        # costs less), and on how soon after completion it comes
+        asset = asset_sim(ra.description, rb.description)
+        soon = (rb.rec - ra.done).days
+        score = 0.60 * asset + 0.25 * place / 100 + 0.15 * max(0.0, 1 - soon / REPAIR_DAYS)
+        if asset < REPAIR_ASSET_MIN or score < FLAG:
+            return None
+        return {"a": ra.work_id, "b": rb.work_id, "kind": "repair_after_built",
+                "score": round(score, 4), "text": round(asset, 4), "place": round(place, 1),
+                "gap_days": gap, "days_after_completion": soon, "amount_a": ra.amount,
+                "amount_b": rb.amount, "amount_diff": round(amt_diff, 4)}
+    # the clock of a repeat starts when the first work was finished, if it was: a work filed
+    # again soon after completion is the question, and building it took months (2 Oct 2026)
+    clock = (rb.rec - ra.done).days if built else gap
+    if clock > DUP_DAYS:
+        return None
+    text = text_sim(ra.description, rb.description)
+    if text < TEXT_MIN:
+        return None
+    score = (0.50 * text + 0.20 * place / 100 + 0.15 * max(0.0, 1 - clock / 730)
              + 0.15 * max(0.0, 1 - amt_diff / AMOUNT_TOL))
     if score < FLAG:
         return None
     staged = bool(STAGED.search(rb.description))
-    after = ra.done is not None and ra.done < rb.rec
-    kind = "staged" if staged else ("after_completed" if after else "while_open")
+    kind = "staged" if staged else ("after_completed" if built else "while_open")
     return {"a": ra.work_id, "b": rb.work_id, "kind": kind, "score": round(score, 4),
             "text": round(text, 4), "place": round(place, 1), "gap_days": gap,
+            "days_after_completion": clock if built else None,
             "amount_a": ra.amount, "amount_b": rb.amount, "amount_diff": round(amt_diff, 4)}
 
 
@@ -292,7 +418,7 @@ def _cv(amounts: list[float]) -> float:
 
 def groups_in_block(recs: list[Rec]) -> list[dict]:
     """Chains of alike works of one district, type and MP, then cut by place words."""
-    recs = sorted(recs, key=lambda r: r.rec)
+    recs = sorted((r for r in recs if r.rec is not None), key=lambda r: r.rec)
     parent = list(range(len(recs)))
 
     def find(x: int) -> int:
@@ -329,6 +455,9 @@ def groups_in_block(recs: list[Rec]) -> list[dict]:
                 continue                     # a batch for different spots: ordinary
             one_site = bool(place) and not goods
             kind = "same_site_split" if one_site else "bulk_order"
+            labels = {r.segment for r in sub if r.segment}
+            if one_site and len(labels) >= 2:
+                kind = "stretches"           # one job at one site in numbered pieces
             if len(sub) < (2 if one_site else SPLIT_MIN):
                 continue
             amounts = [r.amount for r in sub]
@@ -341,7 +470,8 @@ def groups_in_block(recs: list[Rec]) -> list[dict]:
                         "under_limit": _under_limit(amounts) is not None,
                         "limit": _under_limit(amounts), "shared_place": place if one_site else "",
                         "days": (max(r.rec for r in sub) - min(r.rec for r in sub)).days,
-                        "members": members, "amounts": amounts})
+                        "members": members, "amounts": amounts,
+                        "segments": sorted(labels)})
     return out
 
 
@@ -449,7 +579,8 @@ def _side(p: dict, me: str) -> dict:
     return {"other": p["b"] if first_is_me else p["a"], "kind": p["kind"], "score": p["score"],
             "text": p["text"], "place": p["place"], "gap_days": p["gap_days"],
             "other_amount": p["amount_b"] if first_is_me else p["amount_a"],
-            "amount_diff": p["amount_diff"], "this_is_later": not first_is_me}
+            "amount_diff": p["amount_diff"], "this_is_later": not first_is_me,
+            "days_after_completion": p.get("days_after_completion")}
 
 
 def _top(pairs: list[dict]) -> list[dict]:
@@ -461,4 +592,4 @@ def _public(g: dict | None, me: str) -> dict | None:
         return None
     return {k: g[k] for k in ("group_id", "kind", "size", "total", "under_limit", "limit",
                               "shared_place", "days", "cv")} | {
-        "others": [x for x in g["members"] if x != me][:5]}
+        "others": [x for x in g["members"] if x != me][:5], "segments": g.get("segments", [])}

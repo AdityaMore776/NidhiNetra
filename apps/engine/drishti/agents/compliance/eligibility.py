@@ -22,7 +22,8 @@ from dataclasses import dataclass
 from drishti.validation.prohibited import LANDMARK, _patterns
 
 PDS_SHOP = re.compile(
-    r"\b(?:ration|fair\s*price|public\s+distribution|p\.?\s?d\.?\s?s?|fps|amutham)"
+    r"\b(?:ration|fair\s*price|(?:public|pulic|publik|publick)\s+distribution|p\.?\s?d\.?\s?s?|fps|"
+    r"amutham)"
     r"\s+(?:system\s+)?shops?\b", re.I)
 AFTER_LANDMARK = re.compile(
     r"^[\s,.-]*(?:(?:k[ei]?\s+)?pa+s+\b|k[ei]?\s+sam(?:a)?ne|k[ei]?\s+pi(?:ch|chh)e|k[ei]?\s+nikat|"
@@ -32,14 +33,51 @@ INSTITUTION = re.compile(
     r"\b(?:shishu|sishu|vidya|vidhya|bidya|siksha|shiksha|gyan|jnana|bal|ranga?|kala|natya|sangeet|samaj)"
     r"\s+mandir\b|"
     r"\bmemorial\s+(?:senior\s+|higher\s+|secondary\s+|primary\s+|public\s+)*"
-    r"(?:school|college|hospital|hall|library|vidyalaya)\b|\bmandir\s+(?:school|vidyalaya|inter\s+college)\b",
+    r"(?:school|college|hospital|hall|library|vidyalaya|institution|institute|academy)\b|"
+    r"\bmandir\s+(?:school|vidyalaya|inter\s+college)\b",
     re.I)
+# A work FOR a private institution (Annexure-II item 2: works belonging to private organisations):
+# "table of kitchen, private school" (10 works), "JAGAT PRIVETE ITI ME SOLAR PLANT". A private
+# school named as a landmark or an end of a road ("near the private school", "road from Pvt
+# School", "private ITI vai ... tak") is not the work (read on the dashboard tables, 2 Oct 2026).
+PRIVATE_INSTITUTION = re.compile(
+    r"\b(?:private|privete|pvt\.?)\s+(?:school|iti|college|hospital|institute|institution|"
+    r"nursing\s+home|clinic)\b(?!\s+(?:k[ei]\s+)?(?:pa+s|samne|nikat|tak|se|vai|via)\b)", re.I)
+ROUTE_BEFORE = re.compile(
+    r"\b(?:near|opposite|beside|behind|outside|front\s+of|nikat|from|to|se|tak|via|vai|upto|"
+    r"till)\b(?:\s+[\w.'-]+){0,4}\s*$", re.I)
 WORSHIP = r"(?:temple|mandir|masjid|mosque|church|gurudwara|dargah|idgah|eidgah)"
 PREMISES = re.compile(
     rf"\b(?:premises|campus|compound(?!\s+wall)|prangan|parisar|courtyard)\s+(?:of\s+)?(?:[\w.'-]+\s+){{0,3}}?"
     rf"{WORSHIP}\b|"
     rf"\b{WORSHIP}\s+(?:[\w.'-]+\s+)?(?:premises|campus|compound(?!\s+wall)|prangan|parisar|courtyard)\b"
-    rf"(?!\s+(?:k[ei]\s+)?(?:nikat|pa+s|samne|bahar|near))", re.I)
+    rf"(?!\s+(?:k[ei]\s+)?(?:nikat|pa+s|samne|bahar|near|samip|sameep|najdik|nazdik|nazdeek|"
+    rf"bagal))", re.I)
+# A road named after the place of worship it leads to or passes ("Puthiyakavu temple link road",
+# "Pera - St. John's Church - Cheruvalloore Road"): the road is the work, the shrine a name.
+# Read by eye on the eSAKSHI dashboard tables, 2 Oct 2026 (2 of 12 R07 flags).
+ROAD_NAMED = re.compile(
+    r"^[\s,.'-]*(?:[\w.'-]+[\s-]+){0,3}?(?:link\s+|approach\s+|connecting\s+|main\s+)?"
+    r"(?:road|rd|marg|rasta|sadak|sarak|street|lane|gali|path)\b", re.I)
+# Romanised Hindi puts the object before the verb: "shiv mandir ka saundaryikaran karya" (the
+# beautification of a temple), "hanuman mandir nirman". Only the keyword followed at once by
+# ka/ki/ke and a work verb counts: "... se Shiv mandir tak pcc nirman" is a road to the temple
+# (8 of the 9 romanised candidates on the dashboard tables of 2 Oct 2026 were such roads).
+HI_LATIN_OBJECT = re.compile(
+    r"\b(?P<kw>mandir|masjid|gurudwara|gurdwara|girja\s*ghar|dargah|idgah|eidgah|devsthan|"
+    r"devasthan|thakurbari|shivalaya?)\s+(?:(?:ka|ki|ke)\s+)?(?:nav\s*)?"
+    r"(?:nirman|nirmaan|jirnoddhar|jirnodhar|jeernoddhar|punarnirman|saundaryikaran|"
+    r"sundarikaran|sondaryikaran|saundarikaran|marammat|chahardiwari|chardiwari)\b", re.I)
+# A structure built IN, FOR or OF a place of worship: "Construction of Toilet in Catholic Church",
+# "Community Hall in Mandir", "boundary wall for Parvathi temple", "boundary wall of jama masjid".
+# "at" is left out ("shed at Chinar Mandir" names a place), so are "in front of" and "near" (read
+# on the dashboard tables, 2 Oct 2026: 4 of 18 candidates were works on a place of worship, the
+# rest schools named "... Vidya Mandir", landmarks, or places called "eidgah").
+ON_WORSHIP = re.compile(
+    r"\b(?:boundary\s*wall|compound\s*wall|chahardiwari|chardiwari|toilets?|community\s+hall|"
+    r"hall|platform|shed|rooms?|kitchen|flooring|roof|stage|gate)\s+(?:in|inside|within|for|of)"
+    r"\s+(?:the\s+)?(?!front\b)(?:[\w.'-]+\s+){0,3}?(?:temple|mandir|masjid|mosque|church|"
+    r"gurudwara|dargah)\b(?!\s+(?:area|hills?|colony|road|marg|samiti|trust\s+school))", re.I)
 NEAR_BEFORE = re.compile(
     r"\b(?:near|opposite|beside|behind|outside|in front of|nikat)\b(?:\s+[\w.'-]+){0,3}\s*$", re.I)
 
@@ -124,12 +162,27 @@ def v2(text: str | None) -> Inadmissible | None:
                 continue
             if AFTER_LANDMARK.search(t[m.end():]):
                 continue
+            if item["id"] == "RELIGIOUS" and ROAD_NAMED.search(t[m.end():]):
+                continue
             if item["id"] == "COMMERCIAL" and PDS_SHOP.search(t):
                 continue
             if item["id"] in ("RELIGIOUS", "NAMED_ASSET") and INSTITUTION.search(t):
                 continue
             return Inadmissible(item["id"], str(item.get("annexure_ii_2016_item", "")), kw,
                                 " ".join(item["text"].split()))
+    m = PRIVATE_INSTITUTION.search(t)
+    if m and not ROUTE_BEFORE.search(t[:m.start()]):
+        for item, _kw, _rx in _patterns():
+            if item["id"] == "PRIVATE_BUILDING":
+                return Inadmissible("PRIVATE_BUILDING",
+                                    str(item.get("annexure_ii_2016_item", "")),
+                                    m.group(0).strip(), " ".join(item["text"].split()))
+    m = HI_LATIN_OBJECT.search(t) or ON_WORSHIP.search(t)
+    if m and not INSTITUTION.search(t):
+        for item, _kw, _rx in _patterns():
+            if item["id"] == "RELIGIOUS":
+                return Inadmissible("RELIGIOUS", str(item.get("annexure_ii_2016_item", "")),
+                                    m.group(0).strip(), " ".join(item["text"].split()))
     m = PREMISES.search(t)
     if m and not NEAR_BEFORE.search(t[:m.start()]) and not INSTITUTION.search(t):
         for item, _kw, _rx in _patterns():

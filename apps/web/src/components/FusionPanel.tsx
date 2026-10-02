@@ -24,7 +24,9 @@ export function FusionPanel({ a }: { a: WorkDetail["assessment"] }) {
         </span>
         <div>
           <div className="font-semibold">Risk score</div>
-          <div className="text-xs text-muted">Each check adds its signal times its fixed weight; the parts add up to the score</div>
+          <div className="text-xs text-muted">
+            The chance this work is worth a look, from how often each kind of flag proved worth a look when read by eye; the parts add up to the score
+          </div>
         </div>
         <div className="ml-auto text-right">
           <div className="text-2xl font-bold" style={{ color: BAND_COLOR[a.band] }}>
@@ -58,6 +60,14 @@ export function FusionPanel({ a }: { a: WorkDetail["assessment"] }) {
                 <span>
                   <span className="font-medium">{r.label}: </span>
                   {hindi ? r.text_hi : r.text_en}
+                  {!hindi && r.basis === "measured" && r.read ? (
+                    <span className="block text-xs text-muted">
+                      Flags like this read worth a look {r.read[0]} times in {r.read[1]}.
+                    </span>
+                  ) : null}
+                  {!hindi && r.basis === "prior" ? (
+                    <span className="block text-xs text-muted">Not yet read by eye: counts as 1 in 4 until it is.</span>
+                  ) : null}
                 </span>
               </li>
             ))}

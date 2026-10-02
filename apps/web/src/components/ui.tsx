@@ -71,6 +71,9 @@ export function WorkTable({ items, showWhy = true }: { items: WorkRow[]; showWhy
                 </Link>
                 <div className="text-xs text-muted line-clamp-2">{w.description}</div>
                 {showWhy && w.headline && <div className="mt-1 text-xs">{w.headline}</div>}
+                {w.case_size && w.case_size > 1 ? (
+                  <div className="mt-1 text-xs text-muted">One case: {w.case_size} alike works, shown once</div>
+                ) : null}
               </td>
               <td className="px-4 py-3 whitespace-nowrap">
                 {w.district_name}

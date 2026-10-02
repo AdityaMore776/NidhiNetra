@@ -281,6 +281,36 @@ work_types:
     tier: C
     benchmark: { basis: gem, gem_category: GYM_EQUIPMENT, unit_rate_key: inr_per_nos }
 
+  # Four eSAKSHI categories with no close type above (esakshi_categories.yaml, 2 Oct 2026):
+  # their prices differ from every type here, so they get their own peers.
+  - code: WATER_SUPPLY
+    name: Drinking water supply pipeline
+    category: Drinking water
+    unit: m
+    tier: C
+    benchmark: { basis: none }
+
+  - code: EMBANKMENT
+    name: Flood embankment / protection wall
+    category: Roads and pathways
+    unit: m
+    tier: C
+    benchmark: { basis: none }
+
+  - code: ELECTRICITY
+    name: Electricity distribution (transformers, lines)
+    category: Energy
+    unit: nos
+    tier: C
+    benchmark: { basis: none }
+
+  - code: VEHICLE
+    name: Vehicle (van, bus, boat, patrol vehicle)
+    category: Other
+    unit: nos
+    tier: C
+    benchmark: { basis: none }
+
   - code: OTHER
     name: Other / unclassified
     category: Other

@@ -258,3 +258,15 @@ def test_cost_always_applies_so_a_recommended_work_is_assessed_not_not_applicabl
     # for evidence, so this engine has no NOT_APPLICABLE case (unlike photo checks).
     r = assess(_work(status="RECOMMENDED"), stats, AS_OF)
     assert r.status == Status.ASSESSED
+
+
+def test_one_unit_far_above_its_peers_is_asked_not_called_a_bigger_project():
+    # T080 / owner question 2: a planted 10x "one semi-high-mast light" was waved through as
+    # a bigger project; one unit cannot be a bigger project (2 Oct 2026)
+    from drishti.agents.statistical.scope import single_unit
+
+    assert single_unit("STREET_LIGHT", "Installation of one high mast light at Rampur")
+    assert single_unit("STREET_LIGHT", "1 no. solar street light near school")
+    assert not single_unit("STREET_LIGHT", "SOLAR ALL IN ONE HYBRID STREET LIGHT STHAPNA")
+    assert not single_unit("COMPUTER", "Purchase of 15 laptops")
+    assert not single_unit("ROAD_CC", "One way road")

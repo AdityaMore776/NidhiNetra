@@ -57,10 +57,12 @@ work record ─► 2 DATA VALIDATION ─► 3 AGENTS (each returns an AgentResul
 |---|---|
 | `agents/contract.py` | `AgentResult` / `Finding` / `Status`; the banned-word guard; `not_built()` placeholder |
 | `agents/registry.py` | finds engines by folder (`agents/<id>/engine.py`); the five blueprint slots and their weights |
-| `agents/compliance/` | **Guideline Compliance**: rules R01–R11 from `reference/rules.json` (English + Hindi), eligibility v2 reader |
+| `agents/compliance/` | **Guideline Compliance**: rules R01–R14 from `reference/rules.json` (English + Hindi), eligibility v2 reader |
 | `agents/statistical/` | the **Cost** engine: `scope.py` (what a description covers: goods/works, bundles, counts), `cohort.py` (peer statistics store), `text.py` (length reading), `unit_rate.py` (road ₹/m), `price_model.py` (word-price model, applied to any description, T051), `agent.py` (like-for-like peers + the price model must agree) |
 | `agents/dup_split/` | **Duplicate & Split Work**: `match.py` holds the rules and compares ANY work with its district live (stdlib only; the batch builds one index of every work, the API one per district, T051) |
 | `agents/delay/` | **Fund Flow** (stored id `delay`): ended-term works still unsanctioned, office sanction backlog against its district (`backlog.py`, counted live); the delay forecast was removed in T053; shown, not counted |
+| `agents/office_patterns/` | **Office Patterns** (2 Oct 2026): `index.py` counts per office, live from all works, how many works are priced just under a limit (96-100% of ₹5 lakh, ₹10 lakh, ...) and how many constructions are recorded complete within 7 days of sanction; an office is "routine" only when its Wilson lower bound is at least 3× the national share (30+ priced works, 15+ built). `agent.py`: a work just under a limit from a routine office gets `PRICED_AT_LIMIT` (risk 0.30, weight 0.10: corroborates, never queues alone); the office's after-sanction habit is told as a fact (R14 counts the work itself) |
+| `agents/site_progress/` | **Site Progress** v2 (T510), **off** unless `DRISHTI_SITE_PROGRESS=on`: `claims.py` (the record's own words), `observe.py` (the stored per-photo reading from `reference/site_concepts.yaml`), `plaque.py` (MPLADS plaque and its dates from the photo's text), `readers.py` (offline only: a local CLIP model, an optional Gemini reader with a daily cap and cache), `agent.py` (the rules). Readings are made by `data/build_site_observations.py` |
 | `agents/paperwork/`, `agents/photo_evidence/` | **Paperwork** (certificates vs the portal), **Photo Evidence** (reuse, place, time of photos); shown, not counted (see AGENT-CATALOG) |
 
 **One brain per engine (T051).** An engine's reasoning is a function of the work plus stored tables or
@@ -68,7 +70,8 @@ coefficients (`cohort_stats`, `engine_models`, `reference/*`). No engine reads a
 per work by an offline job: a recommendation the system has never seen goes through exactly the same code
 as a corpus work, and "compared, nothing found" is only said after a comparison ran.
 | `validation/` | helpers Guideline Compliance uses: `timeline.py` (impossible dates judged by quarter and office, Wilson lower bound), `prohibited.py` (object-of-work patterns), `pii.py`. The separate Data Validation step was removed in T053 |
-| `fusion/fuse.py`, `fusion/reasons.py` | the risk score, bands and top-3 reasons in English and Hindi (below) |
+| `fusion/calibrated.py`, `fusion/fuse.py`, `fusion/reasons.py` | the risk score (v3 calibrated evidence fusion; v2 rollback), bands and top-3 reasons in English and Hindi (below) |
+| `evaluation/` | the test country (2 Oct 2026): `synthetic.py` builds a seeded, made-up eSAKSHI (~19,000 works shaped like the real export) with labelled planted problems and look-alikes; `stats.py` rebuilds the statistics from it; `harness.py` runs the pipeline blind and scores recall, queue precision and false alarms. Used by `tests/evaluation/` (CI gate) and `data/trial/synthetic_eval.py` |
 | `pipeline/orchestrator.py` | `assess_work()`: run agents → fuse → priority; an agent that raises becomes an `ERROR` result, never a finding |
 | `api/routes.py` | REST endpoints (below) |
 | `auth.py` | token verification, `Principal`, district scoping, dev mode |
@@ -92,38 +95,51 @@ AgentResult(agent, status, verdict, risk, confidence, hard, headline, version,
 - Agents not yet built report `NOT_BUILT`, so every screen shows every slot from day one and nothing pretends
   to have been checked.
 
-## 4. Risk score (fusion v2, T050)
+## 4. Risk score (fusion v3, 2 Oct 2026; v2 kept as a rollback)
 
-`fusion/fuse.py`, the NidhiNetra blueprint formula
-([`specs/2026-09-27-nidhinetra-blueprint.md`](specs/2026-09-27-nidhinetra-blueprint.md)).
+`fusion/calibrated.py` (v3, the default) and `fusion/fuse.py` (dispatch + v2). The score is **the chance a
+work is worth an officer's look**, built from how often each kind of flag was read as worth checking when
+the team read flags by eye (`reference/reliability.json`; every entry names its labels file).
 
 ```
-score     = 0.30 compliance + 0.20 cost + 0.20 duplicate/split + 0.20 delay + 0.10 outlier
-            each term = the engine's risk (0–1) when it ASSESSED the work, else 0
-            weights from the engine registry: not built = 0; below its accuracy target = 0
-            ("shown, not counted": Delay today, AUC 0.71 vs 0.80)
-floors    1 serious rule breach (hard finding, risk ≥ 0.6) lifts the score to the High cut,
-          2+ to the Critical cut; the lift is its own part, so parts still add up exactly
-bands     CRITICAL ≥ 0.33 · HIGH ≥ 0.22 · MEDIUM ≥ 0.15 · LOW   (shown as 0–100)
-reasons   the top three contributions, English (the engine's own sentence) + Hindi
-limited   a counted engine could not assess the work: a LOW score is not a clean chit
-priority  score × (1 + log10(amount / ₹1 lakh)), money factor clamped to 0–3
+a finding   p = hit rate × strength
+            hit rate = (worth + 1) / (read + 4)      e.g. R12 46 of 48 read → 0.94; repeat while open
+                                                     33 of 74 → 0.45; never read → 1 in 4 (the prior)
+            strength = the finding's risk / its reference risk (graded rules count in proportion)
+an engine   its findings as independent evidence, one kind of finding counted once (its strongest)
+the work    1 − ∏(1 − p_engine) over the counted engines (registry weight > 0)
+floor       a serious rule breach (hard, risk ≥ 0.6) lifts the score to High, two to Critical (own part)
+bands       CRITICAL ≥ 0.80 and two counted engines each ≥ 0.15 (or a serious breach and another engine)
+            HIGH ≥ 0.50 (more likely than not worth a look) · MEDIUM ≥ 0.25 · LOW
+parts       each engine's share ∝ −ln(1 − p): order-free, and the parts add up exactly to the score
+reasons     the top three parts, English + Hindi, each with the measured hit rate behind it
+            ("flags like this read worth a look X times in Y")
+priority    score × (1 + log10(amount / ₹1 lakh)), money factor clamped to 0–3 (unchanged)
 ```
 
-**Why these cut-offs:** tuned on all 2,09,993 works (`data/dry_run.py` →
-`data/trial/results/risk_score_bands.json`). The blueprint's 40/70/85 can't be used as written: with
-Delay at weight 0 and Outlier not built, the highest real score is 37. Scores come in steps; High needs two
-engines each with a meaningful signal, Critical a guideline issue plus a split under the ₹5 lakh limit or a
-repeat after completion (or three engines). Result: Critical 128, High 1,396, Medium 35,085.
+**Why v3:** in v2 no single engine could reach High (Guideline Compliance at its strongest gave 0.18 of the
+0.22 needed), so a split, a repeat or a temple work found with certainty stayed Medium unless a second engine
+happened to fire: on the planted test 4 of 50 fakes reached the queue (T080), on the synthetic countries 4%.
+v3 lets one well-measured finding queue a work on its own, and keeps rare, unread or weakly measured findings
+out: a kind of flag never read by eye counts 1 in 4 and cannot queue a work alone (proof before launch, in
+numbers). Splits and repeats stay Medium alone because they read right only about half the time (45-52%).
+Measured in [`trial/FINDINGS.md`](trial/FINDINGS.md) "2 Oct 2026".
 
-**Review queue** = High + Critical (1,524 works, 0.73%), ordered by priority; 24 of 30 random queue works
-read by eye are worth checking (`results/risk_score_eye.json`). The queue list's one-line summary is the
-reason that sets the work apart (a sanction or completion delay only leads when nothing else counts).
+**Learning loop (T070):** `Reliability.with_verdicts({code: (worth, read)})` adds officer verdicts to the
+counts, so the score learns which flags are right without retuning a cut-off.
 
-**Not counted:** Data Validation issues are shown on the work page, but Guideline Compliance reports the same
-facts (R06 impossible dates, R11 missing data), so they no longer add to the score.
+**One case, one queue row:** a Duplicate & Split group (one purchase entered as many works, one site split
+into pieces) is stored with `case_id` / `case_size` (migration 012); the queue shows the group once, by its
+highest-priority work ("One case: N alike works, shown once").
 
-**Planned:** reliability learned from officer verdicts (T070); a group counted once across engines.
+**Rollback:** `DRISHTI_FUSION=v2` brings back the T050 weighted sum unchanged
+(`0.30 compliance + 0.20 cost + 0.20 duplicate/split + 0.20 fund flow`; floors as above;
+CRITICAL ≥ 0.30 · HIGH ≥ 0.22 · MEDIUM ≥ 0.15). Both versions run through the same tests
+(`tests/fusion/test_fuse.py` pins v2, `test_calibrated.py` checks v3).
+
+**Not counted:** Fund Flow (its wait is R01's), Paperwork and Photo Evidence (pilot evidence only) are shown
+on the work page with weight 0. Office Patterns counts with a small weight: an office habit corroborates a
+work's own findings and never queues a work alone (`design` entry, 0.20).
 
 ## 5. Record checks (inside Guideline Compliance)
 
@@ -146,8 +162,9 @@ All routes are under `/api/v1` and (except health) need a signed-in user. Intera
 | `GET /dashboard/summary` | totals, band counts, review count, money at stake — scoped to the user |
 | `GET /dashboard/districts` | per-district counts for the map |
 | `GET /dashboard/offices` | offices with concentrated record problems (listed once) |
+| `GET /dashboard/office-habits` | offices with an unusual habit (Office Patterns: pricing works just under a limit, or recording constructions complete within days of sanction), each with its count, its share and the national share (scoped, cached) |
 | `GET /works?q=&district=&type=&band=&page=` | searchable, paged list of works with their band and score |
-| `GET /queue?district=&band=&page=` | works needing review (MEDIUM/HIGH), by priority |
+| `GET /queue?district=&band=&page=` | works needing review (HIGH/CRITICAL), by priority; a Duplicate & Split case (`case_id`) appears once, by its highest-priority work, with `case_size` |
 | `GET /works/{work_id}` | one work with its full assessment (agent cards, parts, validation); rebuilt on the fly for compact rows |
 
 **Scoping:** `DISTRICT` and `FIELD` users are confined to their district **inside the SQL** of every query
@@ -168,13 +185,13 @@ your area returns 404.
 
 | Table | Holds |
 |---|---|
-| `works` | one row per work: ids, place (state/district codes and names, constituency), MP, agency, type, category, description, amount, dates, status, quantity, outside-constituency flag, and `source ∈ {REAL, SCENARIO, LIVE}` so real, planted and live records are never confused |
+| `works` | one row per work: ids, place (state/district codes and names, constituency), MP, agency, type, category, description, amount, dates (recommended, `sanction_date` since migration 011, completed), status, quantity, outside-constituency flag, and `source ∈ {REAL, SCENARIO, LIVE}` so real, planted and live records are never confused |
 | `districts` | district code, name, state |
 | `cohort_stats` | peer cost bands per level (type×district / type×state / type) — n, p10, p50, p90, sd |
 | `duration_stats` | completion-time percentiles per work type |
 | `unit_rate_models` | road price-per-metre curve and published rate anchors |
 | `timeline_quarters`, `timeline_agencies` | impossible-date base rates by quarter and office |
-| `assessments` | per work: score, band, limited, priority, parts, validation, agents, versions, summary `alerts[]`/`headline`, and `compact` |
+| `assessments` | per work: score, band, limited, priority, parts, validation, agents, versions, summary `alerts[]`/`headline`, `compact`, and `case_id` / `case_size` (migration 012: the Duplicate & Split group a work belongs to, so the queue shows a case once) |
 | `work_signals` | per work and engine: facts computed offline. Since T051 no core engine uses it (kept for evidence-based checkers) |
 | `engine_models` | small learned models an engine applies to any work, as JSON: the cost engine's word-price model (migration 008, `data/build_price_model.py`) |
 | `dashboard_cache` | saved dashboard answers, emptied whenever works are re-assessed |
@@ -205,10 +222,17 @@ database. LOW and MEDIUM works are stored **compact** (summary only) and rebuilt
 
 ## 11. Testing
 
-- **Engine:** 260 tests (`pytest`) — agent contract and banned words, every engine (Compliance, Cost, Duplicate
+- **Engine:** 421 tests (`pytest`) — agent contract and banned words, every engine (Compliance, Cost, Duplicate
   & Split, Delay) including NOT_ASSESSABLE cases, the risk score, bands and reasons, migrations, fusion maths,
   validation and impossible dates, orchestrator (an agent crash never becomes a finding), config, migrations,
   API and auth (scoping, dev-mode refusal on Vercel).
+- **Quality gate (2 Oct 2026):** `tests/evaluation/test_quality_gate.py` runs the whole pipeline on two small
+  seeded made-up countries in CI: each planted problem must be found by the engine meant for it, well-measured
+  rule breaches must reach the queue, look-alikes (a temple as a landmark, a school named "Shishu Mandir",
+  opposite sides of one road, a repair of another asset) must be left alone, queue precision ≥ 0.75 and
+  ordinary works queued ≤ 0.5%. `test_random_environment.py` feeds 400 malformed records (empty fields,
+  impossible dates, other scripts, sums of zero or crores) and checks no engine crashes, parts add up, the
+  same work gives the same answer, and load order and capitals change nothing.
 - **Web:** typecheck, lint and production build in CI.
 - **Agents on real data:** `data/trial/*.py` — every number in [AGENT-CATALOG.md](AGENT-CATALOG.md) comes from a saved
   output in `data/trial/results/`.
