@@ -844,8 +844,13 @@ sums of 0 to ₹100 crore, SQL-looking text) never crash an engine; the same wor
 the order works are loaded in and capitals change no finding. A CI gate runs two small test countries on every
 pull request with a floor per planted kind and a ceiling per look-alike.
 
-**Not measured here:** the planted test (T080) and the full 2,09,993 works with v3 need the data pack (not in
-this session). The 2023 guideline PDF stays unreachable (network policy blocks mplads.mospi.gov.in).
+**Live, all 2,09,993 works** (the owner ran `data/batch_assess.py` on the hosted database after PR #86 merged;
+output in `results/hosted_assess_v3.txt`): CRITICAL 83, HIGH 1,347, MEDIUM 5,112, LOW 203,451. The review queue is
+**1,430 works (0.68%)**, up from 131 with fusion v2 (1 Oct). That is the same order as on the dashboard's works
+(1.04%). The queue shows one row per Duplicate & Split case, so it lists fewer rows than 1,430.
+
+**Not measured yet:** 30 random live queue works read by eye, and the planted test (T080) on the full works with v3
+(both need the data pack or database access, not available in the session that built this). The 2023 guideline PDF stays unreachable (network policy blocks mplads.mospi.gov.in).
 
 ## Bugs and data problems found along the way
 

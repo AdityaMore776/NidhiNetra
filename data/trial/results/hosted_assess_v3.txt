@@ -1,0 +1,6 @@
+# data/batch_assess.py on the hosted database (Supabase drishti-db), run by the owner on
+# 2 Oct 2026 after PR #86 (main 6efb61d) was merged and deployed: Risk Fusion v3, Office Patterns,
+# R14, case grouping. Output pasted verbatim. Before (T054 handoff, 1 Oct 2026, fusion v2):
+# CRITICAL 5, HIGH 126, MEDIUM 2,197, LOW 207,665; review queue 131; 245 MB.
+assessed 209,993 works in 430s: {'LOW': 203451, 'HIGH': 1347, 'MEDIUM': 5112, 'CRITICAL': 83}
+database size after assessment: 264 MB
