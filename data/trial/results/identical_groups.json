@@ -1243,7 +1243,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "Installation of 5 solar lights from Main Road to residence of Pal Singh",
+  "desc": "Installation of 5 solar lights from Main Road to residence of [name]",
   "ids": [
    "WS/MP376/2023-2024/57668",
    "WS/MP376/2023-2024/57667"
@@ -3227,7 +3227,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": false,
   "span_days": 0,
-  "desc": "FOR CONSTRUCTION OF BOUNDARY WALL OF PANCHYATI HOUSE",
+  "desc": "FOR CONSTRUCTION OF BOUNDARY WALL OF [name] HOUSE",
   "ids": [
    "WS/MP380/2023-2024/23367",
    "WS/MP380/2023-2024/23366"
@@ -5900,7 +5900,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": false,
   "span_days": 0,
-  "desc": "FOR CONST OF COMMUNITY HALL IN COMMIITTEE GHAR",
+  "desc": "FOR CONST OF COMMUNITY HALL IN [name] GHAR",
   "ids": [
    "WS/MP381/2025-2026/227475",
    "WS/MP381/2025-2026/227471"
@@ -7205,7 +7205,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "anpad Nainital ke antargat Gram Sabha Ratanpur vikaskhand Kota bag Tahsil kaladhungi Mein mukhya Marg se Maya tiwari ki Ghar Tak c c Nirman Karya Hetu",
+  "desc": "anpad Nainital ke antargat Gram Sabha Ratanpur vikaskhand Kota bag Tahsil kaladhungi Mein mukhya Marg se [name] ki Ghar Tak c c Nirman Karya Hetu",
   "ids": [
    "WS/MP021/2025-2026/204380",
    "WS/MP021/2025-2026/204378"
@@ -7220,7 +7220,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "Janpad Nainital antargat gram bacchi Nagar number 2 Mein link Marg se Sardar Mahendra Singh Ke Khet Tak CC marg Nirman kairiy hetu",
+  "desc": "Janpad Nainital antargat gram bacchi Nagar number 2 Mein link Marg se [name] Ke Khet Tak CC marg Nirman kairiy hetu",
   "ids": [
    "WS/MP021/2025-2026/174631",
    "WS/MP021/2025-2026/174632",
@@ -7281,7 +7281,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": false,
   "span_days": 0,
-  "desc": "Janpad Nainital ke antargat Gram Ramani jaswa katghariya Mein Mangla Vihar face 01 Shri pragat Singh ki dukaan se Shri Ramesh Chand Tiwari ke ghar Tak c c nirma",
+  "desc": "Janpad Nainital ke antargat Gram Ramani jaswa katghariya Mein Mangla Vihar face 01 [name] ki dukaan se Shri [name] ke ghar Tak c c nirma",
   "ids": [
    "WS/MP021/2025-2026/262965",
    "WS/MP021/2025-2026/262964"
@@ -7296,7 +7296,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "Janpad Nainital ke antargat gram Vargomint Joli Court mein Shri Sundar Singh Bisht Ke Ghar Se Lalit callVin Issueyas Ghar tak sarvjanik CC Nirman Karya",
+  "desc": "Janpad Nainital ke antargat gram Vargomint Joli Court mein Shri [name] Ke Ghar Se [name] Ghar tak sarvjanik CC Nirman Karya",
   "ids": [
    "WS/MP021/2025-2026/178120",
    "WS/MP021/2025-2026/178121"
@@ -7311,7 +7311,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": false,
   "span_days": 0,
-  "desc": "Janpad Nainital ke antargat Jagannath Bihar Pipal Pokhara sankhya 2 Fatehpur Haldwani Mein mukhya Marg  se Uma Mishra ji ke ghar ke or c c nirman kary",
+  "desc": "Janpad Nainital ke antargat Jagannath Bihar Pipal Pokhara sankhya 2 Fatehpur Haldwani Mein mukhya Marg  se [name] ke ghar ke or c c nirman kary",
   "ids": [
    "WS/MP021/2025-2026/208338",
    "WS/MP021/2025-2026/208340",
@@ -7357,7 +7357,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": false,
   "span_days": 0,
-  "desc": "Janpad Nainital ke antargat ward number 39 Mein Hills view Colony block Office ke pass Haldwani Mein Kandpal Ji Ke Ghar se mandir ki aur tiles Road Nirman Karya",
+  "desc": "Janpad Nainital ke antargat ward number 39 Mein Hills view Colony block Office ke pass Haldwani Mein [name] Ke Ghar se mandir ki aur tiles Road Nirman Karya",
   "ids": [
    "WS/MP021/2025-2026/242739",
    "WS/MP021/2025-2026/242740"
@@ -7569,7 +7569,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "Janpad Udham Singh Nagar ke antargat a n k Inter College gularbhoj tahsil gadarpur mai shri rajesh kumar k khet w intar college k bich mai sarwajanik sthan mai ",
+  "desc": "Janpad Udham Singh Nagar ke antargat a n k Inter College gularbhoj tahsil gadarpur mai [name] k khet w intar college k bich mai sarwajanik sthan mai ",
   "ids": [
    "WS/MP021/2025-2026/209056",
    "WS/MP021/2025-2026/209057"
@@ -7629,7 +7629,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "Janpad Udham Singh Nagar ke antargat ward number 16 mein Pratap enclave mein shri Surendra Singh Ke Ghar Se mukhya Marg Tak CC Nirman kary hetu",
+  "desc": "Janpad Udham Singh Nagar ke antargat ward number 16 mein Pratap enclave mein [name] Ke Ghar Se mukhya Marg Tak CC Nirman kary hetu",
   "ids": [
    "WS/MP021/2025-2026/177230",
    "WS/MP021/2025-2026/177229"
@@ -8128,7 +8128,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": false,
   "span_days": 40,
-  "desc": "Sanskar Bhatti for Cremation Land",
+  "desc": "Sanskar Bhatti for [name] Land",
   "ids": [
    "WS/MP502/2023-2024/68019",
    "WS/MP502/2023-2024/92561"
@@ -8511,7 +8511,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "Purchase & providing one water tanker of 5000 Lt. capacity to GP for drinking water purposes",
+  "desc": "Purchase & providing one water tanker of 5000 Lt. [name] to GP for drinking water purposes",
   "ids": [
    "WS/MP329/2023-2024/87848",
    "WS/MP329/2023-2024/87849"
@@ -9315,7 +9315,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": false,
   "span_days": 0,
-  "desc": "Installing Renovation of Street Lights from Bijli Ghar Square to Hiradas Bus Stand.",
+  "desc": "Installing Renovation of Street Lights from [name] Ghar Square to Hiradas Bus Stand.",
   "ids": [
    "NOREF-f6e2c64df84b91",
    "NOREF-b1a08e957644c8"
@@ -10370,7 +10370,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "GRAM MADHUPURI FARM SHIV MANDIR KE SAMNE SEMI HIGH MAST LIGHT (03 LIGHTHO WALI) KARYDAYI SANSTHA UPSIC MORADABAD",
+  "desc": "GRAM [name] FARM SHIV MANDIR KE SAMNE SEMI HIGH MAST LIGHT (03 LIGHTHO WALI) KARYDAYI SANSTHA UPSIC MORADABAD",
   "ids": [
    "WS/MP789/2023-2024/13235",
    "WS/MP789/2023-2024/13236"
@@ -10889,7 +10889,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "munnalal ke ghar ke paas tirahe pr 8 way high mask light PCCD dwara lgwae",
+  "desc": "[name] ke ghar ke paas tirahe pr 8 way high mask light PCCD dwara lgwae",
   "ids": [
    "WS/MP814/2025-2026/246360",
    "WS/MP814/2025-2026/246342"
@@ -11189,7 +11189,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "Submercible Pump 2.00 HP with 1000 Lt. Water Tank and its tower",
+  "desc": "Submercible Pump 2.00 HP with 1000 Lt. [name] and its tower",
   "ids": [
    "WS/MP195/2023-2024/78068",
    "WS/MP195/2023-2024/78069",
@@ -12397,7 +12397,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "LED HIGH MASK LIGH NEAR HOUSE OF SUDHIR KUMAR SRIVASTAVA",
+  "desc": "LED HIGH MASK LIGH NEAR HOUSE OF [name]",
   "ids": [
    "WS/MP839/2023-2024/34058",
    "WS/MP839/2023-2024/34057"
@@ -12412,7 +12412,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "LED HIGH MASK LIGHT NEAR HOUSE OF  BALJEET SINGH",
+  "desc": "LED HIGH MASK LIGHT NEAR HOUSE OF [name]",
   "ids": [
    "WS/MP839/2023-2024/34102",
    "WS/MP839/2023-2024/34106"
@@ -12427,7 +12427,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "LED HIGH MASK LIGHT NEAR HOUSE OF HARVINDER SINGH",
+  "desc": "LED HIGH MASK LIGHT NEAR HOUSE OF [name]",
   "ids": [
    "WS/MP839/2023-2024/34113",
    "WS/MP839/2023-2024/34167"
@@ -13643,7 +13643,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "Purchase of Ambulance (Tata Winger AC) on request of CMO Raebareli, CMO Office Jail Road, Raebareli.",
+  "desc": "Purchase of Ambulance (Tata Winger AC) on request of [name], CMO Office Jail Road, Raebareli.",
   "ids": [
    "WS/MP476/2024-2025/100881",
    "WS/MP476/2024-2025/100882"
@@ -13689,7 +13689,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "Installation of Solar Light on Request of Sh. Chhotelal, At a public place, Near his house.",
+  "desc": "Installation of Solar Light on Request of [name], At a public place, Near his house.",
   "ids": [
    "WS/MP476/2024-2025/77200",
    "WS/MP476/2024-2025/77225"
@@ -13704,7 +13704,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": false,
   "span_days": 0,
-  "desc": "Installation of Solar Light on Request of Sh. Dinesh Pasi (SC), At a public place, Near his house.",
+  "desc": "Installation of Solar Light on Request of [name] (SC), At a public place, Near his house.",
   "ids": [
    "WS/MP476/2024-2025/77109",
    "WS/MP476/2024-2025/77112",
@@ -13720,7 +13720,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 9,
-  "desc": "Installation of Solar Light on Request of Sh. Rajendra Kumar, At a public place, Near his house.",
+  "desc": "Installation of Solar Light on Request of [name], At a public place, Near his house.",
   "ids": [
    "WS/MP476/2024-2025/71973",
    "WS/MP476/2024-2025/77758"
@@ -13735,7 +13735,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 12,
-  "desc": "Installation of Solar Light on Request of Sh. Shiv Bahadur Singh, At a public place near his house.",
+  "desc": "Installation of Solar Light on Request of [name], At a public place near his house.",
   "ids": [
    "WS/MP476/2024-2025/71290",
    "WS/MP476/2024-2025/79638"
@@ -16075,7 +16075,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "balkaranpur lahatii Mein Dilip Kumar ke ghar ke pass",
+  "desc": "balkaranpur lahatii Mein [name] ke ghar ke pass",
   "ids": [
    "WS/MP820/2023-2024/39003",
    "WS/MP820/2023-2024/39004"
@@ -16090,7 +16090,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "Gram Sabha Benipur me Gyan Prakash ke ghar ke pas",
+  "desc": "Gram Sabha Benipur me [name] ke ghar ke pas",
   "ids": [
    "WS/MP18380/2024-2025/144080",
    "WS/MP18380/2024-2025/144081"
@@ -16799,7 +16799,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 16,
-  "desc": "vill nari bari me solar light block shankargarh prayagraj",
+  "desc": "vill [name] bari me solar light block shankargarh prayagraj",
   "ids": [
    "WS/MP781/2023-2024/53139",
    "WS/MP781/2023-2024/53113",
@@ -16971,7 +16971,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "VILL SALAIYA NARI BARI ME SOLAR LIGHT BLOCK SHANKARGARH PRAYAGRAJ",
+  "desc": "VILL [name] BARI ME SOLAR LIGHT BLOCK SHANKARGARH PRAYAGRAJ",
   "ids": [
    "WS/MP781/2023-2024/61215",
    "WS/MP781/2023-2024/61214"
@@ -18523,7 +18523,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": false,
   "span_days": 0,
-  "desc": "21\tmanakaura parasohana ravindra kumar ke ghar ke samane shiv mandir ke pas ek solar s?rai? lai? ki sthapana",
+  "desc": "21\tmanakaura [name] ke ghar ke samane shiv mandir ke pas ek solar s?rai? lai? ki sthapana",
   "ids": [
    "WS/MP815/2024-2025/62276",
    "WS/MP815/2024-2025/62275"
@@ -19152,7 +19152,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "Abhishek Yadav ke makan ke pas",
+  "desc": "[name] ke makan ke pas",
   "ids": [
    "WS/MP18222/2025-2026/184308",
    "WS/MP18222/2025-2026/184209"
@@ -19167,7 +19167,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "Anil yadav ke makan ke pass",
+  "desc": "[name] ke makan ke pass",
   "ids": [
    "WS/MP18222/2025-2026/169949",
    "WS/MP18222/2025-2026/170166"
@@ -19182,7 +19182,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "arvind yadav ke makan ke pass",
+  "desc": "[name] ke makan ke pass",
   "ids": [
    "WS/MP18222/2025-2026/170009",
    "WS/MP18222/2025-2026/170470"
@@ -19197,7 +19197,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "Arvind yadav ke makan ke pass",
+  "desc": "[name] ke makan ke pass",
   "ids": [
    "WS/MP18222/2025-2026/171677",
    "WS/MP18222/2025-2026/171665"
@@ -19212,7 +19212,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "ashok yadav ke makan ke pass",
+  "desc": "[name] ke makan ke pass",
   "ids": [
    "WS/MP18222/2025-2026/170467",
    "WS/MP18222/2025-2026/170464"
@@ -19227,7 +19227,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "avnish yadav ke makan ke pass",
+  "desc": "[name] ke makan ke pass",
   "ids": [
    "WS/MP18222/2025-2026/171129",
    "WS/MP18222/2025-2026/171360"
@@ -19294,7 +19294,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "deepak ke makan ke pas",
+  "desc": "[name] ke makan ke pas",
   "ids": [
    "WS/MP18222/2025-2026/212682",
    "WS/MP18222/2025-2026/214060"
@@ -19648,7 +19648,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "jagdish bind ke makan ke pas",
+  "desc": "[name] ke makan ke pas",
   "ids": [
    "WS/MP18222/2025-2026/171582",
    "WS/MP18222/2025-2026/184338"
@@ -19663,7 +19663,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "jitendra kumar yadav ke makan ke pas",
+  "desc": "[name] ke makan ke pas",
   "ids": [
    "WS/MP18222/2025-2026/184364",
    "WS/MP18222/2025-2026/183810"
@@ -19693,7 +19693,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "manoj yadav ke makan ke pas",
+  "desc": "[name] ke makan ke pas",
   "ids": [
    "WS/MP18222/2025-2026/171475",
    "WS/MP18222/2025-2026/184363"
@@ -19708,7 +19708,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "om prakash yadav ke makan ke pas",
+  "desc": "[name] ke makan ke pas",
   "ids": [
    "WS/MP18222/2025-2026/171542",
    "WS/MP18222/2025-2026/171467"
@@ -19911,7 +19911,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "rahul yadav ke ghar ke pass",
+  "desc": "[name] ke ghar ke pass",
   "ids": [
    "WS/MP18222/2025-2026/170535",
    "WS/MP18222/2025-2026/170072",
@@ -19927,7 +19927,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "rajesh kumar yadav ke makan ke pas",
+  "desc": "[name] ke makan ke pas",
   "ids": [
    "WS/MP18222/2025-2026/184462",
    "WS/MP18222/2025-2026/184456"
@@ -19942,7 +19942,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "rajesh yadav ke makan ke pas",
+  "desc": "[name] ke makan ke pas",
   "ids": [
    "WS/MP18222/2025-2026/171515",
    "WS/MP18222/2025-2026/171602"
@@ -19957,7 +19957,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "rakesh yadav ke ghar ke pass",
+  "desc": "[name] ke ghar ke pass",
   "ids": [
    "WS/MP18222/2025-2026/170627",
    "WS/MP18222/2025-2026/170533"
@@ -19972,7 +19972,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "ramchet yadav ke makan ke pas",
+  "desc": "[name] ke makan ke pas",
   "ids": [
    "WS/MP18222/2025-2026/171468",
    "WS/MP18222/2025-2026/184022"
@@ -19987,7 +19987,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "ramesh ke makan ke pas",
+  "desc": "[name] ke makan ke pas",
   "ids": [
    "WS/MP18222/2025-2026/212687",
    "WS/MP18222/2025-2026/212784"
@@ -20002,7 +20002,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "ravindra kumar yadav ke makan ke pas",
+  "desc": "[name] ke makan ke pas",
   "ids": [
    "WS/MP18222/2025-2026/184470",
    "WS/MP18222/2025-2026/184316"
@@ -20017,7 +20017,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "ravindra yadav ke makan ke pas",
+  "desc": "[name] ke makan ke pas",
   "ids": [
    "WS/MP18222/2025-2026/171732",
    "WS/MP18222/2025-2026/184031"
@@ -20235,7 +20235,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "Rohit Yadav ke makan ke pas",
+  "desc": "[name] ke makan ke pas",
   "ids": [
    "WS/MP18222/2025-2026/184339",
    "WS/MP18222/2025-2026/184029"
@@ -20250,7 +20250,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "SAHMULLAH SO AKBAR SHAH KE GHAR KE PASS 01 NAG SOLAR STREET LIGHT",
+  "desc": "SAHMULLAH [name] KE GHAR KE PASS 01 NAG SOLAR STREET LIGHT",
   "ids": [
    "WS/MP18228/2025-2026/235453",
    "WS/MP18228/2025-2026/235482"
@@ -20265,7 +20265,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "SUBASH CHANDRA YADAV SON SHYAM NARAYAN K GHAR K PASS 01 NAG SOLAR LIGHT",
+  "desc": "SUBASH CHANDRA YADAV SON [name] K GHAR K PASS 01 NAG SOLAR LIGHT",
   "ids": [
    "WS/MP18228/2025-2026/182467",
    "WS/MP18228/2025-2026/182483"
@@ -20280,7 +20280,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "subhash ke makan ke pas",
+  "desc": "[name] ke makan ke pas",
   "ids": [
    "WS/MP18222/2025-2026/212685",
    "WS/MP18222/2025-2026/212804"
@@ -20295,7 +20295,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "suresh maurya ke makan ke pas",
+  "desc": "[name] ke makan ke pas",
   "ids": [
    "WS/MP18222/2025-2026/171458",
    "WS/MP18222/2025-2026/182254"
@@ -20325,7 +20325,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "vikash yadav ke ghar ke pass",
+  "desc": "[name] ke ghar ke pass",
   "ids": [
    "WS/MP18222/2025-2026/170554",
    "WS/MP18222/2025-2026/170163"
@@ -20340,7 +20340,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "vinay yadav ke makan ke pass",
+  "desc": "[name] ke makan ke pass",
   "ids": [
    "WS/MP18222/2025-2026/170679",
    "WS/MP18222/2025-2026/170018"
@@ -23342,7 +23342,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": false,
   "span_days": 1,
-  "desc": "Bikram Prakhand ke Gram Ahiyapur me Upendra Tanti ke ghar se Bhushan Prajapati ke ghar ki ore jane wali rastey ka pcc kary",
+  "desc": "Bikram Prakhand ke Gram Ahiyapur me [name] ke ghar se [name] ke ghar ki ore jane wali rastey ka pcc kary",
   "ids": [
    "WS/MP553/2024-2025/120993",
    "WS/MP553/2023-2024/121287"
@@ -25449,7 +25449,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "Improvement of Playground Field at Samin Chianing",
+  "desc": "Improvement of [name] Field at Samin Chianing",
   "ids": [
    "WS/MP694/2024-2025/123004",
    "WS/MP694/2024-2025/122979"
@@ -25879,7 +25879,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "Set up a Solar Street light at Balurghat Loknath Mandir, Balurghat.  Contact Person Prabir saha.  Mob.9932684886",
+  "desc": "Set up a Solar Street light at Balurghat Loknath Mandir, Balurghat.  Contact Person [name][phone]",
   "ids": [
    "WS/MP498/2024-2025/118791",
    "WS/MP498/2024-2025/118796",
@@ -27418,7 +27418,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": false,
   "span_days": 0,
-  "desc": "Construction of UNDERGROUND PIPE LINE DRAINAGE & CONCRETING OF ROAD AT P.C.Mukherjee By Lane (from Subrata Dey House To House Of Swapan Patra) W-05 under Konnag",
+  "desc": "Construction of UNDERGROUND PIPE LINE DRAINAGE & CONCRETING OF ROAD AT P.C.Mukherjee By Lane (from [name] House To House Of [name]) W-05 under Konnag",
   "ids": [
    "WS/MP859/2023-2024/25556",
    "WS/MP859/2023-2024/25557"
@@ -31337,7 +31337,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 4,
-  "desc": "Const. of Drain from Niranjan Behera house to Rama Krushna Sahu house., Bantuli village, Singla G.P., Basta block",
+  "desc": "Const. of Drain from [name] house to [name] house., Bantuli village, Singla G.P., Basta block",
   "ids": [
    "NOREF-1526197329bc94",
    "WS/MP452/2023-2024/103495"
@@ -32661,7 +32661,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "Tube well mining work Near Rajesh House",
+  "desc": "Tube well mining work Near [name] House",
   "ids": [
    "NOREF-30329e53d845dd",
    "WS/MP570/2023-2024/58181"
@@ -45515,7 +45515,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": true,
   "span_days": 0,
-  "desc": "dudh mandali nu navin makan banavva saru",
+  "desc": "dudh mandali nu [name] makan banavva saru",
   "ids": [
    "WS/MP18321/2025-2026/187965",
    "WS/MP18321/2025-2026/187964"
@@ -50546,7 +50546,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": false,
   "span_days": 0,
-  "desc": "Laying of CC road from BolluChenna Reddy House to Jeripothula Buchaiah goud House at Choudampally (V)",
+  "desc": "Laying of CC road from [name] House to [name] House at Choudampally (V)",
   "ids": [
    "WS/MP396/2024-2025/59749",
    "WS/MP396/2024-2025/59748"
@@ -54560,7 +54560,7 @@
   "each_4_to_5_lakh": false,
   "same_amount": false,
   "span_days": 0,
-  "desc": "INSTALLATION OF MML ( 10 Mr Minimast 150 W *6 Nos )",
+  "desc": "INSTALLATION OF MML ( 10 Mr [name] 150 W *6 Nos )",
   "ids": [
    "WS/MP346/2023-2024/66898",
    "WS/MP346/2023-2024/66913",

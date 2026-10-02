@@ -1,0 +1,8 @@
+# data/batch_assess.py on the hosted database (Supabase drishti-db), run by the owner on
+# 2 Oct 2026 after PRs #89, #90 and #91 (T056) were merged and deployed: evidence and work-record
+# checks, Fund Flow, certificate reader, Cost (several streets = a bundle), Duplicate & Split
+# (men's/women's twins, splits under Rs 5 lakh said not asked), R06 counted where it stands out.
+# The owner pasted the band counts as a comparison table (not the raw lines); recorded here as given.
+# Before (hosted_assess_v3.txt, after #86): CRITICAL 83, HIGH 1,347, MEDIUM 5,112, LOW 203,451.
+assessed 209,993 works: {'LOW': 204213, 'HIGH': 1377, 'MEDIUM': 4321, 'CRITICAL': 82}
+review queue (HIGH + CRITICAL): 1,459 (0.69%), was 1,430 (0.68%)

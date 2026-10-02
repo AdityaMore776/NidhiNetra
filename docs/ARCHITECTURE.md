@@ -224,7 +224,7 @@ database. LOW and MEDIUM works are stored **compact** (summary only) and rebuilt
 
 ## 11. Testing
 
-- **Engine:** 477 tests (`pytest`) — agent contract and banned words, every engine (Compliance, Cost, Duplicate
+- **Engine:** 509 tests (`pytest`) — agent contract and banned words, every engine (Compliance, Cost, Duplicate
   & Split, Delay) including NOT_ASSESSABLE cases, the risk score, bands and reasons, migrations, fusion maths,
   validation and impossible dates, orchestrator (an agent crash never becomes a finding), config, migrations,
   API and auth (scoping, dev-mode refusal on Vercel).
@@ -238,6 +238,9 @@ database. LOW and MEDIUM works are stored **compact** (summary only) and rebuilt
   damaged rows inside the corpus the indexes and statistics are built from (none may stop them), and gives a
   loosely typed twin of every work (dates as text, amounts as Decimal or "1,00,000", codes as numbers) the
   same answer finding for finding (`records.py`).
+  `tests/api/test_api_at_scale.py` (T056) runs the API on the test country's 1,302 works with messy text and
+  evidence: every endpoint and role, no 500, district walls, the queue against the stored bands, and no returned text
+  holding anything the masker would hide.
   `test_random_evidence.py` (T056) does the same for evidence: 250 works with malformed files, stamps,
   certificates and photo readings must not stop an index or an engine; the order files were attached in and a
   junk entry beside them change nothing.

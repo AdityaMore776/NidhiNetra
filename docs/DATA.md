@@ -89,7 +89,9 @@ Real and planted data are never mixed silently.
 | `data/trial/cache/` | OCR text of those files (names and account numbers) |
 | `.env*`, `.demo-logins.txt`, `.vercel/` | secrets |
 
-Committed trial results are passed through `data/trial/sanitize_results.py` (masks phone and account numbers).
+Committed trial results are passed through `data/trial/sanitize_results.py`: it masks phone and account numbers
+and runs the site's own masker (`validation/pii.py`) over every text, so no results file shows a name the site
+would hide (T056; `data/trial/pii_trial.py` measures the masker on the dashboard's 57,508 descriptions).
 
 ## 6. Traps we hit (so nobody hits them again)
 
@@ -107,4 +109,6 @@ Committed trial results are passed through `data/trial/sanitize_results.py` (mas
 6. **Image fingerprints don't work on certificates** — every form looks alike. Compare documents by text.
 7. **Citizen ratings are empty:** 21,789 of 21,793 are zero.
 8. **Private data in public records:** phone numbers in descriptions, bank account numbers on certificates —
-   mask, never display.
+   mask, never display. Names hide in road descriptions without any marker: "from <name> house to <name> house",
+   "<NAME> K GHAR", "<name> na ghar", "<name> ke avas", "<name> ka makaan", "<name> S/O <name>" (T056, T092: 13,776 of
+   57,508 descriptions carry something to mask).
