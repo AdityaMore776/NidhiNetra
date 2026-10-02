@@ -44,13 +44,28 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
-**2 Oct 2026, T055 (branch `claude/hopeful-feynman-4ov8y0`, not merged yet): engine review.** A seeded test
+**2 Oct 2026: T056 merged and LIVE (PR #89 `b1056b9`, PR #90 `f964f86`; no migration).** Foolproof and accuracy
+pass: no malformed evidence or work row can stop the batch (`agents/evidence.py`, `records.py`); Fund Flow, the
+certificate reader, Cost (several streets = a bundle) and Duplicate & Split (men's/women's twins, splits under
+Rs 5 lakh said not asked) fixed from real flags read by eye. Certificate reader on the pilot: sanction date 69.4% →
+69.4%, vendor code 97.7% → 97.9% (`results/paperwork_trial_t056.txt`). Hosted `batch_assess.py` to re-run after
+#89 if not done. Stored findings exist only for HIGH/CRITICAL works (migration 003), so count a finding from the
+works table: R06 via `data/trial/r06_rows.py`. Start from `docs/team/log/2026-10-02-1728-adityamore776-T056.md`.
+
+**2 Oct 2026: T055 + T510 merged and LIVE (PR #86, main `6efb61d`); migrations 011 + 012 applied in the Supabase SQL
+editor; hosted DB re-assessed with fusion v3 (CRITICAL 83, HIGH 1,347, MEDIUM 5,112, LOW 203,451; review queue
+1,430 = 0.68%, was 131; 430 s, 264 MB; `data/trial/results/hosted_assess_v3.txt`).** Planted test (T080) with v3:
+fakes in the queue 4 → 11 of 50, MEDIUM+ 25 → 38, top 5% 39/50 (`data/trial/results/planted_test_v3.json`, PR #87). Not
+yet measured on the full corpus: 30 random live queue works read by eye. Site Progress v2 is merged and
+switched off. Start from `docs/team/log/2026-10-02-1352-adityamore776-T055.md` (handoff).
+
+**2 Oct 2026, T055 (engine review, details).** A seeded test
 country with planted problems measures recall (`apps/engine/drishti/evaluation/`, CI gate); new **Office Patterns**
 engine; Guideline rule **R14** (built right after sanction) and R07 fixes; Duplicate & Split reads numbered
 stretches and repairs; **risk fusion v3** (the chance a work is worth a look, from hit rates read by eye;
 `DRISHTI_FUSION=v2` rolls back); one case = one queue row. Planted problems queued 4% → 16% on the test country;
-eSAKSHI dashboard's 40,935 works: queue 47 → 427, 39/40 read worth checking. Before it goes live: apply migrations
-011 + 012 and re-run `batch_assess.py`. Start from `docs/plans/T055-engine-review.md` and the newest log entry.
+eSAKSHI dashboard's 40,935 works: queue 47 → 427, 39/40 read worth checking. Write-up:
+`docs/plans/T055-engine-review.md`.
 
 **1 Oct 2026 night: T054 + T080 + T064 merged and LIVE; hosted DB re-assessed (CRITICAL 5, HIGH 126, MEDIUM
 2,197; queue 131).** Start from `docs/team/log/2026-10-01-2352-adityamore776-T054.md` (handoff, three open owner

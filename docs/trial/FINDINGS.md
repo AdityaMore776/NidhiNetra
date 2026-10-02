@@ -844,8 +844,29 @@ sums of 0 to ₹100 crore, SQL-looking text) never crash an engine; the same wor
 the order works are loaded in and capitals change no finding. A CI gate runs two small test countries on every
 pull request with a floor per planted kind and a ceiling per look-alike.
 
-**Not measured here:** the planted test (T080) and the full 2,09,993 works with v3 need the data pack (not in
-this session). The 2023 guideline PDF stays unreachable (network policy blocks mplads.mospi.gov.in).
+**Live, all 2,09,993 works** (the owner ran `data/batch_assess.py` on the hosted database after PR #86 merged;
+output in `results/hosted_assess_v3.txt`): CRITICAL 83, HIGH 1,347, MEDIUM 5,112, LOW 203,451. The review queue is
+**1,430 works (0.68%)**, up from 131 with fusion v2 (1 Oct). That is the same order as on the dashboard's works
+(1.04%). The queue shows one row per Duplicate & Split case, so it lists fewer rows than 1,430.
+
+**Planted test (T080) re-run with v3 on all 2,09,993 works** (the owner ran `data/trial/planted_test.py`, same 50
+fakes, seed 80; `results/planted_test_v3.json`, added in PR #87): in the review queue **4 → 11 of 50**, MEDIUM or
+above **25 → 38**, caught by the engine meant for them 37 → 39, in the top 5% 39 → 39 (78%, target 75%).
+
+| Kind (10 each) | Caught by the meant engine | Top 5% | Review queue |
+|---|---|---|---|
+| Rule breaches (R07, R08, R12, R13) | 10/10 | 10/10 | **10/10** (was 4/10) |
+| Completed before recommended (R06) | 10/10 | 10/10 | 0/10 |
+| Split into pieces just under ₹5 lakh | 10/10 | 10/10 | 0/10 |
+| Filed again, reworded | **8/10** (was 7/10) | 8/10 | 1/10 |
+| Price raised 2-3× | 1/10 (was 0/10) | 1/10 | 0/10 |
+
+The Cost engine on its own (cost sweep): 2× 0/10, 3× 1/10, 5× 3/10, **10× 6/10** (was 5/10: a stated single unit is
+no longer excused as a bigger project). Most of the fakes that still stay out of the queue stay out on purpose: a split or a reworded repeat alone reads right about half
+the time (the measured hit rates), so it stays MEDIUM until a second check agrees. Completed-before-recommended (R06)
+has never been read by eye, so it counts at the 1-in-4 prior. Prices raised 2-3× are inside the comfort zone (T053).
+
+**Not measured yet:** 30 random live queue works read by eye (needs the data pack or database access). The 2023 guideline PDF stays unreachable (network policy blocks mplads.mospi.gov.in).
 
 ## T056 (2 Oct 2026): foolproof and accuracy pass on the remaining agents
 
@@ -867,9 +888,16 @@ written another way give the same answer. Accuracy changes were made only where 
 | Certificate dates with "-", "." or "\|" for "/" ("20-03-2024"); the letter O for a zero ("3,OO,OOO", "2O/O3/2O24") | the date or amount was lost | read, inside numbers only ("Block O", "CO-OP" untouched) |
 | One work row in the corpus with a pandas NaN in a text column, a district code loaded as a number, a datetime where a date was expected, an amount written "1,00,000", or a negative amount on a CC road | the Duplicate & Split index and the cohort statistics raised, so **the whole batch stopped** (every fuzz seed) | `drishti/records.py`: every column checked once at the indexes, the statistics and the orchestrator (text as written, numbers from any number type, ISO and Indian day-first dates, a clear yes/no); malformed values dropped, never guessed; a clean row is not copied. 5 seeds × 300 damaged rows run clean; the 2 new corpus tests fail on the old code. A loosely typed twin of every work (dates as text or datetimes, amounts as Decimal or grouped text, codes as numbers) gets the same answer finding for finding. On clean records nothing changes: the dashboard's 40,935 works give byte-identical codes, flags and queue files (`dashboard_agents4.json` vs agents3) and the test country is identical (`synthetic_eval_agents4.json`) |
 
-The certificate reader runs when the evidence is built, so its effect on the pilot's 431 real certificates (sanction
-date read on 69% before) is measured only when the owner re-runs `data/build_evidence.py` and
-`data/trial/paperwork_trial.py`.
+**The certificate reader on the pilot's 431 real certificates** (the owner re-ran `data/build_evidence.py` and
+`data/trial/paperwork_trial.py` after #89 merged; output kept verbatim in `results/paperwork_trial_t056.txt`):
+nothing lost and one small gain. Sanction date read on **69.4% → 69.4%**, vendor code **97.7% → 97.9%**,
+sanctioned amount, status and payments 99.8% and location 99.3% unchanged. Every engine count is unchanged too
+(ASSESSED 405, sanction late 32, sanctioned before recommended 1, no certificate read 120). The run shows
+`PAPERS_AGREE` 252 where `results/paperwork_trial.json` (1 Oct, T110) shows 1: that file predates T053, which
+removed five Paperwork notes (in progress on paper, blank certification, part-payment papers, papers of several
+works, vendor concentration as a finding), so the 209 + 33 + 9 works that carried one now read "papers agree".
+Not counted here: how many of the other 30.6% are on the older certificate form, which has no sanction-date line
+(DATA.md), so no reader could find one.
 
 **Cost Anomaly: where its misses come from** (test country, seeds 11-13, `synthetic_eval_agents2.json`). Planted 5×
 mark-ups: 20 of 36 sit inside the comfort zone and 15 of 36 are flagged. Planted 10×: 15 of 36 are read as "a far
