@@ -64,6 +64,12 @@ def esakshi_type(category: str | None, description: str | None = None) -> str | 
     return code
 
 
+@cache
+def site_concepts() -> dict:
+    """What finished assets and unbuilt sites look like in a photo (Site Progress v2, T510)."""
+    return _load("site_concepts.yaml")
+
+
 def is_countable(code: str | None) -> bool:
     """Items bought in units (lights, borewells, computers): a work's amount depends
     on a count the published export does not carry."""

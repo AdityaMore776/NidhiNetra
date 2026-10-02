@@ -180,8 +180,9 @@ planted test (T080) re-run on the full 2,09,993 works with v3 (needs the data pa
 (which stay in this file as the detailed specs): **T110 Paperwork** = T101 + T102 + T103 + T104 (Document +
 Contractor read the same certificates) · **T310 Photo Evidence** = T301 + T302 + T303 + T304 + T505 (one photo:
 new? from this place? from this time?) · **T410 Delay & Fund Flow** = T402 folded into the Delay engine ·
-**T510 Site Progress** = T503 + T604 (frame + tests now; live only with the owner's AI key, satellite only after
-its go/no-go). Every merged checker follows T051's rule: its reasoning runs in the engine on any work's evidence;
+**T510 Site Progress** = T503 + T604 (v2, 2 Oct 2026: free local readers, built and off until its go/no-go on the
+pilot photos passes; the owner's key only adds judging free-text claims; satellite only after its go/no-go; plan
+`docs/plans/T510-site-progress-v2.md`). Every merged checker follows T051's rule: its reasoning runs in the engine on any work's evidence;
 offline jobs only extract facts with the engine's own reader.
 
 These come from the earlier 12-checker design and our real-evidence trial. Build them only when the core task you

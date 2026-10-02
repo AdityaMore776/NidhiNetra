@@ -15,7 +15,7 @@ them: what each checks, how, what we measured, and where it stands.
 | A1 | Eligibility | Before sanction | ✅ **in the engine** as Guideline Compliance rule R07 (v2 reader) | **Works** — 56% precision on a fresh sample |
 | A2 | Duplicate & Split | Before sanction | ✅ **in the engine**, compares any work live (T051) | fresh pairs 20/40 real repeats, same-site splits 9/15 |
 | A3 | Cost | Before sanction | ✅ **live** (v2 ready, T020) | v2: top 30 flags 10/30 real price questions (v1 0/30); 55% of 5× mark-ups caught at 1.3% false alarms |
-| B1 | Site Progress (+ plaque) | During construction | 🔧 frame in the engine as Site Progress (T510), **off** | rules tested with a stand-in provider; needs the owner's AI vision key (T501) and a measured test |
+| B1 | Site Progress (+ plaque) | During construction | 🔧 **v2 built, off** (T510, 2 Oct 2026): free local readers (CLIP + plaque OCR), optional Gemini key | 34 unit tests + an end-to-end smoke test; go/no-go on the pilot's real photos still to run (`site_progress_trial.py`) |
 | B2 | Photo Forensics | During construction | ✅ **in the engine as Photo Evidence** (T310), shown, not counted | exact copies + fingerprint; reproduces the 2 real reuse cases, 0 of 3 combined files flagged |
 | B3 | Geo-Location | During construction | ✅ **in the engine as Photo Evidence** (T310), shown, not counted | 190 stamps on 170 works; 187 inside, 2 at the border, 0 outside; the 3 photos older than the recommendation |
 | B4 | Document | During construction | ✅ **in the engine as Paperwork** (T110), shown, not counted | reproduces the trial: 431 certificates, 32 sanctioned late, 1 before recommendation; Hindi/handwritten needs AI |
@@ -172,7 +172,14 @@ Two rules are enforced in code, not trusted to each agent:
 - **Catches:** "roof done" with no roof; photo of the wrong kind of work; **missing plaque** (CAG: 4,918 works).
 - **Method:** a vision model checks each claim against the photos, with repeat and half-set controls (ported from the research build); plaque present and readable.
 - **Precedent:** PMAY-G pays only on geotagged stage photos (3.84 crore houses).
-- **State:** not tested — nothing free and local can judge "does this photo show a finished road". Needs the paid AI key (the team's decision).
+- **State (T510 v2, 2 Oct 2026): built, switched off until measured.** Free local readers, offline, once per photo:
+  an open CLIP model names what each photo shows (a finished road vs a dirt track, a roofed building vs an empty plot),
+  and the photo's text is read for the MPLADS plaque and its dates. The engine judges the record's own words against
+  those readings: `ASSET_NOT_SHOWN` (recorded complete, 2+ usable photos read as an unbuilt site, none shows the asset),
+  `PLAQUE_DATED_BEFORE_RECOMMENDATION`, and, with the owner's free Gemini key, `CLAIM_NOT_SHOWN` for an officer's
+  notes. Reused, out-of-district and too-early photos (Photo Evidence's facts) confirm nothing. Design and go/no-go:
+  [`plans/T510-site-progress-v2.md`](plans/T510-site-progress-v2.md). Not yet run on a real photo (the pilot photos
+  are in the data pack): `data/build_site_observations.py`, then `data/trial/site_progress_trial.py`.
 
 ### B2 Photo Forensics — *Has this photo been used before, or edited?*
 

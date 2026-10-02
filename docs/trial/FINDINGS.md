@@ -478,6 +478,14 @@ it reports "cannot be assessed yet" on every work with photos and carries no wei
 check dams, roads over 1 km, buildings over ₹50 lakh) finds 2,822 qualifying works in the export (2,167 ponds), of
 which only 1 has a GPS-stamped photo in the pilot: the go/no-go test needs more harvested evidence (T003).
 
+**T510 v2 (2 Oct 2026): free local readers, built and switched off until measured.** The first sentence of this
+section is no longer true: open CLIP models name what a photo shows on a CPU, and the local OCR reads a plaque.
+Design: [`plans/T510-site-progress-v2.md`](../plans/T510-site-progress-v2.md). Checked so far: 34 unit tests and an
+end-to-end smoke test (real RapidOCR on a drawn plaque, a stand-in for the photo model; it found and fixed a bug
+with OCR that glues words together, "MPLADS2023-24"). **No real photo has been read yet**: the pilot photos are in
+the data pack and this session could not fetch the model. The go/no-go numbers will go here from
+`data/trial/site_progress_trial.py`.
+
 ### B5 Satellite
 No-go for now.
 - Of the 170 works with GPS points, the median cost is ₹2.8 lakh and only one exceeds

@@ -17,6 +17,7 @@ real-data trial of every agent. Full description, sources, privacy rules and kno
 | `trial/dashboard_trial.py` | every engine on those 40,935 unseen works (statistics and price model rebuilt from them); `--tag` names the run; by-eye labels in `trial/dashboard_labels.py` |
 | `trial/synthetic_eval.py` | every engine on made-up countries with planted, labelled problems (`apps/engine/drishti/evaluation/`): the only recall measurement; `--seeds 11 12 13` |
 | `trial/dup_split_rescore.py` | the team's 159 labelled repeat pairs, re-read by main's matcher and the working copy |
+| `build_site_observations.py` → `trial/site_progress_trial.py` | Site Progress v2 (T510): read every pilot photo once with free local models (what it shows; the MPLADS plaque and its dates), then run the engine and write the sample to label for its go/no-go |
 | `trial/ocr_pages.py` | local OCR of the downloaded evidence |
 | `trial/sanitize_results.py` | mask phone/account numbers — run before committing results |
 

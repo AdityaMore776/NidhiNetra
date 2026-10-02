@@ -70,7 +70,7 @@ Grouped by the step of a work's life they watch. ✅ = built into the live app �
 - ✅ **Office Patterns** — *Does this office price most of its works just under a limit, or record buildings complete days after sanction?* (an office's habit backs up a work's own findings; it never puts a work on the list by itself)
 
 **While the work is built**
-- 📝 **Site Progress** — *Do the photos show what was claimed? Is the plaque there?*
+- 🧪 **Site Progress** — *Do the photos show what the record says was built? Is the plaque there, and do its dates fit?* (built with free local photo readers; switched on only after it is measured on real photos)
 - 🧪 **Photo Forensics** — *Has this photo been used on another work, or edited?*
 - 🧪 **Geo-Location** — *Was the photo taken at the site, and at the right time?*
 - 🧪 **Document** — *Do the certificates and bills match the portal?*
