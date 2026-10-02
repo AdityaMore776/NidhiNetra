@@ -50,11 +50,12 @@ from drishti.agents.compliance.eligibility import v2 as inadmissible
 from drishti.agents.contract import AgentResult, Finding, Status
 from drishti.agents.delay.agent import ended_terms
 from drishti.agents.dup_split.match import place_words
+from drishti.agents.office_patterns.index import as_date, is_construction
 from drishti.agents.statistical.scope import GOODS, scope, undescribed
 from drishti.validation.timeline import impossible_date, quarter_of
 
 AGENT = "compliance"
-VERSION = "compliance-1.3.0"
+VERSION = "compliance-1.4.0"
 QUESTION = "Does the work follow the MPLADS guidelines?"
 RULES_FILE = Path(reference.__file__).resolve().parent / "rules.json"
 
@@ -75,6 +76,9 @@ CONSTRUCTION_TYPES = {"ROAD_CC", "ROAD_BT", "FOOTPATH", "CULVERT", "BRIDGE", "CO
                       "SCHOOL_BUILDING", "HEALTH_BUILDING", "LIBRARY", "BOUNDARY_WALL",
                       "TOILET_BLOCK", "DRAIN", "POND", "CHECK_DAM", "CREMATORIUM",
                       "PLAYGROUND", "BUS_SHELTER"}
+# R14: a construction complete within a week of its sanction (dashboard dates, 2 Oct 2026)
+AFTER_SANCTION_DAYS, AFTER_SANCTION_MIN_RS = 7, 300_000
+ROUTINE_RISK = 0.10          # the office does it routinely: a recording habit, named once
 OLD_FY = re.compile(r"\b(20[01]\d|202[0-3])\s*[-/]\s*(\d{2}|20\d{2})\b")   # "(2019-2020)"
 
 
@@ -170,7 +174,7 @@ def _finding(rule_id: str, severity: str, text: str, text_hi: str, risk: float |
 
 
 def evaluate(work: dict, as_of: date, timeline=None,
-             type_top: float | None = None) -> list[Finding]:
+             type_top: float | None = None, offices=None) -> list[Finding]:
     out: list[Finding] = []
     status = work.get("status")
     rec, done = work.get("recommended_date"), work.get("completed_date")
@@ -294,6 +298,34 @@ def evaluate(work: dict, as_of: date, timeline=None,
         out.append(_finding("R13", r["severity"], r["message_en"].format(**fmt),
                             r["message_hi"].format(**fmt), value=(done - rec).days,
                             limit=FAST_DAYS))
+
+    # R14 a construction recorded complete within a week of its sanction (dashboard dates)
+    sanctioned = as_date(work.get("sanction_date"))
+    lag = (done - sanctioned).days if (sanctioned and done) else None
+    if (status == "COMPLETED" and lag is not None and lag <= AFTER_SANCTION_DAYS
+            and amount >= AFTER_SANCTION_MIN_RS and is_construction(work)
+            and not OLD_FY.search(desc)):
+        r = rules()["R14"]
+        when = ("on the day it was sanctioned" if lag == 0 else
+                f"{lag} day{'s' * (lag != 1)} after it was sanctioned" if lag > 0 else
+                f"{-lag} day{'s' * (lag != -1)} before it was sanctioned")
+        when_hi = ("स्वीकृति के दिन ही" if lag == 0 else f"स्वीकृति के {lag} दिन बाद" if lag > 0
+                   else f"स्वीकृति से {-lag} दिन पहले")
+        fmt = {"amount": inr(amount), "type": type_name, "when": when, "when_hi": when_hi,
+               "sanctioned": sanctioned.isoformat(), "done": done.isoformat()}
+        text, text_hi = r["message_en"].format(**fmt), r["message_hi"].format(**fmt)
+        habit = offices.after_sanction(work) if offices is not None else None
+        sev, risk = "MEDIUM", None
+        if habit is not None and habit.routine:
+            # one habit of the office, named once (Office Patterns), not one queue item per work
+            more = {"count": f"{habit.count:,}", "total": f"{habit.total:,}",
+                    "share": f"{habit.share:.0%}", "national": f"{habit.national:.1%}"}
+            text += r["routine_en"].format(**more)
+            text_hi += r["routine_hi"].format(**more)
+            sev, risk = "LOW", ROUTINE_RISK
+        out.append(_finding("R14", sev, text, text_hi, risk=risk, value=lag,
+                            limit=AFTER_SANCTION_DAYS, sanctioned=sanctioned.isoformat(),
+                            office_routine=bool(habit and habit.routine)))
     return out
 
 
@@ -302,7 +334,8 @@ def not_checked() -> list[str]:
             if not r["evaluable"]]
 
 
-def assess(work: dict, as_of: date, timeline=None, type_top: float | None = None) -> AgentResult:
+def assess(work: dict, as_of: date, timeline=None, type_top: float | None = None,
+           offices=None) -> AgentResult:
     t0 = time.perf_counter()
     if not work.get("status"):
         return AgentResult(agent=AGENT, status=Status.NOT_ASSESSABLE, verdict="NOT_ASSESSABLE",
@@ -311,7 +344,7 @@ def assess(work: dict, as_of: date, timeline=None, type_top: float | None = None
                                     "stage cannot be checked against the guidelines. This is "
                                     "not a clean chit.",
                            duration_ms=int((time.perf_counter() - t0) * 1000))
-    findings = evaluate(work, as_of, timeline, type_top)
+    findings = evaluate(work, as_of, timeline, type_top, offices)
     names = ", ".join(p["name"] for p in _pauses()["periods"])
     limitations = ["Could not check (the public export does not carry the data): "
                    + " ".join(not_checked()),
@@ -325,6 +358,10 @@ def assess(work: dict, as_of: date, timeline=None, type_top: float | None = None
     if sc == "other":
         limitations.append("The description is in a script the eligibility reader cannot read "
                            "yet, so R07 (works the guidelines do not allow) was not checked.")
+    no_sanction_date = work.get("status") == "COMPLETED" and not work.get("sanction_date")
+    if no_sanction_date:
+        limitations.append("The record carries no sanction date, so R14 (a construction "
+                           "recorded complete within a week of its sanction) was not checked.")
     top = max(findings, key=lambda f: f.risk, default=None)
     broken = sorted({f.evidence["rule"] for f in findings})
     return AgentResult(
@@ -337,6 +374,7 @@ def assess(work: dict, as_of: date, timeline=None, type_top: float | None = None
         version=VERSION, findings=findings, limitations=limitations,
         evidence={"rules_broken": broken, "description_script": sc,
                   "rules_checked": [r for r, v in rules().items() if v["evaluable"]
-                                    and not (r == "R07" and sc == "other")],
+                                    and not (r == "R07" and sc == "other")
+                                    and not (r == "R14" and no_sanction_date)],
                   "rules_not_checkable": [r for r, v in rules().items() if not v["evaluable"]]},
         duration_ms=int((time.perf_counter() - t0) * 1000))

@@ -24,9 +24,10 @@ them: what each checks, how, what we measured, and where it stands.
 | C2 | Fund Flow | Money & time | ✅ **in the engine as Delay & Fund Flow** (T410), shown, not counted | 3,331 works (₹168.9 cr) of the ended 17th Lok Sabha still unsanctioned (reproduced); office backlog vs its district |
 | C3 | Contractor Network | Money & time | ✅ **in the engine as Paperwork** (T110): a fact, not a finding | Pratapgarh 261 works, 7 vendors, top 39%, top three 84% (reproduced) |
 | D1 | Citizen Verification | After completion | 📝 merged into Photo Evidence: a citizen's photo meets the same checks (demo only) | Can't be tested — 21,789 of 21,793 eSAKSHI ratings are zero |
-| — | Guideline Compliance | every work | ✅ **in the engine** (T011) | rules R01–R11 in English + Hindi; 5 of 11 not checkable from the export |
+| — | Guideline Compliance | every work | ✅ **in the engine** (T011) | rules R01–R14 in English + Hindi; T055: R14 built right after sanction (12/12 + 13/13 read worth a look), R07 reader fixes |
+| — | Office Patterns | every office | ✅ **in the engine** (T055), weight 0.10: backs up a work's findings, never queues it alone | offices that price most works just under a limit or record buildings complete days after sanction; listed once on the dashboard |
 | — | Data Validation | every work | ✅ live | impossible dates judged by quarter and office; shown, not counted in the v2 score |
-| — | Risk score | every work | ✅ v2 ready (T050) | blueprint weights, 4 bands, top-3 reasons EN + HI; queue 1,524 (0.73%), 24/30 random queue works worth checking |
+| — | Risk score | every work | ✅ **v3** (T055; v2 = rollback) | the chance a work is worth a look, from hit rates read by eye; one case = one queue row; see FINDINGS "T055" |
 | — | Pre-sanction check | before sanction | ✅ **in the engine + site** (T064) | every engine on a recommendation before sanction → Green / Amber / Red with reasons; never blocks, nothing stored. Real demo: ordinary hall Green, refiled hall Amber, temple-campus light Amber, Rs 25 lakh hall with no place Red |
 | — | Inspection Planner | every work | 📝 planned | — |
 | — | Ask DRISHTI | every work | 📝 planned | — |
@@ -40,6 +41,7 @@ them: what each checks, how, what we measured, and where it stands.
 | Guideline Compliance | `agents/compliance/` | 0.30 | all 2,09,993 works: R01 21,323 · R02 61,920 · R06 1,114 · R07 458 · R11 7,576; no HIGH-severity rule fires. T051: timing rules graded (447 distinct signals, was 3), Hindi-script R07; T053: R12 big sum that does not say what or where (697 works, 28/30 by eye), R13 built in days (13, 13/13); T054: R01/R02 score by how unusual the wait is (at 75 days 63 in 100 works still wait), ended-term leftovers LOW on the para 3.15 clock, R02 always LOW |
 | Cost Anomaly | `agents/statistical/` | 0.20 | planted mark-ups + frozen fresh samples read by eye. T051: the word-price model judges any description: 5× mark-ups caught 42-45% (was 55%), false alarms 1.2%. T053: explicit comfort zone (asks only above the highest of 2× the district top, the state top, 2× the described-like-this top); flags that read almost never right removed (several sites 0/48, far bigger project 3/18, per unit 0/3, below peers unmeasured); kept: above the comfort limit (54/128) and road cost per metre |
 | Duplicate & Split Work | `agents/dup_split/` | 0.20 | T051: rules run live for any work. Fresh frozen samples read by eye: pairs 20/40 real repeats (T030: 15/40), same-site splits 9/15 (T030: 10/15) |
+| Office Patterns (T055, new) | `agents/office_patterns/` | 0.10 (backs up a work's findings; never queues it alone) | dashboard's 40,935 works: 36 offices price most works just under a limit (median 55% of their works vs 9.5% nationally; 1,311 works flagged `PRICED_AT_LIMIT`), 6 record buildings complete within 7 days of sanction as a routine (median 69% vs 7.1%). Test country: 100% of planted limit-pricing offices' works found; fires on 0.02% of ordinary works |
 | Fund Flow (was Delay Prediction) | `agents/delay/` | **0** (shown, not counted) | T053: the forecast was removed (LightGBM 0.710, ladder 0.705 AUC against 0.80; 73% of works run late anyway). Kept: 3,331 works (₹168.9 cr) of the ended 17th Lok Sabha still unsanctioned, office sanction backlog vs its district |
 | ~~Odd Overall~~ | — | — | removed in T053: Isolation Forest flags read 9/30 worth a look; replaced by Guideline Compliance R12 and R13 |
 
@@ -48,8 +50,16 @@ stored tables, coefficients or reference files (`cohort_stats`, `engine_models`,
 `reference/generic_words.txt`). No engine reads an answer stored per work, so a work recommended after the
 data was built meets exactly the same rules. Learning jobs: `data/build_stats.py`, `build_price_model.py`,
 `build_evidence.py`, `build_generic_words.py`. The risk score that combines them is in
-[ARCHITECTURE.md §4](ARCHITECTURE.md#4-risk-score-fusion-v2-t050); its cut-offs were re-tuned for T051
+[ARCHITECTURE.md §4](ARCHITECTURE.md#4-risk-score-fusion-v3-2-oct-2026-v2-kept-as-a-rollback); its cut-offs were re-tuned for T051
 (CRITICAL 0.30, HIGH 0.22). After T053: queue 493. After T054 (timing rules by how unusual the wait is): queue 131, 28/30 read worth checking. Planted-anomaly test (T080): 39 of 50 fakes in the top 5% of the score (target 75%), 37/50 caught by the engine meant for them (rules, dates and splits 30/30, reworded repeats 7/10, prices 2-3× 0/10), 4/50 in the review queue.
+
+**T055 (2 Oct 2026): engine review, test country, Office Patterns, risk fusion v3.** Write-up
+[`plans/T055-engine-review.md`](plans/T055-engine-review.md), numbers in FINDINGS "T055". On three made-up
+countries with 810 planted problems (`data/trial/synthetic_eval.py`): caught by the engine meant for them
+**31% → 74%**, in the review queue **4% → 16%**, in the top 5% **34% → 74%**, queue precision 62% → 68%, ordinary
+works queued 0.03% → 0.11%. On the eSAKSHI dashboard's 40,935 unseen works: queue 47 → **427 (1.04%)**, 40 random
+queue works read **39 worth checking, 1 grey, 0 misread** (main: 38 / 1 / 1). The score is now the chance a work
+is worth a look, from hit rates read by eye (`reference/reliability.json`); `DRISHTI_FUSION=v2` rolls back.
 
 ## Twelve checkers merged into six (T051, trimmed in T053, owner's requests 1 Oct 2026)
 
@@ -108,7 +118,10 @@ Two rules are enforced in code, not trusted to each agent:
 
 - **Found:** solar lights inside temple campuses, community halls on temple premises, "construction of a community temple".
 - **Limits:** verdicts are our reading, not an official ruling; the 2023 prohibited list is not yet verified (mplads.gov.in refuses connections from outside India).
-- **Next:** port v2 into the engine and raise it from a note to a finding.
+- **Next:** port v2 into the engine and raise it from a note to a finding. *(Done: R07 in Guideline Compliance.)*
+- **T055 (2 Oct 2026):** objects of worship after "in / for / on" ("hall in Mandir", "wall for temple"), private
+  institutions before the route word, typo spellings of public distribution shops. Dashboard: 54 → 63 flags; all
+  15 gained read right, 5 of 6 dropped were misreads. T051 TEST sample: keeps 40/40 right flags, drops 1 of 10 misreads.
 
 ### A2 Duplicate & Split — *Already funded, or one work cut into pieces?*
 
@@ -120,6 +133,12 @@ Two rules are enforced in code, not trusted to each agent:
   - **Same-site split:** Nanded, 3 × ₹4,96,000 for one road, same day.
   - **Funded twice:** 48 pairs re-recommended while the first was open; read one by one, ~19 look like one asset funded twice (e.g. Malappuram: a school bus for one school, completed, then sanctioned again).
 - **Limits:** exact wording finds nothing once the first work is complete — real repeats are reworded, so matching by meaning is the next step.
+- **T055 (2 Oct 2026):** one site in numbered stretches ("part / phase / bit / chainage / reach") is `SPLIT_INTO_STRETCHES`
+  (test country 33% → 93%; 18 groups on the dashboard data), never a repeat pair; `REPAIR_SOON_AFTER_BUILT` (a repair of
+  the same asset within 3 years of completion, 0% → 78%; not yet read on real works, so it counts at the prior);
+  sound keys for one village spelt two ways; Hindi/English synonyms; ~490 vetted generic words; the repeat clock starts
+  at completion. The team's 159 labelled pairs: false repeats 56 → 50, true 44 → 43 (`dup_split_rescore.py`).
+  A purchase or split shows once in the queue (one case).
 
 ### A3 Cost — *Is the cost unusual for similar works?* ✅ live
 
@@ -142,6 +161,9 @@ Two rules are enforced in code, not trusted to each agent:
 
 - **By design,** price alone is soft (capped) so it rarely queues a work by itself — only 0.11% of normal works.
 - **Limits:** mark-ups under 2× hide in normal price variation; they need a second signal (e.g. Document reading quantities).
+- **T055 (2 Oct 2026):** a description that states a single unit ("1 no. high mast light") is never excused as "a far
+  bigger project": planted ×10 mark-ups on one unit caught 28% → 78%. Price alone stays Medium at most in v3 (above the
+  comfort limit read right 54 of 128).
 
 ## B · While the work is built
 
@@ -219,6 +241,6 @@ Two rules are enforced in code, not trusted to each agent:
 | Tool | What it does | State |
 |---|---|---|
 | **Data Validation** | impossible dates judged against their own recommendation quarter and office (bulk entry when eSAKSHI opened explains most); missing fields; prohibited-work notes. Its total weight is capped so the record alone can never make a work HIGH. | ✅ |
-| **Risk score** | combines the engines into the 0–100 score by the blueprint weights, with an exact breakdown and the top three reasons in English and Hindi — see [ARCHITECTURE.md §4](ARCHITECTURE.md#4-risk-score-fusion-v2-t050). Planned: conflict rules (a reused photo voids progress confirmations; a bulk order counts once; satellite may only withdraw a finding, never create one). | ✅ v2 |
+| **Risk score** | combines the engines into the 0–100 score (v3, T055: the chance a work is worth a look, from hit rates read by eye; v2's blueprint weights kept as a rollback), with an exact breakdown and the top three reasons in English and Hindi — see [ARCHITECTURE.md §4](ARCHITECTURE.md#4-risk-score-fusion-v3-2-oct-2026-v2-kept-as-a-rollback). A bulk order or split counts once (one case, one queue row, T055). Planned: conflict rules (a reused photo voids progress confirmations; satellite may only withdraw a finding, never create one). | ✅ v3 |
 | **Inspection Planner** | picks the District Authority's mandatory 10% of inspections (para 6.4): mostly by risk × money, ~20% at random to keep base rates honest and deter gaming, grouped into day trips. | 📝 |
 | **Ask DRISHTI** | plain-language questions answered from checked database queries; guideline answers quote the clause verbatim; drafts inspection notes in English/Hindi. | 📝 |

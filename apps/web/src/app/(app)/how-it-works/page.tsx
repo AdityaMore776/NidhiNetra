@@ -6,8 +6,8 @@ import { AGENT_ORDER, agentMeta } from "@/lib/format";
 
 const STEPS = [
   { n: 1, title: "Work enters DRISHTI", text: "Records, progress claims and site photos come in.", color: "var(--inputs)" },
-  { n: 2, title: "Six checkers, in parallel", text: "Each independently checks for a different kind of problem.", color: "var(--navy)" },
-  { n: 3, title: "Risk fusion", text: "Add up the checks, each by its fixed weight, into one 0-100 score with its top three reasons.", color: "var(--fusion)" },
+  { n: 2, title: "Seven checkers, in parallel", text: "Each independently checks for a different kind of problem.", color: "var(--navy)" },
+  { n: 3, title: "Risk fusion", text: "Combine the checks into the chance a work is worth a look, using how often each kind of flag proved right when read by eye, with the top three reasons.", color: "var(--fusion)" },
   { n: 4, title: "Risk review", text: "Rank works Low, Medium, High or Critical, and queue High and Critical for a look.", color: "var(--medium)" },
   { n: 5, title: "Officer verification", text: "An officer reviews the evidence and makes the decision.", color: "var(--low)" },
 ];
@@ -32,6 +32,11 @@ const FACETS: Record<string, string[]> = {
     "Works recommended under a Lok Sabha term that has ended and still not sanctioned",
     "Offices holding far more unsanctioned recommendations than their district",
     "Counts from the record only: no forecasts",
+  ],
+  office_patterns: [
+    "An office that prices most of its works just under the Rs 5 or 10 lakh limit",
+    "An office that records constructions complete within a week of their sanction",
+    "A habit of the office, never of an MP: it adds weight to a work's own findings",
   ],
   paperwork: [
     "Read the work's own utilisation certificates: sanction date, payments, status",

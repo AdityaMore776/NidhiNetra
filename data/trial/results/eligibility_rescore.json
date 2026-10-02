@@ -1,0 +1,29 @@
+{
+  "base": "origin/main",
+  "sample": 50,
+  "by_label": {
+    "grey": {
+      "works": 12,
+      "flagged_base": 12,
+      "flagged_branch": 12
+    },
+    "clear": {
+      "works": 28,
+      "flagged_base": 28,
+      "flagged_branch": 28
+    },
+    "no": {
+      "works": 10,
+      "flagged_base": 10,
+      "flagged_branch": 9
+    }
+  },
+  "changed": [
+    {
+      "index": 32,
+      "label": "no",
+      "base": true,
+      "branch": false
+    }
+  ]
+}

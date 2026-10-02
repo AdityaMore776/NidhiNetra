@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { IndiaMap } from "@/components/IndiaMap";
 import { WorkTable } from "@/components/ui";
-import { api, type DistrictRow, type OfficeRow, type Page, type Summary, type WorkRow } from "@/lib/api";
+import { api, type DistrictRow, type OfficeHabit, type OfficeRow, type Page, type Summary, type WorkRow } from "@/lib/api";
 import { agentMeta, BAND_COLOR, count, inr } from "@/lib/format";
 
 export default function Dashboard() {
@@ -12,12 +12,14 @@ export default function Dashboard() {
   const [districts, setDistricts] = useState<DistrictRow[]>([]);
   const [top, setTop] = useState<WorkRow[]>([]);
   const [offices, setOffices] = useState<OfficeRow[]>([]);
+  const [habits, setHabits] = useState<OfficeHabit[]>([]);
 
   useEffect(() => {
     api<Summary>("/dashboard/summary").then(setS);
     api<DistrictRow[]>("/dashboard/districts").then(setDistricts);
     api<Page<WorkRow>>("/queue").then((p) => setTop(p.items.slice(0, 8)));
     api<OfficeRow[]>("/dashboard/offices").then(setOffices);
+    api<OfficeHabit[]>("/dashboard/office-habits").then(setHabits).catch(() => setHabits([]));
   }, []);
 
   if (!s) return <p className="text-muted text-sm">Loading…</p>;
@@ -133,6 +135,49 @@ export default function Dashboard() {
             </table>
           </div>
           {offices.length > 8 && <p className="text-xs text-muted">and {offices.length - 8} more offices.</p>}
+        </section>
+      )}
+
+      {habits.length > 0 && (
+        <section className="card p-4 space-y-3">
+          <div>
+            <h2 className="font-semibold">Offices with an unusual habit</h2>
+            <p className="text-xs text-muted">
+              Offices that price most of their works just under the Rs 5 or 10 lakh limit, or record constructions complete within a
+              week of sanction, far more often than the scheme as a whole. A habit of the office, listed once: look at its works
+              together. Never a judgement about a Member of Parliament.
+            </p>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-xs text-muted border-b border-line">
+                  <th className="py-2 pr-4 font-medium">Office</th>
+                  <th className="py-2 pr-4 font-medium">Habit</th>
+                  <th className="py-2 pr-4 font-medium text-right">Its works</th>
+                  <th className="py-2 font-medium text-right">vs the scheme</th>
+                </tr>
+              </thead>
+              <tbody>
+                {habits.slice(0, 8).map((o) => (
+                  <tr key={`${o.district_lgd}|${o.office}|${o.habit}`} className="border-b border-line last:border-0">
+                    <td className="py-2 pr-4">
+                      {o.office}
+                      {o.district_name && <span className="text-xs text-muted">, {o.district_name}</span>}
+                    </td>
+                    <td className="py-2 pr-4">{o.habit}</td>
+                    <td className="py-2 pr-4 text-right whitespace-nowrap">
+                      {count(o.count)} of {count(o.total)} ({(o.share * 100).toFixed(0)}%)
+                    </td>
+                    <td className="py-2 text-right font-semibold whitespace-nowrap" style={{ color: "var(--medium)" }}>
+                      {(o.national * 100).toFixed(1)}% · {o.lift.toFixed(0)}× higher
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {habits.length > 8 && <p className="text-xs text-muted">and {habits.length - 8} more.</p>}
         </section>
       )}
 

@@ -208,3 +208,75 @@ def test_r12_a_size_written_as_a_word_is_a_stated_size():
     fs = evaluate(_work(amount=5_300_000.0, description="Purchase of Two Ambulance"), AS_OF,
                   type_top=1_000_000.0)
     assert "R12" not in _codes(fs)
+
+
+# ---- R14 and the 2 Oct 2026 R07 reading (eSAKSHI dashboard tables) ---------------------------
+
+def _built(**kw):
+    return _work(**{"status": "COMPLETED", "work_type_code": "COMMUNITY_HALL",
+                    "amount": 900_000.0, "description": "Construction of community hall at Bijdih",
+                    "recommended_date": date(2025, 1, 10), "sanction_date": date(2025, 9, 1),
+                    "completed_date": date(2025, 9, 3)} | kw)
+
+
+def test_r14_a_construction_complete_two_days_after_sanction_is_medium():
+    f = next(f for f in evaluate(_built(), AS_OF) if f.evidence["rule"] == "R14")
+    assert f.code == "BUILT_RIGHT_AFTER_SANCTION" and f.evidence["severity"] == "MEDIUM"
+    assert "2 days after it was sanctioned" in f.text and f.evidence["value"] == 2
+    assert "स्वीकृति के 2 दिन बाद" in f.evidence["message_hi"]
+    check_plain_language(f.text)
+
+
+def test_r14_needs_a_construction_of_size_and_a_short_gap():
+    assert "R14" not in _codes(evaluate(_built(completed_date=date(2025, 9, 20)), AS_OF))
+    assert "R14" not in _codes(evaluate(_built(amount=150_000.0), AS_OF))
+    goods = _built(work_type_code="COMPUTER", description="Purchase of computers for school")
+    assert "R14" not in _codes(evaluate(goods, AS_OF))
+    before = evaluate(_built(completed_date=date(2025, 8, 1)), AS_OF)
+    assert "31 days before it was sanctioned" in next(
+        f for f in before if f.evidence["rule"] == "R14").text
+
+
+def test_r14_without_a_sanction_date_says_it_could_not_check():
+    r = assess(_built(sanction_date=None), AS_OF)
+    assert "R14" not in r.evidence["rules_checked"]
+    assert any("no sanction date" in lim for lim in r.limitations)
+
+
+def test_r14_an_office_that_does_this_routinely_is_low_and_named_once():
+    from drishti.agents.office_patterns.index import OfficeIndex
+
+    own = [_built(work_id=f"B{i}", agency_name="EE Fast") for i in range(20)]
+    others = [_built(work_id=f"S{i}", agency_name=f"EE {i % 10}",
+                     completed_date=date(2025, 12, 1)) for i in range(200)]
+    f = next(f for f in evaluate(own[0], AS_OF, offices=OfficeIndex.build(own + others))
+             if f.evidence["rule"] == "R14")
+    assert f.evidence["severity"] == "LOW" and f.risk == pytest.approx(0.10)
+    assert "20 of its 20 constructions" in f.text and f.evidence["office_routine"]
+
+
+@pytest.mark.parametrize("text,flagged", [
+    # roads named after a place of worship, and things beside or near one: not the work
+    ("Construction of Puthiyakavu temple link road, ward 2, Udayamperoor GP", False),
+    ("Construction of Pera- St.John's Marthoma Church- Cheruvalloore Road in Ummannoor", False),
+    ("ram mandir prangan ke samip shed nirman karya", False),
+    ("gram sahodra me mandir parisar ke bagal me chabutra ka nirman", False),
+    ("school se Shiv mandir tak pcc nirman kary", False),
+    ("construction of Pulic Distribution shop at Ward no.12", False),
+    ("Development of Ramesh Chandra Memorial Institution Play Ground", False),
+    ("Construction of boundary wall at Saraswati Sishu Bidya Mandir", False),
+    ("Electrification from Salempur to Abhay Nandan Private ITI College", False),
+    ("private bus stand ke pas high mast", False),
+    # the work itself on or for a place of worship, or for a private institution
+    ("Muraura talab shiv mandir ka saundaryikaran karya", True),
+    ("Rampur me Hanuman mandir nirman", True),
+    ("Construction of Toilet in Catholic Church", True),
+    ("For Construction of Community Hall in Mandir", True),
+    ("Construction of boundary wall of jama masjid at Kanganj", True),
+    ("JAGAT PRIVETE ITI ME SOLAR PLANT", True),
+    ("table of kitchen, private school,", True),
+])
+def test_r07_reading_on_real_dashboard_wording(text, flagged):
+    from drishti.agents.compliance.eligibility import v2
+
+    assert bool(v2(text)) is flagged

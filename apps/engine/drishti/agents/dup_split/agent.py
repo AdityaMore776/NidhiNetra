@@ -12,6 +12,8 @@ What it reports, with a signal that grows with the evidence (v1 gave six fixed v
   pair while_open        0.35 .. 0.70  recommended again while the first was open
   group same_site_split  0.40 .. 0.55  one job at one site in pieces; grows with the pieces
   group bulk_order       0.10 .. 0.20  a series of identical purchases (15/15 read so by eye)
+  group stretches        0.40 .. 0.55  one job at one site in numbered parts (2 Oct 2026)
+  pair repair_after_built 0.40 .. 0.70 a repair of what a work built there within 3 years
   under a limit          +0.10 .. 0.20 every piece at 80-100% of Rs 5 or 10 lakh and the
                                        total above it; more the closer the pieces sit to it
 
@@ -31,10 +33,11 @@ from drishti.agents.contract import AgentResult, Finding, Status
 from drishti.agents.dup_split.match import FLAG, DupIndex
 
 AGENT = "dup_split"
-VERSION = "dup-split-2.0.0"
+VERSION = "dup-split-2.1.0"
 QUESTION = "Is this work repeated, or one job cut into pieces?"
-PAIR_RISK = {"after_completed": (0.55, 0.95), "while_open": (0.35, 0.70)}
-GROUP_RISK = {"same_site_split": 0.40, "bulk_order": 0.10}
+PAIR_RISK = {"after_completed": (0.55, 0.95), "while_open": (0.35, 0.70),
+             "repair_after_built": (0.40, 0.70)}
+GROUP_RISK = {"same_site_split": 0.40, "stretches": 0.40, "bulk_order": 0.10}
 # A "same place" group this large is a series, not one job in pieces: the splits read by
 # eye had 2-5 pieces, while 16, 23 and 50 identical works sharing a typo ("tenker",
 # "publiic", "knowledgew") were purchases filed as many works (queue sample, 30 Sept).
@@ -58,8 +61,8 @@ def pair_risk(kind: str, score: float) -> float:
 
 
 def group_risk(g: dict) -> float:
-    if g["kind"] == "same_site_split":
-        risk = GROUP_RISK["same_site_split"] + 0.05 * min(3, int(g["size"]) - 2)
+    if g["kind"] in ("same_site_split", "stretches"):
+        risk = GROUP_RISK[g["kind"]] + 0.05 * min(3, int(g["size"]) - 2)
     else:
         risk = GROUP_RISK["bulk_order"] + 0.01 * min(10, int(g["size"]))
     if g.get("under_limit") and g.get("limit"):
@@ -77,6 +80,24 @@ def _pair_finding(p: dict, amount: float) -> Finding:
     when = f"{gap:,} days {'before' if later else 'after'} this one"
     alike = (f"descriptions {float(p.get('text') or 0):.0%} alike, the same place named, "
              f"amounts {float(p.get('amount_diff') or 0):.0%} apart")
+    if p["kind"] == "repair_after_built":
+        soon = int(p.get("days_after_completion") or 0)
+        if later:
+            text = (f"Repairs what work {other} built at the same place ({_lakh(other_amt)}; "
+                    f"descriptions {float(p.get('text') or 0):.0%} alike once the verbs are "
+                    f"left out), recommended {soon:,} days after that work was completed. A new "
+                    "asset should not need repair this soon: check the first work's completion "
+                    "and quality, and whether this repair pays for the same thing again.")
+        else:
+            text = (f"Work {other} ({_lakh(other_amt)}) repairs what this work built at the same "
+                    f"place, recommended {soon:,} days after this work was completed. Check this "
+                    "work's completion and quality.")
+        return Finding("REPAIR_SOON_AFTER_BUILT", text, hard=False,
+                       risk=pair_risk(p["kind"], float(p["score"])),
+                       evidence={"other": other, "kind": p["kind"], "score": p.get("score"),
+                                 "asset_similarity": p.get("text"),
+                                 "days_after_completion": soon, "other_amount": other_amt,
+                                 "this_amount": amount})
     if p["kind"] == "after_completed":
         code = "FUNDED_AGAIN_AFTER_COMPLETION"
         text = (f"Reads like work {other} ({_lakh(other_amt)}, recommended {when}; {alike}); "
@@ -97,7 +118,12 @@ def _group_finding(g: dict) -> Finding:
     others = ", ".join(g.get("others") or [])
     span = "on the same day" if days == 0 else f"within {days} days"
     piece = total / size
-    if g["kind"] == "same_site_split":
+    if g["kind"] == "stretches":
+        code = "SPLIT_INTO_STRETCHES"
+        text = (f"One of {size} numbered pieces of one job at the same place "
+                f"({', '.join(g.get('segments') or [])}), recommended {span}: {_lakh(total)} in "
+                f"all, about {_lakh(piece)} each. Check whether one job was cut into parts.")
+    elif g["kind"] == "same_site_split":
         code = "SPLIT_AT_ONE_SITE"
         # the matched place words stay in the evidence, not the sentence: they are rare
         # words of the description, and can be a person's name ("near X's house")
@@ -116,7 +142,7 @@ def _group_finding(g: dict) -> Finding:
     return Finding(code, text, hard=False, risk=group_risk(g),
                    evidence={k: g.get(k) for k in ("group_id", "kind", "size", "total",
                                                    "under_limit", "limit", "shared_place",
-                                                   "days", "others", "cv")})
+                                                   "days", "others", "cv", "segments")})
 
 
 def assess(work: dict, index: DupIndex | None) -> AgentResult:

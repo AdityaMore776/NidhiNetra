@@ -165,6 +165,15 @@ engine reads a per-work answer stored by an offline job; signals grow with the e
 **Done when:** [x] made-up unseen recommendations get the same rules as corpus works · [x] every engine measured
 before/after (FINDINGS "T051") · [x] fresh by-eye samples with rules frozen · [x] queue re-read by eye
 
+### T055 · Engine review: test country, Office Patterns, calibrated score (v3), dashboard data  ·  L  ·  engine + data + eval  ·  Depends on: T051, T080
+**Owner's request, 2 Oct 2026:** "make the product way better at finding problems on MPLADS: refine each agent,
+find a more accurate architecture, add agents, test them aggressively on unseen data". Write-up:
+`docs/plans/T055-engine-review.md`; numbers in FINDINGS "T055".
+**Done when:** [x] a seeded made-up country with planted problems measures recall (`drishti/evaluation/`), with a
+CI quality gate · [x] every engine measured before/after on it and on the dashboard's 40,935 unseen works · [x]
+queue read by eye · [ ] hosted DB: migrations 011 + 012 applied and works re-assessed (**needs-owner**) · [ ]
+planted test (T080) re-run on the full 2,09,993 works with v3 (needs the data pack)
+
 ## M9 — Side track: real-evidence checkers (after the core; they feed its engines)
 
 **Merged 12 → 8 (T051).** The owner asked for about eight checkers. The merged tasks below replace the old ones

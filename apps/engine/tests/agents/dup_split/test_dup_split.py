@@ -143,3 +143,76 @@ def test_a_large_same_place_group_is_read_as_a_series():
                  rec=date(2024, 3, 5), wtype="WATER_TANK") for i in range(7)]
     r = assess(pieces[0], DupIndex.build(_filler() + pieces))
     assert r.verdict == "BULK_ORDER" and r.risk <= 0.20
+
+
+# ---- 2 Oct 2026: stretches, repairs, sound-alike places, works seen only as completed ---------
+
+def test_numbered_pieces_of_one_road_are_a_split_into_stretches():
+    from drishti.agents.dup_split.match import segment, site_numbers
+
+    assert segment("CC road at Sitapur part-2") == "part:2"
+    assert segment("CC road Sitapur Part II") == "part:2"
+    assert segment("Laying of CC Road from Hanuman Temple to GP Building Bit-III") == "bit:3"
+    assert segment("CC road at Sitapur chainage 250 to 500 m") == "ch:250-500"
+    assert site_numbers("CC road ward no 12 part-2") == "12"     # the piece is not the site
+    pieces = [_w(f"P{i}", f"Construction of CC road from Sitapur chowk to Bhawanipur school "
+                          f"part-{i + 1}", amount=495_000.0, rec=date(2024, 3, 1))
+              for i in range(3)]
+    idx = DupIndex.build(_filler() + pieces)
+    r = assess(pieces[0], idx)
+    assert r.verdict == "SPLIT_INTO_STRETCHES" and "part:1, part:2, part:3" in r.headline
+    assert "just under Rs 5.00 lakh" in r.headline and r.risk >= 0.6
+    # numbered pieces are never reported as repeats of one another
+    assert not any(f.code in ("REPEATED_WHILE_OPEN", "FUNDED_AGAIN_AFTER_COMPLETION")
+                   for f in r.findings)
+
+
+def test_a_repair_soon_after_the_work_was_built_is_asked_about():
+    built = _w("BUILT", "Construction of community hall at Sitapur near primary school",
+               amount=900_000.0, rec=date(2023, 6, 1), done=date(2024, 1, 10),
+               status="COMPLETED", wtype="COMMUNITY_HALL")
+    repair = _w("FIX", "Repair of community hall at Sitapur near primary school",
+                amount=300_000.0, rec=date(2024, 6, 1), mp="MP B", wtype="COMMUNITY_HALL")
+    elsewhere = _w("FIX2", "Repair of community hall at Bhawanipur near panchayat bhawan",
+                   amount=300_000.0, rec=date(2024, 6, 1), mp="MP B", wtype="COMMUNITY_HALL")
+    idx = DupIndex.build(_filler() + [built, repair, elsewhere])
+    r = assess(repair, idx)
+    assert r.verdict == "REPAIR_SOON_AFTER_BUILT" and "BUILT" in r.headline
+    assert "143 days after that work was completed" in r.headline
+    assert assess(elsewhere, idx).verdict != "REPAIR_SOON_AFTER_BUILT"
+    # years later a repair is ordinary upkeep
+    late = _w("FIX3", repair["description"], amount=300_000.0, rec=date(2027, 6, 1), mp="MP B",
+              wtype="COMMUNITY_HALL")
+    assert assess(late, DupIndex.build(_filler() + [built, late])).risk == 0
+
+
+def test_one_village_spelt_two_ways_is_one_place():
+    from drishti.agents.dup_split.match import sound_key
+
+    assert sound_key("chakwa") == sound_key("chakva")
+    assert sound_key("ghurpur") == sound_key("gurpur")
+    assert place_agreement("chakwa", "chakva") == 100.0
+    assert place_agreement("sonpur", "sunpur") == 0.0
+
+
+def test_hindi_and_english_wordings_of_one_work_read_alike():
+    assert text_sim("Santpur Khurd me samudayik bhawan nirman",
+                    "Santpur Khurd me community hall ka nirman karya") >= 0.9
+
+
+def test_spec_sheets_and_ordinary_words_are_not_places():
+    spec = ("Installation of Solar LED Light with Pole (Lights 24Watt x 2, Pole 7mtr. Octagonal "
+            "with Manual Ladder, Battery 12.8V,30A H Lithium ferro, Module 150Wp")
+    assert place_words(spec) == ""
+    assert place_words("Highmast Solar Street light- Two Piece.") == ""
+    assert place_words("High mast light ka adhisthapan prakhand ke antargat") == ""
+
+
+def test_a_work_seen_only_as_completed_can_be_the_first_of_a_repeat():
+    # the dashboard's Completed table carries no recommendation date
+    old = _w("OLD-C", ROAD, rec=None, done=date(2024, 2, 1), status="COMPLETED")
+    idx = DupIndex.build(_filler() + [old])
+    r = assess(_w("NEW-C", ROAD, rec=date(2024, 9, 1), mp="MP B", status="RECOMMENDED"), idx)
+    assert r.verdict == "FUNDED_AGAIN_AFTER_COMPLETION" and "OLD-C" in r.headline
+    # ... and is compared itself, though it can never be the later of two
+    assert assess(old, idx).status == Status.ASSESSED

@@ -28,11 +28,14 @@ def test_a_work_already_recommended_in_the_district_is_amber(client):
     assert "questions, not findings" in r["advice"]
 
 
-def test_a_prohibited_work_is_amber_with_the_guideline_reason(client):
+def test_a_prohibited_work_is_red_with_the_guideline_reason(client):
+    # fusion v3 (2 Oct 2026): R07 flags were read worth a look 49 times in 58, so one such
+    # finding is more likely than not worth checking: the review band, so RED before sanction
     r = _check(client, description="Construction of temple in village Sundarpur",
                work_type_code="COMMUNITY_HALL").json()
-    assert r["colour"] == "AMBER"
+    assert r["colour"] == "RED"
     assert any(x["code"] == "POSSIBLY_INADMISSIBLE" for x in r["reasons"])
+    assert "never blocks" in r["advice"]
 
 
 def test_above_the_outside_area_ceiling_is_red_and_never_blocks(client):

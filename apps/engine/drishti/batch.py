@@ -17,6 +17,7 @@ from psycopg.types.json import Jsonb
 
 from drishti.agents.delay.backlog import OfficeBacklog
 from drishti.agents.dup_split.match import DupIndex
+from drishti.agents.office_patterns.index import JUST_UNDER, OfficeIndex, limits
 from drishti.agents.paperwork.vendors import VendorIndex
 from drishti.agents.photo_evidence.index import PhotoIndex
 from drishti.pipeline.orchestrator import Assessment, Context, assess_work
@@ -24,7 +25,7 @@ from drishti.pipeline.orchestrator import Assessment, Context, assess_work
 WORK_COLUMNS = ("work_id, source, house, term, state_lgd, state_name, district_lgd, "
                 "district_name, constituency, mp_name, agency_name, fy, work_type_code, "
                 "category, description, amount, recommended_date, completed_date, status, "
-                "quantity, quantity_unit, is_outside_constituency")
+                "quantity, quantity_unit, is_outside_constituency, sanction_date")
 # Offline engine facts for the work (migration 006, table work_signals), as one JSON object
 # keyed by engine: {"cost_model": {...}, "delay": {...}}.
 # ... and the facts read from its attached papers and photos (migration 009, T110), as
@@ -40,15 +41,17 @@ TIMING_CODES = frozenset({"SANCTION_OVERDUE", "COMPLETION_OVERDUE"})
 
 UPSERT = """
 INSERT INTO assessments (work_id, assessed_at, score, band, limited, priority, parts,
-                         validation, agents, versions, alerts, headline, compact)
+                         validation, agents, versions, alerts, headline, compact, case_id,
+                         case_size)
 VALUES (%(work_id)s, now(), %(score)s, %(band)s, %(limited)s, %(priority)s, %(parts)s,
-        %(validation)s, %(agents)s, %(versions)s, %(alerts)s, %(headline)s, %(compact)s)
+        %(validation)s, %(agents)s, %(versions)s, %(alerts)s, %(headline)s, %(compact)s,
+        %(case_id)s, %(case_size)s)
 ON CONFLICT (work_id) DO UPDATE SET
     assessed_at = now(), score = EXCLUDED.score, band = EXCLUDED.band,
     limited = EXCLUDED.limited, priority = EXCLUDED.priority, parts = EXCLUDED.parts,
     validation = EXCLUDED.validation, agents = EXCLUDED.agents,
     versions = EXCLUDED.versions, alerts = EXCLUDED.alerts, headline = EXCLUDED.headline,
-    compact = EXCLUDED.compact
+    compact = EXCLUDED.compact, case_id = EXCLUDED.case_id, case_size = EXCLUDED.case_size
 """
 
 
@@ -67,6 +70,8 @@ def row_for(a: Assessment) -> dict:
     top = max((r for r in a.agents if r.assessed and r.risk > 0), key=lambda r: r.risk,
               default=None)
     row["alerts"] = alerts
+    # one case per Duplicate & Split group (migration 012): the queue shows the group once
+    row["case_id"], row["case_size"] = case_of(a)
     # the headline is the score's reason that sets the work apart: a sanction or completion
     # delay is shared by a third of all works, so in the queue list it only leads when
     # nothing else counts (read on the local copy of the site, 30 Sept 2026)
@@ -84,11 +89,43 @@ def row_for(a: Assessment) -> dict:
     return row
 
 
+def case_of(a: Assessment) -> tuple[str | None, int | None]:
+    """The Duplicate & Split group a work belongs to, as (case id, works in it)."""
+    for r in a.agents:
+        if r.agent == "dup_split" and r.assessed:
+            for f in r.findings:
+                gid = (f.evidence or {}).get("group_id")
+                if gid:
+                    return str(gid), int((f.evidence or {}).get("size") or 0) or None
+    return None, None
+
+
 def indexes(works: list[dict]) -> dict:
     """The cross-work views engines need, from the same rows: the Duplicate & Split index and
     the vendors holding the certified works (Paperwork, T110)."""
     return {"dup_split": DupIndex.build(works), "vendors": VendorIndex.build(works),
-            "photos": PhotoIndex.build(works), "backlog": OfficeBacklog.build(works)}
+            "photos": PhotoIndex.build(works), "backlog": OfficeBacklog.build(works),
+            "offices": OfficeIndex.build(works)}
+
+
+_NATIONAL: dict[str, list[int]] = {}
+
+
+def office_national(con: psycopg.Connection) -> list[int]:
+    """The whole database's office counts (OfficeIndex.national), once per process: the API
+    builds the office index from one district, but judges it against the scheme."""
+    if "counts" not in _NATIONAL:
+        lo = [(JUST_UNDER * lim, lim) for lim in limits()]
+        under = " OR ".join("(amount >= %s AND amount < %s)" for _ in lo)
+        row = con.execute(f"SELECT count(*) FILTER (WHERE amount > 0) AS priced, "
+                          f"count(*) FILTER (WHERE {under}) AS under FROM works",
+                          [x for pair in lo for x in pair]).fetchone()
+        built = OfficeIndex.build(dict(r) for r in con.execute(
+            "SELECT work_type_code, description, status, sanction_date, completed_date "
+            "FROM works WHERE status = 'COMPLETED' AND sanction_date IS NOT NULL "
+            "AND completed_date IS NOT NULL").fetchall()).national
+        _NATIONAL["counts"] = [int(row["priced"]), int(row["under"]), built[2], built[3]]
+    return _NATIONAL["counts"]
 
 
 def with_index(ctx: Context, con: psycopg.Connection, work: dict) -> Context:
@@ -100,6 +137,7 @@ def with_index(ctx: Context, con: psycopg.Connection, work: dict) -> Context:
     rows = con.execute(f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works {SIGNALS_JOIN} "
                        "WHERE works.district_lgd = %s", (d,)).fetchall() if d else []
     data = indexes([_normalise(dict(r)) for r in rows])
+    data["offices"].national = office_national(con)
     # a photo can be reused in another district: every work's evidence, not the district's
     data["photos"] = PhotoIndex.build(
         {"work_id": r["work_id"], "evidence": r["data"]}

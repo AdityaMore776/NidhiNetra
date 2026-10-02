@@ -26,8 +26,9 @@ export const AGENTS: Record<AgentId, AgentMeta> = {
   statistical: { n: "02", name: "Cost Anomaly", color: "var(--statistical)", question: "Is the project cost unusual for similar works?" },
   dup_split: { n: "03", name: "Duplicate & Split Work", color: "var(--duplicate)", question: "Is this work repeated, or one job cut into pieces?" },
   delay: { n: "04", name: "Fund Flow", color: "var(--site)", question: "Is money stuck waiting for sanction?" },
-  paperwork: { n: "05", name: "Paperwork", color: "var(--inputs)", question: "Do the work's own papers agree with the portal?" },
-  photo_evidence: { n: "06", name: "Photo Evidence", color: "var(--fusion)", question: "Are the work's photos new, from its place and from its time?" },
+  office_patterns: { n: "05", name: "Office Patterns", color: "var(--reuse)", question: "Does this work's office price or close works in an unusual way?" },
+  paperwork: { n: "06", name: "Paperwork", color: "var(--inputs)", question: "Do the work's own papers agree with the portal?" },
+  photo_evidence: { n: "07", name: "Photo Evidence", color: "var(--fusion)", question: "Are the work's photos new, from its place and from its time?" },
 };
 
 // Ids stored before the engine registry (the deck's four agents).
@@ -39,7 +40,7 @@ export function agentMeta(id: string, name?: string, question?: string): AgentMe
 }
 
 export const AGENT_ORDER: AgentId[] = ["compliance", "statistical", "dup_split", "delay",
-  "paperwork", "photo_evidence"];
+  "office_patterns", "paperwork", "photo_evidence"];
 
 export const BAND_COLOR: Record<Band, string> = {
   CRITICAL: "var(--critical)",
@@ -78,6 +79,10 @@ export const WORK_TYPES: Record<string, string> = {
   SOLAR_PLANT: "Solar power plant",
   CREMATORIUM: "Crematorium / burial ground",
   STREET_LIGHT: "Solar / LED street light",
+  WATER_SUPPLY: "Drinking water supply pipeline",
+  EMBANKMENT: "Flood embankment / protection wall",
+  ELECTRICITY: "Electricity distribution",
+  VEHICLE: "Vehicle (van, bus, boat)",
   HIGH_MAST: "High mast light",
   CCTV: "CCTV system",
   COMPUTER: "Computers / smart class",

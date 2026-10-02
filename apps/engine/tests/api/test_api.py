@@ -131,3 +131,40 @@ def test_offices_with_unreliable_completion_dates(client, api_db):
     rows = client.get("/api/v1/dashboard/offices", headers=MINISTRY).json()
     assert [r["agency_name"] for r in rows] == ["Anand(DISTRICT COLLECTOR)"]
     assert rows[0]["district_name"] == "Anand" and rows[0]["bad"] == 40
+
+
+def test_one_purchase_filed_as_several_works_is_one_case_in_the_queue(api_db, client):
+    # three identical big sums that name no place, filed the same day: R12 queues each one,
+    # and Duplicate & Split reads them as one bulk order, so the queue shows one case of three
+    from datetime import date
+
+    import psycopg
+
+    from drishti import batch
+    from drishti.agents.statistical.cohort import StatsStore
+    from drishti.pipeline.orchestrator import Context
+
+    with psycopg.connect(api_db) as con:
+        for i in range(3):
+            con.execute(
+                "INSERT INTO works (work_id, source, state_lgd, state_name, district_lgd, "
+                "district_name, work_type_code, description, amount, status, "
+                "recommended_date) VALUES (%s,'REAL','24','Gujarat','639','Anand','ROAD_CC',"
+                "'Construction of PCC Road',1400000,'SANCTIONED',%s)",
+                (f"W-PIECE-{i}", date(2026, 1, 5)))
+        con.commit()
+    batch.assess_all(api_db, Context(stats=StatsStore.load(api_db), as_of=date(2026, 5, 26)))
+    body = client.get("/api/v1/queue", headers=MINISTRY).json()
+    pieces = [i for i in body["items"] if i["work_id"].startswith("W-PIECE-")]
+    assert len(pieces) == 1 and pieces[0]["case_size"] == 3 and pieces[0]["case_id"]
+    assert body["total"] == len(body["items"])
+    everything = client.get("/api/v1/works", headers=MINISTRY).json()["items"]
+    assert sum(i["work_id"].startswith("W-PIECE-") for i in everything) == 3
+
+
+def test_office_habits_are_listed_once_and_scoped(client):
+    r = client.get("/api/v1/dashboard/office-habits", headers=MINISTRY)
+    assert r.status_code == 200 and isinstance(r.json(), list)
+    r = client.get("/api/v1/dashboard/office-habits", headers=DISTRICT_ANAND)
+    assert r.status_code == 200
+    assert all(o["district_lgd"] == "639" for o in r.json())

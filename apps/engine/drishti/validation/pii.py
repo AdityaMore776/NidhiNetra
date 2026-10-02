@@ -33,7 +33,18 @@ RELATION = re.compile(
     r"daughter\s+of|husband\s+of|contact\s+person)\b\.?" + _NAME, re.I)
 # Bare "Shri" is left alone: it usually names a deity or an institution ("Shri Ram Mandir").
 HONORIFIC = re.compile(r"\b(Sh\.|Smt\.?|Shrimati|Kumari|Mr\.?|Mrs\.?|Late|Lt\.)" + _NAME)
-HOUSE = re.compile(r"\b(house\s+of|H\s*[/\\]\s*O|residence\s+of)\b\.?" + _NAME, re.I)
+HOUSE = re.compile(r"\b(house\s+of|H\s*[/\\]\s*O|residence\s+of|request\s+of|requested\s+by)"
+                   r"\b\.?" + _NAME, re.I)
+# "from <name>'s house to ..." (2 Oct 2026, read on the dashboard queue): one to three
+# capitalised words before 's and a home word; a place word or "from" stops the name
+_CAP = r"(?!(?i:" + _STOP + r"|from|road|the)\b)[A-Z][A-Za-z.-]*"
+POSSESSIVE = re.compile(r"\b(?:" + _CAP + r"\s+){0,2}" + _CAP
+                        + r"'[sS](\s+(?i:house|home|residence|field|farm|land|shop))\b")
+# the Hindi form, "<name> ke ghar ke pas" / "<name> ke khet": up to three words before
+# "ke/ki" and a home word; place words and "me/mein" stop the name
+_HI_WORD = r"(?!(?:" + _STOP + r"|me|mein|men|bhawan|bhavan)\b)[A-Za-z][A-Za-z.-]*"
+HI_HOME = re.compile(r"\b(?:" + _HI_WORD + r"\s+){0,2}" + _HI_WORD
+                     + r"(\s+(?:ke|ki)\s+(?:ghar|khet|makan|dukan|bari)\b)", re.I)
 
 
 def mask(text: str | None) -> str | None:
@@ -44,4 +55,6 @@ def mask(text: str | None) -> str | None:
     t = RELATION.sub(lambda m: f"{m.group(1)} [name]", t)
     t = HONORIFIC.sub(lambda m: f"{m.group(1)} [name]", t)
     t = HOUSE.sub(lambda m: f"{m.group(1)} [name]", t)
+    t = POSSESSIVE.sub(lambda m: f"[name]'s{m.group(1)}", t)
+    t = HI_HOME.sub(lambda m: f"[name]{m.group(1)}", t)
     return t

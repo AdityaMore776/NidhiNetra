@@ -46,11 +46,17 @@ note on the ones an officer should look at.
 3. **Specialist agents look at the work.** Each agent answers one question — *Is this cost unusual? Has this
    photo been used on another work? Was the photo taken in the right district?* (the full list is below).
 4. **The answers are combined into one score from 0 to 100**, with the **top reasons** and the evidence.
-   Low / Medium / High / Critical. A work reaches High only when two different checks agree.
-5. **The officer gets a short, ranked list**, not thousands of alerts. Today, on all 2.1 lakh real works,
-   the list is **1,524 works (0.73%)**, and 24 of 30 picked at random were worth checking.
+   Low / Medium / High / Critical. The score is the chance the work is worth an officer's look, worked
+   out from how often flags of each kind were right when the team read them one by one. One check that is
+   nearly always right (a temple work, a ₹40 lakh sum that says nothing about what or where) is enough
+   for High; a check that is right only half the time (a possible repeat) stays Medium until a second
+   one agrees. Critical needs two different checks.
+5. **The officer gets a short, ranked list**, not thousands of alerts. On the 40,935 works in eSAKSHI's
+   public dashboard tables (2 Oct 2026, never used to build any rule), the list is **427 works (1%)**, and
+   39 of 40 picked at random were worth checking. A purchase entered as many works shows once.
 6. **The officer decides.** They open a work, see exactly why it was flagged, check it, and record their
-   verdict. (Planned: those verdicts teach the agents which of their alerts were right.)
+   verdict. (Planned: those verdicts are added to the same counts the score is built from, so it learns which
+   alerts were right.)
 
 ## 3. The agents, one line each
 
@@ -60,7 +66,8 @@ Grouped by the step of a work's life they watch. ✅ = built into the live app �
 **Before the money moves**
 - ✅ **Cost** — *Is the cost unusual for similar works in this district?*
 - ✅ **Guideline Compliance** (includes Eligibility) — *Does the work follow the MPLADS rules?* (e.g. waiting for sanction past 75 days, works inside a temple campus)
-- ✅ **Duplicate & Split** — *Is this already funded, or one work cut into pieces to stay under ₹5 lakh?*
+- ✅ **Duplicate & Split** — *Is this already funded, or one work cut into pieces to stay under ₹5 lakh?* (also: one road cut into "part 1 / part 2" stretches, an asset repaired soon after this scheme built it)
+- ✅ **Office Patterns** — *Does this office price most of its works just under a limit, or record buildings complete days after sanction?* (an office's habit backs up a work's own findings; it never puts a work on the list by itself)
 
 **While the work is built**
 - 📝 **Site Progress** — *Do the photos show what was claimed? Is the plaque there?*

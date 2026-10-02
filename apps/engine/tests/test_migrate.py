@@ -40,9 +40,9 @@ def test_row_level_security_is_on_everywhere(migrated_url):
 
 
 def test_assessments_accept_every_band_the_risk_score_gives(migrated_url):
-    from drishti.fusion.fuse import band_of
+    from drishti.fusion.fuse import CRITICAL, HIGH, MEDIUM, band_of
 
-    bands = sorted({band_of(s) for s in (0.0, 0.16, 0.25, 0.5)})
+    bands = sorted({band_of(s) for s in (0.0, MEDIUM, HIGH, CRITICAL)})
     assert bands == ["CRITICAL", "HIGH", "LOW", "MEDIUM"]
     with psycopg.connect(migrated_url) as con:
         for band in bands:
