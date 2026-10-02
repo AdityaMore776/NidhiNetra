@@ -868,6 +868,71 @@ has never been read by eye, so it counts at the 1-in-4 prior. Prices raised 2-3�
 
 **Not measured yet:** 30 random live queue works read by eye (needs the data pack or database access). The 2023 guideline PDF stays unreachable (network policy blocks mplads.mospi.gov.in).
 
+## T056 (2 Oct 2026): foolproof and accuracy pass on the remaining agents
+
+**Asked (owner):** "work on the next few agents to make them foolproof and accurate". Covered: the evidence engines
+(Photo Evidence, Paperwork, Site Progress) and their indexes, Fund Flow, the certificate reader, and Cost Anomaly.
+Foolproof means a malformed or oddly written record can never crash an engine or the batch, and the same facts
+written another way give the same answer. Accuracy changes were made only where real flags read by eye showed a fix.
+
+**Foolproof, found by fuzzing** (tests in `tests/evaluation/test_random_evidence.py`, `tests/agents/delay/`,
+`tests/agents/paperwork/`):
+
+| Found | Effect before | Fix |
+|---|---|---|
+| One evidence row whose file was not an object (or a stamp without numbers, a payment without an amount, a fingerprint that is not hex) | the photo and vendor indexes raised, so **the whole batch stopped**; a work page too | `agents/evidence.py`: every part checked once, malformed parts dropped, never guessed; every engine and index reads through it. 250 random malformed works and 5 fuzz seeds run clean; 8 of the 14 new tests fail on the old code |
+| Fund Flow compared text exactly: status "recommended", a term "17th lok sabha", house "rajya sabha" | the work was skipped as "sanctioned", or an ended term missed | case and spacing ignored (`delay/backlog.norm`) |
+| A recommendation date written as text ("2024-02-01") | Fund Flow raised; the office-backlog index (all works) raised, so **the batch stopped** | text dates read as dates (`backlog.day`) |
+| A recommendation date after the data's own date | "Waiting -30 days" | NOT_ASSESSABLE, with both dates named |
+| Certificate OCR with words glued together ("TESTVENDORV123456789012") | the vendor code was lost | the code is found inside glued text |
+| Certificate dates with "-", "." or "\|" for "/" ("20-03-2024"); the letter O for a zero ("3,OO,OOO", "2O/O3/2O24") | the date or amount was lost | read, inside numbers only ("Block O", "CO-OP" untouched) |
+| One work row in the corpus with a pandas NaN in a text column, a district code loaded as a number, a datetime where a date was expected, an amount written "1,00,000", or a negative amount on a CC road | the Duplicate & Split index and the cohort statistics raised, so **the whole batch stopped** (every fuzz seed) | `drishti/records.py`: every column checked once at the indexes, the statistics and the orchestrator (text as written, numbers from any number type, ISO and Indian day-first dates, a clear yes/no); malformed values dropped, never guessed; a clean row is not copied. 5 seeds × 300 damaged rows run clean; the 2 new corpus tests fail on the old code. A loosely typed twin of every work (dates as text or datetimes, amounts as Decimal or grouped text, codes as numbers) gets the same answer finding for finding. On clean records nothing changes: the dashboard's 40,935 works give byte-identical codes, flags and queue files (`dashboard_agents4.json` vs agents3) and the test country is identical (`synthetic_eval_agents4.json`) |
+
+The certificate reader runs when the evidence is built, so its effect on the pilot's 431 real certificates (sanction
+date read on 69% before) is measured only when the owner re-runs `data/build_evidence.py` and
+`data/trial/paperwork_trial.py`.
+
+**Cost Anomaly: where its misses come from** (test country, seeds 11-13, `synthetic_eval_agents2.json`). Planted 5×
+mark-ups: 20 of 36 sit inside the comfort zone and 15 of 36 are flagged. Planted 10×: 15 of 36 are read as "a far
+bigger project" and 17 flagged. Both are deliberate (T053: flags inside the comfort zone and "far bigger" flags
+almost never read as real price questions, 3/18). One planted pattern, a "single room" at Rs 39-41 lakh judged
+against whole school buildings, suggested a rule for single units; on the dashboard's real works it would have
+changed **1 of 653** single-unit works, so it was not built (it would tune the engine to the test country).
+
+**Cost Anomaly: its real flags read by eye.** 12 random Cost flags of the dashboard's 40,935 works
+(`dashboard_labels.py` COST_SAMPLE): **3 real price questions, 5 grey, 4 not**. All 4 "not" were one amount for
+several streets or parts ("2nd 3rd 4th 7th Cross", "…Street & Streets", a list of park components) or a wrong work
+type. Fix: one amount for several streets or roads is a bundle for the price (`scope.several_ways`), and only for the
+price. Duplicate & Split still reads "Internal CC Roads (Bit1)/(Bit2) in one village" as one place (a true split,
+kept by a test). Measured (`dashboard_agents2.json` against `dashboard_final.json`; every change read, COST_CHANGES):
+
+| | Before | After |
+|---|---|---|
+| Cost flags on the 40,935 works | 140 | **135** |
+| dropped | | 7, all rightly (4 several streets, 3 vague sums that R12 still flags) |
+| gained (narrower peer bands) | | 2: 1 grey, 1 not |
+| review queue | 427 | 427 (4 works move from CRITICAL to HIGH: their second engine was the dropped Cost flag) |
+| test country (all measures) | | unchanged |
+
+Cost flags stay MEDIUM at most in fusion v3: price alone reads right less than half the time (54 of 128 in T053;
+3 clear and 5 grey of 12 here).
+
+**Duplicate & Split: its split flags read by eye** (12 random SPLIT_AT_ONE_SITE flags, `dashboard_labels.py`
+SPLIT_SAMPLE_T056): **7 real questions, 2 grey, 3 not**. The 3 "not": a men's and a women's building read as one
+job, twice ("Resting Barracks … for Men / for Women"; "Vishranthi Dhamam (Male block) / (Female block)"), and two
+Rs 34,000 street lights near two different hamlets. Two rules, each measured:
+- **Genders that differ make two works** (`match.genders`, like opposite sides of a road); two girls' toilets are
+  still alike.
+- **A split whose total stays under Rs 5 lakh avoids no limit**: said, not asked (`ALIKE_BELOW_LIMIT`, risk 0). 24
+  of the 76 split flags were such; every one of them that had a label read grey or not (0 yes of 5).
+
+Measured (`dashboard_agents3.json` against `dashboard_agents2.json`, every dropped flag read): split flags **76 →
+48**, stretches 18 → 13, bulk orders 1,334 → 1,330; review queue 427 → 427; test country unchanged on every
+measure (`synthetic_eval_agents3.json`). On the rules' own fresh sample, the groups not used to design them read
+**4 real splits of 5** (SPLIT_FRESH_T056). Only those 5 fresh reads were added to the measured hit rate
+(`reliability.json`: 14/27 → 18/32). With that rate a split of 5 or more pieces just under a limit reaches HIGH on its
+own; none on the dashboard does yet.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

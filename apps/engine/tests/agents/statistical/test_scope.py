@@ -117,6 +117,37 @@ def test_lists_of_places_are_many_sites(text):
     assert many_sites(text)
 
 
+@pytest.mark.parametrize("text", [
+    # read on the eSAKSHI dashboard's Cost flags, 2 Oct 2026: one amount for several streets
+    "Construction of CC Road at Ward no 49(new ward no 67) Kirloskar Foundry 2nd 3rd 4th 7th Cross",
+    "Laying of CC Roads in Road No. 4, 10 and 6 in Presidency Avenue Colony, Old Alwal",
+    "Laying of CC Roads in Madhav Nagar",
+    "Kaveri Rengan Street, Thasarathapuram Diwakar Nagar & Streets Z-10, Ward 129",
+    "1st & 2nd Main road asphalting in ward 12",
+    "gaon ki galiyon me khadanja",
+])
+def test_several_streets_in_one_amount_are_a_bundle_for_the_price(text):
+    assert read("ROAD_CC", text).bundle
+
+
+def test_several_streets_of_one_village_are_still_one_place():
+    # Duplicate & Split asks "one place?", Cost asks "one job?": "Internal CC Roads (Bit1)" and
+    # "(Bit2)" in one village were a true split read by eye (dashboard QUEUE_FINAL); the plural
+    # must not hide it (found on the dashboard re-run, 2 Oct 2026)
+    text = "Providing Internal CC Roads(Bit1) in Erramatam of  Kothapalli Mandal"
+    assert not many_sites(text) and read("ROAD_CC", text).bundle
+
+
+@pytest.mark.parametrize("text", [
+    "Construction of CC Roads with Drains from H.No. 4-7-10 to H.No. 7-9-1, Shanthi Gardens",
+    "Construction of 1st and 2nd floor of community hall at Rampur",
+    "CC road near Roads and Buildings Department office, ward 3",
+    "Construction of 2nd cross road at Gandhinagar",
+])
+def test_one_path_one_building_or_an_office_name_stays_one_job(text):
+    assert not read("ROAD_CC", text).bundle
+
+
 def test_numbered_list_needs_one_two_three():
     assert numbered_list("at 1 Dilawal 2 Akhtiyarpur 3 Nakhatpur")
     assert not numbered_list("Construction of 3 rooms in school no 2 ward 1")

@@ -23,6 +23,7 @@ from dataclasses import dataclass, field
 from datetime import date
 from typing import Any
 
+from drishti import records
 from drishti.agents import registry
 from drishti.agents.contract import AgentResult, Status, not_built
 from drishti.agents.statistical.cohort import StatsStore
@@ -89,6 +90,7 @@ def _run(agent: str, fn, *args) -> AgentResult:
 
 
 def assess_work(work: dict, ctx: Context) -> Assessment:
+    work = records.work(work)        # the same column types the indexes were built from
     results = []
     for engine in registry.engines():
         if engine.assess is None:

@@ -42,7 +42,7 @@ them: what each checks, how, what we measured, and where it stands.
 | Cost Anomaly | `agents/statistical/` | 0.20 | planted mark-ups + frozen fresh samples read by eye. T051: the word-price model judges any description: 5× mark-ups caught 42-45% (was 55%), false alarms 1.2%. T053: explicit comfort zone (asks only above the highest of 2× the district top, the state top, 2× the described-like-this top); flags that read almost never right removed (several sites 0/48, far bigger project 3/18, per unit 0/3, below peers unmeasured); kept: above the comfort limit (54/128) and road cost per metre |
 | Duplicate & Split Work | `agents/dup_split/` | 0.20 | T051: rules run live for any work. Fresh frozen samples read by eye: pairs 20/40 real repeats (T030: 15/40), same-site splits 9/15 (T030: 10/15) |
 | Office Patterns (T055, new) | `agents/office_patterns/` | 0.10 (backs up a work's findings; never queues it alone) | dashboard's 40,935 works: 36 offices price most works just under a limit (median 55% of their works vs 9.5% nationally; 1,311 works flagged `PRICED_AT_LIMIT`), 6 record buildings complete within 7 days of sanction as a routine (median 69% vs 7.1%). Test country: 100% of planted limit-pricing offices' works found; fires on 0.02% of ordinary works |
-| Fund Flow (was Delay Prediction) | `agents/delay/` | **0** (shown, not counted) | T053: the forecast was removed (LightGBM 0.710, ladder 0.705 AUC against 0.80; 73% of works run late anyway). Kept: 3,331 works (₹168.9 cr) of the ended 17th Lok Sabha still unsanctioned, office sanction backlog vs its district |
+| Fund Flow (was Delay Prediction) | `agents/delay/` | **0** (shown, not counted) | T053: the forecast was removed (LightGBM 0.710, ladder 0.705 AUC against 0.80; 73% of works run late anyway). Kept: 3,331 works (₹168.9 cr) of the ended 17th Lok Sabha still unsanctioned, office sanction backlog vs its district. T056: reads status, term and house in any case, text dates, and says "cannot be assessed" for a recommendation dated after the data |
 | ~~Odd Overall~~ | — | — | removed in T053: Isolation Forest flags read 9/30 worth a look; replaced by Guideline Compliance R12 and R13 |
 
 **One brain per engine (T051, 1 Oct 2026).** Each engine computes its answer for ANY recommendation from
@@ -139,6 +139,9 @@ Two rules are enforced in code, not trusted to each agent:
   sound keys for one village spelt two ways; Hindi/English synonyms; ~490 vetted generic words; the repeat clock starts
   at completion. The team's 159 labelled pairs: false repeats 56 → 50, true 44 → 43 (`dup_split_rescore.py`).
   A purchase or split shows once in the queue (one case).
+- **T056 (2 Oct 2026):** a men's and a women's building are two works; a split whose total stays under Rs 5 lakh
+  avoids no limit and is said, not asked. 12 real split flags read by eye: 7 yes, 2 grey, 3 no (all 3 removed by
+  these rules); on a fresh sample 4 of 5 groups are real splits. Split flags on the dashboard 76 → 48.
 
 ### A3 Cost — *Is the cost unusual for similar works?* ✅ live
 
@@ -164,6 +167,10 @@ Two rules are enforced in code, not trusted to each agent:
 - **T055 (2 Oct 2026):** a description that states a single unit ("1 no. high mast light") is never excused as "a far
   bigger project": planted ×10 mark-ups on one unit caught 28% → 78%. Price alone stays Medium at most in v3 (above the
   comfort limit read right 54 of 128).
+- **T056 (2 Oct 2026):** one amount for several streets or roads ("2nd 3rd 4th 7th Cross", "CC Roads in Madhav Nagar")
+  is a bundle for the price (it stays one place for Duplicate & Split). 12 random real Cost flags read by eye: 3 real
+  price questions, 5 grey, 4 not; the fix drops 7 of the 140 dashboard flags, all rightly. The planted-test misses at
+  5x/10x sit in the comfort zone or read as "a far bigger project", by design (FINDINGS "T056").
 
 ## B · While the work is built
 

@@ -35,6 +35,7 @@ import time
 from datetime import date
 
 from drishti import reference
+from drishti.agents import evidence
 from drishti.agents.compliance.agent import mcc_days, rarity, share_at
 from drishti.agents.contract import AgentResult, Finding, Status
 
@@ -100,7 +101,7 @@ def _quiet(status: Status, text: str, t0: float, **evidence) -> AgentResult:
 def assess(work: dict, vendors=None) -> AgentResult:
     t0 = time.perf_counter()
     # papers only: photos are the Photo Evidence engine's (T310)
-    files = [f for f in ((work.get("evidence") or {}).get("files")) or [] if f.get("ext") == "pdf"]
+    files = evidence.papers(work)           # every part checked once (agents/evidence.py)
     # a certificate page whose fields could not be read is no certificate to compare
     certs_all = [c for f in files for c in f.get("certificates") or []
                  if c.get("sanctioned_amount") or c.get("location") or c.get("payments")]

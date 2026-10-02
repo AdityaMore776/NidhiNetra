@@ -216,3 +216,41 @@ def test_a_work_seen_only_as_completed_can_be_the_first_of_a_repeat():
     assert r.verdict == "FUNDED_AGAIN_AFTER_COMPLETION" and "OLD-C" in r.headline
     # ... and is compared itself, though it can never be the later of two
     assert assess(old, idx).status == Status.ASSESSED
+
+
+# ---- read by eye on the dashboard's split flags (2 Oct 2026, T056)
+
+@pytest.mark.parametrize("a,b", [
+    ("Construction of Resting Barracks with attached wash rooms for Men in the District Police "
+     "Office, Eluru", "Construction of Resting Barracks with attached wash rooms for Women in the "
+     "District Police Office, Eluru"),
+    ("Construction of new building Vishranthi Dhamam (Male block) at Govt General Hospital",
+     "Construction of new building Vishranthi Dhamam (Female block) at Govt General Hospital"),
+    ("Boys toilet at Govt High School Kalathurpatti",
+     "Girls toilet at Govt High School Kalathurpatti"),
+])
+def test_a_mens_and_a_womens_building_are_two_works(a, b):
+    x = _w("M1", a, 3_198_000.0, rec=date(2024, 10, 25), wtype="OTHER")
+    y = _w("W1", b, 3_199_000.0, rec=date(2024, 10, 25), wtype="OTHER")
+    idx = DupIndex.build(_filler() + [x, y])
+    for w in (x, y):
+        r = assess(w, idx)
+        assert not [f for f in r.findings if f.risk > 0], (w["work_id"], r.verdict)
+
+
+def test_two_girls_toilets_are_still_compared_as_alike():
+    # the same gender on both is no difference at all
+    pieces = [_w(f"G{i}", "Girls toilet at Govt High School Kalathurpatti", 496_000.0,
+                 rec=date(2024, 3, 5), wtype="TOILET_BLOCK") for i in range(2)]
+    r = assess(pieces[0], DupIndex.build(_filler() + pieces))
+    assert r.verdict == "SPLIT_AT_ONE_SITE" and r.risk > 0
+
+
+def test_alike_works_whose_total_crosses_no_limit_are_said_not_asked():
+    # two Rs 34,000 street lights near one place: 0 of 5 such groups read as a real split
+    lights = [_w(f"L{i}", "Installation of 1 no solar street light near Bamangachi Roy Para",
+                 34_259.0, rec=date(2024, 11, 27), wtype="STREET_LIGHT") for i in range(2)]
+    r = assess(lights[0], DupIndex.build(_filler() + lights))
+    assert not [f for f in r.findings if f.risk > 0]
+    below = [f for f in r.findings if f.code == "ALIKE_BELOW_LIMIT"]
+    assert below and "Rs 5.00 lakh" in below[0].text and r.risk == 0

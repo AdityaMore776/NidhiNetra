@@ -47,6 +47,34 @@ QUEUE_FINAL         40 random review-queue works of the final code (results/
                     whose description is only "as per recommendation letter attached"), 0 no. By
                     finding: R12 20 of 21 (+1 grey), R14 13 of 13, R07 3 of 3, splits and
                     stretches 3 of 3.
+COST_SAMPLE         the 12 random Cost flags of the final run (dashboard_final_codes.csv,
+                    statistical:COST_ABOVE_PEERS), read 2 Oct 2026 for T056: 3 yes (a Rs 47
+                    lakh PCC road with no length; Rs 6.76 lakh of street lights "near a temple"
+                    with no count; Rs 36.6 lakh "Solar Street Lights"), 5 grey (a latrine and a
+                    wall in one work; "community centers and halls"; a road with wing walls; a
+                    hall at a burial ground; a night shelter typed OTHER), 4 no: one amount for
+                    several streets ("2nd 3rd 4th 7th Cross", "Street & Streets"), a list of
+                    park components, solar panels for a library typed as street lights.
+COST_CHANGES        every Cost flag that changed when one amount for several streets became a
+                    bundle (scope.several_ways, T056; dashboard_final_flags.json vs
+                    dashboard_agents2_flags.json): 7 dropped, all rightly (4 several streets, 3
+                    vague sums R12 still flags); 2 gained through the narrower peer bands: 1
+                    grey (a Rs 27.9 lakh special repair of a link road), 1 no (drains, side
+                    roads and a culvert in one work, which the "from ... to" exception let
+                    through).
+SPLIT_SAMPLE_T056   the 12 random SPLIT_AT_ONE_SITE flags of dashboard_agents2_codes.csv, read 2
+                    Oct 2026: 7 yes (four Rs 5 lakh rooms at one school, two identical Rs 6.5
+                    lakh works the same day, pieces just under Rs 10 lakh, ...), 2 grey, 3 no:
+                    a men's and a women's building twice, two lights near two different paras
+                    (Rs 34,000 each). The T056 rules (genders differ: two works; a total below
+                    Rs 5 lakh: said, not asked) drop exactly the 3 "no" and 1 grey; of the 8 they
+                    keep, 7 are yes. All 24 below-limit groups that had a label read 0 yes of 5.
+SPLIT_FRESH_T056    the T056 rules' own random sample (dashboard_agents3_codes.csv), only the
+                    groups NOT used to design them: 5 groups, 4 yes (four Rs 5 lakh pieces of
+                    one hill road; a bridge approach's LHS and RHS at Rs 4.99 lakh each; a Rs 5
+                    lakh hall in two halves; two Rs 5 lakh street-lighting pieces), 1 grey (two
+                    identical Rs 2.6 lakh works at one bus stand). These, not the design sample,
+                    are added to reliability.json.
 """
 
 
@@ -257,4 +285,55 @@ QUEUE_FINAL = {
     'WS/MP755/2024-2025/163248': 'yes',
     'WS/MP755/2024-2025/163620': 'yes',
     'WS/MP827/2025-2026/214128': 'yes',
+}
+
+COST_SAMPLE = {
+    'WS/MP18355/2025-2026/158366': 'no',
+    'WS/MP859/2024-2025/152782': 'yes',
+    'WS/MP18019/2024-2025/137730': 'grey',
+    'WS/MP18110/2025-2026/209772': 'grey',
+    'WS/MP459/2025-2026/149088': 'no',
+    'WS/MP18069/2025-2026/162985': 'grey',
+    'WS/MP18203/2024-2025/154497': 'yes',
+    'WS/MP18328/2024-2025/144156': 'no',
+    'WS/MP18014/2025-2026/218029': 'grey',
+    'WS/MP18232/2024-2025/139498': 'no',
+    'WS/MP577/2025-2026/146153': 'grey',
+    'WS/MP644/2024-2025/151113': 'yes',
+}
+
+# dropped: was the old flag a real price question?  gained: is the new flag one?
+COST_CHANGES = {
+    'NOID-a0bb1c16': ('dropped', 'no'),
+    'WS/MP18004/2024-2025/161319': ('dropped', 'no'),
+    'WS/MP18004/2024-2025/161321': ('dropped', 'no'),
+    'WS/MP18198/2025-2026/193991': ('dropped', 'no'),
+    'WS/MP18355/2025-2026/158366': ('dropped', 'no'),
+    'WS/MP18393/2024-2025/163262': ('dropped', 'no'),
+    'WS/MP459/2025-2026/149088': ('dropped', 'no'),
+    'WS/MP18155/2024-2025/177940': ('gained', 'grey'),
+    'WS/MP337/2025-2026/160005': ('gained', 'no'),
+}
+
+SPLIT_SAMPLE_T056 = {
+    'WS/MP858/2024-2025/148880': 'yes',
+    'WS/MP18227/2024-2025/148772': 'yes',
+    'WS/MP18007/2024-2025/149399': 'no',
+    'WS/MP18251/2024-2025/155505': 'no',
+    'WS/MP18328/2024-2025/148543': 'grey',
+    'WS/MP18138/2024-2025/148109': 'yes',
+    'WS/MP18003/2024-2025/163291': 'no',
+    'WS/MP574/2025-2026/145489': 'yes',
+    'WS/MP479/2024-2025/138682': 'yes',
+    'WS/MP526/2026-2027/152486': 'yes',
+    'WS/MP18351/2024-2025/158088': 'grey',
+    'WS/MP858/2024-2025/144031': 'yes',
+}
+
+SPLIT_FRESH_T056 = {
+    'WS/MP18003/2024-2025/157519': 'yes',
+    'WS/MP526/2024-2025/147539': 'yes',
+    'WS/MP761/2025-2026/146645': 'yes',
+    'WS/MP18009/2024-2025/161192': 'yes',
+    'WS/MP18109/2024-2025/150201': 'grey',
 }

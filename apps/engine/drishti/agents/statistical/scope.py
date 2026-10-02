@@ -228,6 +228,21 @@ def mast_count(text: str | None) -> int | None:
     return best
 
 
+# Read on the eSAKSHI dashboard's Cost flags (2 Oct 2026): one amount for several streets was
+# flagged as a price question. "2nd 3rd 4th 7th Cross", "1st & 2nd Main": numbered streets of a
+# ward (not "1st and 2nd floor": floors are one building).
+_ORDINAL_STREETS = re.compile(
+    r"\b\d{1,2}\s*(?:st|nd|rd|th)\b(?:\s*(?:,|&|and)?\s*\d{1,2}\s*(?:st|nd|rd|th)\b)+\s*"
+    r"(?:cross|main|street|lane|road|block|sector|line|gall?i|mohalla)", re.I)
+# "Laying of CC Roads in Madhav Nagar", "... & Streets Z-10": several ways in one amount, unless
+# the description draws one path ("from H.No. 4 to H.No. 7"), and never an office's name
+# ("Roads and Buildings Department").
+_PLURAL_WAYS = re.compile(
+    r"\b(?:streets|lanes|roads|gall?is|gall?iyon|gall?iyan|sadkon|sadke)\b"
+    r"(?!\s*(?:&|and)\s*build)(?!\s*(?:division|department|dept|wing|circle))", re.I)
+_ONE_PATH = re.compile(r"\bfrom\b.{3,160}?\bto\b", re.I)
+
+
 def _norm(text: str | None) -> str:
     t = (text or "").strip().lower()
     t = re.sub(r"[\s ]+", " ", t)
@@ -248,6 +263,13 @@ def many_sites(text: str | None) -> bool:
     if _MANY_SITES.search(t) or numbered_list(t) or _COMMA_LIST.search(t):
         return True
     return bool(_WIDE_AREA.search(t)) and len(t.split()) <= WIDE_AREA_MAX_WORDS
+
+
+def several_ways(text: str | None) -> bool:
+    """One amount for several streets or roads: a bundle for the PRICE, but still one place for
+    Duplicate & Split (a village's internal roads are one site), so it is not many_sites()."""
+    t = text or ""
+    return bool(_ORDINAL_STREETS.search(t) or (_PLURAL_WAYS.search(t) and not _ONE_PATH.search(t)))
 
 
 def scope(text: str | None) -> str:
@@ -291,4 +313,5 @@ def read(work_type: str | None, text: str | None) -> Reading:
         return Reading(MAST, undescribed(text), sites, sites or bool(n), None)
     n = stated_count(text, work_type)
     return Reading(scope(text), undescribed(text), sites,
-                   sites or reads_as_bundle(text) or bool(stated_count(text)), n)
+                   sites or reads_as_bundle(text) or several_ways(text)
+                   or bool(stated_count(text)), n)

@@ -110,6 +110,19 @@ def sides(text: str | None) -> frozenset[str]:
     return frozenset(SIDES[x] for x in TOKEN.findall((text or "").lower()) if x in SIDES)
 
 
+# A men's and a women's building are two works ("Resting Barracks ... for Men" / "... for
+# Women", "Vishranthi Dhamam (Male block)" / "(Female block)": read by eye on the dashboard's
+# split flags, 2 Oct 2026). Only a DIFFERENCE counts: two girls' toilets are still alike.
+GENDERS = {"men": "M", "male": "M", "gents": "M", "boys": "M", "boy": "M", "purush": "M",
+           "balak": "M", "पुरुष": "M", "बालक": "M",
+           "women": "F", "female": "F", "ladies": "F", "girls": "F", "girl": "F",
+           "mahila": "F", "balika": "F", "महिला": "F", "बालिका": "F"}
+
+
+def genders(text: str | None) -> frozenset[str]:
+    return frozenset(GENDERS[x] for x in TOKEN.findall((text or "").lower()) if x in GENDERS)
+
+
 @cache
 def generic_words() -> frozenset[str]:
     lines = (REF / "generic_words.txt").read_text(encoding="utf-8").splitlines()
@@ -361,6 +374,9 @@ def _pair(ra: Rec, rb: Rec) -> dict | None:
     sa, sb = sides(ra.description), sides(rb.description)
     if sa and sb and sa != sb:
         return None                                   # opposite sides of one road
+    ga, gb = genders(ra.description), genders(rb.description)
+    if ga and gb and ga != gb:
+        return None                                   # a men's and a women's building
     place = place_agreement(ra.place, rb.place)
     if place < PLACE_MIN:
         return None
@@ -440,10 +456,10 @@ def groups_in_block(recs: list[Rec]) -> list[dict]:
     for chain in chains.values():
         if len(chain) < 2:
             continue
-        parts: dict[tuple[str, str, frozenset], list[Rec]] = defaultdict(list)
+        parts: dict[tuple[str, str, frozenset, frozenset], list[Rec]] = defaultdict(list)
         for r in chain:
-            parts[(r.place, r.nums, sides(r.description))].append(r)
-        for (place, _nums, _sides), sub in parts.items():
+            parts[(r.place, r.nums, sides(r.description), genders(r.description))].append(r)
+        for (place, _nums, _sides, _genders), sub in parts.items():
             first = sub[0].description
             # one site = a place is named AND the pieces are near word for word the same: the
             # splits read by eye were (min alike 0.74-1.0, most 1.0); pieces that differ in a

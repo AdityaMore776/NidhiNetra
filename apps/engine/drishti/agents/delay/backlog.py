@@ -11,6 +11,13 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import date
 
+from drishti.records import day
+
+
+def norm(x) -> str:
+    """Text compared the way a person reads it: case and spacing ignored."""
+    return " ".join(str(x or "").split()).lower()
+
 
 @dataclass
 class OfficeBacklog:
@@ -23,11 +30,11 @@ class OfficeBacklog:
         off: dict = defaultdict(list)
         dis: dict = defaultdict(list)
         for w in works:
-            rec = w.get("recommended_date")
+            rec = day(w.get("recommended_date"))
             if rec is None:
                 continue
             d = str(w.get("district_lgd") or "NA")
-            item = (rec, w.get("status") == "RECOMMENDED")
+            item = (rec, norm(w.get("status")) == "recommended")
             dis[d].append(item)
             if w.get("agency_name"):
                 off[(d, str(w["agency_name"]))].append(item)
