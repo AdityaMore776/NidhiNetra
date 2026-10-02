@@ -43,17 +43,25 @@ POSSESSIVE = re.compile(r"\b(?:" + _CAP + r"\s+){0,2}" + _CAP
 # the Hindi and Gujarati forms, "<name> ke ghar ke pas", "<NAME> K GHAR", "<name> na ghar":
 # up to three words before the genitive and a home word; place words and "me/mein" stop the name
 # (T056: "k ghar" 1,332 times and "na ghar" 339 times on the dashboard's descriptions)
-_HI_WORD = r"(?!(?:" + _STOP + r"|me|mein|men|bhawan|bhavan)\b)[A-Za-z][A-Za-z.-]*"
+_HI_WORD = (r"(?!(?:" + _STOP + r"|me|mein|men|mai|sai|lekar|bhawan|bhavan)\b)"
+            r"[A-Za-z][A-Za-z.-]*")
 _GENITIVE = r"(?:ke|ki|ka|k|kai|na|ni|nu|no|naa)"
+# the home words after the genitive, with the spellings read on the dashboard (T092: "<name> ke
+# avas" 34 times, "ka makaan" 177, "na ghare" 24, "ke gher" 19, "ki dukaan" 32). "PM Awas" has no
+# genitive before it and stays; "ki dhani" is a hamlet's name and stays.
+_HI_HOME_WORD = (r"(?:ghar|ghare|gher|khet|makan|makaan|dukan|dukaan|bari|avas|awas|aawas|"
+                 r"awaas|niwas|nivas)")
 HI_HOME = re.compile(r"\b(?:" + _HI_WORD + r"\s+){0,2}" + _HI_WORD
-                     + r"(\s+" + _GENITIVE + r"\s+(?:ghar|khet|makan|dukan|bari)\b)", re.I)
+                     + r"(\s+" + _GENITIVE + r"\s+" + _HI_HOME_WORD + r")\b", re.I)
 # "<name> house" with no possessive: "PCC road from <name> house to <name> house" (T056, the
 # dashboard's 57,508 descriptions: "mahto house" 301 times, "singh house" 219). Up to three words
 # before a home word are a name unless the word before it is an ordinary one: these were read by
 # eye among the 450 commonest words before such nouns ("guest house", "panchayat land", "ration
 # shop", "barat ghar" a wedding hall, "old age home").
 # (not "kothi", "haveli", "bungalow": on real works they are mostly parts of place names)
-_HOME = r"(?:house|home|residence|makan|ghar|farm|field|land|shop|dukan|khet|bari)"
+# (T092: also a house's own name, "<surname> Niwas", and the Gujarati "<name> ghare", at home)
+_HOME = (r"(?:house|home|residence|makan|ghar|farm|field|land|shop|dukan|khet|bari|niwas|nivas|"
+         r"ghare)")
 _COMMON = (r"(?:the|a|an|his|her|their|our|own|old|new|said|this|that|its|private|public|"
            r"government|govt|owned|open|vacant|waste|low|forest|aabadi|abadi|populated|agricultural|agriculture|"
            r"cultivation|paddy|wrc|guest|pump|rest|circuit|light|ware|power|green|store|club|court|"
@@ -71,7 +79,7 @@ _COMMON = (r"(?:the|a|an|his|her|their|our|own|old|new|said|this|that|its|privat
            r"fire|water|pani|tank|tube|bore|well|motor|mill|oil|ice|cold|mhip|ywa|row|towords|"
            r"sadak|sarak|marg|rasta|raasta|path|pul|puliya|nali|naali|kuan|khadanja|kharanja|"
            r"nirman|drain|drains|cultural|culture|white|upper|lower|tent|ncc|army|bar|shop|"
-           r"sarkari|chai|alongwith|antargat|kali|harijan|dc|"
+           r"sarkari|chai|alongwith|antargat|kali|harijan|dc|hss|"
            r"via|toward|towards|from|fromthe|upto|till|on|by|me|mein|wale|wala|wali|"
            r"ke|ki|ka|k|kai|na|ni|nu|no|naa)")
 _OWNER = r"(?!(?:" + _STOP + r"|" + _COMMON + r"\b))[A-Za-z][A-Za-z.'’-]*"

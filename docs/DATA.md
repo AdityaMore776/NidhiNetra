@@ -110,4 +110,5 @@ would hide (T056; `data/trial/pii_trial.py` measures the masker on the dashboard
 7. **Citizen ratings are empty:** 21,789 of 21,793 are zero.
 8. **Private data in public records:** phone numbers in descriptions, bank account numbers on certificates —
    mask, never display. Names hide in road descriptions without any marker: "from <name> house to <name> house",
-   "<NAME> K GHAR", "<name> na ghar", "<name> S/O <name>" (T056: 13,564 of 57,508 descriptions carry something to mask).
+   "<NAME> K GHAR", "<name> na ghar", "<name> ke avas", "<name> ka makaan", "<name> S/O <name>" (T056, T092: 13,776 of
+   57,508 descriptions carry something to mask).
