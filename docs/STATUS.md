@@ -46,8 +46,9 @@ The sections below are the working notes the team resumes from.
 
 **2 Oct 2026: T055 + T510 merged and LIVE (PR #86, main `6efb61d`); migrations 011 + 012 applied in the Supabase SQL
 editor; hosted DB re-assessed with fusion v3 (CRITICAL 83, HIGH 1,347, MEDIUM 5,112, LOW 203,451; review queue
-1,430 = 0.68%, was 131; 430 s, 264 MB; `data/trial/results/hosted_assess_v3.txt`).** Not yet measured on the full
-corpus: 30 random live queue works read by eye, and the planted test (T080) with v3. Site Progress v2 is merged and
+1,430 = 0.68%, was 131; 430 s, 264 MB; `data/trial/results/hosted_assess_v3.txt`).** Planted test (T080) with v3:
+fakes in the queue 4 → 11 of 50, MEDIUM+ 25 → 38, top 5% 39/50 (`data/trial/results/planted_test_v3.txt`). Not
+yet measured on the full corpus: 30 random live queue works read by eye. Site Progress v2 is merged and
 switched off. Start from `docs/team/log/2026-10-02-1352-adityamore776-T055.md` (handoff).
 
 **2 Oct 2026, T055 (engine review, details).** A seeded test

@@ -849,8 +849,14 @@ output in `results/hosted_assess_v3.txt`): CRITICAL 83, HIGH 1,347, MEDIUM 5,112
 **1,430 works (0.68%)**, up from 131 with fusion v2 (1 Oct). That is the same order as on the dashboard's works
 (1.04%). The queue shows one row per Duplicate & Split case, so it lists fewer rows than 1,430.
 
-**Not measured yet:** 30 random live queue works read by eye, and the planted test (T080) on the full works with v3
-(both need the data pack or database access, not available in the session that built this). The 2023 guideline PDF stays unreachable (network policy blocks mplads.mospi.gov.in).
+**Planted test (T080) re-run with v3 on all 2,09,993 works** (the owner ran `data/trial/planted_test.py`, same 50
+fakes, seed 80; summary in `results/planted_test_v3.txt`): in the review queue **4 → 11 of 50**, MEDIUM or above
+**25 → 38**, caught by the engine meant for them 37 → 39, in the top 5% 39 → 39 (78%, target 75%). Most of the
+fakes that still stay out of the queue stay out on purpose: a split or a reworded repeat alone reads right about half
+the time (the measured hit rates), so it stays MEDIUM until a second check agrees. Completed-before-recommended (R06)
+has never been read by eye, so it counts at the 1-in-4 prior. Prices raised 2-3× are inside the comfort zone (T053).
+
+**Not measured yet:** 30 random live queue works read by eye (needs the data pack or database access). The 2023 guideline PDF stays unreachable (network policy blocks mplads.mospi.gov.in).
 
 ## Bugs and data problems found along the way
 

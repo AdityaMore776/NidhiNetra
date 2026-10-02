@@ -1,0 +1,10 @@
+# data/trial/planted_test.py (T080: 50 planted fakes, seed 80, all 2,09,993 works) re-run by the owner on
+# 2 Oct 2026 with main 6efb61d (Risk Fusion v3 + the T055 engine changes). Summary as reported by the
+# owner; "before" = T080 (1 Oct 2026, fusion v2), results/planted_test.json as committed then.
+# The run rewrote results/planted_test.json on the owner's machine; commit it as planted_test_v3.json
+# to keep the per-kind breakdown.
+measure                                      before (T080, v2)   now (v3)
+fakes in the top 5% of the score (target 75%)   39/50 (78%)      39/50 (78%)
+fakes in the review queue (HIGH + CRITICAL)      4/50 (8%)       11/50 (22%)
+fakes MEDIUM or above                           25/50 (50%)      38/50 (76%)
+caught by the engine meant for them             37/50 (74%)      39/50 (78%)
