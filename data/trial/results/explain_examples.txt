@@ -1,0 +1,8 @@
+40,935 dashboard works, as of 2026-10-02; district Jaunpur
+ordinary  LOW      0.000 GREEN []
+temple    HIGH     0.818 RED ['POSSIBLY_INADMISSIBLE']
+vague     HIGH     0.904 RED ['NO_STATED_SCOPE']
+price     MEDIUM   0.417 AMBER ['COST_ABOVE_PEERS']
+dates     HIGH     0.786 None ['IMPOSSIBLE_TIMELINE']
+two       CRITICAL 0.894 RED ['POSSIBLY_INADMISSIBLE', 'COST_ABOVE_PEERS']
+repeat    MEDIUM   0.363 AMBER ['FUNDED_AGAIN_AFTER_COMPLETION']

@@ -85,3 +85,11 @@ def test_offices_needing_a_records_check_are_listed(rates):
     rows = rates.concentrated_offices()
     assert [r["agency_name"] for r in rows] == ["Thiruvananthapuram(DISTRICT COLLECTOR)"]
     assert rows[0]["bad"] == 85 and rows[0]["lift"] > 3
+
+
+def test_no_share_is_quoted_when_no_other_work_carries_the_defect():
+    # a small or partial data set (the dashboard tables: none of 11,577 date pairs) has no rate
+    none = TimelineRates.from_counts({"2026-Q2": (500, 0)}, {})
+    i = impossible_date(date(2026, 6, 4), date(2026, 3, 16), "Some office", none)
+    assert "No other work in the data carries this defect" in i.message
+    assert "0.00%" not in i.message and i.risk > 0

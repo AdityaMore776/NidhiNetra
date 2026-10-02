@@ -44,6 +44,12 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
+**2 Oct 2026: T092 Visualization Engine built (PR open, after #92).** A public page, `/explain`, plays one work through
+six animated, replayable steps (input, privacy, reading, seven checks, the score's arithmetic, the officer's result)
+with seven built-in examples on the dashboard data and the judge's own example via `POST /api/v1/explain` (sign-in).
+Every number is the real pipeline's (`drishti/explain.py`, tested equal). Numbers: FINDINGS "T092". Start from the
+newest `docs/team/log/*-T092.md`.
+
 **2 Oct 2026: T056 merged and LIVE (PR #89 `b1056b9`, PR #90 `f964f86`; no migration).** Foolproof and accuracy
 pass: no malformed evidence or work row can stop the batch (`agents/evidence.py`, `records.py`); Fund Flow, the
 certificate reader, Cost (several streets = a bundle) and Duplicate & Split (men's/women's twins, splits under

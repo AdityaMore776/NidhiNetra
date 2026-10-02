@@ -137,7 +137,11 @@ def impossible_date(recommended: date | None, completed: date | None, agency: st
     q = quarter_of(recommended)
     d = rates.distinctiveness(q)
     rate = rates.cohort_rate(q)
-    if d < NOISY_BELOW:
+    if rates.overall <= 0:
+        # no other work carries the defect (a small or partial data set): no share to quote
+        msg += (" No other work in the data carries this defect, so bulk entry does not explain "
+                "it; check the completion certificate against the portal record.")
+    elif d < NOISY_BELOW:
         msg += (f" {rate:.1%} of works recommended in {q} carry the same defect (against "
                 f"{rates.overall:.2%} across the scheme), which points to bulk entry of works "
                 "that were already finished rather than to this work; treat it as a records "

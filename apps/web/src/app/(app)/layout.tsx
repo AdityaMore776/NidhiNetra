@@ -14,6 +14,7 @@ const NAV = [
   { href: "/works", label: "All works" },
   { href: "/presanction", label: "Pre-sanction check" },
   { href: "/how-it-works", label: "How it works" },
+  { href: "/explain", label: "Step by step" },
 ];
 
 const ROLE_LABEL: Record<Me["role"], string> = {

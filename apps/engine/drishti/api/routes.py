@@ -29,6 +29,7 @@ from drishti.batch import (
     with_index,
 )
 from drishti.db import connect
+from drishti.explain import explain as explain_work
 from drishti.pipeline.orchestrator import Context, assess_work
 from drishti.presanction import judge as presanction_judge
 from drishti.validation import pii
@@ -358,6 +359,43 @@ def presanction(rec: Recommendation, user: Principal = Depends(current_user)) ->
         ctx = with_index(Context(stats=_stats(), as_of=as_of), con, work)
     result = presanction_judge(assess_work(work, ctx))
     return {**asdict(result), "as_of": as_of.isoformat(), "district_name": d["name"]}
+
+
+class Example(Recommendation):
+    """A work as typed into the Visualization Engine (T092): a recommendation, or a work further
+    along when the judge gives its status and dates."""
+
+    status: str = Field(default="RECOMMENDED", pattern="^(RECOMMENDED|SANCTIONED|COMPLETED)$")
+    recommended_date: date | None = None
+    sanction_date: date | None = None
+    completed_date: date | None = None
+
+
+@router.post("/explain")
+def explain(ex: Example, user: Principal = Depends(current_user)) -> dict:
+    """Every step DRISHTI takes on one work, for the Visualization Engine page (T092): the same
+    pipeline as the batch, laid out step by step. Nothing is stored."""
+    scope = user.scope_district()
+    if scope is not None and ex.district_lgd != scope:
+        raise HTTPException(404, "no such district in your area")
+    as_of = config.snapshot_date()
+    with connect() as con:
+        d = con.execute("SELECT district_lgd, name, state_lgd, state_name FROM districts "
+                        "WHERE district_lgd = %s", (ex.district_lgd,)).fetchone()
+        if d is None:
+            raise HTTPException(404, "no such district")
+        work = {"work_id": "EXAMPLE", "source": "SCENARIO", "house": None, "term": None,
+                "state_lgd": d["state_lgd"], "state_name": d["state_name"],
+                "district_lgd": d["district_lgd"], "district_name": d["name"],
+                "constituency": None, "mp_name": None, "agency_name": ex.agency_name,
+                "fy": None, "work_type_code": ex.work_type_code or None, "category": None,
+                "description": ex.description.strip(), "amount": float(ex.amount),
+                "recommended_date": ex.recommended_date or as_of,
+                "sanction_date": ex.sanction_date, "completed_date": ex.completed_date,
+                "status": ex.status, "quantity": None, "quantity_unit": None,
+                "is_outside_constituency": ex.is_outside_constituency, "signals": {}}
+        ctx = with_index(Context(stats=_stats(), as_of=as_of), con, work)
+    return explain_work(work, ctx)
 
 
 @router.get("/presanction/options")

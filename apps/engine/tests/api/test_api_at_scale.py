@@ -220,3 +220,28 @@ def test_the_pre_sanction_check_never_fails_on_odd_input(world):
             out = r.json()
             assert out["colour"] in ("RED", "AMBER", "GREEN")
             _clean(out)
+
+
+def test_the_visualization_trace_runs_on_the_live_route(world):
+    """POST /explain (T092): the same pipeline on a typed example, behind the same sign-in."""
+    c, h = world["client"], _roles(world)["ministry"]
+    a, b = world["districts"][:2]
+    body = {"district_lgd": a, "description": "Construction of temple near Ramdev Bhagat house",
+            "amount": 450000, "work_type_code": "COMMUNITY_HALL"}
+    r = c.post("/api/v1/explain", headers=h, json=body)
+    assert r.status_code == 200, r.text[:300]
+    t = r.json()
+    assert {"input", "privacy", "reading", "checks", "scoring", "result"} <= set(t)
+    assert t["result"]["colour"] in ("RED", "AMBER", "GREEN")
+    _clean(t)
+    later = {**body, "status": "COMPLETED", "recommended_date": "2025-06-01",
+             "sanction_date": "2025-07-01", "completed_date": "2025-01-01"}
+    r = c.post("/api/v1/explain", headers=h, json=later)
+    assert r.status_code == 200 and r.json()["input"]["completed"] == "2025-01-01"
+    assert c.post("/api/v1/explain", json=body).status_code == 401
+    officer = {"X-Dev-Role": "DISTRICT", "X-Dev-District": a}
+    assert c.post("/api/v1/explain", headers=officer,
+                  json={**body, "district_lgd": b}).status_code == 404
+    for bad in ({**body, "status": "PAID"}, {**body, "completed_date": "not a date"},
+                {**body, "amount": 0}, {"district_lgd": a}):
+        assert c.post("/api/v1/explain", headers=h, json=bad).status_code == 422
