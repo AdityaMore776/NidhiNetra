@@ -113,6 +113,25 @@ def test_r06_impossible_order_of_dates():
     assert _codes(fs)["R06"] == "LOW"
 
 
+def test_r06_counts_in_full_only_where_it_stands_out():
+    """T056: the R06 cases that stand out (not bulk entry, not an office's habit) were read by
+    eye and keep the MEDIUM signal; a records note (bulk-entry quarter, office habit, a
+    completion date after the data date) stays as small as before the reads (risk 0.10)."""
+    from drishti.validation.timeline import TimelineRates
+
+    done_before = _work(status="COMPLETED", recommended_date=date(2024, 2, 1),
+                        completed_date=date(2023, 11, 1))
+    stands_out = TimelineRates.from_counts({"2024-Q1": (25086, 10)}, {}, overall=(85773, 1105))
+    f = next(f for f in evaluate(done_before, AS_OF, stands_out) if f.evidence["rule"] == "R06")
+    assert f.evidence["severity"] == "MEDIUM" and f.risk == pytest.approx(0.6)
+    bulk = TimelineRates.from_counts({"2024-Q1": (25086, 2500)}, {}, overall=(85773, 1105))
+    f = next(f for f in evaluate(done_before, AS_OF, bulk) if f.evidence["rule"] == "R06")
+    assert f.evidence["severity"] == "LOW" and f.risk == pytest.approx(0.10)
+    late = evaluate(_work(status="COMPLETED", completed_date=date(2026, 9, 1)), AS_OF)
+    f = next(f for f in late if f.evidence["rule"] == "R06")
+    assert f.evidence["severity"] == "LOW" and f.risk == pytest.approx(0.10)
+
+
 def test_r07_possibly_inadmissible_says_verify():
     fs = evaluate(_work(description="Construction of temple in village X"), AS_OF)
     f = next(f for f in fs if f.evidence["rule"] == "R07")
