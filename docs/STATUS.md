@@ -44,6 +44,14 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
+**2 Oct 2026: T056 merged and LIVE (PR #89 `b1056b9`, PR #90 `f964f86`; no migration).** Foolproof and accuracy
+pass: no malformed evidence or work row can stop the batch (`agents/evidence.py`, `records.py`); Fund Flow, the
+certificate reader, Cost (several streets = a bundle) and Duplicate & Split (men's/women's twins, splits under
+Rs 5 lakh said not asked) fixed from real flags read by eye. Certificate reader on the pilot: sanction date 69.4% →
+69.4%, vendor code 97.7% → 97.9% (`results/paperwork_trial_t056.txt`). Hosted `batch_assess.py` to re-run after
+#89 if not done. Stored findings exist only for HIGH/CRITICAL works (migration 003), so count a finding from the
+works table: R06 via `data/trial/r06_rows.py`. Start from `docs/team/log/2026-10-02-1728-adityamore776-T056.md`.
+
 **2 Oct 2026: T055 + T510 merged and LIVE (PR #86, main `6efb61d`); migrations 011 + 012 applied in the Supabase SQL
 editor; hosted DB re-assessed with fusion v3 (CRITICAL 83, HIGH 1,347, MEDIUM 5,112, LOW 203,451; review queue
 1,430 = 0.68%, was 131; 430 s, 264 MB; `data/trial/results/hosted_assess_v3.txt`).** Planted test (T080) with v3:
