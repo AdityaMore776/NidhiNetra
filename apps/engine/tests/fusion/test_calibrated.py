@@ -81,6 +81,18 @@ def test_a_wait_alone_never_reaches_high():
     assert f.score == pytest.approx(0.40) and f.band == "MEDIUM"
 
 
+def test_completed_before_recommended_queues_only_where_it_stands_out():
+    """R06 was read by eye on the hosted data (T056): the cases that stand out reach the queue
+    alone; a bulk-entry or office-habit records note (risk 0.10) stays LOW."""
+    rate = Reliability.load().rate("compliance:IMPOSSIBLE_TIMELINE")
+    assert rate.basis == "measured" and rate.read >= 10
+    stands_out = fuse(_all(_r("compliance", ("IMPOSSIBLE_TIMELINE", 0.6, False))))
+    assert stands_out.band == "HIGH" and stands_out.score == pytest.approx(rate.hit_rate)
+    note = fuse(_all(_r("compliance", ("IMPOSSIBLE_TIMELINE", 0.10, False))))
+    assert note.band == "LOW" and note.score == pytest.approx(rate.hit_rate * 0.10 / 0.6)
+    assert note.score < 0.15                       # about the 0.125 it counted at the prior
+
+
 def test_a_finding_never_read_cannot_queue_a_work_on_its_own():
     f = fuse(_all(_r("dup_split", ("REPAIR_SOON_AFTER_BUILT", 0.7, False))))
     assert f.score == pytest.approx(0.25) and f.band == "MEDIUM"

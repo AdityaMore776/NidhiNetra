@@ -21,7 +21,8 @@ Measured choices (real export, see data/trial/compliance_trial.py):
        LOW (0.05-0.08). The old "past 98% of finished works" MEDIUM line was an artefact:
        the data starts in 2023, so no finished work can show a longer time.
   R06  an impossible date from a bulk-entry quarter is LOW, elsewhere MEDIUM
-       (validation/timeline.py measured why).
+       (validation/timeline.py measured why). Only the MEDIUM cases were read by eye (T056:
+       10 of 10 on the hosted data worth checking); a LOW one is a records note at 0.10.
   R07  the Eligibility v2 reader (56% precision on a fresh sample): MEDIUM, says "verify".
   R12  a big sum that does not say what or where (Rs 10 lakh+, above its type's national
        top, at most six words, no number, no place name): MEDIUM. R13 a construction of
@@ -55,7 +56,7 @@ from drishti.agents.statistical.scope import GOODS, scope, undescribed
 from drishti.validation.timeline import impossible_date, quarter_of
 
 AGENT = "compliance"
-VERSION = "compliance-1.4.0"
+VERSION = "compliance-1.5.0"
 QUESTION = "Does the work follow the MPLADS guidelines?"
 RULES_FILE = Path(reference.__file__).resolve().parent / "rules.json"
 
@@ -79,6 +80,7 @@ CONSTRUCTION_TYPES = {"ROAD_CC", "ROAD_BT", "FOOTPATH", "CULVERT", "BRIDGE", "CO
 # R14: a construction complete within a week of its sanction (dashboard dates, 2 Oct 2026)
 AFTER_SANCTION_DAYS, AFTER_SANCTION_MIN_RS = 7, 300_000
 ROUTINE_RISK = 0.10          # the office does it routinely: a recording habit, named once
+R06_NOTE_RISK = ROUTINE_RISK  # R06 as a records note: bulk entry, office habit, a late date
 OLD_FY = re.compile(r"\b(20[01]\d|202[0-3])\s*[-/]\s*(\d{2}|20\d{2})\b")   # "(2019-2020)"
 
 
@@ -223,19 +225,22 @@ def evaluate(work: dict, as_of: date, timeline=None,
                                 r["message_hi"].format(**fmt), risk=rarity(share),
                                 value=days, limit=norm, share_still_open=round(share, 3)))
 
-    # R06 impossible order of dates
+    # R06 impossible order of dates. Only the cases that stand out (MEDIUM) were read by eye
+    # (T056, 10 of 10 worth checking); a records note keeps the small weight it had before
     imp = impossible_date(rec, done, work.get("agency_name"), timeline)
     if imp:
         sev = "MEDIUM" if imp.risk >= 0.30 else "LOW"
         hi = (f"कार्य अनुशंसा ({rec}) से पहले पूर्ण ({done}) दर्ज है; तारीखों की जाँच आवश्यक।")
-        out.append(_finding("R06", sev, imp.message, hi, recommended=str(rec), completed=str(done)))
+        out.append(_finding("R06", sev, imp.message, hi,
+                            risk=None if sev == "MEDIUM" else R06_NOTE_RISK,
+                            recommended=str(rec), completed=str(done)))
     if done and done > as_of:
         out.append(_finding(
             "R06", "LOW",
             f"Completion date {done.isoformat()} is after the data was published "
             f"({as_of.isoformat()}); the date needs correcting.",
             f"पूर्णता तिथि {done.isoformat()} डेटा प्रकाशन ({as_of.isoformat()}) के बाद की है; "
-            f"तिथि सुधार आवश्यक।", completed=str(done)))
+            f"तिथि सुधार आवश्यक।", risk=R06_NOTE_RISK, completed=str(done)))
 
     # R07 possibly inadmissible
     m = inadmissible(work.get("description"))

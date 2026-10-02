@@ -1,0 +1,25 @@
+{
+  "counts": {
+    "works": 209993,
+    "with_both_dates": 85773,
+    "completed_before_recommended": 1105
+  },
+  "r06_by_severity": {
+    "LOW": 1084,
+    "MEDIUM": 21
+  },
+  "r06_by_reason": {
+    "LOW office habit": 678,
+    "LOW bulk-entry quarter": 285,
+    "LOW stands out": 121,
+    "MEDIUM stands out": 21
+  },
+  "bands_of_these_works": {
+    "LOW": 943,
+    "MEDIUM": 159,
+    "HIGH": 3
+  },
+  "stored_in_full": 3,
+  "timeline_rates_loaded": true,
+  "min_gap_days": 7
+}

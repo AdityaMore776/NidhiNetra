@@ -940,6 +940,25 @@ measure (`synthetic_eval_agents3.json`). On the rules' own fresh sample, the gro
 (`reliability.json`: 14/27 → 18/32). With that rate a split of 5 or more pieces just under a limit reaches HIGH on its
 own; none on the dashboard does yet.
 
+**R06, recorded complete before it was recommended, read on the hosted data** (`data/trial/r06_rows.py`, run by
+the owner; counts `results/r06_hosted.json`, labels `data/trial/r06_labels.py`). A first SQL count of the stored
+findings returned 3: the batch stores full findings only for HIGH and CRITICAL works (migration 003), and R06 alone
+was MEDIUM at most, so stored findings cannot count it. Counted from the works table: **1,105 of 85,773** works with
+both dates are recorded complete 7+ days before their recommendation. R06's own check rates **21 MEDIUM** (they stand
+out) and 1,084 LOW records notes (678 an office's habit, 285 a bulk-entry quarter, 121 less distinct).
+
+| Read by eye (the first 10 MEDIUM cases in the script's fixed random order) | Result |
+|---|---|
+| Roads (7), a hall, a hospital toilet block, a high-mast light; Rs 2.99-37.87 lakh; complete 15-137 days before the MP's recommendation; no sanction date on the record | **10 of 10 worth checking** (the R13/R14 standard: the dates need checking) |
+| Where | 8 of the 10 are Kerala district offices: a state-wide recording practice is possible and is the next thing to read |
+
+Change: `compliance:IMPOSSIBLE_TIMELINE` worth 10 / read 10 (hit rate 0.25 → 0.79), so a case that stands out reaches
+the queue alone; the records notes, which were not read as findings, carry risk 0.10 (`R06_NOTE_RISK`) and count
+0.131, about the 0.125 they counted before. Measured: test country (`synthetic_eval_agents5.json` against agents4)
+planted R06 queued **0 → 12 of 18**, queue 195 → 207 with every added work a planted R06, precision 0.682 → **0.700**,
+ordinary works queued unchanged (0.11%); dashboard unchanged (R06 does not fire on its tables; `dashboard_agents5.json`).
+Expected live: at most 21 more works in the queue, measured on the next `batch_assess.py`.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**
