@@ -1,0 +1,11 @@
+paperwork_trial.py on the owner's machine, 2 Oct 2026, on main after #89 (T056 certificate reader),
+after re-running build_evidence.py. Pasted by the owner; kept verbatim below.
+
+fields_read_share: sanction_date 0.694, sanctioned_amount 0.998, status 0.998, payments 0.998, vendor_code 0.979, location 0.993
+certificates 431, works_with_files 836, works_with_a_sanction_date 229, past_75_days 33, sanctioned_before_recommended 1
+completed_works_with_own_certificate 285, all_own_certificates_say_in_progress 282
+certification_pages 429, with_a_box_marked 2
+pratapgarh_vendors: 261 works, 7 vendors, top 0.391, top3 0.839
+engine status: NOT_ASSESSABLE 157, NOT_APPLICABLE 274, ASSESSED 405
+engine verdicts: NO_CERTIFICATE_READ 120, SANCTION_LATE 32, PAPERS_AGREE 252, SANCTIONED_BEFORE_RECOMMENDATION 1
+findings: SANCTION_LATE 32, SANCTIONED_BEFORE_RECOMMENDATION 1

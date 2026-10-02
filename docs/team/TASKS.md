@@ -182,8 +182,9 @@ the same answer; accuracy changes only where real flags read by eye show a fix. 
 text dates, impossible dates · [x] certificate reader survives OCR noise (tests) · [x] Cost: misses diagnosed,
 real flags read by eye, fix measured on real and test works · [x] Duplicate & Split: split flags read by eye, fixes
 measured, a fresh sample read · [x] the work record itself: damaged rows in the corpus cannot stop the indexes or
-the statistics, loosely typed records give the same answer (`records.py`) · [ ] owner re-runs `build_evidence.py` +
-`paperwork_trial.py` to measure the reader change on real certificates
+the statistics, loosely typed records give the same answer (`records.py`) · [x] owner re-runs `build_evidence.py` +
+`paperwork_trial.py` to measure the reader change on real certificates (sanction date 69.4% → 69.4%, vendor code
+97.7% → 97.9%; `results/paperwork_trial_t056.txt`)
 
 ## M9 — Side track: real-evidence checkers (after the core; they feed its engines)
 
