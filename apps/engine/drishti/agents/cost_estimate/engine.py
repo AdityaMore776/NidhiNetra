@@ -1,8 +1,9 @@
-"""Registers the Cost Estimate engine (Cost v3, T097) with the engine registry.
+"""Registers the Cost Estimate engine (Cost v3, T097) as the Cost check of the core slot (T099).
 
-Shown, not counted, until T098 proves it on read flags (project rule 4). A work reaches it only
-with the implementing agency's form attached (work["cost_form"]); every other work gets
-NOT_APPLICABLE and keeps the Cost Anomaly check.
+A work reaches it with the implementing agency's form attached (work["cost_form"], saved through
+POST /api/v1/cost-forms); every other work is NOT_APPLICABLE. The slot keeps the blueprint weight;
+its findings count at the 1-in-4 prior of fusion v3 until officers' verdicts are read (T098), so
+none can queue a work on its own (project rule 4).
 """
 
 from __future__ import annotations
@@ -10,6 +11,4 @@ from __future__ import annotations
 from drishti.agents.cost_estimate import agent
 from drishti.agents.registry import EngineSpec
 
-ENGINE = EngineSpec(id=agent.AGENT, name="Cost Estimate", question=agent.QUESTION,
-                    assess=agent.assess, weight=0.0, order=9,
-                    weight_note="Shown, not counted, until measured on real estimates (T098).")
+ENGINE = EngineSpec(id=agent.AGENT, name="Cost", question=agent.QUESTION, assess=agent.assess)

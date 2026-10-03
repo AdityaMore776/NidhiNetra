@@ -343,3 +343,60 @@ def test_no_input_breaks_the_checks(seed):
     for odd in (None, [], "x", {"sites": "x"}, {"sites": [None, 3]}, {"work": []}):
         r = _run(copy.deepcopy(odd))
         assert r["ready"] is False and r["issues"]
+
+
+# ---- earlier works at this site and continuations (T100) -------------------------------------
+
+def _with(nature=None, earlier_id=None, answers=None):
+    f = road_form()
+    if nature:
+        f["work"]["nature"] = nature
+        f["work"].update(existing_description="half of the road was laid in 2024",
+                         earlier_scheme="mplads")
+        if nature != "continuation":
+            f["work"].update(existing_age_years=2, existing_condition="good")
+    if earlier_id:
+        f["work"]["earlier_work_id"] = earlier_id
+    if answers is not None:
+        f["earlier_works"] = answers
+    return f
+
+
+def test_a_continuation_must_name_the_work_it_continues():
+    assert ("continuation_needs_id", "work.earlier_work_id") in _codes(
+        _run(_with("continuation")), "fix")
+    r = _run(_with("continuation", "WS/MP1/2024-2025/9"))
+    assert r["ready"], r["issues"]
+
+
+def test_every_sanctioned_look_alike_must_be_answered():
+    r = validate(road_form(), today=TODAY, earlier=["WS/A", "WS/B"])
+    assert {i["code"] for i in r["issues"] if i["level"] == "fix"} == {"earlier_unanswered"}
+    assert not r["ready"]
+    answered = _with(answers=[
+        {"earlier_work": "WS/A", "answer": "different",
+         "difference": "the other road is in the SC colony"},
+        {"earlier_work": "WS/B", "answer": "different",
+         "difference": "that one is the drain beside the school"}])
+    assert validate(answered, today=TODAY, earlier=["WS/A", "WS/B"])["ready"]
+
+
+def test_the_same_work_cannot_be_estimated_again():
+    r = validate(_with(answers=[{"earlier_work": "WS/A", "answer": "same"}]), today=TODAY,
+                 earlier=["WS/A"])
+    assert ("same_as_sanctioned", "earlier_works[0].answer") in _codes(r, "fix")
+    assert not r["ready"]
+
+
+def test_continues_must_match_the_nature_and_the_earlier_work():
+    bad = _with(answers=[{"earlier_work": "WS/A", "answer": "continues"}])
+    assert ("continues_mismatch", "earlier_works[0].answer") in _codes(_run(bad), "fix")
+    good = _with("continuation", "WS/A", answers=[{"earlier_work": "WS/A", "answer": "continues"}])
+    assert validate(good, today=TODAY, earlier=["WS/A"])["ready"]
+
+
+def test_different_must_say_what_differs():
+    r = _run(_with(answers=[{"earlier_work": "WS/A", "answer": "different", "difference": "x"}]))
+    assert ("too_short", "earlier_works[0].difference") in _codes(r, "fix")
+    r = _run(_with(answers=[{"earlier_work": "WS/A", "answer": "maybe"}]))
+    assert ("not_a_choice", "earlier_works[0].answer") in _codes(r, "fix")

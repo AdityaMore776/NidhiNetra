@@ -24,8 +24,14 @@ A reference group is compared only when (reference.py): it has 30+ real works, i
 tight (it captures the size), and its unit is the form's full pricing size (a road priced per m2
 is never compared with roads per metre: the records hold no width).
 
-  NOT_APPLICABLE  no form for this work (the works before the form: Cost Anomaly applies)
+  NOT_APPLICABLE  no form for this work. The record alone carries no size or specification, and
+                  no price question from it was certain: of 15 works a record-only check would
+                  have questioned, 0 were real (5 misread counts, 9 bigger items, 1 grey;
+                  data/trial/simple_certain_trial.py, T099). The old Cost Anomaly is retired.
   NOT_ASSESSABLE  the form is not complete, or nothing on it could be compared
+
+T099 (3 Oct 2026): this is the Cost check of the core slot; its findings count at fusion v3's
+1-in-4 prior until officers' verdicts are read (T098).
 """
 
 from __future__ import annotations
@@ -85,8 +91,9 @@ def assess(work: dict, ctx) -> AgentResult:
     t0 = time.perf_counter()
     form = work.get("cost_form")
     if not isinstance(form, dict) or not form:
-        return _result(Status.NOT_APPLICABLE, "No cost estimate form for this work: it came in "
-                       "before the form, so Cost Anomaly checks its amount.", t0)
+        return _result(Status.NOT_APPLICABLE, "No cost estimate form for this work yet. The "
+                       "record gives no size or specification, so its cost is not judged from "
+                       "the amount alone.", t0)
     as_of = getattr(ctx, "as_of", None)
     checked = validate(form, today=as_of) if as_of else validate(form)
     if not checked["ready"]:

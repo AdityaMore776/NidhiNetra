@@ -12,14 +12,10 @@
     "compliance:MISSING_KEY_DATA": {"design": 0.10, "ref_risk": 0.3, "source": "design: a data gap, not a finding about the work"},
     "compliance:IMPOSSIBLE_TIMELINE": {"worth": 10, "read": 10, "ref_risk": 0.6, "source": "T056 R06: 10 of the 21 hosted cases that stand out (MEDIUM: not a bulk-entry quarter, not an office habit) read 2 Oct 2026, 10 worth checking (data/trial/r06_labels.py; counts results/r06_hosted.json); 8 of the 10 are Kerala district offices, so a state recording practice is possible. A records note (bulk entry, office habit, a late completion date) carries risk 0.10, about the 0.125 it counted at the prior; those 1,084 were not read as findings"},
     "compliance:OUTSIDE_AREA_CEILING": {"ref_risk": 1.0, "source": "arithmetic against para 2.9, not read by eye: the prior; a serious rule breach still lifts the score to High (the floor)"},
-    "statistical:COST_ABOVE_PEERS": {"worth": 54, "read": 128, "ref_risk": 0.9, "source": "T053 cost: above the comfort limit, 54 of 128 flags read as real price questions (docs/trial/FINDINGS.md T053; labels data/trial/cost_v2_labels.py)"},
-    "statistical:UNIT_RATE_ABOVE": {"ref_risk": 0.9, "source": "not yet read by eye: the prior"},
-    "dup_split:FUNDED_AGAIN_AFTER_COMPLETION": {"worth": 6, "read": 12, "ref_risk": 0.95, "source": "T051 fresh TEST + TEST2 pairs of this kind (data/trial/dup_split_v2_labels.py); hit rate does not rise with the pair score (45-50% in every band 0.75-0.95)"},
-    "dup_split:REPEATED_WHILE_OPEN": {"worth": 33, "read": 74, "ref_risk": 0.7, "source": "T051 fresh TEST + TEST2 pairs of this kind (31 of 67) + dashboard 2 of 7 (dashboard_labels.py)"},
-    "dup_split:SPLIT_AT_ONE_SITE": {"worth": 18, "read": 32, "ref_risk": 0.75, "source": "T051 GROUPS_TEST2 9 of 15 (dup_split_v2_labels.py) + dashboard 5 of 12 strict (dashboard_labels.py) + T056: 4 of 5 fresh groups not used to design the T056 rules (dashboard_labels.py SPLIT_FRESH_T056); ref = the strongest split (pieces just under a limit)"},
-    "dup_split:SPLIT_INTO_STRETCHES": {"worth": 14, "read": 27, "ref_risk": 0.75, "source": "a same-site split whose pieces carry part / phase / chainage numbers: read with SPLIT_AT_ONE_SITE until read on its own"},
-    "dup_split:BULK_ORDER": {"ref_risk": 0.4, "source": "not read as 'worth checking' (15 of 15 read as bulk purchases, T050): the prior; under a limit it counts most"},
-    "dup_split:REPAIR_SOON_AFTER_BUILT": {"ref_risk": 0.7, "source": "new 2 Oct 2026, not yet read on real works: the prior"},
+    "cost_estimate:ESTIMATE_ABOVE_STANDARD_AND_MP": {"ref_risk": 0.5, "source": "T099 (3 Oct 2026): the Cost slot, on the agency's form. Not yet read on real estimates: the prior until officers' verdicts (T098). Measured on unseen UP works only (FINDINGS T097: 0 of 42 real works above the line)"},
+    "cost_estimate:MATERIAL_QUANTITY_ABOVE_SIZE": {"ref_risk": 0.6, "source": "T099: a confirmed quantity more than 25% above what the size needs (cost_form/norms.py). Not yet read on real estimates: the prior"},
+    "dup_split:SANCTIONED_WORK_AT_THIS_SITE": {"ref_risk": 0.7, "source": "T100 (3 Oct 2026): two map pins within 50 m, same kind of asset, the link not declared. Not yet read on real forms: the prior. Replaces the repeats judged on words (6 of 12 and 33 of 74), now notes"},
+    "dup_split:REBUILT_SOON_AFTER_COMPLETION": {"ref_risk": 0.6, "source": "T100: the agency declares it rebuilds a work completed under 3 years before. Not yet read: the prior"},
     "office_patterns:PRICED_AT_LIMIT": {"design": 0.20, "ref_risk": 0.3, "source": "design: a habit of the office corroborates a work's own findings and never queues it alone; the offices themselves are listed once"}
   }
 }

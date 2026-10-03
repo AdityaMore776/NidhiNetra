@@ -320,8 +320,9 @@ def _described(agents: list[dict]) -> list[dict]:
     for r in agents:
         aid = registry.canonical_id(r.get("agent", ""))
         spec = specs.get(aid)
-        out.append({**r, "agent": aid, "name": spec.name if spec else aid,
-                    "question": spec.question if spec else ""})
+        name, question = ((spec.name, spec.question) if spec
+                          else registry.RETIRED.get(aid, (aid, "")))
+        out.append({**r, "agent": aid, "name": name, "question": question})
     return out
 
 

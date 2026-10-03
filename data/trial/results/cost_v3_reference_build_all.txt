@@ -1,0 +1,61 @@
+Bihar: years [2024, 2026]
+  BOREWELL                 per unit   n=   5  median    60,167  p90    61,535  p98    62,265  state: not used; districts used: -
+  CCTV                     per unit   n=  61  median   125,000  p90   125,000  p98   125,000  state: USED; districts used: Sitamarhi (61)
+  HIGH_MAST                per mast   n=  38  median   199,000  p90   348,743  p98   900,000  state: not used; districts used: -
+  ROAD_CC                  per metre  n=   1  median     5,179  p90     5,179  p98     5,179  state: not used; districts used: -
+wrote apps/engine/drishti/reference/cost/bihar.json
+Himachal Pradesh: years [2024, 2026]
+  STREET_LIGHT|solar       per light  n=  38  median    16,575  p90    16,575  p98    16,575  state: USED; districts used: Kangra (35)
+  STREET_LIGHT|unstated    per light  n=   1  median    12,705  p90    12,705  p98    12,705  state: not used; districts used: -
+wrote apps/engine/drishti/reference/cost/himachal_pradesh.json
+Madhya Pradesh: years [2024, 2026]
+  BUS_SHELTER              per unit   n=   2  median    29,870  p90    42,338  p98    44,831  state: not used; districts used: -
+  HIGH_MAST                per mast   n=   2  median   394,601  p90   661,715  p98   715,138  state: not used; districts used: -
+  ROAD_CC                  per metre  n=   8  median     2,241  p90     3,331  p98     3,333  state: not used; districts used: -
+  STREET_LIGHT|solar       per light  n=  82  median    33,077  p90    46,879  p98    46,879  state: not used; districts used: Shahdol (52)
+  STREET_LIGHT|unstated    per light  n=  13  median    45,156  p90    45,156  p98    56,596  state: not used; districts used: -
+  WATER_TANK               per unit   n=  36  median   166,026  p90   166,026  p98   166,026  state: USED; districts used: -
+wrote apps/engine/drishti/reference/cost/madhya_pradesh.json
+Tamil Nadu: years [2024, 2026]
+  BOREWELL                 per unit   n=   1  median    15,962  p90    15,962  p98    15,962  state: not used; districts used: -
+  BUS_SHELTER              per unit   n=   1  median    23,986  p90    23,986  p98    23,986  state: not used; districts used: -
+  FOOTPATH                 per metre  n=   5  median     5,370  p90    12,889  p98    15,467  state: not used; districts used: -
+  HIGH_MAST                per mast   n=  82  median   415,854  p90   424,635  p98   632,332  state: USED; districts used: -
+  ROAD_BT                  per metre  n=   4  median     4,063  p90     5,637  p98     5,924  state: not used; districts used: -
+  ROAD_CC                  per metre  n=   9  median     4,991  p90     8,631  p98    11,642  state: not used; districts used: -
+  STREET_LIGHT|unstated    per light  n=   6  median    30,326  p90    40,163  p98    48,033  state: not used; districts used: -
+  TOILET_BLOCK             per unit   n=  12  median   785,000  p90   785,000  p98 1,381,700  state: not used; districts used: -
+  WATER_SUPPLY             per metre  n=   1  median       355  p90       355  p98       355  state: not used; districts used: -
+wrote apps/engine/drishti/reference/cost/tamil_nadu.json
+Uttar Pradesh: years [2024, 2026]
+  BOUNDARY_WALL            per metre  n=   4  median     8,976  p90    14,174  p98    14,263  state: not used; districts used: -
+  BUS_SHELTER              per unit   n=   1  median 1,235,833  p90 1,235,833  p98 1,235,833  state: not used; districts used: -
+  CCTV                     per unit   n=   1  median    37,989  p90    37,989  p98    37,989  state: not used; districts used: -
+  DRAIN                    per metre  n=   1  median       600  p90       600  p98       600  state: not used; districts used: -
+  EMBANKMENT               per metre  n=   1  median    25,655  p90    25,655  p98    25,655  state: not used; districts used: -
+  FOOTPATH                 per metre  n= 206  median     5,789  p90    11,284  p98    14,460  state: not used; districts used: Bulandshahr (37)
+  HIGH_MAST                per mast   n= 232  median   172,675  p90   277,869  p98   408,965  state: not used; districts used: Bareilly (30), Kheri (96), Sitapur (49)
+  ROAD_CC                  per metre  n= 493  median     7,698  p90    12,201  p98    15,711  state: not used; districts used: Deoria (36); too loose: Basti (30), Mainpuri (46), Saharanpur (68)
+  STREET_LIGHT|solar       per light  n= 334  median    20,944  p90    20,944  p98    23,588  state: USED; districts used: Jaunpur (136), Varanasi (177)
+  STREET_LIGHT|unstated    per light  n=  35  median    40,669  p90    98,953  p98   251,467  state: not used; districts used: -
+  TOILET_BLOCK             per unit   n=   1  median   459,900  p90   459,900  p98   459,900  state: not used; districts used: -
+  WATER_TANK               per unit   n=   1  median   749,000  p90   749,000  p98   749,000  state: not used; districts used: -
+wrote apps/engine/drishti/reference/cost/uttar_pradesh.json
+Uttarakhand: years [2025, 2026]
+  STREET_LIGHT|solar       per light  n=  41  median    24,000  p90    24,966  p98    24,967  state: USED; districts used: Dehradun (41)
+  STREET_LIGHT|unstated    per light  n=   1  median    24,966  p90    24,966  p98    24,966  state: not used; districts used: -
+  WATER_TANK               per unit   n=   1  median   100,000  p90   100,000  p98   100,000  state: not used; districts used: -
+wrote apps/engine/drishti/reference/cost/uttarakhand.json
+West Bengal: years [2024, 2026]
+  CCTV                     per unit   n=   1  median    17,188  p90    17,188  p98    17,188  state: not used; districts used: -
+  DRAIN                    per metre  n=  12  median     4,000  p90     4,541  p98     4,707  state: not used; districts used: -
+  FOOTPATH                 per metre  n=   2  median    25,626  p90    44,490  p98    48,262  state: not used; districts used: -
+  HIGH_MAST                per mast   n= 107  median   438,556  p90   586,716  p98   735,030  state: not used; districts used: -; too loose: Cooch Behar (41)
+  ROAD_BT                  per metre  n=   2  median     2,925  p90     4,167  p98     4,415  state: not used; districts used: -
+  ROAD_CC                  per metre  n= 244  median     2,964  p90     5,053  p98     7,687  state: not used; districts used: -; too loose: South 24 Parganas (214)
+  STREET_LIGHT|solar       per light  n= 178  median    34,892  p90    34,987  p98   268,578  state: USED; districts used: Paschim Medinipur (86), South 24 Parganas (42); too loose: Nadia (38)
+  STREET_LIGHT|unstated    per light  n=  38  median    33,626  p90    76,944  p98   456,294  state: not used; districts used: -
+  TOILET_BLOCK             per unit   n=   1  median   174,982  p90   174,982  p98   174,982  state: not used; districts used: -
+  WATER_TANK               per unit   n=   2  median   350,000  p90   430,000  p98   446,000  state: not used; districts used: -
+wrote apps/engine/drishti/reference/cost/west_bengal.json
+A group is compared with a form only when it is tight and priced in the form's own unit of size (a road priced per m2 is never compared with roads per metre).

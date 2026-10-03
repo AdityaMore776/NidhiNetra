@@ -1,0 +1,46 @@
+{
+ "state": "Himachal Pradesh",
+ "source": "eSAKSHI dashboard tables, as of 2026-10-02",
+ "built": "2026-10-03",
+ "years": [
+  2024,
+  2026
+ ],
+ "min_works": 30,
+ "tight": 1.25,
+ "groups": {
+  "STREET_LIGHT|solar": {
+   "unit": "per light",
+   "state": {
+    "n": 38,
+    "p10": 12705,
+    "median": 16575,
+    "p90": 16575,
+    "p98": 16575,
+    "tight": true
+   },
+   "districts": {
+    "Kangra": {
+     "n": 35,
+     "p10": 12705,
+     "median": 16575,
+     "p90": 16575,
+     "p98": 16575,
+     "tight": true
+    }
+   }
+  },
+  "STREET_LIGHT|unstated": {
+   "unit": "per light",
+   "state": {
+    "n": 1,
+    "p10": 12705,
+    "median": 12705,
+    "p90": 12705,
+    "p98": 12705,
+    "tight": true
+   },
+   "districts": {}
+  }
+ }
+}

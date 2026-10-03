@@ -48,16 +48,24 @@ class EngineSpec:
 CORE: tuple[EngineSpec, ...] = (
     EngineSpec("compliance", "Guideline Compliance",
                "Does the work follow the MPLADS guidelines?", weight=0.30, order=1),
-    EngineSpec("statistical", "Cost Anomaly",
-               "Is the project cost unusual for similar works?", weight=0.20, order=2),
-    EngineSpec("dup_split", "Duplicate & Split Work",
-               "Is this work repeated, or one job cut into pieces?", weight=0.20, order=3),
+    # T099 (3 Oct 2026): the Cost slot is the cost estimate form's check; the old Cost Anomaly
+    # (stored id `statistical`) compared amounts without a size and is retired (RETIRED below)
+    EngineSpec("cost_estimate", "Cost",
+               "Is the agency's cost estimate right for this size of work here?", weight=0.20,
+               order=2),
+    EngineSpec("dup_split", "Duplicate Work",
+               "Is this work already sanctioned at this site?", weight=0.20, order=3),
     EngineSpec("delay", "Fund Flow",          # was Delay Prediction; prediction removed (T053)
                "Is money stuck waiting for sanction?", weight=0.20, order=4),
 )
 
 # Ids used by assessments stored before the registry (the deck's four agents).
 LEGACY_IDS = {"duplicate_project": "dup_split", "image_reuse": "photo_forensics"}
+
+# Engines no longer run, so results stored before they were retired still read by name until
+# the next batch replaces them: id -> (name, question).
+RETIRED = {"statistical": ("Cost Anomaly (retired)",
+                           "Is the project cost unusual for similar works?")}
 
 
 def canonical_id(agent_id: str) -> str:

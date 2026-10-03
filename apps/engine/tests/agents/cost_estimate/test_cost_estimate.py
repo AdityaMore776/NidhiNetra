@@ -83,8 +83,15 @@ def codes(r):
 # ---- when it does not apply --------------------------------------------------------------
 
 def test_no_form_is_not_applicable():
-    r = agent.assess({"work_id": "W1"}, ctx())
-    assert r.status == Status.NOT_APPLICABLE and r.risk == 0
+    # T099: the record alone carries no size, and no price question from it was certain (0 of
+    # the 15 a record-only check raised, data/trial/simple_certain_trial.py): never judged
+    for work in ({"work_id": "W1"},
+                 {"work_id": "W2", "state_name": "Testland", "district_name": "Alpha",
+                  "work_type_code": "STREET_LIGHT", "amount": 9_000_000,
+                  "description": "Installation of 10 solar street lights"}):
+        r = agent.assess(work, ctx())
+        assert r.status == Status.NOT_APPLICABLE and r.risk == 0 and not r.findings
+        assert "no cost estimate form" in r.headline.lower()
 
 
 def test_an_incomplete_form_is_not_assessed():
@@ -249,9 +256,18 @@ def test_jaunpur_solar_lights_against_the_real_uttar_pradesh_reference():
     assert not run(road_form(), district="Deoria", state="Uttar Pradesh", ref=None).findings
 
 
-def test_registered_shown_but_not_counted():
+def test_it_is_the_cost_slot_and_the_old_cost_anomaly_is_retired():
+    # T099: the Cost slot of the blueprint (weight 0.20, second), counted; its findings start at
+    # fusion v3's 1-in-4 prior, so none can queue a work alone until officers' verdicts are read
     spec = registry.by_id()[agent.AGENT]
-    assert spec.weight == 0.0 and spec.assess is agent.assess
+    assert spec.weight == 0.20 and spec.assess is agent.assess and spec.name == "Cost"
+    assert [e.id for e in registry.engines()][1] == agent.AGENT
+    assert "statistical" not in registry.by_id() and "statistical" in registry.RETIRED
+    from drishti.fusion import calibrated
+
+    for code in ("ESTIMATE_ABOVE_STANDARD_AND_MP", "MATERIAL_QUANTITY_ABOVE_SIZE"):
+        rate = calibrated.Reliability.load().rate(f"{agent.AGENT}:{code}")
+        assert rate.basis == "prior" and rate.hit_rate == 0.25, code
 
 
 def test_everything_it_says_is_plain_and_odd_forms_never_break_it():

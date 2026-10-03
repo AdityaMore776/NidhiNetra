@@ -17,7 +17,9 @@ The form, as JSON (docs/specs/2026-10-03-cost-estimate-form.md):
   {"recommendation": {...}, "work": {...},
    "sites": [{"location": {...}, "size": {...}, "site_conditions": {...}, "lines": [{...}]}],
    "charges": {...}, "timing": {...}, "totals": {...}, "prepared": {...},
-   "declarations": {...}, "confirmed": ["<code>:<field>", ...]}
+   "declarations": {...}, "confirmed": ["<code>:<field>", ...],
+   "earlier_works": [{"earlier_work": "<work id>", "answer": "same|continues|different",
+                      "difference": "..."}]}            (T100: the agency's answers, see _earlier)
 """
 
 from __future__ import annotations
@@ -277,7 +279,49 @@ def _line(out: _Issues, ln: dict, path: str, ctx: _Ctx) -> dict:
             "material_suggested": suggested, "group": ctx.group}
 
 
-def validate(form: dict, today: date | None = None) -> dict:
+CONTINUING = ("continuation", "extension", "upgrade", "reconstruction")
+
+
+def _earlier(out: _Issues, fields: list[dict], form: dict, work: dict, earlier, ctx) -> None:
+    """The agency's answers about the sanctioned works the Duplicate check found at this site or
+    in the same words (T100): each must be answered, "same" stops the form (that work is already
+    sanctioned), "continues" must match the nature and the earlier work ID, "different" says what
+    differs. A continuation names the work it continues."""
+    nature = _s(work.get("nature"))
+    named = _s(work.get("earlier_work_id")).strip()
+    if nature == "continuation" and not named:
+        out.add(FIX, "continuation_needs_id", "work.earlier_work_id",
+                "A continuation must name the earlier work it continues (its eSAKSHI work ID).")
+    rows = form.get("earlier_works")
+    rows = rows if isinstance(rows, list) else []
+    answered = set()
+    for i, row in enumerate(rows):
+        path = f"earlier_works[{i}]"
+        row = row if isinstance(row, dict) else {}
+        _section(out, fields, row, path, ctx)
+        wid, answer = _s(row.get("earlier_work")).strip(), _s(row.get("answer"))
+        answered.add(wid)
+        if answer == "same":
+            out.add(FIX, "same_as_sanctioned", f"{path}.answer",
+                    f"You say this is the same work as {wid}, which is already sanctioned: it "
+                    "cannot be estimated again. Withdraw it, or change the answer if it is a "
+                    "different work.")
+        elif answer == "continues" and (nature not in CONTINUING or named != wid):
+            out.add(FIX, "continues_mismatch", f"{path}.answer",
+                    f"You say this work continues {wid}: set the nature of the work to "
+                    "continuation, extension, upgrade or reconstruction, and the earlier work ID "
+                    f"to {wid}.")
+    for wid in earlier:
+        if wid not in answered:
+            out.add(FIX, "earlier_unanswered", "earlier_works",
+                    f"Sanctioned work {wid} looks like this one (the same site or the same "
+                    "words): say whether this is the same work, continues it, or is a different "
+                    "work.")
+
+
+def validate(form: dict, today: date | None = None, earlier=None) -> dict:
+    """`earlier`: the ids of the sanctioned works the agency must answer about (the Duplicate
+    check's candidates for this work, given by the API); None checks only the answers given."""
     today = today or date.today()
     data = catalog.load()
     out = _Issues()
@@ -413,6 +457,7 @@ def validate(form: dict, today: date | None = None) -> dict:
 
     _section(out, data["prepared"], form.get("prepared"), "prepared", ctx)
     _section(out, data["declarations"], form.get("declarations"), "declarations", ctx)
+    _earlier(out, data["earlier_works"], form, work, earlier or (), ctx)
 
     confirmed = {c for c in form.get("confirmed") or [] if isinstance(c, str)} \
         if isinstance(form.get("confirmed"), list) else set()

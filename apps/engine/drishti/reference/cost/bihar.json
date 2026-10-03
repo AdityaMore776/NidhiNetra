@@ -1,0 +1,70 @@
+{
+ "state": "Bihar",
+ "source": "eSAKSHI dashboard tables, as of 2026-10-02",
+ "built": "2026-10-03",
+ "years": [
+  2024,
+  2026
+ ],
+ "min_works": 30,
+ "tight": 1.25,
+ "groups": {
+  "BOREWELL": {
+   "unit": "per unit",
+   "state": {
+    "n": 5,
+    "p10": 44012,
+    "median": 60167,
+    "p90": 61535,
+    "p98": 62265,
+    "tight": true
+   },
+   "districts": {}
+  },
+  "CCTV": {
+   "unit": "per unit",
+   "state": {
+    "n": 61,
+    "p10": 125000,
+    "median": 125000,
+    "p90": 125000,
+    "p98": 125000,
+    "tight": true
+   },
+   "districts": {
+    "Sitamarhi": {
+     "n": 61,
+     "p10": 125000,
+     "median": 125000,
+     "p90": 125000,
+     "p98": 125000,
+     "tight": true
+    }
+   }
+  },
+  "HIGH_MAST": {
+   "unit": "per mast",
+   "state": {
+    "n": 38,
+    "p10": 53750,
+    "median": 199000,
+    "p90": 348743,
+    "p98": 900000,
+    "tight": false
+   },
+   "districts": {}
+  },
+  "ROAD_CC": {
+   "unit": "per metre",
+   "state": {
+    "n": 1,
+    "p10": 5179,
+    "median": 5179,
+    "p90": 5179,
+    "p98": 5179,
+    "tight": true
+   },
+   "districts": {}
+  }
+ }
+}
