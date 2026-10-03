@@ -30,7 +30,7 @@ def _all(*results):
 
 def test_blueprint_weights_come_from_the_registry():
     w = weights()
-    assert w["compliance"] == 0.30 and w["statistical"] == 0.20 and w["dup_split"] == 0.20
+    assert w["compliance"] == 0.30 and w["cost_estimate"] == 0.20 and w["dup_split"] == 0.20
     # shown, not counted: Fund Flow's wait is R01's, the evidence engines have pilot evidence
     # only; the outlier slot was replaced by Compliance R12/R13 (T053)
     assert "outlier" not in w and w["delay"] == 0.0
@@ -40,10 +40,10 @@ def test_blueprint_weights_come_from_the_registry():
 
 
 def test_score_is_the_weighted_sum_and_parts_add_up_exactly():
-    f = fuse(_all(_r("compliance", 0.6), _r("statistical", 0.5), _r("dup_split", 0.85)), [])
+    f = fuse(_all(_r("compliance", 0.6), _r("cost_estimate", 0.5), _r("dup_split", 0.85)), [])
     assert f.score == pytest.approx(0.30 * 0.6 + 0.20 * 0.5 + 0.20 * 0.85)
     assert sum(p.contribution for p in f.parts) == pytest.approx(f.score, abs=1e-12)
-    assert [p.source for p in f.parts] == ["compliance", "dup_split", "statistical"]
+    assert [p.source for p in f.parts] == ["compliance", "dup_split", "cost_estimate"]
 
 
 def test_an_engine_shown_but_not_counted_adds_nothing():
@@ -52,7 +52,7 @@ def test_an_engine_shown_but_not_counted_adds_nothing():
 
 
 def test_only_assessed_results_count():
-    f = fuse(_all(_r("statistical", 0.9, status=Status.NOT_ASSESSABLE)), [])
+    f = fuse(_all(_r("cost_estimate", 0.9, status=Status.NOT_ASSESSABLE)), [])
     assert f.score == 0.0
 
 
@@ -71,7 +71,7 @@ def test_one_guideline_delay_alone_is_medium_two_engines_agreeing_is_high():
     assert alone.band == "MEDIUM"
     weak = fuse(_all(_r("compliance", 0.6), _r("dup_split", 0.15)), [])     # 21: bulk order
     assert weak.band == "MEDIUM"
-    two = fuse(_all(_r("compliance", 0.6), _r("statistical", 0.35)), [])    # 25
+    two = fuse(_all(_r("compliance", 0.6), _r("cost_estimate", 0.35)), [])    # 25
     assert two.band == "HIGH"
     repeat = fuse(_all(_r("compliance", 0.6), _r("dup_split", 0.45)), [])   # 27: weak repeat
     assert repeat.band == "HIGH"
@@ -84,7 +84,7 @@ def test_one_guideline_delay_alone_is_medium_two_engines_agreeing_is_high():
 def test_one_serious_rule_breach_lifts_to_high_two_to_critical_as_an_explicit_part():
     one = fuse(_all(_r("compliance", 1.0, hard=True)), [])
     assert one.score == pytest.approx(max(0.30, HIGH)) and one.hard_trigger == "compliance"
-    weak = fuse(_all(_r("statistical", 0.1), _r("compliance", 0.3, hard=True)), [])
+    weak = fuse(_all(_r("cost_estimate", 0.1), _r("compliance", 0.3, hard=True)), [])
     assert weak.band == "LOW"        # a hard finding below 0.6 is not a serious breach
     two = AgentResult(agent="compliance", status=Status.ASSESSED, verdict="V", risk=1.0,
                       confidence=0.9, hard=True, headline="h", version="t",
@@ -92,7 +92,7 @@ def test_one_serious_rule_breach_lifts_to_high_two_to_critical_as_an_explicit_pa
                                 Finding("B", "b", hard=True, risk=1.0)])
     f = fuse(_all(two), [])
     # the rules alone give 0.30 = CRITICAL already; lift a lower one to check the part
-    low = fuse(_all(_r("statistical", 0.6, hard=True), _r("dup_split", 0.6, hard=True)), [])
+    low = fuse(_all(_r("cost_estimate", 0.6, hard=True), _r("dup_split", 0.6, hard=True)), [])
     assert f.band == "CRITICAL"
     assert low.band == "CRITICAL" and low.score == pytest.approx(CRITICAL)
     floor = next(p for p in low.parts if p.source == "floor")
@@ -103,9 +103,9 @@ def test_one_serious_rule_breach_lifts_to_high_two_to_critical_as_an_explicit_pa
 def test_reasons_are_the_top_three_contributions_in_english_and_hindi():
     comp = _r("compliance", 0.6, code="SANCTION_OVERDUE",
               evidence={"message_hi": "स्वीकृति समय सीमा से अधिक लंबित है।"})
-    f = fuse(_all(comp, _r("statistical", 0.4, code="COST_ABOVE_PEERS"),
+    f = fuse(_all(comp, _r("cost_estimate", 0.4, code="ESTIMATE_ABOVE_STANDARD_AND_MP"),
                   _r("dup_split", 0.6, code="REPEATED_WHILE_OPEN"), _r("delay", 1.0)), [])
-    assert [x["source"] for x in f.reasons] == ["compliance", "dup_split", "statistical"]
+    assert [x["source"] for x in f.reasons] == ["compliance", "dup_split", "cost_estimate"]
     assert f.reasons[0]["text_en"] == "compliance sentence"
     assert f.reasons[0]["text_hi"] == "स्वीकृति समय सीमा से अधिक लंबित है।"
     assert "चालू कार्य" in f.reasons[1]["text_hi"]          # engine template for the code
@@ -113,9 +113,9 @@ def test_reasons_are_the_top_three_contributions_in_english_and_hindi():
 
 
 def test_limited_when_a_counted_engine_could_not_assess():
-    f = fuse(_all(_r("compliance", 0.0), _r("statistical", 0.0, status=Status.NOT_ASSESSABLE),
+    f = fuse(_all(_r("compliance", 0.0), _r("cost_estimate", 0.0, status=Status.NOT_ASSESSABLE),
                   _r("dup_split", 0.0)), [])
     assert f.limited is True
-    g = fuse(_all(_r("compliance", 0.0), _r("statistical", 0.0), _r("dup_split", 0.0),
+    g = fuse(_all(_r("compliance", 0.0), _r("cost_estimate", 0.0), _r("dup_split", 0.0),
                   _r("delay", 0.0, status=Status.NOT_APPLICABLE)), [])
     assert g.limited is False       # fund flow is not counted

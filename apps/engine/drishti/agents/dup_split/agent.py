@@ -167,6 +167,9 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
     evidence = {"compared": n, "sanctioned_earlier": found["sanctioned_earlier"],
                 "pinned": pinned, "pin_metres": PIN_METRES,
                 "place_named": found["place_named"]}
+    together = index.filed_together(me.work_id)
+    if together:            # display only: the queue shows works filed together as one case
+        evidence.update(group_id=together[0], size=together[1])
     asked_codes = [f for f in findings if f.risk > 0]
     if asked_codes:
         asked_codes.sort(key=lambda f: -f.risk)

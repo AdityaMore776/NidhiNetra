@@ -37,6 +37,7 @@ from drishti.agents.dup_split.match import (
     SERIES_COPIES,
     STAGED,
     _count_copies,
+    _key,
     _localise,
     genders,
     place_agreement,
@@ -191,6 +192,10 @@ class Rec:
         return r
 
 
+def _together_key(r: Rec) -> tuple:
+    return (r.district, r.mp, _key(r.description), r.rec)
+
+
 def looks_alike(a: Rec, b: Rec) -> float | None:
     """Text likeness when the two descriptions name the same asset at the same place in the same
     words (module note), else None."""
@@ -231,6 +236,10 @@ class RepeatIndex:
 
     by_district: dict[str, list[Rec]] = field(default_factory=dict)
     _ids: dict[str, Rec] = field(default_factory=dict)
+    # works filed together: the same wording, MP and recommendation day in one district. Not a
+    # finding (a purchase filed as several works is not a repeat); the review queue shows them
+    # as one case (migration 012), so 11 rows of one street-light purchase read as one.
+    _together: dict[tuple, list[str]] = field(default_factory=dict)
 
     @classmethod
     def build(cls, works) -> RepeatIndex:
@@ -243,7 +252,16 @@ class RepeatIndex:
         for recs in idx.by_district.values():
             _localise(recs)
             _count_copies(recs)
+            for r in recs:
+                if r.rec is not None and _key(r.description):
+                    idx._together.setdefault(_together_key(r), []).append(r.work_id)
         return idx
+
+    def filed_together(self, work_id: str | None) -> tuple[str, int] | None:
+        """(case id, works in it) for a work filed with identical others, else None."""
+        r = self._ids.get(work_id or "")
+        ids = self._together.get(_together_key(r)) if r is not None and r.rec else None
+        return (f"G-{min(ids)}", len(ids)) if ids and len(ids) >= 2 else None
 
     def covers(self, district) -> bool:
         return str(district or "NA") in self.by_district

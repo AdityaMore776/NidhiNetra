@@ -14,3 +14,5 @@ CREATE TABLE IF NOT EXISTS cost_forms (
 );
 CREATE INDEX IF NOT EXISTS cost_forms_submitted_idx ON cost_forms (work_id)
     WHERE status = 'submitted';
+-- like every table: no direct client access, only through the engine's API (001_core.sql)
+ALTER TABLE cost_forms ENABLE ROW LEVEL SECURITY;

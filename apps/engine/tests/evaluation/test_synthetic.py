@@ -18,9 +18,17 @@ def test_labels_sit_beside_the_works_and_every_planted_kind_is_there():
     assert set(corpus.labels) <= ids
     assert all("label" not in w and "kind" not in w for w in corpus.works)
     kinds = {lab.kind for lab in corpus.labels.values() if lab.positive}
-    assert {"COST_X5", "REPEAT_AFTER_DONE", "SPLIT_SAME_SITE", "SPLIT_STRETCHES",
-            "REPAIR_SOON_AFTER_BUILT", "RULE_TEMPLE", "OFFICE_PRICES_AT_LIMIT"} <= kinds
-    assert all(lab.meant and lab.codes for lab in corpus.labels.values() if lab.positive)
+    assert {"COST_X5", "REPEAT_AFTER_DONE", "SPLIT_SAME_SITE", "SPLIT_STRETCHES", "PIN_REPEAT",
+            "REBUILT_SOON", "REPAIR_SOON_AFTER_BUILT", "RULE_TEMPLE",
+            "OFFICE_PRICES_AT_LIMIT"} <= kinds
+    # T099 + T100: what the record's words alone cannot settle is planted, but no engine is
+    # meant for it (the cost estimate form is); every other planted kind names its engine
+    record_only = {"COST_X3", "COST_X5", "COST_X10", "COST_SMALL_SCOPE_X10", "REPEAT_AFTER_DONE",
+                   "REPEAT_WHILE_OPEN", "SPLIT_SAME_SITE", "SPLIT_STRETCHES",
+                   "REPAIR_SOON_AFTER_BUILT"}
+    for lab in corpus.labels.values():
+        if lab.positive:
+            assert (lab.kind in record_only) != bool(lab.meant and lab.codes), lab
 
 
 def test_a_village_spelt_otherwise_is_still_close_to_itself():

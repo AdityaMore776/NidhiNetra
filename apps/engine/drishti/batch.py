@@ -111,15 +111,14 @@ def row_for(a: Assessment) -> dict:
 
 
 def case_of(a: Assessment) -> tuple[str | None, int | None]:
-    """The Duplicate & Split group a work belongs to, as (case id, works in it). Duplicate Work v3
-    (T100) forms no groups (splits and bulk orders were removed), so every work is its own case
-    until a check that groups works returns; the column stays (migration 012)."""
+    """The case a work belongs to, as (case id, works in it): Duplicate Work v3 (T100) groups works
+    filed together (the same wording, MP and day in one district) for display only, so the
+    queue shows one row for one purchase filed as several works (migration 012)."""
     for r in a.agents:
         if r.agent == "dup_split" and r.assessed:
-            for f in r.findings:
-                gid = (f.evidence or {}).get("group_id")
-                if gid:
-                    return str(gid), int((f.evidence or {}).get("size") or 0) or None
+            for ev in [r.evidence or {}] + [f.evidence or {} for f in r.findings]:
+                if ev.get("group_id"):
+                    return str(ev["group_id"]), int(ev.get("size") or 0) or None
     return None, None
 
 

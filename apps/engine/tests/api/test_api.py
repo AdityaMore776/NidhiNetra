@@ -29,9 +29,10 @@ def test_summary_counts_real_works_and_money(client):
     assert s["amount"] == pytest.approx(160_000 + 1_000_000 + 2_500_000 + 300_000)
     assert sum(s["bands"].values()) == 4
     agents = {a["id"]: a for a in s["agents"]}
-    assert agents["statistical"]["built"] is True
+    assert agents["cost_estimate"]["built"] is True
     assert "outlier" not in agents                 # replaced by Compliance R12/R13 (T053)
-    assert list(agents)[:4] == ["compliance", "statistical", "dup_split", "delay"]
+    assert "statistical" not in agents             # the old Cost Anomaly is retired (T099)
+    assert list(agents)[:4] == ["compliance", "cost_estimate", "dup_split", "delay"]
 
 
 def test_district_officer_sees_only_their_district(client):
@@ -63,12 +64,14 @@ def test_work_detail_carries_every_engine_and_the_parts(client):
     w = client.get("/api/v1/works/W-COSTLY", headers=MINISTRY).json()
     assert w["work"]["district_name"] == "Anand"
     a = w["assessment"]
-    assert [r["agent"] for r in a["agents"]][:4] == ["compliance", "statistical", "dup_split",
+    assert [r["agent"] for r in a["agents"]][:4] == ["compliance", "cost_estimate", "dup_split",
                                                    "delay"]
-    stat = next(r for r in a["agents"] if r["agent"] == "statistical")
-    assert stat["name"] == "Cost Anomaly" and stat["question"]
-    assert stat["verdict"] == "COST_ABOVE_PEERS"
-    assert stat["evidence"]["comparison"][0]["metric"] == "Total cost"
+    cost = next(r for r in a["agents"] if r["agent"] == "cost_estimate")
+    assert cost["name"] == "Cost" and cost["question"]
+    # T099: no cost estimate form, so the amount alone is never judged
+    assert cost["status"] == "NOT_APPLICABLE" and cost["risk"] == 0
+    dup = next(r for r in a["agents"] if r["agent"] == "dup_split")
+    assert dup["name"] == "Duplicate Work" and dup["status"] == "ASSESSED"
     assert sum(p["contribution"] for p in a["parts"]["parts"]) == pytest.approx(a["score"])
 
 
@@ -81,10 +84,13 @@ def test_queue_holds_only_works_needing_review_in_priority_order(client):
     assert items and all(i["band"] in ("CRITICAL", "HIGH") for i in items)
     assert [i["priority"] for i in items] == sorted((i["priority"] for i in items),
                                                     reverse=True)
-    assert "W-TYPICAL" not in {i["work_id"] for i in items}
-    # W-COSTLY is late for sanction AND overpriced: the list leads with what sets it apart
-    costly = next(i for i in items if i["work_id"] == "W-COSTLY")
-    assert "Rs 10.00 lakh" in costly["headline"] and "sanction" not in costly["headline"]
+    ids = {i["work_id"] for i in items}
+    assert "W-TYPICAL" not in ids
+    # a wait for sanction alone never reaches the queue (W-COSTLY: its price is no longer
+    # judged from the amount alone, T099); a big sum that says nothing does (R12)
+    assert "W-COSTLY" not in ids
+    vague = next(i for i in items if i["work_id"] == "W-OTHER-DISTRICT")
+    assert "Rs 25.00 lakh" in vague["headline"] and "sanction" not in vague["headline"]
 
 
 def test_keepalive_touches_the_database(client):
@@ -99,12 +105,12 @@ def test_quiet_works_are_stored_compact_and_rebuilt_when_opened(client, api_db):
         compact, agents = con.execute(
             "SELECT compact, agents FROM assessments WHERE work_id = 'W-TYPICAL'").fetchone()
         flagged = con.execute(
-            "SELECT compact FROM assessments WHERE work_id = 'W-COSTLY'").fetchone()[0]
+            "SELECT compact FROM assessments WHERE work_id = 'W-OTHER-DISTRICT'").fetchone()[0]
     assert compact is True and agents == []
     assert flagged is False
     w = client.get("/api/v1/works/W-TYPICAL", headers=MINISTRY).json()["assessment"]
-    stat = next(r for r in w["agents"] if r["agent"] == "statistical")
-    assert stat["verdict"] == "COST_TYPICAL"
+    dup = next(r for r in w["agents"] if r["agent"] == "dup_split")
+    assert dup["verdict"] == "NOT_SANCTIONED_BEFORE"
 
 
 def test_stored_legacy_agent_ids_are_read_as_engine_ids():
@@ -113,7 +119,9 @@ def test_stored_legacy_agent_ids_are_read_as_engine_ids():
     out = _described([{"agent": "duplicate_project", "status": "NOT_BUILT"},
                       {"agent": "statistical", "status": "ASSESSED"}])
     assert [r["agent"] for r in out] == ["dup_split", "statistical"]
-    assert out[0]["name"] == "Duplicate & Split Work"
+    assert out[0]["name"] == "Duplicate Work"
+    # a result stored before the old Cost Anomaly was retired still reads by name (T099)
+    assert out[1]["name"] == "Cost Anomaly (retired)" and out[1]["question"]
 
 
 def test_offices_with_unreliable_completion_dates(client, api_db):
@@ -135,7 +143,7 @@ def test_offices_with_unreliable_completion_dates(client, api_db):
 
 def test_one_purchase_filed_as_several_works_is_one_case_in_the_queue(api_db, client):
     # three identical big sums that name no place, filed the same day: R12 queues each one,
-    # and Duplicate & Split reads them as one bulk order, so the queue shows one case of three
+    # and Duplicate Work files them as one case (display only, T100): one row of three
     from datetime import date
 
     import psycopg

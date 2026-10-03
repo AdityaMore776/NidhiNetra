@@ -37,11 +37,12 @@ def _k(report, kind):
     return report["kinds"][kind]
 
 
+# T099 + T100 (3 Oct 2026): splits, repeats and prices judged from the record's words alone are
+# no longer checked (not certain enough); the cost estimate form's map pins and declarations are
 @pytest.mark.parametrize("kind,meant", [
     ("RULE_TEMPLE", 0.75), ("RULE_DATES_IMPOSSIBLE", 1.0), ("RULE_OUTSIDE_CEILING", 1.0),
-    ("RULE_BIG_VAGUE", 1.0), ("SPLIT_SAME_SITE", 0.8), ("SPLIT_STRETCHES", 0.8),
-    ("REPAIR_SOON_AFTER_BUILT", 0.5), ("OFFICE_PRICES_AT_LIMIT", 0.8),
-    ("COST_SMALL_SCOPE_X10", 0.5)])
+    ("RULE_BIG_VAGUE", 1.0), ("OFFICE_PRICES_AT_LIMIT", 0.8), ("PIN_REPEAT", 1.0),
+    ("REBUILT_SOON", 1.0)])
 def test_planted_problems_are_found_by_the_engine_meant_for_them(report, kind, meant):
     assert _k(report, kind)["meant_code_fired"] >= meant
 
@@ -53,7 +54,8 @@ def test_one_well_measured_rule_breach_reaches_the_review_queue(report, kind):
 
 @pytest.mark.parametrize("kind,most", [
     ("HN_LANDMARK_TEMPLE", 0.0), ("HN_SCHOOL_NAMED_MANDIR", 0.0), ("HN_OPPOSITE_SIDES", 0.0),
-    ("HN_BATCH_DIFFERENT_VILLAGES", 0.05), ("HN_REPAIR_ELSEWHERE", 0.0)])
+    ("HN_BATCH_DIFFERENT_VILLAGES", 0.05), ("HN_REPAIR_ELSEWHERE", 0.0),
+    ("HN_PIN_OTHER_ASSET", 0.0), ("HN_PIN_NEXT_DOOR", 0.0), ("HN_DECLARED_CONTINUATION", 0.0)])
 def test_look_alikes_are_left_alone(report, kind, most):
     assert _k(report, kind)["meant_code_fired"] <= most
 

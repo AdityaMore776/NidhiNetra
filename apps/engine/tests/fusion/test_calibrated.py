@@ -70,8 +70,9 @@ def test_one_well_measured_finding_is_high_but_never_critical_alone():
 
 def test_two_engines_agreeing_strongly_is_critical():
     f = fuse(_all(_r("compliance", ("NO_STATED_SCOPE", 0.6, False)),
-                  _r("statistical", ("COST_ABOVE_PEERS", 0.9, False))))
-    p1, p2 = _rate("compliance:NO_STATED_SCOPE"), _rate("statistical:COST_ABOVE_PEERS")
+                  _r("cost_estimate", ("ESTIMATE_ABOVE_STANDARD_AND_MP", 0.5, False))))
+    p1 = _rate("compliance:NO_STATED_SCOPE")
+    p2 = _rate("cost_estimate:ESTIMATE_ABOVE_STANDARD_AND_MP")
     assert f.score == pytest.approx(1 - (1 - p1) * (1 - p2))
     assert f.band == "CRITICAL"
 
@@ -94,21 +95,22 @@ def test_completed_before_recommended_queues_only_where_it_stands_out():
 
 
 def test_a_finding_never_read_cannot_queue_a_work_on_its_own():
-    f = fuse(_all(_r("dup_split", ("REPAIR_SOON_AFTER_BUILT", 0.7, False))))
+    f = fuse(_all(_r("dup_split", ("REBUILT_SOON_AFTER_COMPLETION", 0.6, False))))
     assert f.score == pytest.approx(0.25) and f.band == "MEDIUM"
 
 
 def test_weaker_flags_of_a_graded_kind_count_in_proportion():
-    weak = fuse(_all(_r("statistical", ("COST_ABOVE_PEERS", 0.35, False))))
-    strong = fuse(_all(_r("statistical", ("COST_ABOVE_PEERS", 0.9, False))))
-    assert weak.score == pytest.approx(_rate("statistical:COST_ABOVE_PEERS") * 0.35 / 0.9)
+    weak = fuse(_all(_r("cost_estimate", ("ESTIMATE_ABOVE_STANDARD_AND_MP", 0.25, False))))
+    strong = fuse(_all(_r("cost_estimate", ("ESTIMATE_ABOVE_STANDARD_AND_MP", 0.5, False))))
+    assert weak.score == pytest.approx(
+        _rate("cost_estimate:ESTIMATE_ABOVE_STANDARD_AND_MP") * 0.25 / 0.5)
     assert weak.score < strong.score and weak.band == "LOW"
 
 
 def test_one_kind_counts_once_within_an_engine():
-    one = fuse(_all(_r("dup_split", ("REPEATED_WHILE_OPEN", 0.7, False))))
-    two = fuse(_all(_r("dup_split", ("REPEATED_WHILE_OPEN", 0.7, False),
-                       ("REPEATED_WHILE_OPEN", 0.5, False))))
+    one = fuse(_all(_r("dup_split", ("SANCTIONED_WORK_AT_THIS_SITE", 0.7, False))))
+    two = fuse(_all(_r("dup_split", ("SANCTIONED_WORK_AT_THIS_SITE", 0.7, False),
+                       ("SANCTIONED_WORK_AT_THIS_SITE", 0.5, False))))
     assert one.score == pytest.approx(two.score)
 
 
@@ -120,7 +122,7 @@ def test_engines_shown_but_not_counted_add_nothing():
 
 def test_parts_add_up_exactly_and_do_not_depend_on_order():
     rs = [_r("compliance", ("POSSIBLY_INADMISSIBLE", 0.6, False)),
-          _r("dup_split", ("SPLIT_AT_ONE_SITE", 0.6, False)),
+          _r("dup_split", ("SANCTIONED_WORK_AT_THIS_SITE", 0.7, False)),
           _r("office_patterns", ("PRICED_AT_LIMIT", 0.3, False))]
     a, b = fuse(_all(*rs)), fuse(_all(*reversed(rs)))
     assert sum(p.contribution for p in a.parts) == pytest.approx(a.score, abs=1e-12)
@@ -134,9 +136,9 @@ def test_parts_add_up_exactly_and_do_not_depend_on_order():
 def test_an_office_habit_corroborates_but_never_queues_alone():
     alone = fuse(_all(_r("office_patterns", ("PRICED_AT_LIMIT", 0.3, False))))
     assert alone.band == "LOW"
-    # a two-piece split just under the limit (risk 0.60): MEDIUM alone, HIGH with the habit
-    split = fuse(_all(_r("dup_split", ("SPLIT_AT_ONE_SITE", 0.60, False))))
-    both = fuse(_all(_r("dup_split", ("SPLIT_AT_ONE_SITE", 0.60, False)),
+    # one of the rarest waits for sanction (0.40 by design): MEDIUM alone, HIGH with the habit
+    split = fuse(_all(_r("compliance", ("SANCTION_OVERDUE", 0.6, False))))
+    both = fuse(_all(_r("compliance", ("SANCTION_OVERDUE", 0.6, False)),
                      _r("office_patterns", ("PRICED_AT_LIMIT", 0.3, False))))
     assert split.band == "MEDIUM" and both.band == "HIGH"
 
@@ -158,16 +160,16 @@ def test_a_serious_breach_lifts_to_high_two_to_critical():
 
 
 def test_officer_verdicts_move_the_score_without_retuning_a_cut_off():
-    rel = Reliability.load().with_verdicts({"dup_split:REPAIR_SOON_AFTER_BUILT": (20, 22)})
-    before = fuse(_all(_r("dup_split", ("REPAIR_SOON_AFTER_BUILT", 0.7, False))))
-    after = fuse(_all(_r("dup_split", ("REPAIR_SOON_AFTER_BUILT", 0.7, False))),
+    rel = Reliability.load().with_verdicts({"dup_split:REBUILT_SOON_AFTER_COMPLETION": (20, 22)})
+    before = fuse(_all(_r("dup_split", ("REBUILT_SOON_AFTER_COMPLETION", 0.6, False))))
+    after = fuse(_all(_r("dup_split", ("REBUILT_SOON_AFTER_COMPLETION", 0.6, False))),
                  reliability=rel)
     assert before.band == "MEDIUM" and after.band == "HIGH"
     assert after.score == pytest.approx((20 + 1) / (22 + 4))
 
 
 def test_limited_and_bands():
-    f = fuse(_all(_r("compliance"), _r("statistical", status=Status.NOT_ASSESSABLE),
+    f = fuse(_all(_r("compliance"), _r("cost_estimate", status=Status.NOT_ASSESSABLE),
                   _r("dup_split")))
     assert f.limited is True and f.band == "LOW"
     assert band_of(CRITICAL, engines_over=1) == "HIGH"
