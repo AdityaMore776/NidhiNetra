@@ -177,7 +177,7 @@
      {
       "id": "dup_split",
       "name": "Duplicate Work",
-      "question": "Is this work already sanctioned at this site?",
+      "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
       "counted": true,
       "status": "ASSESSED",
       "verdict": "NOT_SANCTIONED_BEFORE",
@@ -533,7 +533,7 @@
      {
       "id": "dup_split",
       "name": "Duplicate Work",
-      "question": "Is this work already sanctioned at this site?",
+      "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
       "counted": true,
       "status": "ASSESSED",
       "verdict": "NOT_SANCTIONED_BEFORE",
@@ -905,7 +905,7 @@
      {
       "id": "dup_split",
       "name": "Duplicate Work",
-      "question": "Is this work already sanctioned at this site?",
+      "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
       "counted": true,
       "status": "ASSESSED",
       "verdict": "NOT_SANCTIONED_BEFORE",
@@ -1314,7 +1314,7 @@
      {
       "id": "dup_split",
       "name": "Duplicate Work",
-      "question": "Is this work already sanctioned at this site?",
+      "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
       "counted": true,
       "status": "ASSESSED",
       "verdict": "NOT_SANCTIONED_BEFORE",
@@ -1705,7 +1705,7 @@
      {
       "id": "dup_split",
       "name": "Duplicate Work",
-      "question": "Is this work already sanctioned at this site?",
+      "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
       "counted": true,
       "status": "ASSESSED",
       "verdict": "NOT_SANCTIONED_BEFORE",
@@ -2120,7 +2120,7 @@
      {
       "id": "dup_split",
       "name": "Duplicate Work",
-      "question": "Is this work already sanctioned at this site?",
+      "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
       "counted": true,
       "status": "ASSESSED",
       "verdict": "NOT_SANCTIONED_BEFORE",
@@ -2549,7 +2549,7 @@
      {
       "id": "dup_split",
       "name": "Duplicate Work",
-      "question": "Is this work already sanctioned at this site?",
+      "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
       "counted": true,
       "status": "ASSESSED",
       "verdict": "SANCTIONED_WORK_AT_THIS_SITE",

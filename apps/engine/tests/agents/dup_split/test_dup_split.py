@@ -250,7 +250,8 @@ def test_without_an_index_or_a_date_it_says_it_could_not_compare():
 def test_registered_as_the_duplicate_slot_with_one_question():
     spec = registry.by_id()["dup_split"]
     assert spec.name == "Duplicate Work" and spec.weight == 0.20
-    assert spec.question == "Is this work already sanctioned at this site?"
+    assert spec.question == ("Is this work already sanctioned here, or one job cut to stay under "
+                             "a limit?")
 
 
 def test_damaged_forms_and_records_never_break_it():

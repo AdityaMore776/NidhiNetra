@@ -24,7 +24,7 @@ type AgentMeta = { n: string; name: string; color: string; question: string };
 export const AGENTS: Record<AgentId, AgentMeta> = {
   compliance: { n: "01", name: "Guideline Compliance", color: "var(--navy)", question: "Does the work follow the MPLADS guidelines?" },
   cost_estimate: { n: "02", name: "Cost", color: "var(--statistical)", question: "Is the agency's cost estimate right for this size of work here?" },
-  dup_split: { n: "03", name: "Duplicate Work", color: "var(--duplicate)", question: "Is this work already sanctioned at this site?" },
+  dup_split: { n: "03", name: "Duplicate Work", color: "var(--duplicate)", question: "Is this work already sanctioned here, or one job cut to stay under a limit?" },
   delay: { n: "04", name: "Fund Flow", color: "var(--site)", question: "Is money stuck waiting for sanction?" },
   office_patterns: { n: "05", name: "Office Patterns", color: "var(--reuse)", question: "Does this work's office price or close works in an unusual way?" },
   paperwork: { n: "06", name: "Paperwork", color: "var(--inputs)", question: "Do the work's own papers agree with the portal?" },

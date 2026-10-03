@@ -24,8 +24,9 @@ const FACETS: Record<string, string[]> = {
     "A work with no form is not judged: an amount alone does not say what is built",
   ],
   dup_split: [
-    "Is this work already sanctioned at this site? The form's map pin against the pins of sanctioned works of the same kind",
+    "Is this work already sanctioned here, or one job cut to stay under a limit? The form's map pin against the pins of sanctioned works of the same kind",
     "A continuation, extension or rebuild is declared on the form and never asked about, unless it rebuilds a work completed under three years ago",
+    "One job cut into pieces to stay under the Rs 5 or 10 lakh limit, asked only when every piece sits within 4% under it (12 of 14 such groups read as one job)",
     "Works that read alike are shown as notes for the agency to answer, never counted: words alone are right about 2 times in 3",
   ],
   delay: [

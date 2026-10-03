@@ -54,7 +54,8 @@ CORE: tuple[EngineSpec, ...] = (
                "Is the agency's cost estimate right for this size of work here?", weight=0.20,
                order=2),
     EngineSpec("dup_split", "Duplicate Work",
-               "Is this work already sanctioned at this site?", weight=0.20, order=3),
+               "Is this work already sanctioned here, or one job cut to stay under a limit?",
+               weight=0.20, order=3),
     EngineSpec("delay", "Fund Flow",          # was Delay Prediction; prediction removed (T053)
                "Is money stuck waiting for sanction?", weight=0.20, order=4),
 )

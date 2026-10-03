@@ -43,7 +43,7 @@ from drishti.agents.dup_split.repeat import PIN_METRES, RepeatIndex
 
 AGENT = "dup_split"
 VERSION = "dup-split-3.0.0"
-QUESTION = "Is this work already sanctioned at this site?"
+QUESTION = "Is this work already sanctioned here, or one job cut to stay under a limit?"
 SITE_RISK = 0.7
 REBUILT_RISK = 0.6
 SPLIT_RISK = 0.6

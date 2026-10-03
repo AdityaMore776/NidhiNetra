@@ -1,4 +1,5 @@
-"""Is this work already sanctioned at this site? The Duplicate check's evidence (T100, 3 Oct 2026).
+"""The Duplicate check's evidence (T100, 3 Oct 2026): is this work already sanctioned here, or
+one job cut to stay under a limit?
 
 The owner: "compare works in the given area to works that have already been sanctioned, and
 understand if this is a repeated work ... account for continuations ... simple and very accurate".
