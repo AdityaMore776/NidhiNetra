@@ -140,7 +140,8 @@ hand-off from the old agent moved to T098.)
 
 ### T098 · Cost v3: prove it, then switch it on  ·  M  ·  engine + data  ·  Depends on: T094, T097
 **What:** plan §8: planted tests on the test country with forms, the UP hold-out, 30 fresh flags read by eye, a pilot of
-20–50 real estimates from an implementing agency; tune the percentile and the MP margin; then `reliability.json`
+20–50 real estimates from an implementing agency; check the two margins the owner kept (+25% beyond the 98th
+percentile, +10% over the MP's amount) on read flags, changing them only with the owner's go-ahead; then `reliability.json`
 entries and a fusion weight; the old `statistical` agent hands over (NOT_APPLICABLE) for works with a form.
 **Done when:** [ ] targets of plan §8 met (or FINDINGS says honestly where they are not) · [ ] owner's go-ahead
 

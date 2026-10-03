@@ -199,6 +199,9 @@ Bigger than one session? That's normal. Push at the end of every session.
 - Pre-2023 and post-2023 works are different populations (eSAKSHI went digital ~2023); never pool them.
   The era boundary keys on `recommended_date`, never on `fy`.
 - Real evidence comes from eSAKSHI's public endpoints (pilot sample, polite rate), never scraped faster.
+- **Cost Estimate margins** (decided 2026-10-03): a price question needs the price per unit more than 25% above the
+  same standard item's 98th percentile **and** the estimate more than 10% above the MP's amount. Change them only on
+  measured flags and with the owner's go-ahead (T098).
 
 ## 9. Traps that already cost us time
 
