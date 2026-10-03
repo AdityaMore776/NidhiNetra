@@ -221,6 +221,92 @@ body {
   border-radius: var(--radius-control);
 }
 
+/* The panel every screen is built from: a quiet sheet, not a floating card. */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+}
+
+.panel-inset {
+  background: var(--sunken);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+}
+
+/* Buttons. One shape, four intents; nothing decorative. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--foreground);
+  padding: 0.35rem 0.7rem;
+  font-size: var(--text-base);
+  font-weight: 500;
+  line-height: 1.4;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn:hover:not(:disabled) {
+  background: var(--sunken);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-primary {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--navy-hover);
+}
+.btn-ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--secondary);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: var(--sunken);
+}
+.btn-sm {
+  padding: 0.2rem 0.5rem;
+  font-size: var(--text-sm);
+}
+
+/* The one animation on the site: a placeholder that says "waiting". */
+.skeleton {
+  border-radius: var(--radius-control);
+  background: linear-gradient(90deg, var(--sunken) 0%, var(--raised) 50%, var(--sunken) 100%);
+  background-size: 200% 100%;
+  animation: skeleton-sweep 1.6s linear infinite;
+}
+@keyframes skeleton-sweep {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* A meter drawn as a bar: always beside the number it stands for, never alone. */
+.meter {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--sunken);
+  overflow: hidden;
+}
+.meter > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+}
+
 /* Section heading used across every panel: small, quiet, letter-spaced. */
 .eyebrow {
   font-size: var(--text-xs);

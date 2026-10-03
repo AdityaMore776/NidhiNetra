@@ -263,6 +263,7 @@ export function Metric({
   tone,
   glyph,
   pending,
+  href,
 }: {
   label: string;
   value: ReactNode;
@@ -272,11 +273,13 @@ export function Metric({
   tone?: Band | "neutral";
   glyph?: string;
   pending?: boolean;
+  /** when given, the whole tile opens this list, so the number is a doorway */
+  href?: string;
 }) {
   const ink =
     tone && tone !== "neutral" ? BANDS[tone].ink : tone === "neutral" ? "var(--muted)" : undefined;
-  return (
-    <div className="card-flat flex flex-col justify-between gap-1 px-3 py-2.5">
+  const body = (
+    <>
       <div className="flex items-start gap-1.5">
         {glyph && (
           <span aria-hidden className="mt-px text-xs" style={{ color: ink ?? "var(--muted)" }}>
@@ -286,7 +289,7 @@ export function Metric({
         <span className="text-xs font-medium text-secondary">{label}</span>
         {hint && (
           <span className="ml-auto inline-flex items-center gap-1" title={hint}>
-            <InfoDot hint={hint} />
+            <InfoDot />
             <span className="sr-only">— {hint}</span>
           </span>
         )}
@@ -301,12 +304,24 @@ export function Metric({
         {sub && <span className="text-xs text-muted">{sub}</span>}
       </div>
       {source && <div className="text-2xs leading-tight text-muted">{source}</div>}
-    </div>
+    </>
+  );
+  const className =
+    "card-flat flex flex-col justify-between gap-1 px-3 py-2.5" +
+    (href ? " transition-colors hover:bg-raised" : "");
+  // A metric that links is one control, not a tile with a hidden hotspot in it.
+  return href ? (
+    <Link href={href} className={className} aria-label={`${label}: ${String(value)}. Open the list.`}>
+      {body}
+    </Link>
+  ) : (
+    <div className={className}>{body}</div>
   );
 }
 
-/** A "?" mark whose explanation is a title *and* real screen-reader text. */
-export function InfoDot({ hint }: { hint: string }) {
+/** A "?" mark. The explanation beside it carries the words, for a screen reader
+ *  as well as for a mouse; this mark itself is decorative. */
+export function InfoDot() {
   return (
     <span
       aria-hidden
@@ -364,10 +379,14 @@ export function Empty({
 
 export function ErrorState({
   title = "Could not load this",
+  body,
   message,
   onRetry,
 }: {
   title?: string;
+  /** the plain-language explanation, shown under the title */
+  body?: string;
+  /** the engine's own words; shown only when there is no better explanation */
   message?: string;
   onRetry?: () => void;
 }) {
@@ -383,7 +402,9 @@ export function ErrorState({
         </span>
         <div className="min-w-0">
           <p className="text-base font-medium">{title}</p>
-          <p className="mt-0.5 text-xs text-muted">{message ?? "The engine did not answer. Nothing is wrong with the works on screen."}</p>
+          <p className="mt-0.5 text-xs text-muted">
+            {body ?? message ?? "The engine did not answer. Nothing is wrong with the works on screen."}
+          </p>
           {onRetry && (
             <Button size="sm" className="mt-2" onClick={onRetry}>
               Try again

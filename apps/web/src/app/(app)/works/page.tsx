@@ -1,81 +1,82 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
-import { Pager, WorkTable } from "@/components/ui";
-import { api, type Page, type WorkRow } from "@/lib/api";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import { api, type DistrictRow } from "@/lib/api";
+import { BAND_ORDER } from "@/lib/tokens";
+import { BAND_LABEL } from "@/lib/format";
 import { WORK_TYPES } from "@/lib/format";
+import { WorkList, type ListOption } from "@/components/WorkList";
+import { useUrlFilters } from "@/lib/useUrlFilters";
 
+/**
+ * Every work the engines have looked at, not only the queue.
+ *
+ * This is where an officer checks the denominator: a district with 40 works in the
+ * queue is a different story from one with 40 works in total. The "couldn't check"
+ * and "nothing attached" filters are here because they are the honest limits of
+ * what the engines could see — never as a low risk.
+ */
 export default function WorksPage() {
   return (
-    <Suspense fallback={<p className="text-muted text-sm">Loading…</p>}>
+    <Suspense fallback={null}>
       <Works />
     </Suspense>
   );
 }
 
 function Works() {
-  const params = useSearchParams();
-  const [q, setQ] = useState("");
-  const [query, setQuery] = useState("");
-  const [type, setType] = useState("");
-  const [band, setBand] = useState("");
-  const [page, setPage] = useState(1);
-  const district = params.get("district") ?? "";
-  const [data, setData] = useState<Page<WorkRow> | null>(null);
+  const url = useUrlFilters({
+    q: "",
+    district: "",
+    type: "",
+    band: "",
+    status: "",
+    finding: "",
+    assess: "",
+    evidence: "",
+  });
+  const { values } = url;
+  const [rows, setRows] = useState<DistrictRow[]>([]);
 
   useEffect(() => {
-    api<Page<WorkRow>>("/works", { q: query, type, band, district, page }).then(setData);
-  }, [query, type, band, district, page]);
+    api<DistrictRow[]>("/dashboard/districts").then(setRows).catch(() => setRows([]));
+  }, []);
+
+  const districts: ListOption[] = useMemo(
+    () =>
+      rows
+        .slice()
+        .sort((a, b) => b.works - a.works)
+        .map((d) => ({ value: d.district_lgd, label: `${d.name} (${d.state})` })),
+    [rows],
+  );
+  const one = rows.find((d) => d.district_lgd === values.district);
 
   return (
-    <div className="space-y-4">
-      <div>
-        <h1 className="text-2xl font-bold">All works</h1>
-        <p className="text-sm text-muted">
-          Every work in the data you can see.
-          {district && data?.items[0]?.district_name && <> Showing the district of {data.items[0].district_name}.</>}
-        </p>
-      </div>
-      <form
-        className="flex flex-wrap gap-2 text-sm"
-        onSubmit={(e) => {
-          e.preventDefault();
-          setQuery(q);
-          setPage(1);
-        }}
-      >
-        <input
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="Search a village, a road, a work id…"
-          className="flex-1 min-w-60 rounded-lg border border-line bg-surface px-3 py-2"
-        />
-        <select value={type} onChange={(e) => { setType(e.target.value); setPage(1); }} className="rounded-lg border border-line bg-surface px-3 py-2">
-          <option value="">All work types</option>
-          {Object.entries(WORK_TYPES).map(([k, v]) => (
-            <option key={k} value={k}>
-              {v}
-            </option>
-          ))}
-        </select>
-        <select value={band} onChange={(e) => { setBand(e.target.value); setPage(1); }} className="rounded-lg border border-line bg-surface px-3 py-2">
-          <option value="">Any risk</option>
-          <option value="CRITICAL">Critical</option>
-          <option value="HIGH">High</option>
-          <option value="MEDIUM">Medium</option>
-          <option value="LOW">Low</option>
-        </select>
-        <button className="rounded-lg bg-navy px-4 py-2 text-white">Search</button>
-      </form>
-      {data ? (
-        <>
-          <WorkTable items={data.items} />
-          <Pager page={data.page} total={data.total} size={data.page_size} onPage={setPage} />
-        </>
-      ) : (
-        <p className="text-muted text-sm">Loading…</p>
-      )}
-    </div>
+    <WorkList
+      path="/works"
+      url={url}
+      title="All works"
+      intro={
+        one
+          ? `Every work the engines looked at in ${one.name}, ${one.state}. ${one.works.toLocaleString("en-IN")} works in this district in total.`
+          : "Every work the engines have looked at, in the area you are cleared to see."
+      }
+      searchPlaceholder="Search a village, a road, a work ID…"
+      exportName="drishti-works"
+      emptyTitle="No work matches these filters"
+      emptyBody="Every filter is shown at the top of this page; clearing one widens the search. DRISHTI hides nothing it has assessed."
+      options={{
+        districts,
+        types: Object.entries(WORK_TYPES).map(([value, label]) => ({ value, label })),
+        bands: BAND_ORDER.map((b) => ({ value: b, label: BAND_LABEL[b] })),
+        statuses: [
+          { value: "RECOMMENDED", label: "Recommended" },
+          { value: "SANCTIONED", label: "Sanctioned" },
+          { value: "COMPLETED", label: "Completed" },
+          { value: "GEO_TAGGED", label: "Geo-tagged" },
+        ],
+      }}
+    />
   );
 }

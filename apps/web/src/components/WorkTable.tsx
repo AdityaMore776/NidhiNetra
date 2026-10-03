@@ -30,14 +30,6 @@ export const WORK_COLUMNS: Column[] = [
   { key: "checked", label: "Checked", wide: true },
 ];
 
-function useColumns() {
-  const [hidden, setHidden] = useState<string[]>([]);
-  const shown = WORK_COLUMNS.filter((c) => (c.on ?? false) || !hidden.includes(c.key));
-  const toggle = (key: string) =>
-    setHidden((h) => (h.includes(key) ? h.filter((k) => k !== key) : [...h, key]));
-  return { shown, toggle, hidden };
-}
-
 /** A `select` that adds a filter to the page. Shared by the queue and works list. */
 export function FilterSelect({
   label,
@@ -113,22 +105,24 @@ export function SearchBox({
   );
 }
 
+/** The columns on screen before the officer changes anything: the `on: true` ones.
+ *  Column choices live here, not in the table, so one table can serve every list. */
+export const DEFAULT_SHOWN: string[] = WORK_COLUMNS.filter((c) => c.on).map((c) => c.key);
+
 /** Show, hide and export the table's columns. */
 export function ColumnControls({
-  hidden,
+  shown,
   onToggle,
   onExport,
-  exportName,
 }: {
-  hidden: string[];
+  shown: string[];
   onToggle: (key: string) => void;
   onExport?: () => void;
-  exportName?: string;
 }) {
   return (
     <details className="relative">
       <summary className="inline-flex cursor-pointer list-none items-center gap-1 rounded border border-line-strong bg-surface px-2.5 py-1 text-xs font-medium hover:bg-sunken">
-        Columns <span className="text-muted">({WORK_COLUMNS.length - hidden.length})</span>
+        Columns <span className="text-muted">({shown.length})</span>
       </summary>
       <div className="absolute right-0 z-20 mt-1 w-52 rounded border border-line-strong bg-surface p-2 shadow-sm">
         <p className="mb-1 px-1 text-2xs uppercase tracking-wide text-muted">Show columns</p>
@@ -136,7 +130,7 @@ export function ColumnControls({
           <label key={c.key} className="flex items-center gap-2 rounded px-1 py-0.5 text-xs hover:bg-sunken">
             <input
               type="checkbox"
-              checked={(c.on ?? false) || !hidden.includes(c.key)}
+              checked={shown.includes(c.key)}
               onChange={() => onToggle(c.key)}
             />
             {c.label}
@@ -198,28 +192,30 @@ export function downloadCsv(name: string, csv: string) {
  */
 export function WorkTable({
   items,
+  shown = DEFAULT_SHOWN,
   showWhy = true,
   emptyTitle = "No works match these filters.",
   emptyBody = "Clear a filter, or widen the search. Nothing has been hidden from you.",
   dense = false,
 }: {
   items: WorkRow[];
+  /** column keys currently on screen; the officer chooses these */
+  shown?: string[];
   showWhy?: boolean;
   emptyTitle?: string;
   emptyBody?: string;
   dense?: boolean;
 }) {
-  const { shown, toggle, hidden } = useColumns();
-  const cell = shown.length;
+  const columns = WORK_COLUMNS.filter((c) => shown.includes(c.key));
   return (
     <div className="overflow-x-auto">
       <table className="data-table" style={dense ? { fontSize: "var(--text-sm)" } : undefined}>
         <caption className="sr-only">
-          {items.length} works. Each row links to the work's evidence page.
+          {items.length} works. Each row links to the evidence page for that work.
         </caption>
         <thead>
           <tr>
-            {shown.map((c) => (
+            {columns.map((c) => (
               <th
                 key={c.key}
                 scope="col"
@@ -233,7 +229,7 @@ export function WorkTable({
         <tbody>
           {items.map((w) => (
             <tr key={w.work_id}>
-              {shown.map((c) => (
+              {columns.map((c) => (
                 <WorkCell key={c.key} column={c.key} w={w} showWhy={showWhy} />
               ))}
             </tr>
@@ -241,7 +237,7 @@ export function WorkTable({
         </tbody>
       </table>
       {items.length === 0 && <Empty title={emptyTitle} body={emptyBody} />}
-      <ColumnSummary hidden={hidden} count={cell} />
+      <ColumnSummary hidden={WORK_COLUMNS.filter((c) => !shown.includes(c.key)).map((c) => c.key)} count={columns.length} />
     </div>
   );
 }

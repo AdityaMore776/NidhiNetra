@@ -4,8 +4,9 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { api, type Me } from "@/lib/api";
+import type { Me } from "@/lib/api";
 import { supabase } from "@/lib/supabase";
+import type { Role } from "@/lib/tokens";
 import { Button, Pill } from "./ui";
 import { SearchCommand } from "./SearchCommand";
 
@@ -19,6 +20,7 @@ const NAV: { group: string; items: { href: string; label: string; glyph: string;
     group: "Review",
     items: [
       { href: "/", label: "Overview", glyph: "▤" },
+      { href: "/alerts", label: "Alerts", glyph: "◎" },
       { href: "/queue", label: "Review queue", glyph: "☰" },
       { href: "/works", label: "All works", glyph: "⌗" },
     ],
@@ -26,28 +28,29 @@ const NAV: { group: string; items: { href: string; label: string; glyph: string;
   {
     group: "Plan",
     items: [
-      { href: "/inspections", label: "Inspection planner", glyph: "◈", roles: ["MINISTRY", "DISTRICT"] },
+      { href: "/inspections", label: "Inspection planner", glyph: "◈", roles: ["MINISTRY", "STATE", "DISTRICT"] },
       { href: "/presanction", label: "Pre-sanction check", glyph: "◇" },
     ],
   },
   {
     group: "Patterns",
     items: [
-      { href: "/offices", label: "Office patterns", glyph: "▣" },
       { href: "/how-it-works", label: "How it works", glyph: "?" },
       { href: "/explain", label: "Step by step", glyph: "▷" },
     ],
   },
 ];
 
-const ROLE_LABEL: Record<Me["role"], string> = {
+const ROLE_LABEL: Record<Role, string> = {
   MINISTRY: "Ministry",
+  STATE: "State officer",
   DISTRICT: "District officer",
   FIELD: "Field officer",
 };
 
-const ROLE_SCOPE: Record<Me["role"], string> = {
+const ROLE_SCOPE: Record<Role, string> = {
   MINISTRY: "All districts",
+  STATE: "One state",
   DISTRICT: "One district",
   FIELD: "One district · field",
 };
@@ -63,8 +66,6 @@ export function AppShell({ me, children }: { me: Me; children: ReactNode }) {
   const [searchOpen, setSearchOpen] = useState(false);
 
   const openSearch = useCallback(() => setSearchOpen(true), []);
-
-  useEffect(() => setNavOpen(false), [path]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -171,6 +172,7 @@ export function AppShell({ me, children }: { me: Me; children: ReactNode }) {
                       <li key={i.href}>
                         <Link
                           href={i.href}
+                          onClick={() => setNavOpen(false)}
                           aria-current={active ? "page" : undefined}
                           className={`flex items-center gap-2 rounded px-2 py-1.5 text-xs transition-colors ${
                             active
@@ -214,34 +216,7 @@ export function AppShell({ me, children }: { me: Me; children: ReactNode }) {
         </main>
       </div>
 
-      <SearchCommand open={searchOpen} onClose={() => setSearchOpen(false)} />
+      {searchOpen && <SearchCommand onClose={() => setSearchOpen(false)} />}
     </div>
   );
-}
-
-/** Fetch the signed-in principal for the shell. Kept here so /login stays a pure form. */
-export function useMeOrRedirect() {
-  const router = useRouter();
-  const [me, setMe] = useState<Me | null>(null);
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    api<Me>("/me")
-      .then(setMe)
-      .catch((e: { status?: number }) => {
-        if (e?.status === 403) setFailed(true);
-        else router.replace("/login");
-      });
-  }, [router]);
-  return { me, failed };
-}
-
-/** The snapshot date every screen shows next to its numbers. */
-export function useSnapshotDate(): string | null {
-  const [date, setDate] = useState<string | null>(null);
-  useEffect(() => {
-    api<{ snapshot_date: string }>("/dashboard/summary")
-      .then((s) => setDate(s.snapshot_date))
-      .catch(() => setDate(null));
-  }, []);
-  return date;
 }

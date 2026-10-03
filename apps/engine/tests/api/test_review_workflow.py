@@ -11,6 +11,7 @@ import psycopg
 import pytest
 from psycopg.rows import dict_row
 
+from drishti import audit
 from drishti.batch import sync_alerts
 from tests.api.conftest import DISTRICT_ANAND, MINISTRY
 
@@ -28,6 +29,121 @@ def queued(api_db):
     opened, closed = sync_alerts(api_db)
     assert closed == 0
     return api_db, opened
+
+
+# --- the audit trail (T060) -------------------------------------------------
+
+
+def ack(client, work_id: str = "W-COSTLY", note: str | None = None):
+    """One ordinary officer action on a known work, so there is something in the
+    trail to test and the test can say which work it belongs to."""
+    alert = next(a for a in client.get("/api/v1/alerts", headers=MINISTRY).json()["items"]
+                 if a["work_id"] == work_id)
+    client.patch(f"/api/v1/alerts/{alert['alert_id']}",
+                 json={"state": "ACKNOWLEDGED", "actor": "officer@example.gov.in",
+                       **({"note": note} if note else {})},
+                 headers=MINISTRY)
+
+
+def audit_rows(db):
+    with psycopg.connect(db, row_factory=dict_row) as con:
+        return con.execute("SELECT * FROM audit_log ORDER BY entry_id").fetchall()
+
+
+def test_every_officer_action_is_audited(client, queued):
+    """Nothing an officer does leaves a trace: not the alert, not the visit, not
+    what the field officer saw."""
+    db, _opened = queued
+    alert = client.get("/api/v1/alerts", headers=MINISTRY).json()["items"][0]
+    client.patch(f"/api/v1/alerts/{alert['alert_id']}",
+                 json={"state": "ACKNOWLEDGED", "actor": "officer@example.gov.in"},
+                 headers=MINISTRY)
+    client.post("/api/v1/inspections", json={"work_id": "W-TYPICAL"}, headers=MINISTRY)
+    iid = client.get("/api/v1/inspections", headers=MINISTRY).json()["items"][0]["inspection_id"]
+    client.patch(f"/api/v1/inspections/{iid}",
+                 json={"state": "ASSIGNED", "assigned_to": "field@example.gov.in",
+                       "actor": "officer@example.gov.in"}, headers=MINISTRY)
+    actions = {r["action"] for r in audit_rows(db)}
+    assert {"ALERT_ACKNOWLEDGED", "INSPECTION_REQUESTED", "INSPECTION_ADVANCED"} <= actions
+    for row in audit_rows(db):
+        assert row["actor"] and row["role"] and row["entity"] and row["entity_id"]
+        # the trail records what was done to a work record, never a name
+        assert "MP" not in (row["note"] or "")
+        assert row["work_id"], "an action on a work must say which work"
+
+
+def test_the_audit_chain_verifies(client, queued):
+    db, _opened = queued
+    with psycopg.connect(db, row_factory=dict_row) as con:
+        assert audit.verify_chain(con) == {"ok": True, "entries": len(audit_rows(db))}
+
+
+def test_editing_a_past_entry_breaks_the_chain(client, queued):
+    """The reason for the chain: a rewritten trail must be detectable.
+
+    Someone with database access changes what an earlier row says. Without the
+    hashes nothing downstream would notice.
+    """
+    db, _opened = queued
+    ack(client)                                    # something must have happened
+    with psycopg.connect(db, row_factory=dict_row) as con:
+        before = audit.verify_chain(con)
+        assert before["ok"] and before["entries"] >= 1
+    with psycopg.connect(db) as con:          # the one way to rewrite history
+        con.execute("UPDATE audit_log SET note = 'nothing to see here' WHERE entry_id = 1")
+        con.commit()
+    with psycopg.connect(db, row_factory=dict_row) as con:
+        after = audit.verify_chain(con)
+    assert not after["ok"]
+    assert after["broken_at"] == 1
+    assert "edited" in after["why"]
+
+
+def test_removing_a_past_entry_breaks_the_chain(client, queued):
+    db, _opened = queued
+    ack(client)
+    ack(client)
+    assert len(audit_rows(db)) > 1
+    with psycopg.connect(db) as con:
+        con.execute("DELETE FROM audit_log WHERE entry_id = 1")
+        con.commit()
+    with psycopg.connect(db, row_factory=dict_row) as con:
+        after = audit.verify_chain(con)
+    assert not after["ok"]
+    assert "changed or removed" in after["why"]
+
+
+def test_the_work_page_lists_what_was_done_to_it(client, queued):
+    db, _opened = queued
+    with psycopg.connect(db, row_factory=dict_row) as con:
+        assert audit.for_work(con, "W-COSTLY") == []
+    ack(client, "W-COSTLY")
+    with psycopg.connect(db, row_factory=dict_row) as con:
+        history = audit.for_work(con, "W-COSTLY")
+    assert [h["action"] for h in history] == ["ALERT_ACKNOWLEDGED"]
+    assert history[0]["actor"] == "officer@example.gov.in"
+
+
+def test_the_work_page_shows_the_trail_and_whether_it_still_verifies(client, queued):
+    """An officer can read what was done, and the page also says out loud whether
+    the trail still holds. A claim of accountability is worth nothing if it cannot
+    be checked from the same screen."""
+    ack(client, "W-COSTLY")
+    review = client.get("/api/v1/works/W-COSTLY", headers=MINISTRY).json()["review"]
+    assert review["chain"] == {"ok": True, "entries": 1}
+    assert [h["action"] for h in review["history"]] == ["ALERT_ACKNOWLEDGED"]
+    # and the standalone check an officer or an auditor can call at any time
+    assert client.get("/api/v1/audit/verify", headers=MINISTRY).json()["ok"] is True
+
+
+def test_an_audit_note_is_masked_like_every_other_free_text(client, queued):
+    """A note is typed by hand and can name someone by accident."""
+    ack(client, "W-COSTLY",
+        note="the contractor can be reached on 9876543210, account 123456789012")
+    review = client.get("/api/v1/works/W-COSTLY", headers=MINISTRY).json()["review"]
+    note = review["history"][0]["note"]
+    assert "9876543210" not in note and "123456789012" not in note, note
+    assert "[phone]" in note and "[number]" in note
 
 
 # --- alerts -----------------------------------------------------------------
@@ -214,6 +330,56 @@ def test_a_visit_walks_its_six_steps(client):
     assert counts["CLOSED"] == 1
 
 
+def test_the_work_page_shows_only_steps_that_really_happened(client, queued):
+    """A timeline must never show a date we did not store.
+
+    Asking for a visit records one moment; nothing else gets a timestamp, so the
+    work's page cannot imply that anyone was assigned or that anyone went out.
+    """
+    client.post("/api/v1/inspections", json={"work_id": "W-COSTLY"}, headers=MINISTRY)
+    review = client.get("/api/v1/works/W-COSTLY", headers=MINISTRY).json()["review"]
+    asked = [e["step"] for e in review["timeline"]]
+    assert "INSPECTION_REQUIRED" in asked
+    for step in ("ASSIGNED", "FIELD_VERIFIED", "RESULT_RECORDED", "CLOSED"):
+        assert step not in asked, f"{step} has not happened, so it must not appear"
+    assert all(e["at"] for e in review["timeline"]), "every entry needs a stored date"
+    # the timeline reads in order, so "seen on the ground" cannot come before the asking
+    dates = [e["at"] for e in review["timeline"]]
+    assert dates == sorted(dates)
+    assert review["inspection"]["requested_by"] is not None
+    assert review["inspection"]["assigned_to"] is None
+
+
+def test_the_work_page_carries_the_alert_and_the_visit_together(client, queued):
+    """One work, one story: the page must not show an alert with no visit behind it."""
+    client.post("/api/v1/inspections", json={"work_id": "W-COSTLY"}, headers=MINISTRY)
+    review = client.get("/api/v1/works/W-COSTLY", headers=MINISTRY).json()["review"]
+    assert review["alert"] is not None
+    assert review["inspection"]["alert_id"] == review["alert"]["alert_id"]
+
+
+def test_a_closed_visit_keeps_the_date_it_was_closed(client):
+    client.post("/api/v1/inspections", json={"work_id": "W-TYPICAL"}, headers=MINISTRY)
+    iid = client.get("/api/v1/inspections", headers=MINISTRY).json()["items"][0]["inspection_id"]
+    client.patch(f"/api/v1/inspections/{iid}",
+                 json={"state": "ASSIGNED", "assigned_to": "field@example.gov.in"},
+                 headers=MINISTRY)
+    client.patch(f"/api/v1/inspections/{iid}", json={"state": "FIELD_VERIFIED"}, headers=MINISTRY)
+    client.post(f"/api/v1/inspections/{iid}/result", json={"outcome": "OBSERVED"},
+                headers=MINISTRY)
+    client.patch(f"/api/v1/inspections/{iid}", json={"state": "CLOSED"}, headers=MINISTRY)
+    review = client.get("/api/v1/works/W-TYPICAL", headers=MINISTRY).json()["review"]
+    seen = [e["step"] for e in review["timeline"]]
+    assert seen[-1] == "CLOSED"
+    assert review["inspection"]["closed_at"] is not None
+    assert review["inspection"]["result"]["outcome"] == "OBSERVED"
+    # every step kept a note of who did it, and nothing was back-dated to one moment
+    stamps = [review["inspection"][c] for c in
+              ("requested_at", "assigned_at", "verified_at", "recorded_at", "closed_at")]
+    assert all(stamps)
+    assert stamps == sorted(stamps)
+
+
 def test_a_visit_cannot_skip_a_step(client):
     client.post("/api/v1/inspections", json={"work_id": "W-TYPICAL"}, headers=MINISTRY)
     iid = client.get("/api/v1/inspections", headers=MINISTRY).json()["items"][0]["inspection_id"]
@@ -301,6 +467,29 @@ def test_search_finds_a_check_by_the_question_it_asks(client):
 def test_search_finds_a_check_by_its_name(client):
     body = client.get("/api/v1/search", params={"q": "Photo"}, headers=MINISTRY).json()
     assert [c["id"] for c in body["checks"]] == ["photo_evidence"]
+
+
+def test_a_check_result_links_to_works_the_way_the_works_list_filters(client, queued):
+    """A check name is not a filter. The codes it raises are, so the link must carry one.
+
+    The site's works list filters on a finding code; a search result that linked with
+    the check's own id would come back empty every time, with no clue why.
+    """
+    seen: set[str] = set()
+    checks: dict[str, list[str]] = {}
+    for word in ("does", "is", "photo", "cost", "wait", "alike"):
+        for check in client.get("/api/v1/search", params={"q": word},
+                                headers=MINISTRY).json()["checks"]:
+            checks.setdefault(check["id"], check["codes"])
+    for codes in checks.values():
+        for code in codes:
+            seen.add(code)
+            listed = client.get("/api/v1/works", params={"finding": code},
+                                headers=MINISTRY).json()
+            assert listed["total"] > 0, f"nothing carries {code}, so the link would be empty"
+            # the filter has to be honoured, not quietly dropped on the way through
+            assert listed["filters"]["finding"] == code
+    assert seen, "no check reported a finding code, so no check could be linked"
 
 
 def test_search_masks_names_like_every_other_screen(client):

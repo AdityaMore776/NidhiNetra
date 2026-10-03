@@ -1,4 +1,4 @@
-import type { Band } from "./api";
+import type { AlertState, Band } from "./api";
 
 /**
  * Risk-band semantics for the interface.
@@ -81,6 +81,8 @@ export const QUEUE_BANDS: Band[] = ["CRITICAL", "HIGH"];
  * are statuses, never a low score: each one carries no risk weight and stays
  * visible on the screen instead of being hidden.
  */
+export type Role = "MINISTRY" | "STATE" | "DISTRICT" | "FIELD";
+
 export type AssessStatus =
   | "ASSESSED"
   | "NOT_APPLICABLE"
@@ -135,8 +137,49 @@ export const STATUS_META: Record<
 };
 
 /** Where a work sits in the scheme's life, as the portal records it. */
+/** An alert is a request to look; these say what has happened to that request. */
+export const ALERT_LABEL: Record<AlertState, string> = {
+  NEW: "New",
+  ACKNOWLEDGED: "Acknowledged",
+  INVESTIGATING: "Investigating",
+  RESOLVED: "Resolved",
+};
+
+/** What a field officer may answer after standing in front of the work.
+ *  UNABLE_TO_VERIFY is a real answer and records nothing either way. */
+export const OUTCOME_LABEL: Record<string, string> = {
+  OBSERVED: "Observed on the ground",
+  NOT_OBSERVED: "Not observed",
+  PARTIALLY_OBSERVED: "Partly observed",
+  UNABLE_TO_VERIFY: "Could not verify",
+};
+
+export const OUTCOME_WHY: Record<string, string> = {
+  OBSERVED: "the work is there as described",
+  NOT_OBSERVED: "the work is not there",
+  PARTIALLY_OBSERVED: "part of the work is there",
+  UNABLE_TO_VERIFY: "nobody could tell — this records nothing either way",
+};
+
+/** The work's own record, as the dates eSAKSHI holds for it. A step with no date
+ *  never appears: an officer sees what happened, not what should have happened. */
 export const LIFECYCLE: Record<string, { label: string; stage: number }> = {
   RECOMMENDED: { label: "Recommended", stage: 1 },
   SANCTIONED: { label: "Sanctioned", stage: 2 },
+  INSPECTION_REQUIRED: { label: "Visit asked for", stage: 3 },
+  ASSIGNED: { label: "Field officer assigned", stage: 3 },
+  FIELD_VERIFIED: { label: "Seen on the ground", stage: 4 },
+  RESULT_RECORDED: { label: "What was seen recorded", stage: 4 },
+  CLOSED: { label: "Visit closed", stage: 5 },
   COMPLETED: { label: "Completed", stage: 5 },
+};
+
+/** The planner's six steps (engine migration 013). None can be skipped. */
+export const INSPECTION_STEPS: Record<string, { label: string; why: string; step: number }> = {
+  REVIEW: { label: "Review", why: "an officer is reading it", step: 0 },
+  INSPECTION_REQUIRED: { label: "Inspection required", why: "a visit has been asked for", step: 1 },
+  ASSIGNED: { label: "Assigned", why: "someone is going out", step: 2 },
+  FIELD_VERIFIED: { label: "Seen on the ground", why: "the officer got there", step: 3 },
+  RESULT_RECORDED: { label: "Result recorded", why: "what they saw is on the work", step: 4 },
+  CLOSED: { label: "Closed", why: "nothing further to do", step: 5 },
 };

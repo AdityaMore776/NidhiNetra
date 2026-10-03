@@ -14,7 +14,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from psycopg.types.json import Jsonb
 from pydantic import BaseModel, Field
 
-from drishti import config, reference
+from drishti import audit, config, reference
 from drishti.agents import registry
 from drishti.agents.office_patterns.index import OfficeIndex
 from drishti.agents.statistical.cohort import StatsStore
@@ -61,6 +61,15 @@ def _scope(user: Principal, alias: str = "w") -> tuple[str, tuple]:
     if st is not None:
         return f"{alias}.state_lgd = %s", (st,)
     return "TRUE", ()
+
+
+def _rows_jsonable(rows: list[dict]) -> list[dict]:
+    """The same as _jsonable, for a list. Free-text an officer typed is masked like
+    every other free text: a note can name a place or a person by accident."""
+    return [{**r,
+             "note": pii.mask(r["note"]) if r.get("note") else r.get("note"),
+             "at": r["at"].isoformat() if hasattr(r.get("at"), "isoformat") else r.get("at")}
+            for r in rows]
 
 
 def _jsonable(row: dict) -> dict:
@@ -448,7 +457,14 @@ def search(q: str = Query(min_length=2, max_length=80), page: int = Query(defaul
             f"max(w.state_name) AS state_name, count(*) AS works FROM works w "
             f"WHERE {where} AND w.agency_name ILIKE %s GROUP BY w.agency_name "
             f"ORDER BY works DESC LIMIT 8", (*params, like)).fetchall()
-    checks = [{"id": e.id, "name": e.name, "question": e.question, "built": e.assess is not None}
+    # A check's link has to carry a finding *code*, because that is what /works
+    # filters on; the code list comes from the same cached findings the dashboard
+    # reads, so search and dashboard can never disagree about what a check raises.
+    raised: dict[str, list[str]] = {}
+    for f in findings(user):
+        raised.setdefault(f["agent"], []).append(f["code"])
+    checks = [{"id": e.id, "name": e.name, "question": e.question, "built": e.assess is not None,
+               "codes": sorted(set(raised.get(e.id, [])))}
               for e in registry.engines()
               if q.lower() in e.name.lower() or q.lower() in e.question.lower()
               or q.lower() in e.id.lower()]
@@ -459,6 +475,14 @@ def search(q: str = Query(min_length=2, max_length=80), page: int = Query(defaul
         "offices": [_jsonable(r) for r in offices_],
         "checks": checks,
     }
+
+
+@router.get("/audit/verify")
+def verify_audit(user: Principal = Depends(current_user)) -> dict:
+    """Does the trail still verify? Any officer can ask, and the answer says how
+    many entries were walked. A broken chain names the entry where it broke."""
+    with connect() as con:
+        return audit.verify_chain(con)
 
 
 @router.get("/works/{work_id:path}/case")
@@ -504,6 +528,8 @@ def work(work_id: str, user: Principal = Depends(current_user)) -> dict:
         if a["compact"]:
             w = _normalise(dict(row))
             ctx = with_index(Context(stats=_stats(), as_of=config.snapshot_date()), con, w)
+        # read the officer's side of the story while the connection is still open
+        review = _review(con, work_id, dict(row), a)
     assessment = _jsonable(dict(a))
     assessment["assessed_at"] = str(a["assessed_at"])
     if a["compact"]:
@@ -515,7 +541,58 @@ def work(work_id: str, user: Principal = Depends(current_user)) -> dict:
     # name a person ("near <name> house"), and the page shows the engines' findings instead
     # (found by tests/api/test_api_at_scale.py, T056)
     work_row = {k: v for k, v in dict(row).items() if k not in ("signals", "evidence")}
-    return {"work": _jsonable(work_row), "assessment": assessment}
+    return {"work": _jsonable(work_row), "assessment": assessment, "review": review}
+
+
+def _review(con, work_id: str, w: dict, a) -> dict:
+    """What an officer has already done about this work, and when.
+
+    Every date here is one we stored: the eSAKSHI record's own dates, or a moment a
+    step was reached. Nothing is inferred, and a step that has not happened has no
+    date at all rather than a guessed one.
+    """
+    alert = con.execute(
+        "SELECT alert_id, code, engine, state, opened_at, updated_at, closed_at, actor, note "
+        "FROM alerts WHERE work_id = %s ORDER BY opened_at DESC LIMIT 1",
+        (work_id,)).fetchone()
+    insp = con.execute(
+        "SELECT i.inspection_id, i.alert_id, i.state, i.assigned_to, i.assigned_by, "
+        "i.requested_by, "
+        "i.requested_at, i.assigned_at, i.verified_at, i.recorded_at, i.closed_at, "
+        "i.due_date, i.note, i.history, "
+        "(SELECT jsonb_build_object('outcome', r.outcome, 'observed', r.observed, "
+        " 'recorded_by', r.recorded_by, 'recorded_at', r.recorded_at, "
+        " 'gps_source', r.gps_source) FROM inspection_results r "
+        "  WHERE r.inspection_id = i.inspection_id ORDER BY r.result_id DESC LIMIT 1) AS result "
+        "FROM inspections i WHERE i.work_id = %s", (work_id,)).fetchone()
+
+    steps: list[dict] = []
+    # the record's own dates, in the order a reader meets them
+    if w.get("recommended_date"):
+        steps.append({"step": "RECOMMENDED", "at": str(w["recommended_date"]),
+                      "what": "the MP recommended this work"})
+    if w.get("sanction_date"):
+        steps.append({"step": "SANCTIONED", "at": str(w["sanction_date"]),
+                      "what": "the work was sanctioned"})
+    if insp:
+        for col, step, what in (
+                ("requested_at", "INSPECTION_REQUIRED", "a visit was asked for"),
+                ("assigned_at", "ASSIGNED", "a field officer was assigned"),
+                ("verified_at", "FIELD_VERIFIED", "it was seen on the ground"),
+                ("recorded_at", "RESULT_RECORDED", "what was seen was recorded"),
+                ("closed_at", "CLOSED", "the visit was closed")):
+            if insp.get(col):
+                steps.append({"step": step, "at": str(insp[col]), "what": what})
+    if w.get("completed_date"):
+        steps.append({"step": "COMPLETED", "at": str(w["completed_date"]),
+                      "what": "the record says the work was completed"})
+    steps.sort(key=lambda e: e["at"])
+
+    return {"alert": _jsonable(dict(alert)) if alert else None,
+            "inspection": _jsonable(dict(insp)) if insp else None,
+            "timeline": steps,
+            "history": _rows_jsonable(audit.for_work(con, work_id)),
+            "chain": audit.verify_chain(con)}
 
 
 def _described(agents: list[dict]) -> list[dict]:
@@ -714,23 +791,35 @@ def create_inspection(body: InspectionIn, user: Principal = Depends(current_user
                         f"WHERE works.work_id = %s AND {where}", (body.work_id, *params)).fetchone()
         if w is None:
             raise HTTPException(404, "no such work in your area")
+        # the alert this visit answers, if there is one open: so the alert screen and
+        # the planner never show two unrelated stories about the same work
+        alert = con.execute("SELECT alert_id FROM alerts WHERE work_id = %s "
+                            "AND state <> 'RESOLVED'", (body.work_id,)).fetchone()
         row = con.execute(
             "INSERT INTO inspections (work_id, district_lgd, state_lgd, band, state, "
-            "assigned_to, due_date, priority, note) "
-            "VALUES (%s, %s, %s, %s, 'INSPECTION_REQUIRED', %s, %s, %s, %s) "
+            "assigned_to, due_date, priority, note, requested_by, requested_at, alert_id) "
+            "VALUES (%s, %s, %s, %s, 'INSPECTION_REQUIRED', %s, %s, %s, %s, %s, now(), %s) "
             "ON CONFLICT (work_id) DO UPDATE SET state = 'INSPECTION_REQUIRED', "
-            "assigned_to = EXcluded.assigned_to, due_date = EXCLUDED.due_date, "
+            "assigned_to = EXCLUDED.assigned_to, due_date = EXCLUDED.due_date, "
             "note = EXCLUDED.note, band = EXCLUDED.band, priority = EXCLUDED.priority, "
+            "requested_by = EXCLUDED.requested_by, requested_at = now(), "
+            "alert_id = EXCLUDED.alert_id, "
             "updated_at = now() WHERE inspections.state NOT IN ('FIELD_VERIFIED', "
             "'RESULT_RECORDED', 'CLOSED') RETURNING inspection_id, state",
             (body.work_id, w["district_lgd"], w["state_lgd"], w["band"], body.assigned_to,
              body.due_date, float(w["priority"]) if w["priority"] is not None else None,
-             body.note)).fetchone()
+             body.note, user.user_id, alert["alert_id"] if alert else None)).fetchone()
         if row is None:                     # already reached the ground; do not rewind it
             existing = con.execute("SELECT inspection_id, state FROM inspections "
                                    "WHERE work_id = %s", (body.work_id,)).fetchone()
             raise HTTPException(409, f"this work is already at step "
                                      f"'{existing['state'].replace('_', ' ').lower()}'")
+        con.commit()
+        audit.record(con, actor=user.user_id, role=user.role, action="INSPECTION_REQUESTED",
+                     entity="inspection", entity_id=row["inspection_id"], work_id=body.work_id,
+                     after={"state": row["state"], "due_date": str(body.due_date or "")},
+                     note=body.note)
+        con.commit()
     return {"inspection_id": row["inspection_id"], "state": row["state"],
             "work_id": body.work_id}
 
@@ -765,10 +854,28 @@ def move_inspection(inspection_id: int, body: InspectionMove,
                                                        (inspection_id,)).fetchone()
                                                        ["assigned_to"]):
             raise HTTPException(409, "name who verified it before marking it seen")
-        con.execute("UPDATE inspections SET state = %s, assigned_to = coalesce(%s, assigned_to), "
-                    "due_date = coalesce(%s, due_date), note = coalesce(%s, note), "
-                    "updated_at = now() WHERE inspection_id = %s",
-                    (body.state, body.assigned_to, body.due_date, body.note, inspection_id))
+        # Each step gets its own timestamp, stamped when it is first reached, so the
+        # work's timeline shows what really happened rather than when the row was last
+        # touched. Nothing here is ever back-dated.
+        stamp = {"ASSIGNED": "assigned_at", "FIELD_VERIFIED": "verified_at",
+                 "CLOSED": "closed_at"}.get(body.state)
+        con.execute(
+            f"UPDATE inspections SET state = %s::text, "
+            f"assigned_to = coalesce(%s::text, assigned_to), "
+            f"due_date = coalesce(%s::date, due_date), note = coalesce(%s::text, note), "
+            f"assigned_by = coalesce(assigned_by, %s::text), "
+            f"{stamp + ' = COALESCE(' + stamp + ', now()),' if stamp else ''} "
+            f"history = history || jsonb_build_array(jsonb_build_object("
+            f"'step', %s::text, 'at', now(), 'by', %s::text, 'note', %s::text)), "
+            f"updated_at = now() WHERE inspection_id = %s",
+            (body.state, body.assigned_to, body.due_date, body.note,
+             body.assigned_to or body.actor,
+             body.state, body.actor, body.note, inspection_id))
+        audit.record(con, actor=body.actor or user.user_id, role=user.role,
+                     action="INSPECTION_ADVANCED", entity="inspection",
+                     entity_id=inspection_id, work_id=row["work_id"],
+                     before={"state": row["state"]}, after={"state": body.state},
+                     note=body.note)
         con.commit()
     return {"inspection_id": inspection_id, "state": body.state}
 
@@ -789,7 +896,8 @@ def record_result(inspection_id: int, body: ResultIn,
     finding either way, exactly like NOT_ASSESSABLE in an engine."""
     where, params = _scope(user, alias="works")
     with connect() as con:
-        row = con.execute(f"SELECT i.state FROM inspections i JOIN works USING (work_id) "
+        row = con.execute(f"SELECT i.state, i.work_id FROM inspections i "
+                          f"JOIN works USING (work_id) "
                           f"WHERE i.inspection_id = %s AND {where}", (inspection_id, *params)
                           ).fetchone()
         if row is None:
@@ -800,7 +908,12 @@ def record_result(inspection_id: int, body: ResultIn,
                     "gps_source, recorded_by) VALUES (%s, %s, %s, %s, %s, %s, %s)",
                     (inspection_id, body.outcome, body.observed, body.lat, body.lon,
                      body.gps_source, body.recorded_by))
-        con.execute("UPDATE inspections SET state = 'RESULT_RECORDED', updated_at = now() "
+        audit.record(con, actor=body.recorded_by or user.user_id, role=user.role,
+                     action="INSPECTION_RESULT_RECORDED", entity="inspection_result",
+                     entity_id=inspection_id, work_id=row["work_id"],
+                     after={"outcome": body.outcome, "observed": body.observed})
+        con.execute("UPDATE inspections SET state = 'RESULT_RECORDED', "
+                    "recorded_at = COALESCE(recorded_at, now()), updated_at = now() "
                     "WHERE inspection_id = %s", (inspection_id,))
         con.commit()
     return {"inspection_id": inspection_id, "state": "RESULT_RECORDED",
@@ -867,6 +980,10 @@ def move_alert(alert_id: int, body: AlertMove, user: Principal = Depends(current
                     "updated_at = now(), closed_at = CASE WHEN %s = 'RESOLVED' THEN now() "
                     "ELSE closed_at END WHERE alert_id = %s",
                     (body.state, body.note, body.actor, body.state, alert_id))
+        audit.record(con, actor=body.actor or user.user_id, role=user.role,
+                     action=f"ALERT_{body.state}", entity="alert", entity_id=alert_id,
+                     work_id=row["work_id"], before={"state": row["state"]},
+                     after={"state": body.state}, note=body.note)
         if body.state == "INVESTIGATING":
             w = con.execute("SELECT works.district_lgd, works.state_lgd, a.band, a.priority "
                             "FROM works LEFT JOIN assessments a USING (work_id) "
