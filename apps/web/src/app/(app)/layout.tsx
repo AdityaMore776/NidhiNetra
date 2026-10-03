@@ -1,32 +1,23 @@
 "use client";
 
-import Link from "next/link";
+import { motion } from "motion/react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Logo } from "@/components/Logo";
+import AITextLoading from "@/components/kokonutui/ai-text-loading";
+import { Emblem } from "@/components/Logo";
 import { MeContext } from "@/components/me";
-import { api, type Me } from "@/lib/api";
+import { AppSidebar } from "@/components/shell/AppSidebar";
+import { Topbar } from "@/components/shell/Topbar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { api, type Me, type Summary } from "@/lib/api";
+import { cachedApi } from "@/lib/cache";
 import { supabase } from "@/lib/supabase";
-
-const NAV = [
-  { href: "/", label: "Dashboard" },
-  { href: "/queue", label: "Review queue" },
-  { href: "/works", label: "All works" },
-  { href: "/presanction", label: "Pre-sanction check" },
-  { href: "/how-it-works", label: "How it works" },
-  { href: "/explain", label: "Step by step" },
-];
-
-const ROLE_LABEL: Record<Me["role"], string> = {
-  MINISTRY: "Ministry (all districts)",
-  DISTRICT: "District officer",
-  FIELD: "Field officer",
-};
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const path = usePathname();
   const [me, setMe] = useState<Me | null>(null);
+  const [summary, setSummary] = useState<Summary | null>(null);
 
   useEffect(() => {
     api<Me>("/me")
@@ -34,49 +25,63 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       .catch(() => router.replace("/login"));
   }, [router]);
 
+  useEffect(() => {
+    if (!me) return;
+    cachedApi<Summary>("/dashboard/summary")
+      .then(setSummary)
+      .catch(() => setSummary(null));
+  }, [me]);
+
   async function signOut() {
     await supabase()?.auth.signOut();
     router.replace("/login");
   }
 
-  if (!me) {
-    return <div className="min-h-screen grid place-items-center text-muted text-sm">Loading…</div>;
-  }
+  if (!me) return <ShellLoading />;
+  const review = summary ? (summary.bands.CRITICAL ?? 0) + summary.bands.HIGH : null;
 
   return (
     <MeContext.Provider value={me}>
-      <header className="bg-surface border-b border-line sticky top-0 z-20">
-        <div className="mx-auto max-w-7xl px-4 h-14 flex items-center gap-6">
-          <Link href="/">
-            <Logo compact />
-          </Link>
-          <nav className="flex gap-1 text-sm overflow-x-auto">
-            {NAV.map((n) => {
-              const active = n.href === "/" ? path === "/" : path.startsWith(n.href);
-              return (
-                <Link
-                  key={n.href}
-                  href={n.href}
-                  className={`px-3 py-1.5 rounded-lg whitespace-nowrap ${active ? "bg-navy text-white" : "text-muted hover:bg-background"}`}
-                >
-                  {n.label}
-                </Link>
-              );
-            })}
-          </nav>
-          <div className="ml-auto flex items-center gap-3 text-xs text-muted">
-            <span className="hidden sm:inline">{ROLE_LABEL[me.role]}</span>
-            <button onClick={signOut} className="rounded-lg border border-line px-2.5 py-1 hover:bg-background">
-              Sign out
-            </button>
-          </div>
-        </div>
-      </header>
-      <main className="mx-auto max-w-7xl px-4 py-6">{children}</main>
-      <footer className="mx-auto max-w-7xl px-4 pb-8 text-[11px] text-muted">
-        DRISHTI flags works that need verification. It never decides; officers do. SIH 2026 · SIH26102 · Team
-        NeuralNexus.
-      </footer>
+      <SidebarProvider>
+        <AppSidebar me={me} review={review} onSignOut={signOut} />
+        <SidebarInset className="min-w-0 overflow-x-clip">
+          <Topbar snapshot={summary?.snapshot_date ?? null} />
+          {/* entry-only: an exit keyed on the route would play with the next page's content inside it */}
+          <motion.main
+            key={path}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8"
+          >
+            {children}
+          </motion.main>
+          <footer className="mx-auto flex w-full max-w-[1440px] flex-wrap items-center justify-between gap-2 border-t px-4 py-5 text-[11px] text-muted-foreground sm:px-6 lg:px-8">
+            <span>NidhiNetra flags works that need verification. It never decides; officers do.</span>
+            <span className="font-mono tracking-wide">SIH 2026 · SIH26102 · MoSPI · Team NeuralNexus</span>
+          </footer>
+        </SidebarInset>
+      </SidebarProvider>
     </MeContext.Provider>
+  );
+}
+
+function ShellLoading() {
+  return (
+    <div className="grid min-h-screen place-items-center bg-white">
+      <div className="flex flex-col items-center gap-5">
+        <div className="relative">
+          <motion.div
+            className="absolute inset-0 -m-6 rounded-full bg-brand-gradient opacity-20 blur-2xl"
+            animate={{ scale: [0.9, 1.15, 0.9], opacity: [0.15, 0.3, 0.15] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div animate={{ y: [0, -6, 0] }} transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}>
+            <Emblem size={84} priority />
+          </motion.div>
+        </div>
+        <AITextLoading texts={["Checking your access…", "Opening NidhiNetra…"]} interval={1400} className="text-sm" />
+      </div>
+    </div>
   );
 }

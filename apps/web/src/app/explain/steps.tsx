@@ -5,7 +5,7 @@
 // mounting it again. Nothing here computes a score: every number comes from the engine.
 
 import type { CSSProperties, ReactNode } from "react";
-import { BandBadge } from "@/components/ui";
+import { BandBadge } from "@/components/nn/badges";
 import type { PreColour } from "@/lib/api";
 import type { Check, Habit, Kind, Neighbour, Trace } from "@/lib/explain";
 import { agentMeta, BAND_COLOR, BAND_LABEL, inr } from "@/lib/format";
@@ -51,7 +51,7 @@ export function InputStep({ t }: { t: Trace }) {
     .join(" · ");
   const rows: [string, ReactNode][] = [
     ["Kind of work", i.work_type_name ?? "Not given"],
-    ["What it says", i.description ? <q>{i.description}</q> : <span className="text-muted">(nothing written)</span>],
+    ["What it says", i.description ? <q>{i.description}</q> : <span className="text-muted-foreground">(nothing written)</span>],
     ["Amount", inr(i.amount)],
     ["Where", [i.district, i.state].filter(Boolean).join(", ") || "-"],
     ["Implementing office", i.office ?? "Not given"],
@@ -61,7 +61,7 @@ export function InputStep({ t }: { t: Trace }) {
   return (
     <div className="grid items-center gap-6 md:grid-cols-[1fr_240px]">
       <div className="rounded-xl border border-line bg-surface p-4 shadow-sm">
-        <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">One work record</div>
+        <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">One work record</div>
         <dl className="space-y-2">
           {rows.map(([k, v], n) => (
             <div
@@ -69,7 +69,7 @@ export function InputStep({ t }: { t: Trace }) {
               className="x-in grid grid-cols-[120px_1fr] gap-3 border-b border-line pb-2 text-sm last:border-0 sm:grid-cols-[150px_1fr]"
               style={at(200 + n * 330)}
             >
-              <dt className="text-muted">{k}</dt>
+              <dt className="text-muted-foreground">{k}</dt>
               <dd className="font-medium break-words">{v}</dd>
             </div>
           ))}
@@ -90,8 +90,8 @@ export function InputStep({ t }: { t: Trace }) {
             <circle cx="215" cy="75" r="4.5" fill="var(--navy)" />
           </g>
         </svg>
-        <p className="x-in text-xs text-muted" style={at(3600)}>
-          into DRISHTI. All 2,09,993 works on the live site go through these same steps.
+        <p className="x-in text-xs text-muted-foreground" style={at(3600)}>
+          into NidhiNetra. All 2,09,993 works on the live site go through these same steps.
         </p>
       </div>
     </div>
@@ -126,7 +126,7 @@ export function PrivacyStep({ t }: { t: Trace }) {
   return (
     <div className="space-y-5">
       <div className="rounded-xl border border-line bg-surface p-4 text-[15px] leading-8">
-        <div className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted">
+        <div className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           <span className="x-pulse inline-block h-2.5 w-2.5 rounded-full bg-inputs" /> Scanning the description
         </div>
         {text ? (
@@ -150,7 +150,7 @@ export function PrivacyStep({ t }: { t: Trace }) {
             );
           })
         ) : (
-          <span className="text-muted">(nothing written)</span>
+          <span className="text-muted-foreground">(nothing written)</span>
         )}
       </div>
       <div className="grid grid-cols-3 gap-3">
@@ -165,7 +165,7 @@ export function PrivacyStep({ t }: { t: Trace }) {
             <div className="text-2xl font-bold" style={{ color: h[k] ? "var(--foreground)" : "var(--low)" }}>
               {h[k]}
             </div>
-            <div className="text-xs text-muted">{label} hidden</div>
+            <div className="text-xs text-muted-foreground">{label} hidden</div>
           </div>
         ))}
       </div>
@@ -248,7 +248,7 @@ export function ReadingStep({ t }: { t: Trace }) {
             );
           })
         ) : (
-          <span className="text-muted">(nothing written)</span>
+          <span className="text-muted-foreground">(nothing written)</span>
         )}
         <div className="mt-2 flex flex-wrap gap-2 text-[11px]">
           {(Object.keys(KINDS) as Kind[]).map((k) => (
@@ -264,7 +264,7 @@ export function ReadingStep({ t }: { t: Trace }) {
         </div>
       </div>
 
-      <div className="flex items-center gap-2 text-xs text-muted">
+      <div className="flex items-center gap-2 text-xs text-muted-foreground">
         <span className="h-px flex-1 bg-line" />
         what the reader found (a lit circle is a fact found)
         <span className="h-px flex-1 bg-line" />
@@ -280,7 +280,7 @@ export function ReadingStep({ t }: { t: Trace }) {
               {n.on ? "✓" : ""}
             </div>
             <div className="mt-1.5 text-[11px] font-medium leading-tight">{n.label}</div>
-            <div className="text-[10px] leading-tight text-muted">{n.note}</div>
+            <div className="text-[10px] leading-tight text-muted-foreground">{n.note}</div>
           </div>
         ))}
       </div>
@@ -295,7 +295,7 @@ export function ReadingStep({ t }: { t: Trace }) {
         </p>
       )}
       {f.era && (
-        <p className="x-in text-xs text-muted" style={at(start + 1700)}>
+        <p className="x-in text-xs text-muted-foreground" style={at(start + 1700)}>
           Era: {f.era}. Works from before eSAKSHI went digital (2023) are only compared with works of their own era.
         </p>
       )}
@@ -323,7 +323,7 @@ const TONE: Record<Tone, string> = {
   raised: "var(--high)",
   quiet: "var(--medium)",
   clear: "var(--low)",
-  off: "var(--muted)",
+  off: "var(--muted-foreground)",
 };
 
 const DATE_RULES = new Set(["R01", "R02", "R06", "R13", "R14"]);
@@ -342,7 +342,7 @@ function Rules({ c, t, start }: { c: Check; t: Trace; start: number }) {
             >
               {r.raised ? "!" : "✓"}
             </span>
-            <span className={r.raised ? "font-semibold" : "text-muted"}>
+            <span className={r.raised ? "font-semibold" : "text-muted-foreground"}>
               {r.id} {r.title}
             </span>
           </li>
@@ -365,7 +365,7 @@ function Rules({ c, t, start }: { c: Check; t: Trace; start: number }) {
 
 function CostBar({ c, start }: { c: Check; start: number }) {
   const row = c.picture?.comparison?.[0];
-  if (!row) return <p className="text-[11px] text-muted">{c.headline}</p>;
+  if (!row) return <p className="text-[11px] text-muted-foreground">{c.headline}</p>;
   const comfort = row.comfort_high ?? null;
   const vals = [row.typical_low, row.typical_high, row.this_work, row.median, comfort ?? row.typical_high].filter((v) => v > 0);
   const a = Math.min(...vals) / 1.8;
@@ -391,7 +391,7 @@ function CostBar({ c, start }: { c: Check; start: number }) {
             className="x-in absolute -top-4 h-[52px] border-l-2 border-dashed"
             style={at(start + 300, { left: x(comfort), borderColor: "var(--statistical)" })}
           >
-            <span className="absolute -top-0.5 left-1 whitespace-nowrap text-[9px] text-muted">comfort limit</span>
+            <span className="absolute -top-0.5 left-1 whitespace-nowrap text-[9px] text-muted-foreground">comfort limit</span>
           </div>
         ) : null}
         <div
@@ -399,7 +399,7 @@ function CostBar({ c, start }: { c: Check; start: number }) {
           style={at(start + 600, { "--x": x(row.this_work), background: raised ? "var(--high)" : "var(--navy)" })}
         />
       </div>
-      <div className="flex justify-between text-[10px] text-muted">
+      <div className="flex justify-between text-[10px] text-muted-foreground">
         <span>cheaper</span>
         <span>costlier (each step = more times the price)</span>
       </div>
@@ -416,7 +416,7 @@ function CostBar({ c, start }: { c: Check; start: number }) {
 function Constellation({ c, start }: { c: Check; start: number }) {
   const p = c.picture;
   const near: Neighbour[] = p?.nearest ?? [];
-  if (!p || !near.length) return <p className="text-[11px] text-muted">{c.headline}</p>;
+  if (!p || !near.length) return <p className="text-[11px] text-muted-foreground">{c.headline}</p>;
   const r = (l: number) => 14 + (1 - Math.max(0, Math.min(1, l))) * 90;
   const flag = p.flag ?? 0.75;
   const pos = near.map((nb, n) => {
@@ -440,7 +440,7 @@ function Constellation({ c, start }: { c: Check; start: number }) {
             y1="110"
             x2={x}
             y2={y}
-            stroke={nb.flagged ? "var(--duplicate)" : "var(--muted)"}
+            stroke={nb.flagged ? "var(--duplicate)" : "var(--muted-foreground)"}
             strokeWidth={1 + nb.likeness * 3}
             opacity={0.25 + nb.likeness * 0.75}
             style={at(start + 200 + n * 220)}
@@ -449,7 +449,7 @@ function Constellation({ c, start }: { c: Check; start: number }) {
         {pos.map(({ nb, x, y }, n) => (
           <g key={nb.work_id} className="x-pop" style={at(start + 350 + n * 220)}>
             <title>{`${nb.description} (${pct(nb.likeness)} alike)`}</title>
-            <circle cx={x} cy={y} r={nb.flagged ? 7 : 5} fill={nb.flagged ? "var(--duplicate)" : "var(--surface)"} stroke={nb.flagged ? "var(--duplicate)" : "var(--muted)"} strokeWidth="2" />
+            <circle cx={x} cy={y} r={nb.flagged ? 7 : 5} fill={nb.flagged ? "var(--duplicate)" : "var(--surface)"} stroke={nb.flagged ? "var(--duplicate)" : "var(--muted-foreground)"} strokeWidth="2" />
             <text x={x} y={y + (y < 110 ? -9 : 15)} textAnchor="middle" fontSize="9" fill="var(--foreground)">
               {pct(nb.likeness)}
             </text>
@@ -462,7 +462,7 @@ function Constellation({ c, start }: { c: Check; start: number }) {
       </svg>
       <p className="x-in text-[11px]" style={at(start + 1700)}>
         Compared with <b>{(p.compared ?? 0).toLocaleString("en-IN")}</b> works of the district; the {near.length} most
-        alike are drawn (closer = more alike). Closest: <q className="text-muted">{top.description}</q> ({pct(top.likeness)}{" "}
+        alike are drawn (closer = more alike). Closest: <q className="text-muted-foreground">{top.description}</q> ({pct(top.likeness)}{" "}
         alike, {inr(top.amount)}, {day(top.date)}).
       </p>
     </div>
@@ -503,7 +503,7 @@ function Timeline({
           })}
           title={`${c.label}: ${c.days} days`}
         >
-          <span className="absolute left-0 top-2 whitespace-nowrap text-[9px] text-muted">{c.label}</span>
+          <span className="absolute left-0 top-2 whitespace-nowrap text-[9px] text-muted-foreground">{c.label}</span>
         </div>
       ))}
       {pts.map((p, n) => (
@@ -529,7 +529,7 @@ function Timeline({
 
 function FundFlow({ c, start }: { c: Check; start: number }) {
   const p = c.picture;
-  if (!p?.recommended) return <p className="text-[11px] text-muted">{c.headline}</p>;
+  if (!p?.recommended) return <p className="text-[11px] text-muted-foreground">{c.headline}</p>;
   const clocks = [{ from: p.recommended, days: p.sanction_clock_days ?? 75, label: `sanction due within ${p.sanction_clock_days ?? 75} days` }];
   return (
     <div className="space-y-1">
@@ -539,11 +539,11 @@ function FundFlow({ c, start }: { c: Check; start: number }) {
           { label: "recommended", date: p.recommended, color: "var(--inputs)" },
           { label: "sanctioned", date: p.sanctioned, color: "var(--navy)" },
           { label: "completed", date: p.completed, color: "var(--low)" },
-          { label: "today", date: p.as_of !== p.recommended ? p.as_of : null, color: "var(--muted)" },
+          { label: "today", date: p.as_of !== p.recommended ? p.as_of : null, color: "var(--muted-foreground)" },
         ]}
         clocks={clocks}
       />
-      <p className="x-in text-[11px] text-muted" style={at(start + 1200)}>
+      <p className="x-in text-[11px] text-muted-foreground" style={at(start + 1200)}>
         {c.headline}
       </p>
     </div>
@@ -558,12 +558,12 @@ function HabitBars({ label, h, start }: { label: string; h: Habit; start: number
       {(
         [
           ["this office", h.share, `${h.office.toLocaleString("en-IN")} of ${h.of.toLocaleString("en-IN")} (${pct(h.share, 1)})`, "var(--reuse)"],
-          ["whole scheme", h.national_share, pct(h.national_share, 1), "var(--muted)"],
+          ["whole scheme", h.national_share, pct(h.national_share, 1), "var(--muted-foreground)"],
         ] as const
       ).map(([who, v, text, color], n) => (
         <div key={who} className="flex items-center gap-2 text-[10px]">
-          <span className="w-20 shrink-0 text-muted">{who}</span>
-          <div className="h-2.5 flex-1 rounded bg-background">
+          <span className="w-20 shrink-0 text-muted-foreground">{who}</span>
+          <div className="h-2.5 flex-1 rounded bg-muted">
             <div className="x-grow-w h-full rounded" style={at(start + n * 250, { "--w": `${(v / top) * 100}%`, background: color })} />
           </div>
           <span className="w-24 shrink-0 text-right">{text}</span>
@@ -577,7 +577,7 @@ function OfficeHabits({ c, start }: { c: Check; start: number }) {
   const p = c.picture;
   const a = p?.priced_just_under_a_limit;
   const b = p?.built_within_a_week_of_sanction;
-  if (!a && !b) return <p className="text-[11px] text-muted">{c.headline}</p>;
+  if (!a && !b) return <p className="text-[11px] text-muted-foreground">{c.headline}</p>;
   return (
     <div className="space-y-2">
       {a && <HabitBars label="Works priced just under a Rs 5 or 10 lakh limit" h={a} start={start} />}
@@ -589,7 +589,7 @@ function OfficeHabits({ c, start }: { c: Check; start: number }) {
 function Picture({ c, t, start }: { c: Check; t: Trace; start: number }) {
   if (c.status !== "ASSESSED") {
     return (
-      <div className="grid place-items-center gap-1 rounded-lg border border-dashed border-line p-3 text-center text-[11px] text-muted">
+      <div className="grid place-items-center gap-1 rounded-lg border border-dashed border-line p-3 text-center text-[11px] text-muted-foreground">
         <span className="text-xl" aria-hidden>
           {c.id === "photo_evidence" ? "📷" : c.id === "paperwork" ? "📄" : "…"}
         </span>
@@ -602,7 +602,7 @@ function Picture({ c, t, start }: { c: Check; t: Trace; start: number }) {
   if (c.id === "dup_split") return <Constellation c={c} start={start} />;
   if (c.id === "delay") return <FundFlow c={c} start={start} />;
   if (c.id === "office_patterns") return <OfficeHabits c={c} start={start} />;
-  return <p className="text-[11px] text-muted">{c.headline}</p>;
+  return <p className="text-[11px] text-muted-foreground">{c.headline}</p>;
 }
 
 export const CHECK_GAP = 650;
@@ -610,7 +610,7 @@ export const CHECK_GAP = 650;
 export function ChecksStep({ t }: { t: Trace }) {
   return (
     <div className="space-y-3">
-      <div className="x-in flex items-center gap-2 text-xs text-muted" style={at(0)}>
+      <div className="x-in flex items-center gap-2 text-xs text-muted-foreground" style={at(0)}>
         <span className="h-px flex-1 bg-line" />
         the read work goes to every check at the same time
         <span className="h-px flex-1 bg-line" />
@@ -637,9 +637,9 @@ export function ChecksStep({ t }: { t: Trace }) {
                   <span className="text-sm font-semibold" style={{ color: meta.color }}>
                     {meta.name}
                   </span>
-                  <span className="ml-auto text-[10px] text-muted">{c.counted ? "counted" : "shown, not counted"}</span>
+                  <span className="ml-auto text-[10px] text-muted-foreground">{c.counted ? "counted" : "shown, not counted"}</span>
                 </div>
-                <p className="mb-2 mt-0.5 text-[11px] text-muted">{c.question}</p>
+                <p className="mb-2 mt-0.5 text-[11px] text-muted-foreground">{c.question}</p>
                 <Picture c={c} t={t} start={start + 300} />
                 <div className="x-in mt-2 flex items-center gap-1.5 text-xs font-semibold" style={at(start + 700, { color: TONE[s.tone] })}>
                   <span className="inline-block h-2 w-2 rounded-full" style={{ background: TONE[s.tone] }} />
@@ -659,7 +659,7 @@ export function ChecksStep({ t }: { t: Trace }) {
           );
         })}
       </div>
-      <p className="x-in text-xs text-muted" style={at(300 + t.checks.length * CHECK_GAP)}>
+      <p className="x-in text-xs text-muted-foreground" style={at(300 + t.checks.length * CHECK_GAP)}>
         A check that cannot look (no papers or photos attached here) says so. &quot;Could not check&quot; is a status,
         never a low score: it adds nothing either way.
       </p>
@@ -688,14 +688,14 @@ function findingLabel(t: Trace, code: string): string {
 function Bar({ label, v, color, start, note }: { label: string; v: number; color: string; start: number; note?: string }) {
   return (
     <div className="grid grid-cols-[92px_1fr_44px] items-center gap-2 text-[11px]">
-      <span className="text-muted">{label}</span>
-      <div className="h-3 rounded bg-background">
+      <span className="text-muted-foreground">{label}</span>
+      <div className="h-3 rounded bg-muted">
         <div className="x-grow-w h-full rounded" style={at(start, { "--w": `${Math.max(0, Math.min(1, v)) * 100}%`, background: color })} />
       </div>
       <span className="x-in text-right font-semibold" style={at(start + 500)}>
         {pct(v)}
       </span>
-      {note && <span className="col-span-3 -mt-1 text-[10px] text-muted">{note}</span>}
+      {note && <span className="col-span-3 -mt-1 text-[10px] text-muted-foreground">{note}</span>}
     </div>
   );
 }
@@ -755,7 +755,7 @@ export function ScoreStep({ t }: { t: Trace }) {
           </p>
         )}
         <div className="space-y-1 text-xs">
-          <p className="x-in text-muted" style={at(meterStart - 200)}>
+          <p className="x-in text-muted-foreground" style={at(meterStart - 200)}>
             The chances combine as &quot;at least one of them is right&quot;:
           </p>
           {segs.map((c) => {
@@ -787,7 +787,7 @@ export function ScoreStep({ t }: { t: Trace }) {
       </div>
 
       <div className="mx-auto flex gap-3">
-        <div className="relative h-64 w-14 overflow-hidden rounded-lg border border-line bg-background">
+        <div className="relative h-64 w-14 overflow-hidden rounded-lg border border-line bg-muted">
           {segs.map((c) => (
             <div
               key={c.engine}
@@ -823,7 +823,7 @@ export function ScoreStep({ t }: { t: Trace }) {
               {BAND_LABEL[k]} {pct(s.lines[k])}
             </div>
           ))}
-          <div className="absolute bottom-0 left-0 translate-y-1/2 text-muted">0</div>
+          <div className="absolute bottom-0 left-0 translate-y-1/2 text-muted-foreground">0</div>
           {s.score > 0 && (
             <div
               className="x-in absolute left-0 translate-y-1/2 text-xs font-bold"
@@ -855,7 +855,7 @@ export function ResultStep({ t }: { t: Trace }) {
           <span className="inline-block origin-left scale-125">
             <BandBadge band={r.band} limited={r.limited} />
           </span>
-          <span className="ml-4 text-sm text-muted">score {pct(r.score)}</span>
+          <span className="ml-4 text-sm text-muted-foreground">score {pct(r.score)}</span>
         </div>
         <p className="x-in text-sm font-medium" style={at(700)}>
           {r.in_queue
@@ -867,7 +867,7 @@ export function ResultStep({ t }: { t: Trace }) {
             <span className="rounded-full px-3 py-1 font-semibold text-white" style={{ background: COLOUR[r.colour].color }}>
               Pre-sanction check: {COLOUR[r.colour].label}
             </span>
-            <span className="text-muted">{r.advice}</span>
+            <span className="text-muted-foreground">{r.advice}</span>
           </div>
         )}
         {r.reasons.length ? (
@@ -879,7 +879,7 @@ export function ResultStep({ t }: { t: Trace }) {
                     {n + 1}. {x.engine}
                   </span>
                   {x.chance != null && (
-                    <span className="text-xs text-muted">
+                    <span className="text-xs text-muted-foreground">
                       {pct(x.chance)} chance it is worth a look
                       {x.read ? ` (${x.read[0]} of ${x.read[1]} such questions read by eye were)` : ""}
                     </span>
@@ -897,12 +897,12 @@ export function ResultStep({ t }: { t: Trace }) {
       </div>
       <div className="space-y-3 text-sm">
         <div className="x-in rounded-xl bg-navy p-4 text-white" style={at(2000)}>
-          <div className="text-lg font-bold">DRISHTI never decides.</div>
+          <div className="text-lg font-bold">NidhiNetra never decides.</div>
           <p className="mt-1 text-white/85">
             It shows the officer where to look first and why. The officer checks the papers and the site, and decides.
           </p>
         </div>
-        <p className="x-in text-xs text-muted" style={at(2400)}>
+        <p className="x-in text-xs text-muted-foreground" style={at(2400)}>
           On the live site, 1,459 of 2,09,993 works (0.69%) are in the review queue (re-assessed 2 Oct 2026).
         </p>
       </div>

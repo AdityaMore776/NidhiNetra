@@ -22,14 +22,14 @@ type AgentMeta = { n: string; name: string; color: string; question: string };
 /** Display names and colours per engine. The engine registry is the source of truth; an engine
  *  missing here still renders, with the name and question the API sends. */
 export const AGENTS: Record<AgentId, AgentMeta> = {
-  compliance: { n: "01", name: "Guideline Compliance", color: "var(--navy)", question: "Does the work follow the MPLADS guidelines?" },
-  statistical: { n: "02", name: "Cost Anomaly", color: "var(--statistical)", question: "Is the project cost unusual for similar works?" },
-  dup_split: { n: "03", name: "Duplicate & Split Work", color: "var(--duplicate)", question: "Is this work repeated, or one job cut into pieces?" },
-  delay: { n: "04", name: "Fund Flow", color: "var(--site)", question: "Is money stuck waiting for sanction?" },
-  office_patterns: { n: "05", name: "Office Patterns", color: "var(--reuse)", question: "Does this work's office price or close works in an unusual way?" },
-  paperwork: { n: "06", name: "Paperwork", color: "var(--inputs)", question: "Do the work's own papers agree with the portal?" },
-  photo_evidence: { n: "07", name: "Photo Evidence", color: "var(--fusion)", question: "Are the work's photos new, from its place and from its time?" },
-  cost_estimate: { n: "08", name: "Cost Estimate", color: "var(--statistical)", question: "Is the agency's cost estimate right for this size of work here?" },
+  compliance: { n: "01", name: "Guideline Compliance", color: "var(--eng-compliance)", question: "Does the work follow the MPLADS guidelines?" },
+  statistical: { n: "02", name: "Cost Anomaly", color: "var(--eng-cost)", question: "Is the project cost unusual for similar works?" },
+  dup_split: { n: "03", name: "Duplicate & Split Work", color: "var(--eng-dup)", question: "Is this work repeated, or one job cut into pieces?" },
+  delay: { n: "04", name: "Fund Flow", color: "var(--eng-flow)", question: "Is money stuck waiting for sanction?" },
+  office_patterns: { n: "05", name: "Office Patterns", color: "var(--eng-office)", question: "Does this work's office price or close works in an unusual way?" },
+  paperwork: { n: "06", name: "Paperwork", color: "var(--eng-paper)", question: "Do the work's own papers agree with the portal?" },
+  photo_evidence: { n: "07", name: "Photo Evidence", color: "var(--eng-photo)", question: "Are the work's photos new, from its place and from its time?" },
+  cost_estimate: { n: "08", name: "Cost Estimate", color: "var(--eng-estimate)", question: "Is the agency's cost estimate right for this size of work here?" },
 };
 
 // Ids stored before the engine registry (the deck's four agents).
@@ -37,7 +37,7 @@ const LEGACY: Record<string, string> = { duplicate_project: "dup_split", image_r
 
 export function agentMeta(id: string, name?: string, question?: string): AgentMeta {
   const key = LEGACY[id] ?? id;
-  return AGENTS[key] ?? { n: "··", name: name ?? key, color: "var(--muted)", question: question ?? "" };
+  return AGENTS[key] ?? { n: "··", name: name ?? key, color: "var(--muted-foreground)", question: question ?? "" };
 }
 
 export const AGENT_ORDER: AgentId[] = ["compliance", "statistical", "dup_split", "delay",
@@ -49,6 +49,16 @@ export const BAND_COLOR: Record<Band, string> = {
   MEDIUM: "var(--medium)",
   LOW: "var(--low)",
 };
+
+/** Soft fills behind a band's word (badges, row tints). */
+export const BAND_SOFT: Record<Band, string> = {
+  CRITICAL: "var(--critical-soft)",
+  HIGH: "var(--high-soft)",
+  MEDIUM: "var(--medium-soft)",
+  LOW: "var(--low-soft)",
+};
+
+export const BAND_ORDER: Band[] = ["CRITICAL", "HIGH", "MEDIUM", "LOW"];
 
 export const BAND_LABEL: Record<Band, string> = {
   CRITICAL: "Critical",

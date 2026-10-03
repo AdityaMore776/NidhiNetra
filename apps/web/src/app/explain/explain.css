@@ -32,7 +32,7 @@
 
 /* a word lighting up in the colour of what it is */
 @keyframes x-light {
-  from { background-color: transparent; color: var(--muted); box-shadow: none; }
+  from { background-color: transparent; color: var(--muted-foreground); box-shadow: none; }
   to { background-color: var(--bg); color: var(--fg); box-shadow: 0 0 0 1px var(--ring); }
 }
 .x-light { animation: x-light 0.35s ease both; animation-delay: var(--d, 0ms); border-radius: 5px; }
@@ -94,7 +94,7 @@
 }
 .x-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: x-draw 0.7s ease both; animation-delay: var(--d, 0ms); }
 
-/* the record flying into DRISHTI */
+/* the record flying into NidhiNetra */
 @keyframes x-fly {
   0% { transform: translateX(0); opacity: 1; }
   80% { opacity: 1; }

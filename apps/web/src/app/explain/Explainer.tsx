@@ -1,7 +1,9 @@
 "use client";
 
+import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import { FloatingPaths } from "@/components/kokonutui/background-paths";
 import { Logo } from "@/components/Logo";
 import { api, apiPost, ApiError, type PreOptions } from "@/lib/api";
 import type { ExamplesFile, Trace } from "@/lib/explain";
@@ -34,7 +36,7 @@ const STEPS: StepDef[] = [
   {
     title: "Reading the description",
     short: "Reading",
-    what: "DRISHTI reads the words like an officer would: which name a place, a size, a construction or a purchase, and whether any is on the guidelines' not-allowed list. Each fact it finds lights up.",
+    what: "NidhiNetra reads the words like an officer would: which name a place, a size, a construction or a purchase, and whether any is on the guidelines' not-allowed list. Each fact it finds lights up.",
     ms: (t) => 4200 + Math.min(2600, t.reading.segments.length * 60) + 1800,
     View: ReadingStep,
   },
@@ -148,29 +150,40 @@ export default function Explainer() {
   const S = STEPS[step];
 
   return (
-    <div className="min-h-screen">
-      <header className="sticky top-0 z-20 border-b border-line bg-surface">
-        <div className="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4">
+    <div className="min-h-screen bg-white">
+      <header className="sticky top-0 z-20 border-b bg-white/75 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4">
           <Link href="/explain">
-            <Logo compact />
+            <Logo size={34} tagline="Visualization Engine" />
           </Link>
-          <span className="hidden text-sm font-semibold text-muted sm:inline">Visualization Engine</span>
           <nav className="ml-auto flex items-center gap-2 text-sm">
-            <Link href="/" className="rounded-lg border border-line px-3 py-1.5 hover:bg-background">
-              Open DRISHTI
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-brand-900 px-4 py-2 font-medium text-white shadow-[0_8px_20px_-10px_rgb(11_37_96/0.9)] transition hover:bg-brand-800"
+            >
+              Open NidhiNetra <ArrowRight className="size-4" />
             </Link>
           </nav>
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl space-y-5 px-4 py-6">
-        <section className="space-y-2">
-          <h1 className="text-2xl font-bold sm:text-3xl">What DRISHTI does with one work, step by step</h1>
-          <p className="max-w-3xl text-sm text-muted sm:text-base">
-            Pick an example, or type your own, and watch it go through the same six steps as every one of the 2,09,993
-            MPLADS works on the live site. Press any step to see it again. Every number on this page comes from the real
-            engines.
-          </p>
+      <main className="mx-auto max-w-6xl space-y-6 px-4 py-8">
+        <section className="relative overflow-hidden rounded-3xl border bg-gradient-to-br from-brand-50 via-white to-white p-6 sm:p-8">
+          <FloatingPaths intensity={0.35} />
+          <div className="relative">
+            <div className="eyebrow flex items-center gap-2">
+              <span className="tricolor-rule w-6 rounded-full" />
+              Visualization Engine · no sign-in
+            </div>
+            <h1 className="mt-3 text-3xl font-semibold tracking-[-0.035em] text-brand-950 sm:text-[2.5rem] sm:leading-[1.08]">
+              What NidhiNetra does with one work, <span className="display pr-1 italic text-brand-gradient">step by step.</span>
+            </h1>
+            <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-muted-foreground">
+              Pick an example, or type your own, and watch it go through the same six steps as every one of the 2,09,993
+              MPLADS works on the live site. Press any step to see it again. Every number on this page comes from the real
+              engines.
+            </p>
+          </div>
         </section>
 
         <section aria-label="Examples" className="flex flex-wrap gap-2">
@@ -178,26 +191,26 @@ export default function Explainer() {
             <button
               key={e.id}
               onClick={() => choose(e.id)}
-              className={`rounded-full border px-2.5 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm ${pick === e.id ? "border-navy bg-navy text-white" : "border-line bg-surface hover:bg-background"}`}
+              className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-all sm:text-sm ${pick === e.id ? "border-transparent bg-brand-gradient text-white shadow-[0_8px_20px_-10px_rgb(10_102_194/0.9)]" : "bg-white text-foreground hover:border-brand-200 hover:bg-brand-50"}`}
             >
               {e.title}
             </button>
           ))}
           <button
             onClick={() => choose(OWN)}
-            className={`rounded-full border border-dashed px-2.5 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm ${pick === OWN ? "border-navy bg-navy text-white" : "border-navy text-navy hover:bg-background"}`}
+            className={`rounded-full border border-dashed px-3 py-1.5 text-xs font-medium transition-all sm:text-sm ${pick === OWN ? "border-transparent bg-brand-gradient text-white" : "border-brand-400 text-brand-700 hover:bg-brand-50"}`}
           >
             + Your own example
           </button>
         </section>
 
         {loadError && <p className="text-sm text-high">The examples could not be loaded. Please reload the page.</p>}
-        {!file && !loadError && <p className="text-sm text-muted">Loading the examples…</p>}
+        {!file && !loadError && <p className="text-sm text-muted-foreground">Loading the examples…</p>}
 
         {pick === OWN && <OwnExample onTrace={ranOwn} />}
         {example && pick !== OWN && (
-          <p className="text-sm">
-            <span className="font-semibold">{example.title}.</span> {example.story}
+          <p className="rounded-xl border-l-2 border-brand-400 bg-muted/60 px-4 py-3 text-sm leading-relaxed">
+            <span className="font-semibold text-brand-950">{example.title}.</span> {example.story}
           </p>
         )}
 
@@ -205,44 +218,43 @@ export default function Explainer() {
           <>
             <Stepper step={step} onGo={go} />
             <div className="flex flex-wrap items-center gap-2">
-              <button onClick={() => go(step - 1)} disabled={step === 0} className="rounded-lg border border-line px-3 py-1.5 text-sm disabled:opacity-40">
-                ← Back
+              <button onClick={() => go(step - 1)} disabled={step === 0} className={CTRL}>
+                <ChevronLeft className="size-4" /> Back
               </button>
               {playing ? (
-                <button onClick={() => setPlaying(false)} className="rounded-lg bg-navy px-4 py-1.5 text-sm font-semibold text-white">
-                  ❚❚ Pause
+                <button onClick={() => setPlaying(false)} className={PRIMARY}>
+                  <Pause className="size-4" /> Pause
                 </button>
               ) : (
-                <button onClick={playAll} className="rounded-lg bg-navy px-4 py-1.5 text-sm font-semibold text-white">
-                  ▶ Play all six steps
+                <button onClick={playAll} className={PRIMARY}>
+                  <Play className="size-4" /> Play all six steps
                 </button>
               )}
-              <button onClick={() => go(step)} className="rounded-lg border border-line px-3 py-1.5 text-sm">
-                ↻ Replay this step
+              <button onClick={() => go(step)} className={CTRL}>
+                <RotateCcw className="size-4" /> Replay this step
               </button>
-              <button
-                onClick={() => go(step + 1)}
-                disabled={step === STEPS.length - 1}
-                className="rounded-lg border border-line px-3 py-1.5 text-sm disabled:opacity-40"
-              >
-                Next →
+              <button onClick={() => go(step + 1)} disabled={step === STEPS.length - 1} className={CTRL}>
+                Next <ChevronRight className="size-4" />
               </button>
-              <span className="ml-auto hidden text-xs text-muted sm:inline">Keys: ← →</span>
+              <span className="ml-auto hidden items-center gap-1 text-xs text-muted-foreground sm:inline-flex">
+                Keys <kbd className="rounded border bg-muted px-1.5 font-mono text-[10px]">←</kbd>
+                <kbd className="rounded border bg-muted px-1.5 font-mono text-[10px]">→</kbd>
+              </span>
             </div>
 
-            <section className="card overflow-hidden">
-              <div className="h-1 bg-background">
+            <section className="panel overflow-hidden">
+              <div className="h-1 bg-muted">
                 {playing && (
-                  <div key={`${pick}-${step}-${run}`} className="x-progress h-full bg-inputs" style={{ "--dur": `${S.ms(trace)}ms` } as React.CSSProperties} />
+                  <div key={`${pick}-${step}-${run}`} className="x-progress h-full bg-brand-gradient" style={{ "--dur": `${S.ms(trace)}ms` } as React.CSSProperties} />
                 )}
               </div>
-              <div className="space-y-4 p-4 sm:p-6">
+              <div className="space-y-5 p-5 sm:p-7">
                 <div>
-                  <div className="text-xs font-semibold uppercase tracking-wide text-muted">
+                  <div className="eyebrow">
                     Step {step + 1} of {STEPS.length}
                   </div>
-                  <h2 className="text-xl font-bold">{S.title}</h2>
-                  <p className="mt-1 max-w-3xl text-sm text-muted">{S.what}</p>
+                  <h2 className="mt-1 text-xl font-semibold tracking-[-0.02em] text-brand-950 sm:text-2xl">{S.title}</h2>
+                  <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-muted-foreground">{S.what}</p>
                 </div>
                 <div key={`${pick}-${step}-${run}`} className="x-stage">
                   <S.View t={trace} />
@@ -254,7 +266,7 @@ export default function Explainer() {
           </>
         )}
 
-        <footer className="space-y-1 pb-8 pt-2 text-[11px] text-muted">
+        <footer className="space-y-1 border-t pb-8 pt-5 text-[11px] text-muted-foreground">
           {pick !== OWN && file && (
             <p>
               Built-in examples: made-up works placed in a real district and checked by the real engines against the {file.source}.
@@ -262,13 +274,18 @@ export default function Explainer() {
             </p>
           )}
           <p>
-            DRISHTI flags works that need verification. It never decides; officers do. SIH 2026 · SIH26102 · Team NeuralNexus.
+            NidhiNetra flags works that need verification. It never decides; officers do. SIH 2026 · SIH26102 · Team NeuralNexus.
           </p>
         </footer>
       </main>
     </div>
   );
 }
+
+const CTRL =
+  "inline-flex items-center gap-1.5 rounded-xl border bg-white px-3.5 py-2 text-sm font-medium transition-colors hover:border-brand-200 hover:bg-brand-50 disabled:pointer-events-none disabled:opacity-40";
+const PRIMARY =
+  "inline-flex items-center gap-1.5 rounded-xl bg-brand-gradient px-4 py-2 text-sm font-semibold text-white shadow-[0_8px_20px_-10px_rgb(10_102_194/0.9)] transition hover:opacity-95";
 
 function Stepper({ step, onGo }: { step: number; onGo: (i: number) => void }) {
   return (
@@ -279,8 +296,8 @@ function Stepper({ step, onGo }: { step: number; onGo: (i: number) => void }) {
           <li key={s.short} className="relative">
             {i > 0 && (
               <span
-                className="absolute right-1/2 top-4 h-0.5 w-full -translate-y-1/2"
-                style={{ background: i <= step ? "var(--navy)" : "var(--line)" }}
+                className="absolute right-1/2 top-[18px] h-0.5 w-full -translate-y-1/2"
+                style={{ background: i <= step ? "linear-gradient(90deg, var(--brand-700), var(--brand-500))" : "var(--line)" }}
                 aria-hidden
               />
             )}
@@ -291,11 +308,11 @@ function Stepper({ step, onGo }: { step: number; onGo: (i: number) => void }) {
               title={`Step ${i + 1}: ${s.title} (press to play it again)`}
             >
               <span
-                className={`grid h-8 w-8 place-items-center rounded-full border-2 text-sm font-bold transition ${state === "now" ? "scale-110 border-navy bg-navy text-white shadow" : state === "done" ? "border-navy bg-surface text-navy" : "border-line bg-surface text-muted"}`}
+                className={`grid h-9 w-9 place-items-center rounded-xl border-2 font-mono text-sm font-bold transition ${state === "now" ? "scale-110 border-transparent bg-brand-gradient text-white shadow-[0_8px_20px_-8px_rgb(10_102_194/0.9)]" : state === "done" ? "border-brand-600 bg-white text-brand-700" : "border-line bg-white text-muted-foreground"}`}
               >
                 {i + 1}
               </span>
-              <span className={`text-center text-[11px] leading-tight ${state === "now" ? "font-semibold" : "text-muted"}`}>
+              <span className={`text-center text-[11px] leading-tight ${state === "now" ? "font-semibold" : "text-muted-foreground"}`}>
                 <span className="sm:hidden">{s.short}</span>
                 <span className="hidden sm:inline">{s.title}</span>
               </span>
@@ -310,14 +327,14 @@ function Stepper({ step, onGo }: { step: number; onGo: (i: number) => void }) {
 /** The answer, always in view below the steps, so a judge can jump around and still see where it lands. */
 function ResultStrip({ t }: { t: Trace }) {
   return (
-    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 rounded-xl border border-line bg-surface px-4 py-2 text-xs">
-      <span className="text-muted">Where this work ends up:</span>
+    <div className="panel flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 text-xs">
+      <span className="text-muted-foreground">Where this work ends up:</span>
       <span className="rounded-full px-2.5 py-0.5 font-semibold text-white" style={{ background: BAND_COLOR[t.result.band] }}>
         {t.result.band}
       </span>
       <span>score {(t.result.score * 100).toFixed(0)}%</span>
-      <span className="text-muted">{t.result.in_queue ? "in the review queue" : "not in the review queue"}</span>
-      <span className="text-muted">
+      <span className="text-muted-foreground">{t.result.in_queue ? "in the review queue" : "not in the review queue"}</span>
+      <span className="text-muted-foreground">
         {t.checks.filter((c) => c.status === "ASSESSED" && c.findings.some((f) => f.risk > 0) && c.counted).length} of{" "}
         {t.checks.length} checks raised a question
       </span>
@@ -381,12 +398,12 @@ function OwnExample({ onTrace }: { onTrace: (t: Trace) => void }) {
     }
   }
 
-  if (gate === "loading") return <p className="text-sm text-muted">Connecting to the live engine…</p>;
+  if (gate === "loading") return <p className="text-sm text-muted-foreground">Connecting to the live engine…</p>;
   if (gate === "signin" || gate === "error")
     return (
       <div className="rounded-xl border border-dashed border-navy bg-surface p-4 text-sm">
         <p className="font-semibold">Your own example runs on the live engine, so it needs the demo sign-in.</p>
-        <p className="mt-1 text-muted">
+        <p className="mt-1 text-muted-foreground">
           {gate === "signin"
             ? "Sign in with the demo account, then come back to this page. The seven examples above work without signing in."
             : "The live engine did not answer just now. The seven examples above still work."}
@@ -400,7 +417,7 @@ function OwnExample({ onTrace }: { onTrace: (t: Trace) => void }) {
   const field = "w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm";
   return (
     <form onSubmit={submit} className="space-y-3 rounded-xl border border-line bg-surface p-4">
-      <p className="text-sm text-muted">
+      <p className="text-sm text-muted-foreground">
         Type a work as it would appear on eSAKSHI. It is checked against the real works of the district you choose.
         Nothing you type is saved.
       </p>
@@ -477,9 +494,9 @@ function OwnExample({ onTrace }: { onTrace: (t: Trace) => void }) {
       </div>
       <div className="flex items-center gap-3">
         <button type="submit" disabled={busy || !district} className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white disabled:opacity-50">
-          {busy ? "Running…" : "Run it through DRISHTI"}
+          {busy ? "Running…" : "Run it through NidhiNetra"}
         </button>
-        <span className="text-xs text-muted">Left empty, the recommended date is today.</span>
+        <span className="text-xs text-muted-foreground">Left empty, the recommended date is today.</span>
       </div>
       {error && <p className="text-sm" style={{ color: "var(--critical)" }}>{error}</p>}
     </form>
