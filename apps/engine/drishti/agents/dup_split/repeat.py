@@ -18,6 +18,13 @@ So what is ASKED comes from the cost estimate form (work["cost_form"]), and word
               the same words (the strictest text rule: 90%+ alike, every place word shared, no
               plot / ward number, side, floor, gender or community apart, no continuation word,
               not several sites, not a series of 3+ copies). A note: the form asks the agency.
+  split       one job cut into pieces to stay under a sanction limit, in its strictest form:
+              2-5 alike works at one place (or numbered parts of one job: reach-1, Bit2, Sy.No
+              488-A), one MP, one work type, recommended within 30 days (match.groups_in_block),
+              EVERY piece between 96% and 100% of the Rs 5 or 10 lakh limit and the total above
+              it. On the dashboard's 40,935 works: 14 groups, read 12 one job cut into pieces,
+              2 grey, 0 not (data/trial/simple_certain_trial.py); v2's looser splits (pieces
+              anywhere at one site) read right 18 of 32.
 
 "Sanctioned" = recorded as sanctioned or completed (or carrying a sanction or completion date);
 "earlier" = first recorded (recommended, else sanctioned, else completed) before this work, the
@@ -40,11 +47,13 @@ from drishti.agents.dup_split.match import (
     _key,
     _localise,
     genders,
+    groups_in_block,
     place_agreement,
     place_words,
     segment,
     sides,
     site_numbers,
+    split_limits,
     text_sim,
 )
 from drishti.agents.statistical.scope import many_sites, undescribed
@@ -53,6 +62,8 @@ from drishti.cost_form import catalog
 PIN_METRES = 50.0                 # two pins this close are one site
 TEXT_MIN = 0.90                   # look-alike wording (the trial's strictest rule)
 PLACE_MIN = 100.0                 # every place word shared
+SPLIT_SHARE = 0.96                # every piece at least this share of the limit it sits under
+SPLIT_MAX = 5                     # 6+ alike pieces read as a series of purchases, not one job
 DECLARED_NATURES = ("continuation", "extension", "upgrade", "reconstruction")
 SANCTIONED = ("SANCTIONED", "COMPLETED")
 # A ground floor and a first floor, an SC colony and a BC colony are two works (read by eye on
@@ -151,6 +162,8 @@ class Rec:
     place: str = ""            # raw_place minus its district's boilerplate (match._localise)
     copies: int = 1            # identical wording filed by one MP in the district
     sites: list = field(default_factory=list)
+    nums: str = ""             # plot / ward / survey numbers (match.site_numbers)
+    segment: str | None = None  # the numbered piece it names (match.segment)
 
     @property
     def first(self) -> date | None:
@@ -186,7 +199,7 @@ class Rec:
                 rec=w.get("recommended_date"), sanction=w.get("sanction_date"),
                 done=w.get("completed_date"), amount=float(w.get("amount") or 0),
                 form=form, raw_place="" if undescribed(desc) else place_words(desc),
-                sites=pins(form))
+                sites=pins(form), nums=site_numbers(desc), segment=segment(desc))
         if not r.work_id or r.first is None or (undescribed(desc) and not r.sites):
             return None
         return r
@@ -194,6 +207,30 @@ class Rec:
 
 def _together_key(r: Rec) -> tuple:
     return (r.district, r.mp, _key(r.description), r.rec)
+
+
+def _near_limit(amount: float) -> bool:
+    return any(SPLIT_SHARE * lim <= amount <= lim for lim in split_limits())
+
+
+def split_groups(recs: list[Rec]) -> dict[str, dict]:
+    """{work id: group} for the strictest splits among these works of one district (module
+    note): only works priced within 4% under a limit can be pieces, so the blocks stay small."""
+    blocks: dict[tuple, list[Rec]] = defaultdict(list)
+    for r in recs:
+        if r.rec is not None and _near_limit(r.amount):
+            blocks[(r.mp, r.work_type)].append(r)
+    out: dict[str, dict] = {}
+    for block in blocks.values():
+        if len(block) < 2:
+            continue
+        for g in groups_in_block(block):
+            lim = g.get("limit")
+            if (g["kind"] in ("same_site_split", "stretches") and lim and g["size"] <= SPLIT_MAX
+                    and all(SPLIT_SHARE * lim <= a <= lim for a in g["amounts"])):
+                for wid in g["members"]:
+                    out[wid] = g
+    return out
 
 
 def looks_alike(a: Rec, b: Rec) -> float | None:
@@ -240,6 +277,7 @@ class RepeatIndex:
     # finding (a purchase filed as several works is not a repeat); the review queue shows them
     # as one case (migration 012), so 11 rows of one street-light purchase read as one.
     _together: dict[tuple, list[str]] = field(default_factory=dict)
+    _splits: dict[str, dict] = field(default_factory=dict)
 
     @classmethod
     def build(cls, works) -> RepeatIndex:
@@ -255,6 +293,7 @@ class RepeatIndex:
             for r in recs:
                 if r.rec is not None and _key(r.description):
                     idx._together.setdefault(_together_key(r), []).append(r.work_id)
+            idx._splits.update(split_groups(recs))
         return idx
 
     def filed_together(self, work_id: str | None) -> tuple[str, int] | None:
@@ -315,13 +354,16 @@ class RepeatIndex:
                     seen.add(x.work_id)
                     if (t := looks_alike(me, x)) is not None:
                         alike.append((x, t))
-        if known is None or known.description != me.description:
+        if known is not None and known.description == me.description:
+            split = self._splits.get(me.work_id)
+        else:                                 # a new work: its pieces are looked for on the spot
+            split = split_groups(others + [me]).get(me.work_id)
             _localise(others)                 # leave the index as it was
             _count_copies(others)
         alike.sort(key=lambda p: (-p[1], p[0].work_id))
         at_site.sort(key=lambda p: (p[1], p[0].work_id))
         return {"me": me, "at_site": at_site, "declared": link, "look_alike": alike[:5],
-                "answers": answers(me.form), "compared": len(others),
+                "answers": answers(me.form), "compared": len(others), "split": split,
                 "sanctioned_earlier": len(earlier), "place_named": bool(me.place)}
 
     def candidates(self, work: dict) -> list[Rec]:

@@ -114,7 +114,7 @@ export interface WorkRow {
   limited: boolean | null;
   alerts: string[] | null;
   headline: string | null;
-  /** One case per Duplicate & Split group (the queue shows the group once). */
+  /** One case per group of works filed together (same wording, MP and day; the queue shows it once). */
   case_id?: string | null;
   case_size?: number | null;
 }

@@ -10,6 +10,11 @@ sure of, and that comes from the implementing agency's cost estimate form (work[
   REBUILT_SOON_AFTER_COMPLETION  risk 0.6  the agency declares this work rebuilds sanctioned work
                                            X, and X was completed less than 3 years before this
                                            work was recommended
+  SPLIT_JUST_UNDER_LIMIT         risk 0.6  one job cut into pieces to stay under a sanction limit,
+                                           in its strictest form (repeat.py: 2-5 alike pieces at
+                                           one place or numbered parts, one MP, within 30 days,
+                                           EVERY piece 96-100% of the Rs 5 or 10 lakh limit):
+                                           14 dashboard groups read 12 yes, 2 grey, 0 not
 
 Notes (risk 0, shown, never counted):
   CONTINUES_SANCTIONED_WORK   the earlier work the agency names (continuation, extension,
@@ -19,8 +24,8 @@ Notes (risk 0, shown, never counted):
                               strictest text rule, 13 of 16 on the team's 289 pairs read by eye),
                               so the form asks the agency, and its answer is shown
 
-Removed in v3 (each read right about half the time, reference/reliability.json): split works,
-numbered stretches, bulk orders, the under-a-limit bonus, and repeats judged on words alone.
+Removed in v3 (each read right about half the time, reference/reliability.json): splits whose
+pieces sit anywhere in 80-100% of a limit, bulk orders, and repeats judged on words alone.
 Measurements: data/trial/simple_certain_trial.py; plan: docs/plans/T099-T100-simple-and-certain.md.
 
   NOT_ASSESSABLE  no index of its district was given, or the record has no date or readable
@@ -41,6 +46,7 @@ VERSION = "dup-split-3.0.0"
 QUESTION = "Is this work already sanctioned at this site?"
 SITE_RISK = 0.7
 REBUILT_RISK = 0.6
+SPLIT_RISK = 0.6
 REBUILT_WITHIN = timedelta(days=3 * 365)
 NATURE_WORDS = {"continuation": "continues", "extension": "extends", "upgrade": "upgrades",
                 "reconstruction": "rebuilds"}
@@ -50,6 +56,17 @@ ANSWER_WORDS = {"different": "a different work", "continues": "the work this one
 
 def _lakh(rs: float) -> str:
     return f"Rs {rs / 1e5:,.2f} lakh"
+
+
+def _rupees(rs: float) -> str:
+    """Rs 4,99,942: the exact amount in Indian digit groups (pieces just under a limit differ
+    in the last few hundred rupees)."""
+    n = str(int(round(rs)))
+    head, tail = n[:-3], n[-3:]
+    while len(head) > 2:
+        tail = f"{head[-2:]},{tail}"
+        head = head[:-2]
+    return f"Rs {head},{tail}" if head else f"Rs {tail}"
 
 
 def _state(x) -> str:
@@ -140,7 +157,26 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
                 evidence={"other": x.work_id, "nature": link["nature"], "on_record": True,
                           "kind": "declared"}))
 
-    # 3. look-alikes by words: a note, the form asks the agency
+    # 3. one job cut into pieces just under a limit (the strictest form only)
+    g = found["split"]
+    if g:
+        others = [m for m in g["members"] if m != me.work_id]
+        lo, hi = min(g["amounts"]), max(g["amounts"])
+        span = "on the same day" if not g["days"] else f"within {g['days']} days"
+        parts = (f" ({', '.join(x.replace(':', ' ') for x in g['segments'])})"
+                 if g.get("segments") else "")
+        findings.append(Finding(
+            "SPLIT_JUST_UNDER_LIMIT",
+            f"One of {g['size']} alike works at one place{parts}, recommended {span}: each "
+            f"{_rupees(lo)}{'' if lo == hi else f' to {_rupees(hi)}'}, just under the "
+            f"{_lakh(g['limit'])} limit, {_lakh(g['total'])} together. Please check whether one "
+            f"job was cut into pieces to stay under the limit. Others: {', '.join(others)}.",
+            hard=False, risk=SPLIT_RISK,
+            evidence={"group_id": g["group_id"], "size": g["size"], "total": g["total"],
+                      "limit": g["limit"], "others": others, "days": g["days"],
+                      "segments": g.get("segments") or [], "kind": "split"}))
+
+    # 4. look-alikes by words: a note, the form asks the agency
     asked = {f.evidence.get("other") for f in findings}
     for x, t in found["look_alike"]:
         if x.work_id in asked:

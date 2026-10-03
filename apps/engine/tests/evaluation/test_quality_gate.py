@@ -42,7 +42,10 @@ def _k(report, kind):
 @pytest.mark.parametrize("kind,meant", [
     ("RULE_TEMPLE", 0.75), ("RULE_DATES_IMPOSSIBLE", 1.0), ("RULE_OUTSIDE_CEILING", 1.0),
     ("RULE_BIG_VAGUE", 1.0), ("OFFICE_PRICES_AT_LIMIT", 0.8), ("PIN_REPEAT", 1.0),
-    ("REBUILT_SOON", 1.0)])
+    ("REBUILT_SOON", 1.0),
+    # planted at 92-100% of the limit; only splits whose every piece is 96%+ are asked (0.43
+    # and 0.5 on 3 Oct 2026)
+    ("SPLIT_SAME_SITE", 0.35), ("SPLIT_STRETCHES", 0.4)])
 def test_planted_problems_are_found_by_the_engine_meant_for_them(report, kind, meant):
     assert _k(report, kind)["meant_code_fired"] >= meant
 

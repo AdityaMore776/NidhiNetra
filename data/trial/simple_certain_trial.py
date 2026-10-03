@@ -17,6 +17,9 @@ descriptions by stricter and stricter text rules (agents/dup_split/match.py's wo
 precision and recall of each. Then the strictest rule on the dashboard's own works: its pairs by
 how far apart they are, and the 25 more than 60 days apart read by eye.
 
+SPLIT (T100). The Duplicate check keeps one split rule, its strictest (agents/dup_split/repeat.py:
+every piece 96-100% of a limit): every group it finds on the dashboard, read by eye.
+
 Writes results/simple_certain_trial.json (work ids, counts and rates only) and prints a summary.
 
 Run:  apps\engine\.venv\Scripts\python.exe data\trial\simple_certain_trial.py
@@ -43,6 +46,7 @@ from esakshi_dashboard import load  # noqa: E402
 
 from drishti.agents.cost_estimate import reference as R  # noqa: E402
 from drishti.agents.dup_split import match as M  # noqa: E402
+from drishti.agents.dup_split.repeat import RepeatIndex  # noqa: E402
 
 RESULTS = ROOT / "data" / "trial" / "results"
 OUT = RESULTS / "simple_certain_trial.json"
@@ -180,11 +184,20 @@ def repeat_dashboard(works: list[dict]) -> dict:
     return {"pairs_by_gap": dict(gaps), "over_60_days_read_by_eye": dict(read)}
 
 
+def splits(works: list[dict]) -> dict:
+    idx = RepeatIndex.build(works)
+    groups = {g["group_id"]: g for g in idx._splits.values()}
+    return {"groups": len(groups), "works": sum(g["size"] for g in groups.values()),
+            "by_kind": dict(Counter(g["kind"] for g in groups.values())),
+            "read_by_eye": dict(Counter(LS.SPLIT_GROUPS.get(k, "unread") for k in groups)),
+            "group_ids": sorted(groups)}
+
+
 def main() -> None:
     works, info = load()
     out = {"source": f"eSAKSHI dashboard tables, {info['works']:,} works, as of {info['as_of']}",
            "cost": cost(works), "repeat_labelled_pairs": repeat_labelled(),
-           "repeat_dashboard": repeat_dashboard(works)}
+           "repeat_dashboard": repeat_dashboard(works), "split": splits(works)}
     OUT.write_text(json.dumps(out, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     c, h = out["cost"], out["cost"]["hold_out"]
     print(f"COST: {c['compared_in_sample']:,} of {c['works']:,} works can be priced from the "
@@ -202,6 +215,9 @@ def main() -> None:
     d = out["repeat_dashboard"]
     print(f"  dashboard, strictest rule: {d['pairs_by_gap']}; over 60 days read: "
           f"{d['over_60_days_read_by_eye']}")
+    sp = out["split"]
+    print(f"SPLIT (every piece 96-100% of a limit): {sp['groups']} groups, {sp['works']} works; "
+          f"read by eye: {sp['read_by_eye']}")
     print(f"wrote {OUT.relative_to(ROOT)}")
 
 

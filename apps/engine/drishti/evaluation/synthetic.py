@@ -19,12 +19,13 @@ what the team measured on the 2,09,993 real works (docs/trial/FINDINGS.md):
   batches            one MP, one day, one template, many villages: ordinary, not a split
 
 Planted problems (positive=True) each name the engine meant to catch them and the finding codes
-that count as caught. T099 + T100 (3 Oct 2026): a price raised on a record, a repeat or a split
+that count as caught. T099 + T100 (3 Oct 2026): a price raised on a record, a repeat or a repair
 judged from words alone are no longer checked (measured not certain enough,
 data/trial/simple_certain_trial.py); they stay planted as positives that no engine is meant for,
-so the report says plainly what the product leaves to the cost estimate form. The form's own
-cases are planted too: a map pin at a sanctioned work of the same kind (PIN_REPEAT), a declared
-rebuild soon after completion (REBUILT_SOON), and their look-alikes.
+so the report says plainly what the product leaves to the cost estimate form. Splits are
+planted at 92-100% of the limit: only those whose every piece is 96%+ are asked about. The
+form's own cases are planted too: a map pin at a sanctioned work of the same kind
+(PIN_REPEAT), a declared rebuild soon after completion (REBUILT_SOON), and their look-alikes.
 Look-alikes (positive=False, kind "HN_*") are what the engines must leave
 alone. Every other work is "BACKGROUND". Labels live beside the works, never inside them, so
 no engine can read the answer.
@@ -579,7 +580,8 @@ class Generator:
             for _ in range(rng.choice((3, 3, 4))):
                 self.make(d, wtype, template=(text, "site"), rec=rec, mp=mp, office=office,
                           amount=float(round(rng.uniform(4.6, 4.99) * LAKH, -2)), status=st,
-                          label=Label("SPLIT_SAME_SITE", True, group=f"S{g}"), case=False)
+                          label=Label("SPLIT_SAME_SITE", True, "dup_split",
+                                      ("SPLIT_JUST_UNDER_LIMIT",), group=f"S{g}"), case=False)
 
         # SPLITS into stretches: one road cut into numbered parts, each just under Rs 5 lakh
         for g in range(max(2, n // 2)):
@@ -604,7 +606,8 @@ class Generator:
                 self.make(d, "ROAD_CC", template=(text, "site"),
                           rec=rec + timedelta(days=rng.randint(0, 20)), mp=mp, office=office,
                           amount=float(round(rng.uniform(4.6, 4.99) * LAKH, -2)), status=st,
-                          label=Label("SPLIT_STRETCHES", True, group=f"T{g}"), case=False)
+                          label=Label("SPLIT_STRETCHES", True, "dup_split",
+                                      ("SPLIT_JUST_UNDER_LIMIT",), group=f"T{g}"), case=False)
 
         # REPAIR SOON AFTER BUILT: a new asset "repaired" within months of completion
         for w in self._pick(lambda w: site_work(w) and w["status"] == "COMPLETED"

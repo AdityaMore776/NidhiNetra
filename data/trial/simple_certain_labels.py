@@ -10,6 +10,15 @@ standard item in its district or state; data/trial/simple_certain_trial.py lists
              "4 way" light, a solar mini-mast compared with grid masts)
   "grey"     nothing in the record explains it, nothing confirms it
 
+SPLIT_GROUPS: every group the Duplicate check's strictest split rule finds on the dashboard
+(agents/dup_split/repeat.py: 2-5 alike pieces at one place or numbered parts, one MP, within 30
+days, every piece 96-100% of the Rs 5 or 10 lakh limit, the total above it):
+  "yes"   one job cut into pieces to stay under the limit (reach-1 / reach-2, four rooms of one
+          school, Sy.No 488 / 488-A / B / C of one road, a 4-plant project as 4 works)
+  "grey"  two pieces that could be two jobs (left and right side of one bridge approach; "CC
+          roads in various localities" of one ward, twice)
+  "no"    not one job
+
 REPEAT_DASHBOARD_PAIRS: the 25 pairs of the strictest text rule (same work type, same district,
 descriptions 90%+ alike, every place word shared, no number, side, gender or continuation word
 apart, not a series of 3+ copies, not "various places") whose dates are more than 60 days apart:
@@ -64,4 +73,21 @@ REPEAT_DASHBOARD_PAIRS = {
     ("WS/MP18335/2025-2026/210206", "WS/MP18335/2025-2026/210207"): "different",
     ("WS/MP005/2025-2026/196998", "WS/MP005/2025-2026/175161"): "same",
     ("WS/MP18155/2024-2025/163661", "WS/MP18155/2025-2026/198948"): "different",
+}
+
+SPLIT_GROUPS = {
+    "G-WS/MP18003/2024-2025/157517": "yes",     # one hill road, Sy.No 488 / 488-A / B / C
+    "G-WS/MP18006/2024-2025/135640": "yes",     # underground drainage, Reach I / II / III
+    "G-WS/MP18009/2024-2025/161192": "yes",     # street lighting of one ward, twice
+    "G-WS/MP18009/2024-2025/163081": "yes",     # one road, reach-1 / reach-2
+    "G-WS/MP18009/2024-2025/163087": "yes",     # one road, reach-1 / reach-2
+    "G-WS/MP18138/2024-2025/148109": "yes",     # one road upgradation, twice
+    "G-WS/MP18351/2024-2025/158085": "yes",     # "the project involves 04 plants", as 4 works
+    "G-WS/MP18351/2024-2025/160019": "yes",     # internal CC roads Bit1 / Bit2
+    "G-WS/MP18393/2024-2025/151997": "grey",    # "CC roads in various localities", twice
+    "G-WS/MP405/2024-2025/149697": "yes",       # one road, reach-1 / reach-2
+    "G-WS/MP526/2024-2025/147539": "grey",      # left / right side of one bridge approach
+    "G-WS/MP526/2024-2025/147605": "yes",       # one road's gravelling, Reach-1 / Reach-2
+    "G-WS/MP526/2026-2027/152486": "yes",       # one drain, segments I & II / III & V
+    "G-WS/MP574/2025-2026/145476": "yes",       # four new rooms of one school
 }

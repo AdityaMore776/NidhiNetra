@@ -5,7 +5,7 @@ by words are notes (right about 2 times in 3, data/trial/simple_certain_trial.py
 
 import copy
 import random
-from datetime import date
+from datetime import date, timedelta
 
 import pytest
 
@@ -302,3 +302,48 @@ def test_hindi_and_english_wordings_of_one_work_read_alike():
 def test_spec_sheets_and_ordinary_words_are_not_places():
     assert place_words("Highmast Solar Street light- Two Piece.") == ""
     assert place_words("High mast light ka adhisthapan prakhand ke antargat") == ""
+
+
+# ---- one job cut into pieces just under a limit (the strictest form only) -----------------------
+
+ROAD = "Construction of CC road from Sitapur chowk to Bhawanipur primary school"
+
+
+@pytest.mark.parametrize("amounts,days,ask", [
+    ((499_942, 499_981), 0, True),            # two pieces at 99.99%: asked
+    ((482_000, 499_000, 499_500), 9, True),   # all at 96%+, within 30 days
+    ((470_000, 499_000), 0, False),           # one piece at 94%: not the strictest form
+    ((499_000, 499_000), 45, False),          # 45 days apart: not filed together
+    ((499_000,) * 6, 0, False),               # six alike pieces: a series, not one job
+])
+def test_pieces_just_under_the_limit_are_asked_about(amounts, days, ask):
+    first = date(2024, 12, 1)
+    pieces = [_w(f"P{i}", f"{ROAD} reach-{i + 1}", a,
+                 rec=first + timedelta(days=days if i else 0), wtype="ROAD_CC")
+              for i, a in enumerate(amounts)]
+    idx = RepeatIndex.build(_filler() + pieces)
+    r = assess(pieces[0], idx)
+    assert (asked(r) == ["SPLIT_JUST_UNDER_LIMIT"]) is ask, (amounts, days, r.headline)
+    if ask:
+        assert "just under the Rs 5.00 lakh limit" in r.headline and "Rs 4,99," in r.headline
+        ev = r.findings[0].evidence
+        assert ev["group_id"] == "G-P0" and ev["size"] == len(amounts)
+
+
+def test_pieces_at_two_places_or_by_two_mps_are_two_jobs():
+    a = _w("A", "Construction of CC road at Sitapur chowk", 499_000.0, rec=date(2024, 12, 1),
+           wtype="ROAD_CC")
+    b = _w("B", "Construction of CC road at Bhawanipur chowk", 499_000.0, rec=date(2024, 12, 1),
+           wtype="ROAD_CC")
+    c = _w("C", "Construction of CC road at Sitapur chowk", 499_000.0, rec=date(2024, 12, 1),
+           wtype="ROAD_CC", mp="MP B")
+    idx = RepeatIndex.build(_filler() + [a, b, c])
+    assert not asked(assess(a, idx))
+
+
+def test_a_new_recommendation_is_matched_with_its_pieces_on_the_spot():
+    old = _w("OLD", f"{ROAD} reach-1", 499_500.0, rec=date(2024, 12, 1), wtype="ROAD_CC")
+    idx = RepeatIndex.build(_filler() + [old])
+    new = _w("NEW", f"{ROAD} reach-2", 499_800.0, rec=date(2024, 12, 3), wtype="ROAD_CC")
+    r = assess(new, idx)
+    assert asked(r) == ["SPLIT_JUST_UNDER_LIMIT"] and "OLD" in r.headline

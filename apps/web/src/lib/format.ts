@@ -23,13 +23,14 @@ type AgentMeta = { n: string; name: string; color: string; question: string };
  *  missing here still renders, with the name and question the API sends. */
 export const AGENTS: Record<AgentId, AgentMeta> = {
   compliance: { n: "01", name: "Guideline Compliance", color: "var(--navy)", question: "Does the work follow the MPLADS guidelines?" },
-  statistical: { n: "02", name: "Cost Anomaly", color: "var(--statistical)", question: "Is the project cost unusual for similar works?" },
-  dup_split: { n: "03", name: "Duplicate & Split Work", color: "var(--duplicate)", question: "Is this work repeated, or one job cut into pieces?" },
+  cost_estimate: { n: "02", name: "Cost", color: "var(--statistical)", question: "Is the agency's cost estimate right for this size of work here?" },
+  dup_split: { n: "03", name: "Duplicate Work", color: "var(--duplicate)", question: "Is this work already sanctioned at this site?" },
   delay: { n: "04", name: "Fund Flow", color: "var(--site)", question: "Is money stuck waiting for sanction?" },
   office_patterns: { n: "05", name: "Office Patterns", color: "var(--reuse)", question: "Does this work's office price or close works in an unusual way?" },
   paperwork: { n: "06", name: "Paperwork", color: "var(--inputs)", question: "Do the work's own papers agree with the portal?" },
   photo_evidence: { n: "07", name: "Photo Evidence", color: "var(--fusion)", question: "Are the work's photos new, from its place and from its time?" },
-  cost_estimate: { n: "08", name: "Cost Estimate", color: "var(--statistical)", question: "Is the agency's cost estimate right for this size of work here?" },
+  // retired 3 Oct 2026 (T099): results stored before then still read by name until re-assessed
+  statistical: { n: "··", name: "Cost Anomaly (retired)", color: "var(--muted)", question: "Is the project cost unusual for similar works?" },
 };
 
 // Ids stored before the engine registry (the deck's four agents).
@@ -40,8 +41,8 @@ export function agentMeta(id: string, name?: string, question?: string): AgentMe
   return AGENTS[key] ?? { n: "··", name: name ?? key, color: "var(--muted)", question: question ?? "" };
 }
 
-export const AGENT_ORDER: AgentId[] = ["compliance", "statistical", "dup_split", "delay",
-  "office_patterns", "paperwork", "photo_evidence", "cost_estimate"];
+export const AGENT_ORDER: AgentId[] = ["compliance", "cost_estimate", "dup_split", "delay",
+  "office_patterns", "paperwork", "photo_evidence"];
 
 export const BAND_COLOR: Record<Band, string> = {
   CRITICAL: "var(--critical)",
