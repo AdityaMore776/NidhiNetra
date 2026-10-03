@@ -1080,6 +1080,41 @@ What it shows:
 The official rate sources (CPWD, data.gov.in, GeM, PMGSY, state PWD sites) are blocked by this cloud environment's
 network policy (tested 3 Oct 2026), so T096 is a human task.
 
+## T097 (3 Oct 2026): the Cost Estimate engine on works it has never seen
+
+The engine (`agents/cost_estimate/`, plan `docs/plans/T097-cost-agent-v3.md` §11) reads the agency's cost estimate form.
+It asks the officer only when:
+- a **confirmed** material quantity is more than 25% above what the size needs; or
+- the price per unit is more than 25% above the 98th percentile of the same standard item in the district (or
+  state) **and** the estimate is more than 10% above the MP's amount.
+
+It is shown, not counted.
+
+**Which real-works groups it can compare** (`data/build_cost_reference.py` → `results/cost_v3_reference_build_up.txt`):
+a group is used only with 30+ works, a tight spread (p90 within +25% of the median), and the form's own unit of size.
+- In Uttar Pradesh: solar street lights (334 works: median Rs 20,944, p98 Rs 23,588; Jaunpur and Varanasi have their
+  own groups) and high masts in Bareilly, Kheri and Sitapur.
+- Roads are never compared per metre: 0 of UP's 1,129 CC-road records state a width.
+
+**Hold-out** (`data/trial/cost_v3_holdout.py` → `results/cost_v3_holdout_up.json`): the reference was built from UP works
+dated before 2026 and tested on the **68** 2026 works of those kinds (54 high masts, 14 solar lights). Each became a
+complete form at its real price, with the MP's amount equal to the estimate, as on eSAKSHI. One more work (215 masts
+under one price, really several sites) was refused by the form itself.
+
+| Measure | Result |
+|---|---|
+| Works it could compare | 42 of 68 (26 high masts in districts without a tight group: "could not check") |
+| Real works above the price question line | **0 of 42** |
+| Planted price ×1.1 / ×1.25 / ×1.5 / ×2 / ×3, MP's amount at the real figure | asked 0 / 9 / **42 / 42 / 42** of 42 |
+| Same works at ½×, 2×, 5× the number of units, same unit price | **0 of 204** answers changed |
+
+For comparison, the old engine caught a planted 3× price 6% of the time (T080), because without the size a 3× price
+looks like a 3× bigger job.
+
+The limit, honestly: with eSAKSHI's records, only standard items can be priced. Everything else answers "could not
+check" until the state's Schedule of Rates (T096) or completed forms give a reference that knows the size. Line-by-line
+rates wait for T096.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

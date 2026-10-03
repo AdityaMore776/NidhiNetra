@@ -361,6 +361,19 @@
       "limitations": [],
       "findings": [],
       "picture": null
+     },
+     {
+      "id": "cost_estimate",
+      "name": "Cost Estimate",
+      "question": "Is the agency's cost estimate right for this size of work here?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No cost estimate form for this work: it came in before the form, so Cost Anomaly checks its amount.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
      }
     ],
     "scoring": {
@@ -741,6 +754,19 @@
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
       "headline": "No photo or paper is attached to this work on eSAKSHI. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     },
+     {
+      "id": "cost_estimate",
+      "name": "Cost Estimate",
+      "question": "Is the agency's cost estimate right for this size of work here?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No cost estimate form for this work: it came in before the form, so Cost Anomaly checks its amount.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -1139,6 +1165,19 @@
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
       "headline": "No photo or paper is attached to this work on eSAKSHI. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     },
+     {
+      "id": "cost_estimate",
+      "name": "Cost Estimate",
+      "question": "Is the agency's cost estimate right for this size of work here?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No cost estimate form for this work: it came in before the form, so Cost Anomaly checks its amount.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -1544,6 +1583,19 @@
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
       "headline": "No photo or paper is attached to this work on eSAKSHI. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     },
+     {
+      "id": "cost_estimate",
+      "name": "Cost Estimate",
+      "question": "Is the agency's cost estimate right for this size of work here?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No cost estimate form for this work: it came in before the form, so Cost Anomaly checks its amount.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -1975,6 +2027,19 @@
       "limitations": [],
       "findings": [],
       "picture": null
+     },
+     {
+      "id": "cost_estimate",
+      "name": "Cost Estimate",
+      "question": "Is the agency's cost estimate right for this size of work here?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No cost estimate form for this work: it came in before the form, so Cost Anomaly checks its amount.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
      }
     ],
     "scoring": {
@@ -2394,6 +2459,19 @@
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
       "headline": "No photo or paper is attached to this work on eSAKSHI. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     },
+     {
+      "id": "cost_estimate",
+      "name": "Cost Estimate",
+      "question": "Is the agency's cost estimate right for this size of work here?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No cost estimate form for this work: it came in before the form, so Cost Anomaly checks its amount.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -2847,6 +2925,19 @@
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
       "headline": "No photo or paper is attached to this work on eSAKSHI. This is not a clean chit.",
+      "limitations": [],
+      "findings": [],
+      "picture": null
+     },
+     {
+      "id": "cost_estimate",
+      "name": "Cost Estimate",
+      "question": "Is the agency's cost estimate right for this size of work here?",
+      "counted": false,
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
+      "risk": 0.0,
+      "headline": "No cost estimate form for this work: it came in before the form, so Cost Anomaly checks its amount.",
       "limitations": [],
       "findings": [],
       "picture": null

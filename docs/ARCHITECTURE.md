@@ -66,6 +66,7 @@ work record ─► 2 DATA VALIDATION ─► 3 AGENTS (each returns an AgentResul
 | `agents/office_patterns/` | **Office Patterns** (2 Oct 2026): `index.py` counts per office, live from all works, how many works are priced just under a limit (96-100% of ₹5 lakh, ₹10 lakh, ...) and how many constructions are recorded complete within 7 days of sanction; an office is "routine" only when its Wilson lower bound is at least 3× the national share (30+ priced works, 15+ built). `agent.py`: a work just under a limit from a routine office gets `PRICED_AT_LIMIT` (risk 0.30, weight 0.10: corroborates, never queues alone); the office's after-sanction habit is told as a fact (R14 counts the work itself) |
 | `agents/site_progress/` | **Site Progress** v2 (T510), **off** unless `DRISHTI_SITE_PROGRESS=on`: `claims.py` (the record's own words), `observe.py` (the stored per-photo reading from `reference/site_concepts.yaml`), `plaque.py` (MPLADS plaque and its dates from the photo's text), `readers.py` (offline only: a local CLIP model, an optional Gemini reader with a daily cap and cache), `agent.py` (the rules). Readings are made by `data/build_site_observations.py` |
 | `agents/paperwork/`, `agents/photo_evidence/` | **Paperwork** (certificates vs the portal), **Photo Evidence** (reuse, place, time of photos); shown, not counted (see AGENT-CATALOG) |
+| `agents/cost_estimate/` | **Cost Estimate** (Cost v3, T097), shown, not counted: reads the agency's cost estimate form (`work["cost_form"]`); `reference.py` builds price-per-unit groups from a state's real works (`reference/cost/<state>.json`, by `data/build_cost_reference.py`) and compares only tight groups priced in the form's own unit of size; `agent.py` asks about a confirmed quantity above what the size needs (`cost_form/norms.py`) or a price above the standard item **and** the MP's amount. Plan `docs/plans/T097-cost-agent-v3.md` |
 
 **One brain per engine (T051).** An engine's reasoning is a function of the work plus stored tables or
 coefficients (`cohort_stats`, `engine_models`, `reference/*`). No engine reads an answer stored
@@ -229,7 +230,7 @@ database. LOW and MEDIUM works are stored **compact** (summary only) and rebuilt
 
 ## 11. Testing
 
-- **Engine:** 531 tests (`pytest`) — agent contract and banned words, every engine (Compliance, Cost, Duplicate
+- **Engine:** 599 tests (`pytest`) — agent contract and banned words, every engine (Compliance, Cost, Duplicate
   & Split, Delay) including NOT_ASSESSABLE cases, the risk score, bands and reasons, migrations, fusion maths,
   validation and impossible dates, orchestrator (an agent crash never becomes a finding), config, migrations,
   API and auth (scoping, dev-mode refusal on Vercel).

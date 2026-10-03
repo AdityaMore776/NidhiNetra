@@ -44,6 +44,13 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
+**3 Oct 2026: Cost Estimate engine built (T097; shown, not counted; PR open after #95).**
+- **What it does:** it reads the agency's cost estimate form and asks only when certain: a confirmed quantity above
+  what the size needs, or a price above the district's standard item **and** the MP's amount.
+- **Measured** on 2026 UP works it never saw: 0 of 42 real works asked about; planted ×1.5 prices 42 of 42; size
+  changes 0 of 204 answers.
+- **Still needed:** the form screens (T094), the official rates (T096), then proof and switch-on (T098).
+
 **3 Oct 2026: Cost v3 started (owner's pivot; PR open).** The implementing agency fills a full cost estimate form; the
 Cost agent will compare it with the same kind and size of work in the same district, then with the MP's amount. Done:
 the form's field list, checks and routes (T093), the UP reference from real works (T095). Next: the form screens (T094,

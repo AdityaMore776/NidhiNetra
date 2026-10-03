@@ -15,6 +15,7 @@ them: what each checks, how, what we measured, and where it stands.
 | A1 | Eligibility | Before sanction | ✅ **in the engine** as Guideline Compliance rule R07 (v2 reader) | **Works** — 56% precision on a fresh sample |
 | A2 | Duplicate & Split | Before sanction | ✅ **in the engine**, compares any work live (T051) | fresh pairs 20/40 real repeats, same-site splits 9/15 |
 | A3 | Cost | Before sanction | ✅ **live** (v2 ready, T020) | v2: top 30 flags 10/30 real price questions (v1 0/30); 55% of 5× mark-ups caught at 1.3% false alarms |
+| A3b | Cost Estimate (Cost v3) | Before sanction | 🧪 **in the engine, shown, not counted** (T097, 3 Oct 2026): runs only on works with the agency's cost estimate form | UP hold-out (2026 works, reference before 2026): 0 of 42 real works above the question line; planted price ×1.5 / ×2 / ×3 asked 42/42, ×1.25 9/42, ×1.1 0/42; size ×½ / ×2 / ×5 changed 0 of 204 answers; 26 of 68 works could not be compared (no tight group) |
 | B1 | Site Progress (+ plaque) | During construction | 🔧 **v2 built, off** (T510, 2 Oct 2026): free local readers (CLIP + plaque OCR), optional Gemini key | 34 unit tests + an end-to-end smoke test; go/no-go on the pilot's real photos still to run (`site_progress_trial.py`) |
 | B2 | Photo Forensics | During construction | ✅ **in the engine as Photo Evidence** (T310), shown, not counted | exact copies + fingerprint; reproduces the 2 real reuse cases, 0 of 3 combined files flagged |
 | B3 | Geo-Location | During construction | ✅ **in the engine as Photo Evidence** (T310), shown, not counted | 190 stamps on 170 works; 187 inside, 2 at the border, 0 outside; the 3 photos older than the recommendation |
@@ -171,6 +172,25 @@ Two rules are enforced in code, not trusted to each agent:
   is a bundle for the price (it stays one place for Duplicate & Split). 12 random real Cost flags read by eye: 3 real
   price questions, 5 grey, 4 not; the fix drops 7 of the 140 dashboard flags, all rightly. The planted-test misses at
   5x/10x sit in the comfort zone or read as "a far bigger project", by design (FINDINGS "T056").
+
+### A3b Cost Estimate (Cost v3) — *Is the agency's estimate right for this size of work here?* 🧪 shown, not counted
+
+The implementing agency fills a full cost estimate form (`docs/specs/2026-10-03-cost-estimate-form.md`); normal mistakes
+are caught on the form, never flagged. The engine (`agents/cost_estimate/`) asks only when it is certain
+(`docs/plans/T097-cost-agent-v3.md`):
+- **`MATERIAL_QUANTITY_ABOVE_SIZE`**: a material the agency confirmed is more than 25% above what the size needs
+  (`cost_form/norms.py`: more batteries, fittings or poles than solar lights; pavers beyond the path's area; cement
+  beyond an M10–M20 slab's volume by the IS 456 nominal mixes).
+- **`ESTIMATE_ABOVE_STANDARD_AND_MP`**: the price per unit is more than 25% above the 98th percentile of the same
+  standard item in the district (or state), **and** the estimate is more than 10% above the MP's amount. It needs two
+  signals because real works record no wattage or height.
+
+A group of real works is compared only when it has 30+ works, is tight (p90 within +25% of the median), and is
+priced in the form's own unit of size. Roads (priced per m²) are never compared with roads per metre.
+
+In Uttar Pradesh today that means solar street lights, and high masts in Kheri, Sitapur and Bareilly; everything else
+answers "could not check" until the Schedule of Rates (T096) or completed forms arrive. Line-by-line rates wait for
+T096. Numbers: FINDINGS "T097".
 
 ## B · While the work is built
 
