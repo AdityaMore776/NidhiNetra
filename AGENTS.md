@@ -194,8 +194,13 @@ Bigger than one session? That's normal. Push at the end of every session.
   alerts, role dashboards, **Inspection Planner (headline)**, field app, pre-sanction check → learning loop, proven
   by a planted-anomaly test. The earlier 12-checker design is a **side track** (TASKS.md M9), built after the core.
 - Build order = `docs/team/TASKS.md`: core T0xx tasks first, lowest ID first.
-- Site Progress judges the officer's **own free-text claims** against the photos (shown / not shown / can't
-  tell). Never describe it as a fixed yes/no checklist.
+- **Four agents only** (owner, 3 Oct 2026; plan `docs/plans/T120-four-agents.md`, tasks T120–T126): Cost (every line
+  against the district's rates, then the whole estimate), Duplicate Work, Time & Rules (the 75-day sanction clock and a
+  comfort window from the form's estimated time to completion), Site Progress (a monthly site video at fixed
+  viewpoints with GPS). Each flags only what is likely fraud, never a minor mistake. The other engines retire with
+  T125.
+- Site Progress judges the agency's or officer's **own claims** against the site's pictures and videos (shown / not
+  shown / can't tell). Never describe it as a fixed yes/no checklist.
 - Pre-2023 and post-2023 works are different populations (eSAKSHI went digital ~2023); never pool them.
   The era boundary keys on `recommended_date`, never on `fy`.
 - Real evidence comes from eSAKSHI's public endpoints (pilot sample, polite rate), never scraped faster.

@@ -36,6 +36,63 @@ A **checker** (the design calls them "agents"; not to be confused with your AI) 
 
 ---
 
+## M1c — Four agents only (owner's pivot, 3 Oct 2026): Cost, Duplicate Work, Time & Rules, Site Progress
+
+The owner's decision: four agents, each flagging only what is likely fraud, never minor mistakes. The plan, in plain
+words and ready for the deck: [`docs/plans/T120-four-agents.md`](../plans/T120-four-agents.md). Every new check stays
+off (shown, not counted) until it meets the plan's §14 target.
+
+### T120 · Four-agent architecture plan  ·  S  ·  docs
+**What:** the prototype architecture of the four agents, the review of the owner's Site Progress design, the timing
+facts measured on the dashboard (`data/trial/four_agents_timing.py`).
+**Done when:** [x] plan written · [x] timing facts in `results/four_agents_timing.txt` and FINDINGS · [ ] owner's go-ahead
+
+### T121 · Cost: every line against the district's rates, then the whole estimate  ·  L  ·  engine + data  ·  Depends on: T099
+**What:** plan §6. Each confirmed line priced against its SoR code, the district's recent rates (5+ forms from 3+
+agencies, never the agency's own) or the standard item; quantities against the size norms; charges and site
+conditions against the map; then the fair estimate and the gap. Asks only when 60%+ of the money is compared and the
+gap is 15%+ and Rs 50,000+ (starting values). SoR lines switch on once T096 lands; the rest can be built and tested
+on planted forms first.
+**Done when:** [ ] planted forms of plan §14 (9 in 10 padded by 20%+ caught, at most 2 in 100 honest asked) · [ ]
+CAN'T CHECK and NOT_APPLICABLE cases · [ ] the officer's sentence names the top three lines · [ ] FINDINGS + CATALOG
+
+### T122 · Time & Rules agent: the 75-day clock and the comfort window  ·  M  ·  engine  ·  Depends on: T099
+**What:** plan §8. One agent from R01 (the clock, less election days), R06 (impossible dates), R13 and R14 (finished in
+days), plus the comfort window: the form's "Expected duration" field renamed "Estimated time to completion", the
+estimate checked against the band for its kind and size (an engineers' minimum table with a source per row, and
+eSAKSHI's measured 90th percentile), the early and late lines, `FINISHED_TOO_FAST`, `BUILT_BEFORE_SANCTION`,
+`PAST_PROMISED_TIME`, `SANCTIONED_LATE` (a fact, never queues alone).
+**Done when:** [ ] tests at both lines' edges, padded and too-short estimates, declared lost months · [ ] dashboard
+re-run: 20+ `FINISHED_TOO_FAST` read by eye, 9 in 10 worth checking · [ ] no work queued on lateness alone
+
+### T123 · Site capture app: viewpoints, the walk, the site map, the seal  ·  L  ·  web + engine  ·  Depends on: T099
+**What:** plan §9.3 and §9.8. Mobile web first (camera, GPS, motion sensors): the site opened from the form's map pins,
+the first visit's viewpoints and zones, the monthly guided return with last month's view shown faintly, the at-site
+checks that refuse a bad video, offline filming, the sealed upload; faces blurred before storage. A small Android app
+for the mock-location and phone-integrity checks comes after.
+**Done when:** [ ] a first visit and a monthly visit filmed end to end on a phone · [ ] a gallery upload and an edited
+file refused · [ ] screenshots on a phone in the PR
+
+### T124 · Site Progress v3: the six checks on video  ·  L  ·  engine  ·  Depends on: T123
+**What:** plan §9.4 and §9.5: live and sealed, at this site (GPS and views both), new footage (fingerprints across
+works and months), zones shown, change since last month at the same viewpoint, the agency's claim judged shown / not
+shown / can't tell (the vision model on its free tier, capped). Findings only as in §9.5; notes never counted.
+**Done when:** [ ] unit tests for each check and each finding, NOT_APPLICABLE (no videos) and NOT_ASSESSABLE · [ ] the
+photo reuse numbers of FINDINGS B2 reproduced on kept frames
+
+### T125 · Four agents only: registry, scoring, web; retire the rest  ·  M  ·  engine + web  ·  Depends on: T122
+**What:** plan §12. The registry holds Cost, Duplicate Work, Time & Rules and Site Progress; Guideline Compliance,
+Fund Flow, Office Patterns, Photo Evidence and Paperwork go to `RETIRED` (old results still read by name); fusion
+weights for four; the web's agent list, how-it-works and explain pages.
+**Done when:** [ ] engine and web checks pass · [ ] dashboard queue before / after in FINDINGS
+
+### T126 · Site Progress field trial: honest visits and planted tricks  ·  M  ·  data + eval  ·  **human-task**  ·  Depends on: T124
+**What:** plan §14: 3–5 real public works near teammates (with permission), three monthly visits each, and each trick
+of §9.6 planted. Only readings and blurred frames are kept; no video enters the repo.
+**Done when:** [ ] each trick caught 9 in 10 · [ ] a finding on at most 1 in 30 honest visits · [ ] FINDINGS
+
+---
+
 ## M0 — Foundations
 
 ### T001 · Verify the 2023 guideline limits (45 vs 75 days; Annexure-II)  ·  S  ·  research  ·  human task
