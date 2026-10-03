@@ -1,0 +1,1877 @@
+{
+ "state": "Uttar Pradesh",
+ "source": "eSAKSHI dashboard tables, as of 2026-10-02",
+ "works": 8702,
+ "min_group": 10,
+ "note": "aggregates only; eSAKSHI states no width, thickness or specification",
+ "types": {
+  "STREET_LIGHT": {
+   "works": 5141,
+   "amount": {
+    "n": 5141,
+    "p10": 19992,
+    "p25": 83515,
+    "median": 173499,
+    "p75": 240689,
+    "p90": 270000,
+    "p95": 375000,
+    "p98": 906406,
+    "band_pct": {
+     "below": 88.5,
+     "above": 55.6
+    },
+    "p98_above_median_pct": 422.4
+   },
+   "pricing_unit": "per unit",
+   "unit_cost": {
+    "n": 369,
+    "p10": 20878,
+    "p25": 20896,
+    "median": 20944,
+    "p75": 20944,
+    "p90": 21899,
+    "p95": 40669,
+    "p98": 82609,
+    "band_pct": {
+     "below": 0.3,
+     "above": 4.6
+    },
+    "p98_above_median_pct": 294.4
+   },
+   "unit_cost_by_year": {
+    "2024": {
+     "n": 182,
+     "p10": 20878,
+     "p25": 20878,
+     "median": 20896,
+     "p75": 20896,
+     "p90": 30577,
+     "p95": 61142,
+     "p98": 93985,
+     "band_pct": {
+      "below": 0.1,
+      "above": 46.3
+     },
+     "p98_above_median_pct": 349.8
+    },
+    "2025": {
+     "n": 171,
+     "p10": 20944,
+     "p25": 20944,
+     "median": 20944,
+     "p75": 20944,
+     "p90": 20944,
+     "p95": 20944,
+     "p98": 33510,
+     "band_pct": {
+      "below": 0.0,
+      "above": 0.0
+     },
+     "p98_above_median_pct": 60.0
+    },
+    "2026": {
+     "n": 16,
+     "p10": 19101,
+     "p25": 19981,
+     "median": 23588,
+     "p75": 23588,
+     "p90": 25851,
+     "p95": 29261,
+     "p98": 31324,
+     "band_pct": {
+      "below": 19.0,
+      "above": 9.6
+     },
+     "p98_above_median_pct": 32.8
+    }
+   },
+   "unit_cost_by_district": {
+    "Bareilly": {
+     "n": 26,
+     "p10": 19709,
+     "p25": 22991,
+     "median": 40669,
+     "p75": 57260,
+     "p90": 85404,
+     "p95": 85404,
+     "p98": 128106,
+     "band_pct": {
+      "below": 51.5,
+      "above": 110.0
+     },
+     "p98_above_median_pct": 215.0
+    },
+    "Jaunpur": {
+     "n": 139,
+     "p10": 20878,
+     "p25": 20878,
+     "median": 20896,
+     "p75": 20896,
+     "p90": 20896,
+     "p95": 20896,
+     "p98": 20896,
+     "band_pct": {
+      "below": 0.1,
+      "above": 0.0
+     },
+     "p98_above_median_pct": 0.0
+    },
+    "Varanasi": {
+     "n": 177,
+     "p10": 20944,
+     "p25": 20944,
+     "median": 20944,
+     "p75": 20944,
+     "p90": 20944,
+     "p95": 20956,
+     "p98": 20956,
+     "band_pct": {
+      "below": 0.0,
+      "above": 0.0
+     },
+     "p98_above_median_pct": 0.1
+    }
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 2628,
+     "p10": 15,
+     "p25": 31,
+     "median": 82,
+     "p75": 130,
+     "p90": 219,
+     "p95": 264,
+     "p98": 308,
+     "band_pct": {
+      "below": 81.7,
+      "above": 167.1
+     },
+     "p98_above_median_pct": 275.6
+    },
+    "sanction_to_completion": {
+     "n": 2273,
+     "p10": 119,
+     "p25": 152,
+     "median": 295,
+     "p75": 425,
+     "p90": 460,
+     "p95": 547,
+     "p98": 566,
+     "band_pct": {
+      "below": 59.7,
+      "above": 55.9
+     },
+     "p98_above_median_pct": 91.9
+    },
+    "recommended_to_completion": {
+     "n": 2273,
+     "p10": 180,
+     "p25": 216,
+     "median": 408,
+     "p75": 467,
+     "p90": 664,
+     "p95": 667,
+     "p98": 723,
+     "band_pct": {
+      "below": 55.8,
+      "above": 62.7
+     },
+     "p98_above_median_pct": 77.2
+    }
+   }
+  },
+  "ROAD_CC": {
+   "works": 1129,
+   "amount": {
+    "n": 1129,
+    "p10": 396028,
+    "p25": 626226,
+    "median": 968898,
+    "p75": 1344467,
+    "p90": 1926458,
+    "p95": 2361971,
+    "p98": 2663993,
+    "band_pct": {
+     "below": 59.1,
+     "above": 98.8
+    },
+    "p98_above_median_pct": 175.0
+   },
+   "pricing_unit": "per metre",
+   "unit_cost": {
+    "n": 493,
+    "p10": 4491,
+    "p25": 5838,
+    "median": 7698,
+    "p75": 10145,
+    "p90": 12201,
+    "p95": 13483,
+    "p98": 15711,
+    "band_pct": {
+     "below": 41.7,
+     "above": 58.5
+    },
+    "p98_above_median_pct": 104.1
+   },
+   "unit_cost_by_year": {
+    "2024": {
+     "n": 168,
+     "p10": 4000,
+     "p25": 6253,
+     "median": 8345,
+     "p75": 10676,
+     "p90": 12256,
+     "p95": 13280,
+     "p98": 15103,
+     "band_pct": {
+      "below": 52.1,
+      "above": 46.9
+     },
+     "p98_above_median_pct": 81.0
+    },
+    "2025": {
+     "n": 123,
+     "p10": 4735,
+     "p25": 5791,
+     "median": 7676,
+     "p75": 9871,
+     "p90": 11677,
+     "p95": 13721,
+     "p98": 16434,
+     "band_pct": {
+      "below": 38.3,
+      "above": 52.1
+     },
+     "p98_above_median_pct": 114.1
+    },
+    "2026": {
+     "n": 202,
+     "p10": 4765,
+     "p25": 5792,
+     "median": 7154,
+     "p75": 9976,
+     "p90": 12205,
+     "p95": 13073,
+     "p98": 15751,
+     "band_pct": {
+      "below": 33.4,
+      "above": 70.6
+     },
+     "p98_above_median_pct": 120.2
+    }
+   },
+   "unit_cost_by_district": {
+    "Aligarh": {
+     "n": 20,
+     "p10": 6953,
+     "p25": 7603,
+     "median": 10035,
+     "p75": 11905,
+     "p90": 13367,
+     "p95": 13713,
+     "p98": 13718,
+     "band_pct": {
+      "below": 30.7,
+      "above": 33.2
+     },
+     "p98_above_median_pct": 36.7
+    },
+    "Amroha": {
+     "n": 29,
+     "p10": 7569,
+     "p25": 8988,
+     "median": 11148,
+     "p75": 11746,
+     "p90": 13930,
+     "p95": 15889,
+     "p98": 17712,
+     "band_pct": {
+      "below": 32.1,
+      "above": 25.0
+     },
+     "p98_above_median_pct": 58.9
+    },
+    "Ballia": {
+     "n": 20,
+     "p10": 2388,
+     "p25": 4685,
+     "median": 5835,
+     "p75": 5992,
+     "p90": 6676,
+     "p95": 7022,
+     "p98": 8789,
+     "band_pct": {
+      "below": 59.1,
+      "above": 14.4
+     },
+     "p98_above_median_pct": 50.6
+    },
+    "Basti": {
+     "n": 30,
+     "p10": 6050,
+     "p25": 6390,
+     "median": 7363,
+     "p75": 9090,
+     "p90": 9884,
+     "p95": 10474,
+     "p98": 11378,
+     "band_pct": {
+      "below": 17.8,
+      "above": 34.2
+     },
+     "p98_above_median_pct": 54.5
+    },
+    "Bulandshahr": {
+     "n": 17,
+     "p10": 6474,
+     "p25": 7596,
+     "median": 9013,
+     "p75": 10145,
+     "p90": 13620,
+     "p95": 15273,
+     "p98": 17352,
+     "band_pct": {
+      "below": 28.2,
+      "above": 51.1
+     },
+     "p98_above_median_pct": 92.5
+    },
+    "Deoria": {
+     "n": 36,
+     "p10": 6955,
+     "p25": 7278,
+     "median": 8386,
+     "p75": 8899,
+     "p90": 10466,
+     "p95": 10918,
+     "p98": 11389,
+     "band_pct": {
+      "below": 17.1,
+      "above": 24.8
+     },
+     "p98_above_median_pct": 35.8
+    },
+    "Firozabad": {
+     "n": 18,
+     "p10": 8858,
+     "p25": 9503,
+     "median": 10210,
+     "p75": 10990,
+     "p90": 16480,
+     "p95": 17435,
+     "p98": 18965,
+     "band_pct": {
+      "below": 13.2,
+      "above": 61.4
+     },
+     "p98_above_median_pct": 85.8
+    },
+    "Ghazipur": {
+     "n": 17,
+     "p10": 3984,
+     "p25": 4000,
+     "median": 4000,
+     "p75": 4745,
+     "p90": 5203,
+     "p95": 5485,
+     "p98": 5694,
+     "band_pct": {
+      "below": 0.4,
+      "above": 30.1
+     },
+     "p98_above_median_pct": 42.4
+    },
+    "Hapur": {
+     "n": 23,
+     "p10": 7119,
+     "p25": 7718,
+     "median": 9470,
+     "p75": 11204,
+     "p90": 15481,
+     "p95": 17548,
+     "p98": 22302,
+     "band_pct": {
+      "below": 24.8,
+      "above": 63.5
+     },
+     "p98_above_median_pct": 135.5
+    },
+    "Jaunpur": {
+     "n": 13,
+     "p10": 4410,
+     "p25": 4642,
+     "median": 5042,
+     "p75": 5259,
+     "p90": 5784,
+     "p95": 5795,
+     "p98": 5800,
+     "band_pct": {
+      "below": 12.5,
+      "above": 14.7
+     },
+     "p98_above_median_pct": 15.0
+    },
+    "Jhansi": {
+     "n": 13,
+     "p10": 4984,
+     "p25": 4986,
+     "median": 4987,
+     "p75": 4990,
+     "p90": 4990,
+     "p95": 4990,
+     "p98": 4990,
+     "band_pct": {
+      "below": 0.1,
+      "above": 0.1
+     },
+     "p98_above_median_pct": 0.1
+    },
+    "Kheri": {
+     "n": 14,
+     "p10": 8631,
+     "p25": 9255,
+     "median": 10605,
+     "p75": 11605,
+     "p90": 11965,
+     "p95": 12465,
+     "p98": 13001,
+     "band_pct": {
+      "below": 18.6,
+      "above": 12.8
+     },
+     "p98_above_median_pct": 22.6
+    },
+    "Kushinagar": {
+     "n": 14,
+     "p10": 7859,
+     "p25": 8315,
+     "median": 8354,
+     "p75": 8993,
+     "p90": 9085,
+     "p95": 10024,
+     "p98": 11055,
+     "band_pct": {
+      "below": 5.9,
+      "above": 8.8
+     },
+     "p98_above_median_pct": 32.3
+    },
+    "Lalitpur": {
+     "n": 18,
+     "p10": 4761,
+     "p25": 4765,
+     "median": 4773,
+     "p75": 4957,
+     "p90": 4973,
+     "p95": 4980,
+     "p98": 4984,
+     "band_pct": {
+      "below": 0.2,
+      "above": 4.2
+     },
+     "p98_above_median_pct": 4.4
+    },
+    "Lucknow": {
+     "n": 15,
+     "p10": 4156,
+     "p25": 6167,
+     "median": 8483,
+     "p75": 12131,
+     "p90": 12559,
+     "p95": 13219,
+     "p98": 14088,
+     "band_pct": {
+      "below": 51.0,
+      "above": 48.0
+     },
+     "p98_above_median_pct": 66.1
+    },
+    "Mahrajganj": {
+     "n": 27,
+     "p10": 10512,
+     "p25": 10908,
+     "median": 12259,
+     "p75": 12419,
+     "p90": 12881,
+     "p95": 13103,
+     "p98": 13347,
+     "band_pct": {
+      "below": 14.2,
+      "above": 5.1
+     },
+     "p98_above_median_pct": 8.9
+    },
+    "Mainpuri": {
+     "n": 46,
+     "p10": 4318,
+     "p25": 6099,
+     "median": 6860,
+     "p75": 7260,
+     "p90": 10053,
+     "p95": 11501,
+     "p98": 14116,
+     "band_pct": {
+      "below": 37.1,
+      "above": 46.5
+     },
+     "p98_above_median_pct": 105.8
+    },
+    "Saharanpur": {
+     "n": 68,
+     "p10": 4725,
+     "p25": 6402,
+     "median": 7023,
+     "p75": 8041,
+     "p90": 9656,
+     "p95": 10291,
+     "p98": 10702,
+     "band_pct": {
+      "below": 32.7,
+      "above": 37.5
+     },
+     "p98_above_median_pct": 52.4
+    }
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 495,
+     "p10": 18,
+     "p25": 34,
+     "median": 56,
+     "p75": 98,
+     "p90": 169,
+     "p95": 211,
+     "p98": 278,
+     "band_pct": {
+      "below": 67.9,
+      "above": 201.8
+     },
+     "p98_above_median_pct": 396.8
+    },
+    "sanction_to_completion": {
+     "n": 411,
+     "p10": 142,
+     "p25": 192,
+     "median": 286,
+     "p75": 394,
+     "p90": 471,
+     "p95": 550,
+     "p98": 628,
+     "band_pct": {
+      "below": 50.3,
+      "above": 64.7
+     },
+     "p98_above_median_pct": 119.6
+    },
+    "recommended_to_completion": {
+     "n": 411,
+     "p10": 206,
+     "p25": 245,
+     "median": 381,
+     "p75": 451,
+     "p90": 528,
+     "p95": 644,
+     "p98": 699,
+     "band_pct": {
+      "below": 45.9,
+      "above": 38.6
+     },
+     "p98_above_median_pct": 83.5
+    }
+   }
+  },
+  "FOOTPATH": {
+   "works": 800,
+   "amount": {
+    "n": 800,
+    "p10": 299688,
+    "p25": 359975,
+    "median": 692090,
+    "p75": 998466,
+    "p90": 1573336,
+    "p95": 1841527,
+    "p98": 2320652,
+    "band_pct": {
+     "below": 56.7,
+     "above": 127.3
+    },
+    "p98_above_median_pct": 235.3
+   },
+   "pricing_unit": "per metre",
+   "unit_cost": {
+    "n": 206,
+    "p10": 4505,
+    "p25": 4987,
+    "median": 5789,
+    "p75": 9202,
+    "p90": 11284,
+    "p95": 12729,
+    "p98": 14460,
+    "band_pct": {
+     "below": 22.2,
+     "above": 94.9
+    },
+    "p98_above_median_pct": 149.8
+   },
+   "unit_cost_by_year": {
+    "2024": {
+     "n": 135,
+     "p10": 4497,
+     "p25": 4977,
+     "median": 5322,
+     "p75": 9681,
+     "p90": 11975,
+     "p95": 13301,
+     "p98": 14596,
+     "band_pct": {
+      "below": 15.5,
+      "above": 125.0
+     },
+     "p98_above_median_pct": 174.2
+    },
+    "2025": {
+     "n": 29,
+     "p10": 4943,
+     "p25": 5735,
+     "median": 7725,
+     "p75": 9159,
+     "p90": 9714,
+     "p95": 9773,
+     "p98": 12953,
+     "band_pct": {
+      "below": 36.0,
+      "above": 25.8
+     },
+     "p98_above_median_pct": 67.7
+    },
+    "2026": {
+     "n": 42,
+     "p10": 4163,
+     "p25": 5009,
+     "median": 5987,
+     "p75": 8203,
+     "p90": 10551,
+     "p95": 10829,
+     "p98": 11572,
+     "band_pct": {
+      "below": 30.5,
+      "above": 76.2
+     },
+     "p98_above_median_pct": 93.3
+    }
+   },
+   "unit_cost_by_district": {
+    "Ballia": {
+     "n": 19,
+     "p10": 4689,
+     "p25": 4984,
+     "median": 4991,
+     "p75": 4995,
+     "p90": 5357,
+     "p95": 6933,
+     "p98": 7641,
+     "band_pct": {
+      "below": 6.1,
+      "above": 7.3
+     },
+     "p98_above_median_pct": 53.1
+    },
+    "Balrampur": {
+     "n": 16,
+     "p10": 4768,
+     "p25": 5181,
+     "median": 5470,
+     "p75": 6199,
+     "p90": 6289,
+     "p95": 6297,
+     "p98": 6311,
+     "band_pct": {
+      "below": 12.8,
+      "above": 15.0
+     },
+     "p98_above_median_pct": 15.4
+    },
+    "Bulandshahr": {
+     "n": 37,
+     "p10": 5660,
+     "p25": 6948,
+     "median": 8407,
+     "p75": 9159,
+     "p90": 9761,
+     "p95": 10696,
+     "p98": 11040,
+     "band_pct": {
+      "below": 32.7,
+      "above": 16.1
+     },
+     "p98_above_median_pct": 31.3
+    },
+    "Firozabad": {
+     "n": 14,
+     "p10": 7872,
+     "p25": 8129,
+     "median": 10577,
+     "p75": 11834,
+     "p90": 14707,
+     "p95": 17981,
+     "p98": 21460,
+     "band_pct": {
+      "below": 25.6,
+      "above": 39.1
+     },
+     "p98_above_median_pct": 102.9
+    },
+    "Gautam Buddha Nagar": {
+     "n": 20,
+     "p10": 8723,
+     "p25": 9971,
+     "median": 11091,
+     "p75": 12873,
+     "p90": 13398,
+     "p95": 14724,
+     "p98": 20496,
+     "band_pct": {
+      "below": 21.3,
+      "above": 20.8
+     },
+     "p98_above_median_pct": 84.8
+    },
+    "Gonda": {
+     "n": 27,
+     "p10": 4358,
+     "p25": 4710,
+     "median": 5029,
+     "p75": 5225,
+     "p90": 5238,
+     "p95": 5249,
+     "p98": 5340,
+     "band_pct": {
+      "below": 13.4,
+      "above": 4.2
+     },
+     "p98_above_median_pct": 6.2
+    },
+    "Lucknow": {
+     "n": 16,
+     "p10": 3867,
+     "p25": 6235,
+     "median": 8305,
+     "p75": 9800,
+     "p90": 10801,
+     "p95": 11351,
+     "p98": 12056,
+     "band_pct": {
+      "below": 53.4,
+      "above": 30.0
+     },
+     "p98_above_median_pct": 45.2
+    }
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 300,
+     "p10": 22,
+     "p25": 35,
+     "median": 68,
+     "p75": 84,
+     "p90": 108,
+     "p95": 184,
+     "p98": 287,
+     "band_pct": {
+      "below": 67.6,
+      "above": 58.8
+     },
+     "p98_above_median_pct": 322.1
+    },
+    "sanction_to_completion": {
+     "n": 251,
+     "p10": 131,
+     "p25": 198,
+     "median": 278,
+     "p75": 367,
+     "p90": 463,
+     "p95": 497,
+     "p98": 550,
+     "band_pct": {
+      "below": 52.9,
+      "above": 66.5
+     },
+     "p98_above_median_pct": 97.8
+    },
+    "recommended_to_completion": {
+     "n": 251,
+     "p10": 177,
+     "p25": 255,
+     "median": 349,
+     "p75": 444,
+     "p90": 485,
+     "p95": 576,
+     "p98": 682,
+     "band_pct": {
+      "below": 49.3,
+      "above": 39.0
+     },
+     "p98_above_median_pct": 95.4
+    }
+   }
+  },
+  "BOREWELL": {
+   "works": 699,
+   "amount": {
+    "n": 699,
+    "p10": 50781,
+    "p25": 73911,
+    "median": 73919,
+    "p75": 73926,
+    "p90": 73934,
+    "p95": 73934,
+    "p98": 550000,
+    "band_pct": {
+     "below": 31.3,
+     "above": 0.0
+    },
+    "p98_above_median_pct": 644.1
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 371,
+     "p10": 110,
+     "p25": 111,
+     "median": 111,
+     "p75": 174,
+     "p90": 174,
+     "p95": 260,
+     "p98": 392,
+     "band_pct": {
+      "below": 0.9,
+      "above": 56.8
+     },
+     "p98_above_median_pct": 253.2
+    },
+    "sanction_to_completion": {
+     "n": 302,
+     "p10": 290,
+     "p25": 292,
+     "median": 384,
+     "p75": 392,
+     "p90": 392,
+     "p95": 396,
+     "p98": 396,
+     "band_pct": {
+      "below": 24.5,
+      "above": 2.1
+     },
+     "p98_above_median_pct": 3.1
+    },
+    "recommended_to_completion": {
+     "n": 302,
+     "p10": 464,
+     "p25": 493,
+     "median": 495,
+     "p75": 503,
+     "p90": 506,
+     "p95": 506,
+     "p98": 605,
+     "band_pct": {
+      "below": 6.3,
+      "above": 2.2
+     },
+     "p98_above_median_pct": 22.2
+    }
+   }
+  },
+  "STREET_LIGHT (high mast)": {
+   "works": 232,
+   "amount": {
+    "n": 232,
+    "p10": 156959,
+    "p25": 166017,
+    "median": 173855,
+    "p75": 860445,
+    "p90": 2243292,
+    "p95": 2860339,
+    "p98": 5123254,
+    "band_pct": {
+     "below": 9.7,
+     "above": 1190.3
+    },
+    "p98_above_median_pct": 2846.9
+   },
+   "pricing_unit": "per high mast",
+   "unit_cost": {
+    "n": 232,
+    "p10": 156959,
+    "p25": 166017,
+    "median": 172675,
+    "p75": 196200,
+    "p90": 277869,
+    "p95": 312789,
+    "p98": 408965,
+    "band_pct": {
+     "below": 9.1,
+     "above": 60.9
+    },
+    "p98_above_median_pct": 136.8
+   },
+   "unit_cost_by_year": {
+    "2024": {
+     "n": 141,
+     "p10": 166016,
+     "p25": 166017,
+     "median": 166017,
+     "p75": 173863,
+     "p90": 312780,
+     "p95": 312789,
+     "p98": 319000,
+     "band_pct": {
+      "below": 0.0,
+      "above": 88.4
+     },
+     "p98_above_median_pct": 92.1
+    },
+    "2025": {
+     "n": 36,
+     "p10": 172299,
+     "p25": 172675,
+     "median": 184437,
+     "p75": 196200,
+     "p90": 249261,
+     "p95": 282427,
+     "p98": 425812,
+     "band_pct": {
+      "below": 6.6,
+      "above": 35.1
+     },
+     "p98_above_median_pct": 130.9
+    },
+    "2026": {
+     "n": 55,
+     "p10": 156959,
+     "p25": 156959,
+     "median": 156959,
+     "p75": 248693,
+     "p90": 268345,
+     "p95": 469041,
+     "p98": 880096,
+     "band_pct": {
+      "below": 0.0,
+      "above": 71.0
+     },
+     "p98_above_median_pct": 460.7
+    }
+   },
+   "unit_cost_by_district": {
+    "Agra": {
+     "n": 18,
+     "p10": 230839,
+     "p25": 248773,
+     "median": 249053,
+     "p75": 249255,
+     "p90": 249271,
+     "p95": 249288,
+     "p98": 249292,
+     "band_pct": {
+      "below": 7.3,
+      "above": 0.1
+     },
+     "p98_above_median_pct": 0.1
+    },
+    "Bareilly": {
+     "n": 30,
+     "p10": 172286,
+     "p25": 172675,
+     "median": 172675,
+     "p75": 196200,
+     "p90": 196200,
+     "p95": 196200,
+     "p98": 304141,
+     "band_pct": {
+      "below": 0.2,
+      "above": 13.6
+     },
+     "p98_above_median_pct": 76.1
+    },
+    "Deoria": {
+     "n": 16,
+     "p10": 312780,
+     "p25": 312780,
+     "median": 312789,
+     "p75": 314342,
+     "p90": 319000,
+     "p95": 365750,
+     "p98": 449899,
+     "band_pct": {
+      "below": 0.0,
+      "above": 2.0
+     },
+     "p98_above_median_pct": 43.8
+    },
+    "Kheri": {
+     "n": 96,
+     "p10": 156959,
+     "p25": 156959,
+     "median": 166017,
+     "p75": 166017,
+     "p90": 166017,
+     "p95": 166017,
+     "p98": 166017,
+     "band_pct": {
+      "below": 5.5,
+      "above": 0.0
+     },
+     "p98_above_median_pct": 0.0
+    },
+    "Sitapur": {
+     "n": 49,
+     "p10": 173597,
+     "p25": 173847,
+     "median": 173863,
+     "p75": 174797,
+     "p90": 174797,
+     "p95": 174797,
+     "p98": 174822,
+     "band_pct": {
+      "below": 0.2,
+      "above": 0.5
+     },
+     "p98_above_median_pct": 0.6
+    }
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 138,
+     "p10": 31,
+     "p25": 31,
+     "median": 31,
+     "p75": 37,
+     "p90": 135,
+     "p95": 135,
+     "p98": 199,
+     "band_pct": {
+      "below": 0.0,
+      "above": 335.5
+     },
+     "p98_above_median_pct": 542.6
+    },
+    "sanction_to_completion": {
+     "n": 136,
+     "p10": 176,
+     "p25": 184,
+     "median": 354,
+     "p75": 355,
+     "p90": 363,
+     "p95": 363,
+     "p98": 363,
+     "band_pct": {
+      "below": 50.1,
+      "above": 2.5
+     },
+     "p98_above_median_pct": 2.5
+    },
+    "recommended_to_completion": {
+     "n": 136,
+     "p10": 221,
+     "p25": 223,
+     "median": 385,
+     "p75": 386,
+     "p90": 394,
+     "p95": 394,
+     "p98": 408,
+     "band_pct": {
+      "below": 42.6,
+      "above": 2.3
+     },
+     "p98_above_median_pct": 6.0
+    }
+   }
+  },
+  "WATER_TANK": {
+   "works": 117,
+   "amount": {
+    "n": 117,
+    "p10": 176000,
+    "p25": 248749,
+    "median": 263802,
+    "p75": 352000,
+    "p90": 352942,
+    "p95": 371960,
+    "p98": 468651,
+    "band_pct": {
+     "below": 33.3,
+     "above": 33.8
+    },
+    "p98_above_median_pct": 77.7
+   },
+   "pricing_unit": "per unit",
+   "unit_cost": {
+    "n": 1,
+    "too_few": true
+   },
+   "unit_cost_by_year": {},
+   "unit_cost_by_district": {},
+   "days": {
+    "recommended_to_sanction": {
+     "n": 23,
+     "p10": 32,
+     "p25": 34,
+     "median": 99,
+     "p75": 99,
+     "p90": 99,
+     "p95": 99,
+     "p98": 156,
+     "band_pct": {
+      "below": 67.7,
+      "above": 0.0
+     },
+     "p98_above_median_pct": 57.7
+    },
+    "sanction_to_completion": {
+     "n": 21,
+     "p10": 314,
+     "p25": 314,
+     "median": 314,
+     "p75": 420,
+     "p90": 480,
+     "p95": 480,
+     "p98": 480,
+     "band_pct": {
+      "below": 0.0,
+      "above": 52.9
+     },
+     "p98_above_median_pct": 52.9
+    },
+    "recommended_to_completion": {
+     "n": 21,
+     "p10": 413,
+     "p25": 413,
+     "median": 413,
+     "p75": 457,
+     "p90": 512,
+     "p95": 512,
+     "p98": 512,
+     "band_pct": {
+      "below": 0.0,
+      "above": 24.0
+     },
+     "p98_above_median_pct": 24.0
+    }
+   }
+  },
+  "SOLAR_PLANT": {
+   "works": 95,
+   "amount": {
+    "n": 95,
+    "p10": 19199,
+    "p25": 19199,
+    "median": 19199,
+    "p75": 19981,
+    "p90": 243755,
+    "p95": 496435,
+    "p98": 5342484,
+    "band_pct": {
+     "below": 0.0,
+     "above": 1169.6
+    },
+    "p98_above_median_pct": 27726.9
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 89,
+     "p10": 49,
+     "p25": 49,
+     "median": 51,
+     "p75": 51,
+     "p90": 51,
+     "p95": 89,
+     "p98": 89,
+     "band_pct": {
+      "below": 3.9,
+      "above": 0.0
+     },
+     "p98_above_median_pct": 74.5
+    },
+    "sanction_to_completion": {
+     "n": 75,
+     "p10": 306,
+     "p25": 306,
+     "median": 306,
+     "p75": 306,
+     "p90": 306,
+     "p95": 306,
+     "p98": 306,
+     "band_pct": {
+      "below": 0.0,
+      "above": 0.0
+     },
+     "p98_above_median_pct": 0.0
+    },
+    "recommended_to_completion": {
+     "n": 75,
+     "p10": 355,
+     "p25": 355,
+     "median": 355,
+     "p75": 357,
+     "p90": 357,
+     "p95": 357,
+     "p98": 357,
+     "band_pct": {
+      "below": 0.0,
+      "above": 0.6
+     },
+     "p98_above_median_pct": 0.6
+    }
+   }
+  },
+  "SPORTS_EQUIPMENT": {
+   "works": 85,
+   "amount": {
+    "n": 85,
+    "p10": 686673,
+    "p25": 822505,
+    "median": 822505,
+    "p75": 822505,
+    "p90": 850000,
+    "p95": 1022886,
+    "p98": 1022886,
+    "band_pct": {
+     "below": 16.5,
+     "above": 3.3
+    },
+    "p98_above_median_pct": 24.4
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 30,
+     "p10": 86,
+     "p25": 126,
+     "median": 162,
+     "p75": 164,
+     "p90": 178,
+     "p95": 405,
+     "p98": 567,
+     "band_pct": {
+      "below": 47.0,
+      "above": 9.7
+     },
+     "p98_above_median_pct": 249.9
+    },
+    "sanction_to_completion": {
+     "n": 25,
+     "p10": 71,
+     "p25": 71,
+     "median": 278,
+     "p75": 332,
+     "p90": 463,
+     "p95": 534,
+     "p98": 534,
+     "band_pct": {
+      "below": 74.5,
+      "above": 66.5
+     },
+     "p98_above_median_pct": 92.1
+    },
+    "recommended_to_completion": {
+     "n": 25,
+     "p10": 233,
+     "p25": 233,
+     "median": 390,
+     "p75": 458,
+     "p90": 671,
+     "p95": 698,
+     "p98": 698,
+     "band_pct": {
+      "below": 40.3,
+      "above": 72.0
+     },
+     "p98_above_median_pct": 79.0
+    }
+   }
+  },
+  "CREMATORIUM": {
+   "works": 84,
+   "amount": {
+    "n": 84,
+    "p10": 347266,
+    "p25": 348905,
+    "median": 349194,
+    "p75": 350761,
+    "p90": 351635,
+    "p95": 502232,
+    "p98": 1458716,
+    "band_pct": {
+     "below": 0.6,
+     "above": 0.7
+    },
+    "p98_above_median_pct": 317.7
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 21,
+     "p10": 15,
+     "p25": 15,
+     "median": 15,
+     "p75": 15,
+     "p90": 15,
+     "p95": 15,
+     "p98": 16,
+     "band_pct": {
+      "below": 0.0,
+      "above": 0.0
+     },
+     "p98_above_median_pct": 8.0
+    },
+    "sanction_to_completion": {
+     "n": 20,
+     "p10": 239,
+     "p25": 239,
+     "median": 300,
+     "p75": 364,
+     "p90": 371,
+     "p95": 427,
+     "p98": 427,
+     "band_pct": {
+      "below": 20.3,
+      "above": 23.7
+     },
+     "p98_above_median_pct": 42.3
+    },
+    "recommended_to_completion": {
+     "n": 20,
+     "p10": 254,
+     "p25": 254,
+     "median": 315,
+     "p75": 379,
+     "p90": 386,
+     "p95": 442,
+     "p98": 442,
+     "band_pct": {
+      "below": 19.4,
+      "above": 22.6
+     },
+     "p98_above_median_pct": 40.3
+    }
+   }
+  },
+  "BUS_SHELTER": {
+   "works": 72,
+   "amount": {
+    "n": 72,
+    "p10": 660508,
+    "p25": 700000,
+    "median": 700000,
+    "p75": 850000,
+    "p90": 954524,
+    "p95": 1882365,
+    "p98": 6397300,
+    "band_pct": {
+     "below": 5.6,
+     "above": 36.4
+    },
+    "p98_above_median_pct": 813.9
+   },
+   "pricing_unit": "per unit",
+   "unit_cost": {
+    "n": 1,
+    "too_few": true
+   },
+   "unit_cost_by_year": {},
+   "unit_cost_by_district": {},
+   "days": {
+    "recommended_to_sanction": {
+     "n": 43,
+     "p10": 99,
+     "p25": 160,
+     "median": 203,
+     "p75": 239,
+     "p90": 239,
+     "p95": 239,
+     "p98": 239,
+     "band_pct": {
+      "below": 51.2,
+      "above": 17.7
+     },
+     "p98_above_median_pct": 17.7
+    },
+    "sanction_to_completion": {
+     "n": 2,
+     "too_few": true
+    },
+    "recommended_to_completion": {
+     "n": 2,
+     "too_few": true
+    }
+   }
+  },
+  "SCHOOL_BUILDING": {
+   "works": 71,
+   "amount": {
+    "n": 71,
+    "p10": 500000,
+    "p25": 500000,
+    "median": 880191,
+    "p75": 1000000,
+    "p90": 1500000,
+    "p95": 2000000,
+    "p98": 2499600,
+    "band_pct": {
+     "below": 43.2,
+     "above": 70.4
+    },
+    "p98_above_median_pct": 184.0
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 52,
+     "p10": 62,
+     "p25": 85,
+     "median": 130,
+     "p75": 183,
+     "p90": 214,
+     "p95": 233,
+     "p98": 330,
+     "band_pct": {
+      "below": 51.9,
+      "above": 65.3
+     },
+     "p98_above_median_pct": 155.1
+    },
+    "sanction_to_completion": {
+     "n": 28,
+     "p10": 22,
+     "p25": 124,
+     "median": 190,
+     "p75": 304,
+     "p90": 367,
+     "p95": 418,
+     "p98": 474,
+     "band_pct": {
+      "below": 88.5,
+      "above": 92.7
+     },
+     "p98_above_median_pct": 148.6
+    },
+    "recommended_to_completion": {
+     "n": 28,
+     "p10": 202,
+     "p25": 274,
+     "median": 342,
+     "p75": 429,
+     "p90": 500,
+     "p95": 534,
+     "p98": 591,
+     "band_pct": {
+      "below": 41.1,
+      "above": 45.9
+     },
+     "p98_above_median_pct": 72.6
+    }
+   }
+  },
+  "ELECTRICITY": {
+   "works": 42,
+   "amount": {
+    "n": 42,
+    "p10": 114149,
+    "p25": 132075,
+    "median": 206239,
+    "p75": 328273,
+    "p90": 970870,
+    "p95": 1055543,
+    "p98": 1231601,
+    "band_pct": {
+     "below": 44.7,
+     "above": 370.7
+    },
+    "p98_above_median_pct": 497.2
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 18,
+     "p10": 50,
+     "p25": 85,
+     "median": 122,
+     "p75": 166,
+     "p90": 235,
+     "p95": 284,
+     "p98": 286,
+     "band_pct": {
+      "below": 59.3,
+      "above": 91.8
+     },
+     "p98_above_median_pct": 133.5
+    },
+    "sanction_to_completion": {
+     "n": 8,
+     "too_few": true
+    },
+    "recommended_to_completion": {
+     "n": 8,
+     "too_few": true
+    }
+   }
+  },
+  "COMMUNITY_HALL": {
+   "works": 32,
+   "amount": {
+    "n": 32,
+    "p10": 870104,
+    "p25": 997058,
+    "median": 1348738,
+    "p75": 2370783,
+    "p90": 2422955,
+    "p95": 2431117,
+    "p98": 2438607,
+    "band_pct": {
+     "below": 35.5,
+     "above": 79.6
+    },
+    "p98_above_median_pct": 80.8
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 11,
+     "p10": 15,
+     "p25": 40,
+     "median": 152,
+     "p75": 426,
+     "p90": 550,
+     "p95": 566,
+     "p98": 576,
+     "band_pct": {
+      "below": 90.1,
+      "above": 261.8
+     },
+     "p98_above_median_pct": 278.7
+    },
+    "sanction_to_completion": {
+     "n": 6,
+     "too_few": true
+    },
+    "recommended_to_completion": {
+     "n": 6,
+     "too_few": true
+    }
+   }
+  },
+  "MEDICAL_EQUIPMENT": {
+   "works": 24,
+   "amount": {
+    "n": 24,
+    "p10": 20000,
+    "p25": 20000,
+    "median": 20000,
+    "p75": 20000,
+    "p90": 200000,
+    "p95": 1050000,
+    "p98": 1791300,
+    "band_pct": {
+     "below": 0.0,
+     "above": 900.0
+    },
+    "p98_above_median_pct": 8856.5
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 1,
+     "too_few": true
+    },
+    "sanction_to_completion": {
+     "n": 1,
+     "too_few": true
+    },
+    "recommended_to_completion": {
+     "n": 1,
+     "too_few": true
+    }
+   }
+  },
+  "BOUNDARY_WALL": {
+   "works": 19,
+   "amount": {
+    "n": 19,
+    "p10": 496705,
+    "p25": 500000,
+    "median": 500000,
+    "p75": 999045,
+    "p90": 1460585,
+    "p95": 2239070,
+    "p98": 2737054,
+    "band_pct": {
+     "below": 0.7,
+     "above": 192.1
+    },
+    "p98_above_median_pct": 447.4
+   },
+   "pricing_unit": "per metre",
+   "unit_cost": {
+    "n": 4,
+    "too_few": true
+   },
+   "unit_cost_by_year": {},
+   "unit_cost_by_district": {},
+   "days": {
+    "recommended_to_sanction": {
+     "n": 13,
+     "p10": 45,
+     "p25": 78,
+     "median": 78,
+     "p75": 78,
+     "p90": 177,
+     "p95": 197,
+     "p98": 201,
+     "band_pct": {
+      "below": 42.6,
+      "above": 126.7
+     },
+     "p98_above_median_pct": 157.8
+    },
+    "sanction_to_completion": {
+     "n": 8,
+     "too_few": true
+    },
+    "recommended_to_completion": {
+     "n": 8,
+     "too_few": true
+    }
+   }
+  },
+  "CULVERT": {
+   "works": 14,
+   "amount": {
+    "n": 14,
+    "p10": 904863,
+    "p25": 1204750,
+    "median": 1969538,
+    "p75": 2418941,
+    "p90": 3538801,
+    "p95": 4978236,
+    "p98": 6070520,
+    "band_pct": {
+     "below": 54.1,
+     "above": 79.7
+    },
+    "p98_above_median_pct": 208.2
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 5,
+     "too_few": true
+    },
+    "sanction_to_completion": {
+     "n": 5,
+     "too_few": true
+    },
+    "recommended_to_completion": {
+     "n": 5,
+     "too_few": true
+    }
+   }
+  },
+  "DRAIN": {
+   "works": 6,
+   "amount": {
+    "n": 6,
+    "too_few": true
+   },
+   "pricing_unit": "per metre",
+   "unit_cost": {
+    "n": 1,
+    "too_few": true
+   },
+   "unit_cost_by_year": {},
+   "unit_cost_by_district": {},
+   "days": {
+    "recommended_to_sanction": {
+     "n": 3,
+     "too_few": true
+    },
+    "sanction_to_completion": {
+     "n": 3,
+     "too_few": true
+    },
+    "recommended_to_completion": {
+     "n": 3,
+     "too_few": true
+    }
+   }
+  },
+  "PLAYGROUND": {
+   "works": 6,
+   "amount": {
+    "n": 6,
+    "too_few": true
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 2,
+     "too_few": true
+    }
+   }
+  },
+  "BRIDGE": {
+   "works": 6,
+   "amount": {
+    "n": 6,
+    "too_few": true
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 2,
+     "too_few": true
+    },
+    "sanction_to_completion": {
+     "n": 2,
+     "too_few": true
+    },
+    "recommended_to_completion": {
+     "n": 2,
+     "too_few": true
+    }
+   }
+  },
+  "TOILET_BLOCK": {
+   "works": 4,
+   "amount": {
+    "n": 4,
+    "too_few": true
+   },
+   "pricing_unit": "per unit",
+   "unit_cost": {
+    "n": 1,
+    "too_few": true
+   },
+   "unit_cost_by_year": {},
+   "unit_cost_by_district": {},
+   "days": {
+    "recommended_to_sanction": {
+     "n": 2,
+     "too_few": true
+    }
+   }
+  },
+  "OTHER": {
+   "works": 4,
+   "amount": {
+    "n": 4,
+    "too_few": true
+   },
+   "days": {}
+  },
+  "EMBANKMENT": {
+   "works": 4,
+   "amount": {
+    "n": 4,
+    "too_few": true
+   },
+   "pricing_unit": "per metre",
+   "unit_cost": {
+    "n": 1,
+    "too_few": true
+   },
+   "unit_cost_by_year": {},
+   "unit_cost_by_district": {},
+   "days": {}
+  },
+  "LIBRARY": {
+   "works": 3,
+   "amount": {
+    "n": 3,
+    "too_few": true
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 1,
+     "too_few": true
+    }
+   }
+  },
+  "COMPUTER": {
+   "works": 2,
+   "amount": {
+    "n": 2,
+    "too_few": true
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 1,
+     "too_few": true
+    },
+    "sanction_to_completion": {
+     "n": 1,
+     "too_few": true
+    },
+    "recommended_to_completion": {
+     "n": 1,
+     "too_few": true
+    }
+   }
+  },
+  "POND": {
+   "works": 2,
+   "amount": {
+    "n": 2,
+    "too_few": true
+   },
+   "days": {
+    "recommended_to_sanction": {
+     "n": 1,
+     "too_few": true
+    },
+    "sanction_to_completion": {
+     "n": 1,
+     "too_few": true
+    },
+    "recommended_to_completion": {
+     "n": 1,
+     "too_few": true
+    }
+   }
+  },
+  "FURNITURE": {
+   "works": 2,
+   "amount": {
+    "n": 2,
+    "too_few": true
+   },
+   "pricing_unit": "per unit",
+   "unit_cost": {
+    "n": 2,
+    "too_few": true
+   },
+   "unit_cost_by_year": {},
+   "unit_cost_by_district": {},
+   "days": {}
+  },
+  "CCTV": {
+   "works": 2,
+   "amount": {
+    "n": 2,
+    "too_few": true
+   },
+   "pricing_unit": "per unit",
+   "unit_cost": {
+    "n": 1,
+    "too_few": true
+   },
+   "unit_cost_by_year": {},
+   "unit_cost_by_district": {},
+   "days": {}
+  },
+  "VEHICLE": {
+   "works": 1,
+   "amount": {
+    "n": 1,
+    "too_few": true
+   },
+   "days": {}
+  },
+  "WATER_SUPPLY": {
+   "works": 1,
+   "amount": {
+    "n": 1,
+    "too_few": true
+   },
+   "days": {}
+  }
+ }
+}

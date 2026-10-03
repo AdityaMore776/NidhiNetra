@@ -76,6 +76,7 @@ as a corpus work, and "compared, nothing found" is only said after a comparison 
 | `evaluation/` | the test country (2 Oct 2026): `synthetic.py` builds a seeded, made-up eSAKSHI (~19,000 works shaped like the real export) with labelled planted problems and look-alikes; `stats.py` rebuilds the statistics from it; `harness.py` runs the pipeline blind and scores recall, queue precision and false alarms. Used by `tests/evaluation/` (CI gate) and `data/trial/synthetic_eval.py` |
 | `pipeline/orchestrator.py` | `assess_work()`: run agents → fuse → priority; an agent that raises becomes an `ERROR` result, never a finding |
 | `explain.py` | the Visualization Engine's trace (T092): runs one work through `assess_work()` and lays out each step for `/explain`: the masked input and what was hidden, the description cut into coloured runs (place, size or count, construction, purchase, not-allowed word, hidden detail) with the facts the readers found, every engine's result with the data its picture needs, and the score's arithmetic replayed from `fusion/calibrated.py` (tested to equal the pipeline's score). It computes no score of its own |
+| `cost_form/` | the cost estimate form (Cost v3, T093): `catalog.py` reads every field from `reference/cost_form.yaml` (one source for the web form, the checks and the spec), `materials.py` suggests which known material a typed item is (the person confirms it), `validate.py` the fix / confirm checks. The Cost v3 engine that judges a submitted form is T097 (`docs/plans/T097-cost-agent-v3.md`) |
 | `api/routes.py` | REST endpoints (below) |
 | `auth.py` | token verification, `Principal`, district scoping, dev mode |
 | `reference/*.yaml` | guideline clauses (quoted verbatim), prohibited works (Annexure-II), work categories and types |
@@ -171,6 +172,7 @@ All routes are under `/api/v1` and (except health) need a signed-in user. Intera
 | `GET /works/{work_id}` | one work with its full assessment (agent cards, parts, validation); rebuilt on the fly for compact rows |
 | `GET /presanction/options`, `POST /presanction` | the pre-sanction check (T064): a typed-in recommendation → Green / Amber / Red with the engines' reasons; nothing stored |
 | `POST /explain` | the Visualization Engine (T092): a typed-in work (a recommendation, or sanctioned / completed with its dates) → the step-by-step trace of `explain.py`, checked against the real works of the chosen district; nothing stored. The page's built-in examples are a static file (`apps/web/public/explain/examples.json`, built by `data/trial/explain_examples.py`), so they need no sign-in |
+| `GET /cost-form/catalog?work_type=`, `POST /cost-form/validate` | the cost estimate form (Cost v3, T093): the fields for a work type from `reference/cost_form.yaml`, and the checks made while it is filled (fix / confirm, never a flag, never a reference price; any body gets an answer). Spec `docs/specs/2026-10-03-cost-estimate-form.md` |
 
 **Scoping:** `DISTRICT` and `FIELD` users are confined to their district **inside the SQL** of every query
 (`_scope()` in `routes.py`), so a mistake in the interface cannot leak another district's works. A work outside

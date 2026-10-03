@@ -1,0 +1,34 @@
+Uttar Pradesh: 8,702 works (eSAKSHI dashboard tables, as of 2026-10-02)
+
+type                          works  sized  unit             median  band (below/above)   rec->sanction  sanction->done (median days)
+STREET_LIGHT                   5141    369  per unit          20944  -0.3% / +4.6%              82            295
+ROAD_CC                        1129    493  per metre          7698  -41.7% / +58.5%            56            286
+FOOTPATH                        800    206  per metre          5789  -22.2% / +94.9%            68            278
+BOREWELL                        699      0                        -  -                         111            384
+STREET_LIGHT (high mast)        232    232  per high mast    172675  -9.1% / +60.9%             31            354
+WATER_TANK                      117      1  per unit          (few)  -                          99            314
+SOLAR_PLANT                      95      0                        -  -                          51            306
+SPORTS_EQUIPMENT                 85      0                        -  -                         162            278
+CREMATORIUM                      84      0                        -  -                          15            300
+BUS_SHELTER                      72      1  per unit          (few)  -                         203              -
+SCHOOL_BUILDING                  71      0                        -  -                         130            190
+ELECTRICITY                      42      0                        -  -                         122              -
+COMMUNITY_HALL                   32      0                        -  -                         152              -
+MEDICAL_EQUIPMENT                24      0                        -  -                           -              -
+BOUNDARY_WALL                    19      4  per metre         (few)  -                          78              -
+CULVERT                          14      0                        -  -                           -              -
+DRAIN                             6      1  per metre         (few)  -                           -              -
+PLAYGROUND                        6      0                        -  -                           -              -
+BRIDGE                            6      0                        -  -                           -              -
+TOILET_BLOCK                      4      1  per unit          (few)  -                           -              -
+OTHER                             4      0                        -  -                           -              -
+EMBANKMENT                        4      1  per metre         (few)  -                           -              -
+LIBRARY                           3      0                        -  -                           -              -
+COMPUTER                          2      0                        -  -                           -              -
+POND                              2      0                        -  -                           -              -
+FURNITURE                         2      2  per unit          (few)  -                           -              -
+CCTV                              2      1  per unit          (few)  -                           -              -
+VEHICLE                           1      0                        -  -                           -              -
+WATER_SUPPLY                      1      0                        -  -                           -              -
+
+wrote data/trial/results/cost_v3_reference_uttar_pradesh.json
