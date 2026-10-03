@@ -502,8 +502,9 @@ def work_case(work_id: str, user: Principal = Depends(current_user)) -> dict:
         if not case_id:
             return {"case_id": None, "size": 1, "items": []}
         items = con.execute(
-            f"SELECT w.work_id, w.district_name, w.state_name, w.work_type_code, "
-            f"w.description, w.amount, w.status, a.band, a.score, a.headline "
+            f"SELECT w.work_id, w.source, w.district_lgd, w.district_name, w.state_name, "
+            f"w.work_type_code, w.description, w.amount, w.status, w.recommended_date, "
+            f"a.band, a.score, a.priority, a.limited, a.alerts, a.headline "
             f"FROM works w JOIN assessments a USING (work_id) "
             f"WHERE a.case_id = %s AND {where} ORDER BY a.priority DESC NULLS LAST, w.work_id",
             (case_id, *params)).fetchall()

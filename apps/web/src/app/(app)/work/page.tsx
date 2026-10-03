@@ -18,7 +18,7 @@ import {
   SourceBadge,
 } from "@/components/ui";
 import { WorkTable } from "@/components/WorkTable";
-import { apiPost, ApiError, type WorkDetail, type WorkRow } from "@/lib/api";
+import { apiPost, ApiError, type WorkCase, type WorkDetail, type WorkRow } from "@/lib/api";
 import { inr, workType } from "@/lib/format";
 import {
   ALERT_LABEL,
@@ -340,9 +340,7 @@ function ReviewPanel({
 
 /** Alike works: one question, so they must be answered together. */
 function AlikeWorks({ workId }: { workId: string }) {
-  const members = useApi<{ members: WorkRow[]; case_size: number }>(
-    `/works/${encodeURIComponent(workId)}/case`,
-  );
+  const members = useApi<WorkCase>(`/works/${encodeURIComponent(workId)}/case`);
   if (members.status === "loading") return <Loading label="Checking for alike works…" />;
   if (members.error) {
     return (
@@ -354,7 +352,10 @@ function AlikeWorks({ workId }: { workId: string }) {
       </Panel>
     );
   }
-  const rows = (members.data?.members ?? []).filter((m) => m.work_id !== workId);
+  // this work is part of its own case, and the table is for the *other* ones
+  const rows: WorkRow[] = (members.data?.items ?? [])
+    .filter((m) => m.work_id !== workId)
+    .map((m) => ({ ...m, case_size: members.data?.size ?? null }));
   if (!rows.length) {
     return (
       <Panel>
@@ -369,7 +370,7 @@ function AlikeWorks({ workId }: { workId: string }) {
     <Panel>
       <PanelHeader
         title="Alike works"
-        hint={`${members.data?.case_size ?? rows.length + 1} works filed as one question. They should be looked at together, not one at a time.`}
+        hint={`${members.data?.size ?? rows.length + 1} works filed as one question. They should be looked at together, not one at a time.`}
       />
       <WorkTable items={rows} dense showWhy={false} />
     </Panel>

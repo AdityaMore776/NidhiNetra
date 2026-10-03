@@ -231,6 +231,35 @@ export interface Reason {
   read?: [number, number] | null;
 }
 
+/** GET /works/{id}/case — the other works filed as this one question.
+ *  A case row is narrower than a queue row: it carries no signals or filters,
+ *  because it exists to be linked to, not filtered. */
+export interface WorkCaseItem {
+  work_id: string;
+  source: "REAL" | "SCENARIO" | "LIVE";
+  district_lgd: string | null;
+  district_name: string | null;
+  state_name: string | null;
+  work_type_code: string | null;
+  description: string | null;
+  amount: number | null;
+  status: string | null;
+  recommended_date: string | null;
+  band: Band | null;
+  score: number | null;
+  priority: number | null;
+  limited: boolean | null;
+  alerts: string[] | null;
+  headline: string | null;
+}
+
+export interface WorkCase {
+  case_id: string | null;
+  /** how many works the case holds, including this one */
+  size: number;
+  items: WorkCaseItem[];
+}
+
 export interface WorkDetail {
   work: {
     work_id: string;

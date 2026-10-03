@@ -511,6 +511,22 @@ def test_case_endpoint_lists_the_works_of_one_case(client, api_db):
     assert {w["work_id"] for w in body["items"]} == {"W-TYPICAL", "W-NO-TYPE"}
 
 
+def test_case_rows_carry_what_the_table_renders(client, api_db):
+    """A case row is shown in the same table as the queue, so it must carry the
+    same fields. Missing ones once left the table rendering blanks."""
+    with psycopg.connect(api_db) as con:
+        con.execute("UPDATE assessments SET case_id = 'C-2', case_size = 2 "
+                    "WHERE work_id = 'W-TYPICAL'")
+        con.execute("UPDATE assessments SET case_id = 'C-2', case_size = 2 "
+                    "WHERE work_id = 'W-NO-TYPE'")
+        con.commit()
+    row = client.get("/api/v1/works/W-TYPICAL/case", headers=MINISTRY).json()["items"][0]
+    for field in ("work_id", "source", "district_lgd", "district_name", "state_name",
+                  "work_type_code", "description", "amount", "status", "recommended_date",
+                  "band", "score", "priority", "limited", "alerts", "headline"):
+        assert field in row, f"the work page's table needs {field}"
+
+
 def test_case_endpoint_of_a_lone_work_is_empty(client):
     body = client.get("/api/v1/works/W-COSTLY/case", headers=MINISTRY).json()
     assert body["case_id"] is None
