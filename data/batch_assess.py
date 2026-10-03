@@ -13,7 +13,7 @@ import psycopg
 
 from common import config  # noqa: F401  (puts the engine on the path)
 from drishti.agents.statistical.cohort import StatsStore
-from drishti.batch import assess_all
+from drishti.batch import assess_all, sync_alerts
 from drishti.pipeline.orchestrator import Context
 
 
@@ -27,6 +27,8 @@ def main() -> None:
     t0 = time.time()
     bands = assess_all(url, ctx)
     print(f"assessed {sum(bands.values()):,} works in {time.time() - t0:.0f}s: {bands}")
+    opened, closed = sync_alerts(url)
+    print(f"alerts: {opened:,} opened, {closed:,} closed")
     with psycopg.connect(url, prepare_threshold=None) as con:
         mb = con.execute("SELECT pg_database_size(current_database()) / 1e6").fetchone()[0]
     print(f"database size after assessment: {mb:.0f} MB")

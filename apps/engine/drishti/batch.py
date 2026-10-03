@@ -190,3 +190,32 @@ def assess_all(url: str, ctx: Context, work_ids: Iterable[str] | None = None,
         con.execute("DELETE FROM dashboard_cache")   # saved dashboard answers are now stale
         con.commit()
     return bands
+
+
+QUEUE_BANDS = ("CRITICAL", "HIGH")
+
+
+def sync_alerts(url: str) -> tuple[int, int]:
+    """Open one alert per work now in the review queue, and close the rest (T060).
+
+    An alert is only a request to look, so it carries no score of its own and is
+    derived entirely from the assessment just written. One open alert per work, so
+    re-running the batch never lengthens an officer's list; an alert an officer
+    has already worked on keeps its state and its note.
+    """
+    with psycopg.connect(url, prepare_threshold=None) as con:
+        opened = con.execute(
+            "INSERT INTO alerts (work_id, code, engine) "
+            "SELECT work_id, coalesce(parts->'reasons'->0->>'code', 'IN_REVIEW'), "
+            "parts->'reasons'->0->>'source' FROM assessments "
+            "WHERE band = ANY(%s) AND parts IS NOT NULL "
+            "ON CONFLICT (work_id) WHERE state <> 'RESOLVED' DO NOTHING RETURNING alert_id",
+            (list(QUEUE_BANDS),)).rowcount
+        closed = con.execute(
+            "UPDATE alerts SET state = 'RESOLVED', closed_at = now(), updated_at = now(), "
+            "note = coalesce(note, 'Left the review queue on the latest assessment') "
+            "WHERE state <> 'RESOLVED' AND work_id NOT IN "
+            "(SELECT work_id FROM assessments WHERE band = ANY(%s)) RETURNING alert_id",
+            (list(QUEUE_BANDS),)).rowcount
+        con.commit()
+    return opened, closed

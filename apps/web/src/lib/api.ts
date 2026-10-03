@@ -9,28 +9,48 @@ export class ApiError extends Error {
   }
 }
 
-/** Call the engine at /api/v1 with the signed-in user's session token. */
-export async function api<T>(path: string, params?: Record<string, string | number | undefined>): Promise<T> {
+/** Call the engine at /api/v1 with the signed-in user's session token.
+ *
+ *  `signal` lets a screen cancel an in-flight request when its filters change or
+ *  the user navigates away, so a slow answer can never overwrite a newer one.
+ */
+export async function api<T>(
+  path: string,
+  params?: Record<string, string | number | undefined>,
+  signal?: AbortSignal,
+): Promise<T> {
   const url = new URL(`/api/v1${path}`, window.location.origin);
   for (const [k, v] of Object.entries(params ?? {})) {
     if (v !== undefined && v !== "") url.searchParams.set(k, String(v));
   }
+  const res = await fetch(url, { headers: await authHeaders(), cache: "no-store", signal });
+  return unwrap<T>(res);
+}
+
+/** The headers that carry the caller's identity. Supabase session, or dev mode. */
+async function authHeaders(): Promise<Record<string, string>> {
   const headers: Record<string, string> = {};
   const sb = supabase();
   if (sb) {
     const { data } = await sb.auth.getSession();
     if (data.session) headers.Authorization = `Bearer ${data.session.access_token}`;
-  } else {
-    const role = devRole();
-    if (role) headers["X-Dev-Role"] = role;
-    const district = process.env.NEXT_PUBLIC_DEV_DISTRICT;
-    if (district) headers["X-Dev-District"] = district;
+    return headers;
   }
-  const res = await fetch(url, { headers, cache: "no-store" });
+  const role = devRole();
+  if (role) headers["X-Dev-Role"] = role;
+  const district = process.env.NEXT_PUBLIC_DEV_DISTRICT;
+  if (district) headers["X-Dev-District"] = district;
+  return headers;
+}
+
+/** Turn a response into data, or into an ApiError carrying the engine's message. */
+async function unwrap<T>(res: Response): Promise<T> {
   if (!res.ok) {
     let detail = res.statusText;
     try {
-      detail = (await res.json()).detail ?? detail;
+      const body = await res.json();
+      if (typeof body?.detail === "string") detail = body.detail;
+      else if (Array.isArray(body?.detail) && body.detail[0]?.msg) detail = body.detail[0].msg;
     } catch {}
     throw new ApiError(res.status, detail);
   }
@@ -241,33 +261,15 @@ export interface Me {
 }
 
 /** POST JSON to the engine at /api/v1 with the same sign-in headers as api() (T064). */
-export async function apiPost<T>(path: string, body: unknown): Promise<T> {
-  const headers: Record<string, string> = { "Content-Type": "application/json" };
-  const sb = supabase();
-  if (sb) {
-    const { data } = await sb.auth.getSession();
-    if (data.session) headers.Authorization = `Bearer ${data.session.access_token}`;
-  } else {
-    const role = devRole();
-    if (role) headers["X-Dev-Role"] = role;
-    const district = process.env.NEXT_PUBLIC_DEV_DISTRICT;
-    if (district) headers["X-Dev-District"] = district;
-  }
+export async function apiPost<T>(path: string, body: unknown, signal?: AbortSignal): Promise<T> {
   const res = await fetch(new URL(`/api/v1${path}`, window.location.origin), {
     method: "POST",
-    headers,
+    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
     body: JSON.stringify(body),
     cache: "no-store",
+    signal,
   });
-  if (!res.ok) {
-    let detail = res.statusText;
-    try {
-      const d = (await res.json()).detail;
-      detail = typeof d === "string" ? d : "Please check the details entered.";
-    } catch {}
-    throw new ApiError(res.status, detail);
-  }
-  return res.json() as Promise<T>;
+  return unwrap<T>(res);
 }
 
 // ---- pre-sanction check (mirror apps/engine/drishti/presanction.py) -------------

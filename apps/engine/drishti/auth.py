@@ -24,7 +24,7 @@ from fastapi import Header, HTTPException
 from drishti import config
 from drishti.db import connect
 
-ROLES = ("MINISTRY", "DISTRICT", "FIELD")
+ROLES = ("MINISTRY", "STATE", "DISTRICT", "FIELD")
 _JWKS: dict = {"at": 0.0, "keys": None}
 JWKS_TTL_S = 600
 
@@ -34,11 +34,20 @@ class Principal:
     user_id: str
     role: str
     district_lgd: str | None = None
+    state_lgd: str | None = None
     name: str | None = None
 
     def scope_district(self) -> str | None:
         """The district this user is confined to, or None for all districts."""
         return self.district_lgd if self.role in ("DISTRICT", "FIELD") else None
+
+    def scope_state(self) -> str | None:
+        """The state this user is confined to, or None for all states.
+
+        MINISTRY sees everything. DISTRICT and FIELD are already confined by
+        district, so their state is implied and left off.
+        """
+        return self.state_lgd if self.role == "STATE" else None
 
 
 def _dev_mode() -> bool:
@@ -70,20 +79,23 @@ def verify_token(token: str, jwks: jwt.PyJWKSet | None = None) -> dict:
 
 def _profile(user_id: str) -> Principal:
     with connect() as con:
-        row = con.execute("SELECT role, district_lgd, display_name FROM profiles "
-                          "WHERE user_id = %s", (user_id,)).fetchone()
+        row = con.execute("SELECT role, district_lgd, state_lgd, display_name "
+                          "FROM profiles WHERE user_id = %s", (user_id,)).fetchone()
     if row is None:
         raise HTTPException(403, "this account has no DRISHTI role")
-    return Principal(user_id, row["role"], row["district_lgd"], row["display_name"])
+    return Principal(user_id, row["role"], row["district_lgd"], row["state_lgd"],
+                     row["display_name"])
 
 
 def current_user(authorization: str | None = Header(default=None),
                  x_dev_role: str | None = Header(default=None),
-                 x_dev_district: str | None = Header(default=None)) -> Principal:
+                 x_dev_district: str | None = Header(default=None),
+                 x_dev_state: str | None = Header(default=None)) -> Principal:
     if _dev_mode() and x_dev_role:
         if x_dev_role not in ROLES:
             raise HTTPException(400, "unknown role")
-        return Principal("dev", x_dev_role, x_dev_district, f"Dev {x_dev_role.title()}")
+        return Principal("dev", x_dev_role, x_dev_district, x_dev_state,
+                         f"Dev {x_dev_role.title()}")
     if not authorization or not authorization.lower().startswith("bearer "):
         raise HTTPException(401, "sign in required")
     claims = verify_token(authorization.split(" ", 1)[1])

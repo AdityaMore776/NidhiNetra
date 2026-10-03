@@ -1,58 +1,333 @@
 @import "tailwindcss";
 
-/* Colours sampled from the team's SIH deck, so each agent on screen carries the
-   colour of the feature it delivers on the Proposed Solution slide. */
+/* ==========================================================================
+   DRISHTI design system
+   --------------------------------------------------------------------------
+   One token layer, then semantic classes. Every colour used for text or for a
+   thin mark is measured by `npm run contrast` (apps/web/scripts/contrast.mjs),
+   which fails if a token drops below WCAG 2.1 AA:
+
+     band ink    >= 4.5:1 on its own tint and on white  (text, badge label)
+     band mark   >= 3:1  on canvas                      (bars, dots, borders)
+     muted text   5.53:1 on canvas
+     navy        11.14:1 on canvas
+
+   Colour never carries meaning alone: every status also has a word and a
+   glyph (see components/ui.tsx). Two legacy values are kept only because
+   charts and the deck's engine colours still read them:
+     --medium #f0a020  2.15:1  never used for text or thin marks any more
+     --low    #3aa76d  3.03:1  same
+   ========================================================================== */
+
 :root {
-  --background: #f6f7fb;
+  /* ---- surfaces & lines -------------------------------------------------- */
+  --canvas: #f6f7fb;
   --surface: #ffffff;
-  --foreground: #1b1f2a;
-  --muted: #5d6475;
+  --raised: #fbfcfe;
+  --sunken: #f1f3f8;
   --line: #e3e6ee;
+  --line-strong: #d8dde8;
+  --line-emphasis: #a8b0c2;
+
+  /* ---- text -------------------------------------------------------------- */
+  --foreground: #1b1f2a;
+  --secondary: #454c5e;
+  --muted: #5d6475;
+
+  /* ---- brand ------------------------------------------------------------- */
   --navy: #1e3a6e;
+  --navy-hover: #16294f;
+
+  /* ---- risk bands: ink = text, mark = graphics, tint = surface, edge = line */
+  --critical: #8e1330;
+  --critical-ink: #7a0f28;
+  --critical-tint: #fbeef1;
+  --critical-edge: #e9c8d0;
+
+  --high: #d6344a;
+  --high-ink: #a8233a;
+  --high-tint: #fdeef0;
+  --high-edge: #f0ccd3;
+
+  --medium: #f0a020;
+  --medium-ink: #8a5200;
+  --medium-tint: #fdf4e6;
+  --medium-edge: #eeddbe;
+  --medium-mark: #b45309;
+
+  --low: #3aa76d;
+  --low-ink: #1f7a4d;
+  --low-tint: #ebf6f0;
+  --low-edge: #c7e3d5;
+  --low-mark: #2a8a5c;
+
+  /* ---- engine accents (kept from the SIH deck so slides and app agree) --- */
   --site: #70c6ab;
   --reuse: #9469e5;
   --duplicate: #ef558a;
   --statistical: #f48137;
   --fusion: #2fb0ae;
   --inputs: #2e9adf;
-  --critical: #8e1330;
-  --high: #d6344a;
-  --medium: #f0a020;
-  --low: #3aa76d;
+
+  /* ---- focus ------------------------------------------------------------- */
+  --focus: #1a56c4;
+
+  /* ---- type scale (px) --------------------------------------------------- */
+  --text-2xs: 10px;
+  --text-xs: 11px;
+  --text-sm: 12px;
+  --text-base: 13px;
+  --text-md: 15px;
+  --text-lg: 17px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 30px;
+
+  /* ---- radius ------------------------------------------------------------ */
+  --radius-control: 4px;
+  --radius-panel: 6px;
+  --radius-dialog: 10px;
+
+  /* ---- layout ------------------------------------------------------------ */
+  --sidebar-width: 232px;
+  --topbar-height: 52px;
+  --content-max: 1600px;
 }
 
 @theme inline {
-  --color-background: var(--background);
+  --color-canvas: var(--canvas);
   --color-surface: var(--surface);
-  --color-foreground: var(--foreground);
-  --color-muted: var(--muted);
+  --color-raised: var(--raised);
+  --color-sunken: var(--sunken);
   --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-line-emphasis: var(--line-emphasis);
+
+  --color-foreground: var(--foreground);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+
   --color-navy: var(--navy);
+  --color-navy-hover: var(--navy-hover);
+  --color-focus: var(--focus);
+
+  --color-critical: var(--critical);
+  --color-critical-ink: var(--critical-ink);
+  --color-critical-tint: var(--critical-tint);
+  --color-critical-edge: var(--critical-edge);
+  --color-high: var(--high);
+  --color-high-ink: var(--high-ink);
+  --color-high-tint: var(--high-tint);
+  --color-high-edge: var(--high-edge);
+  --color-medium: var(--medium);
+  --color-medium-ink: var(--medium-ink);
+  --color-medium-tint: var(--medium-tint);
+  --color-medium-edge: var(--medium-edge);
+  --color-medium-mark: var(--medium-mark);
+  --color-low: var(--low);
+  --color-low-ink: var(--low-ink);
+  --color-low-tint: var(--low-tint);
+  --color-low-edge: var(--low-edge);
+  --color-low-mark: var(--low-mark);
+
   --color-site: var(--site);
   --color-reuse: var(--reuse);
   --color-duplicate: var(--duplicate);
   --color-statistical: var(--statistical);
   --color-fusion: var(--fusion);
   --color-inputs: var(--inputs);
-  --color-critical: var(--critical);
-  --color-high: var(--high);
-  --color-medium: var(--medium);
-  --color-low: var(--low);
+
   --font-sans: var(--font-inter);
+  --radius-control: var(--radius-control);
+  --radius-panel: var(--radius-panel);
+  --radius-dialog: var(--radius-dialog);
+}
+
+/* ==========================================================================
+   base
+   ========================================================================== */
+
+* {
+  border-color: var(--line);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
+  background: var(--canvas);
   color: var(--foreground);
   font-family: var(--font-inter), "Segoe UI", system-ui, sans-serif;
+  font-size: var(--text-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
+
+/* One visible focus treatment for the whole app. Never removed, only shaped. */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Numeric columns line up when digits share a width. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--surface);
+  color: var(--navy);
+  border: 1px solid var(--navy);
+  padding: 8px 14px;
+  font-weight: 600;
+}
+.skip-link:focus {
+  left: 8px;
+  top: 8px;
+}
+
+/* Screen-reader-only text that still reaches the accessibility tree. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ==========================================================================
+   layout primitives
+   ========================================================================== */
 
 .card {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--radius-panel);
 }
+
+.card-flat {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+}
+
+/* Section heading used across every panel: small, quiet, letter-spaced. */
+.eyebrow {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ==========================================================================
+   tables
+   ========================================================================== */
+
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--text-base);
+}
+
+.data-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--sunken);
+  border-bottom: 1px solid var(--line-strong);
+  padding: 7px 12px;
+  text-align: left;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--secondary);
+  white-space: nowrap;
+}
+
+.data-table tbody td {
+  border-bottom: 1px solid var(--line);
+  padding: 9px 12px;
+  vertical-align: top;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.data-table tbody tr:hover {
+  background: var(--raised);
+}
+
+.data-table tbody tr[data-selected="true"] {
+  background: var(--sunken);
+}
+
+/* ==========================================================================
+   controls
+   ========================================================================== */
+
+.field {
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control);
+  padding: 6px 9px;
+  font-size: var(--text-base);
+  color: var(--foreground);
+  min-height: 30px;
+}
+
+.field::placeholder {
+  color: var(--muted);
+}
+
+.field:hover {
+  border-color: var(--line-emphasis);
+}
+
+.field:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -1px;
+  border-color: var(--focus);
+}
+
+/* ==========================================================================
+   motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   third-party
+   ========================================================================== */
 
 .maplibregl-ctrl-attrib {
   font-size: 10px;
+}
+
+.maplibregl-popup-content {
+  border-radius: var(--radius-control);
+  box-shadow: 0 2px 8px rgb(27 31 42 / 12%);
+  padding: 8px 10px;
 }
