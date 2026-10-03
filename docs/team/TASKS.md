@@ -144,6 +144,31 @@ hand-off from the old agent moved to T098.)
 entries and a fusion weight; the old `statistical` agent hands over (NOT_APPLICABLE) for works with a form.
 **Done when:** [ ] targets of plan §8 met (or FINDINGS says honestly where they are not) · [ ] owner's go-ahead
 
+### T099 · Cost: one engine on the form, old Cost Anomaly retired, forms saved and attached  ·  M  ·  engine  ·  Depends on: T097
+**What:** the owner's pivot (3 Oct 2026, plan [`docs/plans/T099-T100-simple-and-certain.md`](../plans/T099-T100-simple-and-certain.md)):
+- measure whether any price question is certain from a record;
+- the Cost Estimate engine takes the Cost core slot; `statistical` is unregistered;
+- every state's reference is built;
+- the storage half of T094: migration `013_cost_forms.sql`, `POST /api/v1/cost-forms` and
+  `GET /api/v1/cost-forms/{work_id}`, and the batch, the work page and the API attach a submitted form.
+
+**Done when:** [x] record-only check measured (0 of 15 real) · [x] a work with no form is NOT_APPLICABLE · [x] the old
+Cost Anomaly retired · [x] migration + routes + API tests · [x] references for 7 states · [x] dashboard queue
+before/after in FINDINGS
+
+### T100 · Duplicate: is this work already sanctioned here, or one job cut to stay under a limit?  ·  M  ·  engine  ·  Depends on: T093
+**What:** same plan, §3. Questions only when certain:
+- a map pin within 50 m of a sanctioned work of the same kind;
+- a declared rebuild of a work completed under 3 years ago;
+- the strictest split (every piece 96–100% of a limit).
+
+Look-alikes by words become notes, and the form asks the agency about them. Continuations are declared on the form
+(nature `continuation`, earlier work ID, answers per look-alike).
+
+**Done when:** [x] text rules measured on the 289 labelled pairs · [x] every strict split group on the dashboard read by
+eye · [x] unit tests at the 50 m edge, linear works, declarations, damaged forms · [x] test country plants pin repeats and
+rebuilds (caught 100%, look-alikes 0) · [ ] first officer verdicts on real forms (T098)
+
 ## M2 — Core: explain + act  ·  target Oct wk 3 – Nov wk 1
 
 ### T050 · Risk score 0–100, bands, top-3 reasons (EN + HI)  ·  M  ·  engine  ·  Depends on: T011, T020

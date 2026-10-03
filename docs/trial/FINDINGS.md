@@ -11,9 +11,10 @@ should look.
 
 | Agent | Verdict | One line |
 |---|---|---|
-| A3 Cost *(built)* | **Works, for big mark-ups** | Catches 63% of works inflated 5× and 84% at 10×, while flagging 1.5% of normal works. Mark-ups under 2× need a second signal. |
-| A2 Split works | **Works** | Real pattern: 12× more works just under ₹5 lakh than just over. Found same-day splits and bulk orders kept under the limit. |
-| A2 Duplicates | **Partly** | 48 cases of one named site recommended again while the first was still open; about 19 of them look like one asset funded twice. Exact wording finds nothing once the first work is complete, so real repeats are reworded. Matching by meaning is not built yet. |
+| A3 Cost *(T099: on the form)* | **Certain only with the form** | A record alone supports no certain price question (0 of 15 real, T099). The Cost check reads the agency's cost estimate form; the old Cost Anomaly (54/128) is retired. |
+| A2 Split works *(T100: strictest only)* | **Works** | Real pattern: 12× more works just under ₹5 lakh than just over. Kept only the strictest split: every piece 96–100% of a limit, 12 of 14 dashboard groups read as one job (2 grey). |
+| A2 Duplicates *(T100: by map pin)* | **Partly, by words; certain by map pin** | Words alone are right about 2 times in 3 at best (T099 + T100); repeats are now asked by the form's map pin and the agency's declarations. |
+| A2 Duplicates *(before T100)* | **Partly** | 48 cases of one named site recommended again while the first was still open; about 19 of them look like one asset funded twice. Exact wording finds nothing once the first work is complete, so real repeats are reworded. Matching by meaning is not built yet. |
 | A1 Eligibility | **Works after a rewrite** | On a fresh sample, 56% of what it flags plainly reads as prohibited, and 80% is worth an officer's look. |
 | C1 Delay prediction | **Weak** | Scores 0.71 on a 0.5–1.0 scale, against 0.68 for simply using the office's past record. Better sold as office track records. 7 in 10 works miss the one-year target anyway. |
 | C2 Fund flow | **Facts work; forecasts can't be tested** | 21,323 works (₹1,361 cr) are still waiting for sanction past 75 days. A "year-end rush" signal turned out to be a portal cycle and was dropped. |
@@ -1114,6 +1115,97 @@ looks like a 3× bigger job.
 The limit, honestly: with eSAKSHI's records, only standard items can be priced. Everything else answers "could not
 check" until the state's Schedule of Rates (T096) or completed forms give a reference that knows the size. Line-by-line
 rates wait for T096.
+
+## T099 + T100 (3 Oct 2026): simple and certain: one Cost check, one Duplicate check
+
+**The owner:** "remove all the bloat, only the very highly effective stuff that WORKS". The Cost agent must work; the
+Duplicate agent should only do what has a high chance of being very accurate, compare a work with the sanctioned works
+of its area, and account for continuations. Script `data/trial/simple_certain_trial.py` → `results/simple_certain_trial.json`
+/ `.txt`; by-eye labels `data/trial/simple_certain_labels.py`; plan `docs/plans/T099-T100-simple-and-certain.md`.
+
+**Cost from the record alone.** The most precise check a record supports is a stated count of a standard item.
+The Cost Estimate engine's reference groups exist for every state; they can price **1,032 of 40,935** works (11 tight
+groups, 7 states). Every real work the check would question, read by eye:
+
+| | Questioned | Read by eye |
+|---|---|---|
+| In-sample (reference from every year) | 5 | 3 misread counts, 1 bigger item, 1 grey |
+| Hold-out (reference before 2026, the 211 works of 2026) | 10 | 2 misread counts, 8 bigger items |
+| **Together** | **15** | **0 real price questions**, 1 grey |
+
+The misreads are the record's count being wrong for the money: "1 nag" twice for two people's lights, six sites in one
+record. The bigger items are a 16 m mast, "4 way" lights and solar mini-masts. On every one of the 36,430 works with a
+disbursed amount, the money paid is at or under the amount sanctioned, so no overpayment exists to ask about either.
+
+**So the Cost check runs only on the agency's cost estimate form** (Cost slot, T099); a work with no form is
+NOT_APPLICABLE. The old Cost Anomaly is retired.
+
+**Repeats from words.** The team's 289 pairs read by eye for T030/T051 (108 one asset funded twice), re-read by stricter
+and stricter rules:
+
+| Rule | Right | Finds of the 108 |
+|---|---|---|
+| every pair the old engine flagged | 108 / 289 (37%) | 100% |
+| identical wording | 24 / 37 (65%) | 22% |
+| 90%+ alike, every place word shared, nothing apart, no continuation word, not many sites | 38 / 59 (64%) | 35% |
+| ... and two or more place words | 25 / 35 (71%) | 23% |
+| identical wording, two or more place words, nothing apart | 13 / 16 (81%) | 12% |
+
+On the dashboard's own works, the strict rule's 25 pairs more than 60 days apart read **8 same, 6 grey, 11 different**.
+The misses:
+- a village or landmark is not a site;
+- an SC and a BC colony;
+- a ground and a first floor;
+- a resubmission or a "completion of" work;
+- no place at all.
+
+**So a repeat is asked only with the form.** The questions are:
+- `SANCTIONED_WORK_AT_THIS_SITE`: map pins within 50 m, same kind of asset, the link not declared;
+- `REBUILT_SOON_AFTER_COMPLETION`: a declared rebuild of a work completed under 3 years ago.
+
+Look-alikes by words are notes, and the form asks the agency about each: the same work (blocked), continues it, or a
+different work (say what differs).
+
+**The one split kept, the strictest:**
+- 2–5 alike pieces at one place, or numbered parts of one job;
+- one MP, filed within 30 days;
+- every piece 96–100% of the Rs 5 or 10 lakh limit.
+
+Every group on the dashboard was read by eye: **14 groups (34 works): 12 one job cut into pieces, 2 grey, 0 not.**
+Examples:
+- reach-1 / reach-2 of one road at Rs 4,99,942 and Rs 4,99,981;
+- four rooms of one school at Rs 5,00,000 each;
+- Sy.No 488 / 488-A / B / C of one hill road;
+- "a project of 04 mineral water plants" filed as 4 works.
+
+The grey ones are the left and right sides of one bridge approach, and "CC roads in various localities" of one ward,
+filed twice. The 96% line was set while reading these groups; a fresh read on the hosted works is the next
+measurement. `reliability.json`: 12 of 14.
+
+**The dashboard's 40,935 works** (`dashboard_trial.py --tag t099_before` on main, `--tag t099_after` here):
+
+| | Before (main) | After |
+|---|---|---|
+| CRITICAL / HIGH / MEDIUM | 36 / 391 / 1,392 | **8 / 431 / 1,231** |
+| Review queue | 427 | **439** |
+| Cost flags (counted) | 135 (`COST_ABOVE_PEERS`) | 0 (no forms yet) |
+| Duplicate flags (counted) | 1,394 (1,330 bulk orders, 48 splits, 13 stretches, 3 repeats) | 34 (`SPLIT_JUST_UNDER_LIMIT`, 14 groups) |
+
+**What moved:**
+- **11 left the queue.** Each was a long wait for sanction plus one other flag: 7 a bulk order (read 15 of 15 as
+  ordinary bulk purchases) and 4 the old cost flag (54 of 128). Alone, a wait stays MEDIUM by design.
+- **23 entered:** the pieces of the strict split groups that were not already in the queue.
+- **CRITICAL fell from 36 to 8**, because most had two engines agreeing through a bulk-order or old cost flag.
+
+Works filed together (the same wording, MP and day) still show as one case in the queue, for display only.
+
+**The test country** (CI gate, seeds 1–2):
+- planted map-pin repeats and declared rebuilds are caught **100%**, and their look-alikes **0%** (another kind of
+  asset at the pin, the same kind 80–300 m away, a declared continuation);
+- planted splits at 92–100% of the limit are caught 43% / 50% (only those whose every piece is 96%+);
+- queue precision is 0.946, and ordinary works queued 0.1%.
+
+Record-only kinds (prices raised on a record, repeats and repairs by words) stay planted with no engine meant for them.
 
 ## Bugs and data problems found along the way
 

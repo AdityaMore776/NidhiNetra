@@ -44,6 +44,25 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
+**3 Oct 2026: simple and certain: one Cost check, one Duplicate check (T099 + T100, owner's pivot; PR open).**
+- **Measured first** (`data/trial/simple_certain_trial.py`):
+  - **Cost:** no price question is certain from a record. Of 15 works a record-only check would have questioned, 0
+    were real (5 misread counts, 9 bigger items, 1 grey).
+  - **Repeats:** words alone are right about 2 times in 3 at best.
+- **Cost** is now the cost estimate form's check, in the core slot. A work with no form is not judged, and the old
+  Cost Anomaly is retired. Forms are saved and attached (migration **013**, `POST/GET /api/v1/cost-forms`).
+- **Duplicate Work** asks only:
+  - by map pin (within 50 m of a sanctioned work of the same kind);
+  - a declared rebuild of a work completed under 3 years ago;
+  - one job cut into pieces each 96–100% of a limit (14 dashboard groups: 12 yes, 2 grey).
+
+  Text look-alikes are notes for the agency to answer on the form.
+- **The dashboard's 40,935 works:** queue 427 → 439. 11 left (a wait plus a bulk-order or old cost flag); 23 entered
+  (strict split pieces). CRITICAL 36 → 8.
+- **Going live:** merge, then apply migration 013 (`data\with_env.py apply_migrations.py`) and re-run
+  `batch_assess.py`.
+- Plan: `docs/plans/T099-T100-simple-and-certain.md`.
+
 **3 Oct 2026: Cost Estimate engine built (T097; shown, not counted; PR open after #95).**
 - **What it does:** it reads the agency's cost estimate form and asks only when certain: a confirmed quantity above
   what the size needs, or a price above the district's standard item **and** the MP's amount.

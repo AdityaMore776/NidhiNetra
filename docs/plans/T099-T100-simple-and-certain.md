@@ -93,9 +93,9 @@ per site (both ends for a road), the nature of the work, and the earlier work it
    - `GET /api/v1/cost-forms/{work_id}`.
    - The batch, the work page and the API read a submitted form as `work["cost_form"]`.
 
-## 3. T100 · Duplicate: is this work already sanctioned at this site?
+## 3. T100 · Duplicate: is this work already sanctioned here, or one job cut to stay under a limit?
 
-The engine keeps its stored id `dup_split`. It is renamed **Duplicate Work** and answers one question.
+The engine keeps its stored id `dup_split`. It is renamed **Duplicate Work**.
 
 **Questions** (counted; each one certain by how it is built):
 
@@ -103,6 +103,7 @@ The engine keeps its stored id `dup_split`. It is renamed **Duplicate Work** and
 |---|---|
 | `SANCTIONED_WORK_AT_THIS_SITE` | The form's map pin is within **50 m** of the map pin of a sanctioned work of the same kind of asset, and the agency did not name that work as the one this work continues. Roads, drains and other linear works compare both ends. |
 | `REBUILT_SOON_AFTER_COMPLETION` | The agency itself declares that this work rebuilds sanctioned work X (nature "reconstruction", earlier work X), and X was completed less than **3 years** before this work was recommended. |
+| `SPLIT_JUST_UNDER_LIMIT` | The strictest split, the one kind of split kept: 2–5 alike pieces at one place (or numbered parts of one job), one MP, recommended within 30 days, **every** piece 96–100% of the Rs 5 or 10 lakh limit. All 14 groups on the dashboard read by eye: 12 one job cut into pieces, 2 grey, 0 not. |
 
 **Notes** (shown, never counted):
 - `CONTINUES_SANCTIONED_WORK`: the agency names the earlier work this one continues, extends, upgrades or rebuilds. The
@@ -111,9 +112,9 @@ The engine keeps its stored id `dup_split`. It is renamed **Duplicate Work** and
   the same words (the strictest text rule above, right about 2 times in 3). With a form, the note shows the agency's own
   answer about it.
 
-**Removed:** split works, numbered stretches, bulk orders, the under-a-limit bonus, and text-only repeat flags. Each read
-right about half the time (`reliability.json`: splits 18 of 32, repeats 6 of 12 and 33 of 74). The bunching of amounts
-under Rs 5 lakh stays visible as an office's habit in Office Patterns.
+**Removed:** looser splits (pieces anywhere at one site), bulk orders, the under-a-limit bonus, and text-only repeat
+flags. Each read right about half the time (`reliability.json`: splits 18 of 32, repeats 6 of 12 and 33 of 74). Works
+filed together (the same wording, MP and day) still show as one case in the queue, for display only.
 
 **On the form (continuations):**
 - The nature of the work gains **`continuation`** (finishing, or the next phase of, an earlier work). For a
@@ -136,5 +137,6 @@ under Rs 5 lakh stays visible as an office's habit in Office Patterns.
   NOT_APPLICABLE / NOT_ASSESSABLE case. They also check plain wording on damaged forms.
 - **The test country** (`evaluation/synthetic.py`) carries the same truth: kinds that are no longer checked are marked
   "not checked by design", so the quality gate measures what the product does.
-- **The dashboard's 40,935 works:** what leaves the queue is measured and listed in FINDINGS.
+- **The dashboard's 40,935 works** (main vs this branch, `dashboard_trial.py`): queue 427 → 439. 11 left (a wait plus a
+  bulk-order or old cost flag); 23 entered (strict split pieces). CRITICAL 36 → 8. Listed in FINDINGS "T099 + T100".
 - **Real forms:** T098 reads the first officer verdicts and sets the measured rates in `reliability.json`.
