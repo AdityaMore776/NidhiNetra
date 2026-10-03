@@ -39,9 +39,9 @@ const STEPS: StepDef[] = [
     View: ReadingStep,
   },
   {
-    title: "Seven checks look at it at once",
+    title: "Every check looks at it at once",
     short: "Checks",
-    what: "Like the channels of a picture, seven checks each ask one question at the same time. A check that finds something lights up; one that cannot look says so instead of guessing.",
+    what: "Like the channels of a picture, every check asks its own question at the same time. A check that finds something lights up; one that cannot look says so instead of guessing.",
     ms: (t) => 1800 + t.checks.length * CHECK_GAP + 2200,
     View: ChecksStep,
   },

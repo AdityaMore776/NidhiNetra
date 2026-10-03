@@ -134,13 +134,14 @@ sample of 20 digitised rates checked against the PDFs by eye
 (and specification) in the district or state (30+ works, else "could not check"); then the MP check; line checks once
 T096 lands; findings and notes of plan §6.5; the old `statistical` agent hands over (NOT_APPLICABLE) for works with a
 form; batch and API attach the work's submitted form. Weight 0 until T098.
-**Done when:** [ ] planted tests of plan §8 pass · [ ] NOT_APPLICABLE / NOT_ASSESSABLE cases · [ ] the hold-out run on
-UP 2026 works in FINDINGS · [ ] AGENT-CATALOG row
+**Done when:** [x] planted tests of plan §8 pass · [x] NOT_APPLICABLE / NOT_ASSESSABLE cases · [x] the hold-out run on
+UP 2026 works in FINDINGS · [x] AGENT-CATALOG row. (Built 3 Oct 2026, plan §11: price questions need two signals; the
+hand-off from the old agent moved to T098.)
 
 ### T098 · Cost v3: prove it, then switch it on  ·  M  ·  engine + data  ·  Depends on: T094, T097
 **What:** plan §8: planted tests on the test country with forms, the UP hold-out, 30 fresh flags read by eye, a pilot of
 20–50 real estimates from an implementing agency; tune the percentile and the MP margin; then `reliability.json`
-entries and a fusion weight.
+entries and a fusion weight; the old `statistical` agent hands over (NOT_APPLICABLE) for works with a form.
 **Done when:** [ ] targets of plan §8 met (or FINDINGS says honestly where they are not) · [ ] owner's go-ahead
 
 ## M2 — Core: explain + act  ·  target Oct wk 3 – Nov wk 1

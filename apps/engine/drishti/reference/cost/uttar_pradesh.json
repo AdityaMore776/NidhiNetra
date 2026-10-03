@@ -1,0 +1,241 @@
+{
+ "state": "Uttar Pradesh",
+ "source": "eSAKSHI dashboard tables, as of 2026-10-02",
+ "built": "2026-10-03",
+ "years": [
+  2024,
+  2026
+ ],
+ "min_works": 30,
+ "tight": 1.25,
+ "groups": {
+  "BOUNDARY_WALL": {
+   "unit": "per metre",
+   "state": {
+    "n": 4,
+    "p10": 3853,
+    "median": 8976,
+    "p90": 14174,
+    "p98": 14263,
+    "tight": false
+   },
+   "districts": {}
+  },
+  "BUS_SHELTER": {
+   "unit": "per unit",
+   "state": {
+    "n": 1,
+    "p10": 1235833,
+    "median": 1235833,
+    "p90": 1235833,
+    "p98": 1235833,
+    "tight": true
+   },
+   "districts": {}
+  },
+  "CCTV": {
+   "unit": "per unit",
+   "state": {
+    "n": 1,
+    "p10": 37989,
+    "median": 37989,
+    "p90": 37989,
+    "p98": 37989,
+    "tight": true
+   },
+   "districts": {}
+  },
+  "DRAIN": {
+   "unit": "per metre",
+   "state": {
+    "n": 1,
+    "p10": 600,
+    "median": 600,
+    "p90": 600,
+    "p98": 600,
+    "tight": true
+   },
+   "districts": {}
+  },
+  "EMBANKMENT": {
+   "unit": "per metre",
+   "state": {
+    "n": 1,
+    "p10": 25655,
+    "median": 25655,
+    "p90": 25655,
+    "p98": 25655,
+    "tight": true
+   },
+   "districts": {}
+  },
+  "FOOTPATH": {
+   "unit": "per metre",
+   "state": {
+    "n": 206,
+    "p10": 4505,
+    "median": 5789,
+    "p90": 11284,
+    "p98": 14460,
+    "tight": false
+   },
+   "districts": {
+    "Bulandshahr": {
+     "n": 37,
+     "p10": 5660,
+     "median": 8407,
+     "p90": 9761,
+     "p98": 11040,
+     "tight": true
+    }
+   }
+  },
+  "HIGH_MAST": {
+   "unit": "per mast",
+   "state": {
+    "n": 232,
+    "p10": 156959,
+    "median": 172675,
+    "p90": 277869,
+    "p98": 408965,
+    "tight": false
+   },
+   "districts": {
+    "Bareilly": {
+     "n": 30,
+     "p10": 172286,
+     "median": 172675,
+     "p90": 196200,
+     "p98": 304141,
+     "tight": true
+    },
+    "Kheri": {
+     "n": 96,
+     "p10": 156959,
+     "median": 166017,
+     "p90": 166017,
+     "p98": 166017,
+     "tight": true
+    },
+    "Sitapur": {
+     "n": 49,
+     "p10": 173597,
+     "median": 173863,
+     "p90": 174797,
+     "p98": 174822,
+     "tight": true
+    }
+   }
+  },
+  "ROAD_CC": {
+   "unit": "per metre",
+   "state": {
+    "n": 493,
+    "p10": 4491,
+    "median": 7698,
+    "p90": 12201,
+    "p98": 15711,
+    "tight": false
+   },
+   "districts": {
+    "Basti": {
+     "n": 30,
+     "p10": 6050,
+     "median": 7363,
+     "p90": 9884,
+     "p98": 11378,
+     "tight": false
+    },
+    "Deoria": {
+     "n": 36,
+     "p10": 6955,
+     "median": 8386,
+     "p90": 10466,
+     "p98": 11389,
+     "tight": true
+    },
+    "Mainpuri": {
+     "n": 46,
+     "p10": 4318,
+     "median": 6860,
+     "p90": 10053,
+     "p98": 14116,
+     "tight": false
+    },
+    "Saharanpur": {
+     "n": 68,
+     "p10": 4725,
+     "median": 7023,
+     "p90": 9656,
+     "p98": 10702,
+     "tight": false
+    }
+   }
+  },
+  "STREET_LIGHT|solar": {
+   "unit": "per light",
+   "state": {
+    "n": 334,
+    "p10": 20878,
+    "median": 20944,
+    "p90": 20944,
+    "p98": 23588,
+    "tight": true
+   },
+   "districts": {
+    "Jaunpur": {
+     "n": 136,
+     "p10": 20878,
+     "median": 20896,
+     "p90": 20896,
+     "p98": 20896,
+     "tight": true
+    },
+    "Varanasi": {
+     "n": 177,
+     "p10": 20944,
+     "median": 20944,
+     "p90": 20944,
+     "p98": 20956,
+     "tight": true
+    }
+   }
+  },
+  "STREET_LIGHT|unstated": {
+   "unit": "per light",
+   "state": {
+    "n": 35,
+    "p10": 18862,
+    "median": 40669,
+    "p90": 98953,
+    "p98": 251467,
+    "tight": false
+   },
+   "districts": {}
+  },
+  "TOILET_BLOCK": {
+   "unit": "per unit",
+   "state": {
+    "n": 1,
+    "p10": 459900,
+    "median": 459900,
+    "p90": 459900,
+    "p98": 459900,
+    "tight": true
+   },
+   "districts": {}
+  },
+  "WATER_TANK": {
+   "unit": "per unit",
+   "state": {
+    "n": 1,
+    "p10": 749000,
+    "median": 749000,
+    "p90": 749000,
+    "p98": 749000,
+    "tight": true
+   },
+   "districts": {}
+  }
+ }
+}

@@ -7,7 +7,7 @@ import "./explain.css";
 export const metadata: Metadata = {
   title: "DRISHTI Visualization Engine: one work, step by step",
   description:
-    "Watch an MPLADS work go through DRISHTI: private details hidden, the description read, seven checks at once, the score added up, and what the officer sees.",
+    "Watch an MPLADS work go through DRISHTI: private details hidden, the description read, every check at once, the score added up, and what the officer sees.",
 };
 
 export default function ExplainPage() {

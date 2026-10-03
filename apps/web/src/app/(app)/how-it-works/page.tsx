@@ -6,7 +6,7 @@ import { AGENT_ORDER, agentMeta } from "@/lib/format";
 
 const STEPS = [
   { n: 1, title: "Work enters DRISHTI", text: "Records, progress claims and site photos come in.", color: "var(--inputs)" },
-  { n: 2, title: "Seven checkers, in parallel", text: "Each independently checks for a different kind of problem.", color: "var(--navy)" },
+  { n: 2, title: "The checkers, in parallel", text: "Each independently checks for a different kind of problem.", color: "var(--navy)" },
   { n: 3, title: "Risk fusion", text: "Combine the checks into the chance a work is worth a look, using how often each kind of flag proved right when read by eye, with the top three reasons.", color: "var(--fusion)" },
   { n: 4, title: "Risk review", text: "Rank works Low, Medium, High or Critical, and queue High and Critical for a look.", color: "var(--medium)" },
   { n: 5, title: "Officer verification", text: "An officer reviews the evidence and makes the decision.", color: "var(--low)" },

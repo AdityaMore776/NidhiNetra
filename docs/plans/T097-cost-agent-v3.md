@@ -206,3 +206,42 @@ gem.gov.in, pmgsy.nic.in, the state PWD sites; tested 3 Oct 2026). T096 is there
 2. For a work that has a form, the old cost card is replaced by the new one (proposed: yes).
 3. Data: allow the government hosts in the environment, or download the T096 files on an Indian connection.
 4. A pilot implementing agency for 20–50 real estimates.
+
+## 11. Built (3 Oct 2026): what changed from the plan, and why
+
+Building the engine on the Uttar Pradesh records showed two ways a plain "price above the 98th percentile" rule would
+still mistake size for price. Both are now rules in `agents/cost_estimate/reference.py` and `agent.py`:
+
+1. **The group's unit must be the form's whole unit of size.**
+   - UP's records never state a road's width (0 of 1,129 CC roads). So a group of roads per metre can look tight
+     (Deoria: p90 +25%) while a 5 m road would still be asked about against 3 m ones.
+   - Roads and paths are priced per m² on the form, so they are never compared with roads per metre.
+   - Standard items are compared per unit: solar street lights per light, high masts per mast.
+2. **A price question needs two signals.** The records hold no wattage or mast height, so a bigger item could explain a
+   high price by itself. A price question (`ESTIMATE_ABOVE_STANDARD_AND_MP`) needs both:
+   - the price per unit more than **25%** above the group's 98th percentile; **and**
+   - the estimate more than **10%** above the MP's amount.
+
+   Either signal alone is a note on the card.
+3. **A group is used only when tight:** its own p90 within +25% of its median. A loose group is missing a size or
+   specification, and comparing with it would be guessing.
+
+**Added: quantities against the size** (`cost_form/norms.py`, exact by construction):
+- more light fittings, batteries, panels or poles than solar lights (no poles at all on existing poles);
+- more lamps than the masts carry;
+- paver blocks beyond the path's area plus 5%;
+- cement beyond an M10–M20 slab's volume by the IS 456 nominal mixes, plus 5%, only when nothing else on the road
+  uses cement.
+
+The form asks the agency to confirm anything above what the size needs. The engine asks the officer only about a
+**confirmed** quantity more than 25% above it (`MATERIAL_QUANTITY_ABOVE_SIZE`).
+
+**Moved to T098:** the old Cost Anomaly handing over for works with a form. The new engine is shown, not counted, so
+until it is switched on both cards appear and nothing is counted twice.
+
+**Measured** (`data/trial/cost_v3_holdout.py`, FINDINGS "T097"): the reference was built from UP works before 2026 and
+tested on 68 unseen 2026 works.
+- 0 of the 42 it could compare were above the question line.
+- Planted price ×1.5, ×2 and ×3 were asked about 42 of 42 times; ×1.25 9 of 42; ×1.1 0 of 42.
+- Half, double and five times the size at the same unit price changed 0 of 204 answers.
+- 26 of 68 could not be compared (high masts outside the three districts with a tight group).

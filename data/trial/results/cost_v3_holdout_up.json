@@ -1,0 +1,46 @@
+{
+ "state": "Uttar Pradesh",
+ "reference": "40,935 dashboard works, before 2026 only",
+ "reference_years": [
+  2024,
+  2025
+ ],
+ "test_works": 68,
+ "refused_by_the_form": 1,
+ "by_group": {
+  "HIGH_MAST": 54,
+  "STREET_LIGHT|solar": 14
+ },
+ "not_checked": 26,
+ "not_checked_reasons": {
+  "the real works of this kind in Uttar Pradesh vary too much i": 26
+ },
+ "real_questions": 0,
+ "above_question_line": 0,
+ "planted": {
+  "x1.1": {
+   "caught": 0,
+   "of": 42
+  },
+  "x1.25": {
+   "caught": 9,
+   "of": 42
+  },
+  "x1.5": {
+   "caught": 42,
+   "of": 42
+  },
+  "x2": {
+   "caught": 42,
+   "of": 42
+  },
+  "x3": {
+   "caught": 42,
+   "of": 42
+  }
+ },
+ "size_changes_answer": {
+  "changed": 0,
+  "of": 204
+ }
+}

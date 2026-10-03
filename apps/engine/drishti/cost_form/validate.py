@@ -26,7 +26,7 @@ import math
 import re
 from datetime import date
 
-from drishti.cost_form import catalog, materials
+from drishti.cost_form import catalog, materials, norms
 
 FIX, CONFIRM = "fix", "confirm"
 LINE_TOLERANCE = 0.01       # an amount may differ from quantity x rate by rounding only
@@ -338,6 +338,14 @@ def validate(form: dict, today: date | None = None) -> dict:
                 out.add(CONFIRM, "duplicate_line", f"{p}.lines[{j}].item",
                         f"{ln.get('item')} appears twice. Remove one, or confirm both are needed.")
             seen.add(key)
+        used = [(j, r["material_id"], lines[j].get("quantity"), lines[j].get("unit"))
+                for j, r in enumerate(done) if isinstance(lines[j], dict)]
+        for q in norms.check(ctx.work_type, size, used):
+            if q["ratio"] > 1.0 + 1e-9:
+                out.add(CONFIRM, "more_than_size_needs", f"{p}.lines[{q['lines'][0]}].quantity",
+                        f"The lines have {q['quantity']:,.0f} {q['unit']} of "
+                        f"{catalog.material(q['material'])['label'].lower()}; the size needs "
+                        f"{q['needed']:,.0f} ({q['why']}). Check the quantity, or confirm it.")
         groups = {r["group"] for r in done}
         if ctx.goods and "goods" not in groups:
             out.add(FIX, "no_goods_lines", f"{p}.lines", "Add each item bought as a goods line.")

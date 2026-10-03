@@ -29,6 +29,7 @@ export const AGENTS: Record<AgentId, AgentMeta> = {
   office_patterns: { n: "05", name: "Office Patterns", color: "var(--reuse)", question: "Does this work's office price or close works in an unusual way?" },
   paperwork: { n: "06", name: "Paperwork", color: "var(--inputs)", question: "Do the work's own papers agree with the portal?" },
   photo_evidence: { n: "07", name: "Photo Evidence", color: "var(--fusion)", question: "Are the work's photos new, from its place and from its time?" },
+  cost_estimate: { n: "08", name: "Cost Estimate", color: "var(--statistical)", question: "Is the agency's cost estimate right for this size of work here?" },
 };
 
 // Ids stored before the engine registry (the deck's four agents).
@@ -40,7 +41,7 @@ export function agentMeta(id: string, name?: string, question?: string): AgentMe
 }
 
 export const AGENT_ORDER: AgentId[] = ["compliance", "statistical", "dup_split", "delay",
-  "office_patterns", "paperwork", "photo_evidence"];
+  "office_patterns", "paperwork", "photo_evidence", "cost_estimate"];
 
 export const BAND_COLOR: Record<Band, string> = {
   CRITICAL: "var(--critical)",

@@ -1,0 +1,15 @@
+Uttar Pradesh: years [2024, 2026]
+  BOUNDARY_WALL            per metre  n=   4  median     8,976  p90    14,174  p98    14,263  state: not used; districts used: -
+  BUS_SHELTER              per unit   n=   1  median 1,235,833  p90 1,235,833  p98 1,235,833  state: not used; districts used: -
+  CCTV                     per unit   n=   1  median    37,989  p90    37,989  p98    37,989  state: not used; districts used: -
+  DRAIN                    per metre  n=   1  median       600  p90       600  p98       600  state: not used; districts used: -
+  EMBANKMENT               per metre  n=   1  median    25,655  p90    25,655  p98    25,655  state: not used; districts used: -
+  FOOTPATH                 per metre  n= 206  median     5,789  p90    11,284  p98    14,460  state: not used; districts used: Bulandshahr (37)
+  HIGH_MAST                per mast   n= 232  median   172,675  p90   277,869  p98   408,965  state: not used; districts used: Bareilly (30), Kheri (96), Sitapur (49)
+  ROAD_CC                  per metre  n= 493  median     7,698  p90    12,201  p98    15,711  state: not used; districts used: Deoria (36); too loose: Basti (30), Mainpuri (46), Saharanpur (68)
+  STREET_LIGHT|solar       per light  n= 334  median    20,944  p90    20,944  p98    23,588  state: USED; districts used: Jaunpur (136), Varanasi (177)
+  STREET_LIGHT|unstated    per light  n=  35  median    40,669  p90    98,953  p98   251,467  state: not used; districts used: -
+  TOILET_BLOCK             per unit   n=   1  median   459,900  p90   459,900  p98   459,900  state: not used; districts used: -
+  WATER_TANK               per unit   n=   1  median   749,000  p90   749,000  p98   749,000  state: not used; districts used: -
+A group is compared with a form only when it is tight and priced in the form's own unit of size (a road priced per m2 is never compared with roads per metre).
+wrote apps/engine/drishti/reference/cost/uttar_pradesh.json
