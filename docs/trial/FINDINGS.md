@@ -1048,6 +1048,38 @@ none of 11,577 works with both dates); it now says so in words (`validation/time
 390 px (a phone), no console errors; "your own example" run end to end against a local engine on the test country
 (a typed name and phone number come back hidden).
 
+## T095 (3 Oct 2026): what works cost, and how long they take, in Uttar Pradesh (Cost v3 prototype)
+
+The owner's pivot (plan `docs/plans/T097-cost-agent-v3.md`): the implementing agency fills a full cost estimate form,
+and the Cost agent compares the estimate with the same kind and size of work in the same district, then with the MP's
+amount. Its first reference is real works. `data/trial/cost_v3_reference.py` read the eSAKSHI dashboard tables for
+Uttar Pradesh: **8,702 works**, the state with the most dated works and stated sizes (712 roads or drains with a length,
+643 works with a count). Output `results/cost_v3_reference_uttar_pradesh.json` / `.txt`, aggregates only. Price per unit
+is counted only for works whose description states the size of one job, read by the Cost engine's own readers.
+
+| Work (UP) | Priced by | Works sized | Median | Middle 80% (below / above the median) | 98th percentile | Recommendation → sanction / sanction → completion (median days) |
+|---|---|---|---|---|---|---|
+| Solar / LED street light | per light | 369 | Rs 20,944 | −0.3% / +4.6% | Rs 82,609 | 82 / 295 |
+| CC road | per metre | 493 | Rs 7,698 | −41.7% / +58.5% | Rs 15,711 | 56 / 286 |
+| Paver / interlocking path | per metre | 206 | Rs 5,789 | −22.2% / +94.9% | Rs 14,460 | 68 / 278 |
+| High mast | per mast | 232 | Rs 1,72,675 | −9.1% / +60.9% | Rs 4,08,965 | 31 / 354 |
+
+What it shows:
+- **A standard item has a tight band.** One solar light: 80% of works within −0.3% / +4.6% of the median.
+- **What eSAKSHI cannot see spreads widely.** The middle 80% of CC roads runs from 42% below to 59% above the median,
+  because no width or thickness is recorded. The street light's 98th percentile (Rs 82,609, 3.9× the median) mixes
+  solar lamps with grid lights on new poles. The form's specification fields exist to separate these.
+- **Place matters.** The median CC road per metre ranges from Rs 4,000 (Ghazipur, 17 works) to Rs 12,259 (Mahrajganj,
+  27) across the 18 districts with 10+ sized roads. Bareilly's street lights (Rs 40,669, 26 works) cost twice Jaunpur's
+  (Rs 20,896, 139). The reference must be per district.
+- **Time barely matters inside 2024–2026.** CC road per metre: 2024 Rs 8,345, 2025 Rs 7,676, 2026 Rs 7,154. The prototype
+  can pool these years; the Schedule of Rates (T096) will set a price date.
+- **Times** (CC road): recommendation to sanction p10 / median / p90 = 18 / 56 / 169 days; sanction to completion 142 /
+  286 / 471 days.
+
+The official rate sources (CPWD, data.gov.in, GeM, PMGSY, state PWD sites) are blocked by this cloud environment's
+network policy (tested 3 Oct 2026), so T096 is a human task.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

@@ -93,6 +93,56 @@ if under 0.80, and compare with the office's own record (0.68).
 **Done when:** [ ] AUC + "late among riskiest 10%" in FINDINGS · [ ] wording never says "will be late" ·
 [ ] model file loading tested; training script in `data/`
 
+## M1b — Cost v3: a cost checker that knows the size (owner's pivot, 3 Oct 2026)
+
+The implementing agency fills a full cost estimate form; the Cost agent checks it against the same kind and size of
+work in the same district, then against the MP's amount. Plan: [`docs/plans/T097-cost-agent-v3.md`](../plans/T097-cost-agent-v3.md);
+the form: [`docs/specs/2026-10-03-cost-estimate-form.md`](../specs/2026-10-03-cost-estimate-form.md). Strong accuracy:
+normal mistakes are caught on the form, never flagged.
+
+### T093 · Cost form contract: field list, checks, routes  ·  M  ·  engine
+**What:** `reference/cost_form.yaml` (every field, one source), `drishti/cost_form/` (catalog, material matcher, the
+fix / confirm checks), `GET /api/v1/cost-form/catalog`, `POST /api/v1/cost-form/validate`.
+**Done when:** [x] every work type has its size fields · [x] checks tested (typos, units, arithmetic, totals, GPS
+length, goods, OTHER, junk input never breaks them) · [x] routes tested · [x] the spec lists every field (test)
+
+### T094 · Cost form screens and saving  ·  M  ·  web + engine  ·  Depends on: T093
+**What:** the nine-step form of the spec §4, rendered from the catalog route, with the expense table, several sites,
+live totals, fix / confirm at each field, drafts. Storage: migration `NNN_cost_forms.sql` (next free number),
+`POST /api/v1/cost-forms` (draft or submitted; submitted only when `ready`), `GET /api/v1/cost-forms/{work_id}`;
+district scoping like every route.
+**Done when:** [ ] spec §10 checklist · [ ] API tests (save, read back, scoping, a not-ready form refused) · [ ] web
+`tsc`, `lint`, `build` · [ ] screenshots on a phone and a laptop in the PR
+
+### T095 · Cost v3 reference for one state (Uttar Pradesh) from real works  ·  S  ·  data
+**What:** `data/trial/cost_v3_reference.py`: per work type, amounts, price per metre or per unit (size read by the Cost
+engine's own readers), percentiles (p10–p98), by year, by district, and days from recommendation to sanction to
+completion. Aggregates only.
+**Done when:** [x] `results/cost_v3_reference_uttar_pradesh.json` + `.txt` · [x] numbers in FINDINGS "T095"
+
+### T096 · Official rates data for Uttar Pradesh  ·  M  ·  data  ·  **human-task**
+**What:** the UP PWD Schedule of Rates (current edition: item rates, area premiums, carriage charges); CPWD DSR 2023 +
+the CPWD cost index for UP centres (fallback); CPWD analysis-of-rates consumption norms (cement per m³ by grade, bricks
+per m³, …); UP minimum wages, GST rates, labour cess, royalty; GeM prices for the goods types. Digitised into
+`reference/cost/` with a build script and a source note per number. The cloud environment cannot reach .gov.in
+(tested 3 Oct 2026): download on an Indian connection into the data pack, or allow the hosts in the environment.
+**Done when:** [ ] files in the data pack, listed in `docs/team/DATA-PACK.md` · [ ] build script + tests · [ ] a
+sample of 20 digitised rates checked against the PDFs by eye
+
+### T097 · Cost Estimate engine (v3)  ·  L  ·  engine  ·  Depends on: T093, T095
+**What:** `agents/cost_estimate/` per the plan §6: price per unit of size vs the 98th percentile of the same kind
+(and specification) in the district or state (30+ works, else "could not check"); then the MP check; line checks once
+T096 lands; findings and notes of plan §6.5; the old `statistical` agent hands over (NOT_APPLICABLE) for works with a
+form; batch and API attach the work's submitted form. Weight 0 until T098.
+**Done when:** [ ] planted tests of plan §8 pass · [ ] NOT_APPLICABLE / NOT_ASSESSABLE cases · [ ] the hold-out run on
+UP 2026 works in FINDINGS · [ ] AGENT-CATALOG row
+
+### T098 · Cost v3: prove it, then switch it on  ·  M  ·  engine + data  ·  Depends on: T094, T097
+**What:** plan §8: planted tests on the test country with forms, the UP hold-out, 30 fresh flags read by eye, a pilot of
+20–50 real estimates from an implementing agency; tune the percentile and the MP margin; then `reliability.json`
+entries and a fusion weight.
+**Done when:** [ ] targets of plan §8 met (or FINDINGS says honestly where they are not) · [ ] owner's go-ahead
+
 ## M2 — Core: explain + act  ·  target Oct wk 3 – Nov wk 1
 
 ### T050 · Risk score 0–100, bands, top-3 reasons (EN + HI)  ·  M  ·  engine  ·  Depends on: T011, T020

@@ -10,7 +10,7 @@ from dataclasses import asdict
 from datetime import date
 from functools import lru_cache
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Body, Depends, HTTPException, Query
 from psycopg.types.json import Jsonb
 from pydantic import BaseModel, Field
 
@@ -28,6 +28,8 @@ from drishti.batch import (
     office_national,
     with_index,
 )
+from drishti.cost_form import catalog as cost_form_catalog
+from drishti.cost_form.validate import validate as validate_cost_form
 from drishti.db import connect
 from drishti.explain import explain as explain_work
 from drishti.pipeline.orchestrator import Context, assess_work
@@ -409,3 +411,23 @@ def presanction_options(user: Principal = Depends(current_user)) -> dict:
                    key=lambda t: t["name"])
     return {"districts": [dict(r) for r in rows], "work_types": types,
             "as_of": config.snapshot_date().isoformat()}
+
+
+@router.get("/cost-form/catalog")
+def cost_form_fields(work_type: str | None = Query(default=None, max_length=40),
+                     user: Principal = Depends(current_user)) -> dict:
+    """Everything the cost estimate form shows for one work type (T093): every section, the
+    size fields of its family, the expense line groups, the materials it suggests and the
+    units. One source (reference/cost_form.yaml) for the form and its checks."""
+    if work_type and not cost_form_catalog.family_of(work_type):
+        raise HTTPException(404, "no such work type")
+    return cost_form_catalog.for_type(work_type)
+
+
+@router.post("/cost-form/validate")
+def cost_form_check(form: dict | list | str | int | float | None = Body(default=None),
+                    user: Principal = Depends(current_user)) -> dict:
+    """The checks made while the cost estimate form is filled (T093): what must be fixed, what
+    looks like a typing mistake to confirm, and the totals worked out from the lines. Never a
+    flag, never a reference price; any body gets an answer, never an error."""
+    return validate_cost_form(form if isinstance(form, dict) else {})

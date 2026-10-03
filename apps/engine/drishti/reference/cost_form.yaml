@@ -1,0 +1,531 @@
+# =====================================================================
+# THE COST ESTIMATE FORM (Cost v3, T093): every field, one source of truth
+# =====================================================================
+# Filled by the IMPLEMENTING AGENCY for a work the MP has recommended (the MP's own estimate is
+# the recommendation's amount, shown read-only). The web form renders from this file
+# (GET /api/v1/cost-form/catalog), the engine checks it with drishti/cost_form/validate.py, and
+# the human spec docs/specs/2026-10-03-cost-estimate-form.md describes it (a test keeps the two
+# in step: every field id here must appear there).
+#
+# Field keys
+#   id        snake_case, stable: stored forms use it
+#   label     what the form shows
+#   kind      number | choice | multi | bool | text | date | month | gps
+#   unit      for numbers: one of `units` below; fixed, the person never picks it
+#   required  true (default) | false
+#   when      shown and required only when another field holds: {field, in | not_in | gt}
+#   types     within a family, only for these work types
+#   hard      [min, max] impossible outside: the form asks to FIX it
+#   soft      [min, max] unusual outside: the form asks to CONFIRM it (a typo guard)
+#   choices   for choice / multi; "other" always comes with a free-text box `<id>_other`
+#
+# NOTHING IN THIS FILE IS EVER A FLAG. Hard and soft limits catch typing mistakes while the form
+# is filled; they are deliberately wide and never judge a price. The Cost agent (T097) judges
+# prices against measured references, never against these limits.
+# =====================================================================
+
+version: 1
+
+units:
+  # id: [dimension, factor to the dimension's base unit]
+  m: [length, 1]
+  km: [length, 1000]
+  ft: [length, 0.3048]
+  rm: [length, 1]            # running metre
+  mm: [small_length, 1]
+  m2: [area, 1]
+  sqft: [area, 0.09290304]
+  m3: [volume, 1]
+  cft: [volume, 0.028316846592]
+  brass: [volume, 2.8316846592]    # 100 cft, used for sand and stone in western India
+  l: [liquid, 1]
+  kl: [liquid, 1000]
+  kg: [mass, 1]
+  quintal: [mass, 100]
+  t: [mass, 1000]
+  bag: [mass, 50]            # a cement bag: 50 kg
+  nos: [count, 1]
+  pair: [count, 2]
+  set: [set, 1]
+  thousand: [count, 1000]
+  day: [time_day, 1]         # labour: person-days
+  hour: [time_hour, 1]
+  month: [time_month, 1]
+  w: [power, 1]
+  kw: [power, 1000]
+  kwp: [power, 1000]
+  wp: [power, 1]
+  kva: [apparent_power, 1000]
+  wh: [energy, 1]
+  kwh: [energy, 1000]
+  hp: [motor_power, 1]
+  mp: [resolution, 1]        # camera megapixels
+  tb: [storage, 1]
+  percent: [percent, 1]
+  ls: [lump_sum, 1]          # lump sum: allowed for small items only (see validate.LUMP_SUM_SHARE)
+  year: [time_year, 1]
+
+# ---------------------------------------------------------------------
+# Section 0: the MP's recommendation (read-only, filled from eSAKSHI by work id)
+# ---------------------------------------------------------------------
+recommendation:
+  - {id: work_id, label: "eSAKSHI work ID", kind: text}
+  - {id: mp_amount, label: "MP's recommended amount (Rs)", kind: number, unit: ls, hard: [1, 100000000]}
+  - {id: recommended_type, label: "Work type in the recommendation", kind: text}
+  - {id: recommended_description, label: "Description in the recommendation", kind: text}
+  - {id: recommended_date, label: "Recommended on", kind: date}
+
+# ---------------------------------------------------------------------
+# Section 1: where (per site; a work with several sites repeats this per site)
+# ---------------------------------------------------------------------
+location:
+  - {id: district_lgd, label: "District", kind: choice}
+  - {id: block, label: "Block / urban local body", kind: text}
+  - {id: gp_or_ward, label: "Gram panchayat / ward", kind: text}
+  - {id: village, label: "Village / locality", kind: text}
+  - {id: pin, label: "PIN code", kind: text}
+  - {id: area_type, label: "Area", kind: choice, choices: [rural, urban, peri_urban]}
+  - {id: lat, label: "Map pin: latitude", kind: gps}
+  - {id: lon, label: "Map pin: longitude", kind: gps}
+  # linear works (roads, paths, drains, walls, embankments, pipelines, power lines): the ends too
+  - {id: end_lat, label: "End point: latitude", kind: gps, linear_only: true}
+  - {id: end_lon, label: "End point: longitude", kind: gps, linear_only: true}
+
+# work-level, asked once
+work:
+  - {id: inside_constituency, label: "Inside the MP's constituency?", kind: bool}
+  - {id: outside_reason, label: "Why outside the constituency", kind: text, when: {field: inside_constituency, in: [false]}}
+  - {id: land_owner, label: "Who owns the land", kind: choice, choices: [state_govt, panchayat, urban_body, central_govt, public_institution, other], construction_only: true}
+  - {id: land_free, label: "The land costs nothing (no purchase or compensation)", kind: bool, construction_only: true}
+  - {id: work_type, label: "Type of work", kind: choice}     # the 33 codes of work_types.yaml, OTHER included
+  - {id: other_type_name, label: "Type of work (write it)", kind: text, when: {field: work_type, in: [OTHER]}}
+  - {id: nature, label: "Nature of the work", kind: choice, choices: [new, extension, upgrade, reconstruction, purchase, installation]}
+  - {id: existing_description, label: "What exists there now", kind: text, when: {field: nature, in: [extension, upgrade, reconstruction]}}
+  - {id: existing_age_years, label: "Age of the existing asset", kind: number, unit: year, hard: [0, 300], soft: [0, 80], when: {field: nature, in: [extension, upgrade, reconstruction]}}
+  - {id: existing_condition, label: "Its condition", kind: choice, choices: [good, damaged, collapsed], when: {field: nature, in: [extension, upgrade, reconstruction]}}
+  - {id: earlier_scheme, label: "Last built or repaired under", kind: choice, choices: [mplads, mgnrega, state_scheme, other_central_scheme, none, not_known], when: {field: nature, in: [extension, upgrade, reconstruction]}}
+  - {id: earlier_work_id, label: "Earlier work ID, if known", kind: text, required: false, when: {field: nature, in: [extension, upgrade, reconstruction]}}
+  - {id: design_standard, label: "Design followed", kind: choice, choices: [state_type_design, pmgsy, irc, cpwd, own_design, none], construction_only: true}
+  - {id: description, label: "The work in your own words: what, exactly where (from X to Y), why this size, anything unusual", kind: text, min_words: 25}
+
+# ---------------------------------------------------------------------
+# Section 3: size and specification, per family of work types. All measured (from the survey and
+# drawings), never guessed. `pricing` is the size the agent prices by.
+# ---------------------------------------------------------------------
+families:
+
+  road:
+    types: [ROAD_CC, ROAD_BT]
+    linear: true
+    pricing: {unit: m2, product: [length_m, width_m]}
+    fields:
+      - {id: length_m, label: "Length", kind: number, unit: m, hard: [1, 100000], soft: [10, 10000]}
+      - {id: width_m, label: "Carriageway width", kind: number, unit: m, hard: [1, 30], soft: [2.5, 12]}
+      - {id: concrete_grade, label: "Concrete grade", kind: choice, choices: [M10, M15, M20, M25, M30, M35, M40, other], types: [ROAD_CC]}
+      - {id: cc_thickness_mm, label: "Concrete thickness", kind: number, unit: mm, hard: [50, 600], soft: [100, 300], types: [ROAD_CC]}
+      - {id: bt_layer, label: "Bituminous layer", kind: choice, choices: [premix_carpet_seal_coat, bm_sdbc, bm_bc, dbm_bc, other], types: [ROAD_BT]}
+      - {id: bt_thickness_mm, label: "Bituminous thickness (all layers)", kind: number, unit: mm, hard: [10, 400], soft: [20, 150], types: [ROAD_BT]}
+      - {id: base_type, label: "Base layer below", kind: choice, choices: [none, brick_soling, gsb, wbm, wmm, pcc, other]}
+      - {id: base_thickness_mm, label: "Base layer thickness", kind: number, unit: mm, hard: [25, 1000], soft: [75, 450], when: {field: base_type, not_in: [none]}}
+      - {id: existing_surface, label: "What the road is now", kind: choice, choices: [earth, brick, wbm, old_bt, old_cc, interlocking, new_alignment]}
+      - {id: raising_m, label: "Average raising / filling", kind: number, unit: m, hard: [0, 10], soft: [0, 2]}
+      - {id: shoulder_width_m, label: "Shoulder width (each side)", kind: number, unit: m, hard: [0, 10], soft: [0, 2.5]}
+      - {id: side_drain_m, label: "Side drain included (length, 0 if none)", kind: number, unit: m, hard: [0, 100000]}
+      - {id: cross_drains_nos, label: "Cross drains / culverts included", kind: number, unit: nos, hard: [0, 500]}
+      - {id: kerb_m, label: "Kerb / edging length (0 if none)", kind: number, unit: m, hard: [0, 100000]}
+      - {id: signs_markings, label: "Signs and road markings included", kind: bool}
+
+  path:
+    types: [FOOTPATH]
+    linear: true
+    pricing: {unit: m2, product: [length_m, width_m]}
+    fields:
+      - {id: length_m, label: "Length", kind: number, unit: m, hard: [1, 100000], soft: [10, 5000]}
+      - {id: width_m, label: "Width", kind: number, unit: m, hard: [0.5, 20], soft: [1, 6]}
+      - {id: paver_thickness_mm, label: "Paver block thickness", kind: choice, choices: ["60", "80", "100", other]}
+      - {id: base_type, label: "Base layer below", kind: choice, choices: [none, brick_soling, gsb, wbm, wmm, pcc, sand_bed, other]}
+      - {id: base_thickness_mm, label: "Base layer thickness", kind: number, unit: mm, hard: [25, 1000], soft: [50, 300], when: {field: base_type, not_in: [none]}}
+      - {id: edging_m, label: "Kerb / edging length (0 if none)", kind: number, unit: m, hard: [0, 100000]}
+
+  drain:
+    types: [DRAIN]
+    linear: true
+    pricing: {unit: m, product: [length_m]}
+    fields:
+      - {id: length_m, label: "Length", kind: number, unit: m, hard: [1, 100000], soft: [10, 5000]}
+      - {id: drain_cover, label: "Open or covered", kind: choice, choices: [open, covered]}
+      - {id: drain_material, label: "Built of", kind: choice, choices: [brick, pcc, rcc, precast, stone, other]}
+      - {id: inner_width_m, label: "Inside width", kind: number, unit: m, hard: [0.1, 10], soft: [0.2, 2]}
+      - {id: inner_depth_m, label: "Inside depth", kind: number, unit: m, hard: [0.1, 10], soft: [0.2, 2]}
+      - {id: wall_thickness_mm, label: "Wall thickness", kind: number, unit: mm, hard: [50, 1000], soft: [100, 350]}
+      - {id: cover_slabs_nos, label: "Cover slabs", kind: number, unit: nos, hard: [0, 100000], when: {field: drain_cover, in: [covered]}}
+      - {id: outfall, label: "Outfall structure included", kind: bool}
+
+  wall:
+    types: [BOUNDARY_WALL]
+    linear: true
+    pricing: {unit: m2, product: [length_m, height_m]}
+    fields:
+      - {id: length_m, label: "Length", kind: number, unit: m, hard: [1, 100000], soft: [5, 3000]}
+      - {id: height_m, label: "Height above ground", kind: number, unit: m, hard: [0.3, 10], soft: [1, 4]}
+      - {id: foundation_depth_m, label: "Foundation depth", kind: number, unit: m, hard: [0, 5], soft: [0.3, 1.5]}
+      - {id: wall_thickness_mm, label: "Wall thickness", kind: number, unit: mm, hard: [50, 1000], soft: [100, 460]}
+      - {id: wall_material, label: "Built of", kind: choice, choices: [brick, stone, rcc, precast, chain_link_fence, other]}
+      - {id: gates_nos, label: "Gates", kind: number, unit: nos, hard: [0, 50]}
+      - {id: gate_width_m, label: "Gate width", kind: number, unit: m, hard: [0.5, 20], soft: [1, 6], when: {field: gates_nos, gt: 0}}
+      - {id: grill_m, label: "Grill / coping length (0 if none)", kind: number, unit: m, hard: [0, 100000]}
+
+  embankment:
+    types: [EMBANKMENT]
+    linear: true
+    pricing: {unit: m, product: [length_m]}
+    fields:
+      - {id: length_m, label: "Length", kind: number, unit: m, hard: [1, 100000], soft: [10, 10000]}
+      - {id: top_width_m, label: "Top width", kind: number, unit: m, hard: [0.5, 50], soft: [1, 10]}
+      - {id: height_m, label: "Height", kind: number, unit: m, hard: [0.2, 20], soft: [0.5, 6]}
+      - {id: side_slope, label: "Side slope (horizontal : vertical)", kind: choice, choices: ["1:1", "1.5:1", "2:1", "3:1", other]}
+      - {id: pitching_m2, label: "Stone pitching / protection area (0 if none)", kind: number, unit: m2, hard: [0, 1000000]}
+
+  building:
+    types: [COMMUNITY_HALL, SCHOOL_BUILDING, HEALTH_BUILDING, LIBRARY, CREMATORIUM]
+    pricing: {unit: m2, product: [built_up_area_m2]}
+    fields:
+      - {id: built_up_area_m2, label: "Built-up area, all floors together", kind: number, unit: m2, hard: [5, 20000], soft: [20, 3000]}
+      - {id: floors_nos, label: "Floors", kind: number, unit: nos, hard: [1, 10], soft: [1, 3]}
+      - {id: structure, label: "Structure", kind: choice, choices: [rcc_frame, load_bearing, steel, prefab, other]}
+      - {id: floor_height_m, label: "Floor height", kind: number, unit: m, hard: [2, 10], soft: [2.7, 4.5]}
+      - {id: roof, label: "Roof", kind: choice, choices: [rcc_slab, sheet_on_truss, other]}
+      - {id: foundation, label: "Foundation", kind: choice, choices: [isolated_footing, strip, raft, pile, other]}
+      - {id: foundation_depth_m, label: "Foundation depth", kind: number, unit: m, hard: [0.3, 30], soft: [0.9, 3]}
+      - {id: rooms_nos, label: "Rooms", kind: number, unit: nos, hard: [0, 200]}
+      - {id: doors_nos, label: "Doors", kind: number, unit: nos, hard: [0, 500]}
+      - {id: windows_nos, label: "Windows", kind: number, unit: nos, hard: [0, 1000]}
+      - {id: flooring, label: "Flooring", kind: choice, choices: [tiles, ips, granite_marble, kota_stone, other]}
+      - {id: electrical_points_nos, label: "Electrical points", kind: number, unit: nos, hard: [0, 2000]}
+      - {id: water_sanitary, label: "Water supply and sanitary fittings included", kind: bool}
+      - {id: toilet_seats_nos, label: "Toilet seats inside the building", kind: number, unit: nos, hard: [0, 200]}
+      - {id: ramp, label: "Ramp for wheelchairs", kind: bool}
+      - {id: rainwater_harvesting, label: "Rainwater harvesting included", kind: bool}
+      - {id: rooftop_solar_kw, label: "Rooftop solar (0 if none)", kind: number, unit: kw, hard: [0, 500]}
+      - {id: platforms_nos, label: "Cremation platforms", kind: number, unit: nos, hard: [0, 50], types: [CREMATORIUM]}
+      - {id: chimney, label: "Chimney included", kind: bool, types: [CREMATORIUM]}
+      - {id: fuel, label: "Fuel", kind: choice, choices: [wood, electric, gas, other], types: [CREMATORIUM]}
+
+  toilet:
+    types: [TOILET_BLOCK]
+    pricing: {unit: nos, sum: [seats_men_nos, seats_women_nos, seats_accessible_nos]}
+    fields:
+      - {id: seats_men_nos, label: "Seats for men", kind: number, unit: nos, hard: [0, 100]}
+      - {id: seats_women_nos, label: "Seats for women", kind: number, unit: nos, hard: [0, 100]}
+      - {id: seats_accessible_nos, label: "Accessible seats", kind: number, unit: nos, hard: [0, 50]}
+      - {id: built_up_area_m2, label: "Built-up area", kind: number, unit: m2, hard: [2, 2000], soft: [5, 300]}
+      - {id: water_tank_l, label: "Water tank capacity (0 if none)", kind: number, unit: l, hard: [0, 100000]}
+      - {id: disposal, label: "Waste goes to", kind: choice, choices: [septic_tank, soak_pit, sewer, bio_digester, other]}
+
+  shelter:
+    types: [BUS_SHELTER]
+    pricing: {unit: m2, product: [length_m, depth_m]}
+    fields:
+      - {id: length_m, label: "Length", kind: number, unit: m, hard: [1, 100], soft: [3, 15]}
+      - {id: depth_m, label: "Depth", kind: number, unit: m, hard: [0.5, 20], soft: [1.5, 5]}
+      - {id: roof, label: "Roof", kind: choice, choices: [rcc_slab, sheet, other]}
+      - {id: structure, label: "Structure", kind: choice, choices: [rcc, steel, other]}
+      - {id: seats_nos, label: "Seats", kind: number, unit: nos, hard: [0, 100]}
+
+  crossing:
+    types: [CULVERT, BRIDGE]
+    pricing:
+      - {when: {field: structure_type, in: [pipe]}, unit: m, product: [barrel_length_m, pipe_rows_nos]}
+      - {unit: m2, product: [spans_nos, span_m, deck_width_m]}
+    fields:
+      - {id: structure_type, label: "Type", kind: choice, choices: [pipe, box, slab, arch, other]}
+      - {id: spans_nos, label: "Spans", kind: number, unit: nos, hard: [1, 100], soft: [1, 10]}
+      - {id: span_m, label: "Length of each span", kind: number, unit: m, hard: [0.3, 200], soft: [0.6, 30]}
+      - {id: deck_width_m, label: "Width (carriageway)", kind: number, unit: m, hard: [1, 40], soft: [3, 12]}
+      - {id: pipe_dia_mm, label: "Pipe diameter", kind: number, unit: mm, hard: [150, 3000], soft: [300, 1200], when: {field: structure_type, in: [pipe]}}
+      - {id: pipe_rows_nos, label: "Pipe rows", kind: number, unit: nos, hard: [1, 20], when: {field: structure_type, in: [pipe]}}
+      - {id: barrel_length_m, label: "Barrel length (across the road)", kind: number, unit: m, hard: [1, 100], soft: [3, 20]}
+      - {id: foundation, label: "Foundation", kind: choice, choices: [open, well, pile, other]}
+      - {id: approach_m, label: "Approach road included (0 if none)", kind: number, unit: m, hard: [0, 5000]}
+
+  pond:
+    types: [POND]
+    pricing: {unit: m3, product: [water_area_m2, avg_depth_m]}
+    fields:
+      - {id: water_area_m2, label: "Water area", kind: number, unit: m2, hard: [10, 1000000], soft: [100, 50000]}
+      - {id: avg_depth_m, label: "Average depth dug", kind: number, unit: m, hard: [0.1, 15], soft: [0.5, 4]}
+      - {id: pond_nature, label: "Kind of pond work", kind: choice, choices: [new, desilting, deepening]}
+      - {id: lining_m2, label: "Lining / stone pitching (0 if none)", kind: number, unit: m2, hard: [0, 1000000]}
+      - {id: steps_nos, label: "Steps / ghats", kind: number, unit: nos, hard: [0, 100]}
+      - {id: inlet_outlet_nos, label: "Inlets and outlets", kind: number, unit: nos, hard: [0, 50]}
+      - {id: fencing_m, label: "Fencing (0 if none)", kind: number, unit: m, hard: [0, 100000]}
+      - {id: soil_lead_m, label: "How far the dug soil is carried", kind: number, unit: m, hard: [0, 20000], soft: [0, 5000]}
+
+  check_dam:
+    types: [CHECK_DAM]
+    pricing: {unit: m2, product: [length_m, height_m]}
+    fields:
+      - {id: length_m, label: "Length", kind: number, unit: m, hard: [1, 500], soft: [5, 100]}
+      - {id: height_m, label: "Height", kind: number, unit: m, hard: [0.3, 15], soft: [0.5, 4]}
+      - {id: dam_material, label: "Built of", kind: choice, choices: [masonry, rcc, gabion, earthen, other]}
+
+  borewell:
+    types: [BOREWELL]
+    pricing: {unit: nos, product: [wells_nos]}
+    fields:
+      - {id: wells_nos, label: "Borewells / hand pumps", kind: number, unit: nos, hard: [1, 200], soft: [1, 20]}
+      - {id: depth_m, label: "Depth of each", kind: number, unit: m, hard: [5, 1500], soft: [20, 300]}
+      - {id: bore_dia_mm, label: "Bore diameter", kind: number, unit: mm, hard: [50, 600], soft: [100, 300]}
+      - {id: casing, label: "Casing pipe", kind: choice, choices: [pvc, ms, gi, other]}
+      - {id: casing_length_m, label: "Casing length", kind: number, unit: m, hard: [0, 1500]}
+      - {id: pump, label: "Pump", kind: choice, choices: [hand_pump, submersible, other]}
+      - {id: pump_hp, label: "Pump power", kind: number, unit: hp, hard: [0.5, 100], soft: [0.5, 15], when: {field: pump, in: [submersible]}}
+      - {id: rising_main_m, label: "Rising main pipe", kind: number, unit: m, hard: [0, 2000]}
+      - {id: water_level_m, label: "Expected water level below ground", kind: number, unit: m, hard: [0, 1000]}
+      - {id: strata, label: "Ground", kind: choice, choices: [alluvial, hard_rock, mixed, not_known]}
+      - {id: platform, label: "Platform and drain included", kind: bool}
+
+  tank:
+    types: [WATER_TANK]
+    pricing: {unit: kl, product: [tanks_nos, capacity_l], factor: 0.001}
+    fields:
+      - {id: tanks_nos, label: "Tanks", kind: number, unit: nos, hard: [1, 100]}
+      - {id: capacity_l, label: "Capacity of each", kind: number, unit: l, hard: [100, 5000000], soft: [500, 500000]}
+      - {id: staging_m, label: "Height of the stand (0 on the ground)", kind: number, unit: m, hard: [0, 40], soft: [0, 20]}
+      - {id: tank_material, label: "Built of", kind: choice, choices: [rcc, hdpe, steel, other]}
+      - {id: connecting_pipe_m, label: "Connecting pipe (0 if none)", kind: number, unit: m, hard: [0, 50000]}
+
+  pipeline:
+    types: [WATER_SUPPLY]
+    linear: true
+    pricing: {unit: m, product: [length_m]}
+    fields:
+      - {id: length_m, label: "Pipe length", kind: number, unit: m, hard: [1, 200000], soft: [10, 20000]}
+      - {id: pipe_material, label: "Pipe", kind: choice, choices: [di, hdpe, upvc, gi, ms, ci, other]}
+      - {id: pipe_dia_mm, label: "Pipe diameter", kind: number, unit: mm, hard: [15, 3000], soft: [50, 600]}
+      - {id: pressure_class, label: "Pressure class", kind: choice, choices: [pn4, pn6, pn10, k7, k9, not_applicable, other]}
+      - {id: trench_depth_m, label: "Trench depth", kind: number, unit: m, hard: [0, 10], soft: [0.6, 2]}
+      - {id: road_restoration_m, label: "Road cut and restored (0 if none)", kind: number, unit: m, hard: [0, 100000]}
+      - {id: house_connections_nos, label: "House connections", kind: number, unit: nos, hard: [0, 100000]}
+      - {id: valves_nos, label: "Valves and hydrants", kind: number, unit: nos, hard: [0, 10000]}
+      - {id: pump_hp, label: "Pumping machinery (0 if none)", kind: number, unit: hp, hard: [0, 500]}
+
+  lights:
+    types: [STREET_LIGHT]
+    pricing: {unit: nos, product: [lights_nos]}
+    fields:
+      - {id: lights_nos, label: "Lights", kind: number, unit: nos, hard: [1, 10000], soft: [1, 500]}
+      - {id: light_power, label: "Power", kind: choice, choices: [solar_standalone, grid]}
+      - {id: led_w, label: "LED wattage of each", kind: number, unit: w, hard: [3, 1000], soft: [9, 200]}
+      - {id: pole_height_m, label: "Pole height", kind: number, unit: m, hard: [0, 20], soft: [4, 12]}
+      - {id: pole_material, label: "Pole", kind: choice, choices: [gi, ms, octagonal, existing_pole, other]}
+      - {id: panel_wp, label: "Solar panel of each", kind: number, unit: wp, hard: [5, 2000], soft: [20, 500], when: {field: light_power, in: [solar_standalone]}}
+      - {id: battery_wh, label: "Battery of each", kind: number, unit: wh, hard: [10, 20000], soft: [100, 3000], when: {field: light_power, in: [solar_standalone]}}
+      - {id: battery_type, label: "Battery type", kind: choice, choices: [lifepo4, li_ion, lead_acid, other], when: {field: light_power, in: [solar_standalone]}}
+      - {id: cable_m, label: "Cable", kind: number, unit: m, hard: [0, 100000], when: {field: light_power, in: [grid]}}
+      - {id: warranty_years, label: "Warranty", kind: number, unit: year, hard: [0, 15], soft: [1, 10]}
+
+  mast:
+    types: [HIGH_MAST]
+    pricing: {unit: nos, product: [masts_nos]}
+    fields:
+      - {id: masts_nos, label: "Masts", kind: number, unit: nos, hard: [1, 200], soft: [1, 20]}
+      - {id: mast_height_m, label: "Mast height", kind: number, unit: m, hard: [6, 50], soft: [9, 30]}
+      - {id: lamps_per_mast, label: "Lamps on each mast", kind: number, unit: nos, hard: [1, 30], soft: [2, 16]}
+      - {id: lamp_w, label: "Wattage of each lamp", kind: number, unit: w, hard: [20, 2000], soft: [50, 600]}
+      - {id: mast_power, label: "Power", kind: choice, choices: [grid, solar]}
+      - {id: cable_m, label: "Cable (0 if none)", kind: number, unit: m, hard: [0, 100000]}
+
+  solar:
+    types: [SOLAR_PLANT]
+    pricing: {unit: kwp, product: [capacity_kwp]}
+    fields:
+      - {id: capacity_kwp, label: "Capacity", kind: number, unit: kwp, hard: [0.1, 10000], soft: [1, 500]}
+      - {id: mounting, label: "Mounted on", kind: choice, choices: [rooftop, ground]}
+      - {id: grid_type, label: "Connection", kind: choice, choices: [on_grid, off_grid, hybrid]}
+      - {id: battery_kwh, label: "Battery (0 if none)", kind: number, unit: kwh, hard: [0, 10000]}
+      - {id: inverter_kva, label: "Inverter", kind: number, unit: kva, hard: [0.1, 10000]}
+
+  power_line:
+    types: [ELECTRICITY]
+    linear: true
+    pricing: {unit: m, product: [length_m]}
+    fields:
+      - {id: length_m, label: "Line length", kind: number, unit: m, hard: [1, 200000], soft: [10, 20000]}
+      - {id: voltage, label: "Voltage", kind: choice, choices: [lt, 11kv, 33kv, other]}
+      - {id: poles_nos, label: "Poles", kind: number, unit: nos, hard: [0, 10000]}
+      - {id: transformers_nos, label: "Transformers", kind: number, unit: nos, hard: [0, 100]}
+      - {id: transformer_kva, label: "Transformer size", kind: number, unit: kva, hard: [5, 10000], soft: [16, 1000], when: {field: transformers_nos, gt: 0}}
+      - {id: conductor, label: "Conductor", kind: choice, choices: [aaac, acsr, abc_cable, underground_cable, other]}
+
+  cctv:
+    types: [CCTV]
+    pricing: {unit: nos, sum: [cameras_fixed_nos, cameras_ptz_nos]}
+    fields:
+      - {id: cameras_fixed_nos, label: "Fixed cameras", kind: number, unit: nos, hard: [0, 5000]}
+      - {id: cameras_ptz_nos, label: "Moving (PTZ) cameras", kind: number, unit: nos, hard: [0, 1000]}
+      - {id: resolution_mp, label: "Camera resolution", kind: number, unit: mp, hard: [0.3, 50], soft: [2, 12]}
+      - {id: recorder_channels, label: "Recorder channels", kind: number, unit: nos, hard: [0, 1024]}
+      - {id: storage_tb, label: "Storage", kind: number, unit: tb, hard: [0, 1000]}
+      - {id: poles_nos, label: "Poles (0 if none)", kind: number, unit: nos, hard: [0, 5000]}
+      - {id: cable_m, label: "Cable", kind: number, unit: m, hard: [0, 100000]}
+      - {id: control_room, label: "Control room included", kind: bool}
+
+  ground:
+    types: [PLAYGROUND]
+    pricing: {unit: m2, product: [area_m2]}
+    fields:
+      - {id: area_m2, label: "Area", kind: number, unit: m2, hard: [10, 1000000], soft: [100, 50000]}
+      - {id: levelling_m3, label: "Earth levelling (0 if none)", kind: number, unit: m3, hard: [0, 1000000]}
+      - {id: surface, label: "Surface", kind: choice, choices: [natural, grass, synthetic, concrete, other]}
+      - {id: fencing_m, label: "Fencing (0 if none)", kind: number, unit: m, hard: [0, 100000]}
+      - {id: flood_lights_nos, label: "Flood lights (0 if none)", kind: number, unit: nos, hard: [0, 500]}
+
+  goods:
+    # the size of a purchase is its item lines (Section 5, group "goods"): each with a
+    # specification, quantity and unit price, and a GeM product ID or three quotations
+    types: [COMPUTER, FURNITURE, SPORTS_EQUIPMENT, MEDICAL_EQUIPMENT, VEHICLE, AMBULANCE]
+    goods: true
+    pricing: {unit: nos, per_line: true}
+    fields:
+      - {id: receiving_institution, label: "Institution that receives the goods", kind: text}
+
+  other:
+    # a type not in the list: written in, its size measured in a unit the person names. The
+    # agent has no reference for it, so it only compares the total with the MP's amount.
+    types: [OTHER]
+    pricing: {unit: other, product: [size_value]}
+    fields:
+      - {id: size_measure, label: "What you measured (e.g. floor area, length, number of units)", kind: text}
+      - {id: size_value, label: "Its value", kind: number, hard: [0.001, 100000000]}
+      - {id: size_unit, label: "Its unit", kind: choice, choices: [m, m2, m3, nos, kw, kl, other]}
+      - {id: specification, label: "Specification (materials, design, capacity)", kind: text, min_words: 10}
+
+# ---------------------------------------------------------------------
+# Section 4: site conditions (per site, construction only). They can only EXPLAIN a cost or
+# WIDEN the allowed band; they never cause a flag. "not_known" is always allowed.
+# Filled automatically from the map pin (never typed): altitude_m, hill_area, north_east,
+# island, lwe_area, border_area, seismic_zone (T096 data).
+# ---------------------------------------------------------------------
+site_conditions:
+  - {id: terrain, label: "Terrain", kind: choice, choices: [plain, rolling, hilly, steep_hilly, desert, coastal, floodplain, island]}
+  - {id: soil, label: "Soil", kind: choice, choices: [normal, black_cotton, sandy, rocky, waterlogged, not_known]}
+  - {id: groundwater_shallow, label: "Water close below ground (pumping needed)", kind: choice, choices: ["yes", "no", not_known]}
+  - {id: access, label: "Can a truck reach the site?", kind: choice, choices: [truck, tractor_only, head_load_only]}
+  - {id: road_distance_m, label: "Distance from the nearest motorable road", kind: number, unit: m, hard: [0, 50000]}
+  - {id: sand_source_km, label: "Distance to the sand source", kind: number, unit: km, hard: [0, 1000], required: false}
+  - {id: aggregate_source_km, label: "Distance to the stone / aggregate source", kind: number, unit: km, hard: [0, 1000], required: false}
+  - {id: brick_source_km, label: "Distance to the brick kiln", kind: number, unit: km, hard: [0, 1000], required: false}
+  - {id: cement_depot_km, label: "Distance to the cement depot", kind: number, unit: km, hard: [0, 1000], required: false}
+  - {id: site_water, label: "Water available on site for the work", kind: bool}
+  - {id: site_power, label: "Electricity available on site for the work", kind: bool}
+  - {id: lost_months, label: "Months when work cannot happen", kind: multi, choices: [jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec], required: false}
+  - {id: urban_constraints, label: "Working limits", kind: multi, choices: [night_work_only, traffic_diversion, narrow_lane, heritage_zone], required: false}
+  - {id: demolition_m3, label: "Old structure to demolish (0 if none)", kind: number, unit: m3, hard: [0, 100000]}
+  - {id: utility_shifting_nos, label: "Poles, pipes or cables to shift (0 if none)", kind: number, unit: nos, hard: [0, 1000]}
+  - {id: trees_nos, label: "Trees to cut or move (0 if none)", kind: number, unit: nos, hard: [0, 10000]}
+
+# ---------------------------------------------------------------------
+# Section 5: the expense lines. Every line: item (typed freely; suggestions from `materials`),
+# quantity, unit, rate, amount (= quantity x rate), where the rate comes from. Goods lines also
+# need a specification and a GeM product ID or 3 quotations.
+# ---------------------------------------------------------------------
+line_groups:
+  - {id: preparatory, label: "Before building (survey, design, soil test, clearing, demolition, utility shifting, temporary works, permits)"}
+  - {id: materials, label: "Materials (type any material; quantity, unit and rate)"}
+  - {id: labour, label: "Labour (person-days x daily rate)"}
+  - {id: machinery, label: "Machines hired (hours or days x rate)"}
+  - {id: carriage, label: "Carrying materials to the site"}
+  - {id: goods, label: "Goods bought (each item with its specification)"}
+  - {id: finishing, label: "Finishing and required items (MPLADS plaque, safety signs, ramps, connections)"}
+  - {id: quality, label: "Testing and quality checks"}
+  - {id: supervision, label: "Supervision / agency charges (only where the state allows them)"}
+  - {id: other, label: "Anything else (each named and explained)"}
+
+line_fields:
+  - {id: item, label: "Item", kind: text}
+  # suggested from the typed item (drishti/cost_form/materials.py), shown as "Recognised as:
+  # <material>", and confirmed or changed by the person; "none" keeps the line out of the
+  # material-by-material comparison (it still counts in the total)
+  - {id: material_id, label: "Recognised as", kind: choice, required: false}
+  # a line is quantity + unit + rate (the amount is worked out), or a lump sum: unit "ls" + amount
+  - {id: quantity, label: "Quantity", kind: number, hard: [0.000001, 1000000000], required: false}
+  - {id: unit, label: "Unit", kind: choice}       # any id of `units`
+  - {id: rate, label: "Rate (Rs per unit)", kind: number, hard: [0, 1000000000], required: false}
+  - {id: amount, label: "Amount (Rs)", kind: number, hard: [0, 1000000000], required: false}
+  - {id: basis, label: "Where the rate comes from", kind: choice, choices: [sor, gem, quotation, market_rate, earlier_work, other]}
+  - {id: sor_code, label: "Schedule of Rates item code", kind: text, when: {field: basis, in: [sor]}}
+  - {id: spec, label: "Specification", kind: text, goods_only: true}
+  - {id: gem_id, label: "GeM product ID", kind: text, required: false, goods_only: true}
+  - {id: quotations_nos, label: "Quotations attached", kind: number, unit: nos, hard: [0, 20], required: false, goods_only: true}
+
+# taxes, margin and escalation: percentages with their amounts
+charges:
+  - {id: contingency_percent, label: "Contingency (safety margin), % of the lines", kind: number, unit: percent, hard: [0, 50], soft: [0, 10]}
+  - {id: escalation_percent, label: "Price rise reserve, % (works over 12 months only)", kind: number, unit: percent, hard: [0, 50], required: false}
+  - {id: gst_percent, label: "GST rate", kind: number, unit: percent, hard: [0, 40]}
+  - {id: gst_amount, label: "GST amount (Rs)", kind: number, hard: [0, 1000000000]}
+  - {id: labour_cess_amount, label: "Building workers' welfare cess (Rs)", kind: number, hard: [0, 100000000]}
+  - {id: royalty_amount, label: "Royalty on sand / stone, mineral fund (Rs)", kind: number, hard: [0, 100000000]}
+  - {id: other_fees_amount, label: "Permission and other statutory fees (Rs)", kind: number, hard: [0, 100000000]}
+
+# ---------------------------------------------------------------------
+# Sections 6 to 8
+# ---------------------------------------------------------------------
+timing:
+  - {id: estimate_month, label: "Prices are as of (month and year)", kind: month}
+  - {id: sor_edition, label: "Schedule of Rates used (state, year)", kind: text, when_any_line_basis: sor}
+  - {id: start_month, label: "Expected start (month and year)", kind: month}
+  - {id: duration_months, label: "Expected duration", kind: number, unit: month, hard: [0.25, 120], soft: [0.5, 36]}
+
+totals:
+  - {id: total_as_per_document, label: "Grand total in the estimate document (Rs)", kind: number, hard: [1, 10000000000]}
+  - {id: reason_differs_from_mp, label: "Why the total differs from the MP's recommended amount", kind: text, when_mp_gap_over: 0.10}
+
+prepared:
+  - {id: prepared_by_role, label: "Prepared by", kind: choice, choices: [ia_engineer, consultant, other]}
+  - {id: prepared_by_designation, label: "Designation of the preparer (kept private)", kind: text, private: true}
+  - {id: checked_by_designation, label: "Designation of the officer who checked it (kept private)", kind: text, private: true}
+  - {id: estimate_pdf, label: "Detailed estimate (PDF)", kind: file}
+  - {id: drawings, label: "Drawings or layout sketch", kind: file, construction_only: true}
+  - {id: site_photo_before, label: "Photo of the site before work (with location)", kind: file, construction_only: true}
+  - {id: land_noc, label: "Land NOC / ownership paper", kind: file, construction_only: true}
+
+declarations:
+  - {id: decl_no_land_cost, label: "No line pays for land or compensation", kind: bool, must_be: true}
+  - {id: decl_no_maintenance, label: "No line pays for maintenance or running costs (salaries, fuel, consumables) beyond the warranty", kind: bool, must_be: true}
+  - {id: decl_not_funded_elsewhere, label: "This work is not already funded by another scheme (or the joint funding is stated)", kind: bool, must_be: true}
+  - {id: decl_actuals, label: "Actual costs will be reported against these same lines at completion", kind: bool, must_be: true}
+
+# ---------------------------------------------------------------------
+# Materials the form suggests and the agent recognises. The person may type ANY item; a typed
+# item that matches none of these is kept, costed in the total, and marked "not compared".
+#   names  words that identify it (English and Hindi as typed in India), matched as whole words
+#   units  units it may be given in; the first is the one it is compared in
+#   guard  [low, high] Rs per first unit: a TYPING-MISTAKE guard only (an extra zero, rupees
+#          for paise), deliberately several times wider than any market price; outside it the
+#          form asks to confirm. Never a price judgment; T096 replaces these with SoR-based ones.
+# ---------------------------------------------------------------------
+materials:
+  - {id: cement, label: "Cement", names: [cement, opc, ppc, psc, "सीमेंट"], units: [bag, kg, quintal, t], guard: [100, 3000]}
+  - {id: steel_rebar, label: "Reinforcement steel", names: [steel, tmt, sariya, saria, rebar, reinforcement, "सरिया"], units: [kg, quintal, t], guard: [15, 500]}
+  - {id: structural_steel, label: "Structural steel", names: [structural steel, ms angle, ms channel, girder, joist, truss], units: [kg, quintal, t], guard: [15, 800]}
+  - {id: sand, label: "Sand", names: [sand, balu, baalu, ret, reti, "बालू", "रेत", "मौरंग", morang, moorang], units: [m3, cft, brass], guard: [100, 30000]}
+  - {id: aggregate, label: "Stone aggregate", names: [aggregate, gitti, giti, stone chips, ballast, grit, "गिट्टी"], units: [m3, cft, brass], guard: [100, 30000]}
+  - {id: brick, label: "Bricks", names: [brick, bricks, eent, eint, "ईंट", fly ash brick], units: [nos, thousand], guard: [0.5, 100]}
+  - {id: paver_block, label: "Paver / interlocking blocks", names: [paver, pavers, interlocking, interlocking tile, paver block], units: [m2, sqft, nos], guard: [30, 10000]}
+  - {id: rmc, label: "Ready-mix concrete", names: [rmc, ready mix, readymix, ready mix concrete], units: [m3], guard: [500, 50000]}
+  - {id: bitumen, label: "Bitumen", names: [bitumen, dammar, tar, emulsion, vg 30, vg30], units: [kg, t, l], guard: [5, 1000]}
+  - {id: granular_base, label: "GSB / WBM / moorum", names: [gsb, wbm, wmm, moorum, murrum, kankar], units: [m3, cft, brass], guard: [50, 30000]}
+  - {id: earth_fill, label: "Earth for filling", names: [earth, soil, mitti, "मिट्टी", earth filling], units: [m3, cft], guard: [5, 10000]}
+  - {id: pipe, label: "Pipes", names: [pipe, pipes, hdpe, upvc, pvc pipe, di pipe, gi pipe, hume pipe, rcc pipe, np2, np3], units: [m, rm, nos], guard: null}
+  - {id: cable, label: "Cable / wire", names: [cable, wire, wiring, armoured cable], units: [m, rm], guard: null}
+  - {id: led_luminaire, label: "LED light fitting", names: [led, luminaire, light fitting, street light fitting], units: [nos], guard: null}
+  - {id: solar_panel, label: "Solar panel", names: [solar panel, solar module, pv module], units: [nos, wp], guard: null}
+  - {id: battery, label: "Battery", names: [battery, batteries], units: [nos, wh], guard: null}
+  - {id: pole, label: "Pole", names: [pole, poles, gi pole, ms pole, octagonal pole], units: [nos], guard: null}
+  - {id: tiles, label: "Tiles", names: [tile, tiles, vitrified, ceramic tile, kota stone, granite], units: [m2, sqft], guard: [20, 20000]}
+  - {id: paint, label: "Paint", names: [paint, distemper, emulsion paint, primer, enamel], units: [l], guard: [20, 5000]}
+  - {id: door_window, label: "Doors / windows", names: [door, doors, window, windows, shutter, chaukhat], units: [nos, m2], guard: null}
+  - {id: labour_skilled, label: "Skilled labour", names: [skilled, mason, mistri, mistry, raj mistri, carpenter, plumber, electrician, welder], units: [day], guard: [100, 10000]}
+  - {id: labour_unskilled, label: "Unskilled labour", names: [unskilled, labour, labourer, mazdoor, majdoor, beldar, helper, coolie], units: [day], guard: [50, 5000]}

@@ -44,6 +44,12 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
+**3 Oct 2026: Cost v3 started (owner's pivot; PR open).** The implementing agency fills a full cost estimate form; the
+Cost agent will compare it with the same kind and size of work in the same district, then with the MP's amount. Done:
+the form's field list, checks and routes (T093), the UP reference from real works (T095). Next: the form screens (T094,
+teammate), the engine (T097), the official rates (T096, human task: .gov.in is blocked in the cloud environment).
+Plan: `docs/plans/T097-cost-agent-v3.md`; form: `docs/specs/2026-10-03-cost-estimate-form.md`.
+
 **2 Oct 2026: T092 Visualization Engine built (PR open, after #92).** A public page, `/explain`, plays one work through
 six animated, replayable steps (input, privacy, reading, seven checks, the score's arithmetic, the officer's result)
 with seven built-in examples on the dashboard data and the judge's own example via `POST /api/v1/explain` (sign-in).
