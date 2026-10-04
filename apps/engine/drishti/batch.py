@@ -16,6 +16,7 @@ from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 
 from drishti import records
+from drishti.agents.cost_estimate.rates import RateIndex
 from drishti.agents.delay.backlog import OfficeBacklog
 from drishti.agents.dup_split.repeat import RepeatIndex
 from drishti.agents.office_patterns.index import JUST_UNDER, OfficeIndex, limits
@@ -75,13 +76,20 @@ def with_forms(con: psycopg.Connection, works: list[dict]) -> list[dict]:
                              .fetchone()):
         return works
     forms = {}
-    for r in con.execute("SELECT work_id, form FROM cost_forms WHERE status = 'submitted' "
-                         "AND work_id = ANY(%s)", ([w["work_id"] for w in works],)).fetchall():
-        wid, form = (r["work_id"], r["form"]) if isinstance(r, dict) else (r[0], r[1])
-        forms[wid] = form
+    for r in con.execute("SELECT work_id, form, saved_by, submitted_at FROM cost_forms "
+                         "WHERE status = 'submitted' AND work_id = ANY(%s)",
+                         ([w["work_id"] for w in works],)).fetchall():
+        r = r if isinstance(r, dict) else dict(zip(("work_id", "form", "saved_by",
+                                                     "submitted_at"), r, strict=False))
+        forms[r["work_id"]] = r
     for w in works:
         if w["work_id"] in forms:
-            w["cost_form"] = forms[w["work_id"]]
+            r = forms[w["work_id"]]
+            w["cost_form"] = r["form"]
+            # who submitted it: the Cost check never counts an agency in its own district baseline
+            w["cost_form_meta"] = {"saved_by": r["saved_by"],
+                                   "submitted_on": r["submitted_at"].date()
+                                   if r["submitted_at"] else None}
     return works
 
 
@@ -127,7 +135,8 @@ def indexes(works: list[dict]) -> dict:
     the vendors holding the certified works (Paperwork, T110). Every record is checked first
     (records.work): one malformed row used to stop the whole build."""
     works = [records.work(w) for w in works]
-    return {"dup_split": RepeatIndex.build(works), "vendors": VendorIndex.build(works),
+    return {"dup_split": RepeatIndex.build(works), "rates": RateIndex.build(works),
+            "vendors": VendorIndex.build(works),
             "photos": PhotoIndex.build(works), "backlog": OfficeBacklog.build(works),
             "offices": OfficeIndex.build(works)}
 

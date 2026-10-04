@@ -1,0 +1,12 @@
+Cost whole-estimate rule on synthetic CC-road forms (plan T120 §6.5)
+1000 forms per cell. Rule: ask when the gap is >= 15% and >= Rs 50,000.
+
+fair rate from sor      spread 5%: honest asked 0.0%, every line +5% 0.0%, every line +10% 2.0%, every line +15% 38.5%, every line +20% 94.2%, every line +30% 100.0%, one line x2 (cement rate) 100.0%, cement quantity x1.5 6.7%, cement quantity x1.5, whole or quantity question 100.0%, honest, quantity question 0.0%
+fair rate from sor      spread 10%: honest asked 0.1%, every line +5% 2.4%, every line +10% 16.8%, every line +15% 48.2%, every line +20% 82.5%, every line +30% 99.3%, one line x2 (cement rate) 96.6%, cement quantity x1.5 24.5%, cement quantity x1.5, whole or quantity question 100.0%, honest, quantity question 0.0%
+fair rate from sor      spread 15%: honest asked 2.4%, every line +5% 9.4%, every line +10% 24.7%, every line +15% 48.1%, every line +20% 70.3%, every line +30% 96.0%, one line x2 (cement rate) 89.1%, cement quantity x1.5 31.9%, cement quantity x1.5, whole or quantity question 100.0%, honest, quantity question 0.0%
+fair rate from district spread 5%: honest asked 0.0%, every line +5% 0.0%, every line +10% 0.8%, every line +15% 32.8%, every line +20% 93.1%, every line +30% 100.0%, one line x2 (cement rate) 100.0%, cement quantity x1.5 5.1%, cement quantity x1.5, whole or quantity question 100.0%, honest, quantity question 0.0%
+fair rate from district spread 10%: honest asked 0.0%, every line +5% 4.5%, every line +10% 29.0%, every line +15% 66.2%, every line +20% 91.5%, every line +30% 99.9%, one line x2 (cement rate) 98.8%, cement quantity x1.5 37.9%, cement quantity x1.5, whole or quantity question 100.0%, honest, quantity question 0.0%
+fair rate from district spread 15%: honest asked 3.3%, every line +5% 13.4%, every line +10% 33.5%, every line +15% 59.4%, every line +20% 79.9%, every line +30% 98.9%, one line x2 (cement rate) 95.3%, cement quantity x1.5 39.2%, cement quantity x1.5, whole or quantity question 100.0%, honest, quantity question 0.0%
+
+Targets (plan §14): every line +20% or more asked >= 90%; honest asked <= 2%.
+Synthetic forms only: the honest spread is an assumption.
