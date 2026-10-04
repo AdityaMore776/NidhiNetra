@@ -25,8 +25,10 @@ import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { EngineMark, SourceBadge } from "@/components/nn/badges";
 import { SectionHeader } from "@/components/nn/layout-bits";
 import { Button } from "@/components/ui/button";
-import { api, ApiError, type WorkDetail } from "@/lib/api";
+import { ExampleNote } from "@/components/nn/showcase";
+import { api, ApiError } from "@/lib/api";
 import { AGENT_ORDER, agentMeta, inr, workType } from "@/lib/format";
+import { isShowcase, type ShowcaseDetail } from "@/lib/showcase";
 import { cn } from "@/lib/utils";
 
 export default function WorkPage() {
@@ -41,19 +43,26 @@ function Work() {
   const id = useSearchParams().get("id") ?? "";
   const router = useRouter();
   const me = useMe();
-  const [d, setD] = useState<{ id: string; detail: WorkDetail } | null>(null);
+  const [d, setD] = useState<{ id: string; detail: ShowcaseDetail } | null>(null);
   const [error, setError] = useState<{ id: string; text: string } | null>(null);
 
   useEffect(() => {
     if (!id) return;
     let live = true;
-    api<WorkDetail>(`/works/${id}`)
+    api<ShowcaseDetail>(`/works/${id}`)
       .then((detail) => live && setD({ id, detail }))
-      .catch((e: ApiError) => live && setError({ id, text: e.status === 404 ? "This work is not in your area, or does not exist." : e.message }));
+      .catch(
+        (e: ApiError) =>
+          live &&
+          setError({
+            id,
+            text: e.status === 404 ? (isShowcase(me) ? e.message : "This work is not in your area, or does not exist.") : e.message,
+          }),
+      );
     return () => {
       live = false;
     };
-  }, [id]);
+  }, [id, me]);
 
   if (error?.id === id)
     return (
@@ -63,6 +72,11 @@ function Work() {
         <Button variant="outline" className="mt-5 rounded-xl" onClick={() => router.back()}>
           <ArrowLeft /> Go back
         </Button>
+        {isShowcase(me) && (
+          <Button asChild variant="ghost" className="mt-2 rounded-xl text-brand-700">
+            <Link href="/">See the ten examples</Link>
+          </Button>
+        )}
       </div>
     );
   if (!d || d.id !== id) return <WorkSkeleton />;
@@ -79,6 +93,8 @@ function Work() {
       <button onClick={() => router.back()} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="size-4" /> Back
       </button>
+
+      {d.detail.showcase && <ExampleNote meta={d.detail.showcase} source={w.source} district={w.district_name} />}
 
       {/* ------------------------------------------------------------------ the work */}
       <motion.section

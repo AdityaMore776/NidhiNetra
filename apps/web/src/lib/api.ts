@@ -1,3 +1,4 @@
+import { NOT_FOUND, SHOWCASE_ON, showcaseAnswer } from "./showcase";
 import { devRole, supabase } from "./supabase";
 
 export class ApiError extends Error {
@@ -25,6 +26,12 @@ export async function api<T>(path: string, params?: Record<string, string | numb
     if (role) headers["X-Dev-Role"] = role;
     const district = process.env.NEXT_PUBLIC_DEV_DISTRICT;
     if (district) headers["X-Dev-District"] = district;
+  }
+  // T132: a visitor without a sign-in gets the prototype examples from a static file
+  if (SHOWCASE_ON && !headers.Authorization && !headers["X-Dev-Role"]) {
+    const answer = await showcaseAnswer(path, params);
+    if (answer === NOT_FOUND) throw new ApiError(404, "This work is not one of the prototype examples.");
+    if (answer !== undefined) return answer as T;
   }
   const res = await fetch(url, { headers, cache: "no-store" });
   if (!res.ok) {

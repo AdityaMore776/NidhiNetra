@@ -1,0 +1,12 @@
+Live engine https://nidhinehtra.vercel.app/api/v1, data up to 2026-05-26; 209,993 works on the live site
+ 1 clean   REAL     WS/MP347/2024-2025/129604      LOW    0.000 fired=[]
+ 2 fast    REAL     WS/MP736/2023-2024/46796       HIGH   0.824 fired=['time_rules']
+ 3 wait    REAL     NOREF-6e3fa16301ff14           MEDIUM 0.397 fired=['time_rules']
+ 4 split   REAL     WS/MP18003/2024-2025/157519    HIGH   0.722 fired=['dup_split']
+ 5 park    REAL     NOREF-ad21b676867cba           HIGH   0.798 fired=['dup_split', 'time_rules']
+ 6 price   SCENARIO EXAMPLE-PRICE                  MEDIUM 0.250 fired=['cost_estimate']
+ 7 repeat  SCENARIO EXAMPLE-REPEAT                 MEDIUM 0.250 fired=['dup_split']
+ 8 late    SCENARIO EXAMPLE-LATE                   MEDIUM 0.250 fired=['time_rules']
+ 9 video   SCENARIO EXAMPLE-VIDEO                  MEDIUM 0.438 fired=['site_progress']
+10 two     SCENARIO EXAMPLE-TWO                    MEDIUM 0.438 fired=['cost_estimate', 'dup_split']
+bands {'CRITICAL': 0, 'HIGH': 3, 'MEDIUM': 6, 'LOW': 1}

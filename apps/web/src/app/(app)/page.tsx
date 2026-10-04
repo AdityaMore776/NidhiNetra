@@ -22,11 +22,13 @@ import type { GlobeMetric } from "@/components/map/IndiaGlobe";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { useMe } from "@/components/me";
 import { PageHeader, SectionHeader, StatTile } from "@/components/nn/layout-bits";
+import { ExampleGallery, useShowcase } from "@/components/nn/showcase";
 import { WorkTable } from "@/components/nn/work-table";
 import { Button } from "@/components/ui/button";
 import type { Band, DistrictRow, OfficeRow, Page, Summary, WorkRow } from "@/lib/api";
 import { useApiData } from "@/lib/cache";
 import { BAND_COLOR, BAND_LABEL, count, inr } from "@/lib/format";
+import { isShowcase } from "@/lib/showcase";
 import { cn } from "@/lib/utils";
 
 const RiskVortex = dynamic(() => import("@/components/three/RiskVortex"), {
@@ -59,18 +61,31 @@ export default function Dashboard() {
 
   const review = s ? (s.bands.CRITICAL ?? 0) + s.bands.HIGH : 0;
   const scope = me?.role === "MINISTRY" || me?.role === "PUBLIC" ? "All of India" : me?.role === "DISTRICT" ? "Your district" : "Your area";
+  // T132: the public view shows the ten prototype examples instead of the engine's data
+  const show = isShowcase(me);
+  const file = useShowcase(show);
+  const total = file?.examples.length ?? 10;
+  const real = file?.examples.filter((e) => e.row.source === "REAL").length ?? 0;
 
   return (
     <div className="space-y-8">
       <PageHeader
-        eyebrow={`${greeting()} · ${scope}`}
+        eyebrow={show ? `${greeting()} · Prototype examples` : `${greeting()} · ${scope}`}
         title="Every MPLADS rupee,"
         accent="watched."
         lead={
-          <>
-            Real works from the eSAKSHI public export{s ? <> (data up to <span className="num font-medium text-foreground">{s.snapshot_date}</span>)</> : null}.
-            NidhiNetra ranks which ones an officer should verify first. It flags; it never accuses.
-          </>
+          show ? (
+            <>
+              Ten worked examples of how the four checks read a work: {real} real works from the eSAKSHI public export and {total - real} made-up works
+              for the checks that need a cost estimate form or a site video. Open any one to see what each check said and why. It flags; it never
+              accuses.
+            </>
+          ) : (
+            <>
+              Real works from the eSAKSHI public export{s ? <> (data up to <span className="num font-medium text-foreground">{s.snapshot_date}</span>)</> : null}.
+              NidhiNetra ranks which ones an officer should verify first. It flags; it never accuses.
+            </>
+          )
         }
         actions={
           <>
@@ -92,16 +107,21 @@ export default function Dashboard() {
       <section className="grid gap-5 lg:grid-cols-12">
         <Stagger className="grid grid-cols-2 gap-4 lg:col-span-5">
           <StaggerItem>
-            <StatTile label="Works monitored" value={s?.works ?? 0} icon={<Layers3 className="size-4" />} note="every work on the export, assessed" />
+            <StatTile
+              label={show ? "Prototype examples" : "Works monitored"}
+              value={s?.works ?? 0}
+              icon={<Layers3 className="size-4" />}
+              note={show ? (file ? `${real} real eSAKSHI works · ${total - real} made-up` : null) : "every work on the export, assessed"}
+            />
           </StaggerItem>
           <StaggerItem>
             <StatTile
-              label="Money recommended"
+              label={show ? "Money in the examples" : "Money recommended"}
               value={s?.amount ?? 0}
               format={(v) => inr(v)}
               icon={<IndianRupee className="size-4" />}
               tone="var(--teal)"
-              note="across those works"
+              note={show ? "what the ten works ask for" : "across those works"}
             />
           </StaggerItem>
           <StaggerItem>
@@ -110,7 +130,13 @@ export default function Dashboard() {
               value={review}
               icon={<Inbox className="size-4" />}
               tone="var(--high)"
-              note={s ? <span className="num">{((review / Math.max(1, s.works)) * 100).toFixed(2)}% of works · High + Critical</span> : null}
+              note={
+                show ? (
+                  "High + Critical: in the review queue"
+                ) : s ? (
+                  <span className="num">{((review / Math.max(1, s.works)) * 100).toFixed(2)}% of works · High + Critical</span>
+                ) : null
+              }
             />
           </StaggerItem>
           <StaggerItem>
@@ -157,182 +183,232 @@ export default function Dashboard() {
         </Reveal>
       </section>
 
-      {/* ---------------------------------------------------------------- globe */}
-      <Reveal>
-        <section className="panel p-5 sm:p-6">
-          <SectionHeader
-            eyebrow="Geography"
-            title="Where the works needing review are"
-            description="Each district rises by the measure you pick. Hover a district for its numbers; click it to open its works. Ctrl + scroll to zoom."
-          />
-          <div className="mt-5 grid gap-5 lg:grid-cols-12">
-            <div className="h-[560px] lg:col-span-8">{districts && <IndiaGlobe rows={districts} metric={metric} onMetric={setMetric} focus={focus} className="size-full" />}</div>
-            <div className="lg:col-span-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-brand-950">Districts to look at first</h3>
-                <span className="text-[11px] text-muted-foreground">by works needing review</span>
-              </div>
-              <ol className="mt-3 space-y-2" onMouseLeave={() => setFocus(null)}>
-                {topDistricts.map((d, i) => {
-                  const max = topDistricts[0]?.review || 1;
-                  return (
-                    <li key={d.district_lgd}>
-                      <Link
-                        href={`/works?district=${d.district_lgd}`}
-                        onMouseEnter={() => setFocus(d.district_lgd)}
-                        className={cn(
-                          "group flex items-center gap-3 rounded-xl border bg-white p-3 transition-all hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card",
-                          focus === d.district_lgd && "border-brand-200 shadow-card",
-                        )}
-                      >
-                        <span className="num grid size-7 shrink-0 place-items-center rounded-lg bg-muted font-mono text-[11px] font-semibold text-brand-900">
-                          {i + 1}
-                        </span>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-baseline gap-1.5">
-                            <span className="truncate text-sm font-medium">{d.name}</span>
-                            <span className="truncate text-[11px] text-muted-foreground">{d.state}</span>
-                          </div>
-                          <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-muted">
-                            <div className="h-full rounded-full bg-brand-gradient" style={{ width: `${(d.review / max) * 100}%` }} />
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="num text-sm font-semibold">{count(d.review)}</div>
-                          <div className="num text-[10px] text-muted-foreground">{(d.share * 100).toFixed(1)}%</div>
-                        </div>
-                        <MapPin className="size-3.5 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
-                      </Link>
-                    </li>
-                  );
-                })}
-                {districts && topDistricts.length === 0 && <li className="text-sm text-muted-foreground">No district has works needing review.</li>}
-                {!districts && Array.from({ length: 6 }).map((_, i) => <li key={i} className="h-14 rounded-xl skeleton-shimmer" />)}
-              </ol>
-            </div>
-          </div>
-        </section>
-      </Reveal>
-
-      {/* ---------------------------------------------------------------- engines + risk mix */}
-      <section className="grid gap-5 lg:grid-cols-12">
-        <Reveal className="lg:col-span-7">
-          <div className="panel h-full p-5 sm:p-6">
+      {show ? (
+        <>
+          {/* ---------------------------------------------------------------- the ten examples (T132) */}
+          <section className="space-y-4">
             <SectionHeader
-              eyebrow="Detect"
-              title="What each check found"
-              description="Works where each of the four checks raised a question. Cost and Site Progress start as agencies file the cost estimate form and monthly site videos."
-              actions={
-                <Button asChild variant="ghost" size="sm" className="text-brand-700">
-                  <Link href="/how-it-works">
-                    How they work <ArrowRight />
-                  </Link>
-                </Button>
-              }
+              eyebrow="Prototype examples"
+              title="Ten works, and what each check made of them"
+              description="Each one is a textbook case: a check asking for a look where it should, two checks agreeing, or the checks staying quiet on an ordinary work. Open one to see the score, the reasons and all four checks."
             />
-            <div className="mt-4">{s ? <EngineFindings agents={s.agents} /> : <div className="h-64 rounded-xl skeleton-shimmer" />}</div>
-          </div>
-        </Reveal>
-        <Reveal className="lg:col-span-5" delay={0.08}>
-          <div className="panel h-full p-5 sm:p-6">
-            <SectionHeader eyebrow="Explain" title="Risk mix" description="How the flagged works split across the bands." />
-            <div className="mt-4">{s ? <RiskMix summary={s} /> : <div className="h-64 rounded-xl skeleton-shimmer" />}</div>
-          </div>
-        </Reveal>
-      </section>
-
-      {/* ---------------------------------------------------------------- states + districts */}
-      <section className="grid gap-5 lg:grid-cols-12">
-        <Reveal className="lg:col-span-5">
-          <div className="panel h-full p-5 sm:p-6">
-            <SectionHeader eyebrow="States" title="Works needing review, by state" description="Top states by count. Hover for works, share and money." />
-            <div className="mt-4">{districts ? <StatesBar rows={districts} /> : <div className="h-80 rounded-xl skeleton-shimmer" />}</div>
-          </div>
-        </Reveal>
-        <Reveal className="lg:col-span-7" delay={0.08}>
-          <div className="panel h-full p-5 sm:p-6">
-            <SectionHeader
-              eyebrow="Districts"
-              title="Size against share needing review"
-              description="Each dot is a district; its size is the money recommended. Blue dots have works needing review. Click one to open its works."
-            />
-            <div className="mt-4">{districts ? <DistrictScatter rows={districts} /> : <div className="h-72 rounded-xl skeleton-shimmer" />}</div>
-          </div>
-        </Reveal>
-      </section>
-
-      {/* ---------------------------------------------------------------- money + what the data says */}
-      <section className="grid gap-5 lg:grid-cols-12">
-        <Reveal className="lg:col-span-8">
-          <div className="panel h-full p-5 sm:p-6">
-            <SectionHeader eyebrow="Money" title="Where the money goes" description="Each state's block is sized by the money recommended and shaded by its share of works needing review." />
-            <div className="mt-4">{districts ? <MoneyTreemap rows={districts} /> : <div className="h-80 rounded-xl skeleton-shimmer" />}</div>
-          </div>
-        </Reveal>
-        <Reveal className="lg:col-span-4" delay={0.08}>
-          <div className="panel h-full space-y-4 p-5 sm:p-6">
-            <SectionHeader eyebrow="Evidence" title="What the four checks read" />
-            <Fact icon={<CheckCircle2 className="size-4" />} tone="var(--eng-compliance)" title="Every eSAKSHI record">
-              Time &amp; Rules reads the dates of every work; Duplicate Work finds one job cut into pieces just under a limit.
-            </Fact>
-            <Fact icon={<FileText className="size-4" />} tone="var(--eng-cost)" title="The agency&apos;s cost estimate form">
-              Cost prices every line against the district&apos;s rates; Duplicate Work checks the form&apos;s map pin against sanctioned works.
-            </Fact>
-            <Fact icon={<Camera className="size-4" />} tone="var(--eng-flow)" title="Monthly site videos">
-              Site Progress compares the agency&apos;s own claim with what a GPS-stamped video of the site shows.
-            </Fact>
-          </div>
-        </Reveal>
-      </section>
-
-      {/* ---------------------------------------------------------------- offices */}
-      {offices && offices.length > 0 && (
-        <Reveal>
-          <section className="panel p-5 sm:p-6">
-            <SectionHeader
-              eyebrow="Offices"
-              title="Offices whose completion dates need checking"
-              description="These offices record many works as completed before they were recommended. That is a record-keeping habit, so it is listed here once per office instead of filling the review queue work by work."
-            />
-            <OfficeTable
-              head={["Implementing office", "District", "Works dated before recommendation", "vs national rate"]}
-              rows={offices.slice(0, 8).map((o) => ({
-                key: o.agency_name,
-                a: o.agency_name,
-                b: (
-                  <>
-                    {o.district_name}
-                    <span className="text-xs text-muted-foreground">, {o.state_name}</span>
-                  </>
-                ),
-                c: `${count(o.bad)} of ${count(o.completed)} (${(o.rate * 100).toFixed(1)}%)`,
-                lift: o.lift,
-              }))}
-            />
-            {offices.length > 8 && <p className="mt-3 text-xs text-muted-foreground">and {offices.length - 8} more offices.</p>}
+            <ExampleGallery file={file} />
           </section>
-        </Reveal>
-      )}
 
-      {/* ---------------------------------------------------------------- queue */}
-      <Reveal>
-        <section className="space-y-4">
-          <SectionHeader
-            eyebrow="Act"
-            title="Top of the review queue"
-            description="Most important first: the risk score weighted by the money at stake. Click a work to see why."
-            actions={
-              <Button asChild variant="outline" className="rounded-xl">
-                <Link href="/queue">
-                  Open the full queue <ArrowRight />
-                </Link>
-              </Button>
-            }
-          />
-          <WorkTable items={queue?.items.slice(0, 8) ?? []} loading={!queue} rank />
-        </section>
-      </Reveal>
+          <section className="grid gap-5 lg:grid-cols-12">
+            <Reveal className="lg:col-span-7">
+              <div className="panel h-full p-5 sm:p-6">
+                <SectionHeader
+                  eyebrow="Detect"
+                  title="What each check found in the examples"
+                  description="Examples where each of the four checks raised a question."
+                  actions={
+                    <Button asChild variant="ghost" size="sm" className="text-brand-700">
+                      <Link href="/how-it-works">
+                        How they work <ArrowRight />
+                      </Link>
+                    </Button>
+                  }
+                />
+                <div className="mt-4">{s ? <EngineFindings agents={s.agents} /> : <div className="h-64 rounded-xl skeleton-shimmer" />}</div>
+              </div>
+            </Reveal>
+            <Reveal className="lg:col-span-5" delay={0.08}>
+              <div className="panel h-full space-y-4 p-5 sm:p-6">
+                <SectionHeader eyebrow="Evidence" title="What the four checks read" />
+                <EvidenceFacts />
+              </div>
+            </Reveal>
+          </section>
+        </>
+      ) : (
+        <>
+          {/* ---------------------------------------------------------------- globe */}
+          <Reveal>
+            <section className="panel p-5 sm:p-6">
+              <SectionHeader
+                eyebrow="Geography"
+                title="Where the works needing review are"
+                description="Each district rises by the measure you pick. Hover a district for its numbers; click it to open its works. Ctrl + scroll to zoom."
+              />
+              <div className="mt-5 grid gap-5 lg:grid-cols-12">
+                <div className="h-[560px] lg:col-span-8">{districts && <IndiaGlobe rows={districts} metric={metric} onMetric={setMetric} focus={focus} className="size-full" />}</div>
+                <div className="lg:col-span-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-semibold text-brand-950">Districts to look at first</h3>
+                    <span className="text-[11px] text-muted-foreground">by works needing review</span>
+                  </div>
+                  <ol className="mt-3 space-y-2" onMouseLeave={() => setFocus(null)}>
+                    {topDistricts.map((d, i) => {
+                      const max = topDistricts[0]?.review || 1;
+                      return (
+                        <li key={d.district_lgd}>
+                          <Link
+                            href={`/works?district=${d.district_lgd}`}
+                            onMouseEnter={() => setFocus(d.district_lgd)}
+                            className={cn(
+                              "group flex items-center gap-3 rounded-xl border bg-white p-3 transition-all hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card",
+                              focus === d.district_lgd && "border-brand-200 shadow-card",
+                            )}
+                          >
+                            <span className="num grid size-7 shrink-0 place-items-center rounded-lg bg-muted font-mono text-[11px] font-semibold text-brand-900">
+                              {i + 1}
+                            </span>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-baseline gap-1.5">
+                                <span className="truncate text-sm font-medium">{d.name}</span>
+                                <span className="truncate text-[11px] text-muted-foreground">{d.state}</span>
+                              </div>
+                              <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-muted">
+                                <div className="h-full rounded-full bg-brand-gradient" style={{ width: `${(d.review / max) * 100}%` }} />
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <div className="num text-sm font-semibold">{count(d.review)}</div>
+                              <div className="num text-[10px] text-muted-foreground">{(d.share * 100).toFixed(1)}%</div>
+                            </div>
+                            <MapPin className="size-3.5 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+                          </Link>
+                        </li>
+                      );
+                    })}
+                    {districts && topDistricts.length === 0 && <li className="text-sm text-muted-foreground">No district has works needing review.</li>}
+                    {!districts && Array.from({ length: 6 }).map((_, i) => <li key={i} className="h-14 rounded-xl skeleton-shimmer" />)}
+                  </ol>
+                </div>
+              </div>
+            </section>
+          </Reveal>
+
+          {/* ---------------------------------------------------------------- engines + risk mix */}
+          <section className="grid gap-5 lg:grid-cols-12">
+            <Reveal className="lg:col-span-7">
+              <div className="panel h-full p-5 sm:p-6">
+                <SectionHeader
+                  eyebrow="Detect"
+                  title="What each check found"
+                  description="Works where each of the four checks raised a question. Cost and Site Progress start as agencies file the cost estimate form and monthly site videos."
+                  actions={
+                    <Button asChild variant="ghost" size="sm" className="text-brand-700">
+                      <Link href="/how-it-works">
+                        How they work <ArrowRight />
+                      </Link>
+                    </Button>
+                  }
+                />
+                <div className="mt-4">{s ? <EngineFindings agents={s.agents} /> : <div className="h-64 rounded-xl skeleton-shimmer" />}</div>
+              </div>
+            </Reveal>
+            <Reveal className="lg:col-span-5" delay={0.08}>
+              <div className="panel h-full p-5 sm:p-6">
+                <SectionHeader eyebrow="Explain" title="Risk mix" description="How the flagged works split across the bands." />
+                <div className="mt-4">{s ? <RiskMix summary={s} /> : <div className="h-64 rounded-xl skeleton-shimmer" />}</div>
+              </div>
+            </Reveal>
+          </section>
+
+          {/* ---------------------------------------------------------------- states + districts */}
+          <section className="grid gap-5 lg:grid-cols-12">
+            <Reveal className="lg:col-span-5">
+              <div className="panel h-full p-5 sm:p-6">
+                <SectionHeader eyebrow="States" title="Works needing review, by state" description="Top states by count. Hover for works, share and money." />
+                <div className="mt-4">{districts ? <StatesBar rows={districts} /> : <div className="h-80 rounded-xl skeleton-shimmer" />}</div>
+              </div>
+            </Reveal>
+            <Reveal className="lg:col-span-7" delay={0.08}>
+              <div className="panel h-full p-5 sm:p-6">
+                <SectionHeader
+                  eyebrow="Districts"
+                  title="Size against share needing review"
+                  description="Each dot is a district; its size is the money recommended. Blue dots have works needing review. Click one to open its works."
+                />
+                <div className="mt-4">{districts ? <DistrictScatter rows={districts} /> : <div className="h-72 rounded-xl skeleton-shimmer" />}</div>
+              </div>
+            </Reveal>
+          </section>
+
+          {/* ---------------------------------------------------------------- money + what the data says */}
+          <section className="grid gap-5 lg:grid-cols-12">
+            <Reveal className="lg:col-span-8">
+              <div className="panel h-full p-5 sm:p-6">
+                <SectionHeader eyebrow="Money" title="Where the money goes" description="Each state's block is sized by the money recommended and shaded by its share of works needing review." />
+                <div className="mt-4">{districts ? <MoneyTreemap rows={districts} /> : <div className="h-80 rounded-xl skeleton-shimmer" />}</div>
+              </div>
+            </Reveal>
+            <Reveal className="lg:col-span-4" delay={0.08}>
+              <div className="panel h-full space-y-4 p-5 sm:p-6">
+                <SectionHeader eyebrow="Evidence" title="What the four checks read" />
+                <EvidenceFacts />
+              </div>
+            </Reveal>
+          </section>
+
+          {/* ---------------------------------------------------------------- offices */}
+          {offices && offices.length > 0 && (
+            <Reveal>
+              <section className="panel p-5 sm:p-6">
+                <SectionHeader
+                  eyebrow="Offices"
+                  title="Offices whose completion dates need checking"
+                  description="These offices record many works as completed before they were recommended. That is a record-keeping habit, so it is listed here once per office instead of filling the review queue work by work."
+                />
+                <OfficeTable
+                  head={["Implementing office", "District", "Works dated before recommendation", "vs national rate"]}
+                  rows={offices.slice(0, 8).map((o) => ({
+                    key: o.agency_name,
+                    a: o.agency_name,
+                    b: (
+                      <>
+                        {o.district_name}
+                        <span className="text-xs text-muted-foreground">, {o.state_name}</span>
+                      </>
+                    ),
+                    c: `${count(o.bad)} of ${count(o.completed)} (${(o.rate * 100).toFixed(1)}%)`,
+                    lift: o.lift,
+                  }))}
+                />
+                {offices.length > 8 && <p className="mt-3 text-xs text-muted-foreground">and {offices.length - 8} more offices.</p>}
+              </section>
+            </Reveal>
+          )}
+
+          {/* ---------------------------------------------------------------- queue */}
+          <Reveal>
+            <section className="space-y-4">
+              <SectionHeader
+                eyebrow="Act"
+                title="Top of the review queue"
+                description="Most important first: the risk score weighted by the money at stake. Click a work to see why."
+                actions={
+                  <Button asChild variant="outline" className="rounded-xl">
+                    <Link href="/queue">
+                      Open the full queue <ArrowRight />
+                    </Link>
+                  </Button>
+                }
+              />
+              <WorkTable items={queue?.items.slice(0, 8) ?? []} loading={!queue} rank />
+            </section>
+          </Reveal>
+        </>
+      )}
     </div>
+  );
+}
+
+function EvidenceFacts() {
+  return (
+    <>
+      <Fact icon={<CheckCircle2 className="size-4" />} tone="var(--eng-compliance)" title="Every eSAKSHI record">
+        Time &amp; Rules reads the dates of every work; Duplicate Work finds one job cut into pieces just under a limit.
+      </Fact>
+      <Fact icon={<FileText className="size-4" />} tone="var(--eng-cost)" title="The agency&apos;s cost estimate form">
+        Cost prices every line against the district&apos;s rates; Duplicate Work checks the form&apos;s map pin against sanctioned works.
+      </Fact>
+      <Fact icon={<Camera className="size-4" />} tone="var(--eng-flow)" title="Monthly site videos">
+        Site Progress compares the agency&apos;s own claim with what a GPS-stamped video of the site shows.
+      </Fact>
+    </>
   );
 }
 

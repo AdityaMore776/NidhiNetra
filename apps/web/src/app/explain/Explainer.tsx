@@ -81,7 +81,13 @@ export default function Explainer() {
     let live = true;
     fetch("/explain/examples.json")
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
-      .then((f: ExamplesFile) => live && setFile(f))
+      .then((f: ExamplesFile) => {
+        if (!live) return;
+        setFile(f);
+        // a prototype example's page links here with ?example=<id> (T132)
+        const asked = new URLSearchParams(window.location.search).get("example");
+        if (asked && f.examples.some((e) => e.id === asked)) setPick(asked);
+      })
       .catch(() => live && setLoadError(true));
     return () => {
       live = false;
