@@ -82,7 +82,10 @@ Names only — **never commit values**. See [`.env.example`](../.env.example).
 | `DATABASE_URL` | engine, data scripts | Postgres connection (falls back to `POSTGRES_URL`) |
 | `POSTGRES_URL` / `POSTGRES_URL_NON_POOLING` | engine / `with_env.py` | set by the Vercel–Supabase integration: transaction pooler / session pooler |
 | `SUPABASE_URL` | engine | where the engine fetches the token-signing keys |
-| `SUPABASE_SERVICE_ROLE_KEY` | `seed_users.py` only | admin key for creating demo accounts — server-side only |
+| `SUPABASE_SERVICE_ROLE_KEY` | engine, `seed_users.py`, `build_site_visits.py` | admin key, server-side only: demo accounts, and signed upload / download links for site videos (T123) |
+| `DRISHTI_CAPTURE_SECRET` | engine | signs the capture token a site visit is filmed with (16+ characters); without it the site-visit routes answer 503 |
+| `DRISHTI_VIDEO_BUCKET` | engine, video job | the Supabase Storage bucket for site videos and kept frames (default `site-visits`, private) |
+| `GEMINI_API_KEY` | `build_site_visits.py` (optional) | the owner's free key: the video job judges the agency's claims; without it they stay "not judged" |
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | web | public login configuration |
 | `DRISHTI_AUTH=dev` | engine | local dev mode (refused on Vercel) |
 | `NEXT_PUBLIC_DEV_ROLE`, `NEXT_PUBLIC_DEV_DISTRICT` | web | the role/district used in dev mode |

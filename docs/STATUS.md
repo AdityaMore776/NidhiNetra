@@ -44,6 +44,24 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
+**4 Oct 2026: the four agents are built (T121–T125, owner's pivot of 3 Oct; PR open).** Cost, Duplicate Work, Time &
+Rules and Site Progress, a quarter of the weight each; Guideline Compliance, Fund Flow, Office Patterns, Paperwork and
+Photo Evidence are retired (their code stays as libraries). Plan: `docs/plans/T120-four-agents.md`; numbers in
+FINDINGS "T121–T125".
+- **Cost** prices every confirmed line (SoR item, else 3+ other agencies' district rates), then judges the whole
+  estimate: asked at 15%+ and Rs 50,000+ above the fair price. Synthetic forms: target met at a 10% honest spread with
+  district rates (91.5% / 0.0%), missed with SoR rates (82.5%) and at a 15% spread (2.4–3.3% honest asked).
+- **Time & Rules**: R01, R06, R13, R14, the late sanction as an office fact (never queues), and the comfort window from
+  the form's estimated time to completion.
+- **Site Progress v3**: monthly site videos filmed in the new capture page (`/capture`), sealed, read once by the video
+  job (OpenCV, off the live engine), video deleted, blurred frames kept. End to end in a real browser on made-up scenes.
+- **Dashboard's 40,935 works:** queue 439 → 217 (185 R14, 34 split pieces). Test countries: precision 0.70 → 1.00.
+- **Going live:** merge, then apply migrations 013 + 014 (`data\with_env.py apply_migrations.py`), set
+  `DRISHTI_CAPTURE_SECRET` and `SUPABASE_SERVICE_ROLE_KEY` on the engine, create a private `site-visits` bucket, and
+  re-run `batch_assess.py`. The video job runs on a teammate's machine (`data/requirements-video.txt`).
+- **Still to do:** the SoR files (T096), the field trial on real sites (T126, human-task), reading the new findings by
+  eye once they fire, the Android app for mock-location checks.
+
 **3 Oct 2026: simple and certain: one Cost check, one Duplicate check (T099 + T100, owner's pivot; PR open).**
 - **Measured first** (`data/trial/simple_certain_trial.py`):
   - **Cost:** no price question is certain from a record. Of 15 works a record-only check would have questioned, 0

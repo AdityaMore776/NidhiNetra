@@ -53,8 +53,12 @@ agencies, never the agency's own) or the standard item; quantities against the s
 conditions against the map; then the fair estimate and the gap. Asks only when 60%+ of the money is compared and the
 gap is 15%+ and Rs 50,000+ (starting values). SoR lines switch on once T096 lands; the rest can be built and tested
 on planted forms first.
-**Done when:** [ ] planted forms of plan §14 (9 in 10 padded by 20%+ caught, at most 2 in 100 honest asked) · [ ]
-CAN'T CHECK and NOT_APPLICABLE cases · [ ] the officer's sentence names the top three lines · [ ] FINDINGS + CATALOG
+**Done when:** [ ] planted forms of plan §14 (9 in 10 padded by 20%+ caught, at most 2 in 100 honest asked):
+**met with district rates when honest estimates sit within 10% of the fair rate** (91.5% caught, 0.0% asked); not with
+SoR rates at 10% (82.5% caught) nor at a 15% spread (2.4–3.3% of honest forms asked), `data/trial/cost_whole_trial.py`
+on synthetic forms; real forms still to come · [x] CAN'T CHECK and NOT_APPLICABLE cases (`test_whole_estimate.py`) ·
+[x] the officer's sentence names the top three lines (`whole.sentence`, `TOP_LINES = 3`) · [x] FINDINGS + CATALOG
+(T121, 4 Oct 2026; the SoR lines wait on T096)
 
 ### T122 · Time & Rules agent: the 75-day clock and the comfort window  ·  M  ·  engine  ·  Depends on: T099
 **What:** plan §8. One agent from R01 (the clock, less election days), R06 (impossible dates), R13 and R14 (finished in
@@ -62,29 +66,36 @@ days), plus the comfort window: the form's "Expected duration" field renamed "Es
 estimate checked against the band for its kind and size (an engineers' minimum table with a source per row, and
 eSAKSHI's measured 90th percentile), the early and late lines, `FINISHED_TOO_FAST`, `BUILT_BEFORE_SANCTION`,
 `PAST_PROMISED_TIME`, `SANCTIONED_LATE` (a fact, never queues alone).
-**Done when:** [ ] tests at both lines' edges, padded and too-short estimates, declared lost months · [ ] dashboard
-re-run: 20+ `FINISHED_TOO_FAST` read by eye, 9 in 10 worth checking · [ ] no work queued on lateness alone
+**Done when:** [x] tests at both lines' edges, padded and too-short estimates, declared lost months
+(`test_time_rules.py`, 26 tests) · [ ] dashboard re-run: 20+ `FINISHED_TOO_FAST` read by eye, 9 in 10 worth checking
+(cannot run yet: it needs the form's estimated time, and no real work has a form; until then R13/R14 ask, as before) ·
+[x] no work queued on lateness alone (dashboard T125: `SANCTIONED_LATE` on 9,401 works scores 0.05 alone; every
+queued work carries R14, R13 or a split; `test_a_late_sanction_is_a_fact_that_adds_a_little_and_never_queues`)
 
 ### T123 · Site capture app: viewpoints, the walk, the site map, the seal  ·  L  ·  web + engine  ·  Depends on: T099
 **What:** plan §9.3 and §9.8. Mobile web first (camera, GPS, motion sensors): the site opened from the form's map pins,
 the first visit's viewpoints and zones, the monthly guided return with last month's view shown faintly, the at-site
 checks that refuse a bad video, offline filming, the sealed upload; faces blurred before storage. A small Android app
 for the mock-location and phone-integrity checks comes after.
-**Done when:** [ ] a first visit and a monthly visit filmed end to end on a phone · [ ] a gallery upload and an edited
-file refused · [ ] screenshots on a phone in the PR
+**Done when:** [ ] a first visit and a monthly visit filmed end to end on a phone (done end to end in headless
+Chromium with a fake camera, `data/trial/capture_e2e.py`; a real phone is T126's) · [x] an edited file refused
+(`test_an_edited_file_breaks_the_seal`; the page has no gallery picker, filming happens only in the page) · [ ]
+screenshots on a phone in the PR (the mobile web page is built; the Android app for mock location comes after)
 
 ### T124 · Site Progress v3: the six checks on video  ·  L  ·  engine  ·  Depends on: T123
 **What:** plan §9.4 and §9.5: live and sealed, at this site (GPS and views both), new footage (fingerprints across
 works and months), zones shown, change since last month at the same viewpoint, the agency's claim judged shown / not
 shown / can't tell (the vision model on its free tier, capped). Findings only as in §9.5; notes never counted.
-**Done when:** [ ] unit tests for each check and each finding, NOT_APPLICABLE (no videos) and NOT_ASSESSABLE · [ ] the
-photo reuse numbers of FINDINGS B2 reproduced on kept frames
+**Done when:** [x] unit tests for each check and each finding, NOT_APPLICABLE (no videos) and NOT_ASSESSABLE
+(`test_site_progress_v3.py` 21, `tests/video/` 14 with OpenCV, the job and the routes end to end) · [ ] the
+photo reuse numbers of FINDINGS B2 reproduced on kept frames (needs the pilot's photos from the data pack)
 
 ### T125 · Four agents only: registry, scoring, web; retire the rest  ·  M  ·  engine + web  ·  Depends on: T122
 **What:** plan §12. The registry holds Cost, Duplicate Work, Time & Rules and Site Progress; Guideline Compliance,
 Fund Flow, Office Patterns, Photo Evidence and Paperwork go to `RETIRED` (old results still read by name); fusion
 weights for four; the web's agent list, how-it-works and explain pages.
-**Done when:** [ ] engine and web checks pass · [ ] dashboard queue before / after in FINDINGS
+**Done when:** [x] engine and web checks pass (4 Oct 2026: 693 engine tests, web tsc + lint + build) · [x]
+dashboard queue before / after in FINDINGS (439 → 217)
 
 ### T126 · Site Progress field trial: honest visits and planted tricks  ·  M  ·  data + eval  ·  **human-task**  ·  Depends on: T124
 **What:** plan §14: 3–5 real public works near teammates (with permission), three monthly visits each, and each trick

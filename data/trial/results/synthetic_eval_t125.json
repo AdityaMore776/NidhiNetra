@@ -1,0 +1,815 @@
+{
+  "tag": "t125",
+  "seeds": [
+    11,
+    12,
+    13
+  ],
+  "pooled": {
+    "works": 61077,
+    "seconds": 78.3,
+    "bands": {
+      "LOW": 60324,
+      "HIGH": 101,
+      "MEDIUM": 652
+    },
+    "queue": 101,
+    "queue_share": 0.0017,
+    "unscored_queued": 0,
+    "queue_precision": 1.0,
+    "positives": 882,
+    "positives_caught_by_meant_engine": 0.203,
+    "positives_queued": 0.115,
+    "positives_medium_or_above": 0.204,
+    "positives_in_top5pct": 0.232,
+    "background_queued": 0.0,
+    "background_engine_fire_rate": {
+      "time_rules": 0.0936
+    }
+  },
+  "pooled_by_kind": {
+    "look-alike or background": {
+      "BACKGROUND": {
+        "n": 47545,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.01,
+        "queued": 0.0,
+        "top5pct": 0.044
+      },
+      "HN_BATCH_DIFFERENT_VILLAGES": {
+        "n": 1343,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.007,
+        "queued": 0.0,
+        "top5pct": 0.043
+      },
+      "HN_BIG_STATED_SCOPE": {
+        "n": 36,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.056,
+        "queued": 0.0,
+        "top5pct": 0.056
+      },
+      "HN_BULK_ENTRY_BACKFILL": {
+        "n": 211,
+        "positive": false,
+        "meant_code_fired": 1.0,
+        "medium_or_above": 0.0,
+        "queued": 0.0,
+        "top5pct": 1.0
+      },
+      "HN_BULK_UNITS": {
+        "n": 3032,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.008,
+        "queued": 0.0,
+        "top5pct": 0.04
+      },
+      "HN_DECLARED_CONTINUATION": {
+        "n": 18,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.0,
+        "queued": 0.0,
+        "top5pct": 0.0
+      },
+      "HN_LANDMARK_TEMPLE": {
+        "n": 5694,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.012,
+        "queued": 0.0,
+        "top5pct": 0.045
+      },
+      "HN_OPPOSITE_SIDES": {
+        "n": 300,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.007,
+        "queued": 0.0,
+        "top5pct": 0.04
+      },
+      "HN_PIN_NEXT_DOOR": {
+        "n": 18,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.0,
+        "queued": 0.0,
+        "top5pct": 0.056
+      },
+      "HN_PIN_OTHER_ASSET": {
+        "n": 18,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.0,
+        "queued": 0.0,
+        "top5pct": 0.056
+      },
+      "HN_REPAIR_ELSEWHERE": {
+        "n": 18,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.0,
+        "queued": 0.0,
+        "top5pct": 0.0
+      },
+      "HN_SCHOOL_NAMED_MANDIR": {
+        "n": 1044,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.011,
+        "queued": 0.0,
+        "top5pct": 0.04
+      },
+      "PIN_ORIGINAL": {
+        "n": 126,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.0,
+        "queued": 0.0,
+        "top5pct": 0.0
+      },
+      "REPAIR_ORIGINAL": {
+        "n": 36,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.0,
+        "queued": 0.0,
+        "top5pct": 0.0
+      },
+      "REPEAT_ORIGINAL": {
+        "n": 72,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.0,
+        "queued": 0.0,
+        "top5pct": 0.0
+      },
+      "UNSCORED_BIG_VAGUE": {
+        "n": 684,
+        "positive": false,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.006,
+        "queued": 0.0,
+        "top5pct": 0.037
+      }
+    },
+    "planted": {
+      "COST_SMALL_SCOPE_X10": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.0,
+        "queued": 0.0,
+        "top5pct": 0.0
+      },
+      "COST_X10": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.0,
+        "queued": 0.0,
+        "top5pct": 0.056
+      },
+      "COST_X3": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.0,
+        "queued": 0.0,
+        "top5pct": 0.0
+      },
+      "COST_X5": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.028,
+        "queued": 0.0,
+        "top5pct": 0.028
+      },
+      "OFFICE_CLOSES_IN_DAYS": {
+        "n": 93,
+        "positive": true,
+        "meant_code_fired": 0.366,
+        "medium_or_above": 0.366,
+        "queued": 0.366,
+        "top5pct": 0.366
+      },
+      "OFFICE_PRICES_AT_LIMIT": {
+        "n": 237,
+        "positive": true,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.004,
+        "queued": 0.0,
+        "top5pct": 0.034
+      },
+      "PIN_REPEAT": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 1.0,
+        "medium_or_above": 1.0,
+        "queued": 0.0,
+        "top5pct": 1.0
+      },
+      "REBUILT_SOON": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 1.0,
+        "medium_or_above": 1.0,
+        "queued": 0.0,
+        "top5pct": 1.0
+      },
+      "REPAIR_SOON_AFTER_BUILT": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.028,
+        "queued": 0.0,
+        "top5pct": 0.056
+      },
+      "REPEAT_AFTER_DONE": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.0,
+        "queued": 0.0,
+        "top5pct": 0.111
+      },
+      "REPEAT_WHILE_OPEN": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.0,
+        "queued": 0.0,
+        "top5pct": 0.0
+      },
+      "RULE_BIG_VAGUE": {
+        "n": 18,
+        "positive": true,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.0,
+        "queued": 0.0,
+        "top5pct": 0.0
+      },
+      "RULE_BUILT_IN_DAYS": {
+        "n": 18,
+        "positive": true,
+        "meant_code_fired": 1.0,
+        "medium_or_above": 1.0,
+        "queued": 1.0,
+        "top5pct": 1.0
+      },
+      "RULE_DATES_IMPOSSIBLE": {
+        "n": 18,
+        "positive": true,
+        "meant_code_fired": 1.0,
+        "medium_or_above": 0.667,
+        "queued": 0.667,
+        "top5pct": 1.0
+      },
+      "RULE_OUTSIDE_CEILING": {
+        "n": 18,
+        "positive": true,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.0,
+        "queued": 0.0,
+        "top5pct": 0.056
+      },
+      "RULE_TEMPLE": {
+        "n": 36,
+        "positive": true,
+        "meant_code_fired": 0.0,
+        "medium_or_above": 0.028,
+        "queued": 0.0,
+        "top5pct": 0.028
+      },
+      "SPLIT_SAME_SITE": {
+        "n": 60,
+        "positive": true,
+        "meant_code_fired": 0.333,
+        "medium_or_above": 0.333,
+        "queued": 0.333,
+        "top5pct": 0.4
+      },
+      "SPLIT_STRETCHES": {
+        "n": 60,
+        "positive": true,
+        "meant_code_fired": 0.283,
+        "medium_or_above": 0.333,
+        "queued": 0.283,
+        "top5pct": 0.333
+      }
+    }
+  },
+  "per_seed": {
+    "11": {
+      "works": 19788,
+      "seconds": 19.2,
+      "bands": {
+        "LOW": 19546,
+        "HIGH": 23,
+        "MEDIUM": 219
+      },
+      "queue": 23,
+      "queue_share": 0.0012,
+      "unscored_queued": 0,
+      "queue_precision": 1.0,
+      "positives": 296,
+      "positives_caught_by_meant_engine": 0.172,
+      "positives_queued": 0.078,
+      "positives_medium_or_above": 0.162,
+      "positives_in_top5pct": 0.196,
+      "background_queued": 0.0,
+      "background_engine_fire_rate": {
+        "time_rules": 0.0947
+      },
+      "recall_by_kind": {
+        "COST_SMALL_SCOPE_X10": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "COST_X10": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.083
+        },
+        "COST_X3": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "COST_X5": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "OFFICE_CLOSES_IN_DAYS": {
+          "n": 28,
+          "positive": true,
+          "meant_code_fired": 0.25,
+          "medium_or_above": 0.25,
+          "queued": 0.25,
+          "top5pct": 0.25
+        },
+        "OFFICE_PRICES_AT_LIMIT": {
+          "n": 84,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.024
+        },
+        "PIN_REPEAT": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 0.0,
+          "top5pct": 1.0
+        },
+        "REBUILT_SOON": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 0.0,
+          "top5pct": 1.0
+        },
+        "REPAIR_SOON_AFTER_BUILT": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "REPEAT_AFTER_DONE": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.167
+        },
+        "REPEAT_WHILE_OPEN": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "RULE_BIG_VAGUE": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "RULE_BUILT_IN_DAYS": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 1.0,
+          "top5pct": 1.0
+        },
+        "RULE_DATES_IMPOSSIBLE": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 0.333,
+          "queued": 0.333,
+          "top5pct": 1.0
+        },
+        "RULE_OUTSIDE_CEILING": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.167
+        },
+        "RULE_TEMPLE": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.083,
+          "queued": 0.0,
+          "top5pct": 0.083
+        },
+        "SPLIT_SAME_SITE": {
+          "n": 19,
+          "positive": true,
+          "meant_code_fired": 0.105,
+          "medium_or_above": 0.105,
+          "queued": 0.105,
+          "top5pct": 0.105
+        },
+        "SPLIT_STRETCHES": {
+          "n": 21,
+          "positive": true,
+          "meant_code_fired": 0.286,
+          "medium_or_above": 0.286,
+          "queued": 0.286,
+          "top5pct": 0.286
+        }
+      }
+    },
+    "12": {
+      "works": 20389,
+      "seconds": 19.7,
+      "bands": {
+        "LOW": 20128,
+        "MEDIUM": 220,
+        "HIGH": 41
+      },
+      "queue": 41,
+      "queue_share": 0.002,
+      "unscored_queued": 0,
+      "queue_precision": 1.0,
+      "positives": 300,
+      "positives_caught_by_meant_engine": 0.22,
+      "positives_queued": 0.137,
+      "positives_medium_or_above": 0.23,
+      "positives_in_top5pct": 0.26,
+      "background_queued": 0.0,
+      "background_engine_fire_rate": {
+        "time_rules": 0.0922
+      },
+      "recall_by_kind": {
+        "COST_SMALL_SCOPE_X10": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.083
+        },
+        "COST_X10": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "COST_X3": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "COST_X5": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.083
+        },
+        "OFFICE_CLOSES_IN_DAYS": {
+          "n": 36,
+          "positive": true,
+          "meant_code_fired": 0.417,
+          "medium_or_above": 0.417,
+          "queued": 0.417,
+          "top5pct": 0.417
+        },
+        "OFFICE_PRICES_AT_LIMIT": {
+          "n": 82,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.012
+        },
+        "PIN_REPEAT": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 0.0,
+          "top5pct": 1.0
+        },
+        "REBUILT_SOON": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 0.0,
+          "top5pct": 1.0
+        },
+        "REPAIR_SOON_AFTER_BUILT": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.083,
+          "queued": 0.0,
+          "top5pct": 0.083
+        },
+        "REPEAT_AFTER_DONE": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.083
+        },
+        "REPEAT_WHILE_OPEN": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "RULE_BIG_VAGUE": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "RULE_BUILT_IN_DAYS": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 1.0,
+          "top5pct": 1.0
+        },
+        "RULE_DATES_IMPOSSIBLE": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 0.833,
+          "queued": 0.833,
+          "top5pct": 1.0
+        },
+        "RULE_OUTSIDE_CEILING": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "RULE_TEMPLE": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "SPLIT_SAME_SITE": {
+          "n": 19,
+          "positive": true,
+          "meant_code_fired": 0.421,
+          "medium_or_above": 0.421,
+          "queued": 0.421,
+          "top5pct": 0.632
+        },
+        "SPLIT_STRETCHES": {
+          "n": 19,
+          "positive": true,
+          "meant_code_fired": 0.368,
+          "medium_or_above": 0.526,
+          "queued": 0.368,
+          "top5pct": 0.526
+        }
+      }
+    },
+    "13": {
+      "works": 20900,
+      "seconds": 20.8,
+      "bands": {
+        "LOW": 20650,
+        "MEDIUM": 213,
+        "HIGH": 37
+      },
+      "queue": 37,
+      "queue_share": 0.0018,
+      "unscored_queued": 0,
+      "queue_precision": 1.0,
+      "positives": 286,
+      "positives_caught_by_meant_engine": 0.217,
+      "positives_queued": 0.129,
+      "positives_medium_or_above": 0.22,
+      "positives_in_top5pct": 0.245,
+      "background_queued": 0.0,
+      "background_engine_fire_rate": {
+        "time_rules": 0.0938
+      },
+      "recall_by_kind": {
+        "COST_SMALL_SCOPE_X10": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "COST_X10": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.083
+        },
+        "COST_X3": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "COST_X5": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.083,
+          "queued": 0.0,
+          "top5pct": 0.083
+        },
+        "OFFICE_CLOSES_IN_DAYS": {
+          "n": 29,
+          "positive": true,
+          "meant_code_fired": 0.414,
+          "medium_or_above": 0.414,
+          "queued": 0.414,
+          "top5pct": 0.414
+        },
+        "OFFICE_PRICES_AT_LIMIT": {
+          "n": 71,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.014,
+          "queued": 0.0,
+          "top5pct": 0.056
+        },
+        "PIN_REPEAT": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 0.0,
+          "top5pct": 1.0
+        },
+        "REBUILT_SOON": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 0.0,
+          "top5pct": 1.0
+        },
+        "REPAIR_SOON_AFTER_BUILT": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.083
+        },
+        "REPEAT_AFTER_DONE": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.083
+        },
+        "REPEAT_WHILE_OPEN": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "RULE_BIG_VAGUE": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "RULE_BUILT_IN_DAYS": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 1.0,
+          "queued": 1.0,
+          "top5pct": 1.0
+        },
+        "RULE_DATES_IMPOSSIBLE": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 1.0,
+          "medium_or_above": 0.833,
+          "queued": 0.833,
+          "top5pct": 1.0
+        },
+        "RULE_OUTSIDE_CEILING": {
+          "n": 6,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "RULE_TEMPLE": {
+          "n": 12,
+          "positive": true,
+          "meant_code_fired": 0.0,
+          "medium_or_above": 0.0,
+          "queued": 0.0,
+          "top5pct": 0.0
+        },
+        "SPLIT_SAME_SITE": {
+          "n": 22,
+          "positive": true,
+          "meant_code_fired": 0.455,
+          "medium_or_above": 0.455,
+          "queued": 0.455,
+          "top5pct": 0.455
+        },
+        "SPLIT_STRETCHES": {
+          "n": 20,
+          "positive": true,
+          "meant_code_fired": 0.2,
+          "medium_or_above": 0.2,
+          "queued": 0.2,
+          "top5pct": 0.2
+        }
+      }
+    }
+  },
+  "seconds": 78
+}

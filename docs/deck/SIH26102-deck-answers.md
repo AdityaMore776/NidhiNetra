@@ -66,7 +66,7 @@ list for the district.
 
 | The problem | What DRISHTI does |
 |---|---|
-| Thousands of works, few officers | Every work is screened on each run. Only works with a well-founded finding reach the list (dashboard test: 439 of 40,935 works). |
+| Thousands of works, few officers | Every work is screened on each run. Only works with a well-founded finding reach the list (dashboard test: 217 of 40,935 works). |
 | Prices hide in averages | The estimate is priced line by line, then judged as a whole: "one costly line can be honest; every line a little costly is a pattern" |
 | The same asset funded twice | Map pins within 50 m, plus the agency's own answer about each look-alike sanctioned work |
 | Jobs split to stay under a limit | Only the strictest split: 12 of 14 such groups on the dashboard read as one job cut up, and none was wrong |
@@ -130,22 +130,22 @@ list for the district.
 
 | Agent | How it works | Catches | State |
 |---|---|---|---|
-| **Cost** | Each line against the SoR item rate, the district's recent rates (5+ forms from 3+ agencies, never the agency's own) or the standard item; quantities against size norms; charges and site conditions against the map; then the fair estimate and the gap | A padded estimate, inflated quantities, a fake hard site, a bigger size than the map holds | ✅ form, quantity norms, standard-item price, MP gap · 🛠 line-by-line and whole-estimate verdict (T121; the SoR data is T096) |
+| **Cost** | Each line against the SoR item rate, the district's recent rates (5+ forms from 3+ agencies, never the agency's own) or the standard item; quantities against size norms; charges and site conditions against the map; then the fair estimate and the gap | A padded estimate, inflated quantities, a fake hard site, a bigger size than the map holds | ✅ form, quantity norms, standard-item price, MP gap, line-by-line and whole-estimate verdict (T121, tested on synthetic forms) · 🛠 the SoR data (T096) and real forms |
 | **Duplicate Work** | Haversine distance between map pins (both ends for roads); the agency's declared links; the strictest split | Repeat at the same site; rebuild too soon; split job | ✅ built (T100) |
-| **Time & Rules** | Date arithmetic; a band per kind and size (engineers' minimum + eSAKSHI's measured longest usual time); the comfort window | Paper completion; built before sanction; past promised time; late sanction (fact) | ✅ the record versions (R01, R06, R13, R14) · 🛠 one agent with the window (T122) |
-| **Site Progress** | Sealed in-app video; GPS + matching each viewpoint to its earlier views; image fingerprints across all works; zone coverage; change at the same viewpoint; an AI vision model judges the claim (shown / not shown / can't tell) | Reused footage; wrong site; same place as another work; claim or completion not shown; already built at start | ✅ photo fingerprints (99.9% of edited copies), claim-judging frame for photos · 🛠 capture app and video checks (T123, T124) |
+| **Time & Rules** | Date arithmetic; a band per kind and size (engineers' minimum + eSAKSHI's measured longest usual time); the comfort window | Paper completion; built before sanction; past promised time; late sanction (fact) | ✅ one agent: the record versions (R01, R06, R13, R14) and the comfort window (T122; the window needs the form's estimated time) |
+| **Site Progress** | Sealed in-app video; GPS + matching each viewpoint to its earlier views; image fingerprints across all works; zone coverage; change at the same viewpoint; an AI vision model judges the claim (shown / not shown / can't tell) | Reused footage; wrong site; same place as another work; claim or completion not shown; already built at start | ✅ capture page and video checks (T123, T124), tested on made-up scenes end to end · 🛠 the field trial on real sites (T126), the Android app |
 
 ### Technology stack (what is actually used)
 
-| Layer | Used today | Added for the four agents (🛠) |
+| Layer | Used today | Added for the four agents |
 |---|---|---|
-| Web | Next.js 16, React, TypeScript, MapLibre (India map on LGD outlines) | Mobile web capture page (camera, GPS, motion sensors); later a small Android app for mock-location and phone-integrity checks |
-| Engine / API | Python 3.12, FastAPI | Video checks run offline as jobs |
-| Database & login | Supabase PostgreSQL (row-level security), Supabase Auth with roles and district scoping | Tables for videos' readings, fingerprints and zones (no full videos kept) |
+| Web | Next.js 16, React, TypeScript, MapLibre (India map on LGD outlines) | ✅ mobile web capture page (camera, GPS, motion sensors, offline queue); 🛠 later a small Android app for mock-location and phone-integrity checks |
+| Engine / API | Python 3.12, FastAPI | ✅ video checks run offline as a job (`data/build_site_visits.py`) |
+| Database & login | Supabase PostgreSQL (row-level security), Supabase Auth with roles and district scoping | ✅ a table of site visits with their readings and fingerprints; Supabase Storage for the video until it is read, then deleted (blurred frames kept) |
 | Hosting | Vercel: web and engine on one domain; deploys on merge to `main` | n/a |
-| Matching & vision | Image fingerprints (256-bit) | OpenCV feature matching (free); one AI vision model on a free tier with a daily cap, for claim judging only |
+| Matching & vision | Image fingerprints (256-bit) | ✅ OpenCV 4 feature matching (free); one AI vision model on a free tier with a daily cap, for claim judging only (optional) |
 | Text | Local OCR (RapidOCR) for plaques; rule-based readers | n/a |
-| Phone checks | n/a | Android `Location.isMock()`, Google Play Integrity (free up to 10,000 checks a day) |
+| Phone checks | n/a | 🛠 Android `Location.isMock()`, Google Play Integrity (free up to 10,000 checks a day) |
 
 Everything is open source or on a free tier (project rule: free tiers only).
 
@@ -157,7 +157,7 @@ Everything is open source or on a free tier (project rule: free tiers only).
 
 | Kind | Answer |
 |---|---|
-| **Technical** | <ul><li>Three of the four agents are arithmetic, maps and dates, built and tested in Python (628 automated tests pass).</li><li>Video checks use free, CPU-only image matching; only one step uses an AI model.</li><li>The live prototype already screens all 2,09,993 eSAKSHI works.</li></ul> |
+| **Technical** | <ul><li>Three of the four agents are arithmetic, maps and dates, built and tested in Python (693 automated tests pass, plus 14 video tests where OpenCV is installed).</li><li>Video checks use free, CPU-only image matching; only one step uses an AI model.</li><li>The live prototype already screens all 2,09,993 eSAKSHI works.</li></ul> |
 | **Data** | <ul><li>eSAKSHI's public data supplies the dates, amounts and types (2,09,993 works; 40,935 with sanction dates).</li><li>What it lacks (size, rates, location, the ground) is exactly what the form and video add.</li><li>Official rates (Schedules of Rates) are public PDFs; digitising them is task T096.</li></ul> |
 | **Operational** | <ul><li>It fits the existing flow (MP → district → implementing agency). The agency already prepares a detailed estimate before sanction; the form puts it in a structured shape.</li><li>Engineers already visit sites; the video replaces a photo.</li><li>DRISHTI never blocks or approves anything; officers decide.</li></ul> |
 | **Economic** | <ul><li>Free and open-source tools on free tiers.</li><li>Videos are reduced to kept frames and readings, so storage stays small.</li><li>AI calls are capped per day.</li></ul> |
@@ -182,13 +182,13 @@ Everything is open source or on a free tier (project rule: free tiers only).
 
 | Loophole | How it is closed |
 |---|---|
-| Raise every rate a little, so no single line looks wrong | Whole-estimate gap: the extras add up in the total 🛠 |
+| Raise every rate a little, so no single line looks wrong | Whole-estimate gap: the extras add up in the total ✅ (synthetic forms: every line +20% asked 82.5–94.2% at a 5–10% honest spread) |
 | Inflate quantities instead of rates | Quantity norms for the size (cement per m³, bricks per m³, pavers per m²) ✅ |
 | Claim a bigger size | Road length must fit between its two map pins ✅; the site video measures what was built 🛠 |
-| Name items the system does not recognise | Below 60% of the money compared, the officer sees "can't check" and the share unrecognised 🛠 |
+| Name items the system does not recognise | Below 60% of the money compared, the officer sees "can't check" and the share unrecognised ✅ |
 | Claim a hilly, far or carry-by-hand site to justify extra cost | Terrain and access come from the map pin; a contradicted claim widens nothing 🛠 |
-| Quote a Schedule of Rates code but a higher rate | The form shows that code's official rate; a different rate needs a reason 🛠 |
-| All agencies in a district raise rates together | The official rates cap the district band; an agency never counts in its own baseline 🛠 |
+| Quote a Schedule of Rates code but a higher rate | The line is held to that code's official rate ✅ (switches on with the SoR files, T096) |
+| All agencies in a district raise rates together | The official rates cap the district band (+15%); an agency never counts in its own baseline ✅ |
 | Pay for a standard item (lights, masts) at an inflated unit price | Unit price against the district's real works: above the 98th percentile + 25% and above the MP's amount + 10% ✅ |
 
 **Duplicate Work**
@@ -197,34 +197,34 @@ Everything is open source or on a free tier (project rule: free tiers only).
 |---|---|
 | Re-describe an existing asset in new words | Map pins within 50 m of a sanctioned work of the same kind; words don't matter ✅ |
 | Call a repeat a "continuation" | A continuation must name the earlier work's ID; the claim is on record ✅ |
-| Answer "different work" falsely about a look-alike | The answer is signed on record; the first site video shows the place 🛠 |
+| Answer "different work" falsely about a look-alike | The answer is signed on record; the first site video shows the place, and a place shared with another work is asked ✅ |
 | Rebuild something finished recently | A declared rebuild of a work completed under 3 years ago is asked ✅ |
 | Cut one job into pieces just under ₹5 / 10 lakh | Every piece 96–100% of a limit, one place, one MP, within 30 days ✅ |
-| Film one site for two works | The place match across works' viewpoints 🛠 |
+| Film one site for two works | The place match across works' viewpoints ✅ (end-to-end trial: 875 matching points, asked) |
 
 **Time & Rules**
 
 | Loophole | How it is closed |
 |---|---|
-| Record completion the day after sanction (paper completion) | "Finished too fast" (record version: 25 of 25 right) ✅; with videos 🛠 |
-| Build before sanction, file afterwards | The first video (or a photo's date stamp) shows it already standing ✅ (photo dates: 3 found) / 🛠 (video) |
-| Promise a very long time so the work is never late | The window caps at the usual longest time for that kind and size 🛠 |
-| Promise a very short time to make a fake fast finish look planned | "Too fast" is judged against physics and the videos, not only the promise 🛠 |
-| Invent lost months after the fact | Lost months are declared on the form before sanction 🛠 |
+| Record completion the day after sanction (paper completion) | "Finished too fast" (record version: 25 of 25 right) ✅; with the window and videos ✅ (not yet read on real works) |
+| Build before sanction, file afterwards | The first video (or a photo's date stamp) shows it already standing ✅ (photo dates: 3 found; the video check is built, its reading needs the AI vision model) |
+| Promise a very long time so the work is never late | The window caps at the usual longest time for that kind of work ✅ |
+| Promise a very short time to make a fake fast finish look planned | A too-short promise is raised to the shortest believable time, and "too fast" needs the videos to show nothing ✅ |
+| Invent lost months after the fact | Lost months are declared on the form, which cannot change once submitted ✅ |
 | An office records every completion on sanction day | The office's habit is named once, and its works score low, so one office cannot flood the list ✅ |
 
 **Site Progress**
 
 | Loophole | How it is closed |
 |---|---|
-| Upload an old or downloaded video | Filming only in the app; fingerprints against all earlier footage 🛠 (photo version ✅ 99.9%) |
-| Film a different, finished site | GPS **and** the views must both match this site's earlier views 🛠 |
-| Fake the GPS with a mock-location app | Mock-location flag, phone integrity check, and the views must still match 🛠 |
-| Film a screen playing a video | The phone's own motion does not match the motion in the picture 🛠 |
-| Show a new corner each month as "progress" | Progress is counted only zone by zone against the same zone last month 🛠 |
-| Film only the finished part | The app won't finish until every viewpoint is matched 🛠 |
+| Upload an old or downloaded video | Filming only in the app; fingerprints against all earlier footage ✅ (made-up scenes: 42 reused frames found; photo version 99.9%) |
+| Film a different, finished site | GPS **and** the views must both match this site's earlier views ✅ |
+| Fake the GPS with a mock-location app | The views must still match ✅; the mock-location flag and phone integrity check need the Android app 🛠 |
+| Film a screen playing a video | The phone's own motion does not match the motion in the picture ✅ (made-up scenes) |
+| Show a new corner each month as "progress" | Progress is counted only at the same viewpoints as last month ✅ |
+| Film only the finished part | The app won't stop until every earlier viewpoint is filmed, and the job checks each one matches ✅ |
 | Dress up the site for the filming day | Random check videos within 48 hours, by someone else 🛠 |
-| Edit the video | The seal (signature over video, GPS, motion and time) breaks 🛠 |
+| Edit the video | The video's SHA-256 is sealed when filming stops; any change breaks it ✅ (a signature by the phone itself needs the Android app 🛠) |
 
 **The system itself**
 
@@ -240,7 +240,7 @@ Everything is open source or on a free tier (project rule: free tiers only).
 |---|---|
 | Human control | DRISHTI asks; officers decide. Every flag reads "needs checking" with its facts; nothing is blocked automatically. |
 | Existing workflow | Same MP → district → agency flow. The estimate and the site visit already exist; DRISHTI gives them a structured form and a guided video. |
-| Priority-based action | Only well-founded findings reach the list: 439 of 40,935 dashboard works (about 1%), so officers' time goes where evidence is strongest |
+| Priority-based action | Only well-founded findings reach the list: 217 of 40,935 dashboard works (about 0.5%), so officers' time goes where evidence is strongest |
 | Modular | Each agent is a folder with one contract. Agents can be added or retired without touching the others (the old Cost Anomaly was retired this way). |
 | Adapts to rule changes | The limits are settings: 75 vs 45 days, margins, the window's grace. The 2023 guideline text is being confirmed (T001). |
 | Gets better with use | Each officer verdict updates that finding's hit rate (the learning loop) |
@@ -272,8 +272,8 @@ Everything is open source or on a free tier (project rule: free tiers only).
 |---|---|---|
 | Works screened | All 2,09,993 eSAKSHI works on each run | ✅ done |
 | Planted fakes in the top 5% of the score | 78% (50 fakes); 74.3% on the 810-problem test country | ✅ measured |
-| Works reaching the review list | 439 of 40,935 dashboard works (about 1%) | ✅ measured |
-| Cost: padded estimates caught (20%+) | 9 in 10, with at most 2 in 100 honest estimates asked | 🎯 target (T121) |
+| Works reaching the review list | 217 of 40,935 dashboard works (about 0.5%), with the four agents | ✅ measured |
+| Cost: padded estimates caught (20%+) | 9 in 10, with at most 2 in 100 honest estimates asked. Synthetic forms: met at a 10% honest spread with district rates (91.5%, 0.0%); missed with SoR rates (82.5%) and at a 15% spread (2.4–3.3% asked) | 🎯 target (T121), 🧪 synthetic |
 | Time & Rules: "finished too fast" worth checking | 9 in 10 (its record version: 25 of 25) | 🎯 target (T122) |
 | Site Progress: each cheating trick caught | 9 in 10, with a finding on at most 1 in 30 honest visits | 🎯 target (T126 field trial) |
 | Every estimate checked before sanction | Yes, once agencies file the form | 🛠 |
@@ -288,11 +288,11 @@ Compare **capabilities**, not claims about others' quality. Mark only what DRISH
 
 | Capability | DRISHTI | eSAKSHI portal today | Manual inspection |
 |---|---|---|---|
-| Estimate priced line by line against official and district rates | 🛠 | ✗ | Partial (an engineer checks some) |
+| Estimate priced line by line against official and district rates | ✅ built (awaits real forms and the SoR files) | ✗ | Partial (an engineer checks some) |
 | Repeat detection by map pin, with declared continuations | ✅ | ✗ | Partial |
 | Split-work detection (strictest rule) | ✅ | ✗ | ✗ |
 | Paper-completion detection (finished too fast) | ✅ (records) | ✗ | Partial |
-| Monthly progress at fixed viewpoints, with reuse and location checks | 🛠 | ✗ (photos, often none) | Partial (occasional visits) |
+| Monthly progress at fixed viewpoints, with reuse and location checks | ✅ built (field trial next) | ✗ (photos, often none) | Partial (occasional visits) |
 | Explainable 0–100 score with top three reasons | ✅ | ✗ | ✗ |
 | Pre-sanction check | ✅ | ✗ | ✗ |
 | Learns from officers' verdicts (hit rates) | ✅ mechanism, awaiting real verdicts | ✗ | ✗ |
@@ -379,7 +379,10 @@ Compare **capabilities**, not claims about others' quality. Mark only what DRISH
 |---|---|
 | 60% past 75 days; median 90 days; 832 complete within 7 days; 195 ₹5 lakh+ constructions; halls p10 1.3 days; 9,300 of 36,508 with no picture | `data/trial/results/four_agents_timing.txt` |
 | 0 of 1,129 road widths | FINDINGS T095 |
-| 0 of 15 record price questions; words 13 of 16; strict split 12 of 14; dashboard list 439 of 40,935 | FINDINGS "T099 + T100" (PR #106) |
+| 0 of 15 record price questions; words 13 of 16; strict split 12 of 14 | FINDINGS "T099 + T100" (PR #106) |
+| Dashboard list 217 of 40,935 (was 439); test countries precision 1.00 | FINDINGS "T121–T125", `results/dashboard_t125_after.json`, `results/synthetic_eval_t125.json` |
+| Whole estimate on synthetic forms (82.5–94.2%, 0.0–3.3%) | `data/trial/results/cost_whole_trial.txt` |
+| 42 reused frames, 875 matching points, 5 of 5 viewpoints | `data/trial/results/capture_e2e.txt` (made-up scenes) |
 | R14 25 of 25 | FINDINGS T055 (reliability table) |
 | 78% of planted fakes in the top 5% | FINDINGS T080 |
 | 74.3% on the test country | FINDINGS T055 |
@@ -387,5 +390,5 @@ Compare **capabilities**, not claims about others' quality. Mark only what DRISH
 | Delay model 0.71 against 0.68 | FINDINGS C1 |
 | Photo fingerprints 99.9%; 3 works dated before recommendation | FINDINGS B2, B3 |
 | Spend ≤ sanction on 36,430 works | Plan T099–T100 §1 |
-| 628 tests | `pytest -q` on PR #106 |
+| 693 tests (+14 video) | `pytest -q` on branch `claude/four-agents`, 4 Oct 2026 |
 | GPS 4.9 m; phone AR drift; Play Integrity 10,000 a day | Plan T120 §17 |

@@ -58,41 +58,37 @@ note on the ones an officer should look at.
    verdict. (Planned: those verdicts are added to the same counts the score is built from, so it learns which
    alerts were right.)
 
-## 3. The agents, one line each
+## 3. The four agents, one line each
 
-Grouped by the step of a work's life they watch. ✅ = built into the live app ·
-🧪 = tested on real data in our trial, being built · 📝 = planned.
+Since 4 Oct 2026 DRISHTI runs four agents (the owner's decision). Each asks only about what is likely to be a real
+problem, never a small mistake, and says "couldn't check" when it has nothing to look at.
 
-**Before the money moves**
-- ✅ **Cost** — *Is the agency's cost estimate right for this size of work here?* It reads the implementing agency's
-  cost estimate form (size, specification, every expense line) and asks only when a confirmed quantity is far above
-  what the size needs, or the price is far above the same standard item here **and** above the MP's amount. A work
-  with no form is not judged: an amount alone does not say what is built (3 Oct 2026: of 15 works a record-only check
-  would have questioned, none was a real price question).
-- ✅ **Guideline Compliance** (includes Eligibility) — *Does the work follow the MPLADS rules?* (e.g. waiting for sanction past 75 days, works inside a temple campus)
+- ✅ **Cost** — *Is every line of the estimate fairly priced for this district, and is the whole estimate fair?* It
+  reads the implementing agency's cost estimate form, prices each line at a fair rate (the state's Schedule of Rates,
+  or what other agencies in the district recently paid, never the agency's own) and holds each quantity to what the
+  size needs. It asks only when the whole estimate is at least 15% **and** Rs 50,000 above the fair price, so one odd
+  line or a rounding never counts. A work with no form is not judged.
 - ✅ **Duplicate Work** — *Is this work already sanctioned here, or one job cut to stay under a limit?* It asks when the
   cost form's map pin is within 50 m of a sanctioned work of the same kind, when the agency itself says it rebuilds a
   work completed under three years ago, or when every piece of one job sits within 4% under the ₹5 or 10 lakh limit
-  (12 of 14 such groups read as one job). Works that only *read* alike are notes for the agency to answer: from words
-  alone that is right about 2 times in 3.
-- ✅ **Office Patterns** — *Does this office price most of its works just under a limit, or record buildings complete days after sanction?* (an office's habit backs up a work's own findings; it never puts a work on the list by itself)
+  (12 of 14 such groups read as one job). Works that only *read* alike are notes for the agency to answer.
+- ✅ **Time & Rules** — *Was it sanctioned on time, and is it being finished in a believable time?* A sanction later
+  than 75 days is told as a fact about the office (6 in 10 works pass it), never as a problem with the work. The
+  agency's own estimated time to completion sets a "comfort window": finishing far too early is asked about only when
+  no site video shows the work being built, so good, fast work is never punished; running past the window (after
+  allowing monsoon months and approved extensions) is a follow-up. Dates that cannot be true, and buildings recorded
+  complete within days of sanction, are asked about too.
+- ✅ **Site Progress** — *Do the monthly site videos show real, new work, at this work's site, for this work only?* The
+  agency films a short video each month in the app, at the same marked spots, with GPS. The video is sealed when
+  filming stops, read once, then deleted (blurred frames are kept). It asks when footage was used before, when the
+  site is another work's, when both the GPS and the views say it was not filmed here, or when the agency's claim is not
+  shown two months in a row. A blurry or dark video is simply filmed again. (Built and tested on made-up scenes; the
+  trial on real sites comes next.)
 
-**While the work is built**
-- 🧪 **Site Progress** — *Do the photos show what the record says was built? Is the plaque there, and do its dates fit?* (built with free local photo readers; switched on only after it is measured on real photos)
-- 🧪 **Photo Forensics** — *Has this photo been used on another work, or edited?*
-- 🧪 **Geo-Location** — *Was the photo taken at the site, and at the right time?*
-- 🧪 **Document** — *Do the certificates and bills match the portal?*
-- 📝 **Satellite** — *Did a large pond or long road actually change the ground?* (big works only)
+**For every work:** the risk score with its top three reasons ✅ · the pre-sanction check ✅ · Inspection Planner 📝
 
-**Money and time**
-- ✅ **Delay** — *Which open works are most likely to run late?* (shown on each work, not counted in the score until it meets its accuracy target)
-- 🧪 **Fund Flow** — *Where is money waiting for sanction too long?*
-- 🧪 **Contractor Network** — *Is a small circle of contractors getting most of the works?*
-
-**After completion**
-- 📝 **Citizen Verification** — *Do local people confirm the asset exists and is used?* (scan a QR code at the site)
-
-**For every work:** Data Validation ✅ · Risk Fusion (the score) ✅ · Inspection Planner 📝 · Ask DRISHTI (questions in plain Hindi/English) 📝
+Retired on 4 Oct 2026: Guideline Compliance (its timing rules live on in Time & Rules), Fund Flow, Office Patterns,
+Paperwork and Photo Evidence. Their trial results stay in [`trial/FINDINGS.md`](trial/FINDINGS.md).
 
 ## 4. One real example, start to finish
 
