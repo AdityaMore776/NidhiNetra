@@ -18,8 +18,8 @@ from drishti.agents.contract import Status
 from drishti.agents.paperwork import agent as paperwork
 from drishti.agents.photo_evidence import agent as photo
 from drishti.agents.photo_evidence.index import PhotoIndex
-from drishti.agents.site_progress import agent as site
 from drishti.agents.site_progress import observe
+from drishti.agents.site_progress import photos as site
 from drishti.batch import indexes
 from drishti.evaluation.stats import build_store
 from drishti.evaluation.synthetic import Generator

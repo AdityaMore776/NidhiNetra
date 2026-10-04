@@ -18,7 +18,7 @@ from drishti.agents.site_progress import agent
 
 
 def _assess(work: dict, ctx):
-    return agent.assess(work, ctx.as_of, (ctx.data or {}).get("photos"))
+    return agent.assess(work, ctx.as_of)
 
 
 ENGINE = (EngineSpec(id=agent.AGENT, name="Site Progress", question=agent.QUESTION,

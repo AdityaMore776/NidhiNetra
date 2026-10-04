@@ -13,7 +13,8 @@ import pytest
 
 from drishti.agents.contract import Status
 from drishti.agents.photo_evidence.index import PhotoIndex
-from drishti.agents.site_progress import agent, claims, observe, plaque
+from drishti.agents.site_progress import claims, observe, plaque
+from drishti.agents.site_progress import photos as agent
 from drishti.agents.site_progress.readers import GeminiReader, QuotaReached
 
 AS_OF = date(2026, 9, 26)

@@ -42,7 +42,8 @@ from common import BUILD, clean  # noqa: E402
 from site_progress_labels import PHOTO_LABELS, WORK_LABELS  # noqa: E402
 
 from drishti.agents.photo_evidence.index import PHOTO_EXT, PhotoIndex  # noqa: E402
-from drishti.agents.site_progress import agent, observe  # noqa: E402
+from drishti.agents.site_progress import observe  # noqa: E402
+from drishti.agents.site_progress import photos as agent  # noqa: E402
 from drishti.validation import pii  # noqa: E402
 
 OUT = ROOT / "data" / "trial" / "results"
