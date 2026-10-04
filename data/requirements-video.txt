@@ -1,0 +1,5 @@
+# The site video job (data/build_site_visits.py, T124): read each site video once.
+# OpenCV 4.x: 5.x moved the face detector out, and no frame is kept unblurred.
+opencv-python-headless>=4.9,<5
+numpy>=1.26
+psycopg[binary]>=3.2

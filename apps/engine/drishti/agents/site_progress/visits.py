@@ -25,6 +25,8 @@ Readings (every key optional; a missing one means "not read", never "passed"):
     asset_at_start    the first visit shows the asset already standing
     complete_shown    on a final visit: every zone shows the finished work
     quality_ok        the video passed the at-site checks (light, coverage, pace)
+    motion_consistent the phone's own motion matches the motion in the picture (False: a screen
+                      may have been filmed, or the video is not this phone's)
 
 This module only reads: it never raises on a malformed visit, it drops it.
 """
@@ -112,7 +114,7 @@ def of(work: dict) -> list[Visit]:
         readings = {k: _bool(r.get(k)) for k in ("sealed", "in_app", "gps_inside",
                                                   "mock_location", "views_match_site",
                                                   "asset_at_start", "complete_shown",
-                                                  "quality_ok")}
+                                                  "quality_ok", "motion_consistent")}
         for k in ("gps_distance_m", "viewpoints_expected", "viewpoints_matched"):
             n = r.get(k)
             readings[k] = float(n) if isinstance(n, (int, float)) and not isinstance(n, bool) \

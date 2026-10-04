@@ -93,6 +93,34 @@ def with_forms(con: psycopg.Connection, works: list[dict]) -> list[dict]:
     return works
 
 
+def with_visits(con: psycopg.Connection, works: list[dict]) -> list[dict]:
+    """The works, each with its READ site visits as work["site_visits"] (migration 014, T124):
+    Site Progress judges their readings, Time & Rules reads whether they show the work going on.
+    A visit not read yet is never attached. A database without the migration gives none."""
+    if not works or not _one(con.execute("SELECT to_regclass('site_visits') IS NOT NULL")
+                             .fetchone()):
+        return works
+    by: dict[str, list[dict]] = {}
+    for r in con.execute("SELECT work_id, visit_id, kind, captured_at, claim, readings "
+                         "FROM site_visits WHERE status = 'read' AND work_id = ANY(%s) "
+                         "ORDER BY captured_at", ([w["work_id"] for w in works],)).fetchall():
+        r = r if isinstance(r, dict) else dict(zip(("work_id", "visit_id", "kind", "captured_at",
+                                                     "claim", "readings"), r, strict=False))
+        by.setdefault(r["work_id"], []).append({
+            "visit_id": r["visit_id"], "kind": r["kind"], "claim": r["claim"],
+            "captured_at": r["captured_at"].isoformat() if r["captured_at"] else None,
+            "readings": r["readings"] or {}})
+    for w in works:
+        if w["work_id"] in by:
+            w["site_visits"] = by[w["work_id"]]
+    return works
+
+
+def with_evidence(con: psycopg.Connection, works: list[dict]) -> list[dict]:
+    """Forms and site visits: what the agencies filed for each work."""
+    return with_visits(con, with_forms(con, works))
+
+
 def row_for(a: Assessment) -> dict:
     row = a.to_row()
     alerts = [r.agent for r in a.agents if r.assessed and r.risk > 0]
@@ -169,7 +197,7 @@ def with_index(ctx: Context, con: psycopg.Connection, work: dict) -> Context:
     d = work.get("district_lgd")
     rows = con.execute(f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works {SIGNALS_JOIN} "
                        "WHERE works.district_lgd = %s", (d,)).fetchall() if d else []
-    data = indexes(with_forms(con, [_normalise(dict(r)) for r in rows]))
+    data = indexes(with_evidence(con, [_normalise(dict(r)) for r in rows]))
     data["offices"].national = office_national(con)
     # a photo can be reused in another district: every work's evidence, not the district's
     data["photos"] = PhotoIndex.build(
@@ -183,7 +211,7 @@ def assess_one(con: psycopg.Connection, work_id: str, ctx: Context) -> Assessmen
                        f"{SIGNALS_JOIN} WHERE work_id = %s", (work_id,)).fetchone()
     if work is None:
         return None
-    work = with_forms(con, [_normalise(dict(work))])[0]
+    work = with_evidence(con, [_normalise(dict(work))])[0]
     a = assess_work(work, with_index(ctx, con, work))
     con.execute(UPSERT, row_for(a))
     return a
@@ -199,10 +227,11 @@ def assess_all(url: str, ctx: Context, work_ids: Iterable[str] | None = None,
         if work_ids is not None:
             sql += " WHERE work_id = ANY(%s)"
             params = (list(work_ids),)
-        works = with_forms(con, [_normalise(dict(w)) for w in con.execute(sql, params).fetchall()])
+        works = with_evidence(con, [_normalise(dict(w))
+                                    for w in con.execute(sql, params).fetchall()])
         if "dup_split" not in (ctx.data or {}):
             # every work of the database, so each is compared with its whole district
-            everything = works if work_ids is None else with_forms(con, [
+            everything = works if work_ids is None else with_evidence(con, [
                 _normalise(dict(w)) for w in con.execute(
                     f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works {SIGNALS_JOIN}")])
             ctx = replace(ctx, data={**(ctx.data or {}), **indexes(everything)})

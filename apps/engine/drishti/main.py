@@ -7,7 +7,9 @@ prefix is part of each route rather than stripped by a rewrite.
 from fastapi import FastAPI
 
 from drishti.api.routes import router
+from drishti.api.site_visits import router as site_visits_router
 
 app = FastAPI(title="DRISHTI engine", version="0.1.0", docs_url="/api/v1/docs",
               openapi_url="/api/v1/openapi.json")
 app.include_router(router)
+app.include_router(site_visits_router)

@@ -103,6 +103,11 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
             notes.append(f"{_when(v).capitalize()} was not accepted (not sealed or not filmed in "
                          "the app): ask for a retake.")
             continue
+        if v.get("motion_consistent") is False:
+            notes.append(f"{_when(v).capitalize()} was not accepted: the phone's own motion does "
+                         "not match the motion in the picture (a screen may have been filmed). "
+                         "Ask for a retake at the site.")
+            continue
         trusted.append(v)
 
     # 1. footage seen before (on any visit, trusted or not: the frames are a fact)
