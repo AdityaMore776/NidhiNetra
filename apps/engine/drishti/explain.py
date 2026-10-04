@@ -115,11 +115,11 @@ def _reading(w: dict, text: str) -> dict:
     }
 
 
-def _rules(findings) -> list[dict]:
+def _rules(findings, only: tuple[str, ...] | None = None) -> list[dict]:
     fired = {f.evidence.get("rule"): f for f in findings if f.evidence.get("rule")}
     out = []
     for rid, r in compliance.rules().items():
-        if not r.get("evaluable", True):
+        if not r.get("evaluable", True) or (only and rid not in only):
             continue
         f = fired.get(rid)
         out.append({"id": rid, "title": r["title"], "ref": r.get("guideline_ref"),
@@ -151,9 +151,26 @@ def _picture(r, w: dict, ctx: Context) -> dict | None:
     ev = r.evidence or {}
     if r.agent == "compliance":
         return {"rules": _rules(r.findings)}
+    if r.agent == "time_rules":
+        window = ev.get("window") or {}
+        return {"rules": _rules(r.findings, ("R01", "R06", "R13", "R14")),
+                "recommended": _day(w.get("recommended_date")),
+                "sanctioned": _day(w.get("sanction_date")),
+                "completed": _day(w.get("completed_date")), "as_of": ctx.as_of.isoformat(),
+                "sanction_clock_days": int(compliance._clause("SANCTION_PERIOD",
+                                                              "sanction_period_days")),
+                "window_start": window.get("start"), "early_line": window.get("early"),
+                "late_line": window.get("late")}
+    if r.agent == "site_progress":
+        return {"visits": ev.get("visits") or []}
     if r.agent == "cost_estimate":
-        return {k: ev.get(k) for k in ("sites", "grand_total", "mp_amount", "mp_gap")
-                if ev.get(k) is not None}
+        out = {k: ev.get(k) for k in ("sites", "grand_total", "mp_amount", "mp_gap")
+               if ev.get(k) is not None}
+        whole = ev.get("whole") or {}
+        if whole:
+            out["whole"] = {k: whole.get(k) for k in ("verdict", "fair_total", "gap",
+                                                       "gap_share", "coverage")}
+        return out
     if r.agent == "dup_split":
         return _neighbours(w, ctx, r)
     if r.agent == "delay":

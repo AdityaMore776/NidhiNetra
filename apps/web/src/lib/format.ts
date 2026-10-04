@@ -22,14 +22,17 @@ type AgentMeta = { n: string; name: string; color: string; question: string };
 /** Display names and colours per engine. The engine registry is the source of truth; an engine
  *  missing here still renders, with the name and question the API sends. */
 export const AGENTS: Record<AgentId, AgentMeta> = {
-  compliance: { n: "01", name: "Guideline Compliance", color: "var(--navy)", question: "Does the work follow the MPLADS guidelines?" },
-  cost_estimate: { n: "02", name: "Cost", color: "var(--statistical)", question: "Is the agency's cost estimate right for this size of work here?" },
-  dup_split: { n: "03", name: "Duplicate Work", color: "var(--duplicate)", question: "Is this work already sanctioned here, or one job cut to stay under a limit?" },
-  delay: { n: "04", name: "Fund Flow", color: "var(--site)", question: "Is money stuck waiting for sanction?" },
-  office_patterns: { n: "05", name: "Office Patterns", color: "var(--reuse)", question: "Does this work's office price or close works in an unusual way?" },
-  paperwork: { n: "06", name: "Paperwork", color: "var(--inputs)", question: "Do the work's own papers agree with the portal?" },
-  photo_evidence: { n: "07", name: "Photo Evidence", color: "var(--fusion)", question: "Are the work's photos new, from its place and from its time?" },
-  // retired 3 Oct 2026 (T099): results stored before then still read by name until re-assessed
+  // the four agents (owner, 3 Oct 2026; plan docs/plans/T120-four-agents.md; T125)
+  cost_estimate: { n: "01", name: "Cost", color: "var(--statistical)", question: "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?" },
+  dup_split: { n: "02", name: "Duplicate Work", color: "var(--duplicate)", question: "Is this work already sanctioned here, or one job cut to stay under a limit?" },
+  time_rules: { n: "03", name: "Time & Rules", color: "var(--navy)", question: "Was it sanctioned on time, and is it being finished in a believable time?" },
+  site_progress: { n: "04", name: "Site Progress", color: "var(--site)", question: "Do the monthly site videos show real, new work, at this work's site, for this work only?" },
+  // retired (T099, T125): results stored before then still read by name until re-assessed
+  compliance: { n: "··", name: "Guideline Compliance (retired)", color: "var(--muted)", question: "Does the work follow the MPLADS guidelines?" },
+  delay: { n: "··", name: "Fund Flow (retired)", color: "var(--muted)", question: "Is money stuck waiting for sanction?" },
+  office_patterns: { n: "··", name: "Office Patterns (retired)", color: "var(--muted)", question: "Does the office record works in an unusual way?" },
+  paperwork: { n: "··", name: "Paperwork (retired)", color: "var(--muted)", question: "Do the work's papers agree with its record?" },
+  photo_evidence: { n: "··", name: "Photo Evidence (retired)", color: "var(--muted)", question: "Are the work's photos its own, from its place and time?" },
   statistical: { n: "··", name: "Cost Anomaly (retired)", color: "var(--muted)", question: "Is the project cost unusual for similar works?" },
 };
 
@@ -41,8 +44,7 @@ export function agentMeta(id: string, name?: string, question?: string): AgentMe
   return AGENTS[key] ?? { n: "··", name: name ?? key, color: "var(--muted)", question: question ?? "" };
 }
 
-export const AGENT_ORDER: AgentId[] = ["compliance", "cost_estimate", "dup_split", "delay",
-  "office_patterns", "paperwork", "photo_evidence"];
+export const AGENT_ORDER: AgentId[] = ["cost_estimate", "dup_split", "time_rules", "site_progress"];
 
 export const BAND_COLOR: Record<Band, string> = {
   CRITICAL: "var(--critical)",

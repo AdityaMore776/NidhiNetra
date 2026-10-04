@@ -22,9 +22,11 @@ def test_labels_sit_beside_the_works_and_every_planted_kind_is_there():
             "REBUILT_SOON", "REPAIR_SOON_AFTER_BUILT", "RULE_TEMPLE",
             "OFFICE_PRICES_AT_LIMIT"} <= kinds
     # T099 + T100: what the record's words alone cannot settle is planted, but no engine is
-    # meant for it (the cost estimate form is); every other planted kind names its engine
+    # meant for it (the cost estimate form is); T125: the guideline rules and office habits the
+    # four agents no longer check; every other planted kind names its engine
     record_only = {"COST_X3", "COST_X5", "COST_X10", "COST_SMALL_SCOPE_X10", "REPEAT_AFTER_DONE",
-                   "REPEAT_WHILE_OPEN", "REPAIR_SOON_AFTER_BUILT"}
+                   "REPEAT_WHILE_OPEN", "REPAIR_SOON_AFTER_BUILT", "RULE_TEMPLE",
+                   "RULE_OUTSIDE_CEILING", "RULE_BIG_VAGUE", "OFFICE_PRICES_AT_LIMIT"}
     for lab in corpus.labels.values():
         if lab.positive:
             assert (lab.kind in record_only) != bool(lab.meant and lab.codes), lab

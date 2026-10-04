@@ -17,11 +17,8 @@ from psycopg.types.json import Jsonb
 
 from drishti import records
 from drishti.agents.cost_estimate.rates import RateIndex
-from drishti.agents.delay.backlog import OfficeBacklog
 from drishti.agents.dup_split.repeat import RepeatIndex
 from drishti.agents.office_patterns.index import JUST_UNDER, OfficeIndex, limits
-from drishti.agents.paperwork.vendors import VendorIndex
-from drishti.agents.photo_evidence.index import PhotoIndex
 from drishti.pipeline.orchestrator import Assessment, Context, assess_work
 
 WORK_COLUMNS = ("work_id, source, house, term, state_lgd, state_name, district_lgd, "
@@ -159,13 +156,12 @@ def case_of(a: Assessment) -> tuple[str | None, int | None]:
 
 
 def indexes(works: list[dict]) -> dict:
-    """The cross-work views engines need, from the same rows: the Duplicate Work index and
-    the vendors holding the certified works (Paperwork, T110). Every record is checked first
-    (records.work): one malformed row used to stop the whole build."""
+    """The cross-work views the four agents need, from the same rows: the Duplicate Work index,
+    the district rate index (Cost) and the office index (Time & Rules names an office's habit
+    once). Every record is checked first (records.work): one malformed row used to stop the
+    whole build."""
     works = [records.work(w) for w in works]
     return {"dup_split": RepeatIndex.build(works), "rates": RateIndex.build(works),
-            "vendors": VendorIndex.build(works),
-            "photos": PhotoIndex.build(works), "backlog": OfficeBacklog.build(works),
             "offices": OfficeIndex.build(works)}
 
 
@@ -199,10 +195,6 @@ def with_index(ctx: Context, con: psycopg.Connection, work: dict) -> Context:
                        "WHERE works.district_lgd = %s", (d,)).fetchall() if d else []
     data = indexes(with_evidence(con, [_normalise(dict(r)) for r in rows]))
     data["offices"].national = office_national(con)
-    # a photo can be reused in another district: every work's evidence, not the district's
-    data["photos"] = PhotoIndex.build(
-        {"work_id": r["work_id"], "evidence": r["data"]}
-        for r in con.execute("SELECT work_id, data FROM evidence_facts").fetchall())
     return replace(ctx, data={**(ctx.data or {}), **data})
 
 

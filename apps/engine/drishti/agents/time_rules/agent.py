@@ -77,7 +77,8 @@ def _days(n: float) -> str:
 
 def _months(days: float) -> str:
     m = days / win.MONTH_DAYS
-    return f"{m:.1f} months" if m < 10 else f"{m:.0f} months"
+    n = f"{m:.1f}".removesuffix(".0") if m < 10 else f"{m:.0f}"
+    return f"{n} month{'s' * (n != '1')}"
 
 
 def sanctioned_late(work: dict) -> Finding | None:
@@ -117,6 +118,7 @@ def too_fast(work: dict, w: win.Window, vs: list[site_visits.Visit]) -> Finding 
         return None        # a real fast finish: the videos show the work going on
     took = (done - w.start).days
     type_name = reference.work_type_name(work.get("work_type_code"))
+    type_name = type_name[:1].lower() + type_name[1:]       # mid-sentence
     early_days = (w.early - w.start).days
     filmed = ("No site video shows the work going on" if vs else
               "There are no site videos of the work")

@@ -430,11 +430,9 @@ class Generator:
         if label is not BACKGROUND:
             self.labels[w["work_id"]] = label
         elif tpl[1] == "landmark":
-            self.labels[w["work_id"]] = Label("HN_LANDMARK_TEMPLE", meant="compliance",
-                                              codes=("POSSIBLY_INADMISSIBLE",))
+            self.labels[w["work_id"]] = Label("HN_LANDMARK_TEMPLE")
         elif tpl[1] == "institution":
-            self.labels[w["work_id"]] = Label("HN_SCHOOL_NAMED_MANDIR", meant="compliance",
-                                              codes=("POSSIBLY_INADMISSIBLE",))
+            self.labels[w["work_id"]] = Label("HN_SCHOOL_NAMED_MANDIR")
         elif tpl[1] == "bulk":
             self.labels[w["work_id"]] = Label("HN_BULK_UNITS", meant="statistical",
                                               codes=("COST_ABOVE_PEERS",))
@@ -478,7 +476,7 @@ class Generator:
                     w["completed_date"] = w["recommended_date"] - timedelta(
                         days=rng.randint(20, 500))
                     self.labels[w["work_id"]] = Label("HN_BULK_ENTRY_BACKFILL",
-                                                      meant="compliance",
+                                                      meant="time_rules",
                                                       codes=("IMPOSSIBLE_TIMELINE",))
             # opposite sides of one road: two works, not a repeat
             v = rng.choice(d.villages)
@@ -639,7 +637,9 @@ class Generator:
                       label=Label("HN_REPAIR_ELSEWHERE", meant="dup_split",
                                   codes=("REPAIR_SOON_AFTER_BUILT",)))
 
-        # GUIDELINE breaches
+        # GUIDELINE breaches. T125 (four agents): prohibited works, the outside-area ceiling
+        # and a big sum that names nothing are no longer checked (planted, meant for no
+        # engine); the dates stay Time & Rules' (R13 built in days, R06 impossible dates)
         for _ in range(n):
             d = rng.choice(self.districts)
             tpl = rng.choice(["Construction of {deity} mandir at {v}",
@@ -649,12 +649,11 @@ class Generator:
             text = tpl.replace("{deity}", rng.choice(_DEITIES))
             self.make(d, rng.choice(["COMMUNITY_HALL", "BOUNDARY_WALL"]),
                       template=(text, "site"),
-                      label=Label("RULE_TEMPLE", True, "compliance", ("POSSIBLY_INADMISSIBLE",)))
+                      label=Label("RULE_TEMPLE", True))          # not checked (T125)
         for w in self._pick(lambda w: w["work_type_code"] in CONSTRUCTION, max(3, n // 2)):
             w["is_outside_constituency"] = True
             w["amount"] = float(rng.choice((30, 40, 50)) * LAKH)
-            self.labels[w["work_id"]] = Label("RULE_OUTSIDE_CEILING", True, "compliance",
-                                              ("OUTSIDE_AREA_CEILING",))
+            self.labels[w["work_id"]] = Label("RULE_OUTSIDE_CEILING", True)  # not checked
         for _ in range(max(3, n // 2)):
             d = rng.choice(self.districts)
             wtype = rng.choice(["COMMUNITY_HALL", "SCHOOL_BUILDING", "ROAD_CC"])
@@ -663,17 +662,17 @@ class Generator:
                     "ROAD_CC": "Construction of road"}[wtype]
             self.make(d, wtype, template=(text, "noplace"),
                       amount=float(rng.choice((30, 40, 60)) * LAKH),
-                      label=Label("RULE_BIG_VAGUE", True, "compliance", ("NO_STATED_SCOPE",)))
+                      label=Label("RULE_BIG_VAGUE", True))       # not checked (T125)
         for w in self._pick(lambda w: w["work_type_code"] in CONSTRUCTION
                             and w["status"] == "COMPLETED" and 5 * LAKH <= w["amount"] <= 15 * LAKH
                             and w["recommended_date"] >= date(2024, 7, 1), max(3, n // 2)):
             w["completed_date"] = w["recommended_date"] + timedelta(days=rng.randint(1, 10))
-            self.labels[w["work_id"]] = Label("RULE_BUILT_IN_DAYS", True, "compliance",
+            self.labels[w["work_id"]] = Label("RULE_BUILT_IN_DAYS", True, "time_rules",
                                               ("BUILT_IN_DAYS",))
         for w in self._pick(lambda w: w["status"] == "COMPLETED"
                             and w["recommended_date"] >= date(2024, 10, 1), max(3, n // 2)):
             w["completed_date"] = w["recommended_date"] - timedelta(days=rng.randint(30, 200))
-            self.labels[w["work_id"]] = Label("RULE_DATES_IMPOSSIBLE", True, "compliance",
+            self.labels[w["work_id"]] = Label("RULE_DATES_IMPOSSIBLE", True, "time_rules",
                                               ("IMPOSSIBLE_TIMELINE",))
 
         # OFFICES: one that prices most works just under Rs 5 lakh; one that closes works in days
@@ -696,8 +695,7 @@ class Generator:
                 if rng.random() < 0.85:
                     w["amount"] = float(round(rng.uniform(4.80, 4.995) * LAKH, -2))
                     self.labels[w["work_id"]] = Label("OFFICE_PRICES_AT_LIMIT", True,
-                                                      "office_patterns", ("PRICED_AT_LIMIT",),
-                                                      group=f"{d.code}|{o}")
+                                                      group=f"{d.code}|{o}")  # not checked
         fast = 0
         for d, o in reversed(offices):
             if fast >= max(2, n // 4):
@@ -713,12 +711,10 @@ class Generator:
                 if rng.random() < 0.6:
                     w["completed_date"] = w["recommended_date"] + timedelta(
                         days=rng.randint(2, 20))
-                    # each work is Guideline Compliance's to find (R13, built in days); the
-                    # office's habit is told by Office Patterns as a fact, not a finding, so the
-                    # same days are not counted twice (synthetic works carry no sanction date,
-                    # so R14 cannot fire here)
+                    # each work is Time & Rules' to find (R13, built in days; synthetic works
+                    # carry no sanction date, so R14 cannot fire here)
                     self.labels[w["work_id"]] = Label("OFFICE_CLOSES_IN_DAYS", True,
-                                                      "compliance", ("BUILT_IN_DAYS",),
+                                                      "time_rules", ("BUILT_IN_DAYS",),
                                                       group=f"{d.code}|{o}")
 
         # a big project that says how big it is: not a mark-up

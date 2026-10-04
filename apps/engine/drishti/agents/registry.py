@@ -1,7 +1,7 @@
 """The one list of engines, found by folder, so four people can build four engines apart.
 
-The NidhiNetra blueprint has four detection engines (its "odd overall" outlier slot was
-replaced by two Guideline Compliance rules, R12 and R13, in T053). Each is a folder
+DRISHTI has four agents (owner, 3 Oct 2026; T125): Cost, Duplicate Work, Time & Rules and Site
+Progress. Each is a folder
 `drishti/agents/<id>/` with a module `engine.py` that defines
 
     ENGINE = EngineSpec(id=..., name=..., question=..., assess=<fn(work, ctx)>)
@@ -44,29 +44,41 @@ class EngineSpec:
     weight_note: str = ""        # why the weight differs from the blueprint, shown on screen
 
 
-# The blueprint's slots. Weights from the spec: 0.30 / 0.20 / 0.20 / 0.20.
+# The four agents (owner, 3 Oct 2026; plan docs/plans/T120-four-agents.md; T125). Fusion v3
+# counts an engine whose weight is above 0; how much a finding counts comes from its measured
+# hit rate (reference/reliability.json), and a kind of finding never read counts 1 in 4, so no
+# new check can queue a work on its own (proof before launch).
 CORE: tuple[EngineSpec, ...] = (
-    EngineSpec("compliance", "Guideline Compliance",
-               "Does the work follow the MPLADS guidelines?", weight=0.30, order=1),
-    # T099 (3 Oct 2026): the Cost slot is the cost estimate form's check; the old Cost Anomaly
-    # (stored id `statistical`) compared amounts without a size and is retired (RETIRED below)
     EngineSpec("cost_estimate", "Cost",
-               "Is the agency's cost estimate right for this size of work here?", weight=0.20,
-               order=2),
+               "Is every line of the estimate fairly priced for this district, and is the whole "
+               "estimate fair?", weight=0.25, order=1),
     EngineSpec("dup_split", "Duplicate Work",
                "Is this work already sanctioned here, or one job cut to stay under a limit?",
-               weight=0.20, order=3),
-    EngineSpec("delay", "Fund Flow",          # was Delay Prediction; prediction removed (T053)
-               "Is money stuck waiting for sanction?", weight=0.20, order=4),
+               weight=0.25, order=2),
+    EngineSpec("time_rules", "Time & Rules",
+               "Was it sanctioned on time, and is it being finished in a believable time?",
+               weight=0.25, order=3),
+    EngineSpec("site_progress", "Site Progress",
+               "Do the monthly site videos show real, new work, at this work's site, for this "
+               "work only?", weight=0.25, order=4),
 )
 
 # Ids used by assessments stored before the registry (the deck's four agents).
 LEGACY_IDS = {"duplicate_project": "dup_split", "image_reuse": "photo_forensics"}
 
 # Engines no longer run, so results stored before they were retired still read by name until
-# the next batch replaces them: id -> (name, question).
-RETIRED = {"statistical": ("Cost Anomaly (retired)",
-                           "Is the project cost unusual for similar works?")}
+# the next batch replaces them: id -> (name, question). Their code stays as libraries (Time &
+# Rules reads Guideline Compliance's timing rules) and for re-running the trials in FINDINGS.
+RETIRED = {
+    "statistical": ("Cost Anomaly (retired)", "Is the project cost unusual for similar works?"),
+    "compliance": ("Guideline Compliance (retired)", "Does the work follow the MPLADS guidelines?"),
+    "delay": ("Fund Flow (retired)", "Is money stuck waiting for sanction?"),
+    "office_patterns": ("Office Patterns (retired)",
+                        "Does the office record works in an unusual way?"),
+    "photo_evidence": ("Photo Evidence (retired)",
+                       "Are the work's photos its own, from its place and time?"),
+    "paperwork": ("Paperwork (retired)", "Do the work's papers agree with its record?"),
+}
 
 
 def canonical_id(agent_id: str) -> str:

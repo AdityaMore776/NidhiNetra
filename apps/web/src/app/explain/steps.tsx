@@ -7,7 +7,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import { BandBadge } from "@/components/ui";
 import type { PreColour } from "@/lib/api";
-import type { Check, Habit, Kind, Neighbour, Trace } from "@/lib/explain";
+import type { Check, Habit, Kind, Neighbour, Trace, VisitSummary } from "@/lib/explain";
 import { agentMeta, BAND_COLOR, BAND_LABEL, inr } from "@/lib/format";
 
 /** Inline style carrying an animation delay (and any other custom properties). */
@@ -328,26 +328,129 @@ const TONE: Record<Tone, string> = {
 
 const DATE_RULES = new Set(["R01", "R02", "R06", "R13", "R14"]);
 
+function RuleList({ c, start }: { c: Check; start: number }) {
+  const rules = c.picture?.rules ?? [];
+  return (
+    <ul className="space-y-0.5 text-[11px]">
+      {rules.map((r, n) => (
+        <li key={r.id} className="x-in flex items-center gap-1.5" style={at(start + n * 110)}>
+          <span
+            className="grid h-4 w-4 shrink-0 place-items-center rounded-full text-[9px] font-bold text-white"
+            style={{ background: r.raised ? "var(--high)" : "var(--low)" }}
+          >
+            {r.raised ? "!" : "✓"}
+          </span>
+          <span className={r.raised ? "font-semibold" : "text-muted"}>
+            {r.id} {r.title}
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** Time & Rules (T122): its timing rules, then the dates against the 75-day clock and the
+ *  comfort window drawn from the agency's own estimated time. */
+function TimeRules({ c, start }: { c: Check; start: number }) {
+  const p = c.picture;
+  const rules = p?.rules ?? [];
+  const clocks = p?.recommended
+    ? [{ from: p.recommended, days: p.sanction_clock_days ?? 75, label: `sanction due within ${p.sanction_clock_days ?? 75} days` }]
+    : [];
+  return (
+    <div className="space-y-2">
+      <RuleList c={c} start={start} />
+      {p?.recommended && (
+        <Timeline
+          start={start + rules.length * 110}
+          points={[
+            { label: "recommended", date: p.recommended, color: "var(--inputs)" },
+            { label: "sanctioned", date: p.sanctioned, color: "var(--navy)" },
+            { label: "window opens", date: p.early_line, color: "var(--low)" },
+            { label: "window closes", date: p.late_line, color: "var(--medium)" },
+            { label: "completed", date: p.completed, color: "var(--high)" },
+          ]}
+          clocks={clocks}
+        />
+      )}
+      {!p?.late_line && (
+        <p className="x-in text-[11px] text-muted" style={at(start + rules.length * 110 + 900)}>
+          No estimated time on a cost estimate form yet, so the comfort window is not drawn.
+        </p>
+      )}
+    </div>
+  );
+}
+
+const CHANGE_LABEL: Record<string, string> = { changed: "new work seen", no_change: "no change", cant_tell: "can't tell" };
+const CLAIM_LABEL: Record<string, string> = { shown: "claim shown", not_shown: "claim not shown", cant_tell: "claim: can't tell" };
+const KIND_LABEL: Record<string, string> = { baseline: "first visit", monthly: "monthly visit", check: "check visit", final: "final visit" };
+
+/** Site Progress (T124): each site video read, oldest first. */
+function SiteVisits({ c, start }: { c: Check; start: number }) {
+  const all: VisitSummary[] = c.picture?.visits ?? [];
+  if (!all.length) return <p className="text-[11px] text-muted">{c.headline}</p>;
+  const SHOWN = 6;
+  const vs = all.slice(-SHOWN);
+  return (
+    <ul className="space-y-1 text-[11px]">
+      {all.length > SHOWN && (
+        <li className="text-muted">
+          {all.length - SHOWN} earlier visit{all.length - SHOWN === 1 ? "" : "s"}, then:
+        </li>
+      )}
+      {vs.map((v, n) => (
+        <li key={v.visit} className="x-in flex flex-wrap items-center gap-x-2" style={at(start + n * 160)}>
+          <b>{day(v.captured)}</b>
+          <span className="text-muted">{KIND_LABEL[v.kind] ?? v.kind}</span>
+          {v.viewpoints[1] ? (
+            <span className="text-muted">
+              {v.viewpoints[0] ?? 0}/{v.viewpoints[1]} spots
+            </span>
+          ) : null}
+          {v.change && <span style={{ color: v.change === "no_change" ? "var(--medium)" : "var(--low)" }}>{CHANGE_LABEL[v.change]}</span>}
+          {v.claim && <span style={{ color: v.claim === "not_shown" ? "var(--high)" : "var(--muted)" }}>{CLAIM_LABEL[v.claim]}</span>}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** Cost (T121): the estimate against the fair price of every line it could price. */
+function WholeEstimate({ c, start }: { c: Check; start: number }) {
+  const w = c.picture?.whole;
+  if (!w || w.verdict === "CANT_CHECK" || !c.picture?.grand_total) return <p className="text-[11px] text-muted">{c.headline}</p>;
+  const total = c.picture.grand_total;
+  const fair = w.fair_total;
+  const top = Math.max(total, fair) || 1;
+  return (
+    <div className="space-y-1 text-[11px]">
+      {[
+        { label: "Estimate", v: total, color: "var(--statistical)" },
+        { label: "Fair price", v: fair, color: "var(--low)" },
+      ].map((r, n) => (
+        <div key={r.label} className="grid grid-cols-[64px_1fr_64px] items-center gap-2">
+          <span className="text-muted">{r.label}</span>
+          <div className="h-2.5 rounded bg-background">
+            <div className="x-grow-w h-full rounded" style={at(start + n * 300, { "--w": `${(r.v / top) * 100}%`, background: r.color })} />
+          </div>
+          <span className="text-right">{inr(r.v)}</span>
+        </div>
+      ))}
+      <p className="x-in text-muted" style={at(start + 800)}>
+        {pct(w.coverage)} of the money priced line by line; the estimate is {w.gap_share >= 0 ? "+" : ""}
+        {pct(w.gap_share, 1)} against the fair price. Asked only from +15% and Rs 50,000.
+      </p>
+    </div>
+  );
+}
+
 function Rules({ c, t, start }: { c: Check; t: Trace; start: number }) {
   const rules = c.picture?.rules ?? [];
   const dated = rules.some((r) => r.raised && r.id && DATE_RULES.has(r.id));
   return (
     <div className="space-y-2">
-      <ul className="space-y-0.5 text-[11px]">
-        {rules.map((r, n) => (
-          <li key={r.id} className="x-in flex items-center gap-1.5" style={at(start + n * 110)}>
-            <span
-              className="grid h-4 w-4 shrink-0 place-items-center rounded-full text-[9px] font-bold text-white"
-              style={{ background: r.raised ? "var(--high)" : "var(--low)" }}
-            >
-              {r.raised ? "!" : "✓"}
-            </span>
-            <span className={r.raised ? "font-semibold" : "text-muted"}>
-              {r.id} {r.title}
-            </span>
-          </li>
-        ))}
-      </ul>
+      <RuleList c={c} start={start} />
       {dated && (
         <Timeline
           start={start + rules.length * 110}
@@ -430,7 +533,9 @@ function Timeline({
   clocks: { from: string; days: number; label: string }[];
   start: number;
 }) {
-  const pts = points.filter((p): p is { label: string; date: string; color: string } => !!p.date);
+  const pts = points
+    .filter((p): p is { label: string; date: string; color: string } => !!p.date)
+    .sort((a, b) => epoch(a.date) - epoch(b.date));
   if (!pts.length) return null;
   const all = [...pts.map((p) => epoch(p.date)), ...clocks.map((c) => epoch(c.from) + c.days)];
   const lo = Math.min(...all);
@@ -440,34 +545,50 @@ function Timeline({
   const x = (e: number) => `${xn(e)}%`;
   // a label near either end is aligned inwards, so it stays inside the card
   const align = (e: number) => (xn(e) < 18 ? "left-0" : xn(e) > 82 ? "right-0" : "left-1/2 -translate-x-1/2");
+  // labels alternate above and below the line, in date order; one that would sit on its
+  // neighbour on the same side moves one row further out
+  const ROW = 24;
+  const near = 24;
+  const last: Record<"up" | "down", { x: number; level: number } | null> = { up: null, down: null };
+  const placed = pts.map((p, n) => {
+    const side = n % 2 ? "down" : "up";
+    const px = xn(epoch(p.date));
+    const prev = last[side];
+    const level = prev && px - prev.x < near ? prev.level + 1 : 0;
+    last[side] = { x: px, level };
+    return { p, n, side, level };
+  });
+  const upRows = Math.max(0, ...placed.filter((q) => q.side === "up").map((q) => q.level));
+  const downRows = Math.max(0, ...placed.filter((q) => q.side === "down").map((q) => q.level));
+  const line = 26 + (upRows + 1) * ROW;
+  const below = 14 + clocks.length * 12;
+  const height = line + below + (downRows + 1) * ROW + (clocks.length ? 14 : 0);
   return (
-    <div className="relative h-24">
-      <div className="absolute inset-x-0 top-12 h-0.5 bg-line" />
+    <div className="relative" style={{ height }}>
+      <div className="absolute inset-x-0 h-0.5 bg-line" style={{ top: line }} />
       {clocks.map((c, n) => (
         <div
           key={c.label}
-          className="x-grow-w absolute h-2 rounded"
+          className="x-grow-w absolute h-1.5 rounded"
           style={at(start + n * 300, {
             left: x(epoch(c.from)),
             "--w": `${(c.days / span) * 92}%`,
-            top: `${54 + n * 10}px`,
+            top: `${line + 8 + n * 12}px`,
             background: "color-mix(in srgb, var(--site) 55%, white)",
           })}
           title={`${c.label}: ${c.days} days`}
-        >
-          <span className="absolute left-0 top-2 whitespace-nowrap text-[9px] text-muted">{c.label}</span>
-        </div>
+        />
       ))}
-      {pts.map((p, n) => (
+      {placed.map(({ p, n, side, level }) => (
         <div
           key={p.label}
-          className="x-pop absolute top-12 -translate-x-1/2 -translate-y-1/2"
-          style={at(start + 300 + n * 300, { left: x(epoch(p.date)) })}
+          className="x-pop absolute -translate-x-1/2 -translate-y-1/2"
+          style={at(start + 300 + n * 300, { left: x(epoch(p.date)), top: `${line}px` })}
         >
           <div className="h-3.5 w-3.5 rounded-full border-2 border-white shadow" style={{ background: p.color }} />
           <div
             className={`absolute whitespace-nowrap text-center text-[9px] leading-tight ${align(epoch(p.date))}`}
-            style={{ top: n % 2 ? "14px" : "-26px" }}
+            style={{ top: side === "down" ? `${below + level * ROW}px` : `${-26 - level * ROW}px` }}
           >
             <b>{p.label}</b>
             <br />
@@ -475,6 +596,11 @@ function Timeline({
           </div>
         </div>
       ))}
+      {clocks.length > 0 && (
+        <p className="absolute bottom-0 left-0 text-[9px] text-muted">
+          {clocks.map((c) => c.label).join(" · ")} (shaded)
+        </p>
+      )}
     </div>
   );
 }
@@ -543,12 +669,15 @@ function Picture({ c, t, start }: { c: Check; t: Trace; start: number }) {
     return (
       <div className="grid place-items-center gap-1 rounded-lg border border-dashed border-line p-3 text-center text-[11px] text-muted">
         <span className="text-xl" aria-hidden>
-          {c.id === "photo_evidence" ? "📷" : c.id === "paperwork" ? "📄" : "…"}
+          {c.id === "site_progress" || c.id === "photo_evidence" ? "📷" : c.id === "cost_estimate" || c.id === "paperwork" ? "📄" : "…"}
         </span>
         {c.headline}
       </div>
     );
   }
+  if (c.id === "time_rules") return <TimeRules c={c} start={start} />;
+  if (c.id === "site_progress") return <SiteVisits c={c} start={start} />;
+  if (c.id === "cost_estimate") return <WholeEstimate c={c} start={start} />;
   if (c.id === "compliance") return <Rules c={c} t={t} start={start} />;
   if (c.id === "dup_split") return <Constellation c={c} start={start} />;
   if (c.id === "delay") return <FundFlow c={c} start={start} />;
@@ -628,7 +757,7 @@ const CODE_LABEL: Record<string, string> = {
 
 function findingLabel(t: Trace, code: string): string {
   if (CODE_LABEL[code]) return CODE_LABEL[code];
-  const comp = t.checks.find((c) => c.id === "compliance");
+  const comp = t.checks.find((c) => c.id === "time_rules") ?? t.checks.find((c) => c.id === "compliance");
   const rule = comp?.findings.find((f) => f.code === code)?.rule;
   const title = comp?.picture?.rules?.find((r) => r.id === rule)?.title;
   if (title) return title;

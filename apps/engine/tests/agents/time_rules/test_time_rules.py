@@ -155,7 +155,7 @@ def _done(days_after_sanction, **kw):
 def test_finished_before_the_early_line_with_no_video_is_asked_about():
     r = assess(_done(10), AS_OF)                         # early line: a quarter of 4 months
     f = _f(r, "FINISHED_TOO_FAST")
-    assert f.risk == 0.6 and "There are no site videos" in f.text and "4.0 months" in f.text
+    assert f.risk == 0.6 and "There are no site videos" in f.text and "was 4 months" in f.text
     assert "BUILT_RIGHT_AFTER_SANCTION" not in _codes(r)   # the window replaces R14
     assert r.evidence["window"]["early"]
 

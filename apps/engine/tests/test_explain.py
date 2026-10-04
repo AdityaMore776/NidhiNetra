@@ -88,9 +88,10 @@ def test_nothing_private_or_accusing_leaves_the_trace(world):
     kinds = {s["k"] for s in t["reading"]["segments"]}
     assert {"private", "not_allowed", "build"} <= kinds
     assert t["reading"]["facts"]["not_allowed"]["word"] == "temple"
-    rules = next(c for c in t["checks"] if c["id"] == "compliance")["picture"]["rules"]
-    assert any(r["id"] == "R07" and r["raised"] for r in rules)
-    assert t["result"]["colour"] in ("RED", "AMBER")
+    # T125: no agent asks about prohibited works any more (the form's work types do); the
+    # reading still marks the word, and the timing rules are the only rules shown
+    rules = next(c for c in t["checks"] if c["id"] == "time_rules")["picture"]["rules"]
+    assert {r["id"] for r in rules} == {"R01", "R06", "R13", "R14"}
     for x in random.Random(3).sample(works, 40):
         _private_free(explain(x, ctx))
     _private_free(t)
@@ -101,7 +102,7 @@ def test_the_picture_data_is_there_for_each_check(world):
     t = explain({**works[7], "work_id": "EX", "status": "RECOMMENDED", "recommended_date": AS_OF},
                 ctx)
     pics = {c["id"]: c["picture"] for c in t["checks"] if c["status"] == "ASSESSED"}
-    assert "rules" in pics["compliance"]
+    assert "rules" in pics["time_rules"] and "sanction_clock_days" in pics["time_rules"]
     if pics.get("dup_split"):
         near = pics["dup_split"]["nearest"]
         assert pics["dup_split"]["compared"] > 0 and near

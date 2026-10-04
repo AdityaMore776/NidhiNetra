@@ -70,8 +70,17 @@ def _f(code: str, text: str, **evidence) -> Finding:
                    evidence={"message_hi": HI[code], **evidence})
 
 
+KIND_WORDS = {"baseline": "first", "monthly": "monthly", "check": "check", "final": "final"}
+
+
 def _when(v: site_visits.Visit) -> str:
-    return f"the {v.kind} visit of {v.captured:%d %b %Y}"
+    return f"the {KIND_WORDS.get(v.kind, v.kind)} visit of {v.captured:%d %b %Y}"
+
+
+def _when_cap(v: site_visits.Visit) -> str:
+    """_when at the start of a sentence (str.capitalize would lower the month)."""
+    s = _when(v)
+    return s[:1].upper() + s[1:]
 
 
 def _declared(work: dict) -> set[str]:
@@ -100,11 +109,11 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
     trusted = []
     for v in vs:
         if v.get("sealed") is False or v.get("in_app") is False:
-            notes.append(f"{_when(v).capitalize()} was not accepted (not sealed or not filmed in "
+            notes.append(f"{_when_cap(v)} was not accepted (not sealed or not filmed in "
                          "the app): ask for a retake.")
             continue
         if v.get("motion_consistent") is False:
-            notes.append(f"{_when(v).capitalize()} was not accepted: the phone's own motion does "
+            notes.append(f"{_when_cap(v)} was not accepted: the phone's own motion does "
                          "not match the motion in the picture (a screen may have been filmed). "
                          "Ask for a retake at the site.")
             continue
@@ -118,7 +127,7 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
             where = ("an earlier visit of this same work" if r["work_id"] == own
                      else f"work {r['work_id']}")
             findings.append(_f("FOOTAGE_USED_BEFORE",
-                               f"{_when(v).capitalize()} carries {r['frames']} frames already seen "
+                               f"{_when_cap(v)} carries {r['frames']} frames already seen "
                                f"on {where}: the same footage, not new filming. A site video must "
                                "be filmed fresh at this site; needs checking.",
                                visit=v.visit_id, reused_from=reused))
@@ -147,12 +156,12 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
             why = ("the phone reported a mock location" if v.get("mock_location") else
                    f"its GPS points are {v.get('gps_distance_m') or 0:,.0f} m outside the site")
             findings.append(_f("NOT_FILMED_AT_THIS_SITE",
-                               f"{_when(v).capitalize()}: {why}, and its views do not match this "
+                               f"{_when_cap(v)}: {why}, and its views do not match this "
                                "site's earlier views. Needs checking where it was filmed.",
                                visit=v.visit_id))
             break
         if gps_out or views_out:
-            notes.append(f"{_when(v).capitalize()}: "
+            notes.append(f"{_when_cap(v)}: "
                          + ("the GPS is outside the site but the views match this site (GPS "
                             "error)" if gps_out else
                             "the views do not match the earlier ones but the GPS is at the site")
@@ -172,7 +181,7 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
             break
     for v in monthly:
         if v.claim_verdict == "cant_tell":
-            notes.append(f"{_when(v).capitalize()}: the claim could not be judged from the video.")
+            notes.append(f"{_when_cap(v)}: the claim could not be judged from the video.")
 
     # 5. complete, but not shown complete
     finals = [v for v in trusted if v.kind == "final"]
@@ -180,7 +189,7 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
         v = finals[-1]
         missing = [z for z in v.get("zones_shown") or []]
         findings.append(_f("COMPLETE_NOT_SHOWN",
-                           f"{_when(v).capitalize()} does not show the work finished in every "
+                           f"{_when_cap(v)} does not show the work finished in every "
                            "part of the site" + (f" ({len(missing)} parts filmed)" if missing
                                                  else "") + ". Check before it is closed.",
                            visit=v.visit_id))
@@ -195,7 +204,7 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
                          "or upgrades an earlier work).")
         else:
             findings.append(_f("ALREADY_BUILT_AT_START",
-                               f"{_when(base[0]).capitalize()}, filmed before work was to start, "
+                               f"{_when_cap(base[0])}, filmed before work was to start, "
                                "already shows the asset standing, but the form calls the work new. "
                                "Check whether the work was done before sanction.",
                                visit=base[0].visit_id))

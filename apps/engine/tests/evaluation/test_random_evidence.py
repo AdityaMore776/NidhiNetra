@@ -107,12 +107,12 @@ def messy():
 def test_malformed_evidence_never_breaks_an_index_or_an_engine(messy):
     works, stats = messy
     ctx = Context(stats=stats, as_of=AS_OF, data=indexes(works))      # must not raise
-    photos = ctx.data["photos"]
+    photos = PhotoIndex.build(works)                    # the retired photo engines' index
     for w in works:
         a = assess_work(w, ctx)
         errors = [(r.agent, r.limitations) for r in a.agents if r.status == Status.ERROR]
         assert not errors, (w["work_id"], errors)
-        # Site Progress is off in the registry: run it directly on the same mess
+        # the v2 photo judge is kept for the pilot trial: run it directly on the same mess
         s = site.assess(w, AS_OF, photos)
         assert s.status != Status.ERROR and 0 <= s.risk <= 1
         json.dumps(s.to_json(), default=str)

@@ -53,43 +53,53 @@ def _rate(code):
 
 def test_hit_rates_shrink_toward_one_in_four_until_read():
     rel = Reliability.load()
-    r12 = rel.rate("compliance:NO_STATED_SCOPE")
-    assert r12.basis == "measured" and r12.read >= 30
-    assert r12.hit_rate == pytest.approx((r12.worth + 1) / (r12.read + 4))
-    assert rel.rate("compliance:SANCTION_OVERDUE").basis == "design"
-    unknown = rel.rate("compliance:SOMETHING_NEVER_READ")
+    r14 = rel.rate("time_rules:BUILT_RIGHT_AFTER_SANCTION")
+    assert r14.basis == "measured" and r14.read >= 25
+    assert r14.hit_rate == pytest.approx((r14.worth + 1) / (r14.read + 4))
+    assert rel.rate("time_rules:SANCTION_OVERDUE").basis == "design"
+    unknown = rel.rate("time_rules:SOMETHING_NEVER_READ")
     assert unknown.basis == "prior" and unknown.hit_rate == pytest.approx(0.25)
 
 
 def test_one_well_measured_finding_is_high_but_never_critical_alone():
-    f = fuse(_all(_r("compliance", ("NO_STATED_SCOPE", 0.6, False))))
-    assert f.band == "HIGH" and f.score == pytest.approx(_rate("compliance:NO_STATED_SCOPE"))
-    r = Reliability.load().rate("compliance:NO_STATED_SCOPE")
+    f = fuse(_all(_r("time_rules", ("BUILT_RIGHT_AFTER_SANCTION", 0.6, False))))
+    assert f.band == "HIGH"
+    assert f.score == pytest.approx(_rate("time_rules:BUILT_RIGHT_AFTER_SANCTION"))
+    r = Reliability.load().rate("time_rules:BUILT_RIGHT_AFTER_SANCTION")
     assert f.reasons[0]["basis"] == "measured" and f.reasons[0]["read"] == [r.worth, r.read]
 
 
 def test_two_engines_agreeing_strongly_is_critical():
-    f = fuse(_all(_r("compliance", ("NO_STATED_SCOPE", 0.6, False)),
-                  _r("cost_estimate", ("ESTIMATE_ABOVE_STANDARD_AND_MP", 0.5, False))))
-    p1 = _rate("compliance:NO_STATED_SCOPE")
-    p2 = _rate("cost_estimate:ESTIMATE_ABOVE_STANDARD_AND_MP")
+    f = fuse(_all(_r("time_rules", ("BUILT_RIGHT_AFTER_SANCTION", 0.6, False)),
+                  _r("dup_split", ("SPLIT_JUST_UNDER_LIMIT", 0.6, False))))
+    p1 = _rate("time_rules:BUILT_RIGHT_AFTER_SANCTION")
+    p2 = _rate("dup_split:SPLIT_JUST_UNDER_LIMIT")
     assert f.score == pytest.approx(1 - (1 - p1) * (1 - p2))
     assert f.band == "CRITICAL"
 
 
 def test_a_wait_alone_never_reaches_high():
-    f = fuse(_all(_r("compliance", ("SANCTION_OVERDUE", 0.6, False))))
+    f = fuse(_all(_r("time_rules", ("SANCTION_OVERDUE", 0.6, False))))
     assert f.score == pytest.approx(0.40) and f.band == "MEDIUM"
+
+
+def test_a_late_sanction_is_a_fact_that_adds_a_little_and_never_queues():
+    late = fuse(_all(_r("time_rules", ("SANCTIONED_LATE", 0.05, False))))
+    assert late.band == "LOW" and late.score == pytest.approx(0.05)
+    alone = fuse(_all(_r("dup_split", ("REBUILT_SOON_AFTER_COMPLETION", 0.6, False))))
+    both = fuse(_all(_r("dup_split", ("REBUILT_SOON_AFTER_COMPLETION", 0.6, False)),
+                     _r("time_rules", ("SANCTIONED_LATE", 0.05, False))))
+    assert both.score > alone.score and both.band == alone.band == "MEDIUM"
 
 
 def test_completed_before_recommended_queues_only_where_it_stands_out():
     """R06 was read by eye on the hosted data (T056): the cases that stand out reach the queue
     alone; a bulk-entry or office-habit records note (risk 0.10) stays LOW."""
-    rate = Reliability.load().rate("compliance:IMPOSSIBLE_TIMELINE")
+    rate = Reliability.load().rate("time_rules:IMPOSSIBLE_TIMELINE")
     assert rate.basis == "measured" and rate.read >= 10
-    stands_out = fuse(_all(_r("compliance", ("IMPOSSIBLE_TIMELINE", 0.6, False))))
+    stands_out = fuse(_all(_r("time_rules", ("IMPOSSIBLE_TIMELINE", 0.6, False))))
     assert stands_out.band == "HIGH" and stands_out.score == pytest.approx(rate.hit_rate)
-    note = fuse(_all(_r("compliance", ("IMPOSSIBLE_TIMELINE", 0.10, False))))
+    note = fuse(_all(_r("time_rules", ("IMPOSSIBLE_TIMELINE", 0.10, False))))
     assert note.band == "LOW" and note.score == pytest.approx(rate.hit_rate * 0.10 / 0.6)
     assert note.score < 0.15                       # about the 0.125 it counted at the prior
 
@@ -121,40 +131,31 @@ def test_engines_shown_but_not_counted_add_nothing():
 
 
 def test_parts_add_up_exactly_and_do_not_depend_on_order():
-    rs = [_r("compliance", ("POSSIBLY_INADMISSIBLE", 0.6, False)),
+    rs = [_r("time_rules", ("BUILT_RIGHT_AFTER_SANCTION", 0.6, False)),
           _r("dup_split", ("SANCTIONED_WORK_AT_THIS_SITE", 0.7, False)),
-          _r("office_patterns", ("PRICED_AT_LIMIT", 0.3, False))]
+          _r("site_progress", ("CLAIM_NOT_SHOWN", 0.25, False))]
     a, b = fuse(_all(*rs)), fuse(_all(*reversed(rs)))
     assert sum(p.contribution for p in a.parts) == pytest.approx(a.score, abs=1e-12)
     assert {p.source: p.contribution for p in a.parts} == pytest.approx(
         {p.source: p.contribution for p in b.parts})
     # each part is the engine's share of -ln(1 - p)
     logs = {p.source: p.contribution for p in a.parts}
-    assert logs["compliance"] > logs["dup_split"] > logs["office_patterns"]
-
-
-def test_an_office_habit_corroborates_but_never_queues_alone():
-    alone = fuse(_all(_r("office_patterns", ("PRICED_AT_LIMIT", 0.3, False))))
-    assert alone.band == "LOW"
-    # one of the rarest waits for sanction (0.40 by design): MEDIUM alone, HIGH with the habit
-    split = fuse(_all(_r("compliance", ("SANCTION_OVERDUE", 0.6, False))))
-    both = fuse(_all(_r("compliance", ("SANCTION_OVERDUE", 0.6, False)),
-                     _r("office_patterns", ("PRICED_AT_LIMIT", 0.3, False))))
-    assert split.band == "MEDIUM" and both.band == "HIGH"
+    assert logs["time_rules"] > logs["dup_split"] > logs["site_progress"]
 
 
 def test_a_serious_breach_lifts_to_high_two_to_critical():
-    one = fuse(_all(_r("compliance", ("OUTSIDE_AREA_CEILING", 1.0, True))))
+    # none of the four agents raises a hard breach today; the floor stays for any that will
+    one = fuse(_all(_r("time_rules", ("SOME_SERIOUS_BREACH", 1.0, True))))
     assert one.band == "HIGH" and one.score == pytest.approx(HIGH) and one.hard_trigger
     assert any(p.source == "floor" for p in one.parts)
     assert sum(p.contribution for p in one.parts) == pytest.approx(one.score, abs=1e-12)
     # two breaches of kinds never read count 1 in 4 each (0.44): the floor lifts to CRITICAL
-    two = fuse(_all(_r("compliance", ("OUTSIDE_AREA_CEILING", 1.0, True),
+    two = fuse(_all(_r("time_rules", ("SOME_SERIOUS_BREACH", 1.0, True),
                        ("SOME_OTHER_BREACH", 1.0, True))))
     assert two.band == "CRITICAL" and two.score == pytest.approx(CRITICAL)
     # when the evidence already passes the floor, nothing is added
-    strong = fuse(_all(_r("compliance", ("OUTSIDE_AREA_CEILING", 1.0, True),
-                          ("POSSIBLY_INADMISSIBLE", 1.0, True))))
+    strong = fuse(_all(_r("time_rules", ("SOME_SERIOUS_BREACH", 1.0, True),
+                          ("BUILT_RIGHT_AFTER_SANCTION", 1.0, True))))
     assert strong.band == "CRITICAL" and strong.score > CRITICAL
     assert not any(p.source == "floor" for p in strong.parts)
 
@@ -169,7 +170,7 @@ def test_officer_verdicts_move_the_score_without_retuning_a_cut_off():
 
 
 def test_limited_and_bands():
-    f = fuse(_all(_r("compliance"), _r("cost_estimate", status=Status.NOT_ASSESSABLE),
+    f = fuse(_all(_r("time_rules"), _r("cost_estimate", status=Status.NOT_ASSESSABLE),
                   _r("dup_split")))
     assert f.limited is True and f.band == "LOW"
     assert band_of(CRITICAL, engines_over=1) == "HIGH"

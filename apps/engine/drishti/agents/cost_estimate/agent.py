@@ -45,7 +45,8 @@ from drishti.cost_form.validate import validate
 
 AGENT = "cost_estimate"
 VERSION = "cost-estimate-0.2.0"
-QUESTION = "Is the agency's cost estimate right for this size of work here?"
+QUESTION = ("Is every line of the estimate fairly priced for this district, and is the whole "
+            "estimate fair?")
 WHOLE_RISK = 0.6
 QUANTITY_MARGIN = 1.25      # a confirmed quantity this far above what the size needs
 PRICE_MARGIN = 1.25         # price per unit this far above the standard item's 98th percentile

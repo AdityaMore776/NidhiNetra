@@ -29,7 +29,7 @@ def _work(**kw):
 def test_engines_in_registry_order(ctx):
     a = assess_work(_work(), ctx)
     assert [r.agent for r in a.agents] == list(AGENT_ORDER)
-    assert AGENT_ORDER[:4] == ("compliance", "cost_estimate", "dup_split", "delay")
+    assert AGENT_ORDER == ("cost_estimate", "dup_split", "time_rules", "site_progress")
     status = {r.agent: r.status for r in a.agents}
     # T099: no cost estimate form, so the Cost check does not apply (never a low score)
     assert status["cost_estimate"] == Status.NOT_APPLICABLE
@@ -56,8 +56,11 @@ def test_an_agent_that_crashes_becomes_an_error_not_a_crash(ctx, monkeypatch):
 
 
 def test_priority_grows_with_money(ctx):
-    small = assess_work(_work(amount=1_000_000.0, description="CC road"), ctx)
-    big = assess_work(_work(amount=1_500_000.0, description="CC road"), ctx)
+    # a construction recorded complete two days after its sanction (Time & Rules, R14)
+    done = {"status": "COMPLETED", "sanction_date": date(2026, 2, 1),
+            "completed_date": date(2026, 2, 3), "description": "CC road in village Y"}
+    small = assess_work(_work(amount=1_000_000.0, **done), ctx)
+    big = assess_work(_work(amount=1_500_000.0, **done), ctx)
     assert small.fused.score > 0 and big.fused.score > 0
     assert big.priority / big.fused.score > small.priority / small.fused.score
 
@@ -70,8 +73,8 @@ def test_row_is_json_ready(ctx):
     assert row["band"] in ("HIGH", "MEDIUM", "LOW")
 
 
-def test_an_impossible_date_is_judged_against_the_quarter_by_compliance(ctx):
-    # T053: the Data Validation step was removed; Guideline Compliance R06 carries it
+def test_an_impossible_date_is_judged_against_the_quarter_by_time_and_rules(ctx):
+    # T053: the Data Validation step was removed; R06 moved with the timing rules (T125)
     from drishti.validation.timeline import TimelineRates
 
     ctx.stats.timeline = TimelineRates.from_counts({"2024-Q1": (25086, 443)}, {},
@@ -79,7 +82,7 @@ def test_an_impossible_date_is_judged_against_the_quarter_by_compliance(ctx):
     a = assess_work(_work(recommended_date=date(2024, 2, 1), completed_date=date(2023, 11, 1),
                           status="COMPLETED", amount=158_000.0), ctx)
     assert a.validation == []
-    comp = next(r for r in a.agents if r.agent == "compliance")
+    comp = next(r for r in a.agents if r.agent == "time_rules")
     f = next(f for f in comp.findings if f.evidence["rule"] == "R06")
     assert f.evidence["severity"] == "LOW"
     assert a.fused.band == "LOW"
