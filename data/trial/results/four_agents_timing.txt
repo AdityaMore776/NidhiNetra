@@ -1,0 +1,74 @@
+eSAKSHI dashboard works: 40,935 (snapshot 2026-10-02)
+
+SANCTION LAG (15,662 works with both dates; recommended 2024-07-08 to 2025-10-02)
+  p10 / median / p90: 21.0 / 90.0 / 256.0 days
+  past 45 days: 11,928 (76.2%)   past 75 days: 9,401 (60.0%)   past 150 days: 4,257
+  same day: 12   within 7 days: 291   sanction dated before recommendation: 0
+
+STILL WAITING at the snapshot: 342 (median 667.0 days; past 75: 342)
+
+BUILD TIME, sanction -> completion (11,577 works)
+  p5 / p10 / median / p90 / p95: 4.0 / 23.0 / 209.0 / 453.0 / 540.0 days
+  done within 7 days of sanction: 832 (7.2%); completed before its own sanction: 0
+
+  type                works     p5    p10  median    p90    p95   <=30d  p90/p10
+  STREET_LIGHT         4311    5.0   46.0   199.0  450.0  547.0    8.5%      9.8
+  ROAD_CC              2133   17.0   56.0   203.0  462.4  549.0    6.7%      8.3
+  COMMUNITY_HALL        784    0.0    1.3   232.0  477.4  573.9   20.3%    367.2
+  BOREWELL              596    3.0    7.0   292.0  396.0  427.2   18.1%     56.6
+  WATER_TANK            558   21.9   64.1   224.0  506.0  608.0    8.1%      7.9
+  FOOTPATH              497   50.0   75.0   256.0  470.0  497.0    3.2%      6.3
+  BUS_SHELTER           492    2.0   24.0   230.0  416.8  471.0   11.6%     17.4
+  LIBRARY               242    0.0    5.0   192.5  523.8  524.0   37.2%    104.8
+  COMPUTER              222   21.1   25.0   105.0  224.0  242.7   15.3%      9.0
+  SCHOOL_BUILDING       188    8.0   81.3   246.0  451.5  527.5    7.4%      5.6
+  BOUNDARY_WALL         185    0.0    3.8   178.0  435.6  537.6   21.1%    114.6
+  SPORTS_EQUIPMENT      155    7.0    8.0   100.0  387.8  592.0   14.8%     48.5
+  DRAIN                 132    1.0    5.0   163.5  490.9  584.0   19.7%     98.2
+  CREMATORIUM           120   81.7  117.1   260.5  450.7  521.3    0.0%      3.8
+  ELECTRICITY           100   70.0   73.0   309.5  457.0  592.0    1.0%      6.3
+  MEDICAL_EQUIPMENT      92    2.5    7.0   274.0  505.0  505.0   26.1%     72.1
+  PLAYGROUND             89   30.0   90.0   224.0  473.2  539.2    5.6%      5.3
+  SOLAR_PLANT            82   95.0  206.5   306.0  306.0  306.0    0.0%      1.5
+  OTHER                  79    2.9    4.8   230.0  486.6  559.6   16.5%    101.4
+  TOILET_BLOCK           79    0.0    0.0   258.0  457.8  542.3   25.3%    457.8
+  CULVERT                72    6.0   33.9   196.0  398.0  463.9    9.7%     11.7
+  FURNITURE              68    3.1   17.1   138.5  384.0  437.0   16.2%     22.5
+  CCTV                   57    6.0    7.0     7.0  216.6  246.2   75.4%     30.9
+  CHECK_DAM              37    5.2    7.2   108.0  394.4  471.2   13.5%     54.8
+  POND                   35   47.0  103.0   200.0  422.4  488.2    2.9%      4.1
+  EMBANKMENT             34    4.9    6.6   173.5  434.9  492.9   17.6%     65.9
+  BRIDGE                 30   18.3   55.9   212.5  401.9  523.9    6.7%      7.2
+
+  by amount band (median days, p10-p90):
+  STREET_LIGHT      under Rs 3 lakh: 233.0 (69.0-460.0, 3275) | Rs 3-10 lakh: 126.0 (18.0-371.0, 916) | Rs 10 lakh+: 259.5 (42.0-605.0, 120)
+  ROAD_CC           under Rs 3 lakh: 166.5 (61.5-471.0, 606) | Rs 3-10 lakh: 209.0 (53.0-464.4, 1169) | Rs 10 lakh+: 217.0 (38.8-432.0, 358)
+  COMMUNITY_HALL    under Rs 3 lakh: 269.0 (11.0-577.0, 101) | Rs 3-10 lakh: 224.5 (1.0-444.0, 462) | Rs 10 lakh+: 237.0 (0.0-533.0, 221)
+  BOREWELL          under Rs 3 lakh: 291.5 (6.0-392.0, 536) | Rs 3-10 lakh: 293.0 (51.2-445.0, 55)
+  WATER_TANK        under Rs 3 lakh: 224.0 (71.0-506.0, 428) | Rs 3-10 lakh: 182.0 (29.2-400.0, 103) | Rs 10 lakh+: 226.0 (4.0-593.0, 27)
+  FOOTPATH          under Rs 3 lakh: 279.0 (59.0-470.0, 88) | Rs 3-10 lakh: 256.0 (79.0-463.0, 316) | Rs 10 lakh+: 225.0 (75.0-463.0, 93)
+  BUS_SHELTER       under Rs 3 lakh: 251.0 (46.0-400.0, 235) | Rs 3-10 lakh: 199.5 (1.0-458.0, 190) | Rs 10 lakh+: 145.0 (26.8-450.4, 67)
+  LIBRARY           under Rs 3 lakh: 364.5 (74.0-524.0, 104) | Rs 3-10 lakh: 7.0 (0.0-271.2, 109) | Rs 10 lakh+: 186.0 (20.2-408.8, 29)
+  COMPUTER          under Rs 3 lakh: 113.0 (58.8-210.7, 68) | Rs 3-10 lakh: 71.0 (23.0-226.2, 119) | Rs 10 lakh+: 144.0 (20.0-188.0, 35)
+  SCHOOL_BUILDING   under Rs 3 lakh: 217.0 (150.0-425.4, 33) | Rs 3-10 lakh: 239.5 (102.3-432.6, 108) | Rs 10 lakh+: 304.0 (3.6-525.0, 47)
+  BOUNDARY_WALL     under Rs 3 lakh: 195.0 (23.8-417.6, 49) | Rs 3-10 lakh: 172.0 (1.4-427.8, 95) | Rs 10 lakh+: 162.0 (2.0-500.0, 41)
+  SPORTS_EQUIPMENT  under Rs 3 lakh: 41.5 (38.0-408.9, 40) | Rs 3-10 lakh: 196.0 (7.0-514.7, 102) | Rs 10 lakh+: 71.0 (43.0-71.0, 13)
+  DRAIN             under Rs 3 lakh: 163.5 (22.0-623.8, 30) | Rs 3-10 lakh: 161.0 (4.1-474.2, 82) | Rs 10 lakh+: 170.5 (47.1-493.3, 20)
+  CREMATORIUM       under Rs 3 lakh: 259.0 (111.6-405.4, 27) | Rs 3-10 lakh: 259.5 (134.7-456.1, 88)
+  ELECTRICITY       under Rs 3 lakh: 315.0 (73.0-434.4, 79) | Rs 3-10 lakh: 302.0 (119.1-492.6, 18)
+  MEDICAL_EQUIPMENT under Rs 3 lakh: 274.0 (9.0-505.0, 70) | Rs 3-10 lakh: 345.0 (2.2-345.0, 17)
+  PLAYGROUND        under Rs 3 lakh: 392.0 (172.2-495.8, 15) | Rs 3-10 lakh: 189.0 (82.6-407.6, 49) | Rs 10 lakh+: 276.0 (130.6-589.4, 25)
+  OTHER             under Rs 3 lakh: 209.0 (4.8-379.4, 13) | Rs 3-10 lakh: 300.0 (4.5-545.0, 36) | Rs 10 lakh+: 164.0 (6.0-403.0, 30)
+  TOILET_BLOCK      under Rs 3 lakh: 360.0 (107.1-383.3, 38) | Rs 3-10 lakh: 12.0 (0.0-540.0, 33)
+  CULVERT           under Rs 3 lakh: 150.0 (67.2-319.4, 10) | Rs 3-10 lakh: 183.0 (45.0-365.6, 37) | Rs 10 lakh+: 205.0 (7.4-440.0, 25)
+  FURNITURE         under Rs 3 lakh: 195.0 (112.1-384.0, 42) | Rs 3-10 lakh: 114.0 (3.0-321.5, 16) | Rs 10 lakh+: 72.5 (1.9-259.5, 10)
+  CCTV              under Rs 3 lakh: 7.0 (7.0-7.0, 44) | Rs 3-10 lakh: 211.0 (22.0-323.0, 11)
+  CHECK_DAM         Rs 3-10 lakh: 308.0 (20.0-473.6, 15) | Rs 10 lakh+: 84.0 (6.0-247.8, 17)
+  EMBANKMENT        Rs 3-10 lakh: 174.0 (3.6-322.6, 13) | Rs 10 lakh+: 97.5 (9.5-387.7, 14)
+
+CONSTRUCTION WORKS (5,038): done within 30 days 583; within 14 481; within 14 at Rs 5 lakh+ 231; within 7 at Rs 5 lakh+ 195
+
+COMPLETED WORKS WITH ANY PICTURE: 27,208 of 36,508 (74.5%)
+PORTAL STAGES of sanctioned works: Physical Inspection 3,506, Sanction 512, Vendor Identification 474, Work Completed 262, Work partially Completed 237, Time Estimation 9
+
+CAVEAT: Build times come from works finished by the snapshot, so slow works are under-counted; the fast end is not affected. The dashboard's Recommended table covers recommendations from 2024-07-08 to 2025-10-02.

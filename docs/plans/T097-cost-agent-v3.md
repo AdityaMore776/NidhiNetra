@@ -201,8 +201,9 @@ gem.gov.in, pmgsy.nic.in, the state PWD sites; tested 3 Oct 2026). T096 is there
 
 ## 10. Decisions for the owner
 
-1. The MP check margin (proposed 10%, the same as the form's "give a reason" rule) and the size threshold (proposed
-   the 98th percentile). Both are tuned in T098 on read flags.
+1. **Decided (owner, 3 Oct 2026): keep both margins** as built (§11): a price question needs the price per unit more
+   than 25% above the group's 98th percentile **and** the estimate more than 10% above the MP's amount. T098 checks
+   them on read flags and changes them only with a measured reason and the owner's go-ahead.
 2. For a work that has a form, the old cost card is replaced by the new one (proposed: yes).
 3. Data: allow the government hosts in the environment, or download the T096 files on an Indian connection.
 4. A pilot implementing agency for 20–50 real estimates.

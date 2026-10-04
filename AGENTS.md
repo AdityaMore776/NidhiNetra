@@ -194,8 +194,13 @@ Bigger than one session? That's normal. Push at the end of every session.
   alerts, role dashboards, **Inspection Planner (headline)**, field app, pre-sanction check → learning loop, proven
   by a planted-anomaly test. The earlier 12-checker design is a **side track** (TASKS.md M9), built after the core.
 - Build order = `docs/team/TASKS.md`: core T0xx tasks first, lowest ID first.
-- Site Progress judges the officer's **own free-text claims** against the photos (shown / not shown / can't
-  tell). Never describe it as a fixed yes/no checklist.
+- **Four agents only** (owner, 3 Oct 2026; plan `docs/plans/T120-four-agents.md`, tasks T120–T126): Cost (every line
+  against the district's rates, then the whole estimate), Duplicate Work, Time & Rules (the 75-day sanction clock and a
+  comfort window from the form's estimated time to completion), Site Progress (a monthly site video at fixed
+  viewpoints with GPS). Each flags only what is likely fraud, never a minor mistake. The other engines retire with
+  T125.
+- Site Progress judges the agency's or officer's **own claims** against the site's pictures and videos (shown / not
+  shown / can't tell). Never describe it as a fixed yes/no checklist.
 - Pre-2023 and post-2023 works are different populations (eSAKSHI went digital ~2023); never pool them.
   The era boundary keys on `recommended_date`, never on `fy`.
 - Real evidence comes from eSAKSHI's public endpoints (pilot sample, polite rate), never scraped faster.
@@ -205,6 +210,9 @@ Bigger than one session? That's normal. Push at the end of every session.
     96–100% of a limit); look-alikes by words are notes.
   - Do not bring back record-only price flags, word-only repeats, bulk orders or looser splits unless a measurement
     on read-by-eye flags beats these.
+- **Cost Estimate margins** (decided 2026-10-03): a price question needs the price per unit more than 25% above the
+  same standard item's 98th percentile **and** the estimate more than 10% above the MP's amount. Change them only on
+  measured flags and with the owner's go-ahead (T098).
 
 ## 9. Traps that already cost us time
 

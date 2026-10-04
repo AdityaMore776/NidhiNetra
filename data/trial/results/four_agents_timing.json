@@ -1,0 +1,964 @@
+{
+  "source": "eSAKSHI public dashboard tables, downloaded 2 Oct 2026",
+  "works": 40935,
+  "snapshot": "2026-10-02",
+  "with_recommended_date": 16004,
+  "with_sanction_date": 15662,
+  "sanction_lag": {
+    "works": 15662,
+    "p5": 15.0,
+    "p10": 21.0,
+    "median": 90.0,
+    "p90": 256.0,
+    "p95": 352.0,
+    "recommended_from": "2024-07-08",
+    "recommended_to": "2025-10-02",
+    "sanction_before_recommendation": 0,
+    "same_day": 12,
+    "within_7_days": 291,
+    "past_45_days": 11928,
+    "past_45_pct": 76.2,
+    "past_75_days": 9401,
+    "past_75_pct": 60.0,
+    "past_150_days": 4257,
+    "by_month": {
+      "2024-07": {
+        "works": 195,
+        "median": 172.0,
+        "past_75_pct": 70.3
+      },
+      "2024-08": {
+        "works": 1047,
+        "median": 85.0,
+        "past_75_pct": 54.9
+      },
+      "2024-09": {
+        "works": 3366,
+        "median": 98.0,
+        "past_75_pct": 63.3
+      },
+      "2024-10": {
+        "works": 2871,
+        "median": 78.0,
+        "past_75_pct": 55.6
+      },
+      "2024-11": {
+        "works": 3367,
+        "median": 90.0,
+        "past_75_pct": 55.9
+      },
+      "2024-12": {
+        "works": 3442,
+        "median": 96.0,
+        "past_75_pct": 61.3
+      },
+      "2025-01": {
+        "works": 1270,
+        "median": 86.0,
+        "past_75_pct": 69.8
+      },
+      "2025-02": {
+        "works": 78,
+        "median": 191.0,
+        "past_75_pct": 85.9
+      },
+      "2025-03": {
+        "works": 23,
+        "median": 212.0,
+        "past_75_pct": 65.2
+      },
+      "2025-05": {
+        "works": 1,
+        "median": 1.0,
+        "past_75_pct": 0.0
+      },
+      "2025-09": {
+        "works": 1,
+        "median": 12.0,
+        "past_75_pct": 0.0
+      },
+      "2025-10": {
+        "works": 1,
+        "median": 140.0,
+        "past_75_pct": 100.0
+      }
+    }
+  },
+  "still_waiting": {
+    "works": 342,
+    "p5": 634.0,
+    "p10": 636.2,
+    "median": 667.0,
+    "p90": 740.0,
+    "p95": 756.0,
+    "past_75_days": 342
+  },
+  "build_time_all": {
+    "works": 11577,
+    "p5": 4.0,
+    "p10": 23.0,
+    "median": 209.0,
+    "p90": 453.0,
+    "p95": 540.0,
+    "completed_before_own_sanction": 0,
+    "done_within_7_days": 832,
+    "done_within_7_pct": 7.2
+  },
+  "build_time_by_type": {
+    "STREET_LIGHT": {
+      "works": 4311,
+      "p5": 5.0,
+      "p10": 46.0,
+      "median": 199.0,
+      "p90": 450.0,
+      "p95": 547.0,
+      "within_7": 242,
+      "within_14": 263,
+      "within_30": 365,
+      "within_30_pct": 8.5,
+      "before_own_sanction": 0,
+      "p90_over_p10": 9.8,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 3275,
+          "median": 233.0,
+          "p10": 69.0,
+          "p90": 460.0
+        },
+        "Rs 3-10 lakh": {
+          "works": 916,
+          "median": 126.0,
+          "p10": 18.0,
+          "p90": 371.0
+        },
+        "Rs 10 lakh+": {
+          "works": 120,
+          "median": 259.5,
+          "p10": 42.0,
+          "p90": 605.0
+        }
+      }
+    },
+    "ROAD_CC": {
+      "works": 2133,
+      "p5": 17.0,
+      "p10": 56.0,
+      "median": 203.0,
+      "p90": 462.4,
+      "p95": 549.0,
+      "within_7": 86,
+      "within_14": 103,
+      "within_30": 143,
+      "within_30_pct": 6.7,
+      "before_own_sanction": 0,
+      "p90_over_p10": 8.3,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 606,
+          "median": 166.5,
+          "p10": 61.5,
+          "p90": 471.0
+        },
+        "Rs 3-10 lakh": {
+          "works": 1169,
+          "median": 209.0,
+          "p10": 53.0,
+          "p90": 464.4
+        },
+        "Rs 10 lakh+": {
+          "works": 358,
+          "median": 217.0,
+          "p10": 38.8,
+          "p90": 432.0
+        }
+      }
+    },
+    "COMMUNITY_HALL": {
+      "works": 784,
+      "p5": 0.0,
+      "p10": 1.3,
+      "median": 232.0,
+      "p90": 477.4,
+      "p95": 573.9,
+      "within_7": 134,
+      "within_14": 146,
+      "within_30": 159,
+      "within_30_pct": 20.3,
+      "before_own_sanction": 0,
+      "p90_over_p10": 367.2,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 101,
+          "median": 269.0,
+          "p10": 11.0,
+          "p90": 577.0
+        },
+        "Rs 3-10 lakh": {
+          "works": 462,
+          "median": 224.5,
+          "p10": 1.0,
+          "p90": 444.0
+        },
+        "Rs 10 lakh+": {
+          "works": 221,
+          "median": 237.0,
+          "p10": 0.0,
+          "p90": 533.0
+        }
+      }
+    },
+    "BOREWELL": {
+      "works": 596,
+      "p5": 3.0,
+      "p10": 7.0,
+      "median": 292.0,
+      "p90": 396.0,
+      "p95": 427.2,
+      "within_7": 66,
+      "within_14": 104,
+      "within_30": 108,
+      "within_30_pct": 18.1,
+      "before_own_sanction": 0,
+      "p90_over_p10": 56.6,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 536,
+          "median": 291.5,
+          "p10": 6.0,
+          "p90": 392.0
+        },
+        "Rs 3-10 lakh": {
+          "works": 55,
+          "median": 293.0,
+          "p10": 51.2,
+          "p90": 445.0
+        }
+      }
+    },
+    "WATER_TANK": {
+      "works": 558,
+      "p5": 21.9,
+      "p10": 64.1,
+      "median": 224.0,
+      "p90": 506.0,
+      "p95": 608.0,
+      "within_7": 13,
+      "within_14": 15,
+      "within_30": 45,
+      "within_30_pct": 8.1,
+      "before_own_sanction": 0,
+      "p90_over_p10": 7.9,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 428,
+          "median": 224.0,
+          "p10": 71.0,
+          "p90": 506.0
+        },
+        "Rs 3-10 lakh": {
+          "works": 103,
+          "median": 182.0,
+          "p10": 29.2,
+          "p90": 400.0
+        },
+        "Rs 10 lakh+": {
+          "works": 27,
+          "median": 226.0,
+          "p10": 4.0,
+          "p90": 593.0
+        }
+      }
+    },
+    "FOOTPATH": {
+      "works": 497,
+      "p5": 50.0,
+      "p10": 75.0,
+      "median": 256.0,
+      "p90": 470.0,
+      "p95": 497.0,
+      "within_7": 5,
+      "within_14": 7,
+      "within_30": 16,
+      "within_30_pct": 3.2,
+      "before_own_sanction": 0,
+      "p90_over_p10": 6.3,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 88,
+          "median": 279.0,
+          "p10": 59.0,
+          "p90": 470.0
+        },
+        "Rs 3-10 lakh": {
+          "works": 316,
+          "median": 256.0,
+          "p10": 79.0,
+          "p90": 463.0
+        },
+        "Rs 10 lakh+": {
+          "works": 93,
+          "median": 225.0,
+          "p10": 75.0,
+          "p90": 463.0
+        }
+      }
+    },
+    "BUS_SHELTER": {
+      "works": 492,
+      "p5": 2.0,
+      "p10": 24.0,
+      "median": 230.0,
+      "p90": 416.8,
+      "p95": 471.0,
+      "within_7": 35,
+      "within_14": 42,
+      "within_30": 57,
+      "within_30_pct": 11.6,
+      "before_own_sanction": 0,
+      "p90_over_p10": 17.4,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 235,
+          "median": 251.0,
+          "p10": 46.0,
+          "p90": 400.0
+        },
+        "Rs 3-10 lakh": {
+          "works": 190,
+          "median": 199.5,
+          "p10": 1.0,
+          "p90": 458.0
+        },
+        "Rs 10 lakh+": {
+          "works": 67,
+          "median": 145.0,
+          "p10": 26.8,
+          "p90": 450.4
+        }
+      }
+    },
+    "LIBRARY": {
+      "works": 242,
+      "p5": 0.0,
+      "p10": 5.0,
+      "median": 192.5,
+      "p90": 523.8,
+      "p95": 524.0,
+      "within_7": 65,
+      "within_14": 83,
+      "within_30": 90,
+      "within_30_pct": 37.2,
+      "before_own_sanction": 0,
+      "p90_over_p10": 104.8,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 104,
+          "median": 364.5,
+          "p10": 74.0,
+          "p90": 524.0
+        },
+        "Rs 3-10 lakh": {
+          "works": 109,
+          "median": 7.0,
+          "p10": 0.0,
+          "p90": 271.2
+        },
+        "Rs 10 lakh+": {
+          "works": 29,
+          "median": 186.0,
+          "p10": 20.2,
+          "p90": 408.8
+        }
+      }
+    },
+    "COMPUTER": {
+      "works": 222,
+      "p5": 21.1,
+      "p10": 25.0,
+      "median": 105.0,
+      "p90": 224.0,
+      "p95": 242.7,
+      "within_7": 6,
+      "within_14": 6,
+      "within_30": 34,
+      "within_30_pct": 15.3,
+      "before_own_sanction": 0,
+      "p90_over_p10": 9.0,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 68,
+          "median": 113.0,
+          "p10": 58.8,
+          "p90": 210.7
+        },
+        "Rs 3-10 lakh": {
+          "works": 119,
+          "median": 71.0,
+          "p10": 23.0,
+          "p90": 226.2
+        },
+        "Rs 10 lakh+": {
+          "works": 35,
+          "median": 144.0,
+          "p10": 20.0,
+          "p90": 188.0
+        }
+      }
+    },
+    "SCHOOL_BUILDING": {
+      "works": 188,
+      "p5": 8.0,
+      "p10": 81.3,
+      "median": 246.0,
+      "p90": 451.5,
+      "p95": 527.5,
+      "within_7": 9,
+      "within_14": 11,
+      "within_30": 14,
+      "within_30_pct": 7.4,
+      "before_own_sanction": 0,
+      "p90_over_p10": 5.6,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 33,
+          "median": 217.0,
+          "p10": 150.0,
+          "p90": 425.4
+        },
+        "Rs 3-10 lakh": {
+          "works": 108,
+          "median": 239.5,
+          "p10": 102.3,
+          "p90": 432.6
+        },
+        "Rs 10 lakh+": {
+          "works": 47,
+          "median": 304.0,
+          "p10": 3.6,
+          "p90": 525.0
+        }
+      }
+    },
+    "BOUNDARY_WALL": {
+      "works": 185,
+      "p5": 0.0,
+      "p10": 3.8,
+      "median": 178.0,
+      "p90": 435.6,
+      "p95": 537.6,
+      "within_7": 28,
+      "within_14": 33,
+      "within_30": 39,
+      "within_30_pct": 21.1,
+      "before_own_sanction": 0,
+      "p90_over_p10": 114.6,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 49,
+          "median": 195.0,
+          "p10": 23.8,
+          "p90": 417.6
+        },
+        "Rs 3-10 lakh": {
+          "works": 95,
+          "median": 172.0,
+          "p10": 1.4,
+          "p90": 427.8
+        },
+        "Rs 10 lakh+": {
+          "works": 41,
+          "median": 162.0,
+          "p10": 2.0,
+          "p90": 500.0
+        }
+      }
+    },
+    "SPORTS_EQUIPMENT": {
+      "works": 155,
+      "p5": 7.0,
+      "p10": 8.0,
+      "median": 100.0,
+      "p90": 387.8,
+      "p95": 592.0,
+      "within_7": 13,
+      "within_14": 22,
+      "within_30": 23,
+      "within_30_pct": 14.8,
+      "before_own_sanction": 0,
+      "p90_over_p10": 48.5,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 40,
+          "median": 41.5,
+          "p10": 38.0,
+          "p90": 408.9
+        },
+        "Rs 3-10 lakh": {
+          "works": 102,
+          "median": 196.0,
+          "p10": 7.0,
+          "p90": 514.7
+        },
+        "Rs 10 lakh+": {
+          "works": 13,
+          "median": 71.0,
+          "p10": 43.0,
+          "p90": 71.0
+        }
+      }
+    },
+    "DRAIN": {
+      "works": 132,
+      "p5": 1.0,
+      "p10": 5.0,
+      "median": 163.5,
+      "p90": 490.9,
+      "p95": 584.0,
+      "within_7": 15,
+      "within_14": 19,
+      "within_30": 26,
+      "within_30_pct": 19.7,
+      "before_own_sanction": 0,
+      "p90_over_p10": 98.2,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 30,
+          "median": 163.5,
+          "p10": 22.0,
+          "p90": 623.8
+        },
+        "Rs 3-10 lakh": {
+          "works": 82,
+          "median": 161.0,
+          "p10": 4.1,
+          "p90": 474.2
+        },
+        "Rs 10 lakh+": {
+          "works": 20,
+          "median": 170.5,
+          "p10": 47.1,
+          "p90": 493.3
+        }
+      }
+    },
+    "CREMATORIUM": {
+      "works": 120,
+      "p5": 81.7,
+      "p10": 117.1,
+      "median": 260.5,
+      "p90": 450.7,
+      "p95": 521.3,
+      "within_7": 0,
+      "within_14": 0,
+      "within_30": 0,
+      "within_30_pct": 0.0,
+      "before_own_sanction": 0,
+      "p90_over_p10": 3.8,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 27,
+          "median": 259.0,
+          "p10": 111.6,
+          "p90": 405.4
+        },
+        "Rs 3-10 lakh": {
+          "works": 88,
+          "median": 259.5,
+          "p10": 134.7,
+          "p90": 456.1
+        }
+      }
+    },
+    "ELECTRICITY": {
+      "works": 100,
+      "p5": 70.0,
+      "p10": 73.0,
+      "median": 309.5,
+      "p90": 457.0,
+      "p95": 592.0,
+      "within_7": 0,
+      "within_14": 0,
+      "within_30": 1,
+      "within_30_pct": 1.0,
+      "before_own_sanction": 0,
+      "p90_over_p10": 6.3,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 79,
+          "median": 315.0,
+          "p10": 73.0,
+          "p90": 434.4
+        },
+        "Rs 3-10 lakh": {
+          "works": 18,
+          "median": 302.0,
+          "p10": 119.1,
+          "p90": 492.6
+        }
+      }
+    },
+    "MEDICAL_EQUIPMENT": {
+      "works": 92,
+      "p5": 2.5,
+      "p10": 7.0,
+      "median": 274.0,
+      "p90": 505.0,
+      "p95": 505.0,
+      "within_7": 11,
+      "within_14": 23,
+      "within_30": 24,
+      "within_30_pct": 26.1,
+      "before_own_sanction": 0,
+      "p90_over_p10": 72.1,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 70,
+          "median": 274.0,
+          "p10": 9.0,
+          "p90": 505.0
+        },
+        "Rs 3-10 lakh": {
+          "works": 17,
+          "median": 345.0,
+          "p10": 2.2,
+          "p90": 345.0
+        }
+      }
+    },
+    "PLAYGROUND": {
+      "works": 89,
+      "p5": 30.0,
+      "p10": 90.0,
+      "median": 224.0,
+      "p90": 473.2,
+      "p95": 539.2,
+      "within_7": 2,
+      "within_14": 3,
+      "within_30": 5,
+      "within_30_pct": 5.6,
+      "before_own_sanction": 0,
+      "p90_over_p10": 5.3,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 15,
+          "median": 392.0,
+          "p10": 172.2,
+          "p90": 495.8
+        },
+        "Rs 3-10 lakh": {
+          "works": 49,
+          "median": 189.0,
+          "p10": 82.6,
+          "p90": 407.6
+        },
+        "Rs 10 lakh+": {
+          "works": 25,
+          "median": 276.0,
+          "p10": 130.6,
+          "p90": 589.4
+        }
+      }
+    },
+    "SOLAR_PLANT": {
+      "works": 82,
+      "p5": 95.0,
+      "p10": 206.5,
+      "median": 306.0,
+      "p90": 306.0,
+      "p95": 306.0,
+      "within_7": 0,
+      "within_14": 0,
+      "within_30": 0,
+      "within_30_pct": 0.0,
+      "before_own_sanction": 0,
+      "p90_over_p10": 1.5,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 75,
+          "median": 306.0,
+          "p10": 306.0,
+          "p90": 306.0
+        }
+      }
+    },
+    "OTHER": {
+      "works": 79,
+      "p5": 2.9,
+      "p10": 4.8,
+      "median": 230.0,
+      "p90": 486.6,
+      "p95": 559.6,
+      "within_7": 11,
+      "within_14": 11,
+      "within_30": 13,
+      "within_30_pct": 16.5,
+      "before_own_sanction": 0,
+      "p90_over_p10": 101.4,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 13,
+          "median": 209.0,
+          "p10": 4.8,
+          "p90": 379.4
+        },
+        "Rs 3-10 lakh": {
+          "works": 36,
+          "median": 300.0,
+          "p10": 4.5,
+          "p90": 545.0
+        },
+        "Rs 10 lakh+": {
+          "works": 30,
+          "median": 164.0,
+          "p10": 6.0,
+          "p90": 403.0
+        }
+      }
+    },
+    "TOILET_BLOCK": {
+      "works": 79,
+      "p5": 0.0,
+      "p10": 0.0,
+      "median": 258.0,
+      "p90": 457.8,
+      "p95": 542.3,
+      "within_7": 17,
+      "within_14": 19,
+      "within_30": 20,
+      "within_30_pct": 25.3,
+      "before_own_sanction": 0,
+      "p90_over_p10": 457.8,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 38,
+          "median": 360.0,
+          "p10": 107.1,
+          "p90": 383.3
+        },
+        "Rs 3-10 lakh": {
+          "works": 33,
+          "median": 12.0,
+          "p10": 0.0,
+          "p90": 540.0
+        }
+      }
+    },
+    "CULVERT": {
+      "works": 72,
+      "p5": 6.0,
+      "p10": 33.9,
+      "median": 196.0,
+      "p90": 398.0,
+      "p95": 463.9,
+      "within_7": 6,
+      "within_14": 7,
+      "within_30": 7,
+      "within_30_pct": 9.7,
+      "before_own_sanction": 0,
+      "p90_over_p10": 11.7,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 10,
+          "median": 150.0,
+          "p10": 67.2,
+          "p90": 319.4
+        },
+        "Rs 3-10 lakh": {
+          "works": 37,
+          "median": 183.0,
+          "p10": 45.0,
+          "p90": 365.6
+        },
+        "Rs 10 lakh+": {
+          "works": 25,
+          "median": 205.0,
+          "p10": 7.4,
+          "p90": 440.0
+        }
+      }
+    },
+    "FURNITURE": {
+      "works": 68,
+      "p5": 3.1,
+      "p10": 17.1,
+      "median": 138.5,
+      "p90": 384.0,
+      "p95": 437.0,
+      "within_7": 6,
+      "within_14": 6,
+      "within_30": 11,
+      "within_30_pct": 16.2,
+      "before_own_sanction": 0,
+      "p90_over_p10": 22.5,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 42,
+          "median": 195.0,
+          "p10": 112.1,
+          "p90": 384.0
+        },
+        "Rs 3-10 lakh": {
+          "works": 16,
+          "median": 114.0,
+          "p10": 3.0,
+          "p90": 321.5
+        },
+        "Rs 10 lakh+": {
+          "works": 10,
+          "median": 72.5,
+          "p10": 1.9,
+          "p90": 259.5
+        }
+      }
+    },
+    "CCTV": {
+      "works": 57,
+      "p5": 6.0,
+      "p10": 7.0,
+      "median": 7.0,
+      "p90": 216.6,
+      "p95": 246.2,
+      "within_7": 42,
+      "within_14": 42,
+      "within_30": 43,
+      "within_30_pct": 75.4,
+      "before_own_sanction": 0,
+      "p90_over_p10": 30.9,
+      "by_amount": {
+        "under Rs 3 lakh": {
+          "works": 44,
+          "median": 7.0,
+          "p10": 7.0,
+          "p90": 7.0
+        },
+        "Rs 3-10 lakh": {
+          "works": 11,
+          "median": 211.0,
+          "p10": 22.0,
+          "p90": 323.0
+        }
+      }
+    },
+    "CHECK_DAM": {
+      "works": 37,
+      "p5": 5.2,
+      "p10": 7.2,
+      "median": 108.0,
+      "p90": 394.4,
+      "p95": 471.2,
+      "within_7": 4,
+      "within_14": 5,
+      "within_30": 5,
+      "within_30_pct": 13.5,
+      "before_own_sanction": 0,
+      "p90_over_p10": 54.8,
+      "by_amount": {
+        "Rs 3-10 lakh": {
+          "works": 15,
+          "median": 308.0,
+          "p10": 20.0,
+          "p90": 473.6
+        },
+        "Rs 10 lakh+": {
+          "works": 17,
+          "median": 84.0,
+          "p10": 6.0,
+          "p90": 247.8
+        }
+      }
+    },
+    "POND": {
+      "works": 35,
+      "p5": 47.0,
+      "p10": 103.0,
+      "median": 200.0,
+      "p90": 422.4,
+      "p95": 488.2,
+      "within_7": 0,
+      "within_14": 0,
+      "within_30": 1,
+      "within_30_pct": 2.9,
+      "before_own_sanction": 0,
+      "p90_over_p10": 4.1,
+      "by_amount": {
+        "Rs 3-10 lakh": {
+          "works": 21,
+          "median": 200.0,
+          "p10": 109.0,
+          "p90": 448.0
+        }
+      }
+    },
+    "EMBANKMENT": {
+      "works": 34,
+      "p5": 4.9,
+      "p10": 6.6,
+      "median": 173.5,
+      "p90": 434.9,
+      "p95": 492.9,
+      "within_7": 4,
+      "within_14": 6,
+      "within_30": 6,
+      "within_30_pct": 17.6,
+      "before_own_sanction": 0,
+      "p90_over_p10": 65.9,
+      "by_amount": {
+        "Rs 3-10 lakh": {
+          "works": 13,
+          "median": 174.0,
+          "p10": 3.6,
+          "p90": 322.6
+        },
+        "Rs 10 lakh+": {
+          "works": 14,
+          "median": 97.5,
+          "p10": 9.5,
+          "p90": 387.7
+        }
+      }
+    },
+    "BRIDGE": {
+      "works": 30,
+      "p5": 18.3,
+      "p10": 55.9,
+      "median": 212.5,
+      "p90": 401.9,
+      "p95": 523.9,
+      "within_7": 2,
+      "within_14": 2,
+      "within_30": 2,
+      "within_30_pct": 6.7,
+      "before_own_sanction": 0,
+      "p90_over_p10": 7.2,
+      "by_amount": {
+        "Rs 3-10 lakh": {
+          "works": 20,
+          "median": 271.5,
+          "p10": 151.8,
+          "p90": 401.9
+        }
+      }
+    }
+  },
+  "construction_fixed_lines": {
+    "works": 5038,
+    "done_within_30_days": 583,
+    "done_within_14_days": 481,
+    "done_within_14_days_rs5_lakh_plus": 231,
+    "done_within_7_days_rs5_lakh_plus": 195
+  },
+  "completed_with_image": {
+    "completed_works": 36508,
+    "with_image": 27208,
+    "with_image_pct": 74.5
+  },
+  "dashboard_work_status": {
+    "Physical Inspection": 3506,
+    "Sanction": 512,
+    "Vendor Identification": 474,
+    "Work Completed": 262,
+    "Work partially Completed": 237,
+    "Time Estimation": 9
+  },
+  "caveat": "Build times come from works finished by the snapshot, so slow works are under-counted; the fast end is not affected. The dashboard's Recommended table covers recommendations from 2024-07-08 to 2025-10-02."
+}

@@ -710,6 +710,33 @@ on their repeat/split signal alone (one engine cannot reach HIGH: the owner's op
 PDF still cannot be fetched from outside India (T001). With 45 days R01 would fire on more works but score
 the same, since the signal now follows the wait curve, not the clock.
 
+## T120 (3 Oct 2026): timing facts for the Time & Rules agent, on the dashboard's sanction dates
+
+Measured for the four-agent plan ([`plans/T120-four-agents.md`](../plans/T120-four-agents.md) §8) by
+`data/trial/four_agents_timing.py` → `results/four_agents_timing.txt` / `.json` (aggregates only). The dashboard
+tables of 2 Oct 2026 carry real sanction dates, which the research export does not.
+
+- **The 75-day clock is broken by most works.** Of 15,662 works with a recommendation and a sanction date (recommended
+  8 Jul 2024 – 2 Oct 2025), the median wait is **90 days** (p10 21, p90 256); **9,401 (60.0%)** waited past 75 days
+  and 11,928 (76.2%) past 45 (before any election-code days are taken off). A late sanction is an office fact, not a
+  work's fraud: as a flag it would put most works in the queue.
+- **Some works are "finished" impossibly fast.**
+  - Of 11,577 works with both a sanction and a completion date, **832 (7.2%)** are recorded complete within 7 days of
+    sanction.
+  - Among 5,038 constructions, **195 of Rs 5 lakh or more** are complete within 7 days.
+  - One community hall in ten is complete within 1.3 days of sanction, and 20.3% within 30 days.
+  - CCTV is legitimately quick: a median of 7 days.
+  - None is dated complete before its own sanction.
+- **One window per type would be wrong.** Sanction to completion has a median of 209 days, but the spread inside a
+  type is huge: the 90th percentile is 8 times the 10th for CC roads (56 to 462 days) and 367 times for community
+  halls. The amount barely separates them: CC roads have a median of 167, 209 and 217 days under Rs 3 lakh, at
+  Rs 3–10 lakh, and at Rs 10 lakh+. The window must come from each work's own size and estimated time (plan §8.2).
+- **Completion evidence today:** 9,300 of 36,508 completed works (25.5%) carry no picture at all. The portal's own
+  stages for sanctioned works include a "Time Estimation" step (Physical Inspection 3,506, Sanction 512, Vendor Identification 474, Work
+  Completed 262, Work partially Completed 237, Time Estimation 9).
+- **Caveat:** build times come from works finished by the snapshot, so slow works are under-counted; the fast end,
+  which the "too fast" question uses, is not affected.
+
 ## T080 (1 Oct 2026): the planted-anomaly test, 50 known problems run blind
 
 `data/trial/planted_test.py` → `results/planted_test.json`, `planted_test_rows.csv`. 50 fakes built from real
