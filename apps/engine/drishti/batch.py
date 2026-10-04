@@ -17,7 +17,7 @@ from psycopg.types.json import Jsonb
 
 from drishti import records
 from drishti.agents.delay.backlog import OfficeBacklog
-from drishti.agents.dup_split.match import DupIndex
+from drishti.agents.dup_split.repeat import RepeatIndex
 from drishti.agents.office_patterns.index import JUST_UNDER, OfficeIndex, limits
 from drishti.agents.paperwork.vendors import VendorIndex
 from drishti.agents.photo_evidence.index import PhotoIndex
@@ -62,6 +62,29 @@ def _normalise(work: dict) -> dict:
     return w
 
 
+def _one(row) -> object:
+    return next(iter(row.values())) if isinstance(row, dict) else row[0]
+
+
+def with_forms(con: psycopg.Connection, works: list[dict]) -> list[dict]:
+    """The works, each with the implementing agency's SUBMITTED cost estimate form as
+    work["cost_form"] (migration 013, T099): the Cost check reads it, the Duplicate check its map
+    pins and declared continuations. A draft is never read. A database the migration has not
+    reached yet gives no forms, never an error, so code can deploy before the migration."""
+    if not works or not _one(con.execute("SELECT to_regclass('cost_forms') IS NOT NULL")
+                             .fetchone()):
+        return works
+    forms = {}
+    for r in con.execute("SELECT work_id, form FROM cost_forms WHERE status = 'submitted' "
+                         "AND work_id = ANY(%s)", ([w["work_id"] for w in works],)).fetchall():
+        wid, form = (r["work_id"], r["form"]) if isinstance(r, dict) else (r[0], r[1])
+        forms[wid] = form
+    for w in works:
+        if w["work_id"] in forms:
+            w["cost_form"] = forms[w["work_id"]]
+    return works
+
+
 def row_for(a: Assessment) -> dict:
     row = a.to_row()
     alerts = [r.agent for r in a.agents if r.assessed and r.risk > 0]
@@ -88,22 +111,23 @@ def row_for(a: Assessment) -> dict:
 
 
 def case_of(a: Assessment) -> tuple[str | None, int | None]:
-    """The Duplicate & Split group a work belongs to, as (case id, works in it)."""
+    """The case a work belongs to, as (case id, works in it): Duplicate Work v3 (T100) groups works
+    filed together (the same wording, MP and day in one district) for display only, so the
+    queue shows one row for one purchase filed as several works (migration 012)."""
     for r in a.agents:
         if r.agent == "dup_split" and r.assessed:
-            for f in r.findings:
-                gid = (f.evidence or {}).get("group_id")
-                if gid:
-                    return str(gid), int((f.evidence or {}).get("size") or 0) or None
+            for ev in [r.evidence or {}] + [f.evidence or {} for f in r.findings]:
+                if ev.get("group_id"):
+                    return str(ev["group_id"]), int(ev.get("size") or 0) or None
     return None, None
 
 
 def indexes(works: list[dict]) -> dict:
-    """The cross-work views engines need, from the same rows: the Duplicate & Split index and
+    """The cross-work views engines need, from the same rows: the Duplicate Work index and
     the vendors holding the certified works (Paperwork, T110). Every record is checked first
     (records.work): one malformed row used to stop the whole build."""
     works = [records.work(w) for w in works]
-    return {"dup_split": DupIndex.build(works), "vendors": VendorIndex.build(works),
+    return {"dup_split": RepeatIndex.build(works), "vendors": VendorIndex.build(works),
             "photos": PhotoIndex.build(works), "backlog": OfficeBacklog.build(works),
             "offices": OfficeIndex.build(works)}
 
@@ -136,7 +160,7 @@ def with_index(ctx: Context, con: psycopg.Connection, work: dict) -> Context:
     d = work.get("district_lgd")
     rows = con.execute(f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works {SIGNALS_JOIN} "
                        "WHERE works.district_lgd = %s", (d,)).fetchall() if d else []
-    data = indexes([_normalise(dict(r)) for r in rows])
+    data = indexes(with_forms(con, [_normalise(dict(r)) for r in rows]))
     data["offices"].national = office_national(con)
     # a photo can be reused in another district: every work's evidence, not the district's
     data["photos"] = PhotoIndex.build(
@@ -150,7 +174,7 @@ def assess_one(con: psycopg.Connection, work_id: str, ctx: Context) -> Assessmen
                        f"{SIGNALS_JOIN} WHERE work_id = %s", (work_id,)).fetchone()
     if work is None:
         return None
-    work = _normalise(dict(work))
+    work = with_forms(con, [_normalise(dict(work))])[0]
     a = assess_work(work, with_index(ctx, con, work))
     con.execute(UPSERT, row_for(a))
     return a
@@ -166,12 +190,12 @@ def assess_all(url: str, ctx: Context, work_ids: Iterable[str] | None = None,
         if work_ids is not None:
             sql += " WHERE work_id = ANY(%s)"
             params = (list(work_ids),)
-        works = [_normalise(dict(w)) for w in con.execute(sql, params).fetchall()]
+        works = with_forms(con, [_normalise(dict(w)) for w in con.execute(sql, params).fetchall()])
         if "dup_split" not in (ctx.data or {}):
             # every work of the database, so each is compared with its whole district
-            everything = works if work_ids is None else [
+            everything = works if work_ids is None else with_forms(con, [
                 _normalise(dict(w)) for w in con.execute(
-                    f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works {SIGNALS_JOIN}")]
+                    f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works {SIGNALS_JOIN}")])
             ctx = replace(ctx, data={**(ctx.data or {}), **indexes(everything)})
         batch: list[dict] = []
         for w in works:

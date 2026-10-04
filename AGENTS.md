@@ -199,6 +199,12 @@ Bigger than one session? That's normal. Push at the end of every session.
 - Pre-2023 and post-2023 works are different populations (eSAKSHI went digital ~2023); never pool them.
   The era boundary keys on `recommended_date`, never on `fy`.
 - Real evidence comes from eSAKSHI's public endpoints (pilot sample, polite rate), never scraped faster.
+- **Simple and certain** (owner, 3 Oct 2026; T099 + T100):
+  - Cost asks only from the implementing agency's cost estimate form; a record alone is never price-judged.
+  - Duplicate Work asks only by the form's map pin, the agency's own declarations, or the strictest split (every piece
+    96–100% of a limit); look-alikes by words are notes.
+  - Do not bring back record-only price flags, word-only repeats, bulk orders or looser splits unless a measurement
+    on read-by-eye flags beats these.
 
 ## 9. Traps that already cost us time
 

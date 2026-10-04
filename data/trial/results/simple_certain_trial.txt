@@ -1,0 +1,15 @@
+COST: 1,032 of 40,935 works can be priced from the record (11 groups)
+  in-sample above the line: 5; hold-out: 10 of 211 real 2026 works
+  read by eye: {'grey': 1, 'misread': 5, 'spec': 9}
+  planted (hold-out): x1.1 12/211, x1.25 23/211, x1.5 88/211, x2 99/211, x3 109/211
+REPEAT: 289 labelled pairs, 108 read as one asset funded twice
+  every pair the engine flagged                                  108/289 right (37%), recall 100%
+  identical wording                                               24/37  right (65%), recall 22%
+  90%+ alike                                                      52/101 right (52%), recall 48%
+  90%+ alike, every place word shared                             41/70  right (59%), recall 38%
+  ... and nothing apart, no continuation word, not many sites     38/59  right (64%), recall 35%
+  ... and two or more place words                                 25/35  right (71%), recall 23%
+  identical wording, two or more place words, nothing apart       13/16  right (81%), recall 12%
+  dashboard, strictest rule: {'0-7 days': 152, 'over 60 days': 25, '8-60 days': 25}; over 60 days read: {'same': 8, 'grey': 6, 'different': 11}
+SPLIT (every piece 96-100% of a limit): 14 groups, 34 works; read by eye: {'yes': 12, 'grey': 2}
+wrote data/trial/results/simple_certain_trial.json

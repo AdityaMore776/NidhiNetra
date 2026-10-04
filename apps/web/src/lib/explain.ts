@@ -53,7 +53,7 @@ export interface Habit {
 export interface Picture {
   // Guideline Compliance
   rules?: RuleRow[];
-  // Cost Anomaly
+  // Cost Anomaly (retired 3 Oct 2026, T099; kept for examples built before then)
   comparison?: {
     metric: string;
     unit: string;
@@ -65,11 +65,12 @@ export interface Picture {
   }[];
   cohort?: { level: string; description: string; n: number };
   work_type_name?: string;
-  // Duplicate & Split
+  // Duplicate Work (T100): "flag" is the look-alike line (a note); a repeat is asked by map pin
   compared?: number;
   text_min?: number;
   place_min?: number;
   flag?: number;
+  pin_metres?: number;
   nearest?: Neighbour[];
   // Fund Flow
   recommended?: string | null;

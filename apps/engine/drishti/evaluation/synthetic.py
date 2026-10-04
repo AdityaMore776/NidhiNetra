@@ -19,7 +19,14 @@ what the team measured on the 2,09,993 real works (docs/trial/FINDINGS.md):
   batches            one MP, one day, one template, many villages: ordinary, not a split
 
 Planted problems (positive=True) each name the engine meant to catch them and the finding codes
-that count as caught. Look-alikes (positive=False, kind "HN_*") are what the engines must leave
+that count as caught. T099 + T100 (3 Oct 2026): a price raised on a record, a repeat or a repair
+judged from words alone are no longer checked (measured not certain enough,
+data/trial/simple_certain_trial.py); they stay planted as positives that no engine is meant for,
+so the report says plainly what the product leaves to the cost estimate form. Splits are
+planted at 92-100% of the limit: only those whose every piece is 96%+ are asked about. The
+form's own cases are planted too: a map pin at a sanctioned work of the same kind
+(PIN_REPEAT), a declared rebuild soon after completion (REBUILT_SOON), and their look-alikes.
+Look-alikes (positive=False, kind "HN_*") are what the engines must leave
 alone. Every other work is "BACKGROUND". Labels live beside the works, never inside them, so
 no engine can read the answer.
 
@@ -102,6 +109,8 @@ TYPES: dict[str, tuple[float, float, float]] = {
     "POND": (0.02, 6.0 * LAKH, 0.30), "CULVERT": (0.02, 3.0 * LAKH, 0.25),
     "CREMATORIUM": (0.02, 5.0 * LAKH, 0.25), "FOOTPATH": (0.03, 3.0 * LAKH, 0.30),
 }
+# works the cost estimate form takes both ends for (reference/cost_form.yaml families)
+LINEAR = {"ROAD_CC", "BOUNDARY_WALL", "DRAIN", "FOOTPATH"}
 CONSTRUCTION = {"ROAD_CC", "COMMUNITY_HALL", "SCHOOL_BUILDING", "BOUNDARY_WALL", "DRAIN",
                 "TOILET_BLOCK", "BUS_SHELTER", "HEALTH_BUILDING", "CULVERT", "FOOTPATH",
                 "CREMATORIUM", "PLAYGROUND", "POND"}
@@ -520,9 +529,7 @@ class Generator:
             for w in self._pick(lambda w: site_work(w) and 1.5 * LAKH <= w["amount"] <= 8 * LAKH
                                 and not any(c.isdigit() for c in w["description"]), n):
                 w["amount"] = float(round(w["amount"] * times, -2))
-                self.labels[w["work_id"]] = Label(f"COST_X{times}", True, "statistical",
-                                                  ("COST_ABOVE_PEERS", "UNIT_RATE_ABOVE",
-                                                   "SMALL_SCOPE_FAR_ABOVE"))
+                self.labels[w["work_id"]] = Label(f"COST_X{times}", True)   # record only
         # COST with a small stated scope: "one high mast light" at ten times its price
         for _ in range(n):
             d = rng.choice(self.districts)
@@ -537,8 +544,7 @@ class Generator:
                 "SCHOOL_BUILDING" if "room" in tpl[0] else "BOREWELL")
             self.make(d, wtype, template=(tpl[0], tpl[1]), village=v,
                       amount=float(round(tpl[2] * rng.uniform(9, 12), -3)),
-                      label=Label("COST_SMALL_SCOPE_X10", True, "statistical",
-                                  ("COST_ABOVE_PEERS", "SMALL_SCOPE_FAR_ABOVE")))
+                      label=Label("COST_SMALL_SCOPE_X10", True))          # record only
 
         # REPEATS: the same work filed again, reworded, often with the village spelt otherwise
         for kind, cond in (("REPEAT_AFTER_DONE", lambda w: w["status"] == "COMPLETED"
@@ -559,9 +565,7 @@ class Generator:
                           template=(self._reword(w["description"], village), "site"),
                           rec=rec, mp=mp, amount=float(round(w["amount"] * rng.uniform(0.9,
                                                                                          1.1), -2)),
-                          label=Label(kind, True, "dup_split",
-                                      ("FUNDED_AGAIN_AFTER_COMPLETION", "REPEATED_WHILE_OPEN"),
-                                      group=w["work_id"]), case=False)
+                          label=Label(kind, True, group=w["work_id"]), case=False)  # words
 
         # SPLITS at one site: one Rs 12-20 lakh job filed as 3-4 pieces just under Rs 5 lakh
         for g in range(max(2, n // 2)):
@@ -577,8 +581,7 @@ class Generator:
                 self.make(d, wtype, template=(text, "site"), rec=rec, mp=mp, office=office,
                           amount=float(round(rng.uniform(4.6, 4.99) * LAKH, -2)), status=st,
                           label=Label("SPLIT_SAME_SITE", True, "dup_split",
-                                      ("SPLIT_AT_ONE_SITE", "SPLIT_INTO_STRETCHES"),
-                                      group=f"S{g}"), case=False)
+                                      ("SPLIT_JUST_UNDER_LIMIT",), group=f"S{g}"), case=False)
 
         # SPLITS into stretches: one road cut into numbered parts, each just under Rs 5 lakh
         for g in range(max(2, n // 2)):
@@ -604,8 +607,7 @@ class Generator:
                           rec=rec + timedelta(days=rng.randint(0, 20)), mp=mp, office=office,
                           amount=float(round(rng.uniform(4.6, 4.99) * LAKH, -2)), status=st,
                           label=Label("SPLIT_STRETCHES", True, "dup_split",
-                                      ("SPLIT_INTO_STRETCHES", "SPLIT_AT_ONE_SITE"),
-                                      group=f"T{g}"), case=False)
+                                      ("SPLIT_JUST_UNDER_LIMIT",), group=f"T{g}"), case=False)
 
         # REPAIR SOON AFTER BUILT: a new asset "repaired" within months of completion
         for w in self._pick(lambda w: site_work(w) and w["status"] == "COMPLETED"
@@ -626,8 +628,8 @@ class Generator:
                       w["completed_date"] + timedelta(days=rng.randint(30, 300)))
             self.make(d, w["work_type_code"], template=(text, "site"), rec=rec,
                       amount=float(round(w["amount"] * rng.uniform(0.3, 0.8), -3)),
-                      label=Label("REPAIR_SOON_AFTER_BUILT", True, "dup_split",
-                                  ("REPAIR_SOON_AFTER_BUILT",), group=w["work_id"]), case=False)
+                      label=Label("REPAIR_SOON_AFTER_BUILT", True, group=w["work_id"]),
+                      case=False)        # words alone; a declared rebuild is REBUILT_SOON below
         # ... and its look-alike: a repair of a different asset, or years later
         for w in self._pick(lambda w: site_work(w) and w["status"] == "COMPLETED", n // 2):
             d = self._district(w)
@@ -728,6 +730,60 @@ class Generator:
                 f"block at {v}", "site"), amount=float(rng.choice((35, 45, 60)) * LAKH),
                 label=Label("HN_BIG_STATED_SCOPE", meant="statistical",
                             codes=("COST_ABOVE_PEERS", "SMALL_SCOPE_FAR_ABOVE")))
+
+        # T100: MAP PINS on the cost estimate form (planted last, so the office habits above
+        # draw the same works as before). An original sanctioned work of a point asset
+        # gets a form with its pin; a later work with its own form is planted beside it.
+        def pin(d: District, key: str) -> tuple[float, float]:
+            h = zlib.crc32(f"{d.code}:{key}".encode())
+            return 21.0 + (h % 600) / 100, 76.0 + (h // 600 % 800) / 100
+
+        def form(wtype: str, lat: float, lon: float, nature: str = "new",
+                 earlier: str | None = None) -> dict:
+            work = {"work_type": wtype, "nature": nature}
+            if earlier:
+                work["earlier_work_id"] = earlier
+            return {"work": work, "sites": [{"location": {"lat": lat, "lon": lon}}]}
+
+        def pinned(w):
+            return (site_work(w) and w["work_type_code"] not in LINEAR and "cost_form" not in w
+                    and w["status"] in ("SANCTIONED", "COMPLETED"))
+
+        def done_lately(w):
+            return (pinned(w) and w["status"] == "COMPLETED" and w["completed_date"]
+                    and w["completed_date"] < AS_OF - timedelta(days=60))
+
+        for kind, cond, k in (("PIN_REPEAT", pinned, n), ("REBUILT_SOON", done_lately, n),
+                              ("HN_PIN_OTHER_ASSET", pinned, n // 2),
+                              ("HN_PIN_NEXT_DOOR", pinned, n // 2),
+                              ("HN_DECLARED_CONTINUATION", pinned, n // 2)):
+            for w in self._pick(cond, k):
+                d = self._district(w)
+                lat, lon = pin(d, w["work_id"])
+                w["cost_form"] = form(w["work_type_code"], lat, lon)
+                self.labels[w["work_id"]] = Label("PIN_ORIGINAL", group=w["work_id"])
+                start = w["completed_date"] or w["recommended_date"]
+                rec = min(AS_OF - timedelta(days=3), start + timedelta(days=rng.randint(30, 300)))
+                wtype, metres = w["work_type_code"], rng.uniform(0, 45)
+                nature, earlier = "new", None
+                text = self._reword(w["description"], None)
+                if kind == "HN_PIN_OTHER_ASSET":        # a borewell beside the hall
+                    wtype, text = "BOREWELL", rng.choice(TEMPLATES["BOREWELL"])[0]
+                elif kind == "HN_PIN_NEXT_DOOR":        # the same kind, 80-300 m away
+                    metres = rng.uniform(80, 300)
+                elif kind == "HN_DECLARED_CONTINUATION":
+                    nature, earlier = "continuation", w["work_id"]
+                elif kind == "REBUILT_SOON":
+                    nature, earlier = "reconstruction", w["work_id"]
+                code = ("REBUILT_SOON_AFTER_COMPLETION" if kind == "REBUILT_SOON"
+                        else "SANCTIONED_WORK_AT_THIS_SITE")
+                label = (Label(kind, True, "dup_split", (code,), group=w["work_id"])
+                         if not kind.startswith("HN_") else
+                         Label(kind, meant="dup_split", codes=("SANCTIONED_WORK_AT_THIS_SITE",
+                                                               "REBUILT_SOON_AFTER_COMPLETION")))
+                new = self.make(d, wtype, template=(text, "site"), rec=rec, label=label,
+                                case=False)
+                new["cost_form"] = form(wtype, lat + metres / 111_195, lon, nature, earlier)
 
     # ------------------------------------------------------------ build
     def build(self) -> Corpus:

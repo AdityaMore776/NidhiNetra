@@ -64,9 +64,17 @@ Grouped by the step of a work's life they watch. ✅ = built into the live app �
 🧪 = tested on real data in our trial, being built · 📝 = planned.
 
 **Before the money moves**
-- ✅ **Cost** — *Is the cost unusual for similar works in this district?*
+- ✅ **Cost** — *Is the agency's cost estimate right for this size of work here?* It reads the implementing agency's
+  cost estimate form (size, specification, every expense line) and asks only when a confirmed quantity is far above
+  what the size needs, or the price is far above the same standard item here **and** above the MP's amount. A work
+  with no form is not judged: an amount alone does not say what is built (3 Oct 2026: of 15 works a record-only check
+  would have questioned, none was a real price question).
 - ✅ **Guideline Compliance** (includes Eligibility) — *Does the work follow the MPLADS rules?* (e.g. waiting for sanction past 75 days, works inside a temple campus)
-- ✅ **Duplicate & Split** — *Is this already funded, or one work cut into pieces to stay under ₹5 lakh?* (also: one road cut into "part 1 / part 2" stretches, an asset repaired soon after this scheme built it)
+- ✅ **Duplicate Work** — *Is this work already sanctioned here, or one job cut to stay under a limit?* It asks when the
+  cost form's map pin is within 50 m of a sanctioned work of the same kind, when the agency itself says it rebuilds a
+  work completed under three years ago, or when every piece of one job sits within 4% under the ₹5 or 10 lakh limit
+  (12 of 14 such groups read as one job). Works that only *read* alike are notes for the agency to answer: from words
+  alone that is right about 2 times in 3.
 - ✅ **Office Patterns** — *Does this office price most of its works just under a limit, or record buildings complete days after sanction?* (an office's habit backs up a work's own findings; it never puts a work on the list by itself)
 
 **While the work is built**
@@ -99,7 +107,7 @@ From our trial on real eSAKSHI evidence (Chittaurgarh, Rajasthan — a boundary 
    forward as a new one. **It says: needs checking**, shows both dates and the photo, and an officer decides.
 
 Another: in Nanded, **three works of ₹4,96,000 each** for the *same road*, recommended the same day —
-₹14.88 lakh in pieces each just under ₹5 lakh. Duplicate & Split raises it; the officer checks whether the
+₹14.88 lakh in pieces each just under ₹5 lakh. Duplicate Work raises it; the officer checks whether the
 split was allowed.
 
 ## 5. What DRISHTI brings

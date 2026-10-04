@@ -134,12 +134,12 @@ confirmed material is compared material by material; a line marked "none" still 
 | `land_free` | the land costs nothing | must be yes: MPLADS cannot pay for land |
 | `work_type` | type of work | the 33 types, **or `OTHER`** |
 | `other_type_name` | type of work, written in | when `OTHER` |
-| `nature` | new / extension / upgrade / reconstruction / purchase / installation | maintenance is not allowed under MPLADS, so it is not offered |
-| `existing_description` | what exists there now | for extension, upgrade, reconstruction |
+| `nature` | new / continuation / extension / upgrade / reconstruction / purchase / installation | maintenance is not allowed under MPLADS, so it is not offered; **continuation** (T100) = finishing, or the next phase of, an earlier work |
+| `existing_description` | what exists there now | for continuation, extension, upgrade, reconstruction |
 | `existing_age_years` | its age | same |
 | `existing_condition` | good / damaged / collapsed | same |
-| `earlier_scheme` | last built or repaired under (MPLADS, MGNREGA, state scheme, …, not known) | same |
-| `earlier_work_id` | earlier work ID, if known | optional |
+| `earlier_scheme` | last built or repaired under (MPLADS, MGNREGA, state scheme, …, not known) | for continuation, extension, upgrade, reconstruction |
+| `earlier_work_id` | earlier work ID | **required for a continuation**; optional otherwise. The Duplicate check trusts a named link and never asks about it |
 | `design_standard` | state type design / PMGSY / IRC / CPWD / own design / none | construction only |
 | `description` | the work in your own words: what, exactly where (from X to Y), why this size, anything unusual | at least 25 words; for people to read: the agent never takes size from it |
 
@@ -261,6 +261,22 @@ the Hindi words used on estimates (सीमेंट, सरिया, बा�
 | `site_photo_before` | photo of the site before work, with location | construction only |
 | `land_noc` | land NOC / ownership paper | construction only |
 
+### 5.9b Earlier works at this site (T100; answered once per work listed)
+
+`GET /api/v1/cost-forms/{work_id}` lists, as `earlier_candidates`, the sanctioned works of the district that the
+Duplicate check finds **at this site** (another form's map pin within 50 m, same kind of asset) or **in the same words**
+(the same place named, descriptions 90%+ alike). Show each one (work ID, description, amount, status) and ask:
+
+| id | What | Notes |
+|---|---|---|
+| `earlier_work` | the sanctioned work's ID | filled in from the list, read-only |
+| `answer` | this work is: **the same work** / **continues it** / **a different work** | "the same work" blocks Submit: it is already sanctioned. "Continues it" needs the nature (continuation, extension, upgrade, reconstruction) and `earlier_work_id` set to it |
+| `difference` | what differs: another site, landmark, floor or side | when "a different work"; at least 4 words |
+
+Each answer is one row of `earlier_works`. Why this is asked: from the words of two records alone, a repeat is right
+only about 2 times in 3 (`docs/plans/T099-T100-simple-and-certain.md`). The agency knows. Its answer, and the map
+pins, make the Duplicate check certain.
+
 ### 5.10 Declarations (all must be ticked)
 
 | id | What |
@@ -307,6 +323,10 @@ overruns and gives the measured data the agent's allowed ranges are set from (T0
 | `old_prices`, `start_before_estimate` | confirm | prices over 18 months old; a start before the price month |
 | `total_mismatch` | fix | the lines and charges do not add up to the estimate document's total |
 | `land_not_free`, `declaration` | fix | land not free; a declaration not ticked |
+| `continuation_needs_id` | fix | a continuation with no earlier work ID |
+| `earlier_unanswered` | fix | a sanctioned work in `earlier_candidates` not answered |
+| `same_as_sanctioned` | fix | the agency says it is the same as a sanctioned work: it cannot be estimated again |
+| `continues_mismatch` | fix | "continues it" while the nature or the earlier work ID says otherwise |
 
 ## 7. The JSON the form sends
 
@@ -334,7 +354,9 @@ overruns and gives the measured data the agent's allowed ranges are set from (T0
                "estimate_pdf": "<file id>", "drawings": "<file id>", "site_photo_before": "<file id>", "land_noc": "<file id>"},
   "declarations": {"decl_no_land_cost": true, "decl_no_maintenance": true, "decl_not_funded_elsewhere": true,
                    "decl_actuals": true},
-  "confirmed": ["unusual:sites[0].size.width_m"]
+  "confirmed": ["unusual:sites[0].size.width_m"],
+  "earlier_works": [{"earlier_work": "WS/MP.../2024-2025/...", "answer": "different",
+                     "difference": "the other road is in the SC colony, this one near the school"}]
 }
 ```
 
@@ -346,7 +368,8 @@ A complete worked example is `road_form()` in `apps/engine/tests/cost_form/test_
 |---|---|---|
 | `GET /api/v1/cost-form/catalog?work_type=ROAD_CC` | every section, the size fields of that type, line groups, suggested materials, units | T093 (done) |
 | `POST /api/v1/cost-form/validate` | body: the form JSON → `{ready, issues[], computed{lines_total, contingency_amount, escalation_amount, charges_total, grand_total, mp_gap, sites[{pricing, lines_total, lines[]}]}}`; any body gets an answer, never an error | T093 (done) |
-| `POST /api/v1/cost-forms`, `GET /api/v1/cost-forms/{work_id}` | save (draft or submitted) and read back; submitted only when `ready` | T094 |
+| `POST /api/v1/cost-forms` | body `{work_id, form, submit}`: saves a draft, or submits when `ready` (else 422 with the issues). The recommendation section is filled from the work's record, never from the body. A submitted form is read-only (409), and submitting re-assesses the work at once | T099 (done) |
+| `GET /api/v1/cost-forms/{work_id}` | the saved form (or none), its status, and `earlier_candidates`: the sanctioned works the agency must answer about (§5.9b) | T099 (done) |
 
 All need a signed-in user; a district officer only reaches their district's works.
 
@@ -366,4 +389,5 @@ silent when it has no reference to compare with. It never shows the reference wh
 - [ ] live totals and the gap from the MP's amount; never a reference price
 - [ ] `fix` and `confirm` shown at their fields; "Yes, this is right" stores the key; Submit only when `ready`
 - [ ] drafts saved; a submitted form is read-only
+- [ ] the earlier works listed by `GET /cost-forms/{work_id}` shown with their three answers (§5.9b)
 - [ ] works on a phone; `tsc`, `lint`, `build` pass; screenshots in the PR

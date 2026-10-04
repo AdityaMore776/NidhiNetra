@@ -21,15 +21,8 @@ from drishti.agents import registry
 from drishti.agents.compliance import agent as compliance
 from drishti.agents.compliance.eligibility import v2 as not_allowed
 from drishti.agents.contract import Status
-from drishti.agents.dup_split.match import (
-    FLAG,
-    PLACE_MIN,
-    TEXT_MIN,
-    Rec,
-    place_agreement,
-    place_words,
-    text_sim,
-)
+from drishti.agents.dup_split.match import place_agreement, place_words, text_sim
+from drishti.agents.dup_split.repeat import PIN_METRES, PLACE_MIN, TEXT_MIN, Rec
 from drishti.agents.statistical import scope as reader
 from drishti.agents.statistical.text import LENGTH, stated_length
 from drishti.fusion import calibrated
@@ -140,16 +133,13 @@ def _neighbours(w: dict, ctx: Context, result) -> dict:
     me = Rec.of(w)
     if index is None or me is None:
         return {"compared": 0, "nearest": []}
-    flagged = set()
-    for f in result.findings:
-        ev = f.evidence or {}
-        flagged |= {x for x in (ev.get("other"), *(ev.get("members") or [])) if x}
-        others = ev.get("others") or []
-        flagged |= set(others.replace(",", " ").split() if isinstance(others, str) else others)
+    flagged = {(f.evidence or {}).get("other") for f in result.findings} - {None}
     others = [x for x in index.by_district.get(me.district, []) if x.work_id != me.work_id]
     scored = sorted(((text_sim(me.description, x.description), x) for x in others),
                     key=lambda t: -t[0])[:NEIGHBOURS]
-    return {"compared": len(others), "text_min": TEXT_MIN, "place_min": PLACE_MIN, "flag": FLAG,
+    # T100: "flag" is the look-alike line (a note, never counted); a repeat is asked only by map pin
+    return {"compared": len(others), "text_min": TEXT_MIN, "place_min": PLACE_MIN,
+            "flag": TEXT_MIN, "pin_metres": PIN_METRES,
             "nearest": [{"work_id": x.work_id, "description": mask(x.description)[:140],
                          "amount": x.amount, "date": _day(x.rec or x.done),
                          "likeness": round(sim, 3),
@@ -161,8 +151,8 @@ def _picture(r, w: dict, ctx: Context) -> dict | None:
     ev = r.evidence or {}
     if r.agent == "compliance":
         return {"rules": _rules(r.findings)}
-    if r.agent == "statistical":
-        return {k: ev.get(k) for k in ("comparison", "cohort", "comfort_high", "work_type_name")
+    if r.agent == "cost_estimate":
+        return {k: ev.get(k) for k in ("sites", "grand_total", "mp_amount", "mp_gap")
                 if ev.get(k) is not None}
     if r.agent == "dup_split":
         return _neighbours(w, ctx, r)

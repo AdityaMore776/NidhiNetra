@@ -1,5 +1,12 @@
 """Cost Anomaly engine (stored id `statistical`): is the cost unusual for the same kind of work?
 
+RETIRED 3 Oct 2026 (T099, the owner's "simple and certain" pivot): it no longer runs, shows or
+counts; the Cost slot is the cost estimate form's check (agents/cost_estimate/). Measured, a price
+question from the record alone is not certain: its main flag read right 54 of 128 times, and of
+15 works a record-only per-unit check would have questioned, none was a real price question
+(data/trial/simple_certain_trial.py). Kept only so the trials behind docs/trial/FINDINGS.md can be
+re-run; this package's readers (scope.py, text.py) and cohort statistics are still shared.
+
 v2 (T020, 30 Sept 2026). v1 compared every work with the median of its work type in its
 district and flagged three spreads above it. On the real corpus that produced the owner's
 complaint: a library building judged against book orders ("typical Rs 10,000", 1,000x),

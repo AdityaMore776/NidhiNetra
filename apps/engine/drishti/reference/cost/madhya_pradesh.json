@@ -1,0 +1,94 @@
+{
+ "state": "Madhya Pradesh",
+ "source": "eSAKSHI dashboard tables, as of 2026-10-02",
+ "built": "2026-10-03",
+ "years": [
+  2024,
+  2026
+ ],
+ "min_works": 30,
+ "tight": 1.25,
+ "groups": {
+  "BUS_SHELTER": {
+   "unit": "per unit",
+   "state": {
+    "n": 2,
+    "p10": 17403,
+    "median": 29870,
+    "p90": 42338,
+    "p98": 44831,
+    "tight": false
+   },
+   "districts": {}
+  },
+  "HIGH_MAST": {
+   "unit": "per mast",
+   "state": {
+    "n": 2,
+    "p10": 127486,
+    "median": 394601,
+    "p90": 661715,
+    "p98": 715138,
+    "tight": false
+   },
+   "districts": {}
+  },
+  "ROAD_CC": {
+   "unit": "per metre",
+   "state": {
+    "n": 8,
+    "p10": 1667,
+    "median": 2241,
+    "p90": 3331,
+    "p98": 3333,
+    "tight": false
+   },
+   "districts": {}
+  },
+  "STREET_LIGHT|solar": {
+   "unit": "per light",
+   "state": {
+    "n": 82,
+    "p10": 33052,
+    "median": 33077,
+    "p90": 46879,
+    "p98": 46879,
+    "tight": false
+   },
+   "districts": {
+    "Shahdol": {
+     "n": 52,
+     "p10": 33077,
+     "median": 33077,
+     "p90": 33077,
+     "p98": 33077,
+     "tight": true
+    }
+   }
+  },
+  "STREET_LIGHT|unstated": {
+   "unit": "per light",
+   "state": {
+    "n": 13,
+    "p10": 45156,
+    "median": 45156,
+    "p90": 45156,
+    "p98": 56596,
+    "tight": true
+   },
+   "districts": {}
+  },
+  "WATER_TANK": {
+   "unit": "per unit",
+   "state": {
+    "n": 36,
+    "p10": 40,
+    "median": 166026,
+    "p90": 166026,
+    "p98": 166026,
+    "tight": true
+   },
+   "districts": {}
+  }
+ }
+}

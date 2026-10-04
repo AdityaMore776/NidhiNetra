@@ -29,9 +29,10 @@ def _work(**kw):
 def test_engines_in_registry_order(ctx):
     a = assess_work(_work(), ctx)
     assert [r.agent for r in a.agents] == list(AGENT_ORDER)
-    assert AGENT_ORDER[:4] == ("compliance", "statistical", "dup_split", "delay")
+    assert AGENT_ORDER[:4] == ("compliance", "cost_estimate", "dup_split", "delay")
     status = {r.agent: r.status for r in a.agents}
-    assert status["statistical"] == Status.ASSESSED
+    # T099: no cost estimate form, so the Cost check does not apply (never a low score)
+    assert status["cost_estimate"] == Status.NOT_APPLICABLE
 
 
 def test_clean_work_is_low_with_limited_evidence(ctx):
@@ -43,12 +44,12 @@ def test_an_agent_that_crashes_becomes_an_error_not_a_crash(ctx, monkeypatch):
     def boom(*_a, **_k):
         raise RuntimeError("disk on fire")
 
-    from drishti.agents.statistical import agent as statistical
+    from drishti.agents.dup_split import agent as dup_split
 
-    monkeypatch.setattr(statistical, "assess", boom)
+    monkeypatch.setattr(dup_split, "assess", boom)
     assert orchestrator.PIPELINE_VERSION
     a = assess_work(_work(), ctx)
-    r = next(r for r in a.agents if r.agent == "statistical")
+    r = next(r for r in a.agents if r.agent == "dup_split")
     assert r.status == Status.ERROR
     assert "RuntimeError" in r.limitations[0]
     assert a.fused.score == 0.0

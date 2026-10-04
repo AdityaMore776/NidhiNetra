@@ -8,6 +8,11 @@ or not; a judge's own example goes to the live engine instead (POST /api/v1/expl
 Writes apps/web/public/explain/examples.json: per example, its title, a one-line story, what was
 typed, and the trace (drishti/explain.py). Text is masked; no MP is named.
 
+T099 + T100 (3 Oct 2026): the Cost and Duplicate checks answer from the implementing agency's cost
+estimate form, so the "price", "two" and "repeat" examples carry a made-up form (a complete one,
+as data/trial/cost_v3_holdout.py builds), and the repeat is a made-up completed work of the same
+kind whose own form's map pin is 20 m away. No real work is given a form.
+
 Run:  apps\engine\.venv\Scripts\python.exe data\trial\explain_examples.py
 """
 
@@ -21,10 +26,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "data"))
+sys.path.insert(0, str(ROOT / "data" / "trial"))
 sys.path.insert(0, str(ROOT / "apps" / "engine"))
+from cost_v3_holdout import form as estimate_form  # noqa: E402
 from esakshi_dashboard import load  # noqa: E402
 
 from drishti.batch import indexes  # noqa: E402
+from drishti.cost_form.validate import validate  # noqa: E402
 from drishti.evaluation.stats import build_store  # noqa: E402
 from drishti.explain import explain  # noqa: E402
 from drishti.pipeline.orchestrator import Context  # noqa: E402
@@ -40,35 +48,60 @@ def _district(works: list[dict]) -> dict:
     return next(w for w in works if w["district_lgd"] == lgd)
 
 
-def _repeat_of(works: list[dict], lgd: str, as_of, ctx) -> dict | None:
-    """A real work of the district, with a place named, that the Duplicate & Split check flags
-    when it is typed in again as a new recommendation: the repeat it looks for."""
-    from drishti.agents.dup_split.match import place_words
-    from drishti.pipeline.orchestrator import assess_work
-
-    for w in sorted(works, key=lambda w: str(w["work_id"])):
-        rec = w.get("recommended_date") or w.get("completed_date")
-        if (w["district_lgd"] != lgd or not rec or not 60 < (as_of - rec).days < 700
-                or not place_words(w.get("description")) or float(w.get("amount") or 0) < 1e5):
-            continue
-        again = {**w, "work_id": "PROBE", "status": "RECOMMENDED", "recommended_date": as_of,
-                 "sanction_date": None, "completed_date": None}
-        dup = next(r for r in assess_work(again, ctx).agents if r.agent == "dup_split")
-        if any(f.risk > 0 for f in dup.findings):
-            return w
-    return None
+LIGHTS, PRICE_EACH, MP_AMOUNT = 10, 48_000.0, 240_000.0
+FAIR_EACH = 20_900.0               # about the district's median solar light
+PIN = (25.7463, 82.6837)
+METRE = 1 / 111_195
 
 
-def examples(works: list[dict], as_of, ctx) -> list[tuple[str, str, dict]]:
-    d = _district(works)
-    base = {"source": "SCENARIO", "house": None, "term": None, "state_lgd": d.get("state_lgd"),
+def _lights_form(as_of, each: float = PRICE_EACH, mp: float = MP_AMOUNT,
+                 pin: tuple[float, float] | None = None) -> dict:
+    """The agency's complete form for 10 solar street lights (at Rs 48,000 each against the MP's
+    Rs 2.4 lakh, with its reason, unless told otherwise); every "looks unusual" check confirmed,
+    as an agency would."""
+    f = estimate_form("STREET_LIGHT|solar", LIGHTS, each, mp)
+    if LIGHTS * each > 1.10 * mp:
+        f["totals"]["reason_differs_from_mp"] = ("the MP's figure was a first estimate; the "
+                                                 "survey found ten poles are needed")
+    if pin:
+        f["sites"][0]["location"].update(lat=pin[0], lon=pin[1])
+    f["confirmed"] = [i["key"] for i in validate(f, today=as_of)["issues"]
+                      if i["level"] == "confirm"]
+    return f
+
+
+def _pinned(work_type: str, lat: float, lon: float, nature: str = "new") -> dict:
+    """The parts of a form the Duplicate check reads: the kind of asset, its map pin, its nature."""
+    return {"work": {"work_type": work_type, "nature": nature},
+            "sites": [{"location": {"lat": lat, "lon": lon}}]}
+
+
+def earlier_lights(base: dict, as_of) -> dict:
+    """Made-up solar lights of the district, completed last year, with their form's map pin."""
+    return {**base, "work_id": "EXAMPLE-0", "work_type_code": "STREET_LIGHT",
+            "amount": LIGHTS * FAIR_EACH, "status": "COMPLETED",
+            "description": "Installation of 10 solar street lights near Shiv Mandir chowk in "
+                           "village Sikrara",
+            "recommended_date": as_of - timedelta(days=520),
+            "sanction_date": as_of - timedelta(days=470),
+            "completed_date": as_of - timedelta(days=300),
+            "cost_form": _pinned("STREET_LIGHT", *PIN)}
+
+
+def _base(d: dict, as_of) -> dict:
+    return {"source": "SCENARIO", "house": None, "term": None, "state_lgd": d.get("state_lgd"),
             "state_name": d.get("state_name"), "district_lgd": d["district_lgd"],
             "district_name": d.get("district_name"), "constituency": None, "mp_name": None,
             "agency_name": d.get("agency_name"), "fy": None, "category": None,
             "status": "RECOMMENDED", "recommended_date": as_of, "sanction_date": None,
             "completed_date": None, "quantity": None, "quantity_unit": None,
             "is_outside_constituency": False, "signals": {}}
-    out = [
+
+
+def examples(works: list[dict], as_of) -> list[tuple[str, str, dict]]:
+    base = _base(_district(works), as_of)
+    lights = _lights_form(as_of)
+    return [
         ("ordinary", "An ordinary new road",
          {**base, "work_id": "EXAMPLE-1", "work_type_code": "ROAD_CC", "amount": 480000.0,
           "description": "Construction of CC road 250 mtr from Panchayat Bhawan to Primary "
@@ -80,25 +113,26 @@ def examples(works: list[dict], as_of, ctx) -> list[tuple[str, str, dict]]:
         ("vague", "A large sum that says nothing",
          {**base, "work_id": "EXAMPLE-3", "work_type_code": "COMMUNITY_HALL",
           "amount": 2600000.0, "description": "As per recommendation letter attached"}),
-        ("price", "One light, priced like many",
-         {**base, "work_id": "EXAMPLE-4", "work_type_code": "STREET_LIGHT", "amount": 495000.0,
-          "description": "Installation of 1 solar street light at the bus stand"}),
+        ("price", "An estimate above the standard light and the MP's amount",
+         {**base, "work_id": "EXAMPLE-4", "work_type_code": "STREET_LIGHT", "amount": MP_AMOUNT,
+          "description": "Installation of 10 solar street lights from the bus stand to the "
+                         "Primary School in village Sikrara", "cost_form": lights}),
         ("dates", "Completed before it was recommended",
          {**base, "work_id": "EXAMPLE-5", "work_type_code": "ROAD_CC", "amount": 760000.0,
           "status": "COMPLETED", "recommended_date": as_of - timedelta(days=120),
           "sanction_date": None, "completed_date": as_of - timedelta(days=200),
           "description": "Construction of CC road 400 mtr from main road to cremation ground"}),
         ("two", "Two checks agree",
-         {**base, "work_id": "EXAMPLE-7", "work_type_code": "STREET_LIGHT", "amount": 495000.0,
-          "description": "Installation of 1 solar street light inside Hanuman Mandir campus"}),
+         {**base, "work_id": "EXAMPLE-7", "work_type_code": "STREET_LIGHT", "amount": MP_AMOUNT,
+          "description": "Installation of 10 solar street lights inside Hanuman Mandir campus",
+          "cost_form": lights}),
+        ("repeat", "A sanctioned work at the same site",
+         {**base, "work_id": "EXAMPLE-6", "work_type_code": "STREET_LIGHT",
+          "amount": LIGHTS * FAIR_EACH,
+          "description": "Solar street light adhishthapan, Shiv Mandir chowk, gram Sikrara",
+          "cost_form": _lights_form(as_of, FAIR_EACH, LIGHTS * FAIR_EACH,
+                                    (PIN[0] + 20 * METRE, PIN[1]))}),
     ]
-    again = _repeat_of(works, d["district_lgd"], as_of, ctx)
-    if again:
-        out.append(("repeat", "The same work asked for again",
-                    {**base, "work_id": "EXAMPLE-6", "work_type_code": again["work_type_code"],
-                     "amount": float(again["amount"]), "description": again["description"],
-                     "agency_name": again.get("agency_name"), "mp_name": again.get("mp_name")}))
-    return out
 
 
 STORIES = {
@@ -107,21 +141,26 @@ STORIES = {
     "temple": "The description reads as building a temple, which the guidelines do not allow; the "
               "same words as a landmark ('road near the temple') would pass.",
     "vague": "Rs 26 lakh with no word on what or where: nobody could check it on the ground.",
-    "price": "One solar light for nearly Rs 5 lakh: compared with what similar lights cost here.",
+    "price": "The MP recommended Rs 2.4 lakh for 10 solar street lights. The agency's cost form "
+             "prices them at Rs 48,000 each, far above what 98 in 100 such lights cost in this "
+             "district, and its estimate is twice the MP's amount: both signals, so it asks.",
     "dates": "The record says the road was finished 80 days before the MP recommended it.",
-    "two": "The same costly solar light, now inside a temple's campus: two different checks each "
+    "two": "The same costly lights, now inside a temple's campus: two different checks each "
            "raise a question, and together they count for more than either alone.",
-    "repeat": "A real work of this district (finished or still open), typed in again as a new "
-              "recommendation.",
+    "repeat": "Ten new solar lights, fairly priced, whose form puts the map pin 20 m from ten "
+              "lights the scheme already paid for and completed there; the form does not say it "
+              "continues that work.",
 }
 
 
 def main() -> None:
     works, info = load()
     as_of = info["as_of"]
-    ctx = Context(stats=build_store(works), as_of=as_of, data=indexes(works))
+    base = _base(_district(works), as_of)
+    known = works + [earlier_lights(base, as_of)]   # the made-up earlier lights, with a pin
+    ctx = Context(stats=build_store(works), as_of=as_of, data=indexes(known))
     out, lines = [], []
-    for key, title, work in examples(works, as_of, ctx):
+    for key, title, work in examples(works, as_of):
         trace = explain(work, ctx)
         out.append({"id": key, "title": title, "story": STORIES[key], "trace": trace})
         lines.append(f"{key:9} {trace['result']['band']:8} {trace['result']['score']:.3f} "

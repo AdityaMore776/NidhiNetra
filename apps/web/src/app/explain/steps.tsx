@@ -363,62 +363,12 @@ function Rules({ c, t, start }: { c: Check; t: Trace; start: number }) {
   );
 }
 
-function CostBar({ c, start }: { c: Check; start: number }) {
-  const row = c.picture?.comparison?.[0];
-  if (!row) return <p className="text-[11px] text-muted">{c.headline}</p>;
-  const comfort = row.comfort_high ?? null;
-  const vals = [row.typical_low, row.typical_high, row.this_work, row.median, comfort ?? row.typical_high].filter((v) => v > 0);
-  const a = Math.min(...vals) / 1.8;
-  const b = Math.max(...vals) * 1.8;
-  const x = (v: number) => `${((Math.log(v) - Math.log(a)) / (Math.log(b) - Math.log(a))) * 100}%`;
-  const raised = c.findings.some((f) => f.risk > 0);
-  const n = c.picture?.cohort?.n;
-  return (
-    <div className="space-y-1.5">
-      <div className="relative mt-5 h-9">
-        <div className="absolute inset-x-0 top-1/2 h-px bg-line" />
-        <div
-          className="x-in absolute top-1.5 h-6 rounded"
-          style={at(start, {
-            left: x(row.typical_low),
-            width: `calc(${x(row.typical_high)} - ${x(row.typical_low)} + 3px)`,
-            background: "color-mix(in srgb, var(--statistical) 35%, white)",
-          })}
-          title="usual for similar works"
-        />
-        {comfort ? (
-          <div
-            className="x-in absolute -top-4 h-[52px] border-l-2 border-dashed"
-            style={at(start + 300, { left: x(comfort), borderColor: "var(--statistical)" })}
-          >
-            <span className="absolute -top-0.5 left-1 whitespace-nowrap text-[9px] text-muted">comfort limit</span>
-          </div>
-        ) : null}
-        <div
-          className="x-slide absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow"
-          style={at(start + 600, { "--x": x(row.this_work), background: raised ? "var(--high)" : "var(--navy)" })}
-        />
-      </div>
-      <div className="flex justify-between text-[10px] text-muted">
-        <span>cheaper</span>
-        <span>costlier (each step = more times the price)</span>
-      </div>
-      <p className="x-in text-[11px]" style={at(start + 1500)}>
-        Usual: <b>{inr(row.typical_low)}</b> to <b>{inr(row.typical_high)}</b>
-        {n ? ` (${n.toLocaleString("en-IN")} ${c.picture?.cohort?.description ?? "similar works"})` : ""}. This work:{" "}
-        <b style={{ color: raised ? "var(--high)" : undefined }}>{inr(row.this_work)}</b>
-        {comfort ? `, comfort limit ${inr(comfort)}` : ""}.
-      </p>
-    </div>
-  );
-}
-
 function Constellation({ c, start }: { c: Check; start: number }) {
   const p = c.picture;
   const near: Neighbour[] = p?.nearest ?? [];
   if (!p || !near.length) return <p className="text-[11px] text-muted">{c.headline}</p>;
   const r = (l: number) => 14 + (1 - Math.max(0, Math.min(1, l))) * 90;
-  const flag = p.flag ?? 0.75;
+  const flag = p.flag ?? 0.9;
   const pos = near.map((nb, n) => {
     const ang = ((-90 + n * (360 / near.length)) * Math.PI) / 180;
     return { nb, x: 110 + r(nb.likeness) * Math.cos(ang), y: 110 + r(nb.likeness) * Math.sin(ang) };
@@ -429,7 +379,7 @@ function Constellation({ c, start }: { c: Check; start: number }) {
       <svg viewBox="0 0 220 220" className="mx-auto h-56 w-56 overflow-visible" aria-label="The most alike works of the district">
         <circle cx="110" cy="110" r={r(flag)} fill="none" stroke="var(--duplicate)" strokeDasharray="3 4" opacity="0.6" />
         <text x={110 + r(flag) + 3} y="113" fontSize="8" fill="var(--duplicate)">
-          repeat line
+          look-alike line
         </text>
         {pos.map(({ nb, x, y }, n) => (
           <line
@@ -463,7 +413,9 @@ function Constellation({ c, start }: { c: Check; start: number }) {
       <p className="x-in text-[11px]" style={at(start + 1700)}>
         Compared with <b>{(p.compared ?? 0).toLocaleString("en-IN")}</b> works of the district; the {near.length} most
         alike are drawn (closer = more alike). Closest: <q className="text-muted">{top.description}</q> ({pct(top.likeness)}{" "}
-        alike, {inr(top.amount)}, {day(top.date)}).
+        alike, {inr(top.amount)}, {day(top.date)}). Words alone are right about 2 times in 3, so a look-alike is a note for
+        the agency to answer; a repeat is asked only when the cost form&apos;s map pin is within {p.pin_metres ?? 50} m of a
+        sanctioned work of the same kind.
       </p>
     </div>
   );
@@ -598,7 +550,6 @@ function Picture({ c, t, start }: { c: Check; t: Trace; start: number }) {
     );
   }
   if (c.id === "compliance") return <Rules c={c} t={t} start={start} />;
-  if (c.id === "statistical") return <CostBar c={c} start={start} />;
   if (c.id === "dup_split") return <Constellation c={c} start={start} />;
   if (c.id === "delay") return <FundFlow c={c} start={start} />;
   if (c.id === "office_patterns") return <OfficeHabits c={c} start={start} />;

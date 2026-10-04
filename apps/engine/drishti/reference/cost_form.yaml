@@ -99,14 +99,29 @@ work:
   - {id: land_free, label: "The land costs nothing (no purchase or compensation)", kind: bool, construction_only: true}
   - {id: work_type, label: "Type of work", kind: choice}     # the 33 codes of work_types.yaml, OTHER included
   - {id: other_type_name, label: "Type of work (write it)", kind: text, when: {field: work_type, in: [OTHER]}}
-  - {id: nature, label: "Nature of the work", kind: choice, choices: [new, extension, upgrade, reconstruction, purchase, installation]}
-  - {id: existing_description, label: "What exists there now", kind: text, when: {field: nature, in: [extension, upgrade, reconstruction]}}
+  # continuation (T100): finishing, or the next phase of, an earlier work; its ID is then required
+  - {id: nature, label: "Nature of the work", kind: choice, choices: [new, continuation, extension, upgrade, reconstruction, purchase, installation]}
+  - {id: existing_description, label: "What exists there now", kind: text, when: {field: nature, in: [continuation, extension, upgrade, reconstruction]}}
   - {id: existing_age_years, label: "Age of the existing asset", kind: number, unit: year, hard: [0, 300], soft: [0, 80], when: {field: nature, in: [extension, upgrade, reconstruction]}}
   - {id: existing_condition, label: "Its condition", kind: choice, choices: [good, damaged, collapsed], when: {field: nature, in: [extension, upgrade, reconstruction]}}
-  - {id: earlier_scheme, label: "Last built or repaired under", kind: choice, choices: [mplads, mgnrega, state_scheme, other_central_scheme, none, not_known], when: {field: nature, in: [extension, upgrade, reconstruction]}}
-  - {id: earlier_work_id, label: "Earlier work ID, if known", kind: text, required: false, when: {field: nature, in: [extension, upgrade, reconstruction]}}
+  - {id: earlier_scheme, label: "Last built or repaired under", kind: choice, choices: [mplads, mgnrega, state_scheme, other_central_scheme, none, not_known], when: {field: nature, in: [continuation, extension, upgrade, reconstruction]}}
+  - {id: earlier_work_id, label: "Earlier work ID (required for a continuation)", kind: text, required: false, when: {field: nature, in: [continuation, extension, upgrade, reconstruction]}}
   - {id: design_standard, label: "Design followed", kind: choice, choices: [state_type_design, pmgsy, irc, cpwd, own_design, none], construction_only: true}
   - {id: description, label: "The work in your own words: what, exactly where (from X to Y), why this size, anything unusual", kind: text, min_words: 25}
+
+# ---------------------------------------------------------------------
+# Earlier works at this site (T100): the sanctioned works of the district the Duplicate check
+# finds at this map pin or in the same words (GET /api/v1/cost-forms/{work_id} lists them). The
+# agency answers EACH, as one row of form["earlier_works"]:
+#   same       it IS that work: already sanctioned, so the form cannot be submitted
+#   continues  this work continues, extends, upgrades or rebuilds it: the nature and the earlier
+#              work ID above must say so
+#   different  another work: say what differs (another site, landmark, floor, side)
+# ---------------------------------------------------------------------
+earlier_works:
+  - {id: earlier_work, label: "Sanctioned work (filled in)", kind: text}
+  - {id: answer, label: "This work is", kind: choice, choices: [same, continues, different]}
+  - {id: difference, label: "What differs (another site, landmark, floor, side)", kind: text, min_words: 4, when: {field: answer, in: [different]}}
 
 # ---------------------------------------------------------------------
 # Section 3: size and specification, per family of work types. All measured (from the survey and

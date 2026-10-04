@@ -13,9 +13,9 @@ them: what each checks, how, what we measured, and where it stands.
 | # | Agent | Stage | State | Trial verdict on real data |
 |---|---|---|---|---|
 | A1 | Eligibility | Before sanction | ✅ **in the engine** as Guideline Compliance rule R07 (v2 reader) | **Works** — 56% precision on a fresh sample |
-| A2 | Duplicate & Split | Before sanction | ✅ **in the engine**, compares any work live (T051) | fresh pairs 20/40 real repeats, same-site splits 9/15 |
-| A3 | Cost | Before sanction | ✅ **live** (v2 ready, T020) | v2: top 30 flags 10/30 real price questions (v1 0/30); 55% of 5× mark-ups caught at 1.3% false alarms |
-| A3b | Cost Estimate (Cost v3) | Before sanction | 🧪 **in the engine, shown, not counted** (T097, 3 Oct 2026): runs only on works with the agency's cost estimate form | UP hold-out (2026 works, reference before 2026): 0 of 42 real works above the question line; planted price ×1.5 / ×2 / ×3 asked 42/42, ×1.25 9/42, ×1.1 0/42; size ×½ / ×2 / ×5 changed 0 of 204 answers; 26 of 68 works could not be compared (no tight group) |
+| A2 | Duplicate Work (was Duplicate & Split) | Before sanction | ✅ **in the engine** (T100, 3 Oct 2026): asks only by map pin, a declared rebuild, or the strictest split | strictest split: 14 dashboard groups read 12 yes, 2 grey, 0 not; words alone right about 2 in 3 (289 labelled pairs), so look-alikes are notes |
+| A3 | ~~Cost Anomaly~~ | Before sanction | ❌ **retired** (T099, 3 Oct 2026): a price question from the record alone is not certain | its main flag read 54/128; of 15 works a record-only per-unit check would have questioned, 0 were real |
+| A3b | **Cost** (the cost estimate form, Cost v3) | Before sanction | ✅ **the Cost slot** (T099): runs on works with the agency's submitted form; no form, not judged | UP hold-out (2026 works, reference before 2026): 0 of 42 real works above the question line; planted price ×1.5 / ×2 / ×3 asked 42/42, ×1.25 9/42, ×1.1 0/42; size ×½ / ×2 / ×5 changed 0 of 204 answers; 26 of 68 works could not be compared (no tight group) |
 | B1 | Site Progress (+ plaque) | During construction | 🔧 **v2 built, off** (T510, 2 Oct 2026): free local readers (CLIP + plaque OCR), optional Gemini key | 34 unit tests + an end-to-end smoke test; go/no-go on the pilot's real photos still to run (`site_progress_trial.py`) |
 | B2 | Photo Forensics | During construction | ✅ **in the engine as Photo Evidence** (T310), shown, not counted | exact copies + fingerprint; reproduces the 2 real reuse cases, 0 of 3 combined files flagged |
 | B3 | Geo-Location | During construction | ✅ **in the engine as Photo Evidence** (T310), shown, not counted | 190 stamps on 170 works; 187 inside, 2 at the border, 0 outside; the 3 photos older than the recommendation |
@@ -40,8 +40,9 @@ them: what each checks, how, what we measured, and where it stands.
 | Engine | Folder | Weight in the score | How it was checked on real works |
 |---|---|---|---|
 | Guideline Compliance | `agents/compliance/` | 0.30 | all 2,09,993 works: R01 21,323 · R02 61,920 · R06 1,114 · R07 458 · R11 7,576; no HIGH-severity rule fires. T051: timing rules graded (447 distinct signals, was 3), Hindi-script R07; T053: R12 big sum that does not say what or where (697 works, 28/30 by eye), R13 built in days (13, 13/13); T054: R01/R02 score by how unusual the wait is (at 75 days 63 in 100 works still wait), ended-term leftovers LOW on the para 3.15 clock, R02 always LOW; T056: R06 read on the hosted data (1,105 works, 21 stand out): the 21 count in full (10/10 by eye, they reach the queue alone), the 1,084 bulk-entry and office-habit records notes stay LOW (risk 0.10) |
-| Cost Anomaly | `agents/statistical/` | 0.20 | planted mark-ups + frozen fresh samples read by eye. T051: the word-price model judges any description: 5× mark-ups caught 42-45% (was 55%), false alarms 1.2%. T053: explicit comfort zone (asks only above the highest of 2× the district top, the state top, 2× the described-like-this top); flags that read almost never right removed (several sites 0/48, far bigger project 3/18, per unit 0/3, below peers unmeasured); kept: above the comfort limit (54/128) and road cost per metre |
-| Duplicate & Split Work | `agents/dup_split/` | 0.20 | T051: rules run live for any work. Fresh frozen samples read by eye: pairs 20/40 real repeats (T030: 15/40), same-site splits 9/15 (T030: 10/15) |
+| ~~Cost Anomaly~~ (retired 3 Oct 2026, T099) | `agents/statistical/` (shared readers only) | — | planted mark-ups + frozen fresh samples read by eye. T051: the word-price model judges any description: 5× mark-ups caught 42-45% (was 55%), false alarms 1.2%. T053: explicit comfort zone (asks only above the highest of 2× the district top, the state top, 2× the described-like-this top); flags that read almost never right removed (several sites 0/48, far bigger project 3/18, per unit 0/3, below peers unmeasured); kept: above the comfort limit (54/128) and road cost per metre |
+| Cost | `agents/cost_estimate/` | 0.20 | T097 + T099: the agency's cost estimate form. UP hold-out: 0 of 42 real works above the question line; planted ×1.5 caught 42/42; findings count at the 1-in-4 prior until officers' verdicts |
+| Duplicate Work | `agents/dup_split/` | 0.20 | T100: map pin within 50 m of a sanctioned work of the same kind; a declared rebuild under 3 years; the strictest split (12/14 yes, 2 grey). Look-alikes by words are notes (2 in 3 right) |
 | Office Patterns (T055, new) | `agents/office_patterns/` | 0.10 (backs up a work's findings; never queues it alone) | dashboard's 40,935 works: 36 offices price most works just under a limit (median 55% of their works vs 9.5% nationally; 1,311 works flagged `PRICED_AT_LIMIT`), 6 record buildings complete within 7 days of sanction as a routine (median 69% vs 7.1%). Test country: 100% of planted limit-pricing offices' works found; fires on 0.02% of ordinary works |
 | Fund Flow (was Delay Prediction) | `agents/delay/` | **0** (shown, not counted) | T053: the forecast was removed (LightGBM 0.710, ladder 0.705 AUC against 0.80; 73% of works run late anyway). Kept: 3,331 works (₹168.9 cr) of the ended 17th Lok Sabha still unsanctioned, office sanction backlog vs its district. T056: reads status, term and house in any case, text dates, and says "cannot be assessed" for a recommendation dated after the data |
 | ~~Odd Overall~~ | — | — | removed in T053: Isolation Forest flags read 9/30 worth a look; replaced by Guideline Compliance R12 and R13 |
@@ -67,8 +68,8 @@ is worth a look, from hit rates read by eye (`reference/reliability.json`); `DRI
 | # | Engine | Merges | Inputs | State |
 |---|---|---|---|---|
 | 1 | Guideline Compliance | A1 Eligibility + rules R01-R11 | the export | ✅ live, counted |
-| 2 | Cost Anomaly | A3 | the export | ✅ live, counted |
-| 3 | Duplicate & Split | A2 | the export | ✅ live, counted |
+| 2 | Cost (T099: was Cost Anomaly) | A3b | the agency's cost estimate form | ✅ live, counted; no form, not judged |
+| 3 | Duplicate Work (T100: was Duplicate & Split) | A2 | the export + the form's map pins and declarations | ✅ live, counted |
 | 4 | Fund Flow | C2 Fund Flow (C1's delay forecast removed in T053: 0.70 < 0.80 and it added little to R02) | the export, Lok Sabha term dates | ✅ shown, not counted (the wait itself is R01's) |
 | 5 | Paperwork | B4 Document + C3 Contractor Network | certificates read by local OCR | ✅ shown, not counted (pilot only); T053 kept only real findings (late or early sanction, another work's papers, more paid on paper) |
 | 6 | Photo Evidence | B2 Photo Forensics + B3 Geo-Location + D1 Citizen photos | photos, GPS stamps | ✅ shown, not counted (pilot only); T053 kept only real findings (reuse, outside the district, photo before the recommendation) |
@@ -124,7 +125,25 @@ Two rules are enforced in code, not trusted to each agent:
   institutions before the route word, typo spellings of public distribution shops. Dashboard: 54 → 63 flags; all
   15 gained read right, 5 of 6 dropped were misreads. T051 TEST sample: keeps 40/40 right flags, drops 1 of 10 misreads.
 
-### A2 Duplicate & Split — *Already funded, or one work cut into pieces?*
+### A2 Duplicate Work — *Is this work already sanctioned here, or one job cut to stay under a limit?*
+
+**T100 (3 Oct 2026), the owner's "simple and certain" pivot.** Words alone find a repeat right about 2 times in 3 at
+best (the strictest text rule 13 of 16 on the team's 289 pairs read by eye, finding 12% of the real repeats), because
+the record's finest place is the district. So the engine now asks only:
+- **`SANCTIONED_WORK_AT_THIS_SITE`:** the cost form's map pin is within 50 m of a sanctioned work of the same kind
+  (a linear work by both ends), and the form does not name it as the work this one continues;
+- **`REBUILT_SOON_AFTER_COMPLETION`:** the agency declares this work rebuilds a work completed under 3 years ago;
+- **`SPLIT_JUST_UNDER_LIMIT`:** 2–5 alike pieces at one place or numbered parts, one MP, within 30 days, **every**
+  piece 96–100% of the Rs 5 or 10 lakh limit. All 14 groups on the dashboard read: 12 one job cut into pieces, 2 grey,
+  0 not.
+
+**Notes, never counted:**
+- a continuation the agency declares;
+- look-alikes by words, which the form asks the agency to answer: the same work (it cannot be estimated again),
+  continues it, or a different work (say what differs).
+
+**Removed:** looser splits, bulk orders, the under-a-limit bonus, and repeats judged on words. The history below is
+how the old rules were measured. Numbers: FINDINGS "T099 + T100".
 
 - **Catches:** the same asset funded twice; one work split into pieces under the ₹5 lakh / ₹10 lakh limits; bulk purchases cut under the tender limit.
 - **Method:** bunching test at the limits; same-site splits (same text, district, type, recommended close together, each piece just under the limit, total over it); same named site recommended again while the first is still open. Planned: DIGIPIN location grid + multilingual meaning match (ported from the research build) for reworded repeats.
@@ -144,7 +163,12 @@ Two rules are enforced in code, not trusted to each agent:
   avoids no limit and is said, not asked. 12 real split flags read by eye: 7 yes, 2 grey, 3 no (all 3 removed by
   these rules); on a fresh sample 4 of 5 groups are real splits. Split flags on the dashboard 76 → 48.
 
-### A3 Cost — *Is the cost unusual for similar works?* ✅ live
+### A3 Cost Anomaly — *Is the cost unusual for similar works?* ❌ retired (T099, 3 Oct 2026)
+
+Retired by the owner's "simple and certain" pivot: a price question from an amount and a sentence is not certain. Its
+main flag read right 54 of 128 times. Of the 15 works the most precise record-only check (a stated count of a standard
+item) would have questioned, none was a real price question. The Cost slot is now A3b, on the agency's form. The
+history below is kept for the record.
 
 - **Catches:** inflated estimates.
 - **Method** (`apps/engine/drishti/agents/statistical/`):
@@ -173,7 +197,11 @@ Two rules are enforced in code, not trusted to each agent:
   price questions, 5 grey, 4 not; the fix drops 7 of the 140 dashboard flags, all rightly. The planted-test misses at
   5x/10x sit in the comfort zone or read as "a far bigger project", by design (FINDINGS "T056").
 
-### A3b Cost Estimate (Cost v3) — *Is the agency's estimate right for this size of work here?* 🧪 shown, not counted
+### A3b Cost (Cost v3) — *Is the agency's estimate right for this size of work here?* ✅ the Cost slot (T099)
+
+Since T099 this is the Cost check of the core slot. A work with no submitted form is NOT_APPLICABLE. Forms are saved
+with `POST /api/v1/cost-forms` (migration 013), and the batch and the API attach them. References are built for 7
+states (`data/build_cost_reference.py --all`).
 
 The implementing agency fills a full cost estimate form (`docs/specs/2026-10-03-cost-estimate-form.md`); normal mistakes
 are caught on the form, never flagged. The engine (`agents/cost_estimate/`) asks only when it is certain

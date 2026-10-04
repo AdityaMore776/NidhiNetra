@@ -1,55 +1,81 @@
-"""Duplicate & Split-Work engine: is this work repeated, or one job cut into pieces?
+"""Duplicate Work engine (stored id `dup_split`): is this work already sanctioned at this site?
 
-v2 (T051). The rules (match.py) run for every work: the batch builds one index of every
-comparable work, the API builds one for the work's district. v1 read answers stored by an
-offline job for the 2026 export only, so a new recommendation read "compared, nothing found"
-without having been compared. Without an index this engine says it could not compare.
+v3 (T100, 3 Oct 2026, the owner's "simple and certain" pivot). The engine asks only what it can be
+sure of, and that comes from the implementing agency's cost estimate form (work["cost_form"]):
 
-What it reports, with a signal that grows with the evidence (v1 gave six fixed values):
+  SANCTIONED_WORK_AT_THIS_SITE   risk 0.7  the form's map pin is within 50 m of the map pin of a
+                                           sanctioned work of the same kind of asset (a linear
+                                           work by both ends), and the agency did not name that
+                                           work as the one this work continues
+  REBUILT_SOON_AFTER_COMPLETION  risk 0.6  the agency declares this work rebuilds sanctioned work
+                                           X, and X was completed less than 3 years before this
+                                           work was recommended
+  SPLIT_JUST_UNDER_LIMIT         risk 0.6  one job cut into pieces to stay under a sanction limit,
+                                           in its strictest form (repeat.py: 2-5 alike pieces at
+                                           one place or numbered parts, one MP, within 30 days,
+                                           EVERY piece 96-100% of the Rs 5 or 10 lakh limit):
+                                           14 dashboard groups read 12 yes, 2 grey, 0 not
 
-  pair after_completed   0.55 .. 0.95  the same work funded again after the first was finished;
-                                       grows with the pair score (text, place, time, amount)
-  pair while_open        0.35 .. 0.70  recommended again while the first was open
-  group same_site_split  0.40 .. 0.55  one job at one site in pieces; grows with the pieces
-  group bulk_order       0.10 .. 0.20  a series of identical purchases (15/15 read so by eye)
-  group stretches        0.40 .. 0.55  one job at one site in numbered parts (2 Oct 2026)
-  pair repair_after_built 0.40 .. 0.70 a repair of what a work built there within 3 years
-  under a limit          +0.10 .. 0.20 every piece at 80-100% of Rs 5 or 10 lakh and the
-                                       total above it; more the closer the pieces sit to it
-  below every limit      0 (said, not asked): a split whose total stays under Rs 5 lakh
-                                       avoids no limit; 0 of 5 such groups read as a real
-                                       split on the dashboard (T056, 2 Oct 2026)
+Notes (risk 0, shown, never counted):
+  CONTINUES_SANCTIONED_WORK   the earlier work the agency names (continuation, extension,
+                              upgrade, reconstruction), and whether it is on record
+  LOOKS_LIKE_SANCTIONED_WORK  an earlier sanctioned work of the same type naming the same place in
+                              the same words; from words alone right about 2 times in 3 (the
+                              strictest text rule, 13 of 16 on the team's 289 pairs read by eye),
+                              so the form asks the agency, and its answer is shown
 
-The work's signal is the strongest of these. Every member of a group carries its group id so
-fusion can count the group once.
+Removed in v3 (each read right about half the time, reference/reliability.json): splits whose
+pieces sit anywhere in 80-100% of a limit, bulk orders, and repeats judged on words alone.
+Measurements: data/trial/simple_certain_trial.py; plan: docs/plans/T099-T100-simple-and-certain.md.
 
-  NOT_ASSESSABLE  no comparison index was given, or the work has no readable description,
-                  date or amount to compare (not a clean chit)
-  ASSESSED        otherwise; a work with no match was compared with every work in its district
+  NOT_ASSESSABLE  no index of its district was given, or the record has no date or readable
+                  description (and no map pin) to compare (not a clean chit)
+  ASSESSED        otherwise
 """
 
 from __future__ import annotations
 
 import time
+from datetime import timedelta
 
 from drishti.agents.contract import AgentResult, Finding, Status
-from drishti.agents.dup_split.match import FLAG, DupIndex, split_limits
+from drishti.agents.dup_split.repeat import PIN_METRES, RepeatIndex
 
 AGENT = "dup_split"
-VERSION = "dup-split-2.1.0"
-QUESTION = "Is this work repeated, or one job cut into pieces?"
-PAIR_RISK = {"after_completed": (0.55, 0.95), "while_open": (0.35, 0.70),
-             "repair_after_built": (0.40, 0.70)}
-GROUP_RISK = {"same_site_split": 0.40, "stretches": 0.40, "bulk_order": 0.10}
-# A "same place" group this large is a series, not one job in pieces: the splits read by
-# eye had 2-5 pieces, while 16, 23 and 50 identical works sharing a typo ("tenker",
-# "publiic", "knowledgew") were purchases filed as many works (queue sample, 30 Sept).
-SERIES_SIZE = 6
-CONFIDENCE = 0.6       # text similarity finds candidates; only a site visit or file confirms
+VERSION = "dup-split-3.0.0"
+QUESTION = "Is this work already sanctioned here, or one job cut to stay under a limit?"
+SITE_RISK = 0.7
+REBUILT_RISK = 0.6
+SPLIT_RISK = 0.6
+REBUILT_WITHIN = timedelta(days=3 * 365)
+NATURE_WORDS = {"continuation": "continues", "extension": "extends", "upgrade": "upgrades",
+                "reconstruction": "rebuilds"}
+ANSWER_WORDS = {"different": "a different work", "continues": "the work this one continues",
+                "same": "the same work"}
 
 
 def _lakh(rs: float) -> str:
     return f"Rs {rs / 1e5:,.2f} lakh"
+
+
+def _rupees(rs: float) -> str:
+    """Rs 4,99,942: the exact amount in Indian digit groups (pieces just under a limit differ
+    in the last few hundred rupees)."""
+    n = str(int(round(rs)))
+    head, tail = n[:-3], n[-3:]
+    while len(head) > 2:
+        tail = f"{head[-2:]},{tail}"
+        head = head[:-2]
+    return f"Rs {head},{tail}" if head else f"Rs {tail}"
+
+
+def _state(x) -> str:
+    """What the record says about an earlier work, in words."""
+    if x.done:
+        return f"completed on {x.done.isoformat()}"
+    if x.sanction:
+        return f"sanctioned on {x.sanction.isoformat()}, not yet completed"
+    return "sanctioned, not yet completed"
 
 
 def _quiet(status: Status, text: str, t0: float) -> AgentResult:
@@ -58,160 +84,151 @@ def _quiet(status: Status, text: str, t0: float) -> AgentResult:
                        duration_ms=int((time.perf_counter() - t0) * 1000))
 
 
-def pair_risk(kind: str, score: float) -> float:
-    lo, hi = PAIR_RISK[kind]
-    return lo + (hi - lo) * max(0.0, min(1.0, (score - FLAG) / (1.0 - FLAG)))
+def _said(answers: dict, wid: str) -> str:
+    a = answers.get(wid) or {}
+    answer = a.get("answer")
+    word = ANSWER_WORDS.get(answer) if isinstance(answer, str) else None
+    if not word:
+        return ""
+    why = a.get("difference")
+    return (f" The agency says it is {word}"
+            f"{f': {why!r}' if isinstance(why, str) and why.strip() else ''}.")
 
 
-def group_risk(g: dict) -> float:
-    if g["kind"] in ("same_site_split", "stretches"):
-        risk = GROUP_RISK[g["kind"]] + 0.05 * min(3, int(g["size"]) - 2)
-    else:
-        risk = GROUP_RISK["bulk_order"] + 0.01 * min(10, int(g["size"]))
-    if g.get("under_limit") and g.get("limit"):
-        mean = float(g["total"]) / int(g["size"])
-        closeness = max(0.0, min(1.0, (mean / float(g["limit"]) - 0.8) / 0.2))
-        risk += 0.10 + 0.10 * closeness
-    return min(1.0, risk)
-
-
-def _pair_finding(p: dict, amount: float) -> Finding:
-    other, gap = p["other"], int(p.get("gap_days") or 0)
-    other_amt = float(p.get("other_amount") or 0)
-    later = bool(p.get("this_is_later"))
-    first = "that work" if later else "this work"      # the one recommended first
-    when = f"{gap:,} days {'before' if later else 'after'} this one"
-    alike = (f"descriptions {float(p.get('text') or 0):.0%} alike, the same place named, "
-             f"amounts {float(p.get('amount_diff') or 0):.0%} apart")
-    if p["kind"] == "repair_after_built":
-        soon = int(p.get("days_after_completion") or 0)
-        if later:
-            text = (f"Repairs what work {other} built at the same place ({_lakh(other_amt)}; "
-                    f"descriptions {float(p.get('text') or 0):.0%} alike once the verbs are "
-                    f"left out), recommended {soon:,} days after that work was completed. A new "
-                    "asset should not need repair this soon: check the first work's completion "
-                    "and quality, and whether this repair pays for the same thing again.")
-        else:
-            text = (f"Work {other} ({_lakh(other_amt)}) repairs what this work built at the same "
-                    f"place, recommended {soon:,} days after this work was completed. Check this "
-                    "work's completion and quality.")
-        return Finding("REPAIR_SOON_AFTER_BUILT", text, hard=False,
-                       risk=pair_risk(p["kind"], float(p["score"])),
-                       evidence={"other": other, "kind": p["kind"], "score": p.get("score"),
-                                 "asset_similarity": p.get("text"),
-                                 "days_after_completion": soon, "other_amount": other_amt,
-                                 "this_amount": amount})
-    if p["kind"] == "after_completed":
-        code = "FUNDED_AGAIN_AFTER_COMPLETION"
-        text = (f"Reads like work {other} ({_lakh(other_amt)}, recommended {when}; {alike}); "
-                f"{first} had already been completed when the other was recommended. Check "
-                "whether the same work was funded again or this is a genuinely new site.")
-    else:
-        code = "REPEATED_WHILE_OPEN"
-        text = (f"Reads like work {other} ({_lakh(other_amt)}, recommended {when}; {alike}) "
-                f"while {first} was still open. Check whether both are the same work.")
-    return Finding(code, text, hard=False, risk=pair_risk(p["kind"], float(p["score"])),
-                   evidence={"other": other, "kind": p["kind"], "score": p.get("score"),
-                             "text_similarity": p.get("text"), "gap_days": gap,
-                             "other_amount": other_amt, "this_amount": amount})
-
-
-def _group_finding(g: dict) -> Finding:
-    size, days, total = int(g["size"]), int(g.get("days") or 0), float(g["total"])
-    others = ", ".join(g.get("others") or [])
-    span = "on the same day" if days == 0 else f"within {days} days"
-    piece = total / size
-    lowest = min(split_limits())
-    if g["kind"] in ("same_site_split", "stretches") and total < lowest:
-        return Finding(
-            "ALIKE_BELOW_LIMIT",
-            f"One of {size} alike works at one place, recommended {span}: {_lakh(total)} in "
-            f"all, below the {_lakh(lowest)} limit, so splitting them avoids no limit. Shown, "
-            "not asked." + (f" Others: {others}." if others else ""),
-            hard=False, risk=0.0,
-            evidence={k: g.get(k) for k in ("group_id", "kind", "size", "total", "limit",
-                                            "shared_place", "days", "others", "segments")})
-    if g["kind"] == "stretches":
-        code = "SPLIT_INTO_STRETCHES"
-        text = (f"One of {size} numbered pieces of one job at the same place "
-                f"({', '.join(g.get('segments') or [])}), recommended {span}: {_lakh(total)} in "
-                f"all, about {_lakh(piece)} each. Check whether one job was cut into parts.")
-    elif g["kind"] == "same_site_split":
-        code = "SPLIT_AT_ONE_SITE"
-        # the matched place words stay in the evidence, not the sentence: they are rare
-        # words of the description, and can be a person's name ("near X's house")
-        text = (f"One of {size} alike works naming the same place, recommended {span}: "
-                f"{_lakh(total)} in all, about {_lakh(piece)} each. Check whether one job "
-                "was cut into pieces.")
-    else:
-        code = "BULK_ORDER"
-        text = (f"One of {size} alike works recommended {span}: {_lakh(total)} in all, about "
-                f"{_lakh(piece)} each; usually one purchase filed as many works.")
-    if g.get("under_limit") and g.get("limit"):
-        text += (f" Every piece sits just under {_lakh(float(g['limit']))} while the total "
-                 "passes it.")
-    if others:
-        text += f" Others: {others}."
-    return Finding(code, text, hard=False, risk=group_risk(g),
-                   evidence={k: g.get(k) for k in ("group_id", "kind", "size", "total",
-                                                   "under_limit", "limit", "shared_place",
-                                                   "days", "others", "cv", "segments")})
-
-
-def assess(work: dict, index: DupIndex | None) -> AgentResult:
+def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
     t0 = time.perf_counter()
     if index is None or not work.get("district_lgd"):
         return _quiet(Status.NOT_ASSESSABLE, "Cannot be assessed: the works of its district "
                       "were not available to compare with. This is not a clean chit.", t0)
     found = index.check(work)
     if found is None:
-        return _quiet(Status.NOT_ASSESSABLE, "Cannot be assessed: the record has no readable "
-                      "description, date or amount to compare. This is not a clean chit.", t0)
-    amount = float(work.get("amount") or 0)
-    pairs = found["pairs"]
-    group = found["group"]
-    if group and group["kind"] == "same_site_split" and int(group["size"]) >= SERIES_SIZE:
-        group = {**group, "kind": "bulk_order"}
+        return _quiet(Status.NOT_ASSESSABLE, "Cannot be assessed: the record has no date, or no "
+                      "readable description or map pin, to compare. This is not a clean chit.", t0)
+    me, answers, link = found["me"], found["answers"], found["declared"]
+    findings: list[Finding] = []
 
-    findings = [_pair_finding(p, amount) for p in pairs]
-    if group:
-        findings.append(_group_finding(group))
-    findings.sort(key=lambda f: -f.risk)
-    if not findings and not found.get("place_named", True):
-        # 1 Oct 2026: 39,616 works (19%) name no place ("Construction of Community Hall."). A
-        # repeat needs the same site named twice, so for these none can be ruled out; saying
-        # "no repeat found" overstated what was checked.
-        n = found.get("compared", 0)
+    # 1. the same site by map pin, not declared as the work this one continues
+    for x, d in found["at_site"]:
+        if link and link["work_id"] == x.work_id:
+            continue
+        if (answers.get(x.work_id) or {}).get("answer") == "continues":
+            continue
+        findings.append(Finding(
+            "SANCTIONED_WORK_AT_THIS_SITE",
+            f"The map pin is {d:,.0f} m from sanctioned work {x.work_id} of the same kind "
+            f"({_lakh(x.amount)}, {_state(x)}), and the form does not name it as the work this "
+            f"one continues.{_said(answers, x.work_id)} Please check on site whether it is the "
+            "same work.",
+            hard=False, risk=SITE_RISK,
+            evidence={"other": x.work_id, "metres": round(d, 1), "other_amount": x.amount,
+                      "other_completed": x.done.isoformat() if x.done else None,
+                      "pin_metres": PIN_METRES, "kind": "at_site"}))
+
+    # 2. what the agency declares this work continues
+    if link:
+        x, verb = link["rec"], NATURE_WORDS.get(link["nature"], "continues")
+        if x is None:
+            findings.append(Finding(
+                "CONTINUES_SANCTIONED_WORK",
+                f"The agency says this work {verb} work {link['work_id']}, which is not on record "
+                "in this district: check the work ID on the form.",
+                hard=False, risk=0.0,
+                evidence={"other": link["work_id"], "nature": link["nature"], "on_record": False,
+                          "kind": "declared"}))
+        elif (link["nature"] == "reconstruction" and x.done and me.first
+              and timedelta(0) <= me.first - x.done < REBUILT_WITHIN):
+            months = (me.first - x.done).days // 30
+            findings.append(Finding(
+                "REBUILT_SOON_AFTER_COMPLETION",
+                f"The agency says this work rebuilds work {x.work_id} ({_lakh(x.amount)}), which "
+                f"was completed on {x.done.isoformat()}, {months} months before this one was "
+                "recommended. A new asset should not need rebuilding this soon: please check "
+                "the first work's completion and quality.",
+                hard=False, risk=REBUILT_RISK,
+                evidence={"other": x.work_id, "nature": link["nature"],
+                          "months_after_completion": months, "other_amount": x.amount,
+                          "kind": "declared"}))
+        else:
+            findings.append(Finding(
+                "CONTINUES_SANCTIONED_WORK",
+                f"The agency says this work {verb} work {x.work_id} ({_lakh(x.amount)}, "
+                f"{_state(x)}).",
+                hard=False, risk=0.0,
+                evidence={"other": x.work_id, "nature": link["nature"], "on_record": True,
+                          "kind": "declared"}))
+
+    # 3. one job cut into pieces just under a limit (the strictest form only)
+    g = found["split"]
+    if g:
+        others = [m for m in g["members"] if m != me.work_id]
+        lo, hi = min(g["amounts"]), max(g["amounts"])
+        span = "on the same day" if not g["days"] else f"within {g['days']} days"
+        parts = (f" ({', '.join(x.replace(':', ' ') for x in g['segments'])})"
+                 if g.get("segments") else "")
+        findings.append(Finding(
+            "SPLIT_JUST_UNDER_LIMIT",
+            f"One of {g['size']} alike works at one place{parts}, recommended {span}: each "
+            f"{_rupees(lo)}{'' if lo == hi else f' to {_rupees(hi)}'}, just under the "
+            f"{_lakh(g['limit'])} limit, {_lakh(g['total'])} together. Please check whether one "
+            f"job was cut into pieces to stay under the limit. Others: {', '.join(others)}.",
+            hard=False, risk=SPLIT_RISK,
+            evidence={"group_id": g["group_id"], "size": g["size"], "total": g["total"],
+                      "limit": g["limit"], "others": others, "days": g["days"],
+                      "segments": g.get("segments") or [], "kind": "split"}))
+
+    # 4. look-alikes by words: a note, the form asks the agency
+    asked = {f.evidence.get("other") for f in findings}
+    for x, t in found["look_alike"]:
+        if x.work_id in asked:
+            continue
+        findings.append(Finding(
+            "LOOKS_LIKE_SANCTIONED_WORK",
+            f"Reads like sanctioned work {x.work_id} ({_lakh(x.amount)}, {_state(x)}): the same "
+            f"place named, descriptions {t:.0%} alike.{_said(answers, x.work_id)} From words "
+            "alone this is right about 2 times in 3, so it is a note, not a question"
+            + ("." if me.form else "; the cost estimate form asks the agency."),
+            hard=False, risk=0.0,
+            evidence={"other": x.work_id, "text_similarity": round(t, 3),
+                      "other_amount": x.amount, "answer": (answers.get(x.work_id) or {})
+                      .get("answer"), "kind": "look_alike"}))
+
+    n, pinned = found["compared"], bool(me.sites)
+    limits = []
+    if not pinned:
+        limits.append("Without the cost estimate form's map pin a repeat can only be looked for "
+                      "by words, which are right about 2 times in 3: shown as notes, never "
+                      "counted.")
+    if not found["place_named"]:
+        limits.append("The description names no place, so no look-alike can be found by words.")
+    evidence = {"compared": n, "sanctioned_earlier": found["sanctioned_earlier"],
+                "pinned": pinned, "pin_metres": PIN_METRES,
+                "place_named": found["place_named"]}
+    together = index.filed_together(me.work_id)
+    if together:            # display only: the queue shows works filed together as one case
+        evidence.update(group_id=together[0], size=together[1])
+    asked_codes = [f for f in findings if f.risk > 0]
+    if asked_codes:
+        asked_codes.sort(key=lambda f: -f.risk)
+        top = asked_codes[0]
         return AgentResult(
-            agent=AGENT, status=Status.ASSESSED, verdict="NO_SITE_NAMED", risk=0.0,
-            confidence=0.3, hard=False, version=VERSION,
-            headline=(f"The description names no place, so a repeat of an earlier work cannot "
-                      f"be ruled out; checked against the {n:,} other works of its district for "
-                      "splits and bulk orders only."),
-            evidence={"compared": n, "place_named": False},
-            limitations=["Ask for the site (village, ward, landmark) to be written in the "
-                         "recommendation: without it no repeat can be confirmed or ruled out."],
-            duration_ms=int((time.perf_counter() - t0) * 1000))
-    if not findings:
-        n = found.get("compared", 0)
+            agent=AGENT, status=Status.ASSESSED, verdict=top.code, risk=top.risk,
+            confidence=0.9, hard=False, headline=top.text, version=VERSION,
+            findings=asked_codes + [f for f in findings if f.risk == 0], limitations=limits,
+            evidence=evidence, duration_ms=int((time.perf_counter() - t0) * 1000))
+    if findings:
         return AgentResult(
-            agent=AGENT, status=Status.ASSESSED, verdict="NO_REPEAT_FOUND", risk=0.0,
-            confidence=CONFIDENCE, hard=False, version=VERSION,
-            headline=(f"Compared with the {n:,} other works of its district: no repeat or "
-                      "split found." if n else
-                      "No other work of its district is on record to compare with."),
-            evidence={"compared": n},
-            limitations=["Compares descriptions only; two records of one site worded very "
-                         "differently are not matched."],
+            agent=AGENT, status=Status.ASSESSED, verdict=findings[0].code, risk=0.0,
+            confidence=0.3, hard=False, headline=findings[0].text, version=VERSION,
+            findings=findings, limitations=limits, evidence=evidence,
             duration_ms=int((time.perf_counter() - t0) * 1000))
-    top = findings[0]
+    where = (f"no sanctioned work within {PIN_METRES:.0f} m of its map pin, and none of the "
+             f"{n:,} other works of its district" if pinned else
+             f"none of the {n:,} other works of its district")
     return AgentResult(
-        agent=AGENT, status=Status.ASSESSED, verdict=top.code, risk=top.risk,
-        confidence=CONFIDENCE, hard=False, headline=top.text, version=VERSION,
-        findings=findings,
-        limitations=["Matched on the wording of descriptions; the district is the finest "
-                     "location in the record, so only a site visit or the files can confirm "
-                     "two works are one."],
-        evidence={"group_id": group["group_id"] if group else None,
-                  "pairs": len(pairs)},
+        agent=AGENT, status=Status.ASSESSED, verdict="NOT_SANCTIONED_BEFORE", risk=0.0,
+        confidence=0.9 if pinned else 0.3, hard=False, version=VERSION,
+        headline=(f"Nothing on record says this work is already sanctioned: {where} names this "
+                  "place in the same words." if n else
+                  "No other work of its district is on record to compare with."),
+        limitations=limits, evidence=evidence,
         duration_ms=int((time.perf_counter() - t0) * 1000))

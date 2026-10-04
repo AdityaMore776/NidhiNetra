@@ -1,6 +1,6 @@
-"""Registers the Duplicate & Split-Work engine with the engine registry.
+"""Registers the Duplicate Work engine (stored id `dup_split`) with the engine registry.
 
-The comparison index (match.DupIndex) is given in the context as ctx.data["dup_split"]: the
+The comparison index (repeat.RepeatIndex) is given in the context as ctx.data["dup_split"]: the
 batch builds it once from every work, the API from the work's district. Without it the engine
 says it could not compare, never "nothing found".
 """
@@ -15,5 +15,5 @@ def _assess(work: dict, ctx):
     return agent.assess(work, (ctx.data or {}).get("dup_split"))
 
 
-ENGINE = EngineSpec(id=agent.AGENT, name="Duplicate & Split Work", question=agent.QUESTION,
+ENGINE = EngineSpec(id=agent.AGENT, name="Duplicate Work", question=agent.QUESTION,
                     assess=_assess)

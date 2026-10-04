@@ -32,7 +32,7 @@ def _work(**kw):
 
 def test_core_slots_come_first_in_blueprint_order():
     ids = [e.id for e in discover()]
-    assert ids[:4] == ["compliance", "statistical", "dup_split", "delay"]
+    assert ids[:4] == ["compliance", "cost_estimate", "dup_split", "delay"]
 
 
 def test_blueprint_weights_without_the_outlier_slot():
@@ -40,9 +40,12 @@ def test_blueprint_weights_without_the_outlier_slot():
     assert sum(e.weight for e in CORE) == pytest.approx(0.90)
 
 
-def test_statistical_folder_is_discovered_as_built():
-    spec = {e.id: e for e in discover()}["statistical"]
-    assert spec.assess is not None and spec.weight == pytest.approx(0.20)
+def test_the_cost_folder_is_discovered_as_built_and_the_old_cost_anomaly_is_retired():
+    # T099: the Cost slot is the cost estimate form's check; `statistical` no longer runs
+    found = {e.id: e for e in discover()}
+    assert found["cost_estimate"].assess is not None
+    assert found["cost_estimate"].weight == pytest.approx(0.20)
+    assert "statistical" not in found
 
 
 def test_missing_engine_reports_not_built(ctx, monkeypatch):
@@ -59,10 +62,10 @@ def test_an_engine_that_raises_becomes_error_not_a_crash(ctx, monkeypatch):
         raise RuntimeError("disk on fire")
 
     engines = tuple(EngineSpec(e.id, e.name, e.question, boom, e.weight, e.order)
-                    if e.id == "statistical" else e for e in registry.engines())
+                    if e.id == "cost_estimate" else e for e in registry.engines())
     monkeypatch.setattr(registry, "_CACHE", engines)
     a = assess_work(_work(), ctx)
-    r = next(r for r in a.agents if r.agent == "statistical")
+    r = next(r for r in a.agents if r.agent == "cost_estimate")
     assert r.status == Status.ERROR and "RuntimeError" in r.limitations[0]
     assert a.fused.score == 0.0
 

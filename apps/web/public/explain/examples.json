@@ -162,73 +162,37 @@
       }
      },
      {
-      "id": "statistical",
-      "name": "Cost Anomaly",
-      "question": "Is the project cost unusual for similar works?",
+      "id": "cost_estimate",
+      "name": "Cost",
+      "question": "Is the agency's cost estimate right for this size of work here?",
       "counted": true,
-      "status": "ASSESSED",
-      "verdict": "COST_TYPICAL",
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
-      "headline": "Cost is within the usual range for similar Cement concrete road works in Jaunpur.",
-      "limitations": [
-       "Judged per metre for 250 m; the total is not compared with roads of other lengths.",
-       "A peer range is not a schedule of rates: an unusual amount can have an ordinary explanation (terrain, specification, scope)."
-      ],
+      "headline": "No cost estimate form for this work yet. The record gives no size or specification, so its cost is not judged from the amount alone.",
+      "limitations": [],
       "findings": [],
-      "picture": {
-       "comparison": [
-        {
-         "metric": "Total cost",
-         "unit": "Rs",
-         "this_work": 480000.0,
-         "typical_low": 435511.0002449025,
-         "typical_high": 1160618.0006823456,
-         "median": 691494.9996829702,
-         "deviation_pct": -30.585181350542566
-        },
-        {
-         "metric": "Cost per metre",
-         "unit": "Rs/m",
-         "this_work": 1920.0,
-         "typical_low": 1294.2232924036864,
-         "typical_high": 16851.462553284833,
-         "median": 4670.070165161304,
-         "deviation_pct": -58.88712734289972,
-         "anchor_low": 4000.0,
-         "anchor_high": 6500.0,
-         "comfort_high": 32010.665017012536
-        }
-       ],
-       "cohort": {
-        "level": "type_district",
-        "description": "works of the same type in this district",
-        "n": 21,
-        "p10": 5.638999129,
-        "p50": 5.839789044,
-        "p90": 6.064689302,
-        "sd": 0.225003124
-       },
-       "work_type_name": "Cement concrete road"
-      }
+      "picture": null
      },
      {
       "id": "dup_split",
-      "name": "Duplicate & Split Work",
-      "question": "Is this work repeated, or one job cut into pieces?",
+      "name": "Duplicate Work",
+      "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
       "counted": true,
       "status": "ASSESSED",
-      "verdict": "NO_REPEAT_FOUND",
+      "verdict": "NOT_SANCTIONED_BEFORE",
       "risk": 0.0,
-      "headline": "Compared with the 1,038 other works of its district: no repeat or split found.",
+      "headline": "Nothing on record says this work is already sanctioned: none of the 1,039 other works of its district names this place in the same words.",
       "limitations": [
-       "Compares descriptions only; two records of one site worded very differently are not matched."
+       "Without the cost estimate form's map pin a repeat can only be looked for by words, which are right about 2 times in 3: shown as notes, never counted."
       ],
       "findings": [],
       "picture": {
-       "compared": 1038,
-       "text_min": 0.62,
-       "place_min": 85.0,
-       "flag": 0.75,
+       "compared": 1039,
+       "text_min": 0.9,
+       "place_min": 100.0,
+       "flag": 0.9,
+       "pin_metres": 50.0,
        "nearest": [
         {
          "work_id": "WS/MP18222/2024-2025/170969",
@@ -295,7 +259,7 @@
       "status": "ASSESSED",
       "verdict": "NOTHING_STUCK_BEYOND_THE_WAIT",
       "risk": 0.0,
-      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 506 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 506 (0%).",
+      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 507 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 507 (0%).",
       "limitations": [],
       "findings": [],
       "picture": {
@@ -315,7 +279,7 @@
       "status": "ASSESSED",
       "verdict": "OFFICE_AS_USUAL",
       "risk": 0.0,
-      "headline": "Nothing unusual about this work's office: 2 of 1,038 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
+      "headline": "Nothing unusual about this work's office: 2 of 1,039 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
       "limitations": [
        "A habit of the office, not proof about this work: look at the office's works together.",
        "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
@@ -324,7 +288,7 @@
       "picture": {
        "priced_just_under_a_limit": {
         "office": 2,
-        "of": 1038,
+        "of": 1039,
         "share": 0.002,
         "national_share": 0.0951
        },
@@ -361,19 +325,6 @@
       "limitations": [],
       "findings": [],
       "picture": null
-     },
-     {
-      "id": "cost_estimate",
-      "name": "Cost Estimate",
-      "question": "Is the agency's cost estimate right for this size of work here?",
-      "counted": false,
-      "status": "NOT_APPLICABLE",
-      "verdict": "NOT_APPLICABLE",
-      "risk": 0.0,
-      "headline": "No cost estimate form for this work: it came in before the form, so Cost Anomaly checks its amount.",
-      "limitations": [],
-      "findings": [],
-      "picture": null
      }
     ],
     "scoring": {
@@ -396,7 +347,7 @@
      "in_queue": false,
      "limited": false,
      "colour": "GREEN",
-     "advice": "No question from the checks the record allows (rules, cost, repeats and splits). This is not a clean chit: the papers and the site are not seen here.",
+     "advice": "No question from the checks the record allows (rules, cost and repeats). This is not a clean chit: the papers and the site are not seen here.",
      "reasons": []
     }
    }
@@ -567,65 +518,48 @@
       }
      },
      {
-      "id": "statistical",
-      "name": "Cost Anomaly",
-      "question": "Is the project cost unusual for similar works?",
+      "id": "cost_estimate",
+      "name": "Cost",
+      "question": "Is the agency's cost estimate right for this size of work here?",
       "counted": true,
-      "status": "ASSESSED",
-      "verdict": "COST_TYPICAL",
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
-      "headline": "Rs 9.00 lakh is inside the usual range for similar Community hall / bhavan works in this state (most cost Rs 8.70 lakh to Rs 24.23 lakh; 32 similar works in this state). DRISHTI asks only above Rs 48.46 lakh, which leaves room for a bigger scope or a contingency margin.",
-      "limitations": [
-       "The description-based price check is not loaded, so the cost was compared with similar works only.",
-       "Fewer than 20 such works in Jaunpur, so the comparison uses works in this state.",
-       "A peer range is not a schedule of rates: an unusual amount can have an ordinary explanation (terrain, specification, scope)."
-      ],
+      "headline": "No cost estimate form for this work yet. The record gives no size or specification, so its cost is not judged from the amount alone.",
+      "limitations": [],
       "findings": [],
-      "picture": {
-       "comparison": [
-        {
-         "metric": "Total cost",
-         "unit": "Rs",
-         "this_work": 900000.0,
-         "typical_low": 870047.867713148,
-         "typical_high": 2422954.3007340906,
-         "median": 1348737.410868884,
-         "deviation_pct": -33.27092488520789,
-         "comfort_high": 4845908.601468181
-        }
-       ],
-       "cohort": {
-        "level": "type_state",
-        "description": "works of the same type in this state",
-        "n": 32,
-        "p10": 5.939543147,
-        "p50": 6.129927404,
-        "p90": 6.384345223,
-        "sd": 0.214127762
-       },
-       "comfort_high": 4845908.601468181,
-       "work_type_name": "Community hall / bhavan"
-      }
+      "picture": null
      },
      {
       "id": "dup_split",
-      "name": "Duplicate & Split Work",
-      "question": "Is this work repeated, or one job cut into pieces?",
+      "name": "Duplicate Work",
+      "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
       "counted": true,
       "status": "ASSESSED",
-      "verdict": "NO_SITE_NAMED",
+      "verdict": "NOT_SANCTIONED_BEFORE",
       "risk": 0.0,
-      "headline": "The description names no place, so a repeat of an earlier work cannot be ruled out; checked against the 1,038 other works of its district for splits and bulk orders only.",
+      "headline": "Nothing on record says this work is already sanctioned: none of the 1,039 other works of its district names this place in the same words.",
       "limitations": [
-       "Ask for the site (village, ward, landmark) to be written in the recommendation: without it no repeat can be confirmed or ruled out."
+       "Without the cost estimate form's map pin a repeat can only be looked for by words, which are right about 2 times in 3: shown as notes, never counted.",
+       "The description names no place, so no look-alike can be found by words."
       ],
       "findings": [],
       "picture": {
-       "compared": 1038,
-       "text_min": 0.62,
-       "place_min": 85.0,
-       "flag": 0.75,
+       "compared": 1039,
+       "text_min": 0.9,
+       "place_min": 100.0,
+       "flag": 0.9,
+       "pin_metres": 50.0,
        "nearest": [
+        {
+         "work_id": "EXAMPLE-0",
+         "description": "Installation of 10 solar street lights near Shiv Mandir chowk in village Sikrara",
+         "amount": 209000.0,
+         "date": "2025-04-30",
+         "likeness": 0.271,
+         "place": 0.0,
+         "flagged": false
+        },
         {
          "work_id": "WS/MP18222/2024-2025/165201",
          "description": "[name] ke avas se [name] ke avas 100 mtr interlaking ka nirman kary.",
@@ -670,15 +604,6 @@
          "likeness": 0.211,
          "place": 0.0,
          "flagged": false
-        },
-        {
-         "work_id": "WS/MP18222/2024-2025/165200",
-         "description": "chhanehta me nahar pich road se [name] ke avas ke pahle tak 200 interlaking nirman kary.",
-         "amount": 752787.0,
-         "date": "2025-10-03",
-         "likeness": 0.203,
-         "place": 0.0,
-         "flagged": false
         }
        ]
       }
@@ -691,7 +616,7 @@
       "status": "ASSESSED",
       "verdict": "NOTHING_STUCK_BEYOND_THE_WAIT",
       "risk": 0.0,
-      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 506 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 506 (0%).",
+      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 507 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 507 (0%).",
       "limitations": [],
       "findings": [],
       "picture": {
@@ -711,7 +636,7 @@
       "status": "ASSESSED",
       "verdict": "OFFICE_AS_USUAL",
       "risk": 0.0,
-      "headline": "Nothing unusual about this work's office: 2 of 1,038 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
+      "headline": "Nothing unusual about this work's office: 2 of 1,039 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
       "limitations": [
        "A habit of the office, not proof about this work: look at the office's works together.",
        "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
@@ -720,7 +645,7 @@
       "picture": {
        "priced_just_under_a_limit": {
         "office": 2,
-        "of": 1038,
+        "of": 1039,
         "share": 0.002,
         "national_share": 0.0951
        },
@@ -754,19 +679,6 @@
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
       "headline": "No photo or paper is attached to this work on eSAKSHI. This is not a clean chit.",
-      "limitations": [],
-      "findings": [],
-      "picture": null
-     },
-     {
-      "id": "cost_estimate",
-      "name": "Cost Estimate",
-      "question": "Is the agency's cost estimate right for this size of work here?",
-      "counted": false,
-      "status": "NOT_APPLICABLE",
-      "verdict": "NOT_APPLICABLE",
-      "risk": 0.0,
-      "headline": "No cost estimate form for this work: it came in before the form, so Cost Anomaly checks its amount.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -978,64 +890,38 @@
       }
      },
      {
-      "id": "statistical",
-      "name": "Cost Anomaly",
-      "question": "Is the project cost unusual for similar works?",
+      "id": "cost_estimate",
+      "name": "Cost",
+      "question": "Is the agency's cost estimate right for this size of work here?",
       "counted": true,
-      "status": "ASSESSED",
-      "verdict": "COST_TYPICAL",
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
-      "headline": "Rs 26.00 lakh is above the usual range but inside the comfort zone for similar Community hall / bhavan works in this state (most cost Rs 8.70 lakh to Rs 24.23 lakh; 32 similar works in this state). DRISHTI asks only above Rs 48.46 lakh, which leaves room for a bigger scope or a contingency margin.",
-      "limitations": [
-       "The description-based price check is not loaded, so the cost was compared with similar works only.",
-       "Fewer than 20 such works in Jaunpur, so the comparison uses works in this state.",
-       "A peer range is not a schedule of rates: an unusual amount can have an ordinary explanation (terrain, specification, scope)."
-      ],
+      "headline": "No cost estimate form for this work yet. The record gives no size or specification, so its cost is not judged from the amount alone.",
+      "limitations": [],
       "findings": [],
-      "picture": {
-       "comparison": [
-        {
-         "metric": "Total cost",
-         "unit": "Rs",
-         "this_work": 2600000.0,
-         "typical_low": 870047.867713148,
-         "typical_high": 2422954.3007340906,
-         "median": 1348737.410868884,
-         "deviation_pct": 92.772883664955,
-         "comfort_high": 4845908.601468181
-        }
-       ],
-       "cohort": {
-        "level": "type_state",
-        "description": "works of the same type in this state",
-        "n": 32,
-        "p10": 5.939543147,
-        "p50": 6.129927404,
-        "p90": 6.384345223,
-        "sd": 0.214127762
-       },
-       "comfort_high": 4845908.601468181,
-       "work_type_name": "Community hall / bhavan"
-      }
+      "picture": null
      },
      {
       "id": "dup_split",
-      "name": "Duplicate & Split Work",
-      "question": "Is this work repeated, or one job cut into pieces?",
+      "name": "Duplicate Work",
+      "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
       "counted": true,
       "status": "ASSESSED",
-      "verdict": "NO_SITE_NAMED",
+      "verdict": "NOT_SANCTIONED_BEFORE",
       "risk": 0.0,
-      "headline": "The description names no place, so a repeat of an earlier work cannot be ruled out; checked against the 1,038 other works of its district for splits and bulk orders only.",
+      "headline": "Nothing on record says this work is already sanctioned: none of the 1,039 other works of its district names this place in the same words.",
       "limitations": [
-       "Ask for the site (village, ward, landmark) to be written in the recommendation: without it no repeat can be confirmed or ruled out."
+       "Without the cost estimate form's map pin a repeat can only be looked for by words, which are right about 2 times in 3: shown as notes, never counted.",
+       "The description names no place, so no look-alike can be found by words."
       ],
       "findings": [],
       "picture": {
-       "compared": 1038,
-       "text_min": 0.62,
-       "place_min": 85.0,
-       "flag": 0.75,
+       "compared": 1039,
+       "text_min": 0.9,
+       "place_min": 100.0,
+       "flag": 0.9,
+       "pin_metres": 50.0,
        "nearest": [
         {
          "work_id": "WS/MP18222/2024-2025/165194",
@@ -1102,7 +988,7 @@
       "status": "ASSESSED",
       "verdict": "NOTHING_STUCK_BEYOND_THE_WAIT",
       "risk": 0.0,
-      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 506 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 506 (0%).",
+      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 507 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 507 (0%).",
       "limitations": [],
       "findings": [],
       "picture": {
@@ -1122,7 +1008,7 @@
       "status": "ASSESSED",
       "verdict": "OFFICE_AS_USUAL",
       "risk": 0.0,
-      "headline": "Nothing unusual about this work's office: 2 of 1,038 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
+      "headline": "Nothing unusual about this work's office: 2 of 1,039 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
       "limitations": [
        "A habit of the office, not proof about this work: look at the office's works together.",
        "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
@@ -1131,7 +1017,7 @@
       "picture": {
        "priced_just_under_a_limit": {
         "office": 2,
-        "of": 1038,
+        "of": 1039,
         "share": 0.002,
         "national_share": 0.0951
        },
@@ -1165,19 +1051,6 @@
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
       "headline": "No photo or paper is attached to this work on eSAKSHI. This is not a clean chit.",
-      "limitations": [],
-      "findings": [],
-      "picture": null
-     },
-     {
-      "id": "cost_estimate",
-      "name": "Cost Estimate",
-      "question": "Is the agency's cost estimate right for this size of work here?",
-      "counted": false,
-      "status": "NOT_APPLICABLE",
-      "verdict": "NOT_APPLICABLE",
-      "risk": 0.0,
-      "headline": "No cost estimate form for this work: it came in before the form, so Cost Anomaly checks its amount.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -1249,16 +1122,16 @@
   },
   {
    "id": "price",
-   "title": "One light, priced like many",
-   "story": "One solar light for nearly Rs 5 lakh: compared with what similar lights cost here.",
+   "title": "An estimate above the standard light and the MP's amount",
+   "story": "The MP recommended Rs 2.4 lakh for 10 solar street lights. The agency's cost form prices them at Rs 48,000 each, far above what 98 in 100 such lights cost in this district, and its estimate is twice the MP's amount: both signals, so it asks.",
    "trace": {
     "version": "explain-1.0.0",
     "as_of": "2026-10-02",
     "input": {
-     "description": "Installation of 1 solar street light at the bus stand",
+     "description": "Installation of 10 solar street lights from the bus stand to the Primary School in village Sikrara",
      "work_type": "STREET_LIGHT",
      "work_type_name": "Solar / LED street light",
-     "amount": 495000.0,
+     "amount": 240000.0,
      "district": "Jaunpur",
      "state": "Uttar Pradesh",
      "office": "JAUNPUR(DISTRICT MAGISTRATE JAUNPUR_IDA)",
@@ -1282,23 +1155,27 @@
        "k": null
       },
       {
-       "t": "1 solar street light",
+       "t": "10 solar street lights",
        "k": "quantity"
       },
       {
-       "t": " at the bus stand",
+       "t": " from the bus stand to the Primary School in village ",
        "k": null
+      },
+      {
+       "t": "Sikrara",
+       "k": "place"
       }
      ],
      "facts": {
       "what": "a construction or repair",
       "says_nothing": false,
-      "place_named": false,
-      "count": null,
-      "single_unit": true,
+      "place_named": true,
+      "count": 10,
+      "single_unit": false,
       "length_m": null,
       "several_sites": false,
-      "bundle": false,
+      "bundle": true,
       "not_allowed": null,
       "era": "digital era (2023 on)"
      }
@@ -1388,124 +1265,121 @@
       }
      },
      {
-      "id": "statistical",
-      "name": "Cost Anomaly",
-      "question": "Is the project cost unusual for similar works?",
+      "id": "cost_estimate",
+      "name": "Cost",
+      "question": "Is the agency's cost estimate right for this size of work here?",
       "counted": true,
       "status": "ASSESSED",
-      "verdict": "COST_ABOVE_PEERS",
-      "risk": 0.9,
-      "headline": "Rs 4.95 lakh: similar Solar / LED street light works in Jaunpur usually cost Rs 19,989 to Rs 20,896 (769 similar works in Jaunpur). This is 23.7 times the top of that range, and above the usual top for this state (Rs 2.41 lakh), and 2.1 times the comfort limit of Rs 2.41 lakh. The description names a single unit, so a bigger project does not explain the amount. Check the estimate and what it includes.",
+      "verdict": "ESTIMATE_ABOVE_STANDARD_AND_MP",
+      "risk": 0.5,
+      "headline": "The work: Rs 48,000 per light (10 of them, Rs 4.80 lakh with charges); 98 in 100 of the 136 similar works in Jaunpur cost at most Rs 20,896 per light (median Rs 20,896). The estimate (Rs 4.80 lakh) is also 100% above the MP's recommended Rs 2.40 lakh (reason given: \"the MP's figure was a first estimate; the survey found ten poles are needed\"). Please check the estimate and whether its specification (LED 12 W, pole 6 m, panel 40 Wp, battery 300 Wh) explains the price.",
       "limitations": [
-       "The description-based price check is not loaded, so the cost was compared with similar works only.",
-       "A peer range is not a schedule of rates: an unusual amount can have an ordinary explanation (terrain, specification, scope)."
+       "Line-by-line rates are not checked yet: they need the state's Schedule of Rates (T096)."
       ],
       "findings": [
        {
-        "code": "COST_ABOVE_PEERS",
-        "text": "Rs 4.95 lakh: similar Solar / LED street light works in Jaunpur usually cost Rs 19,989 to Rs 20,896 (769 similar works in Jaunpur). This is 23.7 times the top of that range, and above the usual top for this state (Rs 2.41 lakh), and 2.1 times the comfort limit of Rs 2.41 lakh. The description names a single unit, so a bigger project does not explain the amount. Check the estimate and what it includes.",
-        "risk": 0.9,
+        "code": "ESTIMATE_ABOVE_STANDARD_AND_MP",
+        "text": "The work: Rs 48,000 per light (10 of them, Rs 4.80 lakh with charges); 98 in 100 of the 136 similar works in Jaunpur cost at most Rs 20,896 per light (median Rs 20,896). The estimate (Rs 4.80 lakh) is also 100% above the MP's recommended Rs 2.40 lakh (reason given: \"the MP's figure was a first estimate; the survey found ten poles are needed\"). Please check the estimate and whether its specification (LED 12 W, pole 6 m, panel 40 Wp, battery 300 Wh) explains the price.",
+        "risk": 0.5,
         "hard": false,
         "rule": null,
         "severity": null
        }
       ],
       "picture": {
-       "comparison": [
+       "sites": [
         {
-         "metric": "Total cost",
-         "unit": "Rs",
-         "this_work": 495000.0,
-         "typical_low": 19989.00000056156,
-         "typical_high": 20896.000019487474,
-         "median": 19991.99999454996,
-         "deviation_pct": 2375.990396833446,
-         "comfort_high": 240914.99991451623
+         "site": 0,
+         "key": "STREET_LIGHT|solar",
+         "all_in": 480000.0,
+         "price_per_unit": 48000.0,
+         "unit": "light",
+         "units": 10,
+         "where": "Jaunpur",
+         "reference": {
+          "n": 136,
+          "p10": 20878,
+          "median": 20896,
+          "p90": 20896,
+          "p98": 20896
+         },
+         "question_above": 26120.0
         }
        ],
-       "cohort": {
-        "level": "type_district",
-        "description": "works of the same type in this district",
-        "n": 769,
-        "p10": 4.300791068,
-        "p50": 4.300856243,
-        "p90": 4.32006316,
-        "sd": 0.1
-       },
-       "comfort_high": 240914.99991451623,
-       "work_type_name": "Solar / LED street light"
+       "grand_total": 480000.0,
+       "mp_amount": 240000.0,
+       "mp_gap": 1.0
       }
      },
      {
       "id": "dup_split",
-      "name": "Duplicate & Split Work",
-      "question": "Is this work repeated, or one job cut into pieces?",
+      "name": "Duplicate Work",
+      "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
       "counted": true,
       "status": "ASSESSED",
-      "verdict": "NO_SITE_NAMED",
+      "verdict": "NOT_SANCTIONED_BEFORE",
       "risk": 0.0,
-      "headline": "The description names no place, so a repeat of an earlier work cannot be ruled out; checked against the 1,038 other works of its district for splits and bulk orders only.",
-      "limitations": [
-       "Ask for the site (village, ward, landmark) to be written in the recommendation: without it no repeat can be confirmed or ruled out."
-      ],
+      "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 50 m of its map pin, and none of the 1,039 other works of its district names this place in the same words.",
+      "limitations": [],
       "findings": [],
       "picture": {
-       "compared": 1038,
-       "text_min": 0.62,
-       "place_min": 85.0,
-       "flag": 0.75,
+       "compared": 1039,
+       "text_min": 0.9,
+       "place_min": 100.0,
+       "flag": 0.9,
+       "pin_metres": 50.0,
        "nearest": [
+        {
+         "work_id": "EXAMPLE-0",
+         "description": "Installation of 10 solar street lights near Shiv Mandir chowk in village Sikrara",
+         "amount": 209000.0,
+         "date": "2025-04-30",
+         "likeness": 0.718,
+         "place": 100.0,
+         "flagged": false
+        },
         {
          "work_id": "WS/MP18228/2024-2025/152698",
          "description": "[name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
          "amount": 20896.0,
          "date": "2024-11-21",
-         "likeness": 0.286,
+         "likeness": 0.261,
          "place": 0.0,
          "flagged": false
         },
         {
-         "work_id": "WS/MP18228/2024-2025/152974",
-         "description": "[name] S\\O [name] K GHAR 01 SOLAR LIGHT",
-         "amount": 20896.0,
-         "date": "2024-11-21",
-         "likeness": 0.286,
+         "work_id": "WS/MP18228/2024-2025/147556",
+         "description": "KRISHNA [name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
+         "amount": 20879.0,
+         "date": "2024-10-18",
+         "likeness": 0.25,
          "place": 0.0,
          "flagged": false
         },
         {
-         "work_id": "WS/MP18228/2024-2025/146962",
+         "work_id": "WS/MP18222/2025-2026/165225",
+         "description": "Ajad hind purv madhaymik Vidhayal me Construction of rooms and halls in school.",
+         "amount": 1000000.0,
+         "date": "2025-10-27",
+         "likeness": 0.233,
+         "place": 0.0,
+         "flagged": false
+        },
+        {
+         "work_id": "WS/MP18228/2024-2025/146948",
          "description": "[name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
          "amount": 20879.0,
          "date": "2024-10-18",
-         "likeness": 0.278,
+         "likeness": 0.226,
          "place": 0.0,
          "flagged": false
         },
         {
-         "work_id": "WS/MP18228/2024-2025/149196",
-         "description": "[name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
-         "amount": 20896.0,
-         "date": "2024-11-21",
-         "likeness": 0.272,
-         "place": 0.0,
-         "flagged": false
-        },
-        {
-         "work_id": "WS/MP18228/2024-2025/150615",
-         "description": "[name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
-         "amount": 20896.0,
-         "date": "2024-11-21",
-         "likeness": 0.268,
-         "place": 0.0,
-         "flagged": false
-        },
-        {
-         "work_id": "WS/MP18228/2024-2025/147095",
-         "description": "[name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
+         "work_id": "WS/MP18228/2024-2025/147065",
+         "description": "[name] W\\O [name] K GHAR 01 NAG SOLAR LIGHT",
          "amount": 20879.0,
          "date": "2024-10-18",
-         "likeness": 0.265,
+         "likeness": 0.226,
          "place": 0.0,
          "flagged": false
         }
@@ -1520,7 +1394,7 @@
       "status": "ASSESSED",
       "verdict": "NOTHING_STUCK_BEYOND_THE_WAIT",
       "risk": 0.0,
-      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 506 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 506 (0%).",
+      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 507 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 507 (0%).",
       "limitations": [],
       "findings": [],
       "picture": {
@@ -1540,7 +1414,7 @@
       "status": "ASSESSED",
       "verdict": "OFFICE_AS_USUAL",
       "risk": 0.0,
-      "headline": "Nothing unusual about this work's office: 2 of 1,038 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
+      "headline": "Nothing unusual about this work's office: 2 of 1,039 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
       "limitations": [
        "A habit of the office, not proof about this work: look at the office's works together.",
        "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
@@ -1549,7 +1423,7 @@
       "picture": {
        "priced_just_under_a_limit": {
         "office": 2,
-        "of": 1038,
+        "of": 1039,
         "share": 0.002,
         "national_share": 0.0951
        },
@@ -1586,55 +1460,39 @@
       "limitations": [],
       "findings": [],
       "picture": null
-     },
-     {
-      "id": "cost_estimate",
-      "name": "Cost Estimate",
-      "question": "Is the agency's cost estimate right for this size of work here?",
-      "counted": false,
-      "status": "NOT_APPLICABLE",
-      "verdict": "NOT_APPLICABLE",
-      "risk": 0.0,
-      "headline": "No cost estimate form for this work: it came in before the form, so Cost Anomaly checks its amount.",
-      "limitations": [],
-      "findings": [],
-      "picture": null
      }
     ],
     "scoring": {
      "method": "v3",
      "engines": [
       {
-       "engine": "statistical",
-       "name": "Cost Anomaly",
-       "chance": 0.4167,
+       "engine": "cost_estimate",
+       "name": "Cost",
+       "chance": 0.25,
        "findings": [
         {
-         "code": "COST_ABOVE_PEERS",
-         "risk": 0.9,
-         "ref_risk": 0.9,
+         "code": "ESTIMATE_ABOVE_STANDARD_AND_MP",
+         "risk": 0.5,
+         "ref_risk": 0.5,
          "strength": 1.0,
-         "hit_rate": 0.4167,
-         "basis": "measured",
-         "read": [
-          54,
-          128
-         ],
-         "chance": 0.4167
+         "hit_rate": 0.25,
+         "basis": "prior",
+         "read": null,
+         "chance": 0.25
         }
        ]
       }
      ],
      "chain": [
       {
-       "engine": "statistical",
-       "chance": 0.4167,
-       "score": 0.4167
+       "engine": "cost_estimate",
+       "chance": 0.25,
+       "score": 0.25
       }
      ],
-     "raw": 0.4167,
+     "raw": 0.25,
      "floor": false,
-     "score": 0.4167,
+     "score": 0.25,
      "band": "MEDIUM",
      "lines": {
       "MEDIUM": 0.25,
@@ -1644,22 +1502,19 @@
     },
     "result": {
      "band": "MEDIUM",
-     "score": 0.4167,
+     "score": 0.25,
      "in_queue": false,
      "limited": false,
      "colour": "AMBER",
      "advice": "Check the points below before sanction. They are questions, not findings.",
      "reasons": [
       {
-       "engine": "Cost Anomaly",
-       "text": "Rs 4.95 lakh: similar Solar / LED street light works in Jaunpur usually cost Rs 19,989 to Rs 20,896 (769 similar works in Jaunpur). This is 23.7 times the top of that range, and above the usual top for this state (Rs 2.41 lakh), and 2.1 times the comfort limit of Rs 2.41 lakh. The description names a single unit, so a bigger project does not explain the amount. Check the estimate and what it includes.",
-       "text_hi": "लागत इसी प्रकार के कार्यों की सामान्य सीमा से काफ़ी अधिक है। अनुमान और उसमें शामिल कार्य की जाँच करें।",
-       "chance": 0.4167,
-       "basis": "measured",
-       "read": [
-        54,
-        128
-       ]
+       "engine": "Cost",
+       "text": "The work: Rs 48,000 per light (10 of them, Rs 4.80 lakh with charges); 98 in 100 of the 136 similar works in Jaunpur cost at most Rs 20,896 per light (median Rs 20,896). The estimate (Rs 4.80 lakh) is also 100% above the MP's recommended Rs 2.40 lakh (reason given: \"the MP's figure was a first estimate; the survey found ten poles are needed\"). Please check the estimate and whether its specification (LED 12 W, pole 6 m, panel 40 Wp, battery 300 Wh) explains the price.",
+       "text_hi": "इस कार्य पर एक जाँच ने ध्यान देने योग्य बात पाई है। विवरण देखें।",
+       "chance": 0.25,
+       "basis": "prior",
+       "read": null
       }
      ]
     }
@@ -1835,73 +1690,38 @@
       }
      },
      {
-      "id": "statistical",
-      "name": "Cost Anomaly",
-      "question": "Is the project cost unusual for similar works?",
+      "id": "cost_estimate",
+      "name": "Cost",
+      "question": "Is the agency's cost estimate right for this size of work here?",
       "counted": true,
-      "status": "ASSESSED",
-      "verdict": "COST_TYPICAL",
+      "status": "NOT_APPLICABLE",
+      "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
-      "headline": "Cost is within the usual range for similar Cement concrete road works in Jaunpur.",
-      "limitations": [
-       "Judged per metre for 400 m; the total is not compared with roads of other lengths.",
-       "A peer range is not a schedule of rates: an unusual amount can have an ordinary explanation (terrain, specification, scope)."
-      ],
+      "headline": "No cost estimate form for this work yet. The record gives no size or specification, so its cost is not judged from the amount alone.",
+      "limitations": [],
       "findings": [],
-      "picture": {
-       "comparison": [
-        {
-         "metric": "Total cost",
-         "unit": "Rs",
-         "this_work": 760000.0,
-         "typical_low": 435511.0002449025,
-         "typical_high": 1160618.0006823456,
-         "median": 691494.9996829702,
-         "deviation_pct": 9.906796194974255
-        },
-        {
-         "metric": "Cost per metre",
-         "unit": "Rs/m",
-         "this_work": 1900.0,
-         "typical_low": 1205.0886784200013,
-         "typical_high": 15690.88337149782,
-         "median": 4348.4371796543965,
-         "deviation_pct": -56.30614122954842,
-         "anchor_low": 4000.0,
-         "anchor_high": 6500.0,
-         "comfort_high": 29806.05450938269
-        }
-       ],
-       "cohort": {
-        "level": "type_district",
-        "description": "works of the same type in this district",
-        "n": 21,
-        "p10": 5.638999129,
-        "p50": 5.839789044,
-        "p90": 6.064689302,
-        "sd": 0.225003124
-       },
-       "work_type_name": "Cement concrete road"
-      }
+      "picture": null
      },
      {
       "id": "dup_split",
-      "name": "Duplicate & Split Work",
-      "question": "Is this work repeated, or one job cut into pieces?",
+      "name": "Duplicate Work",
+      "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
       "counted": true,
       "status": "ASSESSED",
-      "verdict": "NO_SITE_NAMED",
+      "verdict": "NOT_SANCTIONED_BEFORE",
       "risk": 0.0,
-      "headline": "The description names no place, so a repeat of an earlier work cannot be ruled out; checked against the 1,038 other works of its district for splits and bulk orders only.",
+      "headline": "Nothing on record says this work is already sanctioned: none of the 1,039 other works of its district names this place in the same words.",
       "limitations": [
-       "Ask for the site (village, ward, landmark) to be written in the recommendation: without it no repeat can be confirmed or ruled out."
+       "Without the cost estimate form's map pin a repeat can only be looked for by words, which are right about 2 times in 3: shown as notes, never counted.",
+       "The description names no place, so no look-alike can be found by words."
       ],
       "findings": [],
       "picture": {
-       "compared": 1038,
-       "text_min": 0.62,
-       "place_min": 85.0,
-       "flag": 0.75,
+       "compared": 1039,
+       "text_min": 0.9,
+       "place_min": 100.0,
+       "flag": 0.9,
+       "pin_metres": 50.0,
        "nearest": [
         {
          "work_id": "WS/MP18222/2024-2025/165194",
@@ -1981,7 +1801,7 @@
       "status": "ASSESSED",
       "verdict": "OFFICE_AS_USUAL",
       "risk": 0.0,
-      "headline": "Nothing unusual about this work's office: 2 of 1,038 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
+      "headline": "Nothing unusual about this work's office: 2 of 1,039 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
       "limitations": [
        "A habit of the office, not proof about this work: look at the office's works together.",
        "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
@@ -1990,7 +1810,7 @@
       "picture": {
        "priced_just_under_a_limit": {
         "office": 2,
-        "of": 1038,
+        "of": 1039,
         "share": 0.002,
         "national_share": 0.0951
        },
@@ -2024,19 +1844,6 @@
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
       "headline": "No photo or paper is attached to this work on eSAKSHI. This is not a clean chit.",
-      "limitations": [],
-      "findings": [],
-      "picture": null
-     },
-     {
-      "id": "cost_estimate",
-      "name": "Cost Estimate",
-      "question": "Is the agency's cost estimate right for this size of work here?",
-      "counted": false,
-      "status": "NOT_APPLICABLE",
-      "verdict": "NOT_APPLICABLE",
-      "risk": 0.0,
-      "headline": "No cost estimate form for this work: it came in before the form, so Cost Anomaly checks its amount.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -2109,15 +1916,15 @@
   {
    "id": "two",
    "title": "Two checks agree",
-   "story": "The same costly solar light, now inside a temple's campus: two different checks each raise a question, and together they count for more than either alone.",
+   "story": "The same costly lights, now inside a temple's campus: two different checks each raise a question, and together they count for more than either alone.",
    "trace": {
     "version": "explain-1.0.0",
     "as_of": "2026-10-02",
     "input": {
-     "description": "Installation of 1 solar street light inside Hanuman Mandir campus",
+     "description": "Installation of 10 solar street lights inside Hanuman Mandir campus",
      "work_type": "STREET_LIGHT",
      "work_type_name": "Solar / LED street light",
-     "amount": 495000.0,
+     "amount": 240000.0,
      "district": "Jaunpur",
      "state": "Uttar Pradesh",
      "office": "JAUNPUR(DISTRICT MAGISTRATE JAUNPUR_IDA)",
@@ -2141,7 +1948,7 @@
        "k": null
       },
       {
-       "t": "1 solar street light",
+       "t": "10 solar street lights",
        "k": "quantity"
       },
       {
@@ -2157,11 +1964,11 @@
       "what": "a construction or repair",
       "says_nothing": false,
       "place_named": false,
-      "count": null,
-      "single_unit": true,
+      "count": 10,
+      "single_unit": false,
       "length_m": null,
       "several_sites": false,
-      "bundle": false,
+      "bundle": true,
       "not_allowed": {
        "word": "Mandir campus",
        "item": "13",
@@ -2264,79 +2071,87 @@
       }
      },
      {
-      "id": "statistical",
-      "name": "Cost Anomaly",
-      "question": "Is the project cost unusual for similar works?",
+      "id": "cost_estimate",
+      "name": "Cost",
+      "question": "Is the agency's cost estimate right for this size of work here?",
       "counted": true,
       "status": "ASSESSED",
-      "verdict": "COST_ABOVE_PEERS",
-      "risk": 0.9,
-      "headline": "Rs 4.95 lakh: similar Solar / LED street light works in Jaunpur usually cost Rs 19,989 to Rs 20,896 (769 similar works in Jaunpur). This is 23.7 times the top of that range, and above the usual top for this state (Rs 2.41 lakh), and 2.1 times the comfort limit of Rs 2.41 lakh. The description names a single unit, so a bigger project does not explain the amount. Check the estimate and what it includes.",
+      "verdict": "ESTIMATE_ABOVE_STANDARD_AND_MP",
+      "risk": 0.5,
+      "headline": "The work: Rs 48,000 per light (10 of them, Rs 4.80 lakh with charges); 98 in 100 of the 136 similar works in Jaunpur cost at most Rs 20,896 per light (median Rs 20,896). The estimate (Rs 4.80 lakh) is also 100% above the MP's recommended Rs 2.40 lakh (reason given: \"the MP's figure was a first estimate; the survey found ten poles are needed\"). Please check the estimate and whether its specification (LED 12 W, pole 6 m, panel 40 Wp, battery 300 Wh) explains the price.",
       "limitations": [
-       "The description-based price check is not loaded, so the cost was compared with similar works only.",
-       "A peer range is not a schedule of rates: an unusual amount can have an ordinary explanation (terrain, specification, scope)."
+       "Line-by-line rates are not checked yet: they need the state's Schedule of Rates (T096)."
       ],
       "findings": [
        {
-        "code": "COST_ABOVE_PEERS",
-        "text": "Rs 4.95 lakh: similar Solar / LED street light works in Jaunpur usually cost Rs 19,989 to Rs 20,896 (769 similar works in Jaunpur). This is 23.7 times the top of that range, and above the usual top for this state (Rs 2.41 lakh), and 2.1 times the comfort limit of Rs 2.41 lakh. The description names a single unit, so a bigger project does not explain the amount. Check the estimate and what it includes.",
-        "risk": 0.9,
+        "code": "ESTIMATE_ABOVE_STANDARD_AND_MP",
+        "text": "The work: Rs 48,000 per light (10 of them, Rs 4.80 lakh with charges); 98 in 100 of the 136 similar works in Jaunpur cost at most Rs 20,896 per light (median Rs 20,896). The estimate (Rs 4.80 lakh) is also 100% above the MP's recommended Rs 2.40 lakh (reason given: \"the MP's figure was a first estimate; the survey found ten poles are needed\"). Please check the estimate and whether its specification (LED 12 W, pole 6 m, panel 40 Wp, battery 300 Wh) explains the price.",
+        "risk": 0.5,
         "hard": false,
         "rule": null,
         "severity": null
        }
       ],
       "picture": {
-       "comparison": [
+       "sites": [
         {
-         "metric": "Total cost",
-         "unit": "Rs",
-         "this_work": 495000.0,
-         "typical_low": 19989.00000056156,
-         "typical_high": 20896.000019487474,
-         "median": 19991.99999454996,
-         "deviation_pct": 2375.990396833446,
-         "comfort_high": 240914.99991451623
+         "site": 0,
+         "key": "STREET_LIGHT|solar",
+         "all_in": 480000.0,
+         "price_per_unit": 48000.0,
+         "unit": "light",
+         "units": 10,
+         "where": "Jaunpur",
+         "reference": {
+          "n": 136,
+          "p10": 20878,
+          "median": 20896,
+          "p90": 20896,
+          "p98": 20896
+         },
+         "question_above": 26120.0
         }
        ],
-       "cohort": {
-        "level": "type_district",
-        "description": "works of the same type in this district",
-        "n": 769,
-        "p10": 4.300791068,
-        "p50": 4.300856243,
-        "p90": 4.32006316,
-        "sd": 0.1
-       },
-       "comfort_high": 240914.99991451623,
-       "work_type_name": "Solar / LED street light"
+       "grand_total": 480000.0,
+       "mp_amount": 240000.0,
+       "mp_gap": 1.0
       }
      },
      {
       "id": "dup_split",
-      "name": "Duplicate & Split Work",
-      "question": "Is this work repeated, or one job cut into pieces?",
+      "name": "Duplicate Work",
+      "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
       "counted": true,
       "status": "ASSESSED",
-      "verdict": "NO_SITE_NAMED",
+      "verdict": "NOT_SANCTIONED_BEFORE",
       "risk": 0.0,
-      "headline": "The description names no place, so a repeat of an earlier work cannot be ruled out; checked against the 1,038 other works of its district for splits and bulk orders only.",
+      "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 50 m of its map pin, and none of the 1,039 other works of its district names this place in the same words.",
       "limitations": [
-       "Ask for the site (village, ward, landmark) to be written in the recommendation: without it no repeat can be confirmed or ruled out."
+       "The description names no place, so no look-alike can be found by words."
       ],
       "findings": [],
       "picture": {
-       "compared": 1038,
-       "text_min": 0.62,
-       "place_min": 85.0,
-       "flag": 0.75,
+       "compared": 1039,
+       "text_min": 0.9,
+       "place_min": 100.0,
+       "flag": 0.9,
+       "pin_metres": 50.0,
        "nearest": [
+        {
+         "work_id": "EXAMPLE-0",
+         "description": "Installation of 10 solar street lights near Shiv Mandir chowk in village Sikrara",
+         "amount": 209000.0,
+         "date": "2025-04-30",
+         "likeness": 0.633,
+         "place": 0.0,
+         "flagged": false
+        },
         {
          "work_id": "WS/MP18228/2024-2025/159962",
          "description": "BLOCK DOBHI K ANTARGAT GRAM SABHA MARIKPUR ME HANUMAN JI K MANDIR K SAMANE  01 NAG HIGH MASK SOLAR LIGHT",
          "amount": 107932.0,
          "date": "2024-12-22",
-         "likeness": 0.298,
+         "likeness": 0.296,
          "place": 0.0,
          "flagged": false
         },
@@ -2345,7 +2160,7 @@
          "description": "Belwar marg se [name] ke avas ke paas hanuman mandir ke pass khadanje par 120 mtr. tak RCC ka nirman kary.",
          "amount": 691495.0,
          "date": "2025-05-21",
-         "likeness": 0.286,
+         "likeness": 0.284,
          "place": 0.0,
          "flagged": false
         },
@@ -2354,7 +2169,7 @@
          "description": "[name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
          "amount": 20879.0,
          "date": "2024-10-18",
-         "likeness": 0.275,
+         "likeness": 0.272,
          "place": 0.0,
          "flagged": false
         },
@@ -2363,7 +2178,7 @@
          "description": "[name] S\\O [name] K GHAR 01 SOLAR LIGHT",
          "amount": 20896.0,
          "date": "2024-11-21",
-         "likeness": 0.271,
+         "likeness": 0.268,
          "place": 0.0,
          "flagged": false
         },
@@ -2372,16 +2187,7 @@
          "description": "[name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
          "amount": 20879.0,
          "date": "2024-10-18",
-         "likeness": 0.268,
-         "place": 0.0,
-         "flagged": false
-        },
-        {
-         "work_id": "WS/MP18228/2024-2025/159885",
-         "description": "BLOCK DOBHI K ANTARGAT GRAM SABHA CHANDWAK KOT ME BARAICHHABEER MANDIR (HANUMAN MANDIR) PAR 01 NAG SAOLAR HIGH MASK LIGHT",
-         "amount": 107932.0,
-         "date": "2024-12-22",
-         "likeness": 0.267,
+         "likeness": 0.265,
          "place": 0.0,
          "flagged": false
         }
@@ -2396,7 +2202,7 @@
       "status": "ASSESSED",
       "verdict": "NOTHING_STUCK_BEYOND_THE_WAIT",
       "risk": 0.0,
-      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 506 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 506 (0%).",
+      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 507 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 507 (0%).",
       "limitations": [],
       "findings": [],
       "picture": {
@@ -2416,7 +2222,7 @@
       "status": "ASSESSED",
       "verdict": "OFFICE_AS_USUAL",
       "risk": 0.0,
-      "headline": "Nothing unusual about this work's office: 2 of 1,038 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
+      "headline": "Nothing unusual about this work's office: 2 of 1,039 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
       "limitations": [
        "A habit of the office, not proof about this work: look at the office's works together.",
        "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
@@ -2425,7 +2231,7 @@
       "picture": {
        "priced_just_under_a_limit": {
         "office": 2,
-        "of": 1038,
+        "of": 1039,
         "share": 0.002,
         "national_share": 0.0951
        },
@@ -2462,19 +2268,6 @@
       "limitations": [],
       "findings": [],
       "picture": null
-     },
-     {
-      "id": "cost_estimate",
-      "name": "Cost Estimate",
-      "question": "Is the agency's cost estimate right for this size of work here?",
-      "counted": false,
-      "status": "NOT_APPLICABLE",
-      "verdict": "NOT_APPLICABLE",
-      "risk": 0.0,
-      "headline": "No cost estimate form for this work: it came in before the form, so Cost Anomaly checks its amount.",
-      "limitations": [],
-      "findings": [],
-      "picture": null
      }
     ],
     "scoring": {
@@ -2501,22 +2294,19 @@
        ]
       },
       {
-       "engine": "statistical",
-       "name": "Cost Anomaly",
-       "chance": 0.4167,
+       "engine": "cost_estimate",
+       "name": "Cost",
+       "chance": 0.25,
        "findings": [
         {
-         "code": "COST_ABOVE_PEERS",
-         "risk": 0.9,
-         "ref_risk": 0.9,
+         "code": "ESTIMATE_ABOVE_STANDARD_AND_MP",
+         "risk": 0.5,
+         "ref_risk": 0.5,
          "strength": 1.0,
-         "hit_rate": 0.4167,
-         "basis": "measured",
-         "read": [
-          54,
-          128
-         ],
-         "chance": 0.4167
+         "hit_rate": 0.25,
+         "basis": "prior",
+         "read": null,
+         "chance": 0.25
         }
        ]
       }
@@ -2528,14 +2318,14 @@
        "score": 0.8182
       },
       {
-       "engine": "statistical",
-       "chance": 0.4167,
-       "score": 0.894
+       "engine": "cost_estimate",
+       "chance": 0.25,
+       "score": 0.8637
       }
      ],
-     "raw": 0.894,
+     "raw": 0.8637,
      "floor": false,
-     "score": 0.8939,
+     "score": 0.8636,
      "band": "CRITICAL",
      "lines": {
       "MEDIUM": 0.25,
@@ -2545,7 +2335,7 @@
     },
     "result": {
      "band": "CRITICAL",
-     "score": 0.8939,
+     "score": 0.8636,
      "in_queue": true,
      "limited": false,
      "colour": "RED",
@@ -2563,15 +2353,12 @@
        ]
       },
       {
-       "engine": "Cost Anomaly",
-       "text": "Rs 4.95 lakh: similar Solar / LED street light works in Jaunpur usually cost Rs 19,989 to Rs 20,896 (769 similar works in Jaunpur). This is 23.7 times the top of that range, and above the usual top for this state (Rs 2.41 lakh), and 2.1 times the comfort limit of Rs 2.41 lakh. The description names a single unit, so a bigger project does not explain the amount. Check the estimate and what it includes.",
-       "text_hi": "लागत इसी प्रकार के कार्यों की सामान्य सीमा से काफ़ी अधिक है। अनुमान और उसमें शामिल कार्य की जाँच करें।",
-       "chance": 0.4167,
-       "basis": "measured",
-       "read": [
-        54,
-        128
-       ]
+       "engine": "Cost",
+       "text": "The work: Rs 48,000 per light (10 of them, Rs 4.80 lakh with charges); 98 in 100 of the 136 similar works in Jaunpur cost at most Rs 20,896 per light (median Rs 20,896). The estimate (Rs 4.80 lakh) is also 100% above the MP's recommended Rs 2.40 lakh (reason given: \"the MP's figure was a first estimate; the survey found ten poles are needed\"). Please check the estimate and whether its specification (LED 12 W, pole 6 m, panel 40 Wp, battery 300 Wh) explains the price.",
+       "text_hi": "इस कार्य पर एक जाँच ने ध्यान देने योग्य बात पाई है। विवरण देखें।",
+       "chance": 0.25,
+       "basis": "prior",
+       "read": null
       }
      ]
     }
@@ -2579,16 +2366,16 @@
   },
   {
    "id": "repeat",
-   "title": "The same work asked for again",
-   "story": "A real work of this district (finished or still open), typed in again as a new recommendation.",
+   "title": "A sanctioned work at the same site",
+   "story": "Ten new solar lights, fairly priced, whose form puts the map pin 20 m from ten lights the scheme already paid for and completed there; the form does not say it continues that work.",
    "trace": {
     "version": "explain-1.0.0",
     "as_of": "2026-10-02",
     "input": {
-     "description": "Birpalpur me r c c marg se [name] ke avas tak interlaking ka kary. 120 mts",
-     "work_type": "ROAD_CC",
-     "work_type_name": "Cement concrete road",
-     "amount": 474533.0,
+     "description": "Solar street light adhishthapan, Shiv Mandir chowk, gram Sikrara",
+     "work_type": "STREET_LIGHT",
+     "work_type_name": "Solar / LED street light",
+     "amount": 209000.0,
      "district": "Jaunpur",
      "state": "Uttar Pradesh",
      "office": "JAUNPUR(DISTRICT MAGISTRATE JAUNPUR_IDA)",
@@ -2600,7 +2387,7 @@
     },
     "privacy": {
      "hidden": {
-      "name": 1,
+      "name": 0,
       "phone": 0,
       "number": 0
      }
@@ -2608,28 +2395,20 @@
     "reading": {
      "segments": [
       {
-       "t": "Birpalpur",
+       "t": "Solar ",
+       "k": null
+      },
+      {
+       "t": "street",
+       "k": "build"
+      },
+      {
+       "t": " light adhishthapan, Shiv Mandir chowk, gram ",
+       "k": null
+      },
+      {
+       "t": "Sikrara",
        "k": "place"
-      },
-      {
-       "t": " me r c c marg se ",
-       "k": null
-      },
-      {
-       "t": "[name]",
-       "k": "private"
-      },
-      {
-       "t": " ke ",
-       "k": null
-      },
-      {
-       "t": "avas",
-       "k": "place"
-      },
-      {
-       "t": " tak interlaking ka kary. 120 mts",
-       "k": null
       }
      ],
      "facts": {
@@ -2730,125 +2509,122 @@
       }
      },
      {
-      "id": "statistical",
-      "name": "Cost Anomaly",
-      "question": "Is the project cost unusual for similar works?",
+      "id": "cost_estimate",
+      "name": "Cost",
+      "question": "Is the agency's cost estimate right for this size of work here?",
       "counted": true,
       "status": "ASSESSED",
-      "verdict": "COST_TYPICAL",
+      "verdict": "ESTIMATE_FITS_SIZE",
       "risk": 0.0,
-      "headline": "Rs 4.75 lakh is inside the usual range for similar Cement concrete road works in Jaunpur (most cost Rs 4.36 lakh to Rs 11.61 lakh; 21 similar works in Jaunpur). DRISHTI asks only above Rs 23.21 lakh, which leaves room for a bigger scope or a contingency margin.",
+      "headline": "The work: Rs 20,900 per light is in line with similar works in Jaunpur (98 in 100 of the 136 similar works in Jaunpur cost at most Rs 20,896 per light (median Rs 20,896)).",
       "limitations": [
-       "The description-based price check is not loaded, so the cost was compared with similar works only.",
-       "A peer range is not a schedule of rates: an unusual amount can have an ordinary explanation (terrain, specification, scope)."
+       "Line-by-line rates are not checked yet: they need the state's Schedule of Rates (T096)."
       ],
       "findings": [],
       "picture": {
-       "comparison": [
+       "sites": [
         {
-         "metric": "Total cost",
-         "unit": "Rs",
-         "this_work": 474533.0,
-         "typical_low": 435511.0002449025,
-         "typical_high": 1160618.0006823456,
-         "median": 691494.9996829702,
-         "deviation_pct": -31.375787212118787,
-         "comfort_high": 2321236.001364691
+         "site": 0,
+         "key": "STREET_LIGHT|solar",
+         "all_in": 209000.0,
+         "price_per_unit": 20900.0,
+         "unit": "light",
+         "units": 10,
+         "where": "Jaunpur",
+         "reference": {
+          "n": 136,
+          "p10": 20878,
+          "median": 20896,
+          "p90": 20896,
+          "p98": 20896
+         },
+         "question_above": 26120.0
         }
        ],
-       "cohort": {
-        "level": "type_district",
-        "description": "works of the same type in this district",
-        "n": 21,
-        "p10": 5.638999129,
-        "p50": 5.839789044,
-        "p90": 6.064689302,
-        "sd": 0.225003124
-       },
-       "comfort_high": 2321236.001364691,
-       "work_type_name": "Cement concrete road"
+       "grand_total": 209000.0,
+       "mp_amount": 209000.0,
+       "mp_gap": 0.0
       }
      },
      {
       "id": "dup_split",
-      "name": "Duplicate & Split Work",
-      "question": "Is this work repeated, or one job cut into pieces?",
+      "name": "Duplicate Work",
+      "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
       "counted": true,
       "status": "ASSESSED",
-      "verdict": "FUNDED_AGAIN_AFTER_COMPLETION",
-      "risk": 0.7889,
-      "headline": "Reads like work WS/MP18222/2024-2025/165187 (Rs 4.75 lakh, recommended 490 days before this one; descriptions 100% alike, the same place named, amounts 0% apart); that work had already been completed when the other was recommended. Check whether the same work was funded again or this is a genuinely new site.",
-      "limitations": [
-       "Matched on the wording of descriptions; the district is the finest location in the record, so only a site visit or the files can confirm two works are one."
-      ],
+      "verdict": "SANCTIONED_WORK_AT_THIS_SITE",
+      "risk": 0.7,
+      "headline": "The map pin is 20 m from sanctioned work EXAMPLE-0 of the same kind (Rs 2.09 lakh, completed on 2025-12-06), and the form does not name it as the work this one continues. Please check on site whether it is the same work.",
+      "limitations": [],
       "findings": [
        {
-        "code": "FUNDED_AGAIN_AFTER_COMPLETION",
-        "text": "Reads like work WS/MP18222/2024-2025/165187 (Rs 4.75 lakh, recommended 490 days before this one; descriptions 100% alike, the same place named, amounts 0% apart); that work had already been completed when the other was recommended. Check whether the same work was funded again or this is a genuinely new site.",
-        "risk": 0.7889,
+        "code": "SANCTIONED_WORK_AT_THIS_SITE",
+        "text": "The map pin is 20 m from sanctioned work EXAMPLE-0 of the same kind (Rs 2.09 lakh, completed on 2025-12-06), and the form does not name it as the work this one continues. Please check on site whether it is the same work.",
+        "risk": 0.7,
         "hard": false,
         "rule": null,
         "severity": null
        }
       ],
       "picture": {
-       "compared": 1038,
-       "text_min": 0.62,
-       "place_min": 85.0,
-       "flag": 0.75,
+       "compared": 1039,
+       "text_min": 0.9,
+       "place_min": 100.0,
+       "flag": 0.9,
+       "pin_metres": 50.0,
        "nearest": [
         {
-         "work_id": "WS/MP18222/2024-2025/165187",
-         "description": "Birpalpur me r c c marg se [name] ke avas tak interlaking ka kary. 120 mts",
-         "amount": 474533.0,
-         "date": "2025-05-30",
-         "likeness": 1.0,
+         "work_id": "EXAMPLE-0",
+         "description": "Installation of 10 solar street lights near Shiv Mandir chowk in village Sikrara",
+         "amount": 209000.0,
+         "date": "2025-04-30",
+         "likeness": 0.829,
          "place": 100.0,
          "flagged": true
         },
         {
-         "work_id": "WS/MP18222/2024-2025/165188",
-         "description": "pich marg ke [name] ke avas ke 185 mtr interlaking kary",
-         "amount": 858853.0,
-         "date": "2025-06-02",
-         "likeness": 0.608,
-         "place": 66.7,
+         "work_id": "WS/MP18228/2024-2025/151601",
+         "description": "[name] S\\O [name] K GHAR 01  NAG SOLAR LIGHT",
+         "amount": 20896.0,
+         "date": "2024-11-21",
+         "likeness": 0.314,
+         "place": 0.0,
          "flagged": false
         },
         {
-         "work_id": "WS/MP18222/2024-2025/165189",
-         "description": "Birpalpur me pakki sadak ke saroj basti tak 120 mtr interlaking ka kary",
-         "amount": 474533.0,
-         "date": "2025-05-21",
-         "likeness": 0.547,
-         "place": 40.0,
+         "work_id": "WS/MP18228/2024-2025/147158",
+         "description": "[name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
+         "amount": 20900.0,
+         "date": "2024-10-18",
+         "likeness": 0.308,
+         "place": 0.0,
          "flagged": false
         },
         {
-         "work_id": "WS/MP18222/2024-2025/165192",
-         "description": "[name] ke avas ke [name] ke avas tak 100 mtr interlaking kary",
-         "amount": 462998.0,
-         "date": "2025-06-16",
-         "likeness": 0.514,
-         "place": 66.7,
+         "work_id": "WS/MP18228/2024-2025/148779",
+         "description": "1- [name] S\\O [name], 2- [name] S\\O [name] K GHAR KUL 02 NAG SOLAR LIGHT",
+         "amount": 41792.0,
+         "date": "2024-11-21",
+         "likeness": 0.305,
+         "place": 0.0,
          "flagged": false
         },
         {
-         "work_id": "WS/MP18222/2024-2025/165200",
-         "description": "chhanehta me nahar pich road se [name] ke avas ke pahle tak 200 interlaking nirman kary.",
-         "amount": 752787.0,
-         "date": "2025-10-03",
-         "likeness": 0.436,
-         "place": 57.1,
+         "work_id": "WS/MP18228/2024-2025/149189",
+         "description": "[name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
+         "amount": 20896.0,
+         "date": "2024-11-21",
+         "likeness": 0.294,
+         "place": 0.0,
          "flagged": false
         },
         {
-         "work_id": "WS/MP18222/2024-2025/165191",
-         "description": "[name] ke avas se [name] ke avas tak 70 mtr interlaking kary.",
-         "amount": 330950.0,
-         "date": "2025-05-20",
-         "likeness": 0.382,
-         "place": 40.0,
+         "work_id": "WS/MP18228/2024-2025/147736",
+         "description": "[name] S\\O [name] K GHAR 01 NAG SOLAR LIGHT",
+         "amount": 20879.0,
+         "date": "2024-10-18",
+         "likeness": 0.288,
+         "place": 0.0,
          "flagged": false
         }
        ]
@@ -2862,7 +2638,7 @@
       "status": "ASSESSED",
       "verdict": "NOTHING_STUCK_BEYOND_THE_WAIT",
       "risk": 0.0,
-      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 506 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 506 (0%).",
+      "headline": "Waiting 0 days for sanction (Guideline Compliance judges the wait); its term has not ended. This implementing office still has 0 of its 507 recommendations older than 75 days waiting for sanction (0%); across the district 0 of 507 (0%).",
       "limitations": [],
       "findings": [],
       "picture": {
@@ -2882,7 +2658,7 @@
       "status": "ASSESSED",
       "verdict": "OFFICE_AS_USUAL",
       "risk": 0.0,
-      "headline": "Nothing unusual about this work's office: 2 of 1,038 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
+      "headline": "Nothing unusual about this work's office: 2 of 1,039 works priced just under a limit (0%; scheme 9.5%); 0 of 1 constructions complete within a week of sanction (0%; scheme 7.1%).",
       "limitations": [
        "A habit of the office, not proof about this work: look at the office's works together.",
        "The limits are Rs 5 and 10 lakh (reference/rules.json); a state's own tender limits are not modelled."
@@ -2891,7 +2667,7 @@
       "picture": {
        "priced_just_under_a_limit": {
         "office": 2,
-        "of": 1038,
+        "of": 1039,
         "share": 0.002,
         "national_share": 0.0951
        },
@@ -2928,19 +2704,6 @@
       "limitations": [],
       "findings": [],
       "picture": null
-     },
-     {
-      "id": "cost_estimate",
-      "name": "Cost Estimate",
-      "question": "Is the agency's cost estimate right for this size of work here?",
-      "counted": false,
-      "status": "NOT_APPLICABLE",
-      "verdict": "NOT_APPLICABLE",
-      "risk": 0.0,
-      "headline": "No cost estimate form for this work: it came in before the form, so Cost Anomaly checks its amount.",
-      "limitations": [],
-      "findings": [],
-      "picture": null
      }
     ],
     "scoring": {
@@ -2948,21 +2711,18 @@
      "engines": [
       {
        "engine": "dup_split",
-       "name": "Duplicate & Split Work",
-       "chance": 0.3633,
+       "name": "Duplicate Work",
+       "chance": 0.25,
        "findings": [
         {
-         "code": "FUNDED_AGAIN_AFTER_COMPLETION",
-         "risk": 0.7889,
-         "ref_risk": 0.95,
-         "strength": 0.8304,
-         "hit_rate": 0.4375,
-         "basis": "measured",
-         "read": [
-          6,
-          12
-         ],
-         "chance": 0.3633
+         "code": "SANCTIONED_WORK_AT_THIS_SITE",
+         "risk": 0.7,
+         "ref_risk": 0.7,
+         "strength": 1.0,
+         "hit_rate": 0.25,
+         "basis": "prior",
+         "read": null,
+         "chance": 0.25
         }
        ]
       }
@@ -2970,13 +2730,13 @@
      "chain": [
       {
        "engine": "dup_split",
-       "chance": 0.3633,
-       "score": 0.3633
+       "chance": 0.25,
+       "score": 0.25
       }
      ],
-     "raw": 0.3633,
+     "raw": 0.25,
      "floor": false,
-     "score": 0.3633,
+     "score": 0.25,
      "band": "MEDIUM",
      "lines": {
       "MEDIUM": 0.25,
@@ -2986,22 +2746,19 @@
     },
     "result": {
      "band": "MEDIUM",
-     "score": 0.3633,
+     "score": 0.25,
      "in_queue": false,
      "limited": false,
      "colour": "AMBER",
      "advice": "Check the points below before sanction. They are questions, not findings.",
      "reasons": [
       {
-       "engine": "Duplicate & Split Work",
-       "text": "Reads like work WS/MP18222/2024-2025/165187 (Rs 4.75 lakh, recommended 490 days before this one; descriptions 100% alike, the same place named, amounts 0% apart); that work had already been completed when the other was recommended. Check whether the same work was funded again or this is a genuinely new site.",
-       "text_hi": "यह कार्य एक पहले पूर्ण हो चुके कार्य जैसा पढ़ता है। जाँचें कि वही कार्य दोबारा स्वीकृत तो नहीं हुआ।",
-       "chance": 0.3633,
-       "basis": "measured",
-       "read": [
-        6,
-        12
-       ]
+       "engine": "Duplicate Work",
+       "text": "The map pin is 20 m from sanctioned work EXAMPLE-0 of the same kind (Rs 2.09 lakh, completed on 2025-12-06), and the form does not name it as the work this one continues. Please check on site whether it is the same work.",
+       "text_hi": "इस कार्य पर एक जाँच ने ध्यान देने योग्य बात पाई है। विवरण देखें।",
+       "chance": 0.25,
+       "basis": "prior",
+       "read": null
       }
      ]
     }

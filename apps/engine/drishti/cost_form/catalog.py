@@ -13,7 +13,7 @@ import yaml
 
 PATH = Path(__file__).resolve().parents[1] / "reference" / "cost_form.yaml"
 SECTIONS = ("recommendation", "location", "work", "site_conditions", "line_fields", "charges",
-            "timing", "totals", "prepared", "declarations")
+            "timing", "totals", "prepared", "declarations", "earlier_works")
 
 
 @cache

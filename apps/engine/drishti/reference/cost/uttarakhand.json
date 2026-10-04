@@ -1,0 +1,58 @@
+{
+ "state": "Uttarakhand",
+ "source": "eSAKSHI dashboard tables, as of 2026-10-02",
+ "built": "2026-10-03",
+ "years": [
+  2025,
+  2026
+ ],
+ "min_works": 30,
+ "tight": 1.25,
+ "groups": {
+  "STREET_LIGHT|solar": {
+   "unit": "per light",
+   "state": {
+    "n": 41,
+    "p10": 23998,
+    "median": 24000,
+    "p90": 24966,
+    "p98": 24967,
+    "tight": true
+   },
+   "districts": {
+    "Dehradun": {
+     "n": 41,
+     "p10": 23998,
+     "median": 24000,
+     "p90": 24966,
+     "p98": 24967,
+     "tight": true
+    }
+   }
+  },
+  "STREET_LIGHT|unstated": {
+   "unit": "per light",
+   "state": {
+    "n": 1,
+    "p10": 24966,
+    "median": 24966,
+    "p90": 24966,
+    "p98": 24966,
+    "tight": true
+   },
+   "districts": {}
+  },
+  "WATER_TANK": {
+   "unit": "per unit",
+   "state": {
+    "n": 1,
+    "p10": 100000,
+    "median": 100000,
+    "p90": 100000,
+    "p98": 100000,
+    "tight": true
+   },
+   "districts": {}
+  }
+ }
+}

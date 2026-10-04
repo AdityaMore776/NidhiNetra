@@ -1,0 +1,247 @@
+{
+ "source": "eSAKSHI dashboard tables, 40,935 works, as of 2026-10-02",
+ "cost": {
+  "works": 40935,
+  "compared_in_sample": 1032,
+  "groups_used": {
+   "Bihar | CCTV": 61,
+   "Himachal Pradesh | STREET_LIGHT|solar": 38,
+   "Madhya Pradesh | STREET_LIGHT|solar": 52,
+   "Madhya Pradesh | WATER_TANK": 36,
+   "Tamil Nadu | HIGH_MAST": 82,
+   "Uttar Pradesh | FOOTPATH": 37,
+   "Uttar Pradesh | HIGH_MAST": 175,
+   "Uttar Pradesh | ROAD_CC": 36,
+   "Uttar Pradesh | STREET_LIGHT|solar": 334,
+   "Uttarakhand | STREET_LIGHT|solar": 41,
+   "West Bengal | STREET_LIGHT|solar": 140
+  },
+  "above_in_sample": [
+   {
+    "work_id": "WS/MP18176/2024-2025/142537",
+    "group": "HIGH_MAST",
+    "where": "Tamil Nadu",
+    "price": 1000000,
+    "median": 415854,
+    "p98": 632332
+   },
+   {
+    "work_id": "WS/MP18228/2025-2026/159704",
+    "group": "STREET_LIGHT|solar",
+    "where": "Varanasi",
+    "price": 41888,
+    "median": 20944,
+    "p98": 20956
+   },
+   {
+    "work_id": "WS/MP18228/2025-2026/159716",
+    "group": "STREET_LIGHT|solar",
+    "where": "Varanasi",
+    "price": 41888,
+    "median": 20944,
+    "p98": 20956
+   },
+   {
+    "work_id": "WS/MP18230/2025-2026/161094",
+    "group": "STREET_LIGHT|solar",
+    "where": "Uttar Pradesh",
+    "price": 107985,
+    "median": 20944,
+    "p98": 23588
+   },
+   {
+    "work_id": "WS/MP18377/2025-2026/269534",
+    "group": "HIGH_MAST",
+    "where": "Bareilly",
+    "price": 453202,
+    "median": 172675,
+    "p98": 304141
+   }
+  ],
+  "hold_out": {
+   "compared": 211,
+   "above": [
+    {
+     "work_id": "WS/MP755/2025-2026/197519",
+     "group": "HIGH_MAST",
+     "where": "Tamil Nadu",
+     "price": 659507,
+     "median": 413882,
+     "p98": 424635
+    },
+    {
+     "work_id": "WS/MP755/2025-2026/246198",
+     "group": "HIGH_MAST",
+     "where": "Tamil Nadu",
+     "price": 615677,
+     "median": 413882,
+     "p98": 424635
+    },
+    {
+     "work_id": "WS/MP858/2024-2025/168926",
+     "group": "HIGH_MAST",
+     "where": "West Bengal",
+     "price": 3023698,
+     "median": 482430,
+     "p98": 586716
+    },
+    {
+     "work_id": "WS/MP858/2025-2026/227591",
+     "group": "HIGH_MAST",
+     "where": "West Bengal",
+     "price": 881714,
+     "median": 482430,
+     "p98": 586716
+    },
+    {
+     "work_id": "WS/MP18244/2025-2026/210024",
+     "group": "HIGH_MAST",
+     "where": "Cooch Behar",
+     "price": 735030,
+     "median": 586716,
+     "p98": 586716
+    },
+    {
+     "work_id": "WS/MP18244/2025-2026/210026",
+     "group": "HIGH_MAST",
+     "where": "Cooch Behar",
+     "price": 735030,
+     "median": 586716,
+     "p98": 586716
+    },
+    {
+     "work_id": "WS/MP18244/2025-2026/210027",
+     "group": "HIGH_MAST",
+     "where": "Cooch Behar",
+     "price": 735030,
+     "median": 586716,
+     "p98": 586716
+    },
+    {
+     "work_id": "WS/MP18244/2025-2026/210028",
+     "group": "HIGH_MAST",
+     "where": "Cooch Behar",
+     "price": 735030,
+     "median": 586716,
+     "p98": 586716
+    },
+    {
+     "work_id": "WS/MP18244/2025-2026/210029",
+     "group": "HIGH_MAST",
+     "where": "Cooch Behar",
+     "price": 735030,
+     "median": 586716,
+     "p98": 586716
+    },
+    {
+     "work_id": "WS/MP18244/2025-2026/210030",
+     "group": "HIGH_MAST",
+     "where": "Cooch Behar",
+     "price": 735030,
+     "median": 586716,
+     "p98": 586716
+    }
+   ],
+   "planted": {
+    "x1.1": 12,
+    "x1.25": 23,
+    "x1.5": 88,
+    "x2": 99,
+    "x3": 109
+   }
+  },
+  "above_read_by_eye": {
+   "grey": 1,
+   "misread": 5,
+   "spec": 9
+  }
+ },
+ "repeat_labelled_pairs": {
+  "pairs": 289,
+  "same": 108,
+  "rules": {
+   "every pair the engine flagged": {
+    "flagged": 289,
+    "same": 108,
+    "precision": 0.374,
+    "recall": 1.0
+   },
+   "identical wording": {
+    "flagged": 37,
+    "same": 24,
+    "precision": 0.649,
+    "recall": 0.222
+   },
+   "90%+ alike": {
+    "flagged": 101,
+    "same": 52,
+    "precision": 0.515,
+    "recall": 0.481
+   },
+   "90%+ alike, every place word shared": {
+    "flagged": 70,
+    "same": 41,
+    "precision": 0.586,
+    "recall": 0.38
+   },
+   "... and nothing apart, no continuation word, not many sites": {
+    "flagged": 59,
+    "same": 38,
+    "precision": 0.644,
+    "recall": 0.352
+   },
+   "... and two or more place words": {
+    "flagged": 35,
+    "same": 25,
+    "precision": 0.714,
+    "recall": 0.231
+   },
+   "identical wording, two or more place words, nothing apart": {
+    "flagged": 16,
+    "same": 13,
+    "precision": 0.812,
+    "recall": 0.12
+   }
+  }
+ },
+ "repeat_dashboard": {
+  "pairs_by_gap": {
+   "0-7 days": 152,
+   "over 60 days": 25,
+   "8-60 days": 25
+  },
+  "over_60_days_read_by_eye": {
+   "same": 8,
+   "grey": 6,
+   "different": 11
+  }
+ },
+ "split": {
+  "groups": 14,
+  "works": 34,
+  "by_kind": {
+   "stretches": 6,
+   "same_site_split": 8
+  },
+  "read_by_eye": {
+   "yes": 12,
+   "grey": 2
+  },
+  "group_ids": [
+   "G-WS/MP18003/2024-2025/157517",
+   "G-WS/MP18006/2024-2025/135640",
+   "G-WS/MP18009/2024-2025/161192",
+   "G-WS/MP18009/2024-2025/163081",
+   "G-WS/MP18009/2024-2025/163087",
+   "G-WS/MP18138/2024-2025/148109",
+   "G-WS/MP18351/2024-2025/158085",
+   "G-WS/MP18351/2024-2025/160019",
+   "G-WS/MP18393/2024-2025/151997",
+   "G-WS/MP405/2024-2025/149697",
+   "G-WS/MP526/2024-2025/147539",
+   "G-WS/MP526/2024-2025/147605",
+   "G-WS/MP526/2026-2027/152486",
+   "G-WS/MP574/2025-2026/145476"
+  ]
+ }
+}

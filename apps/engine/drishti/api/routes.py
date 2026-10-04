@@ -26,6 +26,7 @@ from drishti.batch import (
     _normalise,
     assess_one,
     office_national,
+    with_forms,
     with_index,
 )
 from drishti.cost_form import catalog as cost_form_catalog
@@ -297,7 +298,7 @@ def work(work_id: str, user: Principal = Depends(current_user)) -> dict:
                             (work_id,)).fetchone()
         ctx = None
         if a["compact"]:
-            w = _normalise(dict(row))
+            w = with_forms(con, [_normalise(dict(row))])[0]
             ctx = with_index(Context(stats=_stats(), as_of=config.snapshot_date()), con, w)
     assessment = _jsonable(dict(a))
     assessment["assessed_at"] = str(a["assessed_at"])
@@ -320,8 +321,9 @@ def _described(agents: list[dict]) -> list[dict]:
     for r in agents:
         aid = registry.canonical_id(r.get("agent", ""))
         spec = specs.get(aid)
-        out.append({**r, "agent": aid, "name": spec.name if spec else aid,
-                    "question": spec.question if spec else ""})
+        name, question = ((spec.name, spec.question) if spec
+                          else registry.RETIRED.get(aid, (aid, "")))
+        out.append({**r, "agent": aid, "name": name, "question": question})
     return out
 
 
@@ -431,3 +433,107 @@ def cost_form_check(form: dict | list | str | int | float | None = Body(default=
     looks like a typing mistake to confirm, and the totals worked out from the lines. Never a
     flag, never a reference price; any body gets an answer, never an error."""
     return validate_cost_form(form if isinstance(form, dict) else {})
+
+
+# ---- saved cost estimate forms (T099: the storage half of T094; migration 013) ---------------
+
+class CostFormSave(BaseModel):
+    """The implementing agency's cost estimate form for one work: a draft, or submitted."""
+
+    work_id: str = Field(min_length=1, max_length=120)
+    form: dict
+    submit: bool = False
+
+
+def _forms_ready(con) -> None:
+    if not con.execute("SELECT to_regclass('cost_forms') IS NOT NULL AS ok").fetchone()["ok"]:
+        raise HTTPException(503, "cost estimate forms are not set up on this database yet "
+                                 "(migration 013_cost_forms.sql)")
+
+
+def _work_in_area(con, work_id: str, user: Principal) -> dict:
+    where, params = _scope(user, alias="works")
+    row = con.execute(f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works {SIGNALS_JOIN} "
+                      f"WHERE works.work_id = %s AND {where}", (work_id, *params)).fetchone()
+    if row is None:
+        raise HTTPException(404, "no such work in your area")
+    return _normalise(dict(row))
+
+
+def _recommendation(w: dict) -> dict:
+    """The form's read-only first section, from the work's own eSAKSHI record: the MP's amount
+    is never taken from what the form sends (the Cost check compares the estimate with it)."""
+    d = w.get("recommended_date")
+    return {"work_id": w["work_id"], "mp_amount": w.get("amount"),
+            "recommended_type": w.get("work_type_code"),
+            "recommended_description": w.get("description"),
+            "recommended_date": d.isoformat() if isinstance(d, date) else None}
+
+
+def _earlier_candidates(con, w: dict) -> list[dict]:
+    """The sanctioned works the agency must answer about (T100): at this map pin, or in the
+    same words. Descriptions pass through the site's masker."""
+    ctx = with_index(Context(stats=_stats(), as_of=config.snapshot_date()), con, w)
+    idx = (ctx.data or {}).get("dup_split")
+    out = []
+    for x in idx.candidates(w) if idx is not None else []:
+        out.append({"work_id": x.work_id, "description": pii.mask(x.description)[:300],
+                    "amount": x.amount, "status": x.status,
+                    "sanction_date": x.sanction.isoformat() if x.sanction else None,
+                    "completed_date": x.done.isoformat() if x.done else None})
+    return out
+
+
+@router.get("/cost-forms/{work_id:path}")
+def cost_form_read(work_id: str, user: Principal = Depends(current_user)) -> dict:
+    """The saved form of one work (or none), and the earlier sanctioned works it must answer
+    about. A district officer reaches only their district's works."""
+    with connect() as con:
+        _forms_ready(con)
+        w = _work_in_area(con, work_id, user)
+        row = con.execute("SELECT status, form, ready, saved_at, submitted_at FROM cost_forms "
+                          "WHERE work_id = %s", (work_id,)).fetchone()
+        if row is not None:
+            w["cost_form"] = row["form"]
+        candidates = _earlier_candidates(con, w)
+    return {"work_id": work_id, "status": row["status"] if row else None,
+            "form": row["form"] if row else None, "ready": bool(row and row["ready"]),
+            "saved_at": str(row["saved_at"]) if row else None,
+            "submitted_at": str(row["submitted_at"]) if row and row["submitted_at"] else None,
+            "recommendation": _recommendation(w), "earlier_candidates": candidates}
+
+
+@router.post("/cost-forms")
+def cost_form_save(body: CostFormSave, user: Principal = Depends(current_user)) -> dict:
+    """Save a draft, or submit a form whose checks all pass (else 422 with the issues). A
+    submitted form is read-only (409), and submitting re-assesses the work at once, so the Cost
+    and Duplicate checks answer from it."""
+    with connect() as con:
+        _forms_ready(con)
+        w = _work_in_area(con, body.work_id, user)
+        old = con.execute("SELECT status FROM cost_forms WHERE work_id = %s",
+                          (body.work_id,)).fetchone()
+        if old is not None and old["status"] == "submitted":
+            raise HTTPException(409, "this work's cost estimate form is already submitted")
+        form = {**body.form, "recommendation": _recommendation(w)}
+        candidates = _earlier_candidates(con, {**w, "cost_form": form})
+        checked = validate_cost_form(form, earlier=[c["work_id"] for c in candidates])
+        if body.submit and not checked["ready"]:
+            raise HTTPException(422, {"message": "the form has fields to fix or confirm",
+                                      "issues": checked["issues"]})
+        status = "submitted" if body.submit else "draft"
+        con.execute(
+            "INSERT INTO cost_forms (work_id, status, form, ready, saved_by, saved_at, "
+            "submitted_at) VALUES (%s, %s, %s, %s, %s, now(), "
+            "CASE WHEN %s THEN now() END) ON CONFLICT (work_id) DO UPDATE SET "
+            "status = EXCLUDED.status, form = EXCLUDED.form, ready = EXCLUDED.ready, "
+            "saved_by = EXCLUDED.saved_by, saved_at = now(), "
+            "submitted_at = EXCLUDED.submitted_at",
+            (body.work_id, status, Jsonb(form), checked["ready"], user.user_id, body.submit))
+        con.commit()
+        if body.submit:
+            assess_one(con, body.work_id, Context(stats=_stats(), as_of=config.snapshot_date()))
+            con.commit()
+    return {"work_id": body.work_id, "status": status, "ready": checked["ready"],
+            "issues": checked["issues"], "computed": checked["computed"],
+            "earlier_candidates": candidates, "assessed": body.submit}

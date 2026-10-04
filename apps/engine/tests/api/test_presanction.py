@@ -23,7 +23,7 @@ def test_a_work_already_recommended_in_the_district_is_amber(client):
     # W-TYPICAL is "CC road in village Bijdih", Rs 1.6 lakh, in Anand
     r = _check(client, description="CC road in village Bijdih", amount=160_000).json()
     assert r["colour"] == "AMBER"
-    assert any(x["engine"] == "Duplicate & Split Work" and "W-TYPICAL" in x["text"]
+    assert any(x["engine"] == "Duplicate Work" and "W-TYPICAL" in x["text"]
                for x in r["reasons"])
     assert "questions, not findings" in r["advice"]
 

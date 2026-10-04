@@ -1,0 +1,176 @@
+{
+ "state": "West Bengal",
+ "source": "eSAKSHI dashboard tables, as of 2026-10-02",
+ "built": "2026-10-03",
+ "years": [
+  2024,
+  2026
+ ],
+ "min_works": 30,
+ "tight": 1.25,
+ "groups": {
+  "CCTV": {
+   "unit": "per unit",
+   "state": {
+    "n": 1,
+    "p10": 17188,
+    "median": 17188,
+    "p90": 17188,
+    "p98": 17188,
+    "tight": true
+   },
+   "districts": {}
+  },
+  "DRAIN": {
+   "unit": "per metre",
+   "state": {
+    "n": 12,
+    "p10": 2413,
+    "median": 4000,
+    "p90": 4541,
+    "p98": 4707,
+    "tight": true
+   },
+   "districts": {}
+  },
+  "FOOTPATH": {
+   "unit": "per metre",
+   "state": {
+    "n": 2,
+    "p10": 6762,
+    "median": 25626,
+    "p90": 44490,
+    "p98": 48262,
+    "tight": false
+   },
+   "districts": {}
+  },
+  "HIGH_MAST": {
+   "unit": "per mast",
+   "state": {
+    "n": 107,
+    "p10": 173088,
+    "median": 438556,
+    "p90": 586716,
+    "p98": 735030,
+    "tight": false
+   },
+   "districts": {
+    "Cooch Behar": {
+     "n": 41,
+     "p10": 586716,
+     "median": 586716,
+     "p90": 735030,
+     "p98": 735030,
+     "tight": false
+    }
+   }
+  },
+  "ROAD_BT": {
+   "unit": "per metre",
+   "state": {
+    "n": 2,
+    "p10": 1684,
+    "median": 2925,
+    "p90": 4167,
+    "p98": 4415,
+    "tight": false
+   },
+   "districts": {}
+  },
+  "ROAD_CC": {
+   "unit": "per metre",
+   "state": {
+    "n": 244,
+    "p10": 1690,
+    "median": 2964,
+    "p90": 5053,
+    "p98": 7687,
+    "tight": false
+   },
+   "districts": {
+    "South 24 Parganas": {
+     "n": 214,
+     "p10": 1690,
+     "median": 2799,
+     "p90": 4883,
+     "p98": 7544,
+     "tight": false
+    }
+   }
+  },
+  "STREET_LIGHT|solar": {
+   "unit": "per light",
+   "state": {
+    "n": 178,
+    "p10": 31331,
+    "median": 34892,
+    "p90": 34987,
+    "p98": 268578,
+    "tight": true
+   },
+   "districts": {
+    "Nadia": {
+     "n": 38,
+     "p10": 31291,
+     "median": 31337,
+     "p90": 268578,
+     "p98": 268606,
+     "tight": false
+    },
+    "Paschim Medinipur": {
+     "n": 86,
+     "p10": 34892,
+     "median": 34987,
+     "p90": 34987,
+     "p98": 34987,
+     "tight": true
+    },
+    "South 24 Parganas": {
+     "n": 42,
+     "p10": 34259,
+     "median": 34259,
+     "p90": 34265,
+     "p98": 35443,
+     "tight": true
+    }
+   }
+  },
+  "STREET_LIGHT|unstated": {
+   "unit": "per light",
+   "state": {
+    "n": 38,
+    "p10": 26913,
+    "median": 33626,
+    "p90": 76944,
+    "p98": 456294,
+    "tight": false
+   },
+   "districts": {}
+  },
+  "TOILET_BLOCK": {
+   "unit": "per unit",
+   "state": {
+    "n": 1,
+    "p10": 174982,
+    "median": 174982,
+    "p90": 174982,
+    "p98": 174982,
+    "tight": true
+   },
+   "districts": {}
+  },
+  "WATER_TANK": {
+   "unit": "per unit",
+   "state": {
+    "n": 2,
+    "p10": 270000,
+    "median": 350000,
+    "p90": 430000,
+    "p98": 446000,
+    "tight": true
+   },
+   "districts": {}
+  }
+ }
+}

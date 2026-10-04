@@ -18,15 +18,16 @@ const FACETS: Record<string, string[]> = {
     "Late sanctions, overdue works, impossible dates, missing key data, big sums that do not say what or where, buildings \"finished\" in days",
     "Works that may not be allowed under the guidelines are marked \"verify\"",
   ],
-  statistical: [
-    "Compare the cost with the same kind of work (a library building with library buildings, books with books)",
-    "Price per metre for roads with a stated length, against published rates",
-    "Undescribed or many-site sanctions are set aside, not scored as a mark-up",
+  cost_estimate: [
+    "Reads the implementing agency's cost estimate form: size, specification and every expense line",
+    "Asks only when a confirmed quantity is far above what the size needs, or the price is far above the same standard item here and above the MP's amount",
+    "A work with no form is not judged: an amount alone does not say what is built",
   ],
   dup_split: [
-    "Find works that describe the same asset again, even when reworded",
-    "Find one job cut into several works just under a limit",
-    "Every match says \"verify\": two works can be alike for good reasons",
+    "Is this work already sanctioned here, or one job cut to stay under a limit? The form's map pin against the pins of sanctioned works of the same kind",
+    "A continuation, extension or rebuild is declared on the form and never asked about, unless it rebuilds a work completed under three years ago",
+    "One job cut into pieces to stay under the Rs 5 or 10 lakh limit, asked only when every piece sits within 4% under it (12 of 14 such groups read as one job)",
+    "Works that read alike are shown as notes for the agency to answer, never counted: words alone are right about 2 times in 3",
   ],
   delay: [
     "Works recommended under a Lok Sabha term that has ended and still not sanctioned",

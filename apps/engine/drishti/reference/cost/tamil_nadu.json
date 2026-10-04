@@ -1,0 +1,121 @@
+{
+ "state": "Tamil Nadu",
+ "source": "eSAKSHI dashboard tables, as of 2026-10-02",
+ "built": "2026-10-03",
+ "years": [
+  2024,
+  2026
+ ],
+ "min_works": 30,
+ "tight": 1.25,
+ "groups": {
+  "BOREWELL": {
+   "unit": "per unit",
+   "state": {
+    "n": 1,
+    "p10": 15962,
+    "median": 15962,
+    "p90": 15962,
+    "p98": 15962,
+    "tight": true
+   },
+   "districts": {}
+  },
+  "BUS_SHELTER": {
+   "unit": "per unit",
+   "state": {
+    "n": 1,
+    "p10": 23986,
+    "median": 23986,
+    "p90": 23986,
+    "p98": 23986,
+    "tight": true
+   },
+   "districts": {}
+  },
+  "FOOTPATH": {
+   "unit": "per metre",
+   "state": {
+    "n": 5,
+    "p10": 4312,
+    "median": 5370,
+    "p90": 12889,
+    "p98": 15467,
+    "tight": false
+   },
+   "districts": {}
+  },
+  "HIGH_MAST": {
+   "unit": "per mast",
+   "state": {
+    "n": 82,
+    "p10": 51109,
+    "median": 415854,
+    "p90": 424635,
+    "p98": 632332,
+    "tight": true
+   },
+   "districts": {}
+  },
+  "ROAD_BT": {
+   "unit": "per metre",
+   "state": {
+    "n": 4,
+    "p10": 3098,
+    "median": 4063,
+    "p90": 5637,
+    "p98": 5924,
+    "tight": false
+   },
+   "districts": {}
+  },
+  "ROAD_CC": {
+   "unit": "per metre",
+   "state": {
+    "n": 9,
+    "p10": 1567,
+    "median": 4991,
+    "p90": 8631,
+    "p98": 11642,
+    "tight": false
+   },
+   "districts": {}
+  },
+  "STREET_LIGHT|unstated": {
+   "unit": "per light",
+   "state": {
+    "n": 6,
+    "p10": 30326,
+    "median": 30326,
+    "p90": 40163,
+    "p98": 48033,
+    "tight": false
+   },
+   "districts": {}
+  },
+  "TOILET_BLOCK": {
+   "unit": "per unit",
+   "state": {
+    "n": 12,
+    "p10": 785000,
+    "median": 785000,
+    "p90": 785000,
+    "p98": 1381700,
+    "tight": true
+   },
+   "districts": {}
+  },
+  "WATER_SUPPLY": {
+   "unit": "per metre",
+   "state": {
+    "n": 1,
+    "p10": 355,
+    "median": 355,
+    "p90": 355,
+    "p98": 355,
+    "tight": true
+   },
+   "districts": {}
+  }
+ }
+}
