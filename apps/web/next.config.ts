@@ -5,6 +5,9 @@ import type { NextConfig } from "next";
 const engine = process.env.ENGINE_DEV_URL ?? "http://127.0.0.1:8000";
 
 const nextConfig: NextConfig = {
+  // The image optimiser (/_next/image) answers 404 under Vercel Services, which broke the
+  // emblem on the live site; the brand images are small pre-sized .webp files, served as they are.
+  images: { unoptimized: true },
   async rewrites() {
     if (process.env.NODE_ENV !== "development") return [];
     return [{ source: "/api/v1/:path*", destination: `${engine}/api/v1/:path*` }];
