@@ -1,6 +1,7 @@
 "use client";
 
-import { CalendarDays, CornerDownLeft, Search, Tag } from "lucide-react";
+import { CalendarDays, ClipboardList, CornerDownLeft, Search, Tag } from "lucide-react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import CommandButton from "@/components/kokonutui/command-button";
@@ -70,6 +71,15 @@ export function Topbar({ snapshot }: { snapshot: string | null }) {
             eSAKSHI data to <span className="num font-medium text-foreground">{snapshot}</span>
           </span>
         )}
+        <Link
+          href="/work-form"
+          title="Mock pre-sanction work intelligence form"
+          aria-current={path.startsWith("/work-form") ? "page" : undefined}
+          className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-brand-200 bg-brand-50 px-3 text-xs font-medium text-brand-800 transition-colors hover:bg-brand-100 aria-[current=page]:bg-brand-100"
+        >
+          <ClipboardList className="size-4 text-brand-600" />
+          <span className="hidden sm:inline">Mock form</span>
+        </Link>
         <CommandButton onClick={() => setOpen(true)} className="w-40 sm:w-64">
           Search works, pages…
         </CommandButton>
