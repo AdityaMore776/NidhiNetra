@@ -23,17 +23,17 @@ type AgentMeta = { n: string; name: string; color: string; question: string };
  *  missing here still renders, with the name and question the API sends. */
 export const AGENTS: Record<AgentId, AgentMeta> = {
   // the four agents (owner, 3 Oct 2026; plan docs/plans/T120-four-agents.md; T125)
-  cost_estimate: { n: "01", name: "Cost", color: "var(--statistical)", question: "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?" },
-  dup_split: { n: "02", name: "Duplicate Work", color: "var(--duplicate)", question: "Is this work already sanctioned here, or one job cut to stay under a limit?" },
-  time_rules: { n: "03", name: "Time & Rules", color: "var(--navy)", question: "Was it sanctioned on time, and is it being finished in a believable time?" },
-  site_progress: { n: "04", name: "Site Progress", color: "var(--site)", question: "Do the monthly site videos show real, new work, at this work's site, for this work only?" },
+  cost_estimate: { n: "01", name: "Cost", color: "var(--eng-cost)", question: "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?" },
+  dup_split: { n: "02", name: "Duplicate Work", color: "var(--eng-dup)", question: "Is this work already sanctioned here, or one job cut to stay under a limit?" },
+  time_rules: { n: "03", name: "Time & Rules", color: "var(--eng-compliance)", question: "Was it sanctioned on time, and is it being finished in a believable time?" },
+  site_progress: { n: "04", name: "Site Progress", color: "var(--eng-flow)", question: "Do the monthly site videos show real, new work, at this work's site, for this work only?" },
   // retired (T099, T125): results stored before then still read by name until re-assessed
-  compliance: { n: "··", name: "Guideline Compliance (retired)", color: "var(--muted)", question: "Does the work follow the MPLADS guidelines?" },
-  delay: { n: "··", name: "Fund Flow (retired)", color: "var(--muted)", question: "Is money stuck waiting for sanction?" },
-  office_patterns: { n: "··", name: "Office Patterns (retired)", color: "var(--muted)", question: "Does the office record works in an unusual way?" },
-  paperwork: { n: "··", name: "Paperwork (retired)", color: "var(--muted)", question: "Do the work's papers agree with its record?" },
-  photo_evidence: { n: "··", name: "Photo Evidence (retired)", color: "var(--muted)", question: "Are the work's photos its own, from its place and time?" },
-  statistical: { n: "··", name: "Cost Anomaly (retired)", color: "var(--muted)", question: "Is the project cost unusual for similar works?" },
+  compliance: { n: "··", name: "Guideline Compliance (retired)", color: "var(--muted-foreground)", question: "Does the work follow the MPLADS guidelines?" },
+  delay: { n: "··", name: "Fund Flow (retired)", color: "var(--muted-foreground)", question: "Is money stuck waiting for sanction?" },
+  office_patterns: { n: "··", name: "Office Patterns (retired)", color: "var(--muted-foreground)", question: "Does the office record works in an unusual way?" },
+  paperwork: { n: "··", name: "Paperwork (retired)", color: "var(--muted-foreground)", question: "Do the work's papers agree with its record?" },
+  photo_evidence: { n: "··", name: "Photo Evidence (retired)", color: "var(--muted-foreground)", question: "Are the work's photos its own, from its place and time?" },
+  statistical: { n: "··", name: "Cost Anomaly (retired)", color: "var(--muted-foreground)", question: "Is the project cost unusual for similar works?" },
 };
 
 // Ids stored before the engine registry (the deck's four agents).
@@ -41,7 +41,7 @@ const LEGACY: Record<string, string> = { duplicate_project: "dup_split", image_r
 
 export function agentMeta(id: string, name?: string, question?: string): AgentMeta {
   const key = LEGACY[id] ?? id;
-  return AGENTS[key] ?? { n: "··", name: name ?? key, color: "var(--muted)", question: question ?? "" };
+  return AGENTS[key] ?? { n: "··", name: name ?? key, color: "var(--muted-foreground)", question: question ?? "" };
 }
 
 export const AGENT_ORDER: AgentId[] = ["cost_estimate", "dup_split", "time_rules", "site_progress"];
@@ -52,6 +52,16 @@ export const BAND_COLOR: Record<Band, string> = {
   MEDIUM: "var(--medium)",
   LOW: "var(--low)",
 };
+
+/** Soft fills behind a band's word (badges, row tints). */
+export const BAND_SOFT: Record<Band, string> = {
+  CRITICAL: "var(--critical-soft)",
+  HIGH: "var(--high-soft)",
+  MEDIUM: "var(--medium-soft)",
+  LOW: "var(--low-soft)",
+};
+
+export const BAND_ORDER: Band[] = ["CRITICAL", "HIGH", "MEDIUM", "LOW"];
 
 export const BAND_LABEL: Record<Band, string> = {
   CRITICAL: "Critical",
