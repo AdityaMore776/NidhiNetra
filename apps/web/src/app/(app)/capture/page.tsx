@@ -70,7 +70,13 @@ function Capture() {
     api<SiteVisits>(`/site-visits/${workId}`)
       .then(setInfo)
       .catch((e: ApiError) =>
-        setError(e.status === 404 ? "This work is not in your area, or does not exist." : e.message),
+        setError(
+          e.status === 404
+            ? "This work is not in your area, or does not exist."
+            : e.status === 401
+              ? "Filming a site visit needs a staff sign-in (Staff sign in, top right)."
+              : e.message,
+        ),
       );
     listPending(workId).then(setPending);
   }, [workId]);

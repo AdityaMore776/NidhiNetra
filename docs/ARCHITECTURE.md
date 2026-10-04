@@ -193,7 +193,12 @@ your area returns 404.
    verifies signature, expiry and audience, then loads `role`, `district_lgd` and `display_name` from
    `profiles`. No profile → 403.
 3. Roles: `MINISTRY` (all districts), `DISTRICT` and `FIELD` (one district).
-4. **Dev mode** (`DRISHTI_AUTH=dev`): a request may name its role in an `X-Dev-Role` header so the app runs on
+4. **Open to view (T130):** every read-only route uses `viewer` in `auth.py`. A request with no session (or a
+   stale one) is the `PUBLIC` viewer of all districts, so anyone who opens the site sees the scored works without
+   signing in. Routes that store something (`/cost-forms`, `/site-visits/*`) keep `current_user` and answer 401
+   without a sign-in; the web app offers "Staff sign in" for them. The browser only ever holds the Supabase URL and
+   anon key; every table has row-level security with no policies, so that key reads and writes nothing directly.
+5. **Dev mode** (`DRISHTI_AUTH=dev`): a request may name its role in an `X-Dev-Role` header so the app runs on
    a laptop without Supabase. It is refused whenever the `VERCEL` environment variable is present.
 
 ## 8. Database

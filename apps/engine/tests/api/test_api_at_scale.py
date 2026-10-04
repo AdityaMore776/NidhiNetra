@@ -238,7 +238,7 @@ def test_the_visualization_trace_runs_on_the_live_route(world):
              "sanction_date": "2025-07-01", "completed_date": "2025-01-01"}
     r = c.post("/api/v1/explain", headers=h, json=later)
     assert r.status_code == 200 and r.json()["input"]["completed"] == "2025-01-01"
-    assert c.post("/api/v1/explain", json=body).status_code == 401
+    assert c.post("/api/v1/explain", json=body).status_code == 200      # open to all (T130)
     officer = {"X-Dev-Role": "DISTRICT", "X-Dev-District": a}
     assert c.post("/api/v1/explain", headers=officer,
                   json={**body, "district_lgd": b}).status_code == 404

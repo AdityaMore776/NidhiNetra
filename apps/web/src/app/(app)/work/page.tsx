@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { AgentCard } from "@/components/AgentCard";
 import { FusionPanel } from "@/components/FusionPanel";
+import { useMe } from "@/components/me";
 import { SourceBadge } from "@/components/ui";
 import { api, ApiError, type WorkDetail } from "@/lib/api";
 import { inr, workType } from "@/lib/format";
@@ -19,6 +20,7 @@ export default function WorkPage() {
 
 function Work() {
   const id = useSearchParams().get("id") ?? "";
+  const me = useMe();
   const [d, setD] = useState<WorkDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -53,12 +55,14 @@ function Work() {
           <Field label="House" value={[w.house, w.term !== w.house ? w.term : null].filter(Boolean).join(" · ")} />
           <Field label="Implementing agency" value={w.agency_name} />
         </dl>
-        <Link
-          href={`/capture?work=${encodeURIComponent(w.work_id)}`}
-          className="inline-block rounded-lg border border-line px-3 py-1.5 text-sm font-semibold"
-        >
-          Film a site visit
-        </Link>
+        {me && me.role !== "PUBLIC" && (
+          <Link
+            href={`/capture?work=${encodeURIComponent(w.work_id)}`}
+            className="inline-block rounded-lg border border-line px-3 py-1.5 text-sm font-semibold"
+          >
+            Film a site visit
+          </Link>
+        )}
       </div>
 
       <FusionPanel a={a} />

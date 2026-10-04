@@ -18,6 +18,7 @@ const NAV = [
 ];
 
 const ROLE_LABEL: Record<Me["role"], string> = {
+  PUBLIC: "Public view (all districts)",
   MINISTRY: "Ministry (all districts)",
   DISTRICT: "District officer",
   FIELD: "Field officer",
@@ -28,15 +29,18 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const path = usePathname();
   const [me, setMe] = useState<Me | null>(null);
 
+  // Open to view (T130): no sign-in needed. The engine answers a visitor as the public viewer;
+  // if it can't be reached the pages still render and show their own errors.
   useEffect(() => {
     api<Me>("/me")
       .then(setMe)
-      .catch(() => router.replace("/login"));
-  }, [router]);
+      .catch(() => setMe({ user_id: "public", role: "PUBLIC", district_lgd: null, name: null }));
+  }, []);
 
   async function signOut() {
     await supabase()?.auth.signOut();
-    router.replace("/login");
+    router.replace("/");
+    window.location.reload();
   }
 
   if (!me) {
@@ -66,9 +70,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </nav>
           <div className="ml-auto flex items-center gap-3 text-xs text-muted">
             <span className="hidden sm:inline">{ROLE_LABEL[me.role]}</span>
-            <button onClick={signOut} className="rounded-lg border border-line px-2.5 py-1 hover:bg-background">
-              Sign out
-            </button>
+            {me.role === "PUBLIC" ? (
+              <Link href="/login" className="rounded-lg border border-line px-2.5 py-1 hover:bg-background">
+                Staff sign in
+              </Link>
+            ) : (
+              <button onClick={signOut} className="rounded-lg border border-line px-2.5 py-1 hover:bg-background">
+                Sign out
+              </button>
+            )}
           </div>
         </div>
       </header>

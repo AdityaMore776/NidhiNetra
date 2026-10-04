@@ -3,7 +3,7 @@ import Explainer from "./Explainer";
 import "./explain.css";
 
 // Public on purpose: judges and visitors see the built-in examples without signing in. A
-// visitor's own example goes to the live engine (POST /api/v1/explain), which needs sign-in.
+// visitor's own example goes to the live engine (POST /api/v1/explain), open to all since T130.
 export const metadata: Metadata = {
   title: "DRISHTI Visualization Engine: one work, step by step",
   description:
