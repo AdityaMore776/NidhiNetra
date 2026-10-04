@@ -325,7 +325,7 @@ function ResultStrip({ t }: { t: Trace }) {
   );
 }
 
-// ---- your own example: the live engine, behind the demo sign-in -----------------------------
+// ---- your own example: the live engine, open to all (T130) ----------------------------------
 
 function OwnExample({ onTrace }: { onTrace: (t: Trace) => void }) {
   const [opts, setOpts] = useState<PreOptions | null>(null);

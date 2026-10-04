@@ -7,16 +7,46 @@ def test_health_needs_no_sign_in(client):
     assert client.get("/api/v1/health").json()["ok"] is True
 
 
-@pytest.mark.parametrize("path", ["/api/v1/me", "/api/v1/dashboard/summary",
-                                  "/api/v1/dashboard/districts", "/api/v1/works",
-                                  "/api/v1/works/W-COSTLY", "/api/v1/queue"])
-def test_everything_else_needs_sign_in(client, path):
-    assert client.get(path).status_code == 401
+VIEWING = ["/api/v1/me", "/api/v1/dashboard/summary", "/api/v1/dashboard/districts",
+           "/api/v1/dashboard/offices", "/api/v1/works", "/api/v1/works/W-COSTLY",
+           "/api/v1/queue", "/api/v1/presanction/options"]
+
+
+@pytest.mark.parametrize("path", VIEWING)
+def test_viewing_needs_no_sign_in(client, path):
+    """T130: anyone who opens the site sees the scored works, all districts, read-only."""
+    assert client.get(path).status_code == 200
+
+
+def test_a_visitor_is_the_public_viewer_of_all_districts(client):
+    me = client.get("/api/v1/me").json()
+    assert me["role"] == "PUBLIC" and me["district_lgd"] is None
+    assert client.get("/api/v1/dashboard/summary").json()["works"] == 4
+
+
+def test_a_stale_session_still_views(client):
+    """An expired or foreign token in an old browser tab must not lock a visitor out."""
+    r = client.get("/api/v1/me", headers={"Authorization": "Bearer not-a-token"})
+    assert r.status_code == 200 and r.json()["role"] == "PUBLIC"
+
+
+@pytest.mark.parametrize("method,path,body", [
+    ("get", "/api/v1/cost-forms/W-TYPICAL", None),
+    ("post", "/api/v1/cost-forms", {"work_id": "W-TYPICAL", "form": {}}),
+    ("get", "/api/v1/site-visits/W-TYPICAL", None),
+    ("post", "/api/v1/site-visits/start", {"work_id": "W-TYPICAL", "kind": "baseline"}),
+    ("post", "/api/v1/site-visits/abc/upload", {"token": "0123456789"}),
+])
+def test_saving_and_filming_still_need_sign_in(client, method, path, body):
+    r = getattr(client, method)(path, **({"json": body} if body is not None else {}))
+    assert r.status_code == 401
 
 
 def test_dev_sign_in_is_refused_on_vercel(client, monkeypatch):
     monkeypatch.setenv("VERCEL", "1")
-    assert client.get("/api/v1/me", headers=MINISTRY).status_code == 401
+    assert client.get("/api/v1/me", headers=MINISTRY).json()["role"] == "PUBLIC"
+    assert client.post("/api/v1/cost-forms", headers=MINISTRY,
+                       json={"work_id": "W-TYPICAL", "form": {}}).status_code == 401
 
 
 def test_me(client):

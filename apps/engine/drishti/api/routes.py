@@ -18,7 +18,7 @@ from drishti import config, reference
 from drishti.agents import registry
 from drishti.agents.office_patterns.index import OfficeIndex
 from drishti.agents.statistical.cohort import StatsStore
-from drishti.auth import Principal, current_user
+from drishti.auth import Principal, current_user, viewer
 from drishti.batch import (
     SIGNALS_COLUMNS,
     SIGNALS_JOIN,
@@ -85,7 +85,7 @@ def keepalive() -> dict:
 
 
 @router.get("/me")
-def me(user: Principal = Depends(current_user)) -> dict:
+def me(user: Principal = Depends(viewer)) -> dict:
     return {"user_id": user.user_id, "role": user.role, "district_lgd": user.district_lgd,
             "name": user.name}
 
@@ -111,7 +111,7 @@ def _cached(key: str, compute):
 
 
 @router.get("/dashboard/summary")
-def summary(user: Principal = Depends(current_user)) -> dict:
+def summary(user: Principal = Depends(viewer)) -> dict:
     key = f"{CACHE_VERSION}:summary:{user.scope_district() or 'ALL'}"
     return _cached(key, lambda: _summary(user))
 
@@ -144,7 +144,7 @@ def _summary(user: Principal) -> dict:
 
 
 @router.get("/dashboard/districts")
-def districts(user: Principal = Depends(current_user)) -> list[dict]:
+def districts(user: Principal = Depends(viewer)) -> list[dict]:
     key = f"{CACHE_VERSION}:districts:{user.scope_district() or 'ALL'}"
     return _cached(key, lambda: _districts(user))
 
@@ -164,7 +164,7 @@ def _districts(user: Principal) -> list[dict]:
 
 
 @router.get("/dashboard/offices")
-def offices(user: Principal = Depends(current_user)) -> list[dict]:
+def offices(user: Principal = Depends(viewer)) -> list[dict]:
     """Implementing offices whose completion dates need checking as a whole.
 
     An office that records many works as completed before they were recommended has a
@@ -190,7 +190,7 @@ def offices(user: Principal = Depends(current_user)) -> list[dict]:
 
 
 @router.get("/dashboard/office-habits")
-def office_habits(user: Principal = Depends(current_user)) -> list[dict]:
+def office_habits(user: Principal = Depends(viewer)) -> list[dict]:
     """Offices with a routine habit (Office Patterns, 2 Oct 2026): pricing most works just under
     a limit, or recording constructions complete within a week of sanction. A habit of an
     office is listed here once, never one queue item per work; never an MP."""
@@ -270,20 +270,20 @@ def _list(user: Principal, *, q: str | None, district: str | None, wtype: str | 
 @router.get("/works")
 def works(q: str | None = None, district: str | None = None,
           type: str | None = Query(default=None), band: str | None = None,
-          page: int = Query(default=1, ge=1), user: Principal = Depends(current_user)) -> dict:
+          page: int = Query(default=1, ge=1), user: Principal = Depends(viewer)) -> dict:
     return _list(user, q=q, district=district, wtype=type, band=band, review_only=False,
                  page=page)
 
 
 @router.get("/queue")
 def queue(district: str | None = None, band: str | None = None,
-          page: int = Query(default=1, ge=1), user: Principal = Depends(current_user)) -> dict:
+          page: int = Query(default=1, ge=1), user: Principal = Depends(viewer)) -> dict:
     return _list(user, q=None, district=district, wtype=None, band=band, review_only=True,
                  page=page)
 
 
 @router.get("/works/{work_id:path}")
-def work(work_id: str, user: Principal = Depends(current_user)) -> dict:
+def work(work_id: str, user: Principal = Depends(viewer)) -> dict:
     where, params = _scope(user, alias="works")     # the signals join needs the bare name
     with connect() as con:
         row = con.execute(f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works "
@@ -339,7 +339,7 @@ class Recommendation(BaseModel):
 
 
 @router.post("/presanction")
-def presanction(rec: Recommendation, user: Principal = Depends(current_user)) -> dict:
+def presanction(rec: Recommendation, user: Principal = Depends(viewer)) -> dict:
     """Every engine on a recommendation before sanction -> Green / Amber / Red with the
     engines' own sentences. Nothing is stored and nothing is blocked."""
     scope = user.scope_district()
@@ -376,7 +376,7 @@ class Example(Recommendation):
 
 
 @router.post("/explain")
-def explain(ex: Example, user: Principal = Depends(current_user)) -> dict:
+def explain(ex: Example, user: Principal = Depends(viewer)) -> dict:
     """Every step DRISHTI takes on one work, for the Visualization Engine page (T092): the same
     pipeline as the batch, laid out step by step. Nothing is stored."""
     scope = user.scope_district()
@@ -403,7 +403,7 @@ def explain(ex: Example, user: Principal = Depends(current_user)) -> dict:
 
 
 @router.get("/presanction/options")
-def presanction_options(user: Principal = Depends(current_user)) -> dict:
+def presanction_options(user: Principal = Depends(viewer)) -> dict:
     """What the pre-sanction form offers: the user's districts and the work types."""
     where, params = _scope(user, alias="d")
     with connect() as con:
@@ -417,7 +417,7 @@ def presanction_options(user: Principal = Depends(current_user)) -> dict:
 
 @router.get("/cost-form/catalog")
 def cost_form_fields(work_type: str | None = Query(default=None, max_length=40),
-                     user: Principal = Depends(current_user)) -> dict:
+                     user: Principal = Depends(viewer)) -> dict:
     """Everything the cost estimate form shows for one work type (T093): every section, the
     size fields of its family, the expense line groups, the materials it suggests and the
     units. One source (reference/cost_form.yaml) for the form and its checks."""
@@ -428,7 +428,7 @@ def cost_form_fields(work_type: str | None = Query(default=None, max_length=40),
 
 @router.post("/cost-form/validate")
 def cost_form_check(form: dict | list | str | int | float | None = Body(default=None),
-                    user: Principal = Depends(current_user)) -> dict:
+                    user: Principal = Depends(viewer)) -> dict:
     """The checks made while the cost estimate form is filled (T093): what must be fixed, what
     looks like a typing mistake to confirm, and the totals worked out from the lines. Never a
     flag, never a reference price; any body gets an answer, never an error."""

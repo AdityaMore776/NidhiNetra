@@ -43,6 +43,7 @@ def test_the_checks_answer_any_body(client):
         assert r.status_code == 200 and r.json()["ready"] is False
 
 
-def test_both_routes_need_sign_in(client):
-    assert client.get("/api/v1/cost-form/catalog").status_code == 401
-    assert client.post("/api/v1/cost-form/validate", json={}).status_code == 401
+def test_both_routes_are_open_to_view(client):
+    """They store nothing: the blank form and its checks are public, like the site (T130)."""
+    assert client.get("/api/v1/cost-form/catalog").status_code == 200
+    assert client.post("/api/v1/cost-form/validate", json={}).status_code == 200

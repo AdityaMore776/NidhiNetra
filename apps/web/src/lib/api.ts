@@ -235,7 +235,8 @@ export interface WorkDetail {
 
 export interface Me {
   user_id: string;
-  role: "MINISTRY" | "DISTRICT" | "FIELD";
+  /** PUBLIC = anyone without a sign-in: views every district, saves nothing (T130) */
+  role: "PUBLIC" | "MINISTRY" | "DISTRICT" | "FIELD";
   district_lgd: string | null;
   name: string | null;
 }

@@ -6,6 +6,10 @@ signature and expiry itself, then reads the role and district from `profiles`.
 Scoping is applied in each query, not in the page, so a mistake in the
 interface cannot leak another district's works.
 
+OPEN TO VIEW (T130): anyone may look. A request without a session is the PUBLIC viewer of
+all districts (`viewer`), for read-only routes; saving a form or filming a site visit still
+needs a signed-in account (`current_user`).
+
 DEV MODE: with DRISHTI_AUTH=dev a request may name its role in the
 X-Dev-Role header, so the app can run on a laptop without Supabase. It is
 refused outright when running on Vercel.
@@ -88,3 +92,20 @@ def current_user(authorization: str | None = Header(default=None),
         raise HTTPException(401, "sign in required")
     claims = verify_token(authorization.split(" ", 1)[1])
     return _profile(claims["sub"])
+
+
+PUBLIC = Principal("public", "PUBLIC", None, "Public view")
+
+
+def viewer(authorization: str | None = Header(default=None),
+           x_dev_role: str | None = Header(default=None),
+           x_dev_district: str | None = Header(default=None)) -> Principal:
+    """Who is looking, for read-only routes (T130): the signed-in user when the session is
+    good, else the PUBLIC viewer of all districts. A stale token in an old tab never locks a
+    visitor out of viewing; it grants nothing more than no token does."""
+    if not authorization and not (_dev_mode() and x_dev_role):
+        return PUBLIC
+    try:
+        return current_user(authorization, x_dev_role, x_dev_district)
+    except (HTTPException, jwt.PyJWTError, httpx.HTTPError, ValueError, KeyError):
+        return PUBLIC
