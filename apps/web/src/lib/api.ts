@@ -298,3 +298,51 @@ export interface PreOptions {
   work_types: { code: string; name: string }[];
   as_of: string;
 }
+
+// ---- site visits (T123; mirror apps/engine/drishti/api/site_visits.py) -------------------
+
+export type VisitKind = "baseline" | "monthly" | "check" | "final";
+
+export interface SiteMap {
+  kind: "compact" | "linear";
+  lat: number;
+  lon: number;
+  radius_m: number;
+  end_lat: number | null;
+  end_lon: number | null;
+  length_m: number;
+  stretches: string[];
+  gps_margin_m: number;
+  stretch_m: number;
+}
+
+export interface Viewpoint {
+  id: string;
+  frame_url: string | null;
+}
+
+export interface SiteVisitRow {
+  visit_id: string;
+  kind: VisitKind;
+  status: "started" | "uploaded" | "read" | "rejected";
+  claim: string | null;
+  note: string | null;
+  captured_at: string | null;
+  readings: Record<string, unknown> | null;
+}
+
+export interface SiteVisits {
+  work_id: string;
+  site: SiteMap | null;
+  next_kind: VisitKind;
+  viewpoints: Viewpoint[];
+  visits: SiteVisitRow[];
+}
+
+export interface VisitStart {
+  visit_id: string;
+  token: string;
+  kind: VisitKind;
+  site: SiteMap | null;
+  viewpoints: Viewpoint[];
+}

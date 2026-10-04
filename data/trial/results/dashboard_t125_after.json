@@ -1,0 +1,77 @@
+{
+  "tag": "t125_after",
+  "works": 40935,
+  "as_of": "2026-10-02",
+  "loader": {
+    "works": 40935,
+    "skipped": {
+      "no work id (kept, waiting for sanction)": 345,
+      "no work id": 3
+    },
+    "allocated_constituencies": 542,
+    "status": {
+      "COMPLETED": 36508,
+      "SANCTIONED": 4085,
+      "RECOMMENDED": 342
+    },
+    "with_recommended_date": 16004,
+    "with_sanction_date": 15662
+  },
+  "price_model": {
+    "version": "price-linear-dashboard",
+    "oof_median_abs_error_factor": 1.633,
+    "oof_share_inside": 0.801
+  },
+  "cutoffs": {
+    "CRITICAL": 0.8,
+    "HIGH": 0.5,
+    "MEDIUM": 0.25
+  },
+  "bands": {
+    "CRITICAL": 2,
+    "HIGH": 215,
+    "MEDIUM": 342,
+    "LOW": 40376
+  },
+  "review_queue": 217,
+  "review_share": 0.0053,
+  "engine_fired": {
+    "dup_split": 34,
+    "time_rules": 9830
+  },
+  "finding_fired": {
+    "time_rules:SANCTIONED_LATE": 9401,
+    "time_rules:SANCTION_OVERDUE": 342,
+    "time_rules:BUILT_RIGHT_AFTER_SANCTION": 320,
+    "dup_split:SPLIT_JUST_UNDER_LIMIT": 34,
+    "time_rules:BUILT_IN_DAYS": 3
+  },
+  "queued_with_finding": {
+    "time_rules:BUILT_RIGHT_AFTER_SANCTION": 185,
+    "time_rules:SANCTIONED_LATE": 179,
+    "dup_split:SPLIT_JUST_UNDER_LIMIT": 34,
+    "time_rules:BUILT_IN_DAYS": 3
+  },
+  "engine_status": {
+    "cost_estimate:NOT_APPLICABLE": 40935,
+    "dup_split:ASSESSED": 40774,
+    "dup_split:NOT_ASSESSABLE": 161,
+    "site_progress:NOT_APPLICABLE": 40935,
+    "time_rules:ASSESSED": 40935
+  },
+  "office_habits": {
+    "priced just under a limit": {
+      "offices": 36,
+      "works": 1311,
+      "national_share": 0.0951,
+      "median_office_share": 0.553
+    },
+    "built right after sanction": {
+      "offices": 6,
+      "works": 149,
+      "national_share": 0.0711,
+      "median_office_share": 0.688
+    }
+  },
+  "seconds": 100
+}

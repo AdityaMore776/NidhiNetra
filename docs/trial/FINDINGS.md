@@ -11,6 +11,7 @@ should look.
 
 | Agent | Verdict | One line |
 |---|---|---|
+| **Four agents** *(T121–T125, 4 Oct 2026)* | **Built; two wait on real evidence** | Cost judges every line, then the whole estimate (synthetic forms: target met at a 10% honest spread with district rates). Time & Rules: the 75-day clock as an office fact, the comfort window. Site Progress reads monthly videos (end-to-end trial on made-up scenes). Dashboard queue 439 → 217. |
 | A3 Cost *(T099: on the form)* | **Certain only with the form** | A record alone supports no certain price question (0 of 15 real, T099). The Cost check reads the agency's cost estimate form; the old Cost Anomaly (54/128) is retired. |
 | A2 Split works *(T100: strictest only)* | **Works** | Real pattern: 12× more works just under ₹5 lakh than just over. Kept only the strictest split: every piece 96–100% of a limit, 12 of 14 dashboard groups read as one job (2 grey). |
 | A2 Duplicates *(T100: by map pin)* | **Partly, by words; certain by map pin** | Words alone are right about 2 times in 3 at best (T099 + T100); repeats are now asked by the form's map pin and the agency's declarations. |
@@ -710,6 +711,33 @@ on their repeat/split signal alone (one engine cannot reach HIGH: the owner's op
 PDF still cannot be fetched from outside India (T001). With 45 days R01 would fire on more works but score
 the same, since the signal now follows the wait curve, not the clock.
 
+## T120 (3 Oct 2026): timing facts for the Time & Rules agent, on the dashboard's sanction dates
+
+Measured for the four-agent plan ([`plans/T120-four-agents.md`](../plans/T120-four-agents.md) §8) by
+`data/trial/four_agents_timing.py` → `results/four_agents_timing.txt` / `.json` (aggregates only). The dashboard
+tables of 2 Oct 2026 carry real sanction dates, which the research export does not.
+
+- **The 75-day clock is broken by most works.** Of 15,662 works with a recommendation and a sanction date (recommended
+  8 Jul 2024 – 2 Oct 2025), the median wait is **90 days** (p10 21, p90 256); **9,401 (60.0%)** waited past 75 days
+  and 11,928 (76.2%) past 45 (before any election-code days are taken off). A late sanction is an office fact, not a
+  work's fraud: as a flag it would put most works in the queue.
+- **Some works are "finished" impossibly fast.**
+  - Of 11,577 works with both a sanction and a completion date, **832 (7.2%)** are recorded complete within 7 days of
+    sanction.
+  - Among 5,038 constructions, **195 of Rs 5 lakh or more** are complete within 7 days.
+  - One community hall in ten is complete within 1.3 days of sanction, and 20.3% within 30 days.
+  - CCTV is legitimately quick: a median of 7 days.
+  - None is dated complete before its own sanction.
+- **One window per type would be wrong.** Sanction to completion has a median of 209 days, but the spread inside a
+  type is huge: the 90th percentile is 8 times the 10th for CC roads (56 to 462 days) and 367 times for community
+  halls. The amount barely separates them: CC roads have a median of 167, 209 and 217 days under Rs 3 lakh, at
+  Rs 3–10 lakh, and at Rs 10 lakh+. The window must come from each work's own size and estimated time (plan §8.2).
+- **Completion evidence today:** 9,300 of 36,508 completed works (25.5%) carry no picture at all. The portal's own
+  stages for sanctioned works include a "Time Estimation" step (Physical Inspection 3,506, Sanction 512, Vendor Identification 474, Work
+  Completed 262, Work partially Completed 237, Time Estimation 9).
+- **Caveat:** build times come from works finished by the snapshot, so slow works are under-counted; the fast end,
+  which the "too fast" question uses, is not affected.
+
 ## T080 (1 Oct 2026): the planted-anomaly test, 50 known problems run blind
 
 `data/trial/planted_test.py` → `results/planted_test.json`, `planted_test_rows.csv`. 50 fakes built from real
@@ -1206,6 +1234,107 @@ Works filed together (the same wording, MP and day) still show as one case in th
 - queue precision is 0.946, and ordinary works queued 0.1%.
 
 Record-only kinds (prices raised on a record, repeats and repairs by words) stay planted with no engine meant for them.
+
+## T121–T125 (4 Oct 2026): the four agents, built and measured
+
+The owner's four agents (plan [`plans/T120-four-agents.md`](../plans/T120-four-agents.md)): **Cost, Duplicate Work,
+Time & Rules, Site Progress**, a quarter of the weight each. Guideline Compliance, Fund Flow, Office Patterns,
+Paperwork and Photo Evidence are retired (their code stays as libraries; Time & Rules reuses the timing rules).
+
+**Cost: every line, then the whole estimate (T121).** Each confirmed line of the agency's form gets a fair rate: the
+state's Schedule of Rates item it cites, else what 3+ other agencies in the district paid on 5+ forms of the last six
+months (never the agency's own; capped at the SoR rate + 15%), else the SoR rate of the material. Each quantity is held
+to what the stated size needs + 10%. The whole estimate is asked about only when 60%+ of the money could be priced and
+the gap is 15%+ **and** Rs 50,000+. Script `data/trial/cost_whole_trial.py` → `results/cost_whole_trial.txt`, 1,000
+synthetic CC-road forms per cell (the honest spread around the fair rate is an assumption, not a measurement):
+
+| Fair rate from | Honest spread | Honest forms asked | Every line +20% asked | Every line +10% asked | One line ×2 (cement) |
+|---|---|---|---|---|---|
+| the Schedule of Rates | 5% | 0.0% | 94.2% | 2.0% | 100% |
+| the Schedule of Rates | 10% | 0.1% | **82.5%** | 16.8% | 96.6% |
+| the Schedule of Rates | 15% | **2.4%** | 70.3% | 24.7% | 89.1% |
+| the district's rates | 5% | 0.0% | 93.1% | 0.8% | 100% |
+| the district's rates | 10% | 0.0% | **91.5%** | 29.0% | 98.8% |
+| the district's rates | 15% | **3.3%** | 79.9% | 33.5% | 95.3% |
+
+- The plan's target (§14: 9 in 10 padded by 20%+ caught, at most 2 in 100 honest asked) is **met at a 5% spread, and
+  at 10% with district rates; missed at 10% with SoR rates (82.5%) and at a 15% spread (2.4–3.3% honest asked)**.
+  The real spread is unknown until real forms come in; the margins stay starting values (T098).
+- Padding the **quantity** (cement ×1.5) moves the whole estimate too little to be asked (5–39%), so the separate
+  quantity question stays: whole or quantity together catch it **100%**, and honest forms get the quantity question
+  **0%**.
+- Every Schedule of Rates line waits on T096 (the SoR files are not loaded yet); until then a line is priced only from
+  district rates, which need 5+ forms from 3+ other agencies. With no real forms yet, the whole estimate answers "not
+  judged" on every real work today, and the per-unit price question (T099) still runs.
+
+**Time & Rules (T122).** One agent from R01 (the 75-day clock, election-code days left out), R06 (impossible dates),
+R13 and R14 (constructions complete within days), plus:
+- `SANCTIONED_LATE`: a fact about the office, risk 0.05. On the dashboard it fires on **9,401** works (60% of the 15,662
+  with both dates, T120) and never queues on its own (scores 0.05).
+- **The comfort window** from the form's estimated time to completion. The estimate is first held between the
+  shortest believable time for the kind of work (`reference/time_floors.json`: 7 days for roads, drains, walls, ponds
+  and similar, the measured R14 line; 21 days for buildings, by design from concrete curing, IS 456) and the longest
+  usual time (eSAKSHI's 90th percentile for the type, `reference/time_bands.json`, 453 days over all works). The early
+  line is the larger of the floor and a quarter of the accepted estimate; the late line adds half the estimate (at least
+  61 days), the declared monsoon months and any recorded extension.
+- `FINISHED_TOO_FAST` (risk 0.6) only for a construction of Rs 3 lakh+ finished before the early line **with no site
+  video showing the work**; `PAST_PROMISED_TIME` 0.2, or 0.4 when the last three site videos show no change. Both are
+  at the 1-in-4 prior until read by eye. 26 unit tests, including both lines' edges, padded and too-short estimates,
+  lost months, extensions and damaged forms.
+- On the dashboard none of the window's findings can fire yet (no real work has a form), so R13/R14 still ask, as
+  before.
+
+**Site Progress v3 (T123 + T124).** Monthly site videos filmed in the capture page at the site's marked viewpoints,
+sealed (SHA-256) when filming stops; read once by a job on a machine with OpenCV, which keeps blurred frames and readings
+and deletes the video. Findings: footage seen before (3+ frames in order), the same place as another undeclared work
+(40+ matching points), not filmed at this site (GPS **and** views both), the claim not shown twice in a row, complete
+not shown, already built at the first visit. A dark, unsealed or not-in-app video is never a finding: the visit is not
+accepted.
+- The video readers on drawn scenes (`tests/video/`, 14 tests): an honest month with no building matches its
+  viewpoints and reads "no change"; a wall built between visits reads "changed"; the same video uploaded again reads as
+  reused footage, a new film of the same site does not; another site's video does not match; this site filmed for
+  another work reads "same place"; a phone held still while the picture moves (a screen filmed) is not consistent; an
+  edited file breaks the seal.
+- **End to end** (`data/trial/capture_e2e.py` → `results/capture_e2e.txt`): headless Chromium films a made-up site
+  through a fake camera, through the engine, a local storage stand-in and the video job. Hall H1's first and monthly
+  visits match 5 of 5 viewpoints and read "changed"; H1's first video filed again for hall H2 reads **42 reused frames**
+  and H1's place (875 matching points), and Site Progress asks about both; H1 raises nothing.
+- Not yet measured on real sites: plan §14's field trial (T126, 3–5 real works, three months, planted tricks).
+
+**The queue with four agents (T125).** The dashboard's 40,935 works (`dashboard_trial.py --tag t125_after`, against
+`t099_after`):
+
+| | Before (seven engines) | After (four agents) |
+|---|---|---|
+| CRITICAL / HIGH / MEDIUM | 8 / 431 / 1,231 | **2 / 215 / 342** |
+| Review queue | 439 | **217** |
+
+- **In the queue now:** 185 constructions recorded complete within a week of sanction (R14, read right 25 of 25) and 34
+  pieces of the 14 strict split groups (12 of 14 read as one job); 2 carry both. The same 320 R14 works and the same
+  34 split pieces fire as before (compared work by work in `_flags.json`).
+- The other 135 R14 works are graded low (LOW), as before.
+- **What left:** the queue's share from checks the four agents no longer make (in `t099_after`: R12 big sums that name
+  nothing fired on 161 works, R07 possibly not allowed on 63, office price habits on 1,311).
+- MEDIUM is now exactly the 342 works still waiting for sanction past 75 days (R01); never queued alone.
+
+**The test countries** (`synthetic_eval.py --tag t125`, seeds 11–13, 61,077 made-up works, against `agents5`):
+
+| | Before | After |
+|---|---|---|
+| Review queue | 207 | **101** |
+| Queue precision (queued works that are planted problems) | 0.70 | **1.00** |
+| Ordinary works queued | 0.11% | **0.0%** |
+| Planted problems caught by the engine meant for them | 73.7% | 20.3% |
+
+- The fall in "caught" is by design: the planted prohibited works, outside-area ceilings, vague big sums and office
+  price habits are no longer checked (0%), and prices or repeats from the record's words alone were dropped in T099 +
+  T100.
+- What is still checked: R13 built in days **100%** caught and queued; R06 impossible dates 100% caught, 67% queued (an
+  office's bulk entry looks the same and is never queued: 211 of 211 such works stay out); an office closing works in
+  2–20 days 37% (only those within R13's line); map-pin repeats and declared rebuilds **100%** (MEDIUM: one finding at
+  the 1-in-4 prior until read); splits 33% / 28% (only those whose every piece is 96%+ of the limit).
+- Every look-alike stays out of the queue: 0 of 5,694 temple landmarks, 1,044 schools named "Mandir", 1,343 batches
+  for different villages, 300 opposite sides of one road and the map-pin look-alikes.
 
 ## Bugs and data problems found along the way
 

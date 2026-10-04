@@ -5,7 +5,7 @@ import { api, type Summary } from "@/lib/api";
 import { AGENT_ORDER, agentMeta } from "@/lib/format";
 
 const STEPS = [
-  { n: 1, title: "Work enters DRISHTI", text: "Records, progress claims and site photos come in.", color: "var(--inputs)" },
+  { n: 1, title: "Work enters DRISHTI", text: "Records, the agency's cost estimate form and monthly site videos come in.", color: "var(--inputs)" },
   { n: 2, title: "The checkers, in parallel", text: "Each independently checks for a different kind of problem.", color: "var(--navy)" },
   { n: 3, title: "Risk fusion", text: "Combine the checks into the chance a work is worth a look, using how often each kind of flag proved right when read by eye, with the top three reasons.", color: "var(--fusion)" },
   { n: 4, title: "Risk review", text: "Rank works Low, Medium, High or Critical, and queue High and Critical for a look.", color: "var(--medium)" },
@@ -13,14 +13,10 @@ const STEPS = [
 ];
 
 const FACETS: Record<string, string[]> = {
-  compliance: [
-    "Each MPLADS guideline rule written as a check with its paragraph number",
-    "Late sanctions, overdue works, impossible dates, missing key data, big sums that do not say what or where, buildings \"finished\" in days",
-    "Works that may not be allowed under the guidelines are marked \"verify\"",
-  ],
   cost_estimate: [
     "Reads the implementing agency's cost estimate form: size, specification and every expense line",
-    "Asks only when a confirmed quantity is far above what the size needs, or the price is far above the same standard item here and above the MP's amount",
+    "Prices every line at a fair rate: the state's Schedule of Rates item, or what 3+ other agencies in the district paid on 5+ recent forms (never the agency's own), and a fair quantity for the stated size",
+    "Then judges the whole estimate: asked only when it is at least 15% and Rs 50,000 above the fair price, so one odd line or a small rounding never counts",
     "A work with no form is not judged: an amount alone does not say what is built",
   ],
   dup_split: [
@@ -29,25 +25,17 @@ const FACETS: Record<string, string[]> = {
     "One job cut into pieces to stay under the Rs 5 or 10 lakh limit, asked only when every piece sits within 4% under it (12 of 14 such groups read as one job)",
     "Works that read alike are shown as notes for the agency to answer, never counted: words alone are right about 2 times in 3",
   ],
-  delay: [
-    "Works recommended under a Lok Sabha term that has ended and still not sanctioned",
-    "Offices holding far more unsanctioned recommendations than their district",
-    "Counts from the record only: no forecasts",
+  time_rules: [
+    "The 75-day sanction clock: a late sanction is told as a fact about the office, with little weight (6 in 10 of the 15,662 works with both dates pass it)",
+    "A comfort window from the agency's own estimated time to completion, checked first against the usual time for that kind and size of work",
+    "Finished before the window opens is asked only when no site video shows the work; past the window, after allowing monsoon months and approved extensions, is asked",
+    "Dates that cannot be true, and constructions recorded complete within days of their sanction",
   ],
-  office_patterns: [
-    "An office that prices most of its works just under the Rs 5 or 10 lakh limit",
-    "An office that records constructions complete within a week of their sanction",
-    "A habit of the office, never of an MP: it adds weight to a work's own findings",
-  ],
-  paperwork: [
-    "Read the work's own utilisation certificates: sanction date, payments, status",
-    "Sanctioned late or before the recommendation; papers of another work",
-    "The vendor's share of the district's certified works, by vendor code (a fact)",
-  ],
-  photo_evidence: [
-    "The same photo or paper attached to another work",
-    "The photo's printed GPS stamp inside the work's own district",
-    "A photo dated before the MP recommended the work",
+  site_progress: [
+    "A short video each month, filmed in the app at the same marked spots on the site, with GPS and the phone's motion",
+    "Judges the agency's own claim (\"walls up to lintel\") against what the video shows: shown, not shown, or can't tell",
+    "Asks when footage was used before, when the site is another work's, or when both GPS and the views say it was not filmed here",
+    "A blurry, dark or uploaded-from-gallery video is never a finding: the visit is simply not accepted and filmed again",
   ],
 };
 

@@ -20,8 +20,10 @@ WORKS = [
     # (R01, T054): two engines agree -> in the queue
     ("W-COSTLY", "639", "Anand", "ROAD_CC", 1_000_000, "CC road in village Vasad",
      "RECOMMENDED", date(2024, 9, 1)),
+    # recorded complete two days after its sanction (Time & Rules, R14: 25 of 25 read right):
+    # one well-measured finding -> in the queue (T125)
     ("W-OTHER-DISTRICT", "640", "Kheda", "ROAD_CC", 2_500_000, "CC road near Kheda market",
-     "SANCTIONED", date(2026, 1, 10)),
+     "COMPLETED", date(2026, 1, 10)),
     ("W-NO-TYPE", "639", "Anand", None, 300_000, "Letter as per attached",
      "RECOMMENDED", date(2026, 2, 1)),
 ]
@@ -38,6 +40,8 @@ def api_db(migrated_url, monkeypatch):
                 "district_name, work_type_code, description, amount, status, "
                 "recommended_date) VALUES (%s,'REAL','24','Gujarat',%s,%s,%s,%s,%s,%s,%s)",
                 (wid, dl, dn, wt, desc, amt, status, rec))
+        con.execute("UPDATE works SET sanction_date = '2026-02-01', completed_date = '2026-02-03' "
+                    "WHERE work_id = 'W-OTHER-DISTRICT'")
         con.execute("INSERT INTO cohort_stats VALUES "
                     "('type_district','ROAD_CC','639',709,4.9,5.204,5.5,0.2),"
                     "('type','ROAD_CC','',49000,4.9,5.2,5.5,0.2)")

@@ -39,13 +39,15 @@ from __future__ import annotations
 import time
 
 from drishti.agents.contract import AgentResult, Finding, Status
-from drishti.agents.cost_estimate import reference
+from drishti.agents.cost_estimate import rates, reference, whole
 from drishti.cost_form import catalog, norms
 from drishti.cost_form.validate import validate
 
 AGENT = "cost_estimate"
-VERSION = "cost-estimate-0.1.0"
-QUESTION = "Is the agency's cost estimate right for this size of work here?"
+VERSION = "cost-estimate-0.2.0"
+QUESTION = ("Is every line of the estimate fairly priced for this district, and is the whole "
+            "estimate fair?")
+WHOLE_RISK = 0.6
 QUANTITY_MARGIN = 1.25      # a confirmed quantity this far above what the size needs
 PRICE_MARGIN = 1.25         # price per unit this far above the standard item's 98th percentile
 MP_MARGIN = 0.10            # the estimate this far above the MP's amount (the form's own rule)
@@ -58,6 +60,10 @@ REF_UNIT_SIZE = {"per light": "nos", "per mast": "nos", "per unit": "nos", "per 
 SPEC_WORDS = {"led_w": "LED {:g} W", "battery_wh": "battery {:g} Wh", "panel_wp": "panel {:g} Wp",
               "pole_height_m": "pole {:g} m", "mast_height_m": "mast {:g} m",
               "lamps_per_mast": "{:g} lamps", "lamp_w": "lamps of {:g} W"}
+
+
+HI_WHOLE = ("पूरा अनुमान इस आकार और इस ज़िले के उचित मूल्य से {share} अधिक है; अंतर बनाने वाली "
+            "पंक्तियाँ विवरण में हैं। स्वीकृति से पहले जाँच करें।")
 
 
 def _rs(v: float) -> str:
@@ -201,10 +207,45 @@ def assess(work: dict, ctx) -> AgentResult:
                      f"recommended {_rs(mp)}"
                      f"{f' (reason given: {reason!r})' if reason else ''}; on its own that is "
                      "not a question: an MP's figure is a first guess.")
-    limits.append("Line-by-line rates are not checked yet: they need the state's Schedule of "
-                  "Rates (T096).")
+
+    # 3. every line against its fair rate, then the whole estimate (T121)
+    sor = data.get("sor") if "sor" in data else rates.load_sor(work.get("state_name"))
+    meta = work.get("cost_form_meta") if isinstance(work.get("cost_form_meta"), dict) else {}
+    when = rates._form_month(form, as_of)
+    w = whole.judge(form, c, work_type, sor, data.get("rates"), work.get("district_lgd"),
+                    str(meta.get("saved_by") or work.get("work_id")), str(work.get("work_id")),
+                    when)
+    if w.lines:
+        compared = True
+    if w.verdict == "CANT_CHECK":
+        limits.append(f"Only {w.coverage:.0%} of the money is in lines with a fair rate or a "
+                      f"known need (at least {whole.MIN_COVERAGE:.0%} is needed), so the whole "
+                      "estimate was not judged.")
+    else:
+        # the whole estimate is judged on rates and quantities together. A confirmed quantity
+        # far beyond what the size needs stays its own question: it is a certain fact, and on
+        # its own it can be too little money to move the total (cost_whole_trial.py: a half
+        # again of the cement adds about a tenth to a road's estimate)
+        if w.verdict == "ASK":
+            findings.append(Finding("ESTIMATE_ABOVE_FAIR_PRICE", whole.sentence(w), hard=False,
+                                    risk=WHOLE_RISK,
+                                    evidence={"gap": round(w.gap, 2),
+                                              "gap_share": round(w.gap_share, 4),
+                                              "fair_total": round(w.fair_grand, 2),
+                                              "coverage": round(w.coverage, 4),
+                                              "message_hi": HI_WHOLE.format(
+                                                  share=f"{w.gap_share:.0%}")}))
+        else:
+            notes.append(f"The whole estimate is {_rs(w.grand)} against a fair "
+                         f"{_rs(w.fair_grand)} ({w.gap_share:+.1%}), pricing {w.coverage:.0%} "
+                         "of the money: within the fair band.")
+    if sor is None:
+        limits.append("The state's Schedule of Rates is not loaded yet (T096): lines are compared "
+                      "with other agencies' recent rates in the district where there are enough, "
+                      "and quantities with what the size needs.")
     evidence = {"grand_total": grand, "mp_amount": mp, "mp_gap": c["mp_gap"],
                 "reason_differs_from_mp": reason, "sites": sites_ev, "notes": notes,
+                "whole": w.to_json(),
                 "reference": {k: (ref or {}).get(k) for k in ("state", "source", "years")}}
     if findings:
         findings.sort(key=lambda f: -f.risk)
@@ -212,7 +253,7 @@ def assess(work: dict, ctx) -> AgentResult:
                        findings=findings, limitations=limits, **evidence)
     if not compared:
         return _result(Status.NOT_ASSESSABLE, "Could not compare this estimate with anything "
-                       "yet: " + " ".join(limits[:-1] or limits) + " This is not a clean chit.",
+                       "yet: " + " ".join(limits) + " This is not a clean chit.",
                        t0, limitations=limits, **evidence)
     return _result(Status.ASSESSED, " ".join(notes) or "The quantities fit the size of the work.",
                    t0, verdict="ESTIMATE_FITS_SIZE", limitations=limits, **evidence)

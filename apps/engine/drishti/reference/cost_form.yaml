@@ -491,7 +491,7 @@ timing:
   - {id: estimate_month, label: "Prices are as of (month and year)", kind: month}
   - {id: sor_edition, label: "Schedule of Rates used (state, year)", kind: text, when_any_line_basis: sor}
   - {id: start_month, label: "Expected start (month and year)", kind: month}
-  - {id: duration_months, label: "Expected duration", kind: number, unit: month, hard: [0.25, 120], soft: [0.5, 36]}
+  - {id: duration_months, label: "Estimated time to completion", kind: number, unit: month, hard: [0.25, 120], soft: [0.5, 36]}
 
 totals:
   - {id: total_as_per_document, label: "Grand total in the estimate document (Rs)", kind: number, hard: [1, 10000000000]}

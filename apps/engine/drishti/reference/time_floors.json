@@ -1,0 +1,18 @@
+{
+  "note": "The shortest believable time to build, per family of the cost estimate form (T122, plan T120 §8.2). A finish faster than the early line is asked about only for these families, only at Rs 3 lakh or more (the R14 line), and only when the site videos do not show the work being built. Families not listed (purchases, installations, lights, borewells, pipelines) are never asked about a fast finish.",
+  "min_amount_rs": 300000,
+  "families": {
+    "road":       {"days": 7, "basis": "measured", "source": "R14: a construction of Rs 3 lakh+ recorded complete within 7 days of its sanction, 25 of 25 read by eye as worth checking (reliability.json)"},
+    "path":       {"days": 7, "basis": "measured", "source": "R14 line, as road"},
+    "drain":      {"days": 7, "basis": "measured", "source": "R14 line, as road"},
+    "wall":       {"days": 7, "basis": "measured", "source": "R14 line, as road"},
+    "embankment": {"days": 7, "basis": "measured", "source": "R14 line, as road"},
+    "toilet":     {"days": 7, "basis": "measured", "source": "R14 line, as road"},
+    "shelter":    {"days": 7, "basis": "measured", "source": "R14 line, as road"},
+    "crossing":   {"days": 7, "basis": "measured", "source": "R14 line, as road"},
+    "pond":       {"days": 7, "basis": "measured", "source": "R14 line, as road"},
+    "check_dam":  {"days": 7, "basis": "measured", "source": "R14 line, as road"},
+    "tank":       {"days": 7, "basis": "measured", "source": "R14 line, as road"},
+    "building":   {"days": 21, "basis": "design", "source": "IS 456:2000: every concrete pour is kept wet at least 7 days (cl. 13.5.1) and the props under a roof slab stay at least 7 days (cl. 11.3); a building has at least a foundation, a frame or walls, and a roof, poured one after another"}
+  }
+}

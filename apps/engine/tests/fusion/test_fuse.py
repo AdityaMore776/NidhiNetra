@@ -28,22 +28,18 @@ def _all(*results):
     return list(results) + [not_built(a, "q") for a in weights() if a not in names]
 
 
-def test_blueprint_weights_come_from_the_registry():
+def test_weights_come_from_the_registry():
     w = weights()
-    assert w["compliance"] == 0.30 and w["cost_estimate"] == 0.20 and w["dup_split"] == 0.20
-    # shown, not counted: Fund Flow's wait is R01's, the evidence engines have pilot evidence
-    # only; the outlier slot was replaced by Compliance R12/R13 (T053)
-    assert "outlier" not in w and w["delay"] == 0.0
-    assert w["paperwork"] == 0.0 and w["photo_evidence"] == 0.0
-    # an office's habit corroborates a little (2 Oct 2026)
-    assert w["office_patterns"] == pytest.approx(0.10)
+    # T125: the four agents count the same; the retired engines are not in the registry at all
+    assert w == {"cost_estimate": 0.25, "dup_split": 0.25, "time_rules": 0.25,
+                 "site_progress": 0.25}
 
 
 def test_score_is_the_weighted_sum_and_parts_add_up_exactly():
-    f = fuse(_all(_r("compliance", 0.6), _r("cost_estimate", 0.5), _r("dup_split", 0.85)), [])
-    assert f.score == pytest.approx(0.30 * 0.6 + 0.20 * 0.5 + 0.20 * 0.85)
+    f = fuse(_all(_r("time_rules", 0.6), _r("cost_estimate", 0.5), _r("dup_split", 0.85)), [])
+    assert f.score == pytest.approx(0.25 * 0.6 + 0.25 * 0.5 + 0.25 * 0.85)
     assert sum(p.contribution for p in f.parts) == pytest.approx(f.score, abs=1e-12)
-    assert [p.source for p in f.parts] == ["compliance", "dup_split", "cost_estimate"]
+    assert [p.source for p in f.parts] == ["dup_split", "time_rules", "cost_estimate"]
 
 
 def test_an_engine_shown_but_not_counted_adds_nothing():
@@ -66,56 +62,50 @@ def test_bands(score, band):
     assert band_of(score) == band
 
 
-def test_one_guideline_delay_alone_is_medium_two_engines_agreeing_is_high():
-    alone = fuse(_all(_r("compliance", 0.6)), [])            # 18 of 100
+def test_one_timing_signal_alone_is_medium_two_engines_agreeing_is_high():
+    alone = fuse(_all(_r("time_rules", 0.6)), [])                           # 15 of 100
     assert alone.band == "MEDIUM"
-    weak = fuse(_all(_r("compliance", 0.6), _r("dup_split", 0.15)), [])     # 21: bulk order
+    weak = fuse(_all(_r("time_rules", 0.6), _r("dup_split", 0.15)), [])     # 19
     assert weak.band == "MEDIUM"
-    two = fuse(_all(_r("compliance", 0.6), _r("cost_estimate", 0.35)), [])    # 25
+    two = fuse(_all(_r("time_rules", 0.6), _r("cost_estimate", 0.35)), [])  # 24
     assert two.band == "HIGH"
-    repeat = fuse(_all(_r("compliance", 0.6), _r("dup_split", 0.45)), [])   # 27: weak repeat
-    assert repeat.band == "HIGH"
-    strong = fuse(_all(_r("compliance", 0.6), _r("dup_split", 0.6)), [])    # 30 (T051 cut)
+    strong = fuse(_all(_r("time_rules", 0.6), _r("dup_split", 0.6)), [])    # 30
     assert strong.band == "CRITICAL"
-    split = fuse(_all(_r("compliance", 0.6), _r("dup_split", 0.8)), [])     # 34: under limit
-    assert split.band == "CRITICAL"
 
 
-def test_one_serious_rule_breach_lifts_to_high_two_to_critical_as_an_explicit_part():
-    one = fuse(_all(_r("compliance", 1.0, hard=True)), [])
-    assert one.score == pytest.approx(max(0.30, HIGH)) and one.hard_trigger == "compliance"
-    weak = fuse(_all(_r("cost_estimate", 0.1), _r("compliance", 0.3, hard=True)), [])
+def test_one_serious_breach_lifts_to_high_two_to_critical_as_an_explicit_part():
+    one = fuse(_all(_r("time_rules", 0.6, hard=True)), [])
+    assert one.score == pytest.approx(HIGH) and one.hard_trigger == "time_rules"
+    floor = next(p for p in one.parts if p.source == "floor")
+    assert floor.contribution == pytest.approx(HIGH - 0.25 * 0.6)
+    assert sum(p.contribution for p in one.parts) == pytest.approx(one.score, abs=1e-12)
+    weak = fuse(_all(_r("cost_estimate", 0.1), _r("time_rules", 0.3, hard=True)), [])
     assert weak.band == "LOW"        # a hard finding below 0.6 is not a serious breach
-    two = AgentResult(agent="compliance", status=Status.ASSESSED, verdict="V", risk=1.0,
+    two = AgentResult(agent="time_rules", status=Status.ASSESSED, verdict="V", risk=0.6,
                       confidence=0.9, hard=True, headline="h", version="t",
-                      findings=[Finding("A", "a", hard=True, risk=1.0),
-                                Finding("B", "b", hard=True, risk=1.0)])
+                      findings=[Finding("A", "a", hard=True, risk=0.6),
+                                Finding("B", "b", hard=True, risk=0.6)])
     f = fuse(_all(two), [])
-    # the rules alone give 0.30 = CRITICAL already; lift a lower one to check the part
-    low = fuse(_all(_r("cost_estimate", 0.6, hard=True), _r("dup_split", 0.6, hard=True)), [])
-    assert f.band == "CRITICAL"
-    assert low.band == "CRITICAL" and low.score == pytest.approx(CRITICAL)
-    floor = next(p for p in low.parts if p.source == "floor")
-    assert floor.contribution == pytest.approx(CRITICAL - (0.2 * 0.6 + 0.2 * 0.6))
-    assert sum(p.contribution for p in low.parts) == pytest.approx(low.score, abs=1e-12)
+    assert f.band == "CRITICAL" and f.score == pytest.approx(CRITICAL)
 
 
 def test_reasons_are_the_top_three_contributions_in_english_and_hindi():
-    comp = _r("compliance", 0.6, code="SANCTION_OVERDUE",
+    late = _r("time_rules", 0.6, code="SANCTION_OVERDUE",
               evidence={"message_hi": "स्वीकृति समय सीमा से अधिक लंबित है।"})
-    f = fuse(_all(comp, _r("cost_estimate", 0.4, code="ESTIMATE_ABOVE_STANDARD_AND_MP"),
-                  _r("dup_split", 0.6, code="REPEATED_WHILE_OPEN"), _r("delay", 1.0)), [])
-    assert [x["source"] for x in f.reasons] == ["compliance", "dup_split", "cost_estimate"]
-    assert f.reasons[0]["text_en"] == "compliance sentence"
+    f = fuse(_all(late, _r("cost_estimate", 0.4, code="ESTIMATE_ABOVE_STANDARD_AND_MP"),
+                  _r("dup_split", 0.5, code="REPEATED_WHILE_OPEN"), _r("delay", 1.0)), [])
+    assert [x["source"] for x in f.reasons] == ["time_rules", "dup_split", "cost_estimate"]
+    assert f.reasons[0]["text_en"] == "time_rules sentence"
     assert f.reasons[0]["text_hi"] == "स्वीकृति समय सीमा से अधिक लंबित है।"
     assert "चालू कार्य" in f.reasons[1]["text_hi"]          # engine template for the code
     assert all(x["source"] != "delay" for x in f.reasons)
 
 
 def test_limited_when_a_counted_engine_could_not_assess():
-    f = fuse(_all(_r("compliance", 0.0), _r("cost_estimate", 0.0, status=Status.NOT_ASSESSABLE),
+    f = fuse(_all(_r("time_rules", 0.0), _r("cost_estimate", 0.0, status=Status.NOT_ASSESSABLE),
                   _r("dup_split", 0.0)), [])
     assert f.limited is True
-    g = fuse(_all(_r("compliance", 0.0), _r("cost_estimate", 0.0), _r("dup_split", 0.0),
-                  _r("delay", 0.0, status=Status.NOT_APPLICABLE)), [])
-    assert g.limited is False       # fund flow is not counted
+    g = fuse(_all(_r("time_rules", 0.0), _r("cost_estimate", 0.0), _r("dup_split", 0.0),
+                  _r("site_progress", 0.0, status=Status.NOT_APPLICABLE),
+                  _r("delay", 0.0, status=Status.NOT_ASSESSABLE)), [])
+    assert g.limited is False       # NOT_APPLICABLE is not "could not check"; delay is retired

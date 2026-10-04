@@ -13,6 +13,8 @@ MPLAD Scheme. It checks every MPLADS work, flags the ones an officer should look
 
 ---
 
+> **Four agents (4 Oct 2026):** Cost, Duplicate Work, Time & Rules and Site Progress, each asking only about what is likely a real problem. Plan in plain words: [`docs/plans/T120-four-agents.md`](docs/plans/T120-four-agents.md).
+>
 > **Plan update (27 Sept 2026):** the build now follows the team's **NidhiNetra** blueprint — four engines (guideline compliance, cost, duplicate & split, delay) → one explained 0–100 risk score → alerts, role dashboards and a daily **Inspection Planner** → learning from field verdicts. Summary: [`docs/specs/2026-09-27-nidhinetra-blueprint.md`](docs/specs/2026-09-27-nidhinetra-blueprint.md).
 
 ## In one minute
@@ -36,7 +38,7 @@ MPLAD Scheme. It checks every MPLADS work, flags the ones an officer should look
 |---|---|
 | **Live web app** | Dashboard with India map, review queue, works search, work detail page with the agent cards and the score breakdown. Three roles (Ministry, District, Field), each seeing only what it should. |
 | **Real data** | All **2,09,993** real eSAKSHI works loaded and assessed. **1,524 works (0.73%)** in the review queue (High + Critical): works where two checks agree. 24 of 30 random queue works, read by eye, are worth checking. |
-| **Built engines** | **Guideline Compliance** (rules R01–R11, English + Hindi), **Cost** (the implementing agency's cost estimate form, checked against the same standard item in the district and the MP's amount; no form, no price judgment), **Duplicate Work** (the form's map pin against sanctioned works of the same kind, declared continuations, and one job cut into pieces just under a limit), **Delay Prediction** (shown, not counted: below its accuracy target), and the **0–100 risk score** with its top three reasons in English and Hindi. |
+| **Built engines** | The four agents (4 Oct 2026): **Cost** (every line of the agency's cost estimate form at a fair rate for the district, then the whole estimate; no form, no price judgment), **Duplicate Work** (the form's map pin against sanctioned works of the same kind, declared continuations, and one job cut into pieces just under a limit), **Time & Rules** (the 75-day sanction clock as an office fact, impossible dates, and a comfort window from the agency's own estimated time), **Site Progress** (monthly site videos filmed in the app, sealed, checked for reused footage, the wrong place and claims not shown), and the **0–100 risk score** with its top three reasons in English and Hindi. |
 | **Real-evidence trial** | Every planned agent was tried on **real evidence for 837 completed works** (905 files downloaded from eSAKSHI's public endpoints, 1,925 pages read). Results: [`docs/trial/FINDINGS.md`](docs/trial/FINDINGS.md). |
 
 ### Headline results from the real-data trial

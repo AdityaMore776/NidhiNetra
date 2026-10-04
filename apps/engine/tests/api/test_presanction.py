@@ -28,21 +28,24 @@ def test_a_work_already_recommended_in_the_district_is_amber(client):
     assert "questions, not findings" in r["advice"]
 
 
-def test_a_prohibited_work_is_red_with_the_guideline_reason(client):
-    # fusion v3 (2 Oct 2026): R07 flags were read worth a look 49 times in 58, so one such
-    # finding is more likely than not worth checking: the review band, so RED before sanction
-    r = _check(client, description="Construction of temple in village Sundarpur",
-               work_type_code="COMMUNITY_HALL").json()
+def test_a_piece_of_a_split_job_is_red_and_never_blocks(client, api_db):
+    # two sanctioned pieces just under the Rs 5 lakh limit at one place, and a third
+    # recommended now: the strictest split (12 of 14 read as one job cut up) -> RED (T125)
+    from datetime import date
+    with psycopg.connect(api_db) as con:
+        for i in range(2):
+            con.execute(
+                "INSERT INTO works (work_id, source, state_lgd, state_name, district_lgd, "
+                "district_name, work_type_code, description, amount, status, "
+                "recommended_date) VALUES (%s,'REAL','24','Gujarat','639','Anand','ROAD_CC',"
+                "'Construction of PCC Road in village Bakrol near primary school',490000,"
+                "'SANCTIONED',%s)",
+                (f"W-SPLIT-{i}", date(2026, 5, 20)))
+        con.commit()
+    r = _check(client, description="Construction of PCC Road in village Bakrol near primary school",
+               amount=490_000).json()
     assert r["colour"] == "RED"
-    assert any(x["code"] == "POSSIBLY_INADMISSIBLE" for x in r["reasons"])
-    assert "never blocks" in r["advice"]
-
-
-def test_above_the_outside_area_ceiling_is_red_and_never_blocks(client):
-    r = _check(client, is_outside_constituency=True, amount=3_000_000).json()
-    assert r["colour"] == "RED"
-    top = r["reasons"][0]
-    assert top["code"] == "OUTSIDE_AREA_CEILING" and top["serious"] and "para 2.9" in top["text"]
+    assert any(x["code"] == "SPLIT_JUST_UNDER_LIMIT" for x in r["reasons"])
     assert "never blocks" in r["advice"]
 
 

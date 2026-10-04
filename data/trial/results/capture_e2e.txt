@@ -1,0 +1,10 @@
+Site capture end to end (made-up scenes, fake camera, local storage)
+
+H1 First visit (h1_base): job ['read'], video deleted True, frames kept 5
+    readings {"sealed": true, "in_app": true, "quality_ok": true, "gps_inside": true, "views_match_site": null, "viewpoints_expected": 5, "viewpoints_matched": 5, "change": null, "reused_from": [], "same_place_as": [], "motion_consistent": null}
+H1 Monthly visit (h1_wall): job ['read'], video deleted True, frames kept 5
+    readings {"sealed": true, "in_app": true, "quality_ok": true, "gps_inside": true, "views_match_site": true, "viewpoints_expected": 5, "viewpoints_matched": 5, "change": "changed", "reused_from": [], "same_place_as": [], "motion_consistent": null}
+H2 First visit (h1_base): job ['read'], video deleted True, frames kept 5
+    readings {"sealed": true, "in_app": true, "quality_ok": true, "gps_inside": true, "views_match_site": null, "viewpoints_expected": 5, "viewpoints_matched": 5, "change": null, "reused_from": [{"frames": 42, "work_id": "H1", "visit_id": "060c0d21705848e38a54d642c8ba6c2f"}], "same_place_as": [{"inliers": 875, "work_id": "H1"}], "motion_consistent": null}
+Site Progress on H1: ASSESSED, findings []
+Site Progress on H2: ASSESSED, findings ['FOOTAGE_USED_BEFORE', 'SAME_PLACE_AS_ANOTHER_WORK']

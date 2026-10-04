@@ -56,17 +56,20 @@ work record ─► 2 DATA VALIDATION ─► 3 AGENTS (each returns an AgentResul
 | Module | Purpose |
 |---|---|
 | `agents/contract.py` | `AgentResult` / `Finding` / `Status`; the banned-word guard; `not_built()` placeholder |
-| `agents/registry.py` | finds engines by folder (`agents/<id>/engine.py`); the five blueprint slots and their weights |
-| `agents/compliance/` | **Guideline Compliance**: rules R01–R14 from `reference/rules.json` (English + Hindi), eligibility v2 reader |
+| `agents/registry.py` | finds engines by folder (`agents/<id>/engine.py`); the four agents (`CORE`, a quarter of the weight each, T125) and the retired ones (`RETIRED`: stored results still read by name) |
+| `agents/time_rules/` | **Time & Rules** (T122): R01 (the 75-day clock, election-code days left out), R06 (impossible dates), R13/R14 (complete within days) from the compliance library; `SANCTIONED_LATE` as an office fact (risk 0.05, never queues alone); `window.py` the comfort window from the form's estimated time to completion, held between the shortest believable time (`reference/time_floors.json`) and eSAKSHI's 90th percentile for the type (`reference/time_bands.json`, `data/build_time_bands.py`); `FINISHED_TOO_FAST` (no site video shows the work) and `PAST_PROMISED_TIME` |
+| `agents/compliance/` | the retired Guideline Compliance (T125): rules R01–R14 from `reference/rules.json` (English + Hindi), kept as the library Time & Rules reads |
 | `agents/statistical/` | the retired Cost Anomaly (T099: no longer registered; `agent.py` kept so the trials behind FINDINGS re-run). Still shared: `scope.py` (what a description covers: goods/works, bundles, counts), `cohort.py` (peer statistics store), `text.py` (length reading), `unit_rate.py` (road ₹/m), `price_model.py` (word-price model, applied to any description, T051), `agent.py` (like-for-like peers + the price model must agree) |
 | `agents/dup_split/` | **Duplicate Work** (T100): `repeat.py` (`RepeatIndex`, built once by the batch, per district by the API) finds sanctioned works of the same kind at the cost form's map pin (50 m; linear works by both ends), the work the form declares it continues, look-alikes by words (notes), and the strictest split (every piece 96–100% of a limit); `match.py` holds the word readers (place words, sides, numbers, Hindi/English synonyms) and the grouping it reuses |
-| `agents/delay/` | **Fund Flow** (stored id `delay`): ended-term works still unsanctioned, office sanction backlog against its district (`backlog.py`, counted live); the delay forecast was removed in T053; shown, not counted |
+| `agents/delay/` | the retired Fund Flow (T125; stored id `delay`): library code only |
 | `records.py` | one reading of a work's record (T056): every column the engines read checked once where the indexes, the cohort statistics and the orchestrator take a work (text as written, numbers from any number type or "1,00,000", ISO and Indian day-first dates, a clear yes/no), malformed values dropped, never guessed, so no row can stop the batch; a clean row passes through uncopied |
 | `agents/evidence.py` | one reading of a work's evidence facts for every engine and index (T056): files, stamps, certificates, payments, fingerprints and photo readings checked once; malformed parts dropped, never guessed, so no evidence row can stop an engine or the batch |
-| `agents/office_patterns/` | **Office Patterns** (2 Oct 2026): `index.py` counts per office, live from all works, how many works are priced just under a limit (96-100% of ₹5 lakh, ₹10 lakh, ...) and how many constructions are recorded complete within 7 days of sanction; an office is "routine" only when its Wilson lower bound is at least 3× the national share (30+ priced works, 15+ built). `agent.py`: a work just under a limit from a routine office gets `PRICED_AT_LIMIT` (risk 0.30, weight 0.10: corroborates, never queues alone); the office's after-sanction habit is told as a fact (R14 counts the work itself) |
-| `agents/site_progress/` | **Site Progress** v2 (T510), **off** unless `DRISHTI_SITE_PROGRESS=on`: `claims.py` (the record's own words), `observe.py` (the stored per-photo reading from `reference/site_concepts.yaml`), `plaque.py` (MPLADS plaque and its dates from the photo's text), `readers.py` (offline only: a local CLIP model, an optional Gemini reader with a daily cap and cache), `agent.py` (the rules). Readings are made by `data/build_site_observations.py` |
-| `agents/paperwork/`, `agents/photo_evidence/` | **Paperwork** (certificates vs the portal), **Photo Evidence** (reuse, place, time of photos); shown, not counted (see AGENT-CATALOG) |
-| `agents/cost_estimate/` | **Cost** (Cost v3, T097; the Cost slot since T099): reads the agency's cost estimate form (`work["cost_form"]`); `reference.py` builds price-per-unit groups from a state's real works (`reference/cost/<state>.json`, by `data/build_cost_reference.py`) and compares only tight groups priced in the form's own unit of size; `agent.py` asks about a confirmed quantity above what the size needs (`cost_form/norms.py`) or a price above the standard item **and** the MP's amount. Plan `docs/plans/T097-cost-agent-v3.md` |
+| `agents/office_patterns/` | the retired Office Patterns (T125; its index still feeds `GET /dashboard/office-habits`), as built on 2 Oct 2026: `index.py` counts per office, live from all works, how many works are priced just under a limit (96-100% of ₹5 lakh, ₹10 lakh, ...) and how many constructions are recorded complete within 7 days of sanction; an office is "routine" only when its Wilson lower bound is at least 3× the national share (30+ priced works, 15+ built). `agent.py`: a work just under a limit from a routine office gets `PRICED_AT_LIMIT` (risk 0.30, weight 0.10: corroborates, never queues alone); the office's after-sanction habit is told as a fact (R14 counts the work itself) |
+| `agents/site_progress/` | **Site Progress** v3 (T124): `visits.py` reads a work's site videos (`work["site_visits"]`, readings made once by the video job), `sitemap.py` the site from the form's map pins (a compact site with a radius, or a linear one in 50 m stretches; 20 m GPS margin), `agent.py` the six checks (footage seen before, the same place as another undeclared work, not filmed here by GPS **and** views, the claim not shown twice in a row, complete not shown, already built at the start); a visit that is unsealed, not filmed in the app or whose motion disagrees with the picture is not accepted (a note, never a finding). `photos.py` is v2 (photos, CLIP, plaque OCR), kept for the photo trial; `readers.py` the optional Gemini reader (daily cap, cache) |
+| `video/` | the site video job (T124), run **outside** the engine on a machine with OpenCV 4 (`data/requirements-video.txt`): `reader.py` (frames every 0.5 s, 256-bit fingerprints, ORB + RANSAC view matching, change at the same view, optical flow, face blurring that fails closed), `visit.py` (one video → readings and kept frames), `job.py` (uploaded visits → read, video deleted, blurred viewpoint frames kept; `data/build_site_visits.py`) |
+| `capture.py`, `api/site_visits.py` | site visits (T123): a capture token signed with `DRISHTI_CAPTURE_SECRET` (7 days, bound to the visit and the person), Supabase Storage signed upload/download links with the service role key (`LocalStore` for trials); routes answer 503 until the secret, storage and migration 014 exist |
+| `agents/paperwork/`, `agents/photo_evidence/` | retired (T125): Paperwork (certificates vs the portal), Photo Evidence (reuse, place, time of photos); library code only |
+| `agents/cost_estimate/` | **Cost** (Cost v3, T097; the Cost slot since T099): reads the agency's cost estimate form (`work["cost_form"]`); `reference.py` builds price-per-unit groups from a state's real works (`reference/cost/<state>.json`, by `data/build_cost_reference.py`) and compares only tight groups priced in the form's own unit of size; `agent.py` asks about a confirmed quantity above what the size needs (`cost_form/norms.py`) or a price above the standard item **and** the MP's amount. T121: `rates.py` gives each confirmed line a fair rate (its SoR item from `reference/cost/sor/<state>.json`, else `RateIndex`: 3+ other agencies' rates in the district on 5+ forms of the last 183 days, never its own, capped at SoR + 15%), `whole.py` the fair estimate (quantities held to the size + 10%) and `ESTIMATE_ABOVE_FAIR_PRICE` when 60%+ of the money is priced and the gap is 15%+ and Rs 50,000+. Plans `docs/plans/T097-cost-agent-v3.md`, `T120-four-agents.md` §6 |
 
 **One brain per engine (T051).** An engine's reasoning is a function of the work plus stored tables or
 coefficients (`cohort_stats`, `engine_models`, `reference/*`). No engine reads an answer stored
@@ -142,9 +145,11 @@ highest-priority work ("One case: N alike works, shown once").
 CRITICAL ≥ 0.30 · HIGH ≥ 0.22 · MEDIUM ≥ 0.15). Both versions run through the same tests
 (`tests/fusion/test_fuse.py` pins v2, `test_calibrated.py` checks v3).
 
-**Not counted:** Fund Flow (its wait is R01's), Paperwork and Photo Evidence (pilot evidence only) are shown
-on the work page with weight 0. Office Patterns counts with a small weight: an office habit corroborates a
-work's own findings and never queues a work alone (`design` entry, 0.20).
+**The four agents (T125):** Cost, Duplicate Work, Time & Rules and Site Progress count, a quarter of the
+weight each. A new kind of finding counts at the 1-in-4 prior until it is read by eye, so none of the new checks
+(the whole estimate, the comfort window, the site videos) can queue a work alone yet; a late sanction is a
+`design` entry of 0.05 and never queues. The retired engines no longer run; their stored results read by name
+until the next batch replaces them.
 
 ## 5. Record checks (inside Guideline Compliance)
 
@@ -173,6 +178,7 @@ All routes are under `/api/v1` and (except health) need a signed-in user. Intera
 | `GET /works/{work_id}` | one work with its full assessment (agent cards, parts, validation); rebuilt on the fly for compact rows |
 | `GET /presanction/options`, `POST /presanction` | the pre-sanction check (T064): a typed-in recommendation → Green / Amber / Red with the engines' reasons; nothing stored |
 | `POST /explain` | the Visualization Engine (T092): a typed-in work (a recommendation, or sanctioned / completed with its dates) → the step-by-step trace of `explain.py`, checked against the real works of the chosen district; nothing stored. The page's built-in examples are a static file (`apps/web/public/explain/examples.json`, built by `data/trial/explain_examples.py`), so they need no sign-in |
+| `GET /site-visits/{work_id}`, `POST /site-visits/start`, `POST /site-visits/{visit_id}/upload`, `POST /site-visits/{visit_id}/done` | site visits (T123, migration 014): the work's site (from the form's map pins), its viewpoints and visits; start issues a capture token; upload returns a signed storage link; done records the seal (SHA-256), the GPS and motion log (≤ 400 KB) and the agency's claim. District walls as everywhere; 503 until set up |
 | `POST /cost-forms`, `GET /cost-forms/{work_id}` | the agency's saved form (T099, migration 013): a draft, or submitted when `ready` (else 422 with the issues; 409 once submitted); the MP's amount always from the record; submitting re-assesses the work. The read returns `earlier_candidates`, the sanctioned works the agency must answer about (T100) |
 | `GET /cost-form/catalog?work_type=`, `POST /cost-form/validate` | the cost estimate form (Cost v3, T093): the fields for a work type from `reference/cost_form.yaml`, and the checks made while it is filled (fix / confirm, never a flag, never a reference price; any body gets an answer). Spec `docs/specs/2026-10-03-cost-estimate-form.md` |
 
@@ -204,6 +210,8 @@ your area returns 404.
 | `work_signals` | per work and engine: facts computed offline. Since T051 no core engine uses it (kept for evidence-based checkers) |
 | `engine_models` | small learned models an engine applies to any work, as JSON: the cost engine's word-price model (migration 008, `data/build_price_model.py`) |
 | `dashboard_cache` | saved dashboard answers, emptied whenever works are re-assessed |
+| `cost_forms` | the agency's cost estimate form per work, draft or submitted (migration 013) |
+| `site_visits` | one row per site visit (migration 014): kind (baseline / monthly / check / final), status (started → uploaded → read or rejected), the claim, the seal, the GPS and motion log, the readings and the kept frames' paths; the video's path is cleared when the job deletes it |
 | `profiles` | user → role, district, display name |
 
 **Fitting the free tier:** storing full agent detail for all 2.1 lakh works took 489 MB of the 500 MB free
@@ -231,15 +239,18 @@ database. LOW and MEDIUM works are stored **compact** (summary only) and rebuilt
 
 ## 11. Testing
 
-- **Engine:** 628 tests (`pytest`) — agent contract and banned words, every engine (Compliance, Cost, Duplicate
-  Work, Delay) including NOT_ASSESSABLE cases, the risk score, bands and reasons, migrations, fusion maths,
+- **Engine:** 693 tests (`pytest`, 4 Oct 2026), plus 14 video tests that run where OpenCV is installed
+  (`tests/video/`, skipped in the engine's own environment) — agent contract and banned words, the four agents
+  (Cost with the whole estimate, Duplicate Work, Time & Rules, Site Progress v3) including NOT_ASSESSABLE cases,
+  the site-visit routes and the video job end to end, the risk score, bands and reasons, migrations, fusion maths,
   validation and impossible dates, orchestrator (an agent crash never becomes a finding), config, migrations,
   API and auth (scoping, dev-mode refusal on Vercel).
 - **Quality gate (2 Oct 2026):** `tests/evaluation/test_quality_gate.py` runs the whole pipeline on two small
-  seeded made-up countries in CI: each planted problem must be found by the engine meant for it, well-measured
-  rule breaches must reach the queue, look-alikes (a temple as a landmark, a school named "Shishu Mandir",
-  opposite sides of one road, a repair of another asset) must be left alone, queue precision ≥ 0.75 and
-  ordinary works queued ≤ 0.5%. `test_random_environment.py` feeds 400 malformed records (empty fields,
+  seeded made-up countries in CI: each planted problem must be found by the engine meant for it (T125: the
+  dates by Time & Rules, map pins and splits by Duplicate Work), R13 must reach the queue, look-alikes (opposite
+  sides of one road, a repair of another asset, a pin next door, a declared continuation) must be left alone,
+  queue precision ≥ 0.75 and ordinary works queued ≤ 0.5%. Kinds the four agents no longer check stay planted with
+  no engine meant for them. `test_random_environment.py` feeds 400 malformed records (empty fields,
   impossible dates, other scripts, sums of zero or crores) and checks no engine crashes, parts add up, the
   same work gives the same answer, and load order and capitals change nothing. Since T056 it also puts 300
   damaged rows inside the corpus the indexes and statistics are built from (none may stop them), and gives a
@@ -260,9 +271,11 @@ database. LOW and MEDIUM works are stored **compact** (summary only) and rebuilt
 
 ## 12. Known limits of the current build
 
-- The four core engines (Compliance, Cost, Duplicate & Split, Delay) and the risk score run in the engine; the
-  Outlier slot and the side-track checkers (photos, documents, …) are proven in the trial scripts and being ported
-  (order in [`team/TASKS.md`](team/TASKS.md)).
+- The four agents (Cost, Duplicate Work, Time & Rules, Site Progress) and the risk score run in the engine. Cost's
+  whole estimate needs real forms and the Schedule of Rates files (T096); the comfort window needs the form's
+  estimated time; Site Progress needs filmed visits (the capture page, migration 014, `DRISHTI_CAPTURE_SECRET`, a
+  storage bucket and the video job). Until then those parts answer "not judged" / "does not apply", never a pass,
+  and their thresholds are design values awaiting T126's field trial.
 - Learning runs offline in `data/` (`build_stats.py`, `build_price_model.py`, `build_evidence.py`,
   `build_generic_words.py`) and is stored as tables, coefficients or reference files, never as per-work
   answers (T051); after a data rebuild the hosted database must be reloaded (`load_db.py` → `batch_assess.py`).

@@ -26,7 +26,7 @@ from drishti.batch import (
     _normalise,
     assess_one,
     office_national,
-    with_forms,
+    with_evidence,
     with_index,
 )
 from drishti.cost_form import catalog as cost_form_catalog
@@ -298,7 +298,7 @@ def work(work_id: str, user: Principal = Depends(current_user)) -> dict:
                             (work_id,)).fetchone()
         ctx = None
         if a["compact"]:
-            w = with_forms(con, [_normalise(dict(row))])[0]
+            w = with_evidence(con, [_normalise(dict(row))])[0]
             ctx = with_index(Context(stats=_stats(), as_of=config.snapshot_date()), con, w)
     assessment = _jsonable(dict(a))
     assessment["assessed_at"] = str(a["assessed_at"])

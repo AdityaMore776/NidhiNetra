@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { AgentCard } from "@/components/AgentCard";
@@ -52,6 +53,12 @@ function Work() {
           <Field label="House" value={[w.house, w.term !== w.house ? w.term : null].filter(Boolean).join(" · ")} />
           <Field label="Implementing agency" value={w.agency_name} />
         </dl>
+        <Link
+          href={`/capture?work=${encodeURIComponent(w.work_id)}`}
+          className="inline-block rounded-lg border border-line px-3 py-1.5 text-sm font-semibold"
+        >
+          Film a site visit
+        </Link>
       </div>
 
       <FusionPanel a={a} />

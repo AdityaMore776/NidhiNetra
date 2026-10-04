@@ -241,7 +241,7 @@ the Hindi words used on estimates (सीमेंट, सरिया, बा�
 | `estimate_month` | prices are as of (YYYY-MM) | not in the future; older than 18 months asks to confirm |
 | `sor_edition` | Schedule of Rates used (state, year) | when any line uses it |
 | `start_month` | expected start (YYYY-MM) | |
-| `duration_months` | expected duration (months) | |
+| `duration_months` | estimated time to completion (months): the Time & Rules agent checks it against the kind and size of work and builds the comfort window from it (plan T120 §8.2) | |
 
 ### 5.8 Totals and the MP's amount
 

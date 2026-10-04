@@ -159,6 +159,9 @@ def main() -> None:
                 code_fired[f"{res.agent}:{c}"] += 1
                 by_code[f"{res.agent}:{c}"].append(r)
     queue = [r for r in rows if r["band"] in REVIEW]
+    # how many queued works carry each finding (T125: what the queue is made of)
+    queued_code = Counter(c for code, rs in by_code.items() for r in rs
+                          if r["band"] in REVIEW for c in [code])
     rng = random.Random(SEED)
     res = {"tag": args.tag, "works": n, "as_of": str(info["as_of"]), "loader": {
                k: v for k, v in info.items() if k not in ("as_of", "unmapped_categories")},
@@ -170,6 +173,7 @@ def main() -> None:
            "review_queue": len(queue), "review_share": round(len(queue) / n, 5),
            "engine_fired": {k: v for k, v in sorted(engine_fired.items())},
            "finding_fired": {k: v for k, v in code_fired.most_common()},
+           "queued_with_finding": {k: v for k, v in queued_code.most_common()},
            "engine_status": {f"{a}:{s}": c for (a, s), c in sorted(status.items())},
            "office_habits": office_habits(works),
            "seconds": round(time.time() - t0)}

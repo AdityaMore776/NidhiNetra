@@ -1,0 +1,155 @@
+{
+  "source": "data/build_time_bands.py on the eSAKSHI dashboard tables of 2 Oct 2026 (snapshot 2026-10-02): sanction to completion of finished works",
+  "note": "p90 = the longest usual time (9 in 10 finished works of the type took no longer). Generous: it includes the wait for a contractor, and works still open at the snapshot are not in it.",
+  "min_works": 30,
+  "all": {
+    "works": 11577,
+    "p50": 209.0,
+    "p90": 453.0
+  },
+  "sanction_lag": {
+    "works": 15662,
+    "p50": 90.0,
+    "share_past": {
+      "45": 0.762,
+      "75": 0.6
+    }
+  },
+  "types": {
+    "BOREWELL": {
+      "works": 596,
+      "p50": 292.0,
+      "p90": 396.0
+    },
+    "BOUNDARY_WALL": {
+      "works": 185,
+      "p50": 178.0,
+      "p90": 435.6
+    },
+    "BRIDGE": {
+      "works": 30,
+      "p50": 212.5,
+      "p90": 401.9
+    },
+    "BUS_SHELTER": {
+      "works": 492,
+      "p50": 230.0,
+      "p90": 416.8
+    },
+    "CCTV": {
+      "works": 57,
+      "p50": 7.0,
+      "p90": 216.6
+    },
+    "CHECK_DAM": {
+      "works": 37,
+      "p50": 108.0,
+      "p90": 394.4
+    },
+    "COMMUNITY_HALL": {
+      "works": 784,
+      "p50": 232.0,
+      "p90": 477.4
+    },
+    "COMPUTER": {
+      "works": 222,
+      "p50": 105.0,
+      "p90": 224.0
+    },
+    "CREMATORIUM": {
+      "works": 120,
+      "p50": 260.5,
+      "p90": 450.7
+    },
+    "CULVERT": {
+      "works": 72,
+      "p50": 196.0,
+      "p90": 398.0
+    },
+    "DRAIN": {
+      "works": 132,
+      "p50": 163.5,
+      "p90": 490.9
+    },
+    "ELECTRICITY": {
+      "works": 100,
+      "p50": 309.5,
+      "p90": 457.0
+    },
+    "EMBANKMENT": {
+      "works": 34,
+      "p50": 173.5,
+      "p90": 434.9
+    },
+    "FOOTPATH": {
+      "works": 497,
+      "p50": 256.0,
+      "p90": 470.0
+    },
+    "FURNITURE": {
+      "works": 68,
+      "p50": 138.5,
+      "p90": 384.0
+    },
+    "LIBRARY": {
+      "works": 242,
+      "p50": 192.5,
+      "p90": 523.8
+    },
+    "MEDICAL_EQUIPMENT": {
+      "works": 92,
+      "p50": 274.0,
+      "p90": 505.0
+    },
+    "OTHER": {
+      "works": 79,
+      "p50": 230.0,
+      "p90": 486.6
+    },
+    "PLAYGROUND": {
+      "works": 89,
+      "p50": 224.0,
+      "p90": 473.2
+    },
+    "POND": {
+      "works": 35,
+      "p50": 200.0,
+      "p90": 422.4
+    },
+    "ROAD_CC": {
+      "works": 2133,
+      "p50": 203.0,
+      "p90": 462.4
+    },
+    "SCHOOL_BUILDING": {
+      "works": 188,
+      "p50": 246.0,
+      "p90": 451.5
+    },
+    "SOLAR_PLANT": {
+      "works": 82,
+      "p50": 306.0,
+      "p90": 306.0
+    },
+    "SPORTS_EQUIPMENT": {
+      "works": 155,
+      "p50": 100.0,
+      "p90": 387.8
+    },
+    "STREET_LIGHT": {
+      "works": 4311,
+      "p50": 199.0,
+      "p90": 450.0
+    },
+    "TOILET_BLOCK": {
+      "works": 79,
+      "p50": 258.0,
+      "p90": 457.8
+    },
+    "WATER_TANK": {
+      "works": 558,
+      "p50": 224.0,
+      "p90": 506.0
+    }
+  }
+}

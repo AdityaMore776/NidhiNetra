@@ -8,25 +8,42 @@ them: what each checks, how, what we measured, and where it stands.
 - Trial scripts: [`../data/trial/`](../data/trial/) · saved outputs: [`../data/trial/results/`](../data/trial/results/)
 - Design and the reasoning behind each choice: [`specs/2026-09-25-drishti-v2-full-agents-design.md`](specs/2026-09-25-drishti-v2-full-agents-design.md)
 
-## Status at a glance
+## The four agents (owner's decision, 3 Oct 2026; built 4 Oct 2026, T121–T125)
+
+Only four agents run now, a quarter of the weight each. Each asks only about what is likely fraud, never a minor
+mistake; "couldn't check" is a status, never a low score. Plan in plain words:
+[`plans/T120-four-agents.md`](plans/T120-four-agents.md); numbers in FINDINGS "T121–T125".
+
+| # | Agent | Folder | Asks when | Proof so far |
+|---|---|---|---|---|
+| 1 | **Cost** | `agents/cost_estimate/` | every confirmed line priced at a fair rate (its SoR item, else 3+ other agencies' recent district rates, never its own) and quantities held to the size; asked when 60%+ of the money is priced and the estimate is 15%+ and Rs 50,000+ above the fair price; a confirmed quantity far above the size; the per-unit price far above the standard item and the MP's amount (T099) | synthetic forms: honest asked 0.0–0.1% and +20% caught 82.5–94.2% at a 5–10% honest spread; 2.4–3.3% honest asked at 15%. No real forms yet; SoR files wait on T096 |
+| 2 | **Duplicate Work** | `agents/dup_split/` | the form's map pin within 50 m of a sanctioned work of the same kind; a declared rebuild under 3 years; the strictest split (every piece 96–100% of a limit) | splits 12 of 14 groups read as one job; map-pin cases 100% on the test country, look-alikes 0% |
+| 3 | **Time & Rules** | `agents/time_rules/` | R01 still waiting past 75 days, R06 impossible dates, R13/R14 complete within days; with a form, the comfort window: finished before its early line with no site video showing the work, or past its late line (more when the site stands still) | R14 25 of 25 read worth checking; R06 read on the hosted data (T056); a late sanction (60% of works) is an office fact and never queues alone; the window's findings at the 1-in-4 prior until read |
+| 4 | **Site Progress** | `agents/site_progress/` (+ `video/`) | footage seen before, the same place as another undeclared work, not filmed here (GPS and views both), the claim not shown twice in a row, complete not shown, already built at the first visit | 21 rule tests, 14 video tests on drawn scenes, an end-to-end trial in a real browser; the field trial on real sites is T126 |
+
+Retired in T125 (results stored before still read by name until re-assessed; code kept as libraries): Guideline
+Compliance (its timing rules live on in Time & Rules), Fund Flow, Office Patterns, Paperwork and Photo Evidence. On the
+dashboard's 40,935 works the review queue went from 439 to 217 (185 R14, 34 split pieces, 2 both).
+
+## Status at a glance (history, before the four agents)
 
 | # | Agent | Stage | State | Trial verdict on real data |
 |---|---|---|---|---|
-| A1 | Eligibility | Before sanction | ✅ **in the engine** as Guideline Compliance rule R07 (v2 reader) | **Works** — 56% precision on a fresh sample |
+| A1 | Eligibility | Before sanction | ❌ retired with Guideline Compliance (T125): not one of the four agents | **Works** — 56% precision on a fresh sample |
 | A2 | Duplicate Work (was Duplicate & Split) | Before sanction | ✅ **in the engine** (T100, 3 Oct 2026): asks only by map pin, a declared rebuild, or the strictest split | strictest split: 14 dashboard groups read 12 yes, 2 grey, 0 not; words alone right about 2 in 3 (289 labelled pairs), so look-alikes are notes |
 | A3 | ~~Cost Anomaly~~ | Before sanction | ❌ **retired** (T099, 3 Oct 2026): a price question from the record alone is not certain | its main flag read 54/128; of 15 works a record-only per-unit check would have questioned, 0 were real |
 | A3b | **Cost** (the cost estimate form, Cost v3) | Before sanction | ✅ **the Cost slot** (T099): runs on works with the agency's submitted form; no form, not judged | UP hold-out (2026 works, reference before 2026): 0 of 42 real works above the question line; planted price ×1.5 / ×2 / ×3 asked 42/42, ×1.25 9/42, ×1.1 0/42; size ×½ / ×2 / ×5 changed 0 of 204 answers; 26 of 68 works could not be compared (no tight group) |
-| B1 | Site Progress (+ plaque) | During construction | 🔧 **v2 built, off** (T510, 2 Oct 2026): free local readers (CLIP + plaque OCR), optional Gemini key | 34 unit tests + an end-to-end smoke test; go/no-go on the pilot's real photos still to run (`site_progress_trial.py`) |
-| B2 | Photo Forensics | During construction | ✅ **in the engine as Photo Evidence** (T310), shown, not counted | exact copies + fingerprint; reproduces the 2 real reuse cases, 0 of 3 combined files flagged |
-| B3 | Geo-Location | During construction | ✅ **in the engine as Photo Evidence** (T310), shown, not counted | 190 stamps on 170 works; 187 inside, 2 at the border, 0 outside; the 3 photos older than the recommendation |
-| B4 | Document | During construction | ✅ **in the engine as Paperwork** (T110), shown, not counted | reproduces the trial: 431 certificates, 32 sanctioned late, 1 before recommendation; Hindi/handwritten needs AI |
+| B1 | Site Progress (+ plaque) | During construction | ✅ **v3 in the engine** (T124, 4 Oct 2026): monthly site videos; v2 (photos) kept for the photo trial | 34 unit tests + an end-to-end smoke test; go/no-go on the pilot's real photos still to run (`site_progress_trial.py`) |
+| B2 | Photo Forensics | During construction | ❌ retired with Photo Evidence (T125); the video job's fingerprints do this for site videos | exact copies + fingerprint; reproduces the 2 real reuse cases, 0 of 3 combined files flagged |
+| B3 | Geo-Location | During construction | ❌ retired with Photo Evidence (T125); site videos carry their own GPS log | 190 stamps on 170 works; 187 inside, 2 at the border, 0 outside; the 3 photos older than the recommendation |
+| B4 | Document | During construction | ❌ retired with Paperwork (T125) | reproduces the trial: 431 certificates, 32 sanctioned late, 1 before recommendation; Hindi/handwritten needs AI |
 | B5 | Satellite (big works only) | During construction | ⛔ no-go for now; gate in Site Progress (T510) | 2,822 works qualify (2,167 ponds); only 1 has a GPS-stamped photo in the pilot |
-| C1 | Delay | Money & time | ✅ **in the engine, shown, not counted** (T051 ladder) | **Weak** as a prediction (AUC 0.705; unseen districts 0.685; target 0.80) |
-| C2 | Fund Flow | Money & time | ✅ **in the engine as Delay & Fund Flow** (T410), shown, not counted | 3,331 works (₹168.9 cr) of the ended 17th Lok Sabha still unsanctioned (reproduced); office backlog vs its district |
-| C3 | Contractor Network | Money & time | ✅ **in the engine as Paperwork** (T110): a fact, not a finding | Pratapgarh 261 works, 7 vendors, top 39%, top three 84% (reproduced) |
+| C1 | Delay | Money & time | ❌ retired (T053 forecast, T125 Fund Flow) | **Weak** as a prediction (AUC 0.705; unseen districts 0.685; target 0.80) |
+| C2 | Fund Flow | Money & time | ❌ retired (T125); the 75-day clock lives on in Time & Rules | 3,331 works (₹168.9 cr) of the ended 17th Lok Sabha still unsanctioned (reproduced); office backlog vs its district |
+| C3 | Contractor Network | Money & time | ❌ retired with Paperwork (T125) | Pratapgarh 261 works, 7 vendors, top 39%, top three 84% (reproduced) |
 | D1 | Citizen Verification | After completion | 📝 merged into Photo Evidence: a citizen's photo meets the same checks (demo only) | Can't be tested — 21,789 of 21,793 eSAKSHI ratings are zero |
-| — | Guideline Compliance | every work | ✅ **in the engine** (T011) | rules R01–R14 in English + Hindi; T055: R14 built right after sanction (12/12 + 13/13 read worth a look), R07 reader fixes |
-| — | Office Patterns | every office | ✅ **in the engine** (T055), weight 0.10: backs up a work's findings, never queues it alone | offices that price most works just under a limit or record buildings complete days after sanction; listed once on the dashboard |
+| — | Guideline Compliance | every work | ❌ retired (T125): R01, R06, R13, R14 run inside Time & Rules | rules R01–R14 in English + Hindi; T055: R14 built right after sanction (12/12 + 13/13 read worth a look), R07 reader fixes |
+| — | Office Patterns | every office | ❌ retired (T125) | offices that price most works just under a limit or record buildings complete days after sanction; listed once on the dashboard |
 | — | Data Validation | every work | ✅ live | impossible dates judged by quarter and office; shown, not counted in the v2 score |
 | — | Risk score | every work | ✅ **v3** (T055; v2 = rollback) | the chance a work is worth a look, from hit rates read by eye; one case = one queue row; see FINDINGS "T055" |
 | — | Pre-sanction check | before sanction | ✅ **in the engine + site** (T064) | every engine on a recommendation before sanction → Green / Amber / Red with reasons; never blocks, nothing stored. Real demo: ordinary hall Green, refiled hall Amber, temple-campus light Amber, Rs 25 lakh hall with no place Red |

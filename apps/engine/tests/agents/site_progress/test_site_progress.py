@@ -5,7 +5,6 @@ model) run offline and store readings; these tests drive the engine's rules with
 readings, so they need no model.
 """
 
-import importlib
 import json
 from datetime import date
 
@@ -13,7 +12,8 @@ import pytest
 
 from drishti.agents.contract import Status
 from drishti.agents.photo_evidence.index import PhotoIndex
-from drishti.agents.site_progress import agent, claims, observe, plaque
+from drishti.agents.site_progress import claims, observe, plaque
+from drishti.agents.site_progress import photos as agent
 from drishti.agents.site_progress.readers import GeminiReader, QuotaReached
 
 AS_OF = date(2026, 9, 26)
@@ -235,15 +235,14 @@ def test_text_is_plain_and_risk_bounded_on_every_path():
 
 # ----------------------------------------------------------------- switched off until measured
 
-def test_the_engine_is_off_unless_switched_on(monkeypatch):
-    from drishti.agents.site_progress import engine
-    monkeypatch.delenv("DRISHTI_SITE_PROGRESS", raising=False)
-    assert importlib.reload(engine).ENGINE is None
-    monkeypatch.setenv("DRISHTI_SITE_PROGRESS", "on")
-    spec = importlib.reload(engine).ENGINE
-    assert spec is not None and spec.weight == 0.0
-    monkeypatch.delenv("DRISHTI_SITE_PROGRESS")
-    importlib.reload(engine)
+def test_site_progress_v3_is_the_fourth_agent_and_v2_is_kept_for_the_photo_trial():
+    # T125: the engine registers v3 (site videos) in its core slot; the v2 photo judge stays a
+    # module for data/trial/site_progress_trial.py and is never run by the pipeline
+    from drishti.agents import registry
+    from drishti.agents.site_progress import agent as v3
+    spec = registry.by_id()["site_progress"]
+    assert spec.name == "Site Progress" and spec.weight == 0.25 and spec.question == v3.QUESTION
+    assert agent.VERSION.startswith("site-progress-2")
 
 
 # ----------------------------------------------------------------- the optional VLM reader

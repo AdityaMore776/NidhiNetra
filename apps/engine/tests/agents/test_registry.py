@@ -30,30 +30,31 @@ def _work(**kw):
     return w
 
 
-def test_core_slots_come_first_in_blueprint_order():
+def test_the_four_agents_and_nothing_else():
+    # T125, the owner's four agents (3 Oct 2026): no other engine folder registers
     ids = [e.id for e in discover()]
-    assert ids[:4] == ["compliance", "cost_estimate", "dup_split", "delay"]
+    assert ids == ["cost_estimate", "dup_split", "time_rules", "site_progress"]
+    assert all(e.assess is not None for e in discover())
 
 
-def test_blueprint_weights_without_the_outlier_slot():
-    # the blueprint's 0.10 outlier slot became Guideline Compliance R12/R13 (T053)
-    assert sum(e.weight for e in CORE) == pytest.approx(0.90)
+def test_each_agent_counts_equally_and_the_findings_decide():
+    # fusion v3 counts an engine with a weight; how much is the finding's measured hit rate
+    assert [e.weight for e in CORE] == [0.25] * 4
 
 
-def test_the_cost_folder_is_discovered_as_built_and_the_old_cost_anomaly_is_retired():
-    # T099: the Cost slot is the cost estimate form's check; `statistical` no longer runs
-    found = {e.id: e for e in discover()}
-    assert found["cost_estimate"].assess is not None
-    assert found["cost_estimate"].weight == pytest.approx(0.20)
-    assert "statistical" not in found
+def test_the_retired_engines_still_read_by_name():
+    found = {e.id for e in discover()}
+    for gone in ("statistical", "compliance", "delay", "office_patterns", "photo_evidence",
+                 "paperwork"):
+        assert gone not in found and "retired" in registry.RETIRED[gone][0]
 
 
 def test_missing_engine_reports_not_built(ctx, monkeypatch):
     engines = tuple(EngineSpec(e.id, e.name, e.question, None, e.weight, e.order)
-                    if e.id == "delay" else e for e in registry.engines())
+                    if e.id == "site_progress" else e for e in registry.engines())
     monkeypatch.setattr(registry, "_CACHE", engines)
     a = assess_work(_work(), ctx)
-    r = next(r for r in a.agents if r.agent == "delay")
+    r = next(r for r in a.agents if r.agent == "site_progress")
     assert r.status == Status.NOT_BUILT and r.risk == 0.0
 
 

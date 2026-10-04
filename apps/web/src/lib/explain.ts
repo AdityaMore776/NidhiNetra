@@ -79,9 +79,30 @@ export interface Picture {
   as_of?: string;
   sanction_clock_days?: number;
   completion_clock_days?: number;
-  // Office Patterns
+  // Office Patterns (retired, T125)
   priced_just_under_a_limit?: Habit;
   built_within_a_week_of_sanction?: Habit;
+  // Time & Rules (T122): the dates above, its timing rules, and the comfort window
+  window_start?: string | null;
+  early_line?: string | null;
+  late_line?: string | null;
+  // Site Progress (T124): one row per site video read
+  visits?: VisitSummary[];
+  // Cost (T121): the whole estimate against its fair price
+  grand_total?: number;
+  mp_amount?: number;
+  whole?: { verdict: string; fair_total: number; gap: number; gap_share: number; coverage: number };
+}
+
+/** One site video as Site Progress read it. */
+export interface VisitSummary {
+  visit: string;
+  kind: "baseline" | "monthly" | "check" | "final";
+  captured: string;
+  change: "changed" | "no_change" | "cant_tell" | null;
+  claim: "shown" | "not_shown" | "cant_tell" | null;
+  zones_shown: number;
+  viewpoints: [number | null, number | null];
 }
 
 export interface TraceFinding {

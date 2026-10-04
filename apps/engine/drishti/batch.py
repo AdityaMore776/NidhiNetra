@@ -16,11 +16,9 @@ from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 
 from drishti import records
-from drishti.agents.delay.backlog import OfficeBacklog
+from drishti.agents.cost_estimate.rates import RateIndex
 from drishti.agents.dup_split.repeat import RepeatIndex
 from drishti.agents.office_patterns.index import JUST_UNDER, OfficeIndex, limits
-from drishti.agents.paperwork.vendors import VendorIndex
-from drishti.agents.photo_evidence.index import PhotoIndex
 from drishti.pipeline.orchestrator import Assessment, Context, assess_work
 
 WORK_COLUMNS = ("work_id, source, house, term, state_lgd, state_name, district_lgd, "
@@ -75,14 +73,49 @@ def with_forms(con: psycopg.Connection, works: list[dict]) -> list[dict]:
                              .fetchone()):
         return works
     forms = {}
-    for r in con.execute("SELECT work_id, form FROM cost_forms WHERE status = 'submitted' "
-                         "AND work_id = ANY(%s)", ([w["work_id"] for w in works],)).fetchall():
-        wid, form = (r["work_id"], r["form"]) if isinstance(r, dict) else (r[0], r[1])
-        forms[wid] = form
+    for r in con.execute("SELECT work_id, form, saved_by, submitted_at FROM cost_forms "
+                         "WHERE status = 'submitted' AND work_id = ANY(%s)",
+                         ([w["work_id"] for w in works],)).fetchall():
+        r = r if isinstance(r, dict) else dict(zip(("work_id", "form", "saved_by",
+                                                     "submitted_at"), r, strict=False))
+        forms[r["work_id"]] = r
     for w in works:
         if w["work_id"] in forms:
-            w["cost_form"] = forms[w["work_id"]]
+            r = forms[w["work_id"]]
+            w["cost_form"] = r["form"]
+            # who submitted it: the Cost check never counts an agency in its own district baseline
+            w["cost_form_meta"] = {"saved_by": r["saved_by"],
+                                   "submitted_on": r["submitted_at"].date()
+                                   if r["submitted_at"] else None}
     return works
+
+
+def with_visits(con: psycopg.Connection, works: list[dict]) -> list[dict]:
+    """The works, each with its READ site visits as work["site_visits"] (migration 014, T124):
+    Site Progress judges their readings, Time & Rules reads whether they show the work going on.
+    A visit not read yet is never attached. A database without the migration gives none."""
+    if not works or not _one(con.execute("SELECT to_regclass('site_visits') IS NOT NULL")
+                             .fetchone()):
+        return works
+    by: dict[str, list[dict]] = {}
+    for r in con.execute("SELECT work_id, visit_id, kind, captured_at, claim, readings "
+                         "FROM site_visits WHERE status = 'read' AND work_id = ANY(%s) "
+                         "ORDER BY captured_at", ([w["work_id"] for w in works],)).fetchall():
+        r = r if isinstance(r, dict) else dict(zip(("work_id", "visit_id", "kind", "captured_at",
+                                                     "claim", "readings"), r, strict=False))
+        by.setdefault(r["work_id"], []).append({
+            "visit_id": r["visit_id"], "kind": r["kind"], "claim": r["claim"],
+            "captured_at": r["captured_at"].isoformat() if r["captured_at"] else None,
+            "readings": r["readings"] or {}})
+    for w in works:
+        if w["work_id"] in by:
+            w["site_visits"] = by[w["work_id"]]
+    return works
+
+
+def with_evidence(con: psycopg.Connection, works: list[dict]) -> list[dict]:
+    """Forms and site visits: what the agencies filed for each work."""
+    return with_visits(con, with_forms(con, works))
 
 
 def row_for(a: Assessment) -> dict:
@@ -123,12 +156,12 @@ def case_of(a: Assessment) -> tuple[str | None, int | None]:
 
 
 def indexes(works: list[dict]) -> dict:
-    """The cross-work views engines need, from the same rows: the Duplicate Work index and
-    the vendors holding the certified works (Paperwork, T110). Every record is checked first
-    (records.work): one malformed row used to stop the whole build."""
+    """The cross-work views the four agents need, from the same rows: the Duplicate Work index,
+    the district rate index (Cost) and the office index (Time & Rules names an office's habit
+    once). Every record is checked first (records.work): one malformed row used to stop the
+    whole build."""
     works = [records.work(w) for w in works]
-    return {"dup_split": RepeatIndex.build(works), "vendors": VendorIndex.build(works),
-            "photos": PhotoIndex.build(works), "backlog": OfficeBacklog.build(works),
+    return {"dup_split": RepeatIndex.build(works), "rates": RateIndex.build(works),
             "offices": OfficeIndex.build(works)}
 
 
@@ -160,12 +193,8 @@ def with_index(ctx: Context, con: psycopg.Connection, work: dict) -> Context:
     d = work.get("district_lgd")
     rows = con.execute(f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works {SIGNALS_JOIN} "
                        "WHERE works.district_lgd = %s", (d,)).fetchall() if d else []
-    data = indexes(with_forms(con, [_normalise(dict(r)) for r in rows]))
+    data = indexes(with_evidence(con, [_normalise(dict(r)) for r in rows]))
     data["offices"].national = office_national(con)
-    # a photo can be reused in another district: every work's evidence, not the district's
-    data["photos"] = PhotoIndex.build(
-        {"work_id": r["work_id"], "evidence": r["data"]}
-        for r in con.execute("SELECT work_id, data FROM evidence_facts").fetchall())
     return replace(ctx, data={**(ctx.data or {}), **data})
 
 
@@ -174,7 +203,7 @@ def assess_one(con: psycopg.Connection, work_id: str, ctx: Context) -> Assessmen
                        f"{SIGNALS_JOIN} WHERE work_id = %s", (work_id,)).fetchone()
     if work is None:
         return None
-    work = with_forms(con, [_normalise(dict(work))])[0]
+    work = with_evidence(con, [_normalise(dict(work))])[0]
     a = assess_work(work, with_index(ctx, con, work))
     con.execute(UPSERT, row_for(a))
     return a
@@ -190,10 +219,11 @@ def assess_all(url: str, ctx: Context, work_ids: Iterable[str] | None = None,
         if work_ids is not None:
             sql += " WHERE work_id = ANY(%s)"
             params = (list(work_ids),)
-        works = with_forms(con, [_normalise(dict(w)) for w in con.execute(sql, params).fetchall()])
+        works = with_evidence(con, [_normalise(dict(w))
+                                    for w in con.execute(sql, params).fetchall()])
         if "dup_split" not in (ctx.data or {}):
             # every work of the database, so each is compared with its whole district
-            everything = works if work_ids is None else with_forms(con, [
+            everything = works if work_ids is None else with_evidence(con, [
                 _normalise(dict(w)) for w in con.execute(
                     f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works {SIGNALS_JOIN}")])
             ctx = replace(ctx, data={**(ctx.data or {}), **indexes(everything)})

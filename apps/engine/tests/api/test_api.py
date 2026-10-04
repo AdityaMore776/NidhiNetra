@@ -30,9 +30,8 @@ def test_summary_counts_real_works_and_money(client):
     assert sum(s["bands"].values()) == 4
     agents = {a["id"]: a for a in s["agents"]}
     assert agents["cost_estimate"]["built"] is True
-    assert "outlier" not in agents                 # replaced by Compliance R12/R13 (T053)
     assert "statistical" not in agents             # the old Cost Anomaly is retired (T099)
-    assert list(agents)[:4] == ["compliance", "cost_estimate", "dup_split", "delay"]
+    assert list(agents) == ["cost_estimate", "dup_split", "time_rules", "site_progress"]
 
 
 def test_district_officer_sees_only_their_district(client):
@@ -64,8 +63,8 @@ def test_work_detail_carries_every_engine_and_the_parts(client):
     w = client.get("/api/v1/works/W-COSTLY", headers=MINISTRY).json()
     assert w["work"]["district_name"] == "Anand"
     a = w["assessment"]
-    assert [r["agent"] for r in a["agents"]][:4] == ["compliance", "cost_estimate", "dup_split",
-                                                   "delay"]
+    assert [r["agent"] for r in a["agents"]] == ["cost_estimate", "dup_split", "time_rules",
+                                                 "site_progress"]
     cost = next(r for r in a["agents"] if r["agent"] == "cost_estimate")
     assert cost["name"] == "Cost" and cost["question"]
     # T099: no cost estimate form, so the amount alone is never judged
@@ -87,10 +86,11 @@ def test_queue_holds_only_works_needing_review_in_priority_order(client):
     ids = {i["work_id"] for i in items}
     assert "W-TYPICAL" not in ids
     # a wait for sanction alone never reaches the queue (W-COSTLY: its price is no longer
-    # judged from the amount alone, T099); a big sum that says nothing does (R12)
+    # judged from the amount alone, T099); a road recorded complete two days after its
+    # sanction does (Time & Rules, R14)
     assert "W-COSTLY" not in ids
-    vague = next(i for i in items if i["work_id"] == "W-OTHER-DISTRICT")
-    assert "Rs 25.00 lakh" in vague["headline"] and "sanction" not in vague["headline"]
+    fast = next(i for i in items if i["work_id"] == "W-OTHER-DISTRICT")
+    assert "Rs 25.00 lakh" in fast["headline"] and "recorded complete" in fast["headline"]
 
 
 def test_keepalive_touches_the_database(client):
@@ -142,8 +142,9 @@ def test_offices_with_unreliable_completion_dates(client, api_db):
 
 
 def test_one_purchase_filed_as_several_works_is_one_case_in_the_queue(api_db, client):
-    # three identical big sums that name no place, filed the same day: R12 queues each one,
-    # and Duplicate Work files them as one case (display only, T100): one row of three
+    # three identical pieces each just under the Rs 5 lakh limit, filed the same day: the
+    # strictest split queues each one, and Duplicate Work files them as one case (display
+    # only, T100): one row of three
     from datetime import date
 
     import psycopg
@@ -158,7 +159,8 @@ def test_one_purchase_filed_as_several_works_is_one_case_in_the_queue(api_db, cl
                 "INSERT INTO works (work_id, source, state_lgd, state_name, district_lgd, "
                 "district_name, work_type_code, description, amount, status, "
                 "recommended_date) VALUES (%s,'REAL','24','Gujarat','639','Anand','ROAD_CC',"
-                "'Construction of PCC Road',1400000,'SANCTIONED',%s)",
+                "'Construction of PCC Road in village Bakrol near primary school',490000,"
+                "'SANCTIONED',%s)",
                 (f"W-PIECE-{i}", date(2026, 1, 5)))
         con.commit()
     batch.assess_all(api_db, Context(stats=StatsStore.load(api_db), as_of=date(2026, 5, 26)))

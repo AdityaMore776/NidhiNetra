@@ -257,15 +257,16 @@ def test_jaunpur_solar_lights_against_the_real_uttar_pradesh_reference():
 
 
 def test_it_is_the_cost_slot_and_the_old_cost_anomaly_is_retired():
-    # T099: the Cost slot of the blueprint (weight 0.20, second), counted; its findings start at
-    # fusion v3's 1-in-4 prior, so none can queue a work alone until officers' verdicts are read
+    # T099 / T125: the first of the four agents, counted; its findings start at fusion v3's 1-in-4
+    # prior, so none can queue a work alone until officers' verdicts are read
     spec = registry.by_id()[agent.AGENT]
-    assert spec.weight == 0.20 and spec.assess is agent.assess and spec.name == "Cost"
-    assert [e.id for e in registry.engines()][1] == agent.AGENT
+    assert spec.weight == 0.25 and spec.assess is agent.assess and spec.name == "Cost"
+    assert [e.id for e in registry.engines()][0] == agent.AGENT
     assert "statistical" not in registry.by_id() and "statistical" in registry.RETIRED
     from drishti.fusion import calibrated
 
-    for code in ("ESTIMATE_ABOVE_STANDARD_AND_MP", "MATERIAL_QUANTITY_ABOVE_SIZE"):
+    for code in ("ESTIMATE_ABOVE_STANDARD_AND_MP", "MATERIAL_QUANTITY_ABOVE_SIZE",
+                 "ESTIMATE_ABOVE_FAIR_PRICE"):
         rate = calibrated.Reliability.load().rate(f"{agent.AGENT}:{code}")
         assert rate.basis == "prior" and rate.hit_rate == 0.25, code
 

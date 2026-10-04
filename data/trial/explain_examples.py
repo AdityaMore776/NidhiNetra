@@ -13,6 +13,13 @@ estimate form, so the "price", "two" and "repeat" examples carry a made-up form 
 as data/trial/cost_v3_holdout.py builds), and the repeat is a made-up completed work of the same
 kind whose own form's map pin is 20 m away. No real work is given a form.
 
+T125 (4 Oct 2026, four agents): the temple and the vague sum are gone (those guideline rules are no
+longer checked). Time & Rules gets two examples ("fast": recorded complete days after sanction,
+long before its own estimate allowed, with no site video; "late": a hall past its promised time
+whose last three site videos show no change), and Site Progress one ("video": a first visit
+whose footage was filmed for another hall, with the readings the video job made in
+data/trial/capture_e2e.py). "two" is now the costly lights at the place of lights already paid for.
+
 Run:  apps\engine\.venv\Scripts\python.exe data\trial\explain_examples.py
 """
 
@@ -76,6 +83,23 @@ def _pinned(work_type: str, lat: float, lon: float, nature: str = "new") -> dict
             "sites": [{"location": {"lat": lat, "lon": lon}}]}
 
 
+def _timed(work_type: str, start, months: float) -> dict:
+    """The parts of a form Time & Rules reads: the kind of work and the agency's estimated time
+    to completion (the rest is left empty, so Cost says the form is not ready)."""
+    return {"work": {"work_type": work_type, "nature": "new"},
+            "timing": {"start_month": f"{start:%Y-%m}", "duration_months": months}}
+
+
+def _visit(n: int, kind: str, when, change: str | None = None, **more) -> dict:
+    """A made-up site video as the video job leaves it: sealed, filmed in the app, at the site,
+    at its five marked viewpoints."""
+    readings = {"sealed": True, "in_app": True, "quality_ok": True, "gps_inside": True,
+                "views_match_site": None if kind == "baseline" else True,
+                "viewpoints_expected": 5, "viewpoints_matched": 5, "change": change, **more}
+    return {"visit_id": f"V{n}", "kind": kind, "captured_at": when.isoformat(),
+            "readings": readings}
+
+
 def earlier_lights(base: dict, as_of) -> dict:
     """Made-up solar lights of the district, completed last year, with their form's map pin."""
     return {**base, "work_id": "EXAMPLE-0", "work_type_code": "STREET_LIGHT",
@@ -101,55 +125,89 @@ def _base(d: dict, as_of) -> dict:
 def examples(works: list[dict], as_of) -> list[tuple[str, str, dict]]:
     base = _base(_district(works), as_of)
     lights = _lights_form(as_of)
+    fast_sanction = as_of - timedelta(days=100)
+    hall_sanction = as_of - timedelta(days=480)
+    monthly = [_visit(1, "baseline", hall_sanction + timedelta(days=20))]
+    for n in range(1, 16):                     # monthly visits: work, then a stop for 3 months
+        monthly.append(_visit(n + 1, "monthly", hall_sanction + timedelta(days=20 + 30 * n),
+                              "changed" if n <= 12 else "no_change"))
     return [
         ("ordinary", "An ordinary new road",
          {**base, "work_id": "EXAMPLE-1", "work_type_code": "ROAD_CC", "amount": 480000.0,
           "description": "Construction of CC road 250 mtr from Panchayat Bhawan to Primary "
                          "School in village Bhagwatipur, Ward No 4"}),
-        ("temple", "A temple as the work itself",
-         {**base, "work_id": "EXAMPLE-2", "work_type_code": "COMMUNITY_HALL", "amount": 900000.0,
-          "description": "Construction of temple and boundary wall at Shiv Mandir campus, "
-                         "near Ramdev Bhagat house"}),
-        ("vague", "A large sum that says nothing",
-         {**base, "work_id": "EXAMPLE-3", "work_type_code": "COMMUNITY_HALL",
-          "amount": 2600000.0, "description": "As per recommendation letter attached"}),
         ("price", "An estimate above the standard light and the MP's amount",
          {**base, "work_id": "EXAMPLE-4", "work_type_code": "STREET_LIGHT", "amount": MP_AMOUNT,
           "description": "Installation of 10 solar street lights from the bus stand to the "
                          "Primary School in village Sikrara", "cost_form": lights}),
-        ("dates", "Completed before it was recommended",
-         {**base, "work_id": "EXAMPLE-5", "work_type_code": "ROAD_CC", "amount": 760000.0,
-          "status": "COMPLETED", "recommended_date": as_of - timedelta(days=120),
-          "sanction_date": None, "completed_date": as_of - timedelta(days=200),
-          "description": "Construction of CC road 400 mtr from main road to cremation ground"}),
-        ("two", "Two checks agree",
-         {**base, "work_id": "EXAMPLE-7", "work_type_code": "STREET_LIGHT", "amount": MP_AMOUNT,
-          "description": "Installation of 10 solar street lights inside Hanuman Mandir campus",
-          "cost_form": lights}),
         ("repeat", "A sanctioned work at the same site",
          {**base, "work_id": "EXAMPLE-6", "work_type_code": "STREET_LIGHT",
           "amount": LIGHTS * FAIR_EACH,
           "description": "Solar street light adhishthapan, Shiv Mandir chowk, gram Sikrara",
           "cost_form": _lights_form(as_of, FAIR_EACH, LIGHTS * FAIR_EACH,
                                     (PIN[0] + 20 * METRE, PIN[1]))}),
+        ("dates", "Completed before it was recommended",
+         {**base, "work_id": "EXAMPLE-5", "work_type_code": "ROAD_CC", "amount": 760000.0,
+          "status": "COMPLETED", "recommended_date": as_of - timedelta(days=120),
+          "sanction_date": None, "completed_date": as_of - timedelta(days=200),
+          "description": "Construction of CC road 400 mtr from main road to cremation ground"}),
+        ("fast", "Finished long before its own estimate allows",
+         {**base, "work_id": "EXAMPLE-8", "work_type_code": "ROAD_CC", "amount": 690000.0,
+          "status": "COMPLETED", "recommended_date": fast_sanction - timedelta(days=40),
+          "sanction_date": fast_sanction, "completed_date": fast_sanction + timedelta(days=6),
+          "description": "Construction of CC road 350 mtr from Anganwadi Kendra to the pond in "
+                         "village Bhagwatipur",
+          "cost_form": _timed("ROAD_CC", fast_sanction, 4)}),
+        ("late", "Past its own promised time, and stopped",
+         {**base, "work_id": "EXAMPLE-9", "work_type_code": "COMMUNITY_HALL",
+          "amount": 1800000.0, "status": "SANCTIONED",
+          "recommended_date": hall_sanction - timedelta(days=40), "sanction_date": hall_sanction,
+          "description": "Construction of community hall with kitchen near the Panchayat "
+                         "Bhawan in village Bhagwatipur",
+          "cost_form": _timed("COMMUNITY_HALL", hall_sanction, 8),
+          "site_visits": [v for v in monthly if v["captured_at"] <= as_of.isoformat()]}),
+        ("video", "A site video filmed for another work",
+         {**base, "work_id": "EXAMPLE-10", "work_type_code": "COMMUNITY_HALL",
+          "amount": 1500000.0, "status": "SANCTIONED",
+          "recommended_date": as_of - timedelta(days=100),
+          "sanction_date": as_of - timedelta(days=60),
+          "description": "Construction of community hall in village Sikrara",
+          "cost_form": _timed("COMMUNITY_HALL", as_of - timedelta(days=60), 8),
+          "site_visits": [_visit(1, "baseline", as_of - timedelta(days=45),
+                                 reused_from=[{"work_id": "EXAMPLE-11", "visit_id": "V7",
+                                               "frames": 42}],
+                                 same_place_as=[{"work_id": "EXAMPLE-11", "inliers": 875}])]}),
+        ("two", "Two checks agree",
+         {**base, "work_id": "EXAMPLE-7", "work_type_code": "STREET_LIGHT", "amount": MP_AMOUNT,
+          "description": "Installation of 10 solar street lights at Shiv Mandir chowk in village "
+                         "Sikrara", "cost_form": _lights_form(as_of, pin=(PIN[0] + 20 * METRE,
+                                                                          PIN[1]))}),
     ]
 
 
 STORIES = {
     "ordinary": "A plain road with its length, both ends and its village named: what most works "
                 "look like.",
-    "temple": "The description reads as building a temple, which the guidelines do not allow; the "
-              "same words as a landmark ('road near the temple') would pass.",
-    "vague": "Rs 26 lakh with no word on what or where: nobody could check it on the ground.",
     "price": "The MP recommended Rs 2.4 lakh for 10 solar street lights. The agency's cost form "
              "prices them at Rs 48,000 each, far above what 98 in 100 such lights cost in this "
              "district, and its estimate is twice the MP's amount: both signals, so it asks.",
-    "dates": "The record says the road was finished 80 days before the MP recommended it.",
-    "two": "The same costly lights, now inside a temple's campus: two different checks each "
-           "raise a question, and together they count for more than either alone.",
     "repeat": "Ten new solar lights, fairly priced, whose form puts the map pin 20 m from ten "
               "lights the scheme already paid for and completed there; the form does not say it "
               "continues that work.",
+    "dates": "The record says the road was finished 80 days before the MP recommended it.",
+    "fast": "A 350 m road recorded complete 6 days after its sanction. The agency's own form "
+            "promised 4 months, so its comfort window opens a month after the start, and no "
+            "site video shows the road being built. (Only the form's timing is filled in here.)",
+    "late": "A community hall the agency promised in 8 months, still open 16 months after its "
+            "sanction. Its monthly site videos showed the walls rising, then the last three show "
+            "no change at the same viewpoints: past its own time, and stopped.",
+    "video": "The first site video of a new hall carries 42 frames already seen on another "
+             "hall's video, and its viewpoints show that hall's place. (The readings are the ones "
+             "the video job made in the team's end-to-end trial, filming one made-up site for "
+             "two works.)",
+    "two": "The same costly lights, now at the place where the scheme already paid for ten "
+           "lights: two different checks each raise a question, and together they count for "
+           "more than either alone.",
 }
 
 
