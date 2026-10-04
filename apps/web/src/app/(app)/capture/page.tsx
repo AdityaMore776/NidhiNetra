@@ -40,7 +40,7 @@ interface Mark {
 
 export default function CapturePage() {
   return (
-    <Suspense fallback={<p className="text-muted text-sm">Loading…</p>}>
+    <Suspense fallback={<p className="text-muted-foreground text-sm">Loading…</p>}>
       <Capture />
     </Suspense>
   );
@@ -205,7 +205,7 @@ function Capture() {
 
   if (!workId) return <p className="text-sm">Open this page from a work (Film a site visit).</p>;
   if (error && !info) return <p className="text-sm text-high">{error}</p>;
-  if (!info) return <p className="text-muted text-sm">Loading…</p>;
+  if (!info) return <p className="text-muted-foreground text-sm">Loading…</p>;
 
   const ghost = (visit?.viewpoints ?? info.viewpoints).find((v) => v.id === at)?.frame_url;
 
@@ -213,7 +213,7 @@ function Capture() {
     <div className="space-y-5 max-w-3xl">
       <div>
         <h1 className="text-2xl font-bold">Film a site visit</h1>
-        <p className="text-sm text-muted">
+        <p className="text-sm text-muted-foreground">
           Work <Link href={`/work?id=${encodeURIComponent(workId)}`} className="underline">{workId}</Link>. Film at the site,
           in this page: a video from the gallery is not accepted. Start at the first fixed viewpoint, walk the site, stop at
           each viewpoint, and come back to the first.
@@ -250,7 +250,7 @@ function Capture() {
               <label key={k.id} className={`rounded-lg border p-3 text-sm ${chosen === k.id ? "border-ink" : "border-line"}`}>
                 <input type="radio" name="kind" className="mr-2" checked={chosen === k.id} onChange={() => setKind(k.id)} />
                 <span className="font-semibold">{k.label}</span>
-                <span className="block text-xs text-muted">{k.help}</span>
+                <span className="block text-xs text-muted-foreground">{k.help}</span>
               </label>
             ))}
           </div>
@@ -267,7 +267,7 @@ function Capture() {
             </label>
           )}
           {chosen !== "baseline" && expected.length > 0 && (
-            <p className="text-xs text-muted">
+            <p className="text-xs text-muted-foreground">
               {expected.length} viewpoints from the last visit: {expected.join(", ")}. Each one must be filmed again.
             </p>
           )}
