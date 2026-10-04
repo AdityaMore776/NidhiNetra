@@ -18,10 +18,12 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { BAND_COLOR, WORK_TYPES } from "@/lib/format";
-import { NAV, navFor } from "./nav";
+import { useMe } from "@/components/me";
+import { NAV, navFor, visibleTo } from "./nav";
 
 export function Topbar({ snapshot }: { snapshot: string | null }) {
   const path = usePathname();
+  const me = useMe();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
@@ -87,7 +89,7 @@ export function Topbar({ snapshot }: { snapshot: string | null }) {
             </CommandGroup>
           )}
           <CommandGroup heading="Pages">
-            {NAV.map((n) => (
+            {visibleTo(NAV, me?.role).map((n) => (
               <CommandItem key={n.href} value={`${n.label} ${n.hint}`} onSelect={() => go(n.href)}>
                 <n.icon className="text-brand-600" />
                 <span>{n.label}</span>

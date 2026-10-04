@@ -30,7 +30,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import type { Me } from "@/lib/api";
-import { NAV_GROUPS, ROLE_LABEL, ROLE_SHORT } from "./nav";
+import { NAV_GROUPS, ROLE_LABEL, ROLE_SHORT, visibleTo } from "./nav";
 
 export function AppSidebar({ me, review, onSignOut }: { me: Me; review: number | null; onSignOut: () => void }) {
   const path = usePathname();
@@ -51,7 +51,7 @@ export function AppSidebar({ me, review, onSignOut }: { me: Me; review: number |
             <SidebarGroupLabel className="font-mono text-[10px] uppercase tracking-[0.14em]">{g.label}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {g.items.map((n) => {
+                {visibleTo(g.items, me.role).map((n) => {
                   const active = n.href === "/" ? path === "/" : path.startsWith(n.href);
                   return (
                     <SidebarMenuItem key={n.href} className="relative">

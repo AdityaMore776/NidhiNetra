@@ -311,7 +311,8 @@ html.lenis body {
 .lenis.lenis-smooth [data-lenis-prevent] {
   overscroll-behavior: contain;
 }
-.lenis.lenis-smooth iframe {
+/* only while a smooth scroll is running: at rest an embedded page (the work form) must take clicks */
+.lenis.lenis-scrolling iframe {
   pointer-events: none;
 }
 

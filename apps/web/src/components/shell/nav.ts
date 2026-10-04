@@ -1,5 +1,6 @@
 import {
   Clapperboard,
+  ClipboardList,
   Database,
   Inbox,
   LayoutDashboard,
@@ -9,7 +10,8 @@ import {
 } from "lucide-react";
 import type { Me } from "@/lib/api";
 
-export type NavItem = { href: string; label: string; icon: LucideIcon; hint: string };
+/** `signedIn`: shown only to staff who signed in, never to the public view (role PUBLIC). */
+export type NavItem = { href: string; label: string; icon: LucideIcon; hint: string; signedIn?: boolean };
 
 export const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
   {
@@ -22,7 +24,16 @@ export const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
   },
   {
     label: "Act",
-    items: [{ href: "/presanction", label: "Pre-sanction check", icon: ShieldCheck, hint: "Check a recommendation before sanction" }],
+    items: [
+      { href: "/presanction", label: "Pre-sanction check", icon: ShieldCheck, hint: "Check a recommendation before sanction" },
+      {
+        href: "/work-form",
+        label: "Work intelligence form",
+        icon: ClipboardList,
+        hint: "The pre-sanction form for a work's facts",
+        signedIn: true,
+      },
+    ],
   },
   {
     label: "Understand",
@@ -34,6 +45,11 @@ export const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
 ];
 
 export const NAV: NavItem[] = NAV_GROUPS.flatMap((g) => g.items);
+
+/** The items this viewer may see: the public view does not get the signed-in ones. */
+export function visibleTo(items: NavItem[], role: Me["role"] | undefined): NavItem[] {
+  return items.filter((n) => !n.signedIn || (role !== undefined && role !== "PUBLIC"));
+}
 
 export function navFor(path: string): NavItem | undefined {
   if (path === "/") return NAV[0];
