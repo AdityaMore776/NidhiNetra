@@ -78,7 +78,7 @@ export function EngineChips({ alerts, className }: { alerts: string[] | null; cl
 export function SourceBadge({ source }: { source: string }) {
   const map: Record<string, [string, string]> = {
     REAL: ["Real eSAKSHI record", "var(--brand-600)"],
-    SCENARIO: ["Demo scenario", "var(--eng-office)"],
+    SCENARIO: ["Made-up example", "var(--eng-office)"],
     LIVE: ["Live submission", "var(--eng-flow)"],
   };
   const [label, color] = map[source] ?? [source, "var(--muted-foreground)"];

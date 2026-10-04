@@ -6,11 +6,13 @@ import { useEffect, useState } from "react";
 import AITextLoading from "@/components/kokonutui/ai-text-loading";
 import { Emblem } from "@/components/Logo";
 import { MeContext } from "@/components/me";
+import { ShowcaseBanner } from "@/components/nn/showcase";
 import { AppSidebar } from "@/components/shell/AppSidebar";
 import { Topbar } from "@/components/shell/Topbar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { api, type Me, type Summary } from "@/lib/api";
 import { cachedApi } from "@/lib/cache";
+import { isShowcase } from "@/lib/showcase";
 import { supabase } from "@/lib/supabase";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -49,6 +51,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <AppSidebar me={me} review={review} onSignOut={signOut} />
         <SidebarInset className="min-w-0 overflow-x-clip">
           <Topbar snapshot={summary?.snapshot_date ?? null} />
+          {isShowcase(me) && <ShowcaseBanner />}
           {/* entry-only: an exit keyed on the route would play with the next page's content inside it */}
           <motion.main
             key={path}

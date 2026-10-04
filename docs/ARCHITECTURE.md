@@ -198,6 +198,11 @@ your area returns 404.
    signing in. Routes that store something (`/cost-forms`, `/site-visits/*`) keep `current_user` and answer 401
    without a sign-in; the web app offers "Staff sign in" for them. The browser only ever holds the Supabase URL and
    anon key; every table has row-level security with no policies, so that key reads and writes nothing directly.
+   **Prototype examples (T132):** the web app answers a visitor with no session from a static file instead of the
+   engine: `apps/web/public/showcase/examples.json` (ten works, built by `data/trial/showcase_examples.py`) serves
+   `/me`, the dashboard, the queue, the works list and those ten works' pages (`apps/web/src/lib/showcase.ts`, hooked
+   into `api()`). The pre-sanction check, Step by step and every signed-in request still go to the engine.
+   `NEXT_PUBLIC_SHOWCASE=0` turns it off; the engine's own `PUBLIC` answers above are unchanged.
 5. **Dev mode** (`DRISHTI_AUTH=dev`): a request may name its role in an `X-Dev-Role` header so the app runs on
    a laptop without Supabase. It is refused whenever the `VERCEL` environment variable is present.
 
