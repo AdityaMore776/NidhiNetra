@@ -196,7 +196,7 @@ def read(path, log: dict, site: Site | None, earlier: list[Earlier], others: lis
             reused.append({"work_id": e.work_id, "visit_id": e.visit_id, "frames": run})
     readings["reused_from"] = [r for r in reused if r["frames"] >= MIN_RUN]
 
-    same = []
+    same: dict[str, int] = {}
     mine_all = list(feats.values()) or pool
     for e in others:
         best = 0
@@ -207,8 +207,8 @@ def read(path, log: dict, site: Site | None, earlier: list[Earlier], others: lis
             of = rd.features(rd.cv2.cvtColor(img, rd.cv2.COLOR_BGR2GRAY))
             best = max([best] + [rd.match(of, m)[0] for m in mine_all])
         if best >= PLACE_MATCH:
-            same.append({"work_id": e.work_id, "inliers": best})
-    readings["same_place_as"] = same
+            same[e.work_id] = max(best, same.get(e.work_id, 0))       # one entry per work
+    readings["same_place_as"] = [{"work_id": k, "inliers": v} for k, v in sorted(same.items())]
 
     kept = {"viewpoints": {}, "hashes": hashes}
     for vid, f in keys.items():
