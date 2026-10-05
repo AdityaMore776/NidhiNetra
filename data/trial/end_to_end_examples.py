@@ -35,6 +35,7 @@ Run:  apps\engine\.venv\Scripts\python.exe data\trial\end_to_end_examples.py
 from __future__ import annotations
 
 import json
+import statistics
 import sys
 from datetime import date, timedelta
 from pathlib import Path
@@ -45,9 +46,11 @@ sys.path.insert(0, str(ROOT / "data" / "trial"))
 sys.path.insert(0, str(ROOT / "apps" / "engine"))
 import work_form_examples as wf  # noqa: E402
 
+from drishti.agents.cost_estimate import rates, whole  # noqa: E402
+from drishti.agents.cost_estimate.agent import assess as cost_assess  # noqa: E402
 from drishti.agents.time_rules import window as time_window  # noqa: E402
 from drishti.batch import indexes  # noqa: E402
-from drishti.cost_form import pswif  # noqa: E402
+from drishti.cost_form import catalog, pswif  # noqa: E402
 from drishti.cost_form.validate import validate  # noqa: E402
 from drishti.evaluation.stats import build_store  # noqa: E402
 from drishti.explain import explain  # noqa: E402
@@ -241,6 +244,128 @@ def yardstick(key: str, p: dict, ref: dict) -> dict | None:
             "district": {"works": d["n"], "median": d["median"]} if d else None}
 
 
+def _others_range(index, key: tuple, agency: str, work_id: str, when) -> dict | None:
+    """What the other agencies pay: the lowest and highest of their own median rates (the same
+    recent forms rates._vote takes the fair rate from)."""
+    own = {agency, rates.agency_key(agency)}
+    by: dict[str, list[float]] = {}
+    for a, wid, r, month in index.get(key, []):
+        if a in own or wid == work_id:
+            continue
+        if when is not None and month is not None and not 0 <= (when - month).days <= rates.RECENT_DAYS:
+            continue
+        by.setdefault(a, []).append(r)
+    if not by:
+        return None
+    meds = sorted(statistics.median(v) for v in by.values())
+    return {"low": round(meds[0], 2), "high": round(meds[-1], 2), "agencies": len(meds),
+            "forms": sum(len(v) for v in by.values())}
+
+
+def _situations(p: dict, n: int) -> list[dict]:
+    """What on the website form could honestly raise a line's cost, and whether it applies here.
+    Read straight from the form; the Cost agent itself does not discount for them, so a yes is
+    for the officer to weigh."""
+    terrain = str(p.get("terrain") or "").strip()
+    access = str(p.get("site_access") or "").strip()
+    far = float(p.get("motorable_access_distance_m") or 0)
+    remote = bool(terrain and terrain.lower() != "plain") or (
+        bool(access) and not access.lower().startswith("motorable")) or far > 0
+    where = ", ".join(x for x in (terrain or None, access.lower() or None,
+                                  f"{far:g} m from a motorable road" if far else None) if x)
+    reason = str(p.get(f"boq_just_{n}") or "").strip()
+    source = str(p.get(f"boq_source_{n}") or "").strip()
+    code = str(p.get(f"boq_code_{n}") or "").strip()
+    return [
+        {"label": "Hard-to-reach site", "applies": remote, "note": where or "not stated"},
+        {"label": "Agency's reason for this line", "applies": bool(reason),
+         "note": f"“{reason}”" if reason else "none given"},
+        {"label": "Official rate cited", "applies": bool(code) and "sor" in source.lower(),
+         "note": (f"SoR item {code}" if code else source or "not stated")
+                 + "; the state's rate book is not loaded yet (T096)"},
+    ]
+
+
+def cost_lines(w: dict, ctx, p: dict) -> dict:
+    """Step 3, the Cost agent's reading of each estimate line (T138): the rate and quantity it
+    calls usual here, how far the line is above them, and what on the form could explain it.
+    Every figure is the agent's own (its evidence) or the form's."""
+    res = cost_assess(w, ctx)
+    ev = res.evidence
+    wh = ev.get("whole") or {}
+    form = w["cost_form"]
+    agency, wid = rates.agency_of(w), str(w.get("work_id"))
+    when = rates._form_month(form, ctx.as_of)
+    idx = (ctx.data or {}).get("rates")
+    judged = {(x["site"], x["line"]): x for x in wh.get("lines", [])}
+    gaps = {g["material"]: g for g in ev.get("data_gaps", [])}
+    form_lines = (form.get("sites") or [{}])[0].get("lines") or []
+    lines_total = sum(r["amount"] for r in boq(p)) or 1.0
+    site = (ev.get("sites") or [{}])[0]
+    out = []
+    for r in boq(p):
+        j = r["n"] - 1
+        ln = form_lines[j] if j < len(form_lines) else {}
+        mid = ln.get("material_id")
+        mat = catalog.material(mid) if mid else None
+        x = judged.get((0, j))
+        row = {"n": r["n"], "situations": _situations(p, r["n"]), "extra": 0.0}
+        if x and x.get("fair_rate") is not None:
+            fair = x["fair_rate"]
+            key = ((str(w.get("district_lgd")), mid) if x["fair_source"] == "district"
+                   else (rates._state(w), mid))
+            book = idx.by_key if x["fair_source"] == "district" else idx.by_state
+            rng = _others_range(book, key, agency, wid, when) if idx else None
+            pct = x["rate"] / fair - 1
+            row.update(state="rate", fair_rate=fair, pct=round(pct, 4), range=rng,
+                       where=x["fair_source"], unit=x["unit"],
+                       level=("high" if rng and x["rate"] > rng["high"] * 1.005
+                              else "watch" if pct > 0.005 else "ok"))
+        elif x and site.get("price_per_unit") is None:
+            row.update(state="quantity_only", unit=x["unit"], level="ok")
+        elif mid is None and r["unit"] != "ls" and lines_total:
+            over = (wh.get("unexplained") or {}).get("unread_items", 0.0)
+            row.update(state="unread", level="high" if over else "ok", over=round(over, 2),
+                       share=round(r["amount"] / lines_total, 4))
+        elif mid in gaps:
+            g = gaps[mid]
+            row.update(state="no_data", level="none", forms=g["forms"], agencies=g["agencies"],
+                       need=f"{rates.MIN_FORMS} forms from {rates.MIN_AGENCIES} agencies")
+        # a goods work (solar lights) is priced as a whole item, per light: that reading leads
+        if row.get("state") in (None, "no_data", "quantity_only")                 and site.get("price_per_unit") is not None:
+            row.pop("forms", None), row.pop("agencies", None), row.pop("need", None)
+            ref = site["reference"]
+            per = site["price_per_unit"]
+            row.update(state="whole_item", level="high" if per > site["question_above"] else "ok",
+                       per=per, per_unit=site["unit"], median=ref["median"], p98=ref["p98"],
+                       works=ref["n"], where_text=site["where"], limit=site["question_above"],
+                       pct=round(per / ref["median"] - 1, 4))
+        if "state" not in row:
+            row.update(state="no_data", level="none", forms=0, agencies=0,
+                       need=f"{rates.MIN_FORMS} forms from {rates.MIN_AGENCIES} agencies")
+        if x:
+            needed = x.get("needed")
+            if needed is not None:
+                row.update(needed=round(needed, 1),
+                           allowed=round(needed * whole.QTY_TOLERANCE, 1),
+                           qty_ratio=round(x["quantity"] / needed, 3) if needed else None)
+                if x["quantity"] > needed * whole.QTY_TOLERANCE:
+                    row["level"] = "high"
+            row["extra"] = round(x["extra"], 2)
+        if mat:
+            row["material"] = mat["label"]
+        out.append(row)
+    unread = wh.get("unexplained", {})
+    summary = {"verdict": wh.get("verdict"), "grand": wh.get("grand_total"),
+               "fair": wh.get("fair_total"), "gap": wh.get("gap"), "share": wh.get("gap_share"),
+               "coverage": wh.get("coverage"), "limit_share": whole.GAP_SHARE,
+               "limit_rs": whole.GAP_MIN_RS, "qty_slack": round(whole.QTY_TOLERANCE - 1, 4),
+               "unread_allowed": whole.UNREAD_SHARE, "unexplained": unread,
+               "lines_total": lines_total, "headline": res.headline,
+               "asks": any(f.code == "ESTIMATE_ABOVE_FAIR_PRICE" for f in res.findings)}
+    return {"lines": out, "summary": summary}
+
+
 def decision(band: str) -> str:
     return {"LOW": "Nothing for the officer to check: ready for sanction.",
             "MEDIUM": "Sanction after the officer checks what is flagged.",
@@ -289,7 +414,8 @@ def main() -> None:
                     "boq": boq(e["form"]), "check": check,
                     "time_plan": time_plan(w["cost_form"], w["work_type_code"], as_of),
                     "yardstick": yardstick(e["key"], e["form"], ref),
-                    "decision": decision(band), "trace": trace})
+                    "decision": decision(band), "cost": cost_lines(w, ctx, e["form"]),
+                    "trace": trace})
     if bad:
         sys.exit("the end-to-end filings no longer show what they say:\n" + "\n".join(bad))
     SUMMARY.write_text(f"{len(works):,} dashboard works, as of {as_of}; {wf.DISTRICT}, "
@@ -305,5 +431,44 @@ def main() -> None:
     print(f"wrote {OUT.relative_to(ROOT)} ({OUT.stat().st_size // 1024} KB)")
 
 
+def cost_only() -> None:
+    """Add the Cost agent's line-by-line reading to the examples already written, without the
+    dashboard tables (the Cost agent reads only the forms: the district's real works carry none).
+    Stops unless the agent says exactly what the stored trace says for every filing."""
+    data = json.loads(OUT.read_text(encoding="utf-8"))
+    as_of = date.fromisoformat(data["as_of"])
+    state, district = "UTTAR PRADESH", wf.DISTRICT.upper()
+    place = {"district_lgd": f"{state}|{district}", "state_lgd": state,
+             "state_name": "Uttar Pradesh", "district_name": wf.DISTRICT}
+    demo, demo_bg = wf.build(as_of)
+    world = demo_bg + [pswif.to_work(e["form"], today=as_of, **e["record"]) for e in demo]
+    filings, bg = build(as_of)
+    for x in world + bg:
+        x.update(place)
+    stored = {e["id"]: e for e in data["examples"]}
+    bad = []
+    for e in filings:
+        w = pswif.to_work(e["form"], today=as_of, **e["record"])
+        w.update(place)
+        ctx = Context(stats=None, as_of=as_of, data=indexes(world + bg + [w]))
+        ex = stored[e["key"]]
+        if ex["form"] != e["form"]:
+            bad.append(f"{e['key']}: the filing changed since the examples were written")
+            continue
+        reading = cost_lines(w, ctx, e["form"])
+        want = next(c for c in ex["trace"]["checks"] if c["id"] == "cost_estimate")["headline"]
+        if reading["summary"]["headline"] != want:
+            bad.append(f"{e['key']}: Cost now says {reading['summary']['headline']!r}, "
+                       f"the stored trace {want!r}")
+        ex["cost"] = reading
+        print(f"{e['key']:13} {reading['summary']['verdict']}  "
+              + " ".join(f"{x['n']}:{x['state']}/{x['level']}" for x in reading["lines"]))
+    if bad:
+        sys.exit("the Cost reading does not match the stored examples:\n" + "\n".join(bad))
+    OUT.write_text(json.dumps(data, ensure_ascii=False, indent=1, default=str),
+                   encoding="utf-8")
+    print(f"wrote {OUT.relative_to(ROOT)} ({OUT.stat().st_size // 1024} KB)")
+
+
 if __name__ == "__main__":
-    main()
+    cost_only() if "--cost-only" in sys.argv else main()

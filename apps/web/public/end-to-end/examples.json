@@ -648,6 +648,261 @@
      "advice": "No question from the checks the record allows (rules, cost and repeats). This is not a clean chit: the papers and the site are not seen here.",
      "reasons": []
     }
+   },
+   "cost": {
+    "lines": [
+     {
+      "n": 1,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 380.0,
+      "pct": 0.0,
+      "range": {
+       "low": 372.0,
+       "high": 395.0,
+       "agencies": 10,
+       "forms": 20
+      },
+      "where": "district",
+      "unit": "bag",
+      "level": "ok",
+      "needed": 1333.6,
+      "allowed": 1466.9,
+      "qty_ratio": 0.98,
+      "material": "Cement"
+     },
+     {
+      "n": 2,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 1800.0,
+      "pct": 0.0,
+      "range": {
+       "low": 1764.0,
+       "high": 1872.0,
+       "agencies": 10,
+       "forms": 20
+      },
+      "where": "district",
+      "unit": "m3",
+      "level": "ok",
+      "needed": 83.3,
+      "allowed": 91.7,
+      "qty_ratio": 0.828,
+      "material": "Sand"
+     },
+     {
+      "n": 3,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 2100.0,
+      "pct": 0.0,
+      "range": {
+       "low": 2058.0,
+       "high": 2184.0,
+       "agencies": 10,
+       "forms": 20
+      },
+      "where": "district",
+      "unit": "m3",
+      "level": "ok",
+      "material": "Stone aggregate"
+     },
+     {
+      "n": 4,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 1450.0,
+      "pct": 0.0,
+      "range": {
+       "low": 1421.0,
+       "high": 1508.0,
+       "agencies": 10,
+       "forms": 18
+      },
+      "where": "district",
+      "unit": "m3",
+      "level": "ok",
+      "material": "GSB / WBM / moorum"
+     },
+     {
+      "n": 5,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 750.0,
+      "pct": 0.0,
+      "range": {
+       "low": 735.0,
+       "high": 780.0,
+       "agencies": 10,
+       "forms": 20
+      },
+      "where": "district",
+      "unit": "day",
+      "level": "ok",
+      "material": "Skilled labour"
+     },
+     {
+      "n": 6,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 420.0,
+      "pct": 0.0,
+      "range": {
+       "low": 412.0,
+       "high": 437.0,
+       "agencies": 10,
+       "forms": 20
+      },
+      "where": "district",
+      "unit": "day",
+      "level": "ok",
+      "material": "Unskilled labour"
+     },
+     {
+      "n": 7,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "Approved quotation; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "unread",
+      "level": "ok",
+      "over": 0.0,
+      "share": 0.0517
+     }
+    ],
+    "summary": {
+     "verdict": "FAIR",
+     "grand": 1451530.0,
+     "fair": 1451530.0,
+     "gap": 0.0,
+     "share": 0.0,
+     "coverage": 0.9483,
+     "limit_share": 0.15,
+     "limit_rs": 50000,
+     "qty_slack": 0.1,
+     "unread_allowed": 0.15,
+     "unexplained": {},
+     "lines_total": 1451530.0,
+     "headline": "The whole estimate is Rs 14.52 lakh against a fair Rs 14.52 lakh (+0.0%), pricing 95% of the money: within the fair band.",
+     "asks": false
+    }
    }
   },
   {
@@ -1191,6 +1446,61 @@
      "colour": "GREEN",
      "advice": "No question from the checks the record allows (rules, cost and repeats). This is not a clean chit: the papers and the site are not seen here.",
      "reasons": []
+    }
+   },
+   "cost": {
+    "lines": [
+     {
+      "n": 1,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "Approved quotation; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "whole_item",
+      "level": "ok",
+      "per": 20900.0,
+      "per_unit": "light",
+      "median": 20896,
+      "p98": 20896,
+      "works": 136,
+      "where_text": "Jaunpur",
+      "limit": 26120.0,
+      "pct": 0.0002,
+      "needed": 20.0,
+      "allowed": 22.0,
+      "qty_ratio": 1.0,
+      "material": "Battery"
+     }
+    ],
+    "summary": {
+     "verdict": "FAIR",
+     "grand": 418000.0,
+     "fair": 418000.0,
+     "gap": 0.0,
+     "share": 0.0,
+     "coverage": 1.0,
+     "limit_share": 0.15,
+     "limit_rs": 50000,
+     "qty_slack": 0.1,
+     "unread_allowed": 0.15,
+     "unexplained": {},
+     "lines_total": 418000.0,
+     "headline": "The work: Rs 20,900 per light is in line with similar works in Jaunpur (98 in 100 of the 136 similar works in Jaunpur cost at most Rs 20,896 per light (median Rs 20,896)). The whole estimate is Rs 4.18 lakh against a fair Rs 4.18 lakh (+0.0%), pricing 100% of the money: within the fair band.",
+     "asks": false
     }
    }
   },
@@ -1892,6 +2202,263 @@
        "read": null
       }
      ]
+    }
+   },
+   "cost": {
+    "lines": [
+     {
+      "n": 1,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 380.0,
+      "pct": 0.0,
+      "range": {
+       "low": 372.0,
+       "high": 395.0,
+       "agencies": 10,
+       "forms": 20
+      },
+      "where": "district",
+      "unit": "bag",
+      "level": "ok",
+      "needed": 1333.6,
+      "allowed": 1466.9,
+      "qty_ratio": 0.98,
+      "material": "Cement"
+     },
+     {
+      "n": 2,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 1800.0,
+      "pct": 0.0,
+      "range": {
+       "low": 1764.0,
+       "high": 1872.0,
+       "agencies": 10,
+       "forms": 20
+      },
+      "where": "district",
+      "unit": "m3",
+      "level": "ok",
+      "needed": 83.3,
+      "allowed": 91.7,
+      "qty_ratio": 0.828,
+      "material": "Sand"
+     },
+     {
+      "n": 3,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 2100.0,
+      "pct": 0.0,
+      "range": {
+       "low": 2058.0,
+       "high": 2184.0,
+       "agencies": 10,
+       "forms": 20
+      },
+      "where": "district",
+      "unit": "m3",
+      "level": "ok",
+      "material": "Stone aggregate"
+     },
+     {
+      "n": 4,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 1450.0,
+      "pct": 0.0,
+      "range": {
+       "low": 1421.0,
+       "high": 1508.0,
+       "agencies": 10,
+       "forms": 18
+      },
+      "where": "district",
+      "unit": "m3",
+      "level": "ok",
+      "material": "GSB / WBM / moorum"
+     },
+     {
+      "n": 5,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 750.0,
+      "pct": 0.0,
+      "range": {
+       "low": 735.0,
+       "high": 780.0,
+       "agencies": 10,
+       "forms": 20
+      },
+      "where": "district",
+      "unit": "day",
+      "level": "ok",
+      "material": "Skilled labour"
+     },
+     {
+      "n": 6,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 420.0,
+      "pct": 0.0,
+      "range": {
+       "low": 412.0,
+       "high": 437.0,
+       "agencies": 10,
+       "forms": 20
+      },
+      "where": "district",
+      "unit": "day",
+      "level": "ok",
+      "material": "Unskilled labour"
+     },
+     {
+      "n": 7,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": true,
+        "note": "“Mixer and vibrator on site for the whole season”"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "Approved quotation; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "unread",
+      "level": "high",
+      "over": 324770.5,
+      "share": 0.3123
+     }
+    ],
+    "summary": {
+     "verdict": "ASK",
+     "grand": 2001530.0,
+     "fair": 1676759.5,
+     "gap": 324770.5,
+     "share": 0.2359,
+     "coverage": 0.6877,
+     "limit_share": 0.15,
+     "limit_rs": 50000,
+     "qty_slack": 0.1,
+     "unread_allowed": 0.15,
+     "unexplained": {
+      "unread_items": 324770.5
+     },
+     "lines_total": 2001530.0,
+     "headline": "The estimate (Rs 20.02 lakh) is Rs 3.25 lakh above the fair price for this size of work in this district (Rs 16.77 lakh), 24% above the fair price of the 69% of the money that could be priced. Most of the gap: items no reader can price beyond 15% of the lines +Rs 3.25 lakh (not itemised). 0 of the 6 priced lines are above their fair rate. Needs checking before sanction.",
+     "asks": true
     }
    }
   },
@@ -2604,6 +3171,261 @@
        ]
       }
      ]
+    }
+   },
+   "cost": {
+    "lines": [
+     {
+      "n": 1,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 380.0,
+      "pct": 0.0,
+      "range": {
+       "low": 372.0,
+       "high": 395.0,
+       "agencies": 9,
+       "forms": 18
+      },
+      "where": "district",
+      "unit": "bag",
+      "level": "ok",
+      "needed": 422.3,
+      "allowed": 464.5,
+      "qty_ratio": 0.98,
+      "material": "Cement"
+     },
+     {
+      "n": 2,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 1800.0,
+      "pct": 0.0,
+      "range": {
+       "low": 1764.0,
+       "high": 1872.0,
+       "agencies": 9,
+       "forms": 18
+      },
+      "where": "district",
+      "unit": "m3",
+      "level": "ok",
+      "needed": 26.4,
+      "allowed": 29.0,
+      "qty_ratio": 0.834,
+      "material": "Sand"
+     },
+     {
+      "n": 3,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 2100.0,
+      "pct": 0.0,
+      "range": {
+       "low": 2058.0,
+       "high": 2184.0,
+       "agencies": 9,
+       "forms": 18
+      },
+      "where": "district",
+      "unit": "m3",
+      "level": "ok",
+      "material": "Stone aggregate"
+     },
+     {
+      "n": 4,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 1450.0,
+      "pct": 0.0,
+      "range": {
+       "low": 1421.0,
+       "high": 1508.0,
+       "agencies": 9,
+       "forms": 16
+      },
+      "where": "district",
+      "unit": "m3",
+      "level": "ok",
+      "material": "GSB / WBM / moorum"
+     },
+     {
+      "n": 5,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 750.0,
+      "pct": 0.0,
+      "range": {
+       "low": 735.0,
+       "high": 780.0,
+       "agencies": 9,
+       "forms": 18
+      },
+      "where": "district",
+      "unit": "day",
+      "level": "ok",
+      "material": "Skilled labour"
+     },
+     {
+      "n": 6,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "rate",
+      "fair_rate": 420.0,
+      "pct": 0.0,
+      "range": {
+       "low": 412.0,
+       "high": 437.0,
+       "agencies": 9,
+       "forms": 18
+      },
+      "where": "district",
+      "unit": "day",
+      "level": "ok",
+      "material": "Unskilled labour"
+     },
+     {
+      "n": 7,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "Approved quotation; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "unread",
+      "level": "ok",
+      "over": 0.0,
+      "share": 0.1467
+     }
+    ],
+    "summary": {
+     "verdict": "FAIR",
+     "grand": 511320.0,
+     "fair": 511320.0,
+     "gap": 0.0,
+     "share": 0.0,
+     "coverage": 0.8533,
+     "limit_share": 0.15,
+     "limit_rs": 50000,
+     "qty_slack": 0.1,
+     "unread_allowed": 0.15,
+     "unexplained": {},
+     "lines_total": 511320.0,
+     "headline": "The whole estimate is Rs 5.11 lakh against a fair Rs 5.11 lakh (+0.0%), pricing 85% of the money: within the fair band.",
+     "asks": false
     }
    }
   },
@@ -3442,6 +4264,304 @@
        "read": null
       }
      ]
+    }
+   },
+   "cost": {
+    "lines": [
+     {
+      "n": 1,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 128250.0,
+      "state": "rate",
+      "fair_rate": 380.0,
+      "pct": 0.25,
+      "range": {
+       "low": 369.0,
+       "high": 395.0,
+       "agencies": 6,
+       "forms": 8
+      },
+      "where": "district",
+      "unit": "bag",
+      "level": "high",
+      "material": "Cement"
+     },
+     {
+      "n": 2,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 36450.0,
+      "state": "rate",
+      "fair_rate": 1800.0,
+      "pct": 0.25,
+      "range": {
+       "low": 1746.0,
+       "high": 1872.0,
+       "agencies": 6,
+       "forms": 8
+      },
+      "where": "district",
+      "unit": "m3",
+      "level": "high",
+      "material": "Sand"
+     },
+     {
+      "n": 3,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 33075.0,
+      "state": "rate",
+      "fair_rate": 2100.0,
+      "pct": 0.25,
+      "range": {
+       "low": 2037.0,
+       "high": 2184.0,
+       "agencies": 6,
+       "forms": 8
+      },
+      "where": "district",
+      "unit": "m3",
+      "level": "high",
+      "material": "Stone aggregate"
+     },
+     {
+      "n": 4,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "State/Dept SoR; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "no_data",
+      "level": "none",
+      "forms": 2,
+      "agencies": 2,
+      "need": "5 forms from 3 agencies",
+      "material": "Reinforcement steel"
+     },
+     {
+      "n": 5,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "no_data",
+      "level": "none",
+      "forms": 2,
+      "agencies": 2,
+      "need": "5 forms from 3 agencies",
+      "material": "Bricks"
+     },
+     {
+      "n": 6,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "Approved quotation; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "no_data",
+      "level": "none",
+      "forms": 2,
+      "agencies": 2,
+      "need": "5 forms from 3 agencies",
+      "material": "Tiles"
+     },
+     {
+      "n": 7,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 74448.0,
+      "state": "rate",
+      "fair_rate": 750.0,
+      "pct": 0.2507,
+      "range": {
+       "low": 728.0,
+       "high": 780.0,
+       "agencies": 6,
+       "forms": 8
+      },
+      "where": "district",
+      "unit": "day",
+      "level": "high",
+      "material": "Skilled labour"
+     },
+     {
+      "n": 8,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "District recent rates; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 113400.0,
+      "state": "rate",
+      "fair_rate": 420.0,
+      "pct": 0.25,
+      "range": {
+       "low": 407.0,
+       "high": 437.0,
+       "agencies": 6,
+       "forms": 8
+      },
+      "where": "district",
+      "unit": "day",
+      "level": "high",
+      "material": "Unskilled labour"
+     },
+     {
+      "n": 9,
+      "situations": [
+       {
+        "label": "Hard-to-reach site",
+        "applies": false,
+        "note": "Plain, motorable all-weather"
+       },
+       {
+        "label": "Agency's reason for this line",
+        "applies": false,
+        "note": "none given"
+       },
+       {
+        "label": "Official rate cited",
+        "applies": false,
+        "note": "Approved quotation; the state's rate book is not loaded yet (T096)"
+       }
+      ],
+      "extra": 0.0,
+      "state": "no_data",
+      "level": "none",
+      "forms": 2,
+      "agencies": 2,
+      "need": "5 forms from 3 agencies",
+      "material": "Doors / windows"
+     }
+    ],
+    "summary": {
+     "verdict": "ASK",
+     "grand": 2940153.0,
+     "fair": 2554530.0,
+     "gap": 385623.0,
+     "share": 0.2501,
+     "coverage": 0.6555,
+     "limit_share": 0.15,
+     "limit_rs": 50000,
+     "qty_slack": 0.1,
+     "unread_allowed": 0.15,
+     "unexplained": {},
+     "lines_total": 2940153.0,
+     "headline": "The estimate (Rs 29.40 lakh) is Rs 3.86 lakh above the fair price for this size of work in this district (Rs 25.55 lakh), 25% above the fair price of the 66% of the money that could be priced. Most of the gap: cement +Rs 1.28 lakh (Rs 475 a bag against Rs 380), unskilled labour +Rs 1.13 lakh (Rs 525 a day against Rs 420), skilled labour +Rs 74,448 (Rs 938 a day against Rs 750). 5 of the 5 priced lines are above their fair rate. Needs checking before sanction.",
+     "asks": true
     }
    }
   }
