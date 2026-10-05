@@ -34,4 +34,11 @@ Data tab shows prices, works on record, after sanction, rules: True; the form ke
 
 deep link ?example=time_fast opened WF-TIME-1
 live check without a district: asks for the district
+
+End to end (/end-to-end, T136): form, form check, agents, risk score
+legit_road    score shown   0 (meant 0): ok
+legit_lights  score shown   0 (meant 0): ok
+cost_hidden   score shown  25 (meant 25): ok
+dup_pieces    score shown  72 (meant 72): ok
+many_flags    score shown  46 (meant 46): ok
 page errors: 0

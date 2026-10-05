@@ -5,6 +5,7 @@ import {
   Inbox,
   LayoutDashboard,
   type LucideIcon,
+  Route,
   ShieldCheck,
   Workflow,
 } from "lucide-react";
@@ -39,6 +40,7 @@ export const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
     items: [
       { href: "/how-it-works", label: "How it works", icon: Workflow, hint: "The engines and the score" },
       { href: "/explain", label: "Step by step", icon: Clapperboard, hint: "One work, animated" },
+      { href: "/end-to-end", label: "Form to risk score", icon: Route, hint: "Five filings, end to end" },
     ],
   },
 ];

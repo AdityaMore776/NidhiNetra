@@ -4,6 +4,10 @@
 // fixed viewpoints every month. The page checks light, place and coverage while filming, so a
 // poor video is fixed at the site, never flagged later; it seals the video (SHA-256 when filming
 // ends) and uploads it with a capture token issued when filming started.
+// Room for error (T136): only what makes a video useless stops the upload (too short, a viewpoint
+// half marked, a first visit with fewer than two viewpoints). Everything else (a viewpoint that
+// cannot be reached, weak GPS, poor light, walking fast) is shown as a tip and noted in the log;
+// Site Progress forgives one poor video and asks only when the last two cannot show the work.
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -29,8 +33,11 @@ const KINDS: { id: VisitKind; label: string; help: string }[] = [
 ];
 const MIN_SECONDS = 20;
 const MIN_VIEW_SECONDS = 2;
+const MIN_BASE_VIEWS = 2; // a first visit needs at least this many viewpoints to compare with
+const GOOD_BASE_VIEWS = 4;
 const DARK = 40;
 const FAST_MPS = 2.5;
+const WEAK_GPS_M = 50; // a fix less accurate than this cannot place the phone (the engine's GPS_POOR_M)
 
 interface Mark {
   id: string;
@@ -56,6 +63,7 @@ function Capture() {
   const [filming, setFilming] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [marks, setMarks] = useState<Mark[]>([]);
+  const [skipped, setSkipped] = useState<string[]>([]);
   const [at, setAt] = useState<string | null>(null);
   const [dark, setDark] = useState(false);
   const [gps, setGps] = useState<GpsFix | null>(null);
@@ -110,6 +118,7 @@ function Capture() {
       recording.current = rec;
       setVisit(v);
       setMarks([]);
+      setSkipped([]);
       setAt(null);
       setFilming(true);
     } catch (e) {
@@ -121,7 +130,12 @@ function Capture() {
   function markStart(id: string) {
     const t0 = recording.current?.now() ?? 0;
     setMarks((m) => [...m.filter((x) => x.id !== id), { id, t0, t1: null }]);
+    setSkipped((s) => s.filter((x) => x !== id));
     setAt(id);
+  }
+
+  function skip(id: string) {
+    setSkipped((s) => (s.includes(id) ? s : [...s, id]));
   }
 
   function markEnd() {
@@ -131,15 +145,24 @@ function Capture() {
   }
 
   const done = marks.filter((m) => m.t1 !== null && m.t1 - m.t0 >= MIN_VIEW_SECONDS);
-  const missing = chosen === "baseline" ? [] : expected.filter((id) => !done.some((m) => m.id === id));
+  const missing =
+    chosen === "baseline" ? [] : expected.filter((id) => !done.some((m) => m.id === id) && !skipped.includes(id));
   const outside = site && gps ? outsideBy(site, gps.lat, gps.lon) : null;
-  const problems = [
+  const weakGps = gps !== null && gps.accuracy > WEAK_GPS_M;
+  // only these stop the upload: the video would be useless
+  const blockers = [
     seconds < MIN_SECONDS && `Keep filming: at least ${MIN_SECONDS} seconds.`,
-    chosen === "baseline" && done.length < 4 && "Mark at least 4 viewpoints around the site (a fixed object at each).",
-    missing.length > 0 && `Viewpoint${missing.length > 1 ? "s" : ""} ${missing.join(", ")} not filmed yet: walk there, line up the faint picture, and mark it.`,
+    chosen === "baseline" && done.length < MIN_BASE_VIEWS && `Mark at least ${MIN_BASE_VIEWS} viewpoints around the site (a fixed object at each: a tree, a pole, a wall).`,
     at && "Finish the viewpoint you are at.",
-    dark && "Too dark: film in daylight.",
-    site && gps && !insideSite(site, gps.lat, gps.lon) && `You are ${Math.round(outside ?? 0)} m from the site: go to the site.`,
+  ].filter(Boolean) as string[];
+  // these are tips: the video can still be uploaded, and they are noted with it
+  const tips = [
+    chosen === "baseline" && done.length >= MIN_BASE_VIEWS && done.length < GOOD_BASE_VIEWS && `${GOOD_BASE_VIEWS} or more viewpoints are better, if the site allows.`,
+    missing.length > 0 && `Viewpoint${missing.length > 1 ? "s" : ""} ${missing.join(", ")} not filmed yet: walk there, line up the faint picture and mark it, or tap "Can't reach" if it is blocked.`,
+    dark && "Too dark: film in daylight if you can. A dark video cannot show the work.",
+    weakGps && `GPS is weak (±${Math.round(gps?.accuracy ?? 0)} m): stand in the open for a moment. The views still show where you are.`,
+    !weakGps && site && gps && outside !== null && outside - gps.accuracy > site.gps_margin_m && !insideSite(site, gps.lat, gps.lon) &&
+      `The phone puts you ${Math.round(outside)} m from the site's map pin. If you are at the site, carry on: the views decide.`,
     gps?.speed != null && gps.speed > FAST_MPS && "Walk more slowly.",
   ].filter(Boolean) as string[];
 
@@ -162,6 +185,8 @@ function Capture() {
         in_app: true,
         duration_s: duration,
         viewpoints: done.map((m) => ({ id: m.id, t0: m.t0, t1: m.t1 })),
+        skipped: skipped.map((id) => ({ id, reason: "could not reach (blocked or unsafe)" })),
+        tips,
         gps: rec.gps,
         motion: rec.motion,
         user_agent: navigator.userAgent.slice(0, 200),
@@ -293,15 +318,27 @@ function Capture() {
         <div className="flex flex-wrap gap-2">
           {(chosen === "baseline" ? [...done.map((m) => m.id), `v${done.length + 1}`] : expected).map((id) => {
             const ok = done.some((m) => m.id === id);
+            const off = skipped.includes(id);
             return (
-              <button
-                key={id}
-                disabled={Boolean(at)}
-                className={`rounded-lg border px-3 py-2 text-sm ${ok ? "border-low" : "border-line"}`}
-                onClick={() => markStart(id)}
-              >
-                {ok ? "✓ " : ""}At viewpoint {id}
-              </button>
+              <span key={id} className="inline-flex gap-1">
+                <button
+                  disabled={Boolean(at)}
+                  className={`rounded-lg border px-3 py-2 text-sm ${ok ? "border-low" : "border-line"}`}
+                  onClick={() => markStart(id)}
+                >
+                  {ok ? "✓ " : ""}At viewpoint {id}
+                </button>
+                {chosen !== "baseline" && !ok && (
+                  <button
+                    disabled={Boolean(at) || off}
+                    aria-label={`Can't reach viewpoint ${id}`}
+                    className="rounded-lg border border-line px-2 py-2 text-xs text-muted-foreground disabled:opacity-60"
+                    onClick={() => skip(id)}
+                  >
+                    {off ? "Skipped" : "Can't reach"}
+                  </button>
+                )}
+              </span>
             );
           })}
           {at && (
@@ -311,13 +348,23 @@ function Capture() {
           )}
         </div>
         <ul className="space-y-1 text-sm">
-          {problems.map((p) => (
+          {blockers.map((p) => (
+            <li key={p} className="text-high">• {p}</li>
+          ))}
+          {tips.map((p) => (
             <li key={p} className="text-medium">• {p}</li>
           ))}
-          {problems.length === 0 && <li className="text-low">Everything needed is filmed. Stop when you are back at the first viewpoint.</li>}
+          {blockers.length === 0 && tips.length === 0 && (
+            <li className="text-low">Everything needed is filmed. Stop when you are back at the first viewpoint.</li>
+          )}
+          {blockers.length === 0 && tips.length > 0 && (
+            <li className="text-muted-foreground">
+              You can still stop and upload: the tips are noted with the video, and one imperfect visit is never held against the work.
+            </li>
+          )}
         </ul>
         <button
-          disabled={problems.length > 0}
+          disabled={blockers.length > 0}
           className="rounded-lg bg-ink px-4 py-2 text-sm font-semibold text-white disabled:opacity-40"
           onClick={stop}
         >

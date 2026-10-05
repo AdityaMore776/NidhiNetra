@@ -1475,6 +1475,127 @@ other forms (`batch.state_forms`).
 - every agency in a district padding together (needs the SoR, T096);
 - a bigger size claimed consistently everywhere (needs the site videos to measure it).
 
+## T136 (5 Oct 2026): five filings end to end, Site Progress with room for error, and one real region
+
+**One region's real works: Uttar Pradesh** (`data/trial/up_real_check.py`, `results/up_real_check.txt`).
+The government sites (eSAKSHI, data.gov.in, the PWD Schedules of Rates) cannot be reached from
+the build machine, so the real data is the eSAKSHI dashboard tables already in the team pack.
+Uttar Pradesh is their largest state: 8,702 of 40,935 works, in 74 districts; Jaunpur has 1,038.
+
+- **All four agents on every UP work**: 10.3 s (1.19 ms a work, slowest 458 ms), **0 agent
+  errors**. Cost and Site Progress are not applicable (no form or video exists for these works).
+  Duplicate Work assessed 8,641 and could not assess 61 (no description). Time & Rules assessed
+  all 8,702. It asked `SANCTIONED_LATE` 2,292 times (an office fact, risk 0.05, never queues
+  alone), `SANCTION_OVERDUE` 30, `BUILT_IN_DAYS` 2 and `BUILT_RIGHT_AFTER_SANCTION` 2. Bands:
+  HIGH 2, MEDIUM 30, LOW 8,670.
+- **The Time agent's caps hold for UP**:
+  - The national "longest usual time" is within ±2.2% of UP's own 90th percentile for its five
+    big types:
+    - street lights: UP 460 days, India 450;
+    - CC roads: 471 / 462;
+    - borewells: 392 / 396;
+    - paths: 463 / 470;
+    - solar plants: 306 / 306.
+  - 86.6–100% of UP's finished works fall within it. UP works are slower in the middle: median
+    286–295 days against 199–203 nationally.
+  - **Decision: keep the national bands; no per-state bands.** A state whose works close
+    suspiciously fast would make its own cap stricter for honest works. In Bihar, 87 libraries
+    were "completed" a median 6 days after sanction.
+  - Recommendation to sanction: UP median 82 days, 53.9% past 75 days (India 90 days, 60.0%).
+- **UP's real prices per unit of size**, the yardstick for the demo's honest values:
+  - CC roads: Rs 4,491 to 12,201 a metre (middle 80% of 493 works, median 7,698);
+  - paths: Rs 4,505 to 11,284 a metre (206 works);
+  - high masts: median Rs 1,72,675 (232 works);
+  - **solar street lights: median Rs 20,944 a light, tight** (334 works; Jaunpur 136 works,
+    median Rs 20,896).
+
+**Five filings, form to risk score** (`data/trial/end_to_end_examples.py`, `/end-to-end`,
+`results/end_to_end_examples.txt`). Each filing goes through the same path as the live check: the
+website form, the form's own check, the four agents and the fused score. Site Progress is shown
+as a placeholder until its field trial (T126).
+
+| Filing | Ready | Agents ask | Score | Band |
+|---|---|---|---|---|
+| An honest 300 m CC road (Rs 4,838 a metre: inside UP's real range) | yes | none | 0 | LOW |
+| 20 solar lights at Rs 20,900 (Jaunpur's real median) | yes | none | 0 | LOW |
+| The honest road with Rs 5.5 lakh in equipment hire | yes | Cost | 25 | MEDIUM |
+| One lane as three pieces end to end, each just under Rs 5 lakh, one described in other words | yes | Duplicate | 72 | HIGH |
+| A "new" hall 20 m from a finished one, rates +25%, waiting 100 days | yes | Cost, Duplicate, Time | 46 | MEDIUM |
+
+The road with hidden hire costs Rs 6,672 a metre, which is inside UP's real range. A price check
+on the record alone would pass it; the line-by-line check of the form asks.
+
+The page passes in a real browser (`results/work_form_e2e.txt`):
+- each filing's score is shown as computed;
+- the placeholder and the decision are on the page;
+- 0 page errors;
+- the 12 work-form examples still match the live check.
+
+**Robustness loop, round 6** (`results/agent_robustness.txt`): **81 probes, 74 PASS, 0 FAIL, 7
+LIMIT**; 3,000 random damages (seed 7): 0 agent errors, 0 broken contracts, 0 different answers.
+The round tried "just past a line", lines nobody prices, renamed pieces, and Site Progress's room
+for error. What got past, and how it is fixed (each with a regression test):
+
+- **Cost**:
+  - Sand doubled went unasked. The only CC-road norm was cement. Sand now follows the same IS 456
+    nominal mix (M20 = 1:1.5:3, 0.42 m³ of dry sand per m³). It allows 20% for moist sand's
+    bulking, so honest estimates of 0.44–0.47 m³ are never asked. It applies only under bases
+    that take no sand.
+  - A line no reader prices (equipment hire, 30 days raised to 250) hid Rs 5.5 lakh. In a
+    construction estimate, such items beyond 15% of the lines now count as not shown to be fair,
+    like lump sums. Honest earthwork, shuttering and curing (about 10%) are not asked.
+  - Rates typed "Rs 464/-" read as no rate. The adapter now reads Rs, ₹, INR, /- and Devanagari
+    digits.
+  - A form whose lines carried no readable rate passed as "ready". It now asks for the rate.
+- **Duplicate Work**:
+  - A split with one piece called a paver road, "Other" or "Gravel / WBM", or described in other
+    words, escaped the wording rule. The forms' map pins now find the strictest split too: pieces
+    of one lane laid end to end or at one pin, recommended within 30 days, every piece 96–100% of
+    a limit.
+  - A road subtype the engine has no code for kept only one end. It now keeps both.
+  - A "new" hall pinned 60 m from a finished one (just past the 50 m line) is now named in a note
+    (`NEAR_SANCTIONED_WORK`, within 150 m, never counted). Site Progress's first video
+    (`ALREADY_BUILT_AT_START`) settles it.
+- **Site Progress**:
+  - A work recorded complete with not one accepted video is now asked at once. Before, it waited
+    60 days past the start.
+  - **Room for error.**
+    - A dark, blurred or very short video says "can't tell", never "does not match". The
+      agent's "filmed elsewhere" and "claim not shown" no longer count such a video.
+    - A GPS fix counts with its own reported accuracy; when every fix is poorer than 50 m, the
+      GPS says "can't tell".
+    - A viewpoint missed one month is still compared the next. Every viewpoint the site ever had
+      is compared, from its last 3 good frames; a visit that did not match never becomes the
+      reference.
+    - A viewpoint the person could not reach is skipped with a reason and not counted against
+      the visit.
+  - **Still does its job**: two unusable videos in a row (dark, short, viewpoints not filmed, or
+    views not matching while the GPS says "at the site") ask `SITE_VIDEOS_UNUSABLE`. This also
+    closes "GPS faked inside" when it is repeated. One poor month is never a finding.
+  - **The capture page** no longer refuses an honest visit. Only a useless video stops the upload
+    (under 20 s, a viewpoint half marked, a first visit with under 2 viewpoints). Everything else
+    is a tip noted with the video: "Can't reach" a viewpoint, weak GPS, the phone placing you
+    away from the pin, poor light, walking fast.
+- **Proof in a real browser** (`results/capture_e2e.txt`, fake camera, local engine and storage):
+  - The honest visit was uploaded with one tip: 3 of 5 viewpoints marked, 2 "can't reach",
+    GPS ±90 m and 150 m off the pin.
+  - The reader found all 5 views, saw the work changed, and said "can't tell" for the GPS.
+    Site Progress asks nothing on H1.
+  - The hall filmed at another hall's site is still asked (`FOOTAGE_USED_BEFORE`,
+    `SAME_PLACE_AS_ANOTHER_WORK`).
+- **Video reader**: 20 tests on drawn scenes (6 new; each new one fails on the old reader).
+
+**Unchanged where it should be.**
+- The dashboard's 40,935 real works (`results/dashboard_t136_after.json` against `t135_after`):
+  the same bands, queue (217) and flags, work by work.
+- The 12 work-form examples raise exactly what they did. Two outputs changed:
+  - the 6-day road's `NO_SITE_VIDEO` now says it was recorded complete with no video;
+  - two Cost limitations quote a higher priced share, because sand is now normed.
+
+**Limits now 7.** The six of T135 (with "GPS faked inside" now caught when repeated), plus:
+labour days multiplied 2.5 times are not asked, because labour per m³ is not normed yet (CPWD's
+Analysis of Rates gives it, T096).
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

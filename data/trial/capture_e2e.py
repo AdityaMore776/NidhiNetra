@@ -3,7 +3,10 @@ Progress (T123 + T124). A browser films a made-up site through a fake camera:
 
     visit 1  first visit (baseline) of hall H1: five viewpoints
     visit 2  monthly visit of H1: the same viewpoints, a wall built since
-    visit 3  first visit of hall H2, filmed at H1's site (another work's place)
+    visit 3  monthly visit of H1, done badly but honestly (T136, room for error): three viewpoints
+             marked, two "can't reach", weak GPS (+-90 m) 150 m off the pin. The page lets it be
+             uploaded with tips, and the reader says "can't tell" for the GPS
+    visit 4  first visit of hall H2, filmed at H1's site (another work's place)
 
 Pieces: a local Postgres (pgserver), the engine (uvicorn, dev sign-in), the web app (next dev),
 a stand-in for Supabase Storage (a small HTTP server writing to a temporary folder), headless
@@ -61,7 +64,7 @@ def free_port() -> int:
         return s.getsockname()[1]
 
 
-def scene(seed: int, wall: bool = False) -> np.ndarray:
+def scene(seed: int, wall: bool = False, plaster: bool = False) -> np.ndarray:
     rng = np.random.default_rng(seed)
     img = np.full((H, W * 4, 3), 150, np.uint8)
     img[: H // 3] = (200, 180, 140)
@@ -80,6 +83,8 @@ def scene(seed: int, wall: bool = False) -> np.ndarray:
             cv2.rectangle(img, (x0, H // 2), (x0 + 300, H - 20), (60, 60, 160), -1)
             for row in range(H // 2, H - 20, 24):
                 cv2.line(img, (x0, row), (x0 + 300, row), (230, 230, 230), 2)
+            if plaster:              # the next month: the walls plastered (new pixels to film)
+                cv2.rectangle(img, (x0, H // 2), (x0 + 300, H - 20), (205, 215, 225), -1)
     return img
 
 
@@ -173,7 +178,8 @@ def wait_http(url: str, seconds: float) -> None:
     raise SystemExit(f"{url} did not come up")
 
 
-def film(page, url: str, kind_label: str, claim: str | None, marks: list[str]) -> str:
+def film(page, url: str, kind_label: str, claim: str | None, marks: list[str],
+         skip: tuple[str, ...] = ()) -> str:
     page.goto(url)
     page.get_by_text("Start filming").wait_for(timeout=120_000)
     page.get_by_label(kind_label).check()
@@ -187,6 +193,8 @@ def film(page, url: str, kind_label: str, claim: str | None, marks: list[str]) -
         page.get_by_role("button", name=f"At viewpoint {vid}").click()
         time.sleep(DWELL - 0.6)
         page.get_by_role("button", name=f"Done at {vid}").click()
+    for vid in skip:
+        page.get_by_role("button", name=f"Can't reach viewpoint {vid}").click()
     time.sleep(2.5)
     stop = page.get_by_role("button", name="Stop and upload")
     for _ in range(30):
@@ -206,9 +214,11 @@ def main() -> None:
     tmp = Path(tempfile.mkdtemp(prefix="capture-e2e-"))
     store_dir = tmp / "store"
     store_dir.mkdir()
-    vids = {"h1_base": tmp / "h1_base.y4m", "h1_wall": tmp / "h1_wall.y4m"}
+    vids = {"h1_base": tmp / "h1_base.y4m", "h1_wall": tmp / "h1_wall.y4m",
+            "h1_plaster": tmp / "h1_plaster.y4m"}
     y4m(vids["h1_base"], scene(1))
     y4m(vids["h1_wall"], scene(1, wall=True))
+    y4m(vids["h1_plaster"], scene(1, wall=True, plaster=True))
 
     srv = pgserver.get_server(str(tmp / "pg"), cleanup_mode="stop")
     url = srv.get_uri()
@@ -252,21 +262,23 @@ def main() -> None:
         wait_http(f"http://localhost:{wport}/login", 180)
         exe = os.environ.get("PLAYWRIGHT_CHROMIUM") or (
             glob.glob("/opt/pw-browsers/chromium-*/chrome-linux*/chrome") or [None])[0]
-        plan = [("H1", "h1_base", "First visit", None, [f"v{i + 1}" for i in range(VIEWS)]),
-                ("H1", "h1_wall", "Monthly visit", "walls built",
-                 [f"v{i + 1}" for i in range(VIEWS)]),
-                ("H2", "h1_base", "First visit", None, [f"v{i + 1}" for i in range(VIEWS)])]
+        every = [f"v{i + 1}" for i in range(VIEWS)]
+        good_gps = {"latitude": SITE[0], "longitude": SITE[1], "accuracy": 6}
+        weak_gps = {"latitude": SITE[0] + 150 / 111_195, "longitude": SITE[1], "accuracy": 90}
+        plan = [("H1", "h1_base", "First visit", None, every, (), good_gps),
+                ("H1", "h1_wall", "Monthly visit", "walls built", every, (), good_gps),
+                ("H1", "h1_plaster", "Monthly visit", "walls plastered", every[:3],
+                 ("v4", "v5"), weak_gps),
+                ("H2", "h1_base", "First visit", None, every, (), good_gps)]
         with sync_playwright() as p:
-            for work, video, label, claim, marks in plan:
+            for work, video, label, claim, marks, skip, gps in plan:
                 b = p.chromium.launch(executable_path=exe, args=[
                     "--use-fake-ui-for-media-stream", "--use-fake-device-for-media-stream",
                     f"--use-file-for-fake-video-capture={vids[video]}"])
-                ctx = b.new_context(geolocation={"latitude": SITE[0], "longitude": SITE[1],
-                                                 "accuracy": 6},
-                                    permissions=["geolocation", "camera"])
+                ctx = b.new_context(geolocation=gps, permissions=["geolocation", "camera"])
                 page = ctx.new_page()
                 warned = film(page, f"http://localhost:{wport}/capture?work={work}", label,
-                              claim, marks)
+                              claim, marks, skip)
                 b.close()
                 with psycopg.connect(url, row_factory=dict_row) as con:
                     done = job.process(con, capture.LocalStore(store_dir))
@@ -281,7 +293,7 @@ def main() -> None:
                 v["readings"] = {k: rd.get(k) for k in (
                     "sealed", "in_app", "quality_ok", "gps_inside", "views_match_site",
                     "viewpoints_expected", "viewpoints_matched", "change", "reused_from",
-                    "same_place_as", "motion_consistent")}
+                    "same_place_as", "motion_consistent", "gps_weak", "viewpoints_skipped")}
                 v["video_deleted"] = r["video_path"] is None
                 v["frames_kept"] = len((r["kept"] or {}).get("viewpoints") or {})
             for wid in ("H1", "H2"):

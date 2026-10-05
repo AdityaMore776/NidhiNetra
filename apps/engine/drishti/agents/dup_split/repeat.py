@@ -15,6 +15,9 @@ So what is ASKED comes from the cost estimate form (work["cost_form"]), and word
               drain, wall, pipeline ...) by both ends. Certain by construction: two pins, one place.
   declared    the work this one continues, extends, upgrades or rebuilds, named by the agency on
               the form (work.nature, work.earlier_work_id), and its record in the district
+  near        (T136) a sanctioned building or place of the same family whose pin is just past the
+              one-site line (PIN_METRES to NEAR_METRES): a note naming it, never counted; the
+              first site video (Site Progress: the asset already standing) settles it
   look_alike  sanctioned works of the same work type whose description names the same place in
               the same words (the strictest text rule: 90%+ alike, every place word shared, no
               plot / ward number, side, floor, gender or community apart, no continuation word,
@@ -43,6 +46,7 @@ from datetime import date
 from drishti import records
 from drishti.agents.dup_split.match import (
     SERIES_COPIES,
+    SPLIT_GAP_DAYS,
     STAGED,
     _count_copies,
     _key,
@@ -61,6 +65,7 @@ from drishti.agents.statistical.scope import many_sites, undescribed
 from drishti.cost_form import catalog
 
 PIN_METRES = 50.0                 # two pins this close are one site
+NEAR_METRES = 150.0               # a same-kind building this close, just past the line: a note
 OVERLAP_METRES = 25.0             # a point of a road this close to another road's line lies on it
 OVERLAP_SHARE = 0.80              # this share of a road on another's line: the same ground (T135)
 MIN_ROAD_METRES = 50.0            # shorter alignments are compared by their pins only
@@ -268,7 +273,16 @@ class Rec:
 
     @property
     def linear(self) -> bool:
-        return catalog.is_linear(_work_type(self))
+        """A linear family, or an OTHER work whose form gives its two ends (a gravel road)."""
+        wt = _work_type(self)
+        return catalog.is_linear(wt) or (wt == "OTHER" and any(e for _s, e in self.sites))
+
+    @property
+    def lane(self) -> str | None:
+        """The family for splits by map pins: a road, a paved path or an OTHER alignment laid end
+        to end are one lane (T136: one piece filed as a paver-block road escaped)."""
+        fam = self.family
+        return "lane" if fam in ("road", "path") or (fam == "other" and self.linear) else fam
 
     def before(self, other: Rec) -> bool:
         """Recorded before the other work (the work id breaks a tie)."""
@@ -314,6 +328,60 @@ def _near_limit(amount: float) -> bool:
     return any(SPLIT_SHARE * lim <= amount <= lim for lim in split_limits())
 
 
+def _touch(a: Rec, b: Rec) -> bool:
+    """Two works' sites meet: pins within PIN_METRES, or for linear works an end of one within
+    PIN_METRES of an end of the other (pieces laid end to end) or one lying on the other."""
+    for sa, ea in a.sites:
+        for sb, eb in b.sites:
+            ends_a, ends_b = [p for p in (sa, ea) if p], [p for p in (sb, eb) if p]
+            if any(metres(p, q) <= PIN_METRES for p in ends_a for q in ends_b):
+                return True
+            if a.linear and (on_line((sa, ea), (sb, eb)) or 0) > 0:
+                return True
+    return False
+
+
+def pin_split_groups(recs: list[Rec]) -> list[dict]:
+    """The strictest split found by the forms' map pins (T136: the same split with one piece
+    called another kind of road, or described in other words, escaped the wording rule): 2 to
+    SPLIT_MAX works of one family (a lane: Rec.lane) whose sites meet end to end or at one pin,
+    recommended within
+    SPLIT_GAP_DAYS, EVERY piece 96-100% of one limit and the total above it."""
+    cand = sorted((r for r in recs if r.sites and r.rec is not None and r.lane
+                   and _near_limit(r.amount)), key=lambda r: r.rec)
+    parent = list(range(len(cand)))
+
+    def find(x: int) -> int:
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    for i, a in enumerate(cand):
+        for j in range(i + 1, len(cand)):
+            b = cand[j]
+            if (b.rec - a.rec).days > SPLIT_GAP_DAYS:
+                break
+            if a.mp == b.mp and a.lane == b.lane and _touch(a, b):
+                parent[find(i)] = find(j)
+    chains: dict[int, list[Rec]] = defaultdict(list)
+    for i, r in enumerate(cand):
+        chains[find(i)].append(r)
+    out = []
+    for sub in chains.values():
+        amounts = [r.amount for r in sub]
+        lim = next((x for x in split_limits() if all(SPLIT_SHARE * x <= a <= x for a in amounts)
+                    and sum(amounts) > x), None)
+        if not 2 <= len(sub) <= SPLIT_MAX or lim is None:
+            continue
+        members = sorted(r.work_id for r in sub)
+        out.append({"group_id": "P-" + members[0], "kind": "pins_split", "size": len(sub),
+                    "total": float(sum(amounts)), "limit": lim, "members": members,
+                    "amounts": amounts, "days": (sub[-1].rec - sub[0].rec).days,
+                    "segments": [], "shared_place": ""})
+    return out
+
+
 def split_groups(recs: list[Rec]) -> dict[str, dict]:
     """{work id: group} for the strictest splits among these works of one district (module
     note): only works priced within 4% under a limit can be pieces, so the blocks stay small."""
@@ -322,6 +390,9 @@ def split_groups(recs: list[Rec]) -> dict[str, dict]:
         if r.rec is not None and _near_limit(r.amount):
             blocks[(r.mp, r.work_type)].append(r)
     out: dict[str, dict] = {}
+    for g in pin_split_groups(recs):
+        for wid in g["members"]:
+            out[wid] = g                     # the wording's group, if any, is set below
     for block in blocks.values():
         if len(block) < 2:
             continue
@@ -444,6 +515,19 @@ class RepeatIndex:
             if best is not None:
                 at_site.append((x, best))
 
+        # just past the one-site line (T136: a "new" hall pinned 60 m from a hall finished 16
+        # months earlier): a same-kind building or place within NEAR_METRES, for a note
+        near = []
+        if me.sites and not me.linear:
+            seen = {x.work_id for x, _ in at_site}
+            for x in earlier:
+                if x.work_id in seen or not x.sites or x.family != fam or x.linear:
+                    continue
+                d = min(metres(a[0], b[0]) for a in me.sites for b in x.sites)
+                if PIN_METRES < d <= NEAR_METRES:
+                    near.append((x, d))
+            near.sort(key=lambda p: (p[1], p[0].work_id))
+
         nature, wid = declared(me.form)
         link = None
         if wid:
@@ -475,7 +559,7 @@ class RepeatIndex:
         alike.sort(key=lambda p: (-p[1], p[0].work_id))
         at_site.sort(key=lambda p: (p[1], p[0].work_id))
         return {"me": me, "at_site": at_site, "overlap": overlap, "declared": link,
-                "look_alike": alike[:5],
+                "look_alike": alike[:5], "near": near[:3],
                 "answers": answers(me.form), "compared": len(others), "split": split,
                 "sanctioned_earlier": len(earlier), "place_named": bool(me.place)}
 

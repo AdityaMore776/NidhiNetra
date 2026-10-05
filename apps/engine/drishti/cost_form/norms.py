@@ -7,7 +7,8 @@ Only checks that follow from the size itself, with nothing estimated:
   concrete     cement for a CC road of a nominal-mix grade (M10 / M15 / M20): length x width x
                thickness x bags per m3 of that mix, plus 5%; only when nothing else on the road
                uses cement (no PCC base, side drain, kerb or cross drain), so the whole cement
-               line is the slab's
+               line is the slab's; and its sand by the same mix (T136), only when the base takes
+               none (no base, WBM or WMM)
 
 The form (validate.py) asks the agency to confirm a quantity above what the size needs (a typo
 is corrected there); the Cost agent asks the officer about one well above it (agent.py).
@@ -29,6 +30,8 @@ DRY_VOLUME = 1.54
 CEMENT_KG_PER_M3 = 1440
 BAG_KG = 50
 WASTAGE = 1.05
+SAND_BULKING = 1.20     # moist sand measured by volume bulks 20-30% (IS 2386-3); honest
+                        # estimates carry 0.44-0.47 m3 of sand per m3 of M20 for it
 
 
 def cement_bags_per_m3(grade: str) -> float | None:
@@ -89,7 +92,23 @@ def needs(work_type: str | None, size: dict) -> list[dict]:
                         "why": f"{vol:,.1f} m3 of {size['concrete_grade']} concrete "
                                f"({dims[0]:g} m x {dims[1]:g} m x {dims[2]:g} mm), "
                                f"{bags:.2f} bags per m3, plus 5%"})
+            # sand from the same mix (T136: twice the sand went unasked); only under bases that
+            # take none (GSB, brick soling and a sand bed do)
+            sand = sand_m3_per_m3(str(size.get("concrete_grade")))
+            if sand and size.get("base_type") in (None, "none", "wbm", "wmm"):
+                out.append({"material": "sand", "needed": vol * sand * SAND_BULKING * WASTAGE,
+                            "why": f"{vol:,.1f} m3 of {size['concrete_grade']} concrete, "
+                                   f"{sand:.2f} m3 of dry sand per m3, plus 20% for moist "
+                                   "sand's bulking and 5%"})
     return out
+
+
+def sand_m3_per_m3(grade: str) -> float | None:
+    """Dry sand per m3 of a nominal mix (IS 456 Table 9, the same 1.54 factor as the cement)."""
+    mix = NOMINAL_MIX.get(grade)
+    if not mix:
+        return None
+    return DRY_VOLUME * mix[1] / sum(mix)
 
 
 def check(work_type: str | None, size: dict, lines: list[tuple[int, str | None, object, object]]

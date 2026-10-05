@@ -202,6 +202,22 @@ def main() -> None:
             page.get_by_role("button", name="Check this form with the agents").click()
             page.get_by_text("Write the district in section C").wait_for(timeout=60_000)
             out["checks"].append({"form": "no district", "answer": "asks for the district"})
+            # T136: the five filings end to end, form to risk score, Site Progress a placeholder
+            e2e = json.loads((ROOT / "apps" / "web" / "public" / "end-to-end" / "examples.json")
+                             .read_text(encoding="utf-8"))["examples"]
+            page.goto(f"http://localhost:{wport}/end-to-end", wait_until="networkidle")
+            out["end_to_end"] = []
+            for ex in e2e:
+                page.get_by_role("button", name=ex["title"], exact=False).first.click()
+                page.get_by_text("out of 100").wait_for(timeout=30_000)   # the loop has played
+                text = page.locator("main").last.inner_text()
+                want = round(ex["trace"]["result"]["score"] * 100)
+                shown = page.locator("p.num.text-5xl").inner_text().strip()
+                out["end_to_end"].append({
+                    "id": ex["id"], "score": shown, "meant": want,
+                    "ok": shown == str(want) and "Placeholder" in text
+                    and ex["decision"] in text and "The agency fills the form" in text})
+                page.screenshot(path=str(shots / f"e2e_{ex['id']}.png"), full_page=True)
             b.close()
     finally:
         os.killpg(web.pid, signal.SIGTERM)
@@ -233,6 +249,10 @@ def main() -> None:
               f"{out.get('data_tab')}; the form kept its edit: {out.get('form_kept')}"]
     lines += ["", f"deep link ?example=time_fast opened {out.get('deep_link')}"]
     lines.append(f"live check without a district: {out['checks'][0]['answer']}")
+    lines += ["", "End to end (/end-to-end, T136): form, form check, agents, risk score"]
+    for e in out.get("end_to_end") or []:
+        lines.append(f"{e['id']:13} score shown {e['score']:>3} (meant {e['meant']}): "
+                     f"{'ok' if e['ok'] else 'WRONG'}")
     lines.append(f"page errors: {len(errors)}")
     OUT.with_suffix(".txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines))

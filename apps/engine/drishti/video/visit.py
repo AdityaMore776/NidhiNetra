@@ -14,6 +14,18 @@ The six checks of the plan, as readings (agents/site_progress/visits.py names th
     5 change            change: at the same viewpoints as the visit before
     6 the claim         claim_verdict (and asset_at_start, complete_shown) by an optional reader
     and same_place_as: this visit's views match another work's viewpoints
+
+Room for error (T136): a person at a site gets things wrong, and an honest month must not look
+like a trick.
+    every viewpoint the site ever had is compared, from its last MAX_REFS good frames (a viewpoint
+        missed one month is still compared the next, and an old frame stands in for a poor one);
+        a visit whose views did not match the site never becomes the site's reference
+    a dark, blurred or very short video says "can't tell" (views_match_site None, change
+        "cant_tell"), never "does not match": poor light is not a proof of anything
+    a GPS point counts with its own reported accuracy (up to GPS_POOR_M); when every point is
+        poorer than that, the GPS says "can't tell"
+    a viewpoint the person could not film says so in the log ("skipped": [{"id", "reason"}]) and
+        is not counted against the visit
 """
 
 from __future__ import annotations
@@ -24,7 +36,7 @@ import statistics
 from collections.abc import Callable
 from dataclasses import dataclass, field
 
-from drishti.agents.site_progress.sitemap import Site
+from drishti.agents.site_progress.sitemap import GPS_MARGIN_M, Site
 from drishti.video import reader as rd
 
 VIEW_MATCH = 25           # matching points in one geometry: the same viewpoint as before
@@ -35,6 +47,10 @@ MIN_RUN = 3               # frames in a row equal to another video's: reused foo
 FLOW_MOVING, FLOW_STILL = 4.0, 0.8      # image motion (px between sampled frames)
 ROT_MOVING, ROT_STILL = 8.0, 1.5        # phone rotation (deg/s)
 QUALITY_SHARE = 0.6       # usable frames needed for a video of good quality
+MIN_USABLE = 8            # fewer usable frames than this (4 s): too short to judge
+GPS_POOR_M = 50.0         # a fix less accurate than this says nothing about where the phone was
+MIN_GOOD_FIXES = 3
+MAX_REFS = 3              # earlier good frames of one viewpoint it is compared with
 
 Judge = Callable[[list[str], list[tuple[str, bytes]]], list[dict]]
 
@@ -42,12 +58,29 @@ Judge = Callable[[list[str], list[tuple[str, bytes]]], list[dict]]
 @dataclass
 class Earlier:
     """An earlier visit: of this work (to compare with), or of another work (to check reuse and
-    place). viewpoints: {id: jpeg bytes}; hashes: fingerprints of its sampled frames, in order."""
+    place). viewpoints: {id: jpeg bytes}; hashes: fingerprints of its sampled frames, in order;
+    readings: what that visit read (a visit whose views did not match is never a reference)."""
     work_id: str
     visit_id: str
     kind: str
     viewpoints: dict[str, bytes] = field(default_factory=dict)
     hashes: list[str] = field(default_factory=list)
+    readings: dict = field(default_factory=dict)
+
+
+def references(earlier: list[Earlier]) -> dict[str, list[bytes]]:
+    """Every viewpoint the site has had, with its last MAX_REFS good frames, newest first. A
+    visit whose views did not match the site, or that was filmed outside it, is left out."""
+    out: dict[str, list[bytes]] = {}
+    for e in reversed(earlier):
+        r = e.readings or {}
+        if r.get("views_match_site") is False or r.get("mock_location") is True \
+                or r.get("gps_inside") is False:
+            continue
+        for vid, jpg in e.viewpoints.items():
+            if jpg and len(out.setdefault(vid, [])) < MAX_REFS:
+                out[vid].append(jpg)
+    return {k: v for k, v in out.items() if v}
 
 
 def sha256(path) -> str:
@@ -72,18 +105,31 @@ def longest_run(mine: list[str], theirs: list[str], bits: int = rd.STRICT_BITS) 
     return best
 
 
+def _num(v) -> float | None:
+    return (float(v) if isinstance(v, (int, float)) and not isinstance(v, bool)
+            and math.isfinite(v) else None)
+
+
 def _gps(log: dict, site: Site | None) -> dict:
     pts = [p for p in log.get("gps") or [] if isinstance(p, dict)
-           and isinstance(p.get("lat"), (int, float)) and isinstance(p.get("lon"), (int, float))]
+           and _num(p.get("lat")) is not None and _num(p.get("lon")) is not None
+           and -90 <= p["lat"] <= 90 and -180 <= p["lon"] <= 180]
     mocks = [p.get("mock") for p in pts if isinstance(p.get("mock"), bool)]
     out = {"mock_location": (True if any(mocks) else False) if mocks else None,
-           "gps_inside": None, "gps_distance_m": None}
-    if site and pts:
-        inside = [site.inside(p["lat"], p["lon"]) for p in pts]
+           "gps_inside": None, "gps_distance_m": None, "gps_weak": None}
+    # a fix with no accuracy is taken as good (older phones); one poorer than GPS_POOR_M is not
+    good = [p for p in pts if (_num(p.get("accuracy")) or 0.0) <= GPS_POOR_M]
+    if pts:
+        out["gps_weak"] = len(good) < min(MIN_GOOD_FIXES, len(pts))
+    if site and pts and not out["gps_weak"]:
+        # each point is inside when it is, give or take its own reported accuracy
+        inside = [site.outside_by(p["lat"], p["lon"]) - (_num(p.get("accuracy")) or 0.0)
+                  <= GPS_MARGIN_M for p in good]
         out["gps_inside"] = sum(inside) / len(inside) >= 0.5
         out["gps_distance_m"] = round(statistics.median(site.outside_by(p["lat"], p["lon"])
-                                                        for p in pts), 1)
+                                                        for p in good), 1)
     return out
+
 
 
 def _stretches(log: dict, site: Site | None) -> list[str]:
@@ -141,47 +187,57 @@ def read(path, log: dict, site: Site | None, earlier: list[Earlier], others: lis
     readings["sealed"] = (sha256(path) == sealed) if isinstance(sealed, str) else None
     frames = rd.frames(path)
     usable = [f for f in frames if f.usable]
-    readings["quality_ok"] = bool(frames) and len(usable) / len(frames) >= QUALITY_SHARE
+    readings["quality_ok"] = (bool(frames) and len(usable) / len(frames) >= QUALITY_SHARE
+                              and len(usable) >= MIN_USABLE)
     readings.update(_gps(log, site))
     readings["motion_consistent"] = _motion(frames, log)
+    skipped = sorted({s["id"] for s in log.get("skipped") or [] if isinstance(s, dict)
+                      and isinstance(s.get("id"), str)})
+    readings["viewpoints_skipped"] = skipped
 
     keys = _keyframes(frames, log)
     feats = {vid: rd.features(f.grey) for vid, f in keys.items()}
     pool = [rd.features(f.grey) for f in usable[::4]]       # unmarked frames, for re-finding views
-    prev = next((e for e in reversed(earlier) if e.viewpoints), None)
+    refs = references(earlier)
+    before_of: dict[str, bytes] = {}
 
     matched, changes = [], []
-    if prev:
-        for vid, jpg in prev.viewpoints.items():
-            before = rd.decode(jpg)
-            if before is None:
-                continue
-            bg = rd.cv2.cvtColor(before, rd.cv2.COLOR_BGR2GRAY)
-            bf = rd.features(bg)
-            mine = [feats[vid]] if vid in feats else []
-            best, h, grey = 0, None, None
-            for cand, frame in [(f, keys[vid].grey) for f in mine] + [(f, None) for f in pool]:
-                n, hh = rd.match(bf, cand)
-                if n > best:
-                    best, h, grey = n, hh, frame
+    if refs:
+        for vid, jpgs in refs.items():
+            mine = [(feats[vid], keys[vid].grey)] if vid in feats else []
+            best, h, grey, bg_best = 0, None, None, None
+            for jpg in jpgs:                         # newest first: a tie keeps the newest
+                before = rd.decode(jpg)
+                if before is None:
+                    continue
+                bg = rd.cv2.cvtColor(before, rd.cv2.COLOR_BGR2GRAY)
+                bf = rd.features(bg)
+                for cand, frame in mine + [(f, None) for f in pool]:
+                    n, hh = rd.match(bf, cand)
+                    if n > best:
+                        best, h, grey, bg_best = n, hh, frame, bg
+                        before_of[vid] = jpg
             if best >= VIEW_MATCH:
                 matched.append(vid)
                 if h is not None and grey is not None:
-                    changes.append(rd.change(bg, grey, h))
-        expected = len(prev.viewpoints)
+                    changes.append(rd.change(bg_best, grey, h))
+        expected = len(refs)
+        counted = max(1, expected - len(set(skipped) & set(refs)))
         readings["viewpoints_expected"] = expected
         readings["viewpoints_matched"] = len(matched)
-        need = max(1, math.ceil(expected / 2))
-        readings["views_match_site"] = (True if len(matched) >= need else
-                                        False if not matched else None)
+        need = max(1, math.ceil(counted / 2))
+        views = True if len(matched) >= need else False if not matched else None
+        # a dark, blurred or very short video cannot show that it is somewhere else
+        readings["views_match_site"] = None if views is False and not readings["quality_ok"] \
+            else views
         if changes and max(changes) >= CHANGE_MIN:
             readings["change"] = "changed"
-        elif changes and max(changes) < CHANGE_LOW:
+        elif changes and max(changes) < CHANGE_LOW and readings["quality_ok"]:
             readings["change"] = "no_change"
         else:
             readings["change"] = "cant_tell"
         readings["zones_shown"] = sorted(set(matched) | set(_stretches(log, site)))
-        readings["zones_new"] = sorted(set(keys) - set(prev.viewpoints))
+        readings["zones_new"] = sorted(set(keys) - set(refs))
     else:
         readings.update(viewpoints_expected=len(keys), viewpoints_matched=len(keys),
                         views_match_site=None, change=None,
@@ -220,9 +276,9 @@ def read(path, log: dict, site: Site | None, earlier: list[Earlier], others: lis
                     complete_shown=None)
     if judge:
         now = [(f"now-{v}", kept["viewpoints"][v]["jpeg"]) for v in list(keys)[:3]]
-        before = [(f"before-{v}", prev.viewpoints[v]) for v in matched[:3]] if prev else []
+        before = [(f"before-{v}", before_of[v]) for v in matched[:3] if v in before_of]
         questions = []
-        if claim and prev:
+        if claim and refs:
             questions.append(("claim", claim))
         if kind == "baseline":
             questions.append(("asset_at_start", f"{asset} is already built and standing"))
@@ -230,11 +286,20 @@ def read(path, log: dict, site: Site | None, earlier: list[Earlier], others: lis
             questions.append(("complete_shown", f"{asset} is finished in every part shown"))
         if questions and now:
             answers = judge([q for _k, q in questions], before + now)
-            for (k, _q), a in zip(questions, answers, strict=False):
-                v = a.get("verdict")
+            for (k, _q), a in zip(questions, answers if isinstance(answers, list) else [],
+                                  strict=False):
+                a = a if isinstance(a, dict) else {}
+                v = a.get("verdict") if a.get("verdict") in ("shown", "not_shown",
+                                                             "cant_tell") else None
+                if v == "not_shown" and not readings["quality_ok"]:
+                    # the reader may simply not see it in a dark or blurred video
+                    v, a = "cant_tell", {"reason": "the video is too dark, blurred or short to "
+                                                   "judge the claim"}
                 if k == "claim":
                     readings["claim_verdict"] = v
-                    readings["claim_reason"] = a.get("reason") or None
+                    reason = a.get("reason")
+                    readings["claim_reason"] = reason[:300] if isinstance(reason, str) \
+                        and reason else None
                 elif v in ("shown", "not_shown"):
                     readings[k] = v == "shown"
     return readings, kept

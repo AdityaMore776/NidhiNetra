@@ -327,7 +327,7 @@
    "kind": "evasion",
    "probe": "GPS faked inside the site, views elsewhere",
    "verdict": "LIMIT",
-   "detail": "nothing: one proof (the views) is a note by design; GPS error alone or views alone never fail a video"
+   "detail": "nothing: one video with one proof (the views) is a note by design; two such videos in a row are asked (SITE_VIDEOS_UNUSABLE, round 6)"
   },
   {
    "agent": "cost_estimate",
@@ -425,7 +425,7 @@
    "kind": "scale",
    "probe": "3,000 filed roads in one district: one check stays under 2 s",
    "verdict": "PASS",
-   "detail": "0.06 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']"
+   "detail": "0.07 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']"
   },
   {
    "agent": "cost_estimate",
@@ -454,6 +454,118 @@
    "probe": "a bigger size claimed everywhere (field and scope both 7 m)",
    "verdict": "LIMIT",
    "detail": "nothing: a size claimed the same way everywhere is the agency's word; the site videos and the officer's visit check it, not the estimate"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "an equipment-hire line raised from 30 days to 250",
+   "verdict": "PASS",
+   "detail": "Rs 5.5 lakh more in a line no reader prices: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "noise",
+   "probe": "honest unread items (earthwork, shuttering, curing ~10%): quiet",
+   "verdict": "PASS",
+   "detail": "earthwork, shuttering and curing lines: nothing (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "sand and aggregate quantities doubled",
+   "verdict": "PASS",
+   "detail": "twice the sand: MATERIAL_QUANTITY_ABOVE_SIZE (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "labour days multiplied by 2.5",
+   "verdict": "LIMIT",
+   "detail": "nothing: labour days per m3 are not normed yet (CPWD's Analysis of Rates gives them, T096); the site videos show the pace of work"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "noise",
+   "probe": "rates written 'Rs 464/-' and quantities with spaces",
+   "verdict": "PASS",
+   "detail": "['ESTIMATE_ABOVE_FAIR_PRICE'] (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "rates written as words ('see attached'): never a clean chit",
+   "verdict": "PASS",
+   "detail": "NOT_ASSESSABLE: Cannot be assessed: the cost estimate form is not complete (7 fields to fix). This is not "
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "a 'new' hall pinned 60 m from the old (just past the 50 m line)",
+   "verdict": "PASS",
+   "detail": "note: True; a pin past 50 m is another site by rule, so it is named in a note and the first site video (the hall already standing) settles it"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "split with the checked piece called a paver road / 'Other'",
+   "verdict": "PASS",
+   "detail": "missed: none (pieces end to end by pin)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "split with each piece described in other words",
+   "verdict": "PASS",
+   "detail": "['SPLIT_JUST_UNDER_LIMIT']: the pieces still meet end to end by their pins"
+  },
+  {
+   "agent": "time_rules",
+   "kind": "evasion",
+   "probe": "'complete' past the early line, checked the next day, never filmed",
+   "verdict": "PASS",
+   "detail": "['NO_SITE_VIDEO']: complete with not one site video is asked at once"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "noise",
+   "probe": "one dark video between good ones: a note, not a question",
+   "verdict": "PASS",
+   "detail": "one dark month: nothing (ASSESSED)"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "evasion",
+   "probe": "the last two videos dark / viewpoints not filmed",
+   "verdict": "PASS",
+   "detail": "two unusable in a row: SITE_VIDEOS_UNUSABLE (ASSESSED)"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "noise",
+   "probe": "weak GPS on every video, a viewpoint skipped: not asked",
+   "verdict": "PASS",
+   "detail": "weak GPS, v4 skipped: nothing (ASSESSED)"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "noise",
+   "probe": "a dark video with its GPS off the site: never 'filmed elsewhere'",
+   "verdict": "PASS",
+   "detail": "nothing: a dark video is no proof of anything"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "evasion",
+   "probe": "'not shown', a dark video, 'not shown': still twice in a row",
+   "verdict": "PASS",
+   "detail": "a dark video slipped between the two: CLAIM_NOT_SHOWN (ASSESSED)"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "evasion",
+   "probe": "views never match while the GPS says 'at the site', twice",
+   "verdict": "PASS",
+   "detail": "GPS faked inside, another place filmed: SITE_VIDEOS_UNUSABLE (ASSESSED)"
   }
  ],
  "damage": {

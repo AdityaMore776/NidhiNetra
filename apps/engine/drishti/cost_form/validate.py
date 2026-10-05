@@ -251,6 +251,11 @@ def _line(out: _Issues, ln: dict, path: str, ctx: _Ctx) -> dict:
         amount = a
         out.add(FIX, "line_incomplete", f"{path}.rate",
                 f"{item or 'This line'}: give the quantity and the rate (or make it a lump sum).")
+    elif item or q is not None or r is not None:
+        # T136: lines with no readable rate passed as "ready", and nothing could be priced
+        out.add(FIX, "line_incomplete", f"{path}.{'rate' if q is not None else 'quantity'}",
+                f"{item or 'This line'}: give the quantity and the rate in numbers (or make it "
+                "a lump sum).")
     suggested = materials.match(item)
     chosen = _s(ln.get("material_id"))
     mat_id = chosen or suggested

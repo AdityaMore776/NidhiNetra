@@ -109,7 +109,8 @@ def site_of(form: dict | None, work_type: str | None = None) -> Site | None:
     part = form.get("work") if isinstance(form.get("work"), dict) else {}
     wt = part.get("work_type") if isinstance(part.get("work_type"), str) else work_type
     elat, elon = _num(loc.get("end_lat")), _num(loc.get("end_lon"))
-    if catalog.is_linear(wt) and elat is not None and elon is not None:
+    # an OTHER work the form gives two ends for is an alignment too (T136: a gravel road)
+    if (catalog.is_linear(wt) or wt in (None, "OTHER")) and elat is not None and elon is not None:
         return Site("linear", lat, lon, MIN_RADIUS_M / 2, elat, elon)
     size = site.get("size") if isinstance(site.get("size"), dict) else {}
     area = _num(size.get("built_up_area_m2")) or _num(size.get("area_m2"))

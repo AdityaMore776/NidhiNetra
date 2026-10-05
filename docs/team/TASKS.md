@@ -102,6 +102,22 @@ dashboard queue before / after in FINDINGS (439 → 217)
 of §9.6 planted. Only readings and blurred frames are kept; no video enters the repo.
 **Done when:** [ ] each trick caught 9 in 10 · [ ] a finding on at most 1 in 30 honest visits · [ ] FINDINGS
 
+### T136 · Five filings end to end, Site Progress with room for error, one real region  ·  L  ·  engine + web + data  ·  Depends on: T135
+**What:** (owner, 5 Oct 2026) a set of five filings followed from the form to the risk score, Site
+Progress as a placeholder there (it starts after sanction; T126 tests it), honest values set against
+real works; Site Progress easy to use and forgiving of honest mistakes yet still catching tricks; the
+other agents hardened further (round 6 of the loop); one region's real works to test on (Uttar
+Pradesh). Plan: [`docs/plans/T136-end-to-end-and-room-for-error.md`](../plans/T136-end-to-end-and-room-for-error.md).
+**Done when:** [x] `/end-to-end`: five filings (two honest, three to find) through the real engine
+(`data/trial/end_to_end_examples.py`, which refuses a filing that no longer raises what it should),
+in a real browser with 0 page errors · [x] Site Progress: a poor video is "can't tell", weak GPS
+counts its accuracy, a missed viewpoint is compared next time, a skipped one is not counted, two
+unusable videos in a row are asked; the capture page uploads an honest imperfect visit with tips
+(`capture_e2e.py`) · [x] the loop's round 6 ends 81 probes, 0 FAIL, 3,000 damages crash none ·
+[x] every UP work through the four agents with 0 errors, the Time caps checked against UP's own
+works (`up_real_check.py`) · [ ] the field trial on real sites (T126) · [ ] the SoR (T096) for the
+labour-day limit
+
 ### T135 · The four agents' self-improvement loop  ·  L  ·  engine + data  ·  Depends on: T134
 **What:** run each agent through samples and attack it (random damage, honest noise, evasions,
 scarce data, scale) until it stops giving wrong answers, being bypassed or breaking; where the

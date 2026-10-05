@@ -190,9 +190,11 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
         span = "on the same day" if not g["days"] else f"within {g['days']} days"
         parts = (f" ({', '.join(x.replace(':', ' ') for x in g['segments'])})"
                  if g.get("segments") else "")
+        what = ("works whose forms' map pins put them end to end or at one site"
+                if g.get("kind") == "pins_split" else "alike works at one place")
         findings.append(Finding(
             "SPLIT_JUST_UNDER_LIMIT",
-            f"One of {g['size']} alike works at one place{parts}, recommended {span}: each "
+            f"One of {g['size']} {what}{parts}, recommended {span}: each "
             f"{_rupees(lo)}{'' if lo == hi else f' to {_rupees(hi)}'}, just under the "
             f"{_lakh(g['limit'])} limit, {_lakh(g['total'])} together. Please check whether one "
             f"job was cut into pieces to stay under the limit. Others: {', '.join(others)}.",
@@ -216,6 +218,24 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
             evidence={"other": x.work_id, "text_similarity": round(t, 3),
                       "other_amount": x.amount, "answer": (answers.get(x.work_id) or {})
                       .get("answer"), "kind": "look_alike"}))
+
+    # 5. a same-kind building just past the one-site line (T136): a note, never counted
+    for x, d in found.get("near") or []:
+        if x.work_id in asked:
+            continue
+        named = x.work_id in answers or (link and link["work_id"] == x.work_id)
+        findings.append(Finding(
+            "NEAR_SANCTIONED_WORK",
+            f"Sanctioned work {x.work_id} ({_lakh(x.amount)}, {_state(x)}) of the same kind has "
+            f"its map pin {d:,.0f} m from this one, just past the {PIN_METRES:.0f} m that makes "
+            "two pins one site"
+            + (", and the form names it." if named else
+               ", and the form names no nearby work. Check it is not the same building; the "
+               "first site video shows whether the asset already stands.")
+            + " A note, not a question.",
+            hard=False, risk=0.0,
+            evidence={"other": x.work_id, "metres": round(d, 1), "other_amount": x.amount,
+                      "kind": "near"}))
 
     n, pinned = found["compared"], bool(me.sites)
     limits = pin_problems(me.form, me.linear)

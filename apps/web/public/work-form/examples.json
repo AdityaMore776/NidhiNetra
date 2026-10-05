@@ -3877,7 +3877,7 @@
       "limitations": [
        "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
        "Not priced here, for want of reliable price data (recorded, so it can be collected): cement (4 recent forms from 4 other agencies; 5 from 3 needed); sand (4 recent forms from 4 other agencies; 5 from 3 needed); stone aggregate (4 recent forms from 4 other agencies; 5 from 3 needed); gsb / wbm / moorum (2 recent forms from 2 other agencies; 5 from 3 needed); skilled labour (4 recent forms from 4 other agencies; 5 from 3 needed); unskilled labour (4 recent forms from 4 other agencies; 5 from 3 needed).",
-       "Only 34% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged.",
+       "Only 43% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged.",
        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
       ],
       "findings": [],
@@ -3897,7 +3897,7 @@
         "fair_total": 1682560.0,
         "gap": 0.0,
         "gap_share": 0.0,
-        "coverage": 0.3444
+        "coverage": 0.4311
        }
       }
      },
@@ -4051,12 +4051,12 @@
       "status": "ASSESSED",
       "verdict": "NO_SITE_VIDEO",
       "risk": 0.4,
-      "headline": "Sanctioned on 24 Jun 2026 and 93 days past its planned start (01 Jul 2026), but no site video has been accepted yet. The first visit is filmed before work begins and then every month: ask the agency for the videos, and check the site.",
+      "headline": "Recorded complete on 30 Jun 2026, 6 days after its sanction, but no site video was ever accepted. A work with a form is filmed before it starts and every month: ask the agency for the videos, and check the site before it is closed.",
       "limitations": [],
       "findings": [
        {
         "code": "NO_SITE_VIDEO",
-        "text": "Sanctioned on 24 Jun 2026 and 93 days past its planned start (01 Jul 2026), but no site video has been accepted yet. The first visit is filmed before work begins and then every month: ask the agency for the videos, and check the site.",
+        "text": "Recorded complete on 30 Jun 2026, 6 days after its sanction, but no site video was ever accepted. A work with a form is filmed before it starts and every month: ask the agency for the videos, and check the site before it is closed.",
         "risk": 0.4,
         "hard": false,
         "rule": null,
@@ -4150,7 +4150,7 @@
       },
       {
        "engine": "Site Progress",
-       "text": "Sanctioned on 24 Jun 2026 and 93 days past its planned start (01 Jul 2026), but no site video has been accepted yet. The first visit is filmed before work begins and then every month: ask the agency for the videos, and check the site.",
+       "text": "Recorded complete on 30 Jun 2026, 6 days after its sanction, but no site video was ever accepted. A work with a form is filmed before it starts and every month: ask the agency for the videos, and check the site before it is closed.",
        "text_hi": "स्वीकृति और नियोजित आरंभ के बाद भी कोई साइट वीडियो स्वीकार नहीं हुआ। एजेंसी से वीडियो माँगें और स्थल की जाँच करें।",
        "chance": 0.25,
        "basis": "prior",
@@ -6223,7 +6223,7 @@
       "limitations": [
        "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
        "Not priced here, for want of reliable price data (recorded, so it can be collected): cement (4 recent forms from 4 other agencies; 5 from 3 needed); sand (4 recent forms from 4 other agencies; 5 from 3 needed); stone aggregate (4 recent forms from 4 other agencies; 5 from 3 needed); gsb / wbm / moorum (2 recent forms from 2 other agencies; 5 from 3 needed); skilled labour (4 recent forms from 4 other agencies; 5 from 3 needed); unskilled labour (4 recent forms from 4 other agencies; 5 from 3 needed).",
-       "Only 34% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged.",
+       "Only 43% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged.",
        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
       ],
       "findings": [],
@@ -6243,7 +6243,7 @@
         "fair_total": 1451530.0,
         "gap": 0.0,
         "gap_share": 0.0,
-        "coverage": 0.3422
+        "coverage": 0.4277
        }
       }
      },

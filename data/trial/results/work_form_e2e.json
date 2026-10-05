@@ -200,5 +200,37 @@
   "data_tab": true,
   "form_kept": true,
   "deep_link": "WF-TIME-1",
+  "end_to_end": [
+    {
+      "id": "legit_road",
+      "score": "0",
+      "meant": 0,
+      "ok": true
+    },
+    {
+      "id": "legit_lights",
+      "score": "0",
+      "meant": 0,
+      "ok": true
+    },
+    {
+      "id": "cost_hidden",
+      "score": "25",
+      "meant": 25,
+      "ok": true
+    },
+    {
+      "id": "dup_pieces",
+      "score": "72",
+      "meant": 72,
+      "ok": true
+    },
+    {
+      "id": "many_flags",
+      "score": "46",
+      "meant": 46,
+      "ok": true
+    }
+  ],
   "page_errors": []
 }

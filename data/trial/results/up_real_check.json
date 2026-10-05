@@ -1,0 +1,198 @@
+{
+ "state": "Uttar Pradesh",
+ "as_of": "2026-10-02",
+ "all_works": 40935,
+ "agents": {
+  "works": 8702,
+  "districts": 74,
+  "in_district": 1038,
+  "status": {
+   "cost_estimate": {
+    "NOT_APPLICABLE": 8702
+   },
+   "dup_split": {
+    "ASSESSED": 8641,
+    "NOT_ASSESSABLE": 61
+   },
+   "time_rules": {
+    "ASSESSED": 8702
+   },
+   "site_progress": {
+    "NOT_APPLICABLE": 8702
+   }
+  },
+  "errors": {},
+  "fired": {
+   "time_rules:SANCTIONED_LATE": 2292,
+   "time_rules:SANCTION_OVERDUE": 30,
+   "time_rules:BUILT_IN_DAYS": 2,
+   "time_rules:BUILT_RIGHT_AFTER_SANCTION": 2
+  },
+  "flagged_examples": {
+   "time_rules:SANCTIONED_LATE": [
+    "WS/MP812/2024-2025/135399",
+    "WS/MP812/2024-2025/135400",
+    "WS/MP812/2024-2025/135401",
+    "WS/MP812/2024-2025/135402",
+    "WS/MP812/2024-2025/135403",
+    "WS/MP812/2024-2025/135404",
+    "WS/MP812/2024-2025/135405",
+    "WS/MP812/2024-2025/135406",
+    "WS/MP812/2024-2025/135407",
+    "WS/MP812/2024-2025/135408"
+   ],
+   "time_rules:SANCTION_OVERDUE": [
+    "NOID-8f60b2fc",
+    "NOID-2d717328",
+    "NOID-49985453",
+    "NOID-b4249a43",
+    "NOID-6c75e63d",
+    "NOID-1992f1be",
+    "NOID-da5b748c",
+    "NOID-04974d28",
+    "NOID-c85fa4f0",
+    "NOID-107b33b2"
+   ],
+   "time_rules:BUILT_IN_DAYS": [
+    "WS/MP18219/2024-2025/149604",
+    "WS/MP18219/2024-2025/152232"
+   ],
+   "time_rules:BUILT_RIGHT_AFTER_SANCTION": [
+    "WS/MP18219/2024-2025/149604",
+    "WS/MP18219/2024-2025/152232"
+   ]
+  },
+  "bands": {
+   "CRITICAL": 0,
+   "HIGH": 2,
+   "MEDIUM": 30,
+   "LOW": 8670
+  },
+  "seconds": 10.3,
+  "ms_per_work": 1.19,
+  "slowest_ms": 457.6
+ },
+ "timelines": {
+  "types": [
+   {
+    "type": "STREET_LIGHT",
+    "works": 2409,
+    "p50": 295.0,
+    "p90": 460.0,
+    "india_p50": 199.0,
+    "india_p90": 450.0,
+    "p90_vs_india": 0.022,
+    "within_india_p90": 0.884
+   },
+   {
+    "type": "ROAD_CC",
+    "works": 411,
+    "p50": 286.0,
+    "p90": 471.0,
+    "india_p50": 203.0,
+    "india_p90": 462.4,
+    "p90_vs_india": 0.019,
+    "within_india_p90": 0.866
+   },
+   {
+    "type": "BOREWELL",
+    "works": 302,
+    "p50": 384.0,
+    "p90": 392.0,
+    "india_p50": 292.0,
+    "india_p90": 396.0,
+    "p90_vs_india": -0.01,
+    "within_india_p90": 1.0
+   },
+   {
+    "type": "FOOTPATH",
+    "works": 251,
+    "p50": 278.0,
+    "p90": 463.0,
+    "india_p50": 256.0,
+    "india_p90": 470.0,
+    "p90_vs_india": -0.015,
+    "within_india_p90": 0.932
+   },
+   {
+    "type": "SOLAR_PLANT",
+    "works": 75,
+    "p50": 306.0,
+    "p90": 306.0,
+    "india_p50": 306.0,
+    "india_p90": 306.0,
+    "p90_vs_india": 0.0,
+    "within_india_p90": 1.0
+   }
+  ],
+  "sanction_lag": {
+   "works": 4250,
+   "p50": 82.0,
+   "share_past_75_days": 0.539,
+   "india_p50": 90.0,
+   "india_share_past_75_days": 0.6
+  }
+ },
+ "prices": {
+  "source": "eSAKSHI dashboard tables, as of 2026-10-02",
+  "groups": {
+   "FOOTPATH": {
+    "unit": "per metre",
+    "n": 206,
+    "p10": 4505,
+    "median": 5789,
+    "p90": 11284,
+    "p98": 14460,
+    "tight": false,
+    "district": {}
+   },
+   "HIGH_MAST": {
+    "unit": "per mast",
+    "n": 232,
+    "p10": 156959,
+    "median": 172675,
+    "p90": 277869,
+    "p98": 408965,
+    "tight": false,
+    "district": {}
+   },
+   "ROAD_CC": {
+    "unit": "per metre",
+    "n": 493,
+    "p10": 4491,
+    "median": 7698,
+    "p90": 12201,
+    "p98": 15711,
+    "tight": false,
+    "district": {}
+   },
+   "STREET_LIGHT|solar": {
+    "unit": "per light",
+    "n": 334,
+    "p10": 20878,
+    "median": 20944,
+    "p90": 20944,
+    "p98": 23588,
+    "tight": true,
+    "district": {
+     "Jaunpur": {
+      "n": 136,
+      "median": 20896,
+      "p90": 20896,
+      "tight": true
+     }
+    }
+   },
+   "STREET_LIGHT|unstated": {
+    "unit": "per light",
+    "n": 35,
+    "p10": 18862,
+    "median": 40669,
+    "p90": 98953,
+    "p98": 251467,
+    "tight": false,
+    "district": {}
+   }
+  }
+ }
+}

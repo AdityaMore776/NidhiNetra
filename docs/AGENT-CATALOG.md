@@ -31,6 +31,15 @@ New questions: Cost `ESTIMATE_NOT_ITEMISED` and `SIZE_NOT_AS_DESCRIBED`, Site Pr
 `NO_SITE_VIDEO` and `SITE_NOT_AT_FORM_PIN` (each at the 1-in-4 prior until read). A price the data
 cannot support is switched off for that material and recorded as a gap (`GET /cost/data-gaps`).
 
+**Round 6 and room for error (T136, FINDINGS "T136")**: 81 probes end 74 PASS, 0 FAIL, 7 LIMIT;
+3,000 random damages crash none. Cost norms sand by the IS 456 mix and counts unread items beyond
+15% of a construction estimate; Duplicate Work finds the strictest split by map pins too and names a
+same-kind building just past 50 m in a note (`NEAR_SANCTIONED_WORK`); Site Progress forgives one
+poor video (dark, short, weak GPS, a viewpoint missed or skipped) and asks `SITE_VIDEOS_UNUSABLE`
+only when the last two cannot show the work, and asks at once about a work recorded complete with no
+video. Every agent ran on all 8,702 real UP works with 0 errors. `/end-to-end` follows five filings
+from the form to the risk score, Site Progress as a placeholder until its field trial (T126).
+
 The website's work intelligence form (`/work-form`, T134) is read by all four: twelve example filings in Jaunpur show
 each agent flagging, with the flagged fields outlined in the form (made-up agencies; FINDINGS "T134"), and "Check this
 form" runs them on any filled form against the same example data, shown on the page's Data tab.

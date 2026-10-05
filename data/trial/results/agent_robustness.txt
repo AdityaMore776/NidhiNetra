@@ -1,5 +1,5 @@
-Agent robustness loop (T135): 65 probes on the work form's example filings in Jaunpur (1,038 real works, 11 background filings), as of 2026-10-02
-PASS 59  FAIL 0  LIMIT 6
+Agent robustness loop (T135, T136): 81 probes on the work form's example filings in Jaunpur (1,038 real works, 11 background filings), as of 2026-10-02
+PASS 74  FAIL 0  LIMIT 7
 
 == cost_estimate
   PASS  noise    honest rates a few % apart (seeded): no question
@@ -56,6 +56,18 @@ PASS 59  FAIL 0  LIMIT 6
         ['SIZE_NOT_AS_DESCRIBED']: the form's own scope still says 3.5 m wide
   LIMIT evasion  a bigger size claimed everywhere (field and scope both 7 m)
         nothing: a size claimed the same way everywhere is the agency's word; the site videos and the officer's visit check it, not the estimate
+  PASS  evasion  an equipment-hire line raised from 30 days to 250
+        Rs 5.5 lakh more in a line no reader prices: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
+  PASS  noise    honest unread items (earthwork, shuttering, curing ~10%): quiet
+        earthwork, shuttering and curing lines: nothing (ASSESSED)
+  PASS  evasion  sand and aggregate quantities doubled
+        twice the sand: MATERIAL_QUANTITY_ABOVE_SIZE (ASSESSED)
+  LIMIT evasion  labour days multiplied by 2.5
+        nothing: labour days per m3 are not normed yet (CPWD's Analysis of Rates gives them, T096); the site videos show the pace of work
+  PASS  noise    rates written 'Rs 464/-' and quantities with spaces
+        ['ESTIMATE_ABOVE_FAIR_PRICE'] (ASSESSED)
+  PASS  evasion  rates written as words ('see attached'): never a clean chit
+        NOT_ASSESSABLE: Cannot be assessed: the cost estimate form is not complete (7 fields to fix). This is not 
 == dup_split
   PASS  noise    GPS jitter of 5 m: the repeat still asked, the honest road not
         changed: none
@@ -94,7 +106,13 @@ PASS 59  FAIL 0  LIMIT 6
   PASS  noise    pins rounded to 4 decimals (about 11 m): same answers
         changed: none
   PASS  scale    3,000 filed roads in one district: one check stays under 2 s
-        0.06 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']
+        0.07 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']
+  PASS  evasion  a 'new' hall pinned 60 m from the old (just past the 50 m line)
+        note: True; a pin past 50 m is another site by rule, so it is named in a note and the first site video (the hall already standing) settles it
+  PASS  evasion  split with the checked piece called a paver road / 'Other'
+        missed: none (pieces end to end by pin)
+  PASS  evasion  split with each piece described in other words
+        ['SPLIT_JUST_UNDER_LIMIT']: the pieces still meet end to end by their pins
 == time_rules
   PASS  evasion  the late hall: start month declared two years after sanction
         start promised 2 years after sanction: PAST_PROMISED_TIME (ASSESSED)
@@ -114,6 +132,8 @@ PASS 59  FAIL 0  LIMIT 6
         nothing; says the estimate is missing: True
   PASS  evasion  'complete' just past the 30-day floor, never filmed
         ['FINISHED_TOO_FAST', 'NO_SITE_VIDEO']: Time's floor is passed, but no site video was ever filmed
+  PASS  evasion  'complete' past the early line, checked the next day, never filmed
+        ['NO_SITE_VIDEO']: complete with not one site video is asked at once
 == site_progress
   PASS  evasion  sanctioned months ago, never filmed
         ['NO_SITE_VIDEO'] (ASSESSED); sanctioned 2026-04-15, no video
@@ -130,11 +150,23 @@ PASS 59  FAIL 0  LIMIT 6
   PASS  noise    visits listed in another order, one listed twice: same answer
         changed: none
   LIMIT evasion  GPS faked inside the site, views elsewhere
-        nothing: one proof (the views) is a note by design; GPS error alone or views alone never fail a video
+        nothing: one video with one proof (the views) is a note by design; two such videos in a row are asked (SITE_VIDEOS_UNUSABLE, round 6)
   PASS  noise    one video with a bad GPS fix (300 m off), views fine: not asked
         one GPS-off video: nothing (ASSESSED)
   PASS  noise    sanctioned 50 days ago, first video not yet due: not asked
         50 days, no video: nothing (NOT_APPLICABLE)
+  PASS  noise    one dark video between good ones: a note, not a question
+        one dark month: nothing (ASSESSED)
+  PASS  evasion  the last two videos dark / viewpoints not filmed
+        two unusable in a row: SITE_VIDEOS_UNUSABLE (ASSESSED)
+  PASS  noise    weak GPS on every video, a viewpoint skipped: not asked
+        weak GPS, v4 skipped: nothing (ASSESSED)
+  PASS  noise    a dark video with its GPS off the site: never 'filmed elsewhere'
+        nothing: a dark video is no proof of anything
+  PASS  evasion  'not shown', a dark video, 'not shown': still twice in a row
+        a dark video slipped between the two: CLAIM_NOT_SHOWN (ASSESSED)
+  PASS  evasion  views never match while the GPS says 'at the site', twice
+        GPS faked inside, another place filmed: SITE_VIDEOS_UNUSABLE (ASSESSED)
 
 Random damage: 3000 runs (seed 7), half through the website form, half inside the engine's own form, visits and record
   agent errors: 0 {}

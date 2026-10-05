@@ -22,9 +22,12 @@ estimates (T098) set the final ones.
 Money that is not shown to be fair (T135, the robustness loop: padding moved out of the priced
 lines was invisible): in a construction estimate (one whose size says how much cement, sand or
 stone it needs) lump sums beyond LUMP_SHARE of the lines, and "other" charges or contingency
-beyond OTHER_SHARE / CONTINGENCY_SHARE of the lines, are not part of the fair estimate. The
-officer's sentence names them. A material that could not be priced here records its gap
-(rates.Gap): the check is off for that price, never guessed, and the team knows what to collect.
+beyond OTHER_SHARE / CONTINGENCY_SHARE of the lines, are not part of the fair estimate; nor (T136:
+an equipment-hire line raised from 30 days to 250 hid Rs 5.5 lakh) are items no reader recognises
+beyond UNREAD_SHARE of the lines (plant hire, earthwork, shuttering and curing of an honest CC road
+come to well under it). The officer's sentence names them. A material that could not be priced
+here records its gap (rates.Gap): the check is off for that price, never guessed, and the team
+knows what to collect.
 """
 
 from __future__ import annotations
@@ -35,7 +38,7 @@ from dataclasses import dataclass, field
 from datetime import date
 
 from drishti.agents.cost_estimate import rates
-from drishti.cost_form import catalog, norms
+from drishti.cost_form import catalog, materials, norms
 
 QTY_TOLERANCE = 1.10
 MIN_COVERAGE = 0.60
@@ -46,6 +49,7 @@ LUMP_SHARE = 0.02             # lump sums a construction estimate may carry unit
 OTHER_SHARE = 0.05            # "other" charges, beyond taxes the form names
 OTHER_SHARE_NO_TAX = 0.23     # ... when the form says nothing of GST (it may sit in "other")
 CONTINGENCY_SHARE = 0.05      # CPWD allows 3%; 5% is the form's own soft limit
+UNREAD_SHARE = 0.15           # items no reader recognises, in a construction estimate (T136)
 CIVIL = {"cement", "sand", "aggregate", "steel_rebar", "brick", "granular_base", "bitumen"}
 
 
@@ -129,6 +133,19 @@ def _num(v) -> float:
         and math.isfinite(v) else 0.0
 
 
+def _unread(ln) -> bool:
+    """A priced line (not a lump sum) whose item no known material's name fits."""
+    if not isinstance(ln, dict) or ln.get("unit") == "ls":
+        return False
+    item = ln.get("item") if isinstance(ln.get("item"), str) else None
+    return not catalog.material(ln.get("material_id")) and not materials.match(item)
+
+
+def _line_value(ln: dict) -> float:
+    q, r = _num(ln.get("quantity")), _num(ln.get("rate"))
+    return q * r if q > 0 and r > 0 else max(0.0, _num(ln.get("amount")))
+
+
 def unexplained(form: dict, computed: dict, civil: bool) -> dict:
     """Money in the estimate that is not shown to be fair (module note), by kind."""
     lines_total = _num(computed.get("lines_total"))
@@ -142,6 +159,9 @@ def unexplained(form: dict, computed: dict, civil: bool) -> dict:
                 if isinstance(ln, dict) and ln.get("unit") == "ls":
                     ls += max(0.0, _num(ln.get("amount")))
         out["lump_sums"] = max(0.0, ls - LUMP_SHARE * lines_total)
+        unread = sum(_line_value(ln) for site in form.get("sites") or [] if isinstance(site, dict)
+                     for ln in site.get("lines") or [] if _unread(ln))
+        out["unread_items"] = max(0.0, unread - UNREAD_SHARE * lines_total)
     charges = form.get("charges") if isinstance(form.get("charges"), dict) else {}
     taxed = any(isinstance(charges.get(k), (int, float)) for k in ("gst_percent", "gst_amount"))
     other = max(0.0, _num(charges.get("other_fees_amount")))
@@ -200,7 +220,7 @@ def judge(form: dict, computed: dict, work_type: str | None, sor: dict | None,
     coverage = compared / lines_total if lines_total > 0 else 0.0
     civil = any(m in CIVIL for (_i, m) in need)
     extra = unexplained(form, computed, civil)
-    lump = extra.get("lump_sums", 0.0)
+    lump = extra.get("lump_sums", 0.0) + extra.get("unread_items", 0.0)
     charged = extra.get("other_charges", 0.0) + extra.get("contingency", 0.0)
     fair_lines = lines_total - compared + sum(x.fair_amount for x in out) - lump
     fair_grand = (fair_lines * ((grand - charged) / lines_total) if lines_total > 0
@@ -242,7 +262,8 @@ def sentence(w: Whole, label: str = "this size of work in this district") -> str
             + f" above the fair price for {label} ({_rs(w.fair_grand)}){of}")
     words = {"lump_sums": f"lump sums beyond {LUMP_SHARE:.0%} of the lines",
              "other_charges": "'other' charges beyond the usual share",
-             "contingency": f"contingency beyond {CONTINGENCY_SHARE:.0%}"}
+             "contingency": f"contingency beyond {CONTINGENCY_SHARE:.0%}",
+             "unread_items": f"items no reader can price beyond {UNREAD_SHARE:.0%} of the lines"}
     parts += [f"{words[k]} +{_rs(v)} (not itemised)" for k, v in w.unexplained.items()
               if k in words]
     text += f". Most of the gap: {', '.join(parts)}." if parts else "."

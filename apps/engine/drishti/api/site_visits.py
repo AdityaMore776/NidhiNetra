@@ -75,12 +75,22 @@ def _frame_url(path: str | None) -> str | None:
 
 
 def _viewpoints(con, work_id: str) -> list[dict]:
-    row = con.execute("SELECT visit_id, kept FROM site_visits WHERE work_id = %s AND status = "
-                      "'read' AND kept IS NOT NULL ORDER BY captured_at DESC LIMIT 1",
-                      (work_id,)).fetchone()
-    kept = (row or {}).get("kept") or {}
+    """Every viewpoint the site has had, each with its newest frame from a visit that matched
+    the site (T136: a viewpoint missed one month is still asked for the next)."""
+    rows = con.execute("SELECT visit_id, kept, readings FROM site_visits WHERE work_id = %s AND "
+                       "status = 'read' AND kept IS NOT NULL ORDER BY captured_at DESC",
+                       (work_id,)).fetchall()
+    newest: dict[str, dict] = {}
+    for row in rows:
+        r = row.get("readings") or {}
+        if r.get("views_match_site") is False or r.get("gps_inside") is False \
+                or r.get("mock_location") is True:
+            continue
+        for vid, v in ((row.get("kept") or {}).get("viewpoints") or {}).items():
+            if isinstance(v, dict):
+                newest.setdefault(vid, v)
     return [{"id": vid, "frame_url": _frame_url(v.get("path"))}
-            for vid, v in sorted((kept.get("viewpoints") or {}).items())]
+            for vid, v in sorted(newest.items())]
 
 
 def _token(token: str, visit_id: str, user: Principal) -> capture.Claims:

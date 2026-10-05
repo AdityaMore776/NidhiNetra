@@ -25,6 +25,8 @@ Readings (every key optional; a missing one means "not read", never "passed"):
     asset_at_start    the first visit shows the asset already standing
     complete_shown    on a final visit: every zone shows the finished work
     quality_ok        the video passed the at-site checks (light, coverage, pace)
+    gps_weak          every GPS fix was poorer than the reader trusts (T136): the GPS says nothing
+    viewpoints_skipped viewpoint ids the person said they could not film (blocked, unsafe, gone)
     motion_consistent the phone's own motion matches the motion in the picture (False: a screen
                       may have been filmed, or the video is not this phone's)
 
@@ -120,12 +122,14 @@ def of(work: dict) -> list[Visit]:
         readings = {k: _bool(r.get(k)) for k in ("sealed", "in_app", "gps_inside",
                                                   "mock_location", "views_match_site",
                                                   "asset_at_start", "complete_shown",
-                                                  "quality_ok", "motion_consistent")}
+                                                  "quality_ok", "motion_consistent",
+                                                  "gps_weak")}
         for k in ("gps_distance_m", "viewpoints_expected", "viewpoints_matched"):
             n = r.get(k)
             readings[k] = float(n) if _finite(n) else None
         readings["zones_shown"] = _ids(r.get("zones_shown"))
         readings["zones_new"] = _ids(r.get("zones_new"))
+        readings["viewpoints_skipped"] = _ids(r.get("viewpoints_skipped"))
         for k in ("change", "claim_verdict"):
             readings[k] = r.get(k) if isinstance(r.get(k), str) else None
         reason = r.get("claim_reason")
@@ -146,6 +150,30 @@ def accepted(v: Visit) -> bool:
     other video (a rejected one is a note, and a retake is asked for)."""
     return (v.get("sealed") is not False and v.get("in_app") is not False
             and v.get("motion_consistent") is not False)
+
+
+def unusable(v: Visit) -> str | None:
+    """Why an accepted video cannot show this site's progress (T136), or None. Only what the
+    readings say counts: a reading that is missing was not made, and says nothing.
+        "too dark, blurred or short"   quality_ok is False
+        "no viewpoint marked"          a first visit with no viewpoint to compare later ones with
+        "viewpoints not filmed"        fewer than half the site's viewpoints found again
+        "views do not match the site"  none found again, though the GPS puts it at the site"""
+    if v.get("quality_ok") is False:
+        return "too dark, blurred or short"
+    expected, matched = v.get("viewpoints_expected"), v.get("viewpoints_matched")
+    if expected is None:
+        return None
+    if expected == 0:
+        return "no viewpoint marked"
+    if v.kind == "baseline":
+        return None
+    if v.get("views_match_site") is False:
+        gps_out = v.get("mock_location") is True or v.get("gps_inside") is False
+        return None if gps_out else "views do not match the site"
+    if v.get("views_match_site") is None and matched is not None and matched < expected:
+        return "viewpoints not filmed"
+    return None
 
 
 def genuine(v: Visit) -> bool:

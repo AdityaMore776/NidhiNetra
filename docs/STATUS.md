@@ -39,10 +39,19 @@ The sections below are the working notes the team resumes from.
 - Milestone task plans: `docs/plans/`
 - Old research build (read-only source for ported code and raw data): `~/saakshya`
   (snapshot commit `abf2da4`)
-- GitHub (private): https://github.com/AdityaMore776/drishti (the gh login is
+- GitHub (private): https://github.com/AdityaMore776/NidhiNetra (the gh login is
   `AdityaMore776`; "Phoenix-techstuf" no longer resolves)
 
 ## >>> RESUME HERE <<<
+
+**5 Oct 2026: five filings end to end, Site Progress with room for error, and Uttar Pradesh (T136).**
+`/end-to-end` follows five filings in Jaunpur (two honest, three to find) from the form to the
+risk score through the real engine; Site Progress is a placeholder there until its field trial
+(T126). Site Progress now forgives one poor video (dark, short, weak GPS, a viewpoint missed or
+skipped) and asks only when the last two cannot show the work; the capture page uploads an honest
+imperfect visit with tips. Round 6 of the loop: 81 probes, 0 FAIL, 7 LIMIT. All 8,702 real UP works
+ran through the four agents with 0 errors; the Time caps hold for UP within ±2.2%. The repository is
+now `AdityaMore776/NidhiNetra`. FINDINGS "T136"; plan `docs/plans/T136-end-to-end-and-room-for-error.md`.
 
 **5 Oct 2026: the four agents went through a self-improvement loop (T135).** An attack harness
 (`data/trial/agent_robustness_loop.py`) tried random damage, honest noise, deliberate evasions,

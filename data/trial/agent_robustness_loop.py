@@ -1,4 +1,4 @@
-r"""The four agents' self-improvement loop (T135): every way we could think of for them to go wrong.
+r"""The four agents' self-improvement loop (T135, T136): every way we could think of for them to go wrong.
 
 The owner (5 Oct 2026): "take each agent and run them through samples, then try to find ways where
 this agent can go wrong, give a wrong answer, or can be bypassed ... keep iterating until the agents
@@ -872,8 +872,9 @@ def _(world):
     vs[-1]["readings"].update(gps_inside=True, gps_distance_m=0)
     res = run(world, _site(world, "site_elsewhere", vs))
     got = flags(res, "site_progress")
-    return ("PASS" if got else "LIMIT", f"{got or 'nothing'}: one proof (the views) is a note by "
-            "design; GPS error alone or views alone never fail a video")
+    return ("PASS" if got else "LIMIT", f"{got or 'nothing'}: one video with one proof (the "
+            "views) is a note by design; two such videos in a row are asked (SITE_VIDEOS_UNUSABLE, "
+            "round 6)")
 
 
 # ===================================================================================================
@@ -1124,6 +1125,212 @@ def _(world):
 
 
 # ===================================================================================================
+# round 6 (T136): just past a line, lines nobody prices, renamed pieces, and room for error on site
+# ===================================================================================================
+
+def _honest(world, key: str, edit) -> dict:
+    """The example's form with `edit(rows)` applied to its BOQ, the MP's figure moved with it."""
+    p = form_of(world, key)
+    rows = boq(p)
+    edit(rows)
+    set_boq(p, rows)
+    p["mp_recommended_amount"] = f"{float(p['technical_estimate']):.0f}"
+    return work_of(p, record_of(world, key), world.place, world.as_of)
+
+
+@probe("cost_estimate", "evasion", "an equipment-hire line raised from 30 days to 250")
+def _(world):
+    def edit(rows):
+        for r in rows:
+            if "mixer" in r["desc"].lower():
+                r["qty"] = "250"
+    res = run(world, _honest(world, "clean", edit))
+    return still(res, "cost_estimate", "ESTIMATE_ABOVE_FAIR_PRICE",
+                 "Rs 5.5 lakh more in a line no reader prices")
+
+
+@probe("cost_estimate", "noise", "honest unread items (earthwork, shuttering, curing ~10%): quiet")
+def _(world):
+    def edit(rows):
+        rows += [{"desc": "Earthwork in excavation and filling for the subgrade", "unit": "cum",
+                  "qty": "160", "rate": "220", "source": "District recent rates"},
+                 {"desc": "Shuttering for the slab edges", "unit": "sqm", "qty": "95",
+                  "rate": "380", "source": "District recent rates"},
+                 {"desc": "Curing for 14 days", "unit": "sqm", "qty": "1050", "rate": "18",
+                  "source": "District recent rates"}]
+    return quiet(run(world, _honest(world, "clean", edit)), "cost_estimate",
+                 "earthwork, shuttering and curing lines")
+
+
+@probe("cost_estimate", "evasion", "sand and aggregate quantities doubled")
+def _(world):
+    def edit(rows):
+        for r in rows:
+            if "sand" in r["desc"].lower() or "aggregate" in r["desc"].lower():
+                r["qty"] = f"{float(r['qty']) * 2:g}"
+    return still(run(world, _honest(world, "clean", edit)), "cost_estimate",
+                 "MATERIAL_QUANTITY_ABOVE_SIZE", "twice the sand")
+
+
+@probe("cost_estimate", "evasion", "labour days multiplied by 2.5")
+def _(world):
+    def edit(rows):
+        for r in rows:
+            if "mason" in r["desc"].lower() or "labourer" in r["desc"].lower():
+                r["qty"] = f"{float(r['qty']) * 2.5:g}"
+    got = flags(run(world, _honest(world, "clean", edit)), "cost_estimate")
+    return ("PASS" if got else "LIMIT",
+            f"{got or 'nothing'}: labour days per m3 are not normed yet (CPWD's Analysis of "
+            "Rates gives them, T096); the site videos show the pace of work")
+
+
+@probe("cost_estimate", "noise", "rates written 'Rs 464/-' and quantities with spaces")
+def _(world):
+    p = form_of(world, "cost_padded")
+    for k in [k for k in p if k.startswith("boq_rate_")]:
+        p[k] = f"Rs {p[k]}/-"
+    for k in [k for k in p if k.startswith("boq_qty_")]:
+        p[k] = f" {p[k]} "
+    res = run(world, work_of(p, record_of(world, "cost_padded"), world.place, world.as_of))
+    got = flags(res, "cost_estimate")
+    return ("PASS" if got == ["ESTIMATE_ABOVE_FAIR_PRICE"] else "FAIL",
+            f"{got or 'nothing'} ({res['cost_estimate'].status.value})")
+
+
+@probe("cost_estimate", "evasion", "rates written as words ('see attached'): never a clean chit")
+def _(world):
+    p = form_of(world, "cost_padded")
+    for k in [k for k in p if k.startswith("boq_rate_")]:
+        p[k] = "see attached"
+    res = run(world, work_of(p, record_of(world, "cost_padded"), world.place, world.as_of))
+    st = res["cost_estimate"].status
+    return ("PASS" if st == Status.NOT_ASSESSABLE else "FAIL",
+            f"{st.value}: {res['cost_estimate'].headline[:90]}")
+
+
+@probe("dup_split", "evasion", "a 'new' hall pinned 60 m from the old (just past the 50 m line)")
+def _(world):
+    lat, _lon = wf.pin(6)
+    p = form_of(world, "dup_rebuild")
+    p.update(work_nature="New asset", prior_work_id="", prior_completion_date="",
+             repeat_reason="", known_nearby_work_ids="", existing_asset_same_site="No",
+             nearby_work_relationship="None known", latitude=f"{lat + 60 * METRE:.6f}")
+    res = run(world, work_of(p, {}, world.place, world.as_of))
+    noted = any(f.code == "NEAR_SANCTIONED_WORK" for f in res["dup_split"].findings)
+    return ("PASS" if noted else "FAIL",
+            f"note: {noted}; a pin past 50 m is another site by rule, so it is named in a note "
+            "and the first site video (the hall already standing) settles it")
+
+
+@probe("dup_split", "evasion", "split with the checked piece called a paver road / 'Other'")
+def _(world):
+    bad = []
+    for sub in ("Paver block road", "Other", "Gravel / WBM"):
+        p = form_of(world, "dup_split")
+        p["road_subtype"] = sub
+        p["work_title"] = p["work_title"].replace("CC road", sub)
+        got = flags(run(world, work_of(p, {}, world.place, world.as_of)), "dup_split")
+        if "SPLIT_JUST_UNDER_LIMIT" not in got:
+            bad.append((sub, got))
+    return ("PASS" if not bad else "FAIL", f"missed: {bad or 'none'} (pieces end to end by pin)")
+
+
+@probe("dup_split", "evasion", "split with each piece described in other words")
+def _(world):
+    words = ["Lane paving from the main road", "Concrete surface, harijan basti approach",
+             "Road work near the panchayat ground"]
+    p = form_of(world, "dup_split")
+    p["work_title"] = words[1]
+    p["scope_of_work"] = words[1] + ", 95 m long, 3.5 m wide, 150 mm M20 over WBM."
+    got = flags(run(world, work_of(p, {}, world.place, world.as_of)), "dup_split")
+    return ("PASS" if "SPLIT_JUST_UNDER_LIMIT" in got else "FAIL",
+            f"{got or 'nothing'}: the pieces still meet end to end by their pins")
+
+
+@probe("time_rules", "evasion", "'complete' past the early line, checked the next day, never filmed")
+def _(world):
+    w = copy.deepcopy(world.records["time_fast"])
+    san = date.fromisoformat(world.examples["time_fast"]["form"]["sanction_date"])
+    w["completed_date"] = (san + timedelta(days=50)).isoformat()
+    saved = world.as_of
+    world.as_of = san + timedelta(days=51)
+    try:
+        res = run(world, w)
+    finally:
+        world.as_of = saved
+    got = flags(res, "time_rules") + flags(res, "site_progress")
+    return ("PASS" if "NO_SITE_VIDEO" in got else "FAIL",
+            f"{got or 'nothing'}: complete with not one site video is asked at once")
+
+
+def _clean_visits(world) -> list[dict]:
+    return copy.deepcopy(world.examples["clean"]["record"]["site_visits"])
+
+
+DARK = {"quality_ok": False, "views_match_site": None, "change": "cant_tell",
+        "claim_verdict": "cant_tell", "viewpoints_matched": 0}
+
+
+@probe("site_progress", "noise", "one dark video between good ones: a note, not a question")
+def _(world):
+    vs = _clean_visits(world)
+    vs[1]["readings"].update(DARK)
+    res = run(world, _site(world, "clean", vs))
+    return quiet(res, "site_progress", "one dark month")
+
+
+@probe("site_progress", "evasion", "the last two videos dark / viewpoints not filmed")
+def _(world):
+    vs = _clean_visits(world)
+    vs[1]["readings"].update(DARK)
+    vs[2]["readings"].update(views_match_site=None, viewpoints_matched=1, change="cant_tell")
+    res = run(world, _site(world, "clean", vs))
+    return still(res, "site_progress", "SITE_VIDEOS_UNUSABLE", "two unusable in a row")
+
+
+@probe("site_progress", "noise", "weak GPS on every video, a viewpoint skipped: not asked")
+def _(world):
+    vs = _clean_visits(world)
+    for v in vs:
+        v["readings"].update(gps_weak=True, gps_inside=None, gps_distance_m=None)
+    vs[2]["readings"].update(viewpoints_skipped=["v4"], viewpoints_matched=4)
+    return quiet(run(world, _site(world, "clean", vs)), "site_progress", "weak GPS, v4 skipped")
+
+
+@probe("site_progress", "noise", "a dark video with its GPS off the site: never 'filmed elsewhere'")
+def _(world):
+    vs = _clean_visits(world)
+    vs[2]["readings"].update(quality_ok=False, gps_inside=False, gps_distance_m=800.0,
+                             views_match_site=False)
+    got = flags(run(world, _site(world, "clean", vs)), "site_progress")
+    return ("PASS" if "NOT_FILMED_AT_THIS_SITE" not in got else "FAIL",
+            f"{got or 'nothing'}: a dark video is no proof of anything")
+
+
+@probe("site_progress", "evasion", "'not shown', a dark video, 'not shown': still twice in a row")
+def _(world):
+    vs = copy.deepcopy(world.examples["site_claim"]["record"]["site_visits"])
+    dark = copy.deepcopy(vs[-1])
+    dark["visit_id"] = "V4b"
+    dark["captured_at"] = (date.fromisoformat(vs[3]["captured_at"][:10])
+                           + timedelta(days=15)).isoformat()
+    dark["readings"].update(DARK)
+    vs.insert(4, dark)
+    return still(run(world, _site(world, "site_claim", vs)), "site_progress", "CLAIM_NOT_SHOWN",
+                 "a dark video slipped between the two")
+
+
+@probe("site_progress", "evasion", "views never match while the GPS says 'at the site', twice")
+def _(world):
+    vs = _clean_visits(world)
+    for v in vs[1:]:
+        v["readings"].update(views_match_site=False, viewpoints_matched=0, change="cant_tell",
+                             claim_verdict="cant_tell")
+    return still(run(world, _site(world, "clean", vs)), "site_progress", "SITE_VIDEOS_UNUSABLE",
+                 "GPS faked inside, another place filmed")
+
+
+# ===================================================================================================
 # damage: random junk anywhere
 # ===================================================================================================
 
@@ -1224,7 +1431,7 @@ def main() -> None:
         print(f"{verdict:5} {pr.agent:13} {pr.kind:8} {pr.name}\n      {detail}", flush=True)
     dmg = damage_rounds(world, args.damage, args.seed) if args.damage and not args.only else None
     tally = Counter(r["verdict"] for r in rows)
-    lines = [f"Agent robustness loop (T135): {len(rows)} probes on the work form's example "
+    lines = [f"Agent robustness loop (T135, T136): {len(rows)} probes on the work form's example "
              f"filings in {wf.DISTRICT} ({len(world.district):,} real works, "
              f"{len(world.background)} background filings), as of {world.as_of}",
              f"PASS {tally['PASS']}  FAIL {tally['FAIL']}  LIMIT {tally['LIMIT']}", ""]

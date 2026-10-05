@@ -91,13 +91,22 @@ def _s(v) -> str:
     return v.strip() if isinstance(v, str) else ""
 
 
+_DIGITS = str.maketrans("०१२३४५६७८९", "0123456789")
+# how money is written by hand: "Rs 464/-", "Rs. 1,250", "₹ 380", "INR 2,100.00" (T136: a rate
+# typed "Rs 464/-" read as no rate, and the padded estimate went unasked)
+_MONEY_MARKS = ("₹", "inr", "rs.", "rs", "/-", "रु.", "रु")
+
+
 def _n(v) -> float | None:
     if isinstance(v, bool):
         return None
     if isinstance(v, (int, float)):
         return float(v) if math.isfinite(v) else None
+    t = _s(v).translate(_DIGITS).lower().replace(",", "")
+    for mark in _MONEY_MARKS:
+        t = t.replace(mark, " ")
     try:
-        x = float(_s(v).replace(",", ""))
+        x = float(t.strip())
     except ValueError:
         return None
     return x if math.isfinite(x) else None
@@ -360,7 +369,10 @@ def to_cost_form(p: dict, today: date | None = None) -> dict:
     code = work_type(p)
     nature = _NATURE.get(_s(p.get("work_nature")))
     goods = catalog.is_goods(code, nature)
-    linear = catalog.is_linear(code)
+    # a road whose surface the engine has no code for ("Gravel / WBM", "Other") is still an
+    # alignment with two ends (T136: its far end was dropped, and with it every check by ends)
+    linear = catalog.is_linear(code) or (
+        code == "OTHER" and _s(p.get("site_geometry_type")).startswith("Linear"))
 
     work: dict = {"work_type": code}
     if code == "OTHER":

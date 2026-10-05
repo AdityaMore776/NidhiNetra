@@ -1,0 +1,24 @@
+Uttar Pradesh on the eSAKSHI dashboard tables (40,935 works, as of 2026-10-02): 8,702 works in 74 districts (Jaunpur 1,038)
+
+1. The four agents on every UP work: 10.3 s (1.19 ms a work, slowest 457.6 ms); agent errors: 0
+   cost_estimate  NOT_APPLICABLE 8,702
+   dup_split      ASSESSED 8,641, NOT_ASSESSABLE 61
+   time_rules     ASSESSED 8,702
+   site_progress  NOT_APPLICABLE 8,702
+   asked: time_rules:SANCTIONED_LATE 2,292, time_rules:SANCTION_OVERDUE 30, time_rules:BUILT_IN_DAYS 2, time_rules:BUILT_RIGHT_AFTER_SANCTION 2
+   bands: CRITICAL 0, HIGH 2, MEDIUM 30, LOW 8,670
+
+2. UP's finished works against the Time agent's national caps (sanction to completion, days)
+   STREET_LIGHT     2,409 works: UP p50   295, p90   460 | India p50   199, p90   450 | UP p90 +2.2% | within India's p90: 88.4%
+   ROAD_CC            411 works: UP p50   286, p90   471 | India p50   203, p90   462 | UP p90 +1.9% | within India's p90: 86.6%
+   BOREWELL           302 works: UP p50   384, p90   392 | India p50   292, p90   396 | UP p90 -1.0% | within India's p90: 100.0%
+   FOOTPATH           251 works: UP p50   278, p90   463 | India p50   256, p90   470 | UP p90 -1.5% | within India's p90: 93.2%
+   SOLAR_PLANT         75 works: UP p50   306, p90   306 | India p50   306, p90   306 | UP p90 +0.0% | within India's p90: 100.0%
+   recommendation to sanction: UP median 82.0 days (4,250 works), 53.9% past 75 days; India median 90.0, 60.0% past 75 days
+
+3. UP's real prices per unit of size (eSAKSHI dashboard tables, as of 2026-10-02; groups with 30+ works)
+   FOOTPATH       per metre    206 works: p10     4,505, median     5,789, p90    11,284, p98    14,460
+   HIGH_MAST      per mast     232 works: p10   156,959, median   172,675, p90   277,869, p98   408,965
+   ROAD_CC        per metre    493 works: p10     4,491, median     7,698, p90    12,201, p98    15,711
+   STREET_LIGHT|solar per light    334 works: p10    20,878, median    20,944, p90    20,944, p98    23,588 (tight) | Jaunpur: 136 works, median 20,896 (tight)
+   STREET_LIGHT|unstated per light     35 works: p10    18,862, median    40,669, p90    98,953, p98   251,467
