@@ -1,0 +1,89 @@
+{
+  "works_loaded": 1038,
+  "examples": [
+    {
+      "id": "clean",
+      "filled": true,
+      "boq_rows": 7,
+      "panel_ok": true
+    },
+    {
+      "id": "cost_padded",
+      "filled": true,
+      "boq_rows": 7,
+      "panel_ok": true
+    },
+    {
+      "id": "cost_quantity",
+      "filled": true,
+      "boq_rows": 7,
+      "panel_ok": true
+    },
+    {
+      "id": "cost_lights",
+      "filled": true,
+      "boq_rows": 1,
+      "panel_ok": true
+    },
+    {
+      "id": "dup_pin",
+      "filled": true,
+      "boq_rows": 7,
+      "panel_ok": true
+    },
+    {
+      "id": "dup_rebuild",
+      "filled": true,
+      "boq_rows": 9,
+      "panel_ok": true
+    },
+    {
+      "id": "dup_split",
+      "filled": true,
+      "boq_rows": 7,
+      "panel_ok": true
+    },
+    {
+      "id": "time_fast",
+      "filled": true,
+      "boq_rows": 7,
+      "panel_ok": true
+    },
+    {
+      "id": "time_late",
+      "filled": true,
+      "boq_rows": 9,
+      "panel_ok": true
+    },
+    {
+      "id": "site_reused",
+      "filled": true,
+      "boq_rows": 9,
+      "panel_ok": true
+    },
+    {
+      "id": "site_claim",
+      "filled": true,
+      "boq_rows": 9,
+      "panel_ok": true
+    },
+    {
+      "id": "site_elsewhere",
+      "filled": true,
+      "boq_rows": 7,
+      "panel_ok": true
+    }
+  ],
+  "checks": [
+    {
+      "form": "cost_padded",
+      "answer": "YOUR FORM\n\nJaunpur, Uttar Pradesh \u00b7 \u20b917.55 L\n\nEverything the agents read is filled in.\n\nLow risk\n\u00b7 0\nnot in the review queue\n01\n\nCostNothing to ask\n\nPrice of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.\n\n02\n\nDuplicate WorkNothing to ask\n\n03\n\nTime & RulesNothing to ask\n\n04\n\nSite ProgressDoes not apply yet\n\nNo site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.\n\nA question is for an officer to verify, never a finding of wrongdoing. \"Could not check\" is not a pass."
+    },
+    {
+      "form": "no district",
+      "answer": "asks for the district"
+    }
+  ],
+  "deep_link": "WF-TIME-1",
+  "page_errors": []
+}
