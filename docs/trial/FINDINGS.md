@@ -1368,12 +1368,19 @@ questions (`results/work_form_examples.txt`):
   1,038 real works, the engine and the web app in the public view. The dashboard's card opens `/work-form`; every
   example fills the framed form (title, agency and BOQ rows read back) and the panel shows its verdict; a deep link
   `?example=time_fast` opens with its filing; a form without its district gets a plain message; 0 page errors.
-- **The live check of an example differs from its worked verdict, and the page says so.** The live database holds
-  real records only, so pressing "Check this form" on a loaded example uses the form alone. The honest road stays
-  quiet and the solar lights ask the same question (the panel says "same"); the cement question and the late hall
-  (at half weight, without its videos) still ask; the other 8 ask nothing live, because they need records the form
-  does not carry (other agencies' filings, the earlier works, the later sanction, completion and site videos). The
-  panel names the difference instead of showing a quiet "nothing to ask".
+- **The demo's live check uses the same example data** (`POST /work-form/check?demo=true`, `drishti/demo.py`, the
+  file `reference/demo/work_form.json` written by the examples script): the other agencies' filings, the earlier
+  works and each example's record after sanction, placed in the form's district; nothing stored, never used by any
+  other route. In the browser, all 12 loaded examples raise **exactly** their worked flags live, and the script
+  checks the same path without a browser before it writes the files.
+- **The page shows what is flagged and why, simply**: each agent says Flagged, Clear, Not checked or After sanction,
+  with one line built from the finding's own numbers (the trace now carries a whitelisted `facts` part: numbers,
+  dates, work IDs, item names); the flagged fields are outlined in the form in the agent's colour (1 to 4 fields per
+  example; the padded estimate marks its total and its three highest rates); "Show in form" scrolls to one.
+- **Editing a field changes the answer**: "Twice the cement" with the cement set back to 1,307 bags clears both of
+  Cost's flags (LOW). The **Data tab** shows, in plain words, the prices other agencies filed (10 items; cement Rs
+  380 a bag on 22 forms), the standard solar-light price (Rs 20,896, 136 real eSAKSHI works in Jaunpur), the works
+  on record, what happened after sanction (dates, site videos) and the rules the agents use.
 - **Adapter rules** (`test_pswif.py`, 21 tests; `test_work_form_api.py`, 4): fill only what the agency wrote; fields
   PSWIF never asks are skipped by the required checks (`cost_form/versions.py`), never guessed; a BOQ line's
   justification confirms that line, the rate-deviation note the whole estimate; the work type from the title before

@@ -9,8 +9,9 @@ run on top. Headless Chromium then does what a judge would on /work-form:
      side panel shows the agents' verdict the examples file holds for it;
   2. a deep link /work-form?example=<id> opens with that filing;
   3. "Check this form with the agents" on each loaded example sends the form to
-     POST /api/v1/work-form/check and shows the live answer (four agents, nothing stored), with
-     a note saying whether it matches the example's worked verdict;
+     POST /api/v1/work-form/check?demo=true (the same example data, nothing stored): the same
+     flags, the flagged fields outlined in the form; "Show in form" scrolls to one; the cement
+     of "twice the cement" set back to what the road needs clears Cost's flags; the Data tab;
   4. the same on a form with its district removed: a plain message, no error page.
 
 Needs: the engine's requirements and Playwright for Python (the video job's environment has
@@ -23,7 +24,6 @@ from __future__ import annotations
 import glob
 import json
 import os
-import re
 import signal
 import socket
 import subprocess
@@ -124,38 +124,74 @@ def main() -> None:
             frame = page.frame_locator("iframe[title*='Work Intelligence Form']")
             for ex in examples:
                 page.get_by_role("button", name=ex["title"], exact=True).click()
-                page.wait_for_timeout(400)
+                page.wait_for_timeout(500)
                 title = frame.locator("input[name='work_title']").input_value()
                 agency = frame.locator("input[name='implementing_agency']").input_value()
                 rows = frame.locator("#boqBody tr").count()
-                aside = page.locator("aside").inner_text()
-                asked = [c["id"] for c in ex["trace"]["checks"]
-                         if any(f["risk"] > 0 for f in c["findings"])]
-                ok = (title == ex["form"]["work_title"]
-                      and agency == ex["form"]["implementing_agency"]
-                      and ex["title"] in aside
-                      and len(re.findall(r"asks (?:a question|\d+ questions)", aside)) == len(asked))
-                page.screenshot(path=str(shots / f"{ex['id']}.png"))
-                # the live check on the loaded filing: the form alone, against real records only
-                with page.expect_response("**/api/v1/work-form/check", timeout=180_000) as r:
-                    page.get_by_role("button", name="Check this form with the agents").click()
-                live = r.value.json()
-                page.get_by_text("Your form").wait_for(timeout=60_000)
-                live_codes = sorted(f["code"] for c in live["trace"]["checks"]
-                                    for f in c["findings"] if f["risk"] > 0)
+                aside = page.locator("aside")
                 codes = sorted(f["code"] for c in ex["trace"]["checks"]
                                for f in c["findings"] if f["risk"] > 0)
-                note = page.locator("aside").inner_text()
+                asked = [c["id"] for c in ex["trace"]["checks"]
+                         if any(f["risk"] > 0 for f in c["findings"])]
+                flagged = aside.get_by_text("Flagged", exact=True).count()
+                marks = frame.locator(".nn-flag").count()
+                ok = (title == ex["form"]["work_title"]
+                      and agency == ex["form"]["implementing_agency"]
+                      and ex["title"] in aside.inner_text() and flagged == len(asked)
+                      and (marks > 0) == bool(asked))
+                page.screenshot(path=str(shots / f"{ex['id']}.png"))
+                # the live check of the loaded filing, against the same example data
+                with page.expect_response(lambda r: "/api/v1/work-form/check" in r.url,
+                                          timeout=180_000) as r:
+                    page.get_by_role("button", name="Check this form with the agents").click()
+                live = r.value.json()
+                page.get_by_text("Your form, checked just now").wait_for(timeout=60_000)
+                page.wait_for_timeout(300)
+                live_codes = sorted(f["code"] for c in live["trace"]["checks"]
+                                    for f in c["findings"] if f["risk"] > 0)
                 out["examples"].append({
                     "id": ex["id"], "filled": title == ex["form"]["work_title"],
-                    "boq_rows": rows, "panel_ok": ok, "codes": codes, "live_codes": live_codes,
-                    "live_note": ("same" if "as in its worked verdict" in note
-                                  else "differs" if "does not carry" in note else "none")})
+                    "boq_rows": rows, "panel_ok": ok, "flagged_agents": flagged,
+                    "fields_marked": marks, "codes": codes, "live_codes": live_codes,
+                    "live_marks": frame.locator(".nn-flag").count()})
                 page.screenshot(path=str(shots / f"check_{ex['id']}.png"))
+            # "Show in form" scrolls the form to the flagged field
+            page.get_by_role("button", name="Twice the cement the road can use").click()
+            page.wait_for_timeout(500)
+            page.locator("aside").get_by_role("button", name="Show in form").first.click()
+            page.wait_for_timeout(1200)
+            out["show_in_form"] = frame.locator(".nn-flag").first.evaluate(
+                "e => { const r = e.getBoundingClientRect(); "
+                "return r.top >= 0 && r.bottom <= window.innerHeight; }")
+            page.screenshot(path=str(shots / "show_in_form.png"))
+            # an officer's fix: the cement back to what the road needs, then check again
+            need = next(c for c in examples if c["id"] == "cost_quantity")
+            honest = round(float(need["form"]["boq_qty_1"]) / 2)
+            frame.locator("input[name='boq_qty_1']").fill(str(honest))
+            with page.expect_response(lambda r: "/api/v1/work-form/check" in r.url,
+                                      timeout=180_000) as r:
+                page.get_by_role("button", name="Check this form with the agents").click()
+            fixed = r.value.json()
+            page.get_by_text("Your form, checked just now").wait_for(timeout=60_000)
+            out["fixed_cement"] = {
+                "bags": honest,
+                "codes": sorted(f["code"] for c in fixed["trace"]["checks"]
+                                for f in c["findings"] if f["risk"] > 0),
+                "band": fixed["trace"]["result"]["band"]}
+            page.screenshot(path=str(shots / "fixed_cement.png"))
+            # the Data tab, and back to a form that is still filled
+            page.get_by_role("tab", name="Data the agents use").click()
+            page.get_by_text("Prices other agencies filed").wait_for(timeout=30_000)
+            data_text = page.locator("main").last.inner_text()
+            out["data_tab"] = all(x in data_text for x in (
+                "Cement OPC 43 grade", "WF-OLD-ROAD", "Rules the agents use", "After sanction"))
+            page.screenshot(path=str(shots / "data_tab.png"), full_page=True)
+            page.get_by_role("tab", name="Form and flags").click()
+            out["form_kept"] = frame.locator("input[name='boq_qty_1']").input_value() == str(honest)
             # a deep link opens with its filing
             page.goto(f"http://localhost:{wport}/work-form?example=time_fast",
                       wait_until="networkidle")
-            page.get_by_text("complete\" 6 days after sanction", exact=False).first.wait_for(
+            page.get_by_text("Recorded complete 6 days after sanction", exact=False).first.wait_for(
                 timeout=60_000)
             page.wait_for_timeout(1500)
             out["deep_link"] = frame.locator("input[name='recommendation_ref']").input_value()
@@ -182,11 +218,19 @@ def main() -> None:
     for e in out["examples"]:
         lines.append(f"{e['id']:15} form filled {e['filled']!s:5} BOQ rows {e['boq_rows']:2} "
                      f"verdict panel {'ok' if e['panel_ok'] else 'WRONG'}")
-    lines += ["", "Live check of each loaded filing (the form alone, against the real works only; "
-              "the worked verdicts also use the examples' made-up records):"]
+    lines += ["", "Live check of each loaded filing (POST /work-form/check?demo=true, the same "
+              "example data):"]
     for e in out["examples"]:
-        lines.append(f"{e['id']:15} worked {', '.join(e['codes']) or '-'}; live "
-                     f"{', '.join(e['live_codes']) or '-'}; panel note {e['live_note']}")
+        same = "same" if e["codes"] == e["live_codes"] else "DIFFERS"
+        lines.append(f"{e['id']:15} flags {', '.join(e['codes']) or '-'}; live {same}; "
+                     f"fields marked {e['fields_marked']} (after the live check "
+                     f"{e['live_marks']})")
+    fx = out.get("fixed_cement") or {}
+    lines += ["", f"\"Show in form\" brought the flagged field into view: {out.get('show_in_form')}",
+              f"cost_quantity with the cement set to {fx.get('bags')} bags: flags "
+              f"{', '.join(fx.get('codes') or []) or 'none'}; band {fx.get('band')}",
+              f"Data tab shows prices, works on record, after sanction, rules: "
+              f"{out.get('data_tab')}; the form kept its edit: {out.get('form_kept')}"]
     lines += ["", f"deep link ?example=time_fast opened {out.get('deep_link')}"]
     lines.append(f"live check without a district: {out['checks'][0]['answer']}")
     lines.append(f"page errors: {len(errors)}")

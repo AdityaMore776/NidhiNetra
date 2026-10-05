@@ -70,6 +70,14 @@ def _rs(v: float) -> str:
     return f"Rs {v / 1e5:,.2f} lakh" if v >= 1e5 else f"Rs {v:,.0f}"
 
 
+def _top(x: whole.Line) -> dict:
+    """A line that makes the gap, as the officer's screen names it."""
+    return {"line": x.index, "material": x.material, "label": x.label, "unit": x.unit,
+            "quantity": round(x.quantity, 3), "rate": round(x.rate, 2),
+            "fair_rate": None if x.fair_rate is None else round(x.fair_rate, 2),
+            "fair_quantity": round(x.fair_quantity, 3), "extra": round(x.extra, 2)}
+
+
 def _result(status: Status, headline: str, t0: float, verdict: str | None = None,
             findings: list[Finding] | None = None, limitations: list[str] | None = None,
             **evidence) -> AgentResult:
@@ -232,6 +240,10 @@ def assess(work: dict, ctx) -> AgentResult:
                                               "gap_share": round(w.gap_share, 4),
                                               "fair_total": round(w.fair_grand, 2),
                                               "coverage": round(w.coverage, 4),
+                                              "grand_total": round(w.grand, 2),
+                                              "above_fair_rate": w.above_fair,
+                                              "priced_lines": w.priced,
+                                              "top": [_top(x) for x in w.top()],
                                               "message_hi": HI_WHOLE.format(
                                                   share=f"{w.gap_share:.0%}")}))
         else:

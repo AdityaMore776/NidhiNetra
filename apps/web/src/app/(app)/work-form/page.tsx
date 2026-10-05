@@ -1,26 +1,30 @@
 "use client";
 
-import { ClipboardList, ExternalLink, FileSearch, FlaskConical, Loader2, Play } from "lucide-react";
+import { ArrowUpRight, Database, ExternalLink, FileSearch, FileText, Loader2, Play } from "lucide-react";
 import { motion } from "motion/react";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { BandBadge, EngineMark } from "@/components/nn/badges";
 import { PageHeader } from "@/components/nn/layout-bits";
+import { type FormData, WorkFormData } from "@/components/nn/work-form-data";
 import { Button } from "@/components/ui/button";
 import { ApiError, apiPost } from "@/lib/api";
-import type { Check, Trace } from "@/lib/explain";
+import type { Trace } from "@/lib/explain";
 import { agentMeta, AGENT_ORDER, inr } from "@/lib/format";
 import FORM_HTML from "@/lib/forms/pre-sanction-work-intelligence-form";
+import { type AgentLine, type AgentState, agentLines, clearMarks, markForm, showField } from "@/lib/work-form-flags";
+import { cn } from "@/lib/utils";
 
 /**
  * The Pre-Sanction Work Intelligence Form (forms/pre-sanction-work-intelligence-form.html), open to
  * everyone: it is shown exactly as written, in a frame, so the site's styles never touch it; its own
  * toolbar saves drafts in this browser, validates, exports JSON and prints.
  *
- * T134: example filings (made-up agencies, public/work-form/examples.json, built by
- * data/trial/work_form_examples.py through the real engines) fill the form through its own functions
- * and show what each agent said; "Check this form" sends what is in the form to
- * POST /api/v1/work-form/check, which stores nothing.
+ * T134, a demonstration: example filings (made-up agencies, public/work-form/examples.json, built by
+ * data/trial/work_form_examples.py through the real engines) fill the form; each agent says flagged,
+ * clear or not checked, with one line on why, and the flagged fields are outlined in the form in the
+ * agent's colour. "Check this form" sends what is in the form to POST /api/v1/work-form/check?demo=true,
+ * which compares it with the same example data (the Data tab) and stores nothing.
  */
 
 interface FormExample {
@@ -39,6 +43,7 @@ interface FormExamplesFile {
   source: string;
   as_of: string;
   examples: FormExample[];
+  data: FormData;
 }
 
 interface CheckResult {
@@ -49,7 +54,7 @@ interface CheckResult {
 
 type Shown =
   | { kind: "example"; ex: FormExample }
-  | { kind: "own"; result: CheckResult; from?: FormExample }
+  | { kind: "own"; result: CheckResult; form: Record<string, unknown>; title?: string }
   | { kind: "error"; message: string }
   | { kind: "checking" };
 
@@ -85,9 +90,17 @@ function fill(frame: HTMLIFrameElement | null, data: Record<string, unknown>): b
   return true;
 }
 
+/** Outline in the framed form what the agents flagged. */
+function mark(frame: HTMLIFrameElement | null, trace: Trace, form: Record<string, unknown>) {
+  markForm(
+    frame?.contentDocument,
+    agentLines(trace, form).flatMap((l) => l.flags),
+  );
+}
+
 const GROUPS: { agent: string | null; label: string }[] = [
   ...AGENT_ORDER.map((id) => ({ agent: id as string | null, label: agentMeta(id).name })),
-  { agent: null, label: "Nothing to ask" },
+  { agent: null, label: "Nothing flagged" },
 ];
 
 export default function WorkFormPage() {
@@ -104,6 +117,7 @@ function WorkForm() {
   const [file, setFile] = useState<FormExamplesFile | null>(null);
   const [shown, setShown] = useState<Shown | null>(null);
   const [ready, setReady] = useState(false);
+  const [tab, setTab] = useState<"form" | "data">("form");
 
   useEffect(() => {
     fetch("/work-form/examples.json")
@@ -113,27 +127,30 @@ function WorkForm() {
   }, []);
 
   function pick(ex: FormExample) {
+    setTab("form");
     setShown({ kind: "example", ex });
-    fill(frame.current, ex.form);
+    if (fill(frame.current, ex.form)) mark(frame.current, ex.trace, ex.form);
   }
 
   // a link to /work-form?example=<id> opens with that filing, once the form and the file are in
   const linked = file && wanted ? file.examples.find((e) => e.id === wanted) : undefined;
   const view: Shown | null = shown ?? (linked ? { kind: "example", ex: linked } : null);
   useEffect(() => {
-    if (ready && linked && shown === null) fill(frame.current, linked.form);
+    if (ready && linked && shown === null && fill(frame.current, linked.form)) mark(frame.current, linked.trace, linked.form);
   }, [ready, linked, shown]);
 
   async function checkOwn() {
     const w = frame.current?.contentWindow as FormWindow | null | undefined;
     if (!w || typeof w.serialize !== "function") return;
     const sent = w.serialize();
-    // an example (changed or not) keeps its reference number: say how the live answer compares
-    const from = file?.examples.find((e) => e.form.recommendation_ref === sent.recommendation_ref);
+    // an example, changed or not, keeps its reference number
+    const title = file?.examples.find((e) => e.form.recommendation_ref === sent.recommendation_ref)?.title;
+    clearMarks(frame.current?.contentDocument);
     setShown({ kind: "checking" });
     try {
-      const result = await apiPost<CheckResult>("/work-form/check", sent);
-      setShown({ kind: "own", result, from });
+      const result = await apiPost<CheckResult>("/work-form/check?demo=true", sent);
+      setShown({ kind: "own", result, form: sent, title });
+      mark(frame.current, result.trace, sent);
     } catch (e) {
       const message =
         e instanceof ApiError && e.status === 422
@@ -152,13 +169,15 @@ function WorkForm() {
     window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
   }
 
+  const titles = Object.fromEntries((file?.examples ?? []).map((e) => [e.id, e.title]));
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <PageHeader
         eyebrow="Act · Before sanction"
         title="Work intelligence"
         accent="form."
-        lead="The work's facts, collected once at sanction and in a form the agents can read: identity, site and map, duplicates and splits, the estimate line by line, timeline, clearances and the site-progress baseline."
+        lead="The implementing agency fills this form before sanction. Four agents read it and flag what an officer should check."
         actions={
           <Button variant="outline" className="rounded-xl" onClick={openInNewTab}>
             <ExternalLink /> Open in a new tab
@@ -169,10 +188,7 @@ function WorkForm() {
       <section className="panel space-y-3 p-4 sm:p-5" aria-label="Example filings">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="font-semibold">Example filings</h2>
-          <p className="text-xs text-muted-foreground">
-            Made-up agencies and villages in the real district of Jaunpur, checked by the real agents
-            {file ? ` against ${file.source.split(";")[0]}` : ""}.
-          </p>
+          <p className="text-xs text-muted-foreground">Pick one: the form fills in, and the flagged fields are outlined.</p>
         </div>
         {!file && <p className="text-sm text-muted-foreground">Loading the examples…</p>}
         {file && (
@@ -180,7 +196,7 @@ function WorkForm() {
             {GROUPS.map((g) => {
               const items = file.examples.filter((e) => e.agent === g.agent);
               if (!items.length) return null;
-              const color = g.agent ? agentMeta(g.agent).color : "var(--muted-foreground)";
+              const color = g.agent ? agentMeta(g.agent).color : "var(--low)";
               return (
                 <div key={g.label} className="min-w-0 space-y-1.5">
                   <div className="flex items-center gap-2 text-xs font-semibold" style={{ color }}>
@@ -196,7 +212,10 @@ function WorkForm() {
                             type="button"
                             onClick={() => pick(ex)}
                             disabled={!ready}
-                            className={`w-full rounded-lg border px-2.5 py-1.5 text-left text-xs leading-snug transition-colors disabled:opacity-50 ${on ? "border-brand-600 bg-brand-50 font-medium" : "bg-white hover:bg-muted"}`}
+                            className={cn(
+                              "w-full rounded-lg border px-2.5 py-1.5 text-left text-xs leading-snug transition-colors disabled:opacity-50",
+                              on ? "border-brand-600 bg-brand-50 font-medium" : "bg-white hover:bg-muted",
+                            )}
                           >
                             {ex.title}
                           </button>
@@ -209,22 +228,39 @@ function WorkForm() {
             })}
           </div>
         )}
-        <div className="flex flex-wrap items-center gap-2 border-t pt-3 text-xs text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t pt-3 text-xs text-muted-foreground">
           <Button size="sm" className="rounded-xl" onClick={checkOwn} disabled={!ready}>
             <Play /> Check this form with the agents
           </Button>
-          <span className="inline-flex items-center gap-1.5">
-            <FlaskConical className="size-3.5 text-brand-600" />
-            Fill it yourself or change an example, then check. Nothing is saved.
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <ClipboardList className="size-3.5 text-brand-600" />
-            The form&apos;s own toolbar saves drafts in this browser, validates and exports.
-          </span>
+          <span>Change any field (say, the cement quantity) and check again. Nothing is saved.</span>
         </div>
       </section>
 
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_400px]">
+      <div className="flex gap-1 rounded-xl bg-muted p-1 text-sm font-medium sm:w-fit" role="tablist">
+        {(
+          [
+            ["form", "Form and flags", FileText],
+            ["data", "Data the agents use", Database],
+          ] as const
+        ).map(([id, label, Icon]) => (
+          <button
+            key={id}
+            type="button"
+            role="tab"
+            aria-selected={tab === id}
+            onClick={() => setTab(id)}
+            className={cn(
+              "inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 transition-colors sm:flex-none",
+              tab === id ? "bg-white text-brand-950 shadow-sm" : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            <Icon className="size-4" /> {label}
+          </button>
+        ))}
+      </div>
+
+      {/* the form stays mounted on the Data tab, so a filled form is never lost */}
+      <div className={cn("grid gap-5 xl:grid-cols-[minmax(0,1fr)_400px]", tab !== "form" && "hidden")}>
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
@@ -241,22 +277,24 @@ function WorkForm() {
         </motion.div>
         <aside className="order-1 min-w-0 xl:order-2" aria-live="polite">
           <div className="xl:sticky xl:top-20">
-            <Verdict shown={view} />
+            <Verdict shown={view} onShow={(name) => showField(frame.current?.contentDocument, name)} onData={() => setTab("data")} />
           </div>
         </aside>
       </div>
+      {tab === "data" &&
+        (file?.data ? <WorkFormData data={file.data} titles={titles} /> : <p className="text-sm text-muted-foreground">Loading the data…</p>)}
     </div>
   );
 }
 
-function Verdict({ shown }: { shown: Shown | null }) {
+function Verdict({ shown, onShow, onData }: { shown: Shown | null; onShow: (field: string) => void; onData: () => void }) {
   if (!shown)
     return (
       <div className="panel space-y-2 p-5 text-sm text-muted-foreground">
         <FileSearch className="size-5 text-brand-600" />
         <p>
-          Pick an example filing to see the form as an agency filled it, and what each of the four agents said about it. Or fill
-          the form yourself and press <b>Check this form with the agents</b>.
+          Pick an example filing above. The form fills in, each agent says what it flagged and why, and the flagged fields are outlined
+          in the form.
         </p>
       </div>
     );
@@ -267,130 +305,99 @@ function Verdict({ shown }: { shown: Shown | null }) {
       </div>
     );
   if (shown.kind === "error") return <div className="panel p-5 text-sm text-destructive">{shown.message}</div>;
-  if (shown.kind === "example") {
-    const ex = shown.ex;
-    return (
-      <div className="panel space-y-4 p-5">
-        <div className="space-y-1.5">
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Made-up example filing</p>
-          <h3 className="font-semibold leading-snug text-balance">{ex.title}</h3>
-          <p className="text-sm text-muted-foreground">{ex.story}</p>
-          {ex.later.length > 0 && (
-            <ul className="space-y-0.5 text-xs text-muted-foreground">
-              {ex.later.map((l) => (
-                <li key={l}>· {l}</li>
-              ))}
-            </ul>
-          )}
-        </div>
-        <Agents trace={ex.trace} />
-      </div>
-    );
-  }
-  const { result, from } = shown;
-  const fixes = result.form.issues.filter((i) => i.level === "fix");
-  const same = from && asking(from.trace).join() === asking(result.trace).join();
+
+  const own = shown.kind === "own";
+  const trace = own ? shown.result.trace : shown.ex.trace;
+  const form = own ? shown.form : shown.ex.form;
+  const lines = agentLines(trace, form);
+  const fixes = own ? shown.result.form.issues.filter((i) => i.level === "fix") : [];
   return (
     <div className="panel space-y-4 p-5">
-      <div className="space-y-1.5">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Your form</p>
-        <h3 className="font-semibold">
-          {result.district.name}, {result.district.state_name} · {inr(result.form.grand_total)}
-        </h3>
-        {fixes.length > 0 ? (
-          <div className="space-y-1 text-xs">
-            <p className="text-muted-foreground">
-              The Cost check needs {fixes.length} more {fixes.length === 1 ? "answer" : "answers"} before it can judge the estimate:
+      <div className="space-y-1">
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+          {own ? "Your form, checked just now" : "Example filing"}
+        </p>
+        {own ? (
+          <>
+            {shown.title && <h3 className="font-semibold leading-snug text-balance">{shown.title}</h3>}
+            <p className={shown.title ? "text-sm text-muted-foreground" : "font-semibold"}>
+              {shown.result.district.name}, {shown.result.district.state_name} · {inr(shown.result.form.grand_total)}
             </p>
-            <ul className="max-h-40 space-y-0.5 overflow-auto">
+          </>
+        ) : (
+          <>
+            <h3 className="font-semibold leading-snug text-balance">{shown.ex.title}</h3>
+            <p className="text-sm text-muted-foreground">{shown.ex.story}</p>
+          </>
+        )}
+        {fixes.length > 0 && (
+          <details className="text-xs text-muted-foreground">
+            <summary className="cursor-pointer">
+              {fixes.length} {fixes.length === 1 ? "answer" : "answers"} missing for Cost
+            </summary>
+            <ul className="mt-1 max-h-32 space-y-0.5 overflow-auto">
               {fixes.slice(0, 12).map((i) => (
                 <li key={i.field + i.message}>· {i.message}</li>
               ))}
             </ul>
-          </div>
-        ) : (
-          <p className="text-xs text-muted-foreground">Everything the agents read is filled in.</p>
-        )}
-        {from && (
-          <p className="rounded-lg bg-brand-50/70 p-2.5 text-xs leading-relaxed text-brand-950">
-            {same ? (
-              <>
-                Live check on the example &ldquo;{from.title}&rdquo;:{" "}
-                {asking(result.trace).length ? "the same questions as in its worked verdict." : "as in its worked verdict, no agent asks."}
-              </>
-            ) : (
-              <>
-                Live check on the example &ldquo;{from.title}&rdquo;, against the database, which holds real eSAKSHI records only. Its worked
-                verdict also used made-up records the form does not carry (its later sanction, completion and site videos; other agencies&apos;
-                filings and earlier works in Jaunpur), so a check that needs them says below what it could not compare. Pick the example
-                again to see its verdict.
-              </>
-            )}
-          </p>
+          </details>
         )}
       </div>
-      <Agents trace={result.trace} />
+      <ul className="space-y-2">
+        {lines.map((l) => (
+          <AgentRow key={l.id} line={l} onShow={onShow} />
+        ))}
+      </ul>
+      <div className="flex flex-wrap items-center gap-2 border-t pt-3 text-xs text-muted-foreground">
+        <BandBadge band={trace.result.band} score={trace.result.score} />
+        <span>{trace.result.in_queue ? "Goes to the officers' review queue" : "An officer sees the flags before sanction"}</span>
+      </div>
+      <button type="button" onClick={onData} className="inline-flex items-center gap-1 text-xs font-medium text-brand-700 hover:underline">
+        See the data the agents compared with <ArrowUpRight className="size-3.5" />
+      </button>
     </div>
   );
 }
 
-/** The questions asked (agent, finding and weight), in order. */
-function asking(trace: Trace): string[] {
-  return trace.checks.flatMap((c) => c.findings.filter((f) => f.risk > 0).map((f) => `${c.id}:${f.code}:${f.risk}`));
-}
-
-const STATE: Record<Check["status"], string> = {
-  ASSESSED: "Nothing to ask",
-  NOT_APPLICABLE: "Does not apply yet",
-  NOT_ASSESSABLE: "Could not check (not a pass)",
-  NOT_BUILT: "Not run",
-  ERROR: "Not run",
+const CHIP: Record<AgentState, { label: string; className: string }> = {
+  flagged: { label: "Flagged", className: "bg-[var(--high)] text-white" },
+  clear: { label: "Clear", className: "bg-[var(--low-soft)] text-[var(--low)]" },
+  not_checked: { label: "Not checked", className: "bg-muted text-muted-foreground" },
+  later: { label: "After sanction", className: "bg-muted text-muted-foreground" },
 };
 
-function Agents({ trace }: { trace: Trace }) {
-  const r = trace.result;
+function AgentRow({ line, onShow }: { line: AgentLine; onShow: (field: string) => void }) {
+  const meta = agentMeta(line.id);
+  const flagged = line.state === "flagged";
   return (
-    <div className="space-y-3">
-      <div className="flex flex-wrap items-center gap-2 text-xs">
-        <BandBadge band={r.band} score={r.score} />
-        <span className="text-muted-foreground">{r.in_queue ? "goes to the review queue" : "not in the review queue"}</span>
+    <li
+      className="rounded-xl border p-3"
+      style={flagged ? { borderColor: meta.color, background: `color-mix(in srgb, ${meta.color} 6%, transparent)` } : undefined}
+    >
+      <div className="flex items-center gap-2">
+        <EngineMark id={line.id} size={22} />
+        <span className="text-sm font-semibold" style={{ color: flagged ? meta.color : undefined }}>
+          {meta.name}
+        </span>
+        <span className={cn("ml-auto rounded-full px-2 py-0.5 text-[11px] font-semibold", CHIP[line.state].className)}>
+          {CHIP[line.state].label}
+        </span>
       </div>
-      <ul className="space-y-2.5">
-        {trace.checks.map((c) => {
-          const meta = agentMeta(c.id, c.name, c.question);
-          const asked = c.findings.filter((f) => f.risk > 0);
-          return (
-            <li key={c.id} className="flex gap-2.5">
-              <EngineMark id={c.id} size={26} />
-              <div className="min-w-0 space-y-0.5">
-                <p className="text-sm font-semibold" style={{ color: meta.color }}>
-                  {meta.name}
-                  <span className="ml-2 text-xs font-medium" style={{ color: asked.length ? "var(--high)" : "var(--muted-foreground)" }}>
-                    {asked.length ? (asked.length === 1 ? "asks a question" : `asks ${asked.length} questions`) : STATE[c.status]}
-                  </span>
-                </p>
-                {asked.length > 0
-                  ? asked.map((f) => (
-                      <p key={f.code} className="text-xs leading-relaxed">
-                        {f.text}
-                      </p>
-                    ))
-                  : c.status !== "ASSESSED"
-                    ? <p className="text-xs leading-relaxed text-muted-foreground">{c.headline}</p>
-                    : // checked what it could: say what it could not, so quiet never reads as a pass
-                      c.limitations.slice(0, 2).map((l) => (
-                        <p key={l} className="text-xs leading-relaxed text-muted-foreground">
-                          {l}
-                        </p>
-                      ))}
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-      <p className="text-[11px] text-muted-foreground">
-        A question is for an officer to verify, never a finding of wrongdoing. &quot;Could not check&quot; is not a pass.
-      </p>
-    </div>
+      {line.flags.map((f) => (
+        <div key={f.code} className="mt-2 flex items-start gap-2">
+          <p className="min-w-0 flex-1 text-[13px] leading-snug">{f.why}</p>
+          {f.fields.length > 0 && (
+            <button
+              type="button"
+              onClick={() => onShow(f.fields[0].name)}
+              className="shrink-0 rounded-md border bg-white px-1.5 py-0.5 text-[11px] font-medium text-brand-700 hover:bg-brand-50"
+            >
+              Show in form
+            </button>
+          )}
+        </div>
+      ))}
+      {line.note && <p className="mt-1 text-xs text-muted-foreground">{line.note}</p>}
+    </li>
   );
 }

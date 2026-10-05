@@ -185,15 +185,17 @@ def office_national(con: psycopg.Connection) -> list[int]:
     return _NATIONAL["counts"]
 
 
-def with_index(ctx: Context, con: psycopg.Connection, work: dict) -> Context:
-    """The context with indexes covering this work's district."""
+def with_index(ctx: Context, con: psycopg.Connection, work: dict,
+               extra: list[dict] | None = None) -> Context:
+    """The context with indexes covering this work's district (plus `extra` works, such as the
+    work form's demonstration data, which are never stored)."""
     idx = (ctx.data or {}).get("dup_split")
-    if idx is not None and idx.covers(work.get("district_lgd")):
+    if idx is not None and idx.covers(work.get("district_lgd")) and not extra:
         return ctx
     d = work.get("district_lgd")
     rows = con.execute(f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works {SIGNALS_JOIN} "
                        "WHERE works.district_lgd = %s", (d,)).fetchall() if d else []
-    data = indexes(with_evidence(con, [_normalise(dict(r)) for r in rows]))
+    data = indexes(with_evidence(con, [_normalise(dict(r)) for r in rows]) + list(extra or ()))
     data["offices"].national = office_national(con)
     return replace(ctx, data={**(ctx.data or {}), **data})
 

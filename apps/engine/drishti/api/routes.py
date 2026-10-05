@@ -16,6 +16,7 @@ from psycopg.types.json import Jsonb
 from pydantic import BaseModel, Field
 
 from drishti import config, reference
+from drishti import demo as work_demo
 from drishti.agents import registry
 from drishti.agents.office_patterns.index import OfficeIndex
 from drishti.agents.statistical.cohort import StatsStore
@@ -408,10 +409,15 @@ WORK_FORM_MAX = 400_000            # a filled form is a few KB; refuse anything 
 
 
 @router.post("/work-form/check")
-def work_form_check(form: dict = Body(...), user: Principal = Depends(viewer)) -> dict:
+def work_form_check(form: dict = Body(...), demo: bool = Query(False),
+                    user: Principal = Depends(viewer)) -> dict:
     """The website's work intelligence form (PSWIF v1.0, T134), as an agency filled it, through
     the four agents: what the form still lacks for them, and every step of their verdict,
-    checked against the real works of the form's district. Nothing is stored."""
+    checked against the real works of the form's district. Nothing is stored.
+
+    `demo=true` (the form page's demonstration) also compares it with the example data of
+    drishti/demo.py, placed in the form's district, and gives an example filing what its record
+    shows after sanction."""
     if len(json.dumps(form, default=str)) > WORK_FORM_MAX:
         raise HTTPException(413, "this form is too large")
     district, state = (str(form.get(k) or "").strip() for k in ("district", "state"))
@@ -432,12 +438,17 @@ def work_form_check(form: dict = Body(...), user: Principal = Depends(viewer)) -
         work = pswif.to_work(form, district_lgd=d["district_lgd"], today=as_of,
                              state_lgd=d["state_lgd"], state_name=d["state_name"],
                              district_name=d["name"])
-        ctx = with_index(Context(stats=_stats(), as_of=as_of), con, work)
+        extra = None
+        if demo:
+            work.update(work_demo.later(work["work_id"]))
+            extra = [*work_demo.records(work), work]
+        ctx = with_index(Context(stats=_stats(), as_of=as_of), con, work, extra=extra)
     checked = validate_cost_form(work["cost_form"], today=as_of)
     confirmed = set(work["cost_form"].get("confirmed") or [])
     return {
         "district": {"district_lgd": d["district_lgd"], "name": d["name"],
                      "state_name": d["state_name"]},
+        "demo": demo,
         "form": {"ready": checked["ready"], "work_type": work["work_type_code"],
                  "grand_total": checked["computed"]["grand_total"],
                  "issues": [i for i in checked["issues"]

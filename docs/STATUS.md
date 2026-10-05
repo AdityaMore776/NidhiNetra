@@ -45,10 +45,11 @@ The sections below are the working notes the team resumes from.
 ## >>> RESUME HERE <<<
 
 **5 Oct 2026: the website's work intelligence form reaches the four agents (T134).** `/work-form` shows twelve example
-filings by made-up agencies in Jaunpur, each caught by one agent (one honest road passes all four), with the agents'
-verdicts; "Check this form" runs the four agents on any filled form (`POST /api/v1/work-form/check`, nothing stored).
-Numbers in FINDINGS "T134". Going live needs nothing new: the examples are a static file, and the route reads the
-hosted database as it is.
+filings by made-up agencies in Jaunpur, each caught by one agent (one honest road passes all four): each agent says
+flagged / clear / not checked with one line on why, and the flagged fields are outlined in the form. "Check this form"
+runs the four agents on any filled form against the same example data (`POST /api/v1/work-form/check?demo=true`,
+nothing stored), shown in plain words on the page's Data tab. Numbers in FINDINGS "T134". Going live needs nothing
+new: the examples and the demo data ship with the web app and the engine.
 
 **4 Oct 2026: the four agents are built (T121–T125, owner's pivot of 3 Oct; PR open).** Cost, Duplicate Work, Time &
 Rules and Site Progress, a quarter of the weight each; Guideline Compliance, Fund Flow, Office Patterns, Paperwork and

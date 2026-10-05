@@ -158,7 +158,8 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
             findings.append(_f("NOT_FILMED_AT_THIS_SITE",
                                f"{_when_cap(v)}: {why}, and its views do not match this "
                                "site's earlier views. Needs checking where it was filmed.",
-                               visit=v.visit_id))
+                               visit=v.visit_id, metres=v.get("gps_distance_m"),
+                               mock_location=v.get("mock_location") is True))
             break
         if gps_out or views_out:
             notes.append(f"{_when_cap(v)}: "
@@ -177,7 +178,8 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
                                f"visits in a row ({a.captured:%d %b %Y}: {a.claim or 'no claim'}; "
                                f"{b.captured:%d %b %Y}: {b.claim or 'no claim'})"
                                + (f". Reader: {reason}" if reason else "")
-                               + ". Check at the site.", visits=[a.visit_id, b.visit_id]))
+                               + ". Check at the site.", visits=[a.visit_id, b.visit_id],
+                               claims=[a.claim, b.claim]))
             break
     for v in monthly:
         if v.claim_verdict == "cant_tell":

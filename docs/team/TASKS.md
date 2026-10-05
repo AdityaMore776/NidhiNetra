@@ -105,11 +105,14 @@ of §9.6 planted. Only readings and blurred frames are kept; no video enters the
 ### T134 · The website's work intelligence form, read by the four agents, with example filings  ·  M  ·  engine + web + data  ·  Depends on: T125, T133
 **What:** the form on `/work-form` (PSWIF v1.0) reaches the agents: an adapter to the engine's cost form
 (`cost_form/pswif.py`, `versions.py`), `POST /api/v1/work-form/check` (nothing stored), and example filings by made-up
-agencies in Jaunpur, each caught by one agent, shown on the page for judges with the agents' verdicts.
+agencies in Jaunpur, each caught by one agent, shown on the page for judges: each agent flagged / clear / not
+checked with one line on why, the flagged fields outlined in the form, a Data tab with the example data in plain
+words, and a live check (`?demo=true`) against the same data.
 **Done when:** [x] adapter and route tested (`test_pswif.py` 21, `test_work_form_api.py` 4) · [x] 12 examples, each
 raising exactly its questions through the real engines (`data/trial/work_form_examples.py`, which refuses otherwise) ·
 [x] the page end to end in a real browser, from the dashboard's card to a live check, 0 page errors
-(`data/trial/work_form_e2e.py`) · [x] FINDINGS "T134" · [ ] seen on the live site after merge
+(`data/trial/work_form_e2e.py`) · [x] the live demo check raises exactly the worked flags on 12 of 12, and a fixed
+field clears its flag · [x] FINDINGS "T134" · [ ] seen on the live site after merge
 
 ---
 

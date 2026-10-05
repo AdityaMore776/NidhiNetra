@@ -14,19 +14,23 @@ site_reused     form filled True  BOQ rows  9 verdict panel ok
 site_claim      form filled True  BOQ rows  9 verdict panel ok
 site_elsewhere  form filled True  BOQ rows  7 verdict panel ok
 
-Live check of each loaded filing (the form alone, against the real works only; the worked verdicts also use the examples' made-up records):
-clean           worked -; live -; panel note same
-cost_padded     worked ESTIMATE_ABOVE_FAIR_PRICE; live -; panel note differs
-cost_quantity   worked ESTIMATE_ABOVE_FAIR_PRICE, MATERIAL_QUANTITY_ABOVE_SIZE; live MATERIAL_QUANTITY_ABOVE_SIZE; panel note differs
-cost_lights     worked ESTIMATE_ABOVE_STANDARD_AND_MP; live ESTIMATE_ABOVE_STANDARD_AND_MP; panel note same
-dup_pin         worked SANCTIONED_WORK_AT_THIS_SITE; live -; panel note differs
-dup_rebuild     worked REBUILT_SOON_AFTER_COMPLETION; live -; panel note differs
-dup_split       worked SPLIT_JUST_UNDER_LIMIT; live -; panel note differs
-time_fast       worked FINISHED_TOO_FAST; live -; panel note differs
-time_late       worked PAST_PROMISED_TIME; live PAST_PROMISED_TIME; panel note differs
-site_reused     worked FOOTAGE_USED_BEFORE, SAME_PLACE_AS_ANOTHER_WORK; live -; panel note differs
-site_claim      worked CLAIM_NOT_SHOWN; live -; panel note differs
-site_elsewhere  worked NOT_FILMED_AT_THIS_SITE; live -; panel note differs
+Live check of each loaded filing (POST /work-form/check?demo=true, the same example data):
+clean           flags -; live same; fields marked 0 (after the live check 0)
+cost_padded     flags ESTIMATE_ABOVE_FAIR_PRICE; live same; fields marked 4 (after the live check 4)
+cost_quantity   flags ESTIMATE_ABOVE_FAIR_PRICE, MATERIAL_QUANTITY_ABOVE_SIZE; live same; fields marked 2 (after the live check 2)
+cost_lights     flags ESTIMATE_ABOVE_STANDARD_AND_MP; live same; fields marked 2 (after the live check 2)
+dup_pin         flags SANCTIONED_WORK_AT_THIS_SITE; live same; fields marked 2 (after the live check 2)
+dup_rebuild     flags REBUILT_SOON_AFTER_COMPLETION; live same; fields marked 1 (after the live check 1)
+dup_split       flags SPLIT_JUST_UNDER_LIMIT; live same; fields marked 2 (after the live check 2)
+time_fast       flags FINISHED_TOO_FAST; live same; fields marked 1 (after the live check 1)
+time_late       flags PAST_PROMISED_TIME; live same; fields marked 1 (after the live check 1)
+site_reused     flags FOOTAGE_USED_BEFORE, SAME_PLACE_AS_ANOTHER_WORK; live same; fields marked 2 (after the live check 2)
+site_claim      flags CLAIM_NOT_SHOWN; live same; fields marked 1 (after the live check 1)
+site_elsewhere  flags NOT_FILMED_AT_THIS_SITE; live same; fields marked 1 (after the live check 1)
+
+"Show in form" brought the flagged field into view: True
+cost_quantity with the cement set to 1307 bags: flags none; band LOW
+Data tab shows prices, works on record, after sanction, rules: True; the form kept its edit: True
 
 deep link ?example=time_fast opened WF-TIME-1
 live check without a district: asks for the district

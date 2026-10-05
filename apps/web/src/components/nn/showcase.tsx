@@ -108,8 +108,7 @@ export function FormExamplesCard() {
       <div className="min-w-0 flex-1">
         <h3 className="text-[15px] font-semibold text-brand-950">Twelve example filings of the work intelligence form</h3>
         <p className="mt-0.5 text-[13px] text-muted-foreground">
-          Made-up agencies fill the form; each filing is caught by one of the four agents (one honest road passes all four). Load one into the
-          form, or fill it yourself and check it.
+          Made-up agencies fill the form. See what each agent flags in it, and why.
         </p>
       </div>
       <span className="inline-flex items-center gap-1 text-xs font-medium text-brand-700">

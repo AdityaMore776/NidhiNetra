@@ -42,6 +42,11 @@ sys.path.insert(0, str(ROOT / "data"))
 sys.path.insert(0, str(ROOT / "apps" / "engine"))
 from esakshi_dashboard import load  # noqa: E402
 
+from drishti import demo  # noqa: E402
+from drishti.agents.cost_estimate import whole  # noqa: E402
+from drishti.agents.dup_split import agent as dup_agent  # noqa: E402
+from drishti.agents.dup_split import repeat  # noqa: E402
+from drishti.agents.time_rules import window  # noqa: E402
 from drishti.batch import indexes  # noqa: E402
 from drishti.cost_form import norms, pswif  # noqa: E402
 from drishti.cost_form.validate import validate  # noqa: E402
@@ -51,6 +56,8 @@ from drishti.pipeline.orchestrator import Context  # noqa: E402
 
 OUT = ROOT / "apps" / "web" / "public" / "work-form" / "examples.json"
 SUMMARY = ROOT / "data" / "trial" / "results" / "work_form_examples.txt"
+DEMO = ROOT / "apps" / "engine" / "drishti" / "reference" / "demo" / "work_form.json"
+PLACE_KEYS = ("district_lgd", "district_name", "state_lgd", "state_name")
 DISTRICT = "Jaunpur"
 BASE = (25.7463, 82.6837)               # the district, near its headquarters
 METRE = 1 / 111_195
@@ -343,9 +350,7 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
     p = road("WF-CLEAN-1", AG[0], VILLAGES[0], 0, rec, san)
     start = san + timedelta(days=14)
     add("clean", None, {}, "An honest CC road: every agent looks, none asks",
-        "Nirman Seva Agency files a 300 m village road. Every line is priced near what other "
-        "agencies in Jaunpur pay, the cement matches the road's size, the map pins show its two "
-        "ends, and its monthly site videos show the road being built at the same five spots.",
+        "A 300 m village road, priced and sized honestly.",
         [f"Sanctioned {san:%d %b %Y}, 35 days after the recommendation",
          "Three site videos so far: the first visit, then new work at the same viewpoints "
          "each month, the agency's claim shown"],
@@ -361,9 +366,7 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
     p = road("WF-COST-1", AG[1], VILLAGES[1], 1, rec, None, rate_up=1.22, mp_x=1.0)
     add("cost_padded", "cost_estimate", {"cost_estimate": ["ESTIMATE_ABOVE_FAIR_PRICE"]},
         "Every line a little high: the whole estimate is not",
-        "Gramin Path Nigam prices every line of a 300 m road about 22% above what other "
-        "agencies in Jaunpur paid on their recent forms. No single line looks wrong, so no "
-        "line-by-line check would stop it; the extras only show when the lines are added up.",
+        "Every rate is about 22% above what other agencies in the district charge.",
         ["Not sanctioned yet: this is the check before sanction"], p)
     rec = m(55)
     p = road("WF-COST-2", AG[2], VILLAGES[2], 2, rec, None, cement_x=2.0, mp_x=1.0,
@@ -371,17 +374,12 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
     add("cost_quantity", "cost_estimate",
         {"cost_estimate": ["ESTIMATE_ABOVE_FAIR_PRICE", "MATERIAL_QUANTITY_ABOVE_SIZE"]},
         "Twice the cement the road can use",
-        "Jan Suvidha Works lists about 2,600 bags of cement for a 300 m x 3.5 m road whose "
-        "150 mm of M20 concrete needs about 1,330 with wastage, and writes a reason on the line. "
-        "Its rates are fair; the quantity is what is out of line, and the extra cement alone "
-        "lifts the whole estimate above its fair price.",
+        "2,614 bags of cement for a road that needs about 1,330.",
         ["Not sanctioned yet: this is the check before sanction"], p)
     p = lights("WF-COST-3", AG[3], VILLAGES[3], 3, m(40), 48_000, 240_000)
     add("cost_lights", "cost_estimate", {"cost_estimate": ["ESTIMATE_ABOVE_STANDARD_AND_MP"]},
         "Solar lights at more than twice the usual price",
-        "Prakash Urja Agency prices 10 standard solar street lights at Rs 48,000 each. In Uttar "
-        "Pradesh 98 in 100 such lights on real works cost far less, and its estimate is twice "
-        "the MP's Rs 2.4 lakh. Both signals together, so Cost asks.",
+        "10 solar street lights at Rs 48,000 each; the MP recommended Rs 2.4 lakh.",
         ["Not sanctioned yet: this is the check before sanction"], p)
 
     # --- Duplicate Work ---
@@ -396,9 +394,7 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
              end_lat=f"{lat + 311 * METRE:.6f}", end_lon=f"{lon:.6f}")
     add("dup_pin", "dup_split", {"dup_split": ["SANCTIONED_WORK_AT_THIS_SITE"]},
         "A \"new\" road on top of one the scheme already paid for",
-        "Sahyog Construction Cell files a new CC road whose map pins sit 20 m from a road of the "
-        "same kind sanctioned and completed last year, and says nothing about it. Words don't "
-        "matter here: the pins do.",
+        "A new road pinned 20 m from a road completed last year. The form does not mention it.",
         ["Not sanctioned yet: this is the check before sanction",
          "Earlier road WF-OLD-ROAD: sanctioned, completed 11 months ago, pinned 20 m away"], p)
 
@@ -414,10 +410,7 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
              baseline_existing_condition="The hall built under WF-OLD-HALL stands on the site")
     add("dup_rebuild", "dup_split", {"dup_split": ["REBUILT_SOON_AFTER_COMPLETION"]},
         "Rebuilding a hall finished 16 months earlier",
-        "Nirman Seva Agency declares, honestly, that this work rebuilds the community hall "
-        "completed under WF-OLD-HALL 16 months before this recommendation. A building that new "
-        "should not need "
-        "rebuilding, so Duplicate Work asks why, even though the link is declared.",
+        "The agency says this rebuilds a hall that was finished 16 months earlier.",
         ["Not sanctioned yet: this is the check before sanction",
          f"Earlier hall WF-OLD-HALL: completed {m(540):%d %b %Y}"], p)
 
@@ -440,9 +433,7 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
         bg_works.append(pswif.to_work(piece, today=as_of))
     add("dup_split", "dup_split", {"dup_split": ["SPLIT_JUST_UNDER_LIMIT"]},
         "One lane filed as three works, each just under Rs 5 lakh",
-        "Gramin Path Nigam files three alike works for one lane in one village within eight "
-        "days: parts 1, 2 and 3, recommended at Rs 4.93, 4.955 and 4.98 lakh. Each sits within "
-        "4% under the Rs 5 lakh limit; together they are one Rs 14.9 lakh job.",
+        "One lane filed as parts 1, 2 and 3, each just under the Rs 5 lakh limit.",
         ["Not sanctioned yet: this is the check before sanction",
          "The other parts: WF-SPLIT-1 and WF-SPLIT-3"], pieces[1])
 
@@ -452,9 +443,7 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
     p = road("WF-TIME-1", AG[2], VILLAGES[7], 9, rec, san, length=350, days=120)
     add("time_fast", "time_rules", {"time_rules": ["FINISHED_TOO_FAST"]},
         "A 350 m road \"complete\" 6 days after sanction",
-        "Jan Suvidha Works promised the road in 120 days. The record says it was complete 6 "
-        "days after sanction, and no site video shows it being built. A road that size needs "
-        "at least a month even for a fast, honest contractor.",
+        "Promised in 120 days; recorded complete 6 days after sanction.",
         [f"Sanctioned {san:%d %b %Y}",
          f"Recorded complete {san + timedelta(days=6):%d %b %Y}, 6 days later",
          "No site video filmed"],
@@ -475,9 +464,7 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
                         "cant_tell" if still else "shown"))
     add("time_late", "time_rules", {"time_rules": ["PAST_PROMISED_TIME"]},
         "Eight months promised, sixteen months on, and stopped",
-        "Prakash Urja Agency promised the hall in 8 months. Sixteen months after sanction it is "
-        "still open, and the last three monthly videos show no change at the same viewpoints: "
-        "past its own promised time, after allowing for the monsoon.",
+        "Promised in 8 months; 16 months later it is not finished and the site is still.",
         [f"Sanctioned {san:%d %b %Y}", "Still not complete",
          "The last three monthly videos show no change"], p,
         status="SANCTIONED", site_visits=vs)
@@ -490,10 +477,7 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
     add("site_reused", "site_progress", {"site_progress": ["FOOTAGE_USED_BEFORE",
                                                            "SAME_PLACE_AS_ANOTHER_WORK"]},
         "The first site video was filmed for another work",
-        "Sahyog Construction Cell's first site video carries 42 frames already seen on the "
-        "video of another hall, and its viewpoints show that hall's place. (These readings are "
-        "the ones the video job made in the team's end-to-end trial, filming one made-up site "
-        "for two works.)",
+        "The first site video reuses footage from another hall's video.",
         [f"Sanctioned {san:%d %b %Y}", f"First site video {start:%d %b %Y}"], p,
         status="SANCTIONED",
         site_visits=[visit(1, "baseline", start,
@@ -507,9 +491,7 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
     p = hall("WF-SITE-2", AG[0], VILLAGES[11], 12, rec, san, start=start)
     add("site_claim", "site_progress", {"site_progress": ["CLAIM_NOT_SHOWN"]},
         "\"Roof slab cast\", twice, and the videos don't show it",
-        "Nirman Seva Agency claims the roof slab is cast on two monthly visits in a row. At the "
-        "same five viewpoints, both videos show walls with no slab. One month could be a timing "
-        "slip; two in a row is a question.",
+        '"Roof slab cast" claimed in two monthly videos that show no slab.',
         [f"Sanctioned {san:%d %b %Y}", "Four site videos: the claim matches the first two, "
          "not the last two"], p, status="SANCTIONED",
         site_visits=[visit(1, "baseline", start),
@@ -530,9 +512,7 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
     p = road("WF-SITE-3", AG[2], VILLAGES[13], 13, rec, san, start=start)
     add("site_elsewhere", "site_progress", {"site_progress": ["NOT_FILMED_AT_THIS_SITE"]},
         "A monthly video filmed 2.4 km away",
-        "Jan Suvidha Works' third site video was filmed 2.4 km outside the road's mapped "
-        "alignment, and none of its views match the five viewpoints marked on the first visit. "
-        "GPS alone can be wrong and views alone can change; both together cannot.",
+        "The third monthly video was filmed 2.4 km from the road.",
         [f"Sanctioned {san:%d %b %Y}", "Three site videos: the third filmed elsewhere"], p,
         status="SANCTIONED",
         site_visits=[visit(1, "baseline", start),
@@ -543,6 +523,131 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
                            gps_distance_m=2400, views_match_site=False,
                            viewpoints_matched=0)])
     return ex, bg_works
+
+
+# ---- the page's Data tab, in plain words, and the engine's copy of the same data ---------------
+
+KIND = {"baseline": "First visit", "monthly": "Monthly visit", "check": "Surprise check",
+        "final": "Final visit"}
+VERDICT = {"shown": "shown", "not_shown": "not shown", "cant_tell": "can't tell"}
+
+
+def day(x) -> str:
+    return date.fromisoformat(str(x)[:10]).strftime("%d %b %Y")
+
+
+def video(v: dict) -> dict:
+    """One site video, as the video job's readings say, in plain words."""
+    r, bits = v["readings"], []
+    for x in r.get("reused_from") or []:
+        bits.append(f"{x['frames']} frames already seen in {x['work_id']}'s video")
+    for x in r.get("same_place_as") or []:
+        bits.append(f"same place as {x['work_id']}'s site")
+    if r.get("gps_inside") is False:
+        bits.append(f"GPS {(r.get('gps_distance_m') or 0) / 1000:.1f} km outside the site")
+    if r.get("views_match_site") is False:
+        bits.append("views don't match the site")
+    if v.get("claim"):
+        said = VERDICT.get(r.get("claim_verdict"))
+        bits.append(f"claim \"{v['claim']}\"" + (f": {said}" if said else ""))
+    if r.get("change") == "no_change":
+        bits.append("no change since last month")
+    return {"visit": v["visit_id"], "date": day(v["captured_at"]), "kind": KIND[v["kind"]],
+            "reading": "; ".join(bits) or "at the site, all 5 viewpoints marked"}
+
+
+def videos(vs: list[dict]) -> list[dict]:
+    """A long run of ordinary monthly visits is told in one line."""
+    rows = [video(v) for v in vs]
+    plain = [i for i, v in enumerate(vs) if v["kind"] == "monthly"
+             and v["readings"].get("change") == "changed"
+             and v["readings"].get("claim_verdict") == "shown"]
+    if len(rows) <= 5 or len(plain) < 3:
+        return rows
+    a, b = plain[0], plain[-1]
+    run = {"visit": f"{rows[a]['visit']} to {rows[b]['visit']}", "date": "monthly",
+           "kind": "Monthly visits", "reading": "new work each month; the claim shown"}
+    return rows[:a] + [run] + rows[b + 1:]
+
+
+def plain_data(examples: list[dict], records: list[dict], traces: dict) -> dict:
+    """What the agents compare the filings with in this demo, as the Data tab shows it."""
+    # rates other agencies filed: every priced line of every filing, by item
+    paid: dict[tuple, list] = {}
+    for w in records:
+        for site in (w.get("cost_form") or {}).get("sites") or []:
+            for ln in site.get("lines") or []:
+                if ln.get("material_id") and ln.get("rate"):
+                    paid.setdefault((ln["item"], ln["unit"]), []).append(
+                        (float(ln["rate"]), w["agency_name"], w["work_id"]))
+    rates = []
+    for (item, unit), xs in paid.items():
+        forms = {x[2] for x in xs}
+        if len(forms) < 5:
+            continue
+        vals = sorted(x[0] for x in xs)
+        rates.append({"item": item, "unit": unit, "usual": vals[len(vals) // 2],
+                      "low": vals[0], "high": vals[-1], "forms": len(forms),
+                      "agencies": len({x[1] for x in xs})})
+    standard = []
+    for c in traces["cost_lights"]["checks"]:
+        for site in (c["picture"] or {}).get("sites") or [] if c["id"] == "cost_estimate" else []:
+            ref = site.get("reference")
+            if ref:
+                standard.append({"item": "Solar street light, 12 W LED, 40 Wp panel",
+                                 "unit": "light", "usual": ref["median"],
+                                 "ask_above": site["question_above"], "works": ref["n"],
+                                 "where": f"real eSAKSHI works in {site['where']}"})
+    floors = {f["code"]: f["facts"] for c in traces["time_fast"]["checks"]
+              for f in c["findings"]}
+    quantity = {f["code"]: f["facts"] for c in traces["cost_quantity"]["checks"]
+                for f in c["findings"]}
+    rules = [
+        {"agent": "cost_estimate", "text": "Cement in M20 concrete: "
+         + quantity["MATERIAL_QUANTITY_ABOVE_SIZE"]["why"].split(", ", 1)[1]},
+        {"agent": "cost_estimate", "text": f"The whole estimate is asked about when it is "
+         f"{whole.GAP_SHARE:.0%}+ and Rs {whole.GAP_MIN_RS:,}+ above the fair price"},
+        {"agent": "dup_split", "text": f"Map pins within {repeat.PIN_METRES:.0f} m of a "
+         "sanctioned work of the same kind are one site"},
+        {"agent": "dup_split", "text": f"A rebuild within {dup_agent.REBUILT_WITHIN.days // 365}"
+         " years of completion is asked about"},
+        {"agent": "dup_split", "text": f"Split: 2 to {repeat.SPLIT_MAX} alike pieces, every one "
+         f"{repeat.SPLIT_SHARE:.0%} to 100% of a limit (Rs 5 or 10 lakh)"},
+        {"agent": "time_rules", "text": f"A 350 m CC road takes at least "
+         f"{floors['FINISHED_TOO_FAST']['limit']} days"},
+        {"agent": "time_rules", "text": f"Late after the promised time plus half of it again "
+         f"(at least {window.GRACE_MIN_DAYS} days)"},
+        {"agent": "site_progress", "text": "Not filmed here only when the GPS and the views "
+         "both disagree"},
+        {"agent": "site_progress", "text": "A claim not shown on two monthly videos in a row"},
+    ]
+    ids = {e["form"]["recommendation_ref"] for e in examples}
+    works = [{"id": w["work_id"], "what": w["description"], "agency": w["agency_name"],
+              "amount": w["amount"],
+              "state": (f"Completed {day(w['completed_date'])}" if w.get("completed_date")
+                        else "Recommended" if w["status"] == "RECOMMENDED" else "Sanctioned")}
+             for w in records if w["work_id"] not in ids and not w["work_id"].startswith("WF-BG")]
+    filings = [{"id": w["work_id"], "what": w["description"], "agency": w["agency_name"],
+                "amount": w["amount"], "filed": day(w["recommended_date"])}
+               for w in records if w["work_id"].startswith("WF-BG")]
+    return {
+        "where": f"{DISTRICT}, Uttar Pradesh",
+        "rates": sorted(rates, key=lambda r: -r["forms"]), "standard": standard,
+        "rules": rules, "works": works, "filings": filings,
+        "after": {e["key"]: e["later"] for e in examples},
+        "videos": {e["key"]: videos(e["record"]["site_visits"]) for e in examples
+                   if e["record"].get("site_visits")},
+    }
+
+
+def demo_file(examples: list[dict], records: list[dict]) -> dict:
+    """The engine's copy (drishti/demo.py): every example record, without its district (the
+    demo places it in the checked form's), and each example's record after sanction."""
+    return {"about": "Made-up example data for the work intelligence form's demo (T134), "
+                     "written by data/trial/work_form_examples.py. Not real works.",
+            "records": [{k: v for k, v in w.items() if k not in PLACE_KEYS} for w in records],
+            "later": {e["form"]["recommendation_ref"]: e["record"] for e in examples
+                      if e["record"]}}
 
 
 def main() -> None:
@@ -562,7 +667,7 @@ def main() -> None:
     # every filing is known to the district: the background, and each example to the others
     ctx = Context(stats=build_store(works), as_of=as_of,
                   data=indexes(works + background + records))
-    out, lines, bad = [], [], []
+    out, lines, bad, traces = [], [], [], {}
     for e, w in zip(examples, records, strict=True):
         checked = validate(w["cost_form"], today=as_of)
         trace = explain(w, ctx)
@@ -572,6 +677,7 @@ def main() -> None:
         want = {k: sorted(v) for k, v in e["codes"].items()}
         if fired != want:
             bad.append(f"{e['key']}: raises {fired}, meant {want}")
+        traces[e["key"]] = trace
         statuses = {c["id"]: c["status"] for c in trace["checks"]}
         lines.append(f"{e['key']:15} {trace['result']['band']:7} {trace['result']['score']:.3f} "
                      f"form ready {checked['ready']!s:5} {fired} {statuses}")
@@ -584,15 +690,35 @@ def main() -> None:
                     "trace": trace})
     if bad:
         sys.exit("examples no longer show what they say:\n" + "\n".join(bad))
+    # the engine's demo data, and the live check's path through it (POST /work-form/check?demo=
+    # true): the district's real works, the demo records, the form with its record after sanction
+    DEMO.parent.mkdir(parents=True, exist_ok=True)
+    DEMO.write_text(json.dumps(demo_file(examples, background + records), ensure_ascii=False,
+                               separators=(",", ":"), default=str), encoding="utf-8")
+    demo._text.cache_clear()
+    district = [w for w in works if w.get("district_lgd") == place["district_lgd"]]
+    for e, o in zip(examples, out, strict=True):
+        w = pswif.to_work(e["form"], today=as_of, **demo.later(e["form"]["recommendation_ref"]))
+        w.update(place)
+        live = explain(w, Context(stats=ctx.stats, as_of=as_of,
+                                  data=indexes(district + demo.records(w) + [w])))
+        asked = sorted(f["code"] for c in live["checks"] for f in c["findings"] if f["risk"] > 0)
+        if asked != sorted(f["code"] for c in o["trace"]["checks"] for f in c["findings"]
+                           if f["risk"] > 0):
+            bad.append(f"{e['key']}: the demo check raises {asked}")
+    if bad:
+        sys.exit("the demo check differs from the examples:\n" + "\n".join(bad))
     SUMMARY.write_text(f"{len(works):,} dashboard works, as of {as_of}; district {DISTRICT}; "
                        f"{len(background)} background filings\n" + "\n".join(lines) + "\n",
                        encoding="utf-8")
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps({"source": f"eSAKSHI dashboard tables, {len(works):,} works, "
                                          f"as of {as_of}; made-up filings in {DISTRICT}",
-                               "as_of": str(as_of), "examples": out},
+                               "as_of": str(as_of), "examples": out,
+                               "data": plain_data(examples, background + records, traces)},
                               ensure_ascii=False, indent=1, default=str), encoding="utf-8")
-    print(f"wrote {OUT.relative_to(ROOT)} ({OUT.stat().st_size // 1024} KB)")
+    print(f"wrote {OUT.relative_to(ROOT)} ({OUT.stat().st_size // 1024} KB) and "
+          f"{DEMO.relative_to(ROOT)} ({DEMO.stat().st_size // 1024} KB)")
 
 
 if __name__ == "__main__":

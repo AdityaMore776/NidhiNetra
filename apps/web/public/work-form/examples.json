@@ -6,7 +6,7 @@
    "id": "clean",
    "agent": null,
    "title": "An honest CC road: every agent looks, none asks",
-   "story": "Nirman Seva Agency files a 300 m village road. Every line is priced near what other agencies in Jaunpur pay, the cement matches the road's size, the map pins show its two ends, and its monthly site videos show the road being built at the same five spots.",
+   "story": "A 300 m village road, priced and sized honestly.",
    "later": [
     "Sanctioned 19 Jul 2026, 35 days after the recommendation",
     "Three site videos so far: the first visit, then new work at the same viewpoints each month, the agency's claim shown"
@@ -505,7 +505,7 @@
    "id": "cost_padded",
    "agent": "cost_estimate",
    "title": "Every line a little high: the whole estimate is not",
-   "story": "Gramin Path Nigam prices every line of a 300 m road about 22% above what other agencies in Jaunpur paid on their recent forms. No single line looks wrong, so no line-by-line check would stop it; the extras only show when the lines are added up.",
+   "story": "Every rate is about 22% above what other agencies in the district charge.",
    "later": [
     "Not sanctioned yet: this is the check before sanction"
    ],
@@ -778,7 +778,51 @@
         "risk": 0.6,
         "hard": false,
         "rule": null,
-        "severity": null
+        "severity": null,
+        "facts": {
+         "gap": 303139.0,
+         "gap_share": 0.2088,
+         "fair_total": 1451530.0,
+         "coverage": 0.9573,
+         "grand_total": 1754669.0,
+         "above_fair_rate": 6,
+         "priced_lines": 6,
+         "top": [
+          {
+           "line": 0,
+           "material": "cement",
+           "label": "Cement",
+           "unit": "bag",
+           "quantity": 1307.0,
+           "rate": 464.0,
+           "fair_rate": 380.0,
+           "fair_quantity": 1307.0,
+           "extra": 109788.0
+          },
+          {
+           "line": 2,
+           "material": "aggregate",
+           "label": "Stone aggregate",
+           "unit": "m3",
+           "quantity": 135.0,
+           "rate": 2562.0,
+           "fair_rate": 2100.0,
+           "fair_quantity": 135.0,
+           "extra": 62370.0
+          },
+          {
+           "line": 5,
+           "material": "labour_unskilled",
+           "label": "Unskilled labour",
+           "unit": "day",
+           "quantity": 551.0,
+           "rate": 512.0,
+           "fair_rate": 420.0,
+           "fair_quantity": 551.0,
+           "extra": 50692.0
+          }
+         ]
+        }
        }
       ],
       "picture": {
@@ -1004,7 +1048,7 @@
    "id": "cost_quantity",
    "agent": "cost_estimate",
    "title": "Twice the cement the road can use",
-   "story": "Jan Suvidha Works lists about 2,600 bags of cement for a 300 m x 3.5 m road whose 150 mm of M20 concrete needs about 1,330 with wastage, and writes a reason on the line. Its rates are fair; the quantity is what is out of line, and the extra cement alone lifts the whole estimate above its fair price.",
+   "story": "2,614 bags of cement for a road that needs about 1,330.",
    "later": [
     "Not sanctioned yet: this is the check before sanction"
    ],
@@ -1277,7 +1321,19 @@
         "risk": 0.6,
         "hard": false,
         "rule": null,
-        "severity": null
+        "severity": null,
+        "facts": {
+         "site": 0,
+         "material": "cement",
+         "quantity": 2614.0,
+         "needed": 1333.58,
+         "unit": "bag",
+         "why": "157.5 m3 of M20 concrete (300 m x 3.5 m x 150 mm), 8.06 bags per m3, plus 5%",
+         "ratio": 1.96,
+         "lines": [
+          0
+         ]
+        }
        },
        {
         "code": "ESTIMATE_ABOVE_FAIR_PRICE",
@@ -1285,7 +1341,29 @@
         "risk": 0.6,
         "hard": false,
         "rule": null,
-        "severity": null
+        "severity": null,
+        "facts": {
+         "gap": 435881.89,
+         "gap_share": 0.2882,
+         "fair_total": 1512308.11,
+         "coverage": 0.9615,
+         "grand_total": 1948190.0,
+         "above_fair_rate": 0,
+         "priced_lines": 6,
+         "top": [
+          {
+           "line": 0,
+           "material": "cement",
+           "label": "Cement",
+           "unit": "bag",
+           "quantity": 2614.0,
+           "rate": 380.0,
+           "fair_rate": 380.0,
+           "fair_quantity": 1466.942,
+           "extra": 435881.89
+          }
+         ]
+        }
        }
       ],
       "picture": {
@@ -1521,7 +1599,7 @@
    "id": "cost_lights",
    "agent": "cost_estimate",
    "title": "Solar lights at more than twice the usual price",
-   "story": "Prakash Urja Agency prices 10 standard solar street lights at Rs 48,000 each. In Uttar Pradesh 98 in 100 such lights on real works cost far less, and its estimate is twice the MP's Rs 2.4 lakh. Both signals together, so Cost asks.",
+   "story": "10 solar street lights at Rs 48,000 each; the MP recommended Rs 2.4 lakh.",
    "later": [
     "Not sanctioned yet: this is the check before sanction"
    ],
@@ -1732,7 +1810,18 @@
         "risk": 0.5,
         "hard": false,
         "rule": null,
-        "severity": null
+        "severity": null,
+        "facts": {
+         "site": 0,
+         "price_per_unit": 48000.0,
+         "unit": "light",
+         "where": "Jaunpur",
+         "p98": 20896,
+         "median": 20896,
+         "n": 136,
+         "mp_amount": 240000.0,
+         "mp_gap": 1.0
+        }
        }
       ],
       "picture": {
@@ -1970,7 +2059,7 @@
    "id": "dup_pin",
    "agent": "dup_split",
    "title": "A \"new\" road on top of one the scheme already paid for",
-   "story": "Sahyog Construction Cell files a new CC road whose map pins sit 20 m from a road of the same kind sanctioned and completed last year, and says nothing about it. Words don't matter here: the pins do.",
+   "story": "A new road pinned 20 m from a road completed last year. The form does not mention it.",
    "later": [
     "Not sanctioned yet: this is the check before sanction",
     "Earlier road WF-OLD-ROAD: sanctioned, completed 11 months ago, pinned 20 m away"
@@ -2275,7 +2364,14 @@
         "risk": 0.7,
         "hard": false,
         "rule": null,
-        "severity": null
+        "severity": null,
+        "facts": {
+         "other": "WF-OLD-ROAD",
+         "metres": 20.0,
+         "other_amount": 1452000.0,
+         "other_completed": "2025-11-06",
+         "kind": "at_site"
+        }
        }
       ],
       "picture": {
@@ -2470,7 +2566,7 @@
    "id": "dup_rebuild",
    "agent": "dup_split",
    "title": "Rebuilding a hall finished 16 months earlier",
-   "story": "Nirman Seva Agency declares, honestly, that this work rebuilds the community hall completed under WF-OLD-HALL 16 months before this recommendation. A building that new should not need rebuilding, so Duplicate Work asks why, even though the link is declared.",
+   "story": "The agency says this rebuilds a hall that was finished 16 months earlier.",
    "later": [
     "Not sanctioned yet: this is the check before sanction",
     "Earlier hall WF-OLD-HALL: completed 10 Apr 2025"
@@ -2779,7 +2875,14 @@
         "risk": 0.6,
         "hard": false,
         "rule": null,
-        "severity": null
+        "severity": null,
+        "facts": {
+         "other": "WF-OLD-HALL",
+         "nature": "reconstruction",
+         "months_after_completion": 16,
+         "other_amount": 2475000.0,
+         "kind": "declared"
+        }
        }
       ],
       "picture": {
@@ -2974,7 +3077,7 @@
    "id": "dup_split",
    "agent": "dup_split",
    "title": "One lane filed as three works, each just under Rs 5 lakh",
-   "story": "Gramin Path Nigam files three alike works for one lane in one village within eight days: parts 1, 2 and 3, recommended at Rs 4.93, 4.955 and 4.98 lakh. Each sits within 4% under the Rs 5 lakh limit; together they are one Rs 14.9 lakh job.",
+   "story": "One lane filed as parts 1, 2 and 3, each just under the Rs 5 lakh limit.",
    "later": [
     "Not sanctioned yet: this is the check before sanction",
     "The other parts: WF-SPLIT-1 and WF-SPLIT-3"
@@ -3283,7 +3386,23 @@
         "risk": 0.6,
         "hard": false,
         "rule": null,
-        "severity": null
+        "severity": null,
+        "facts": {
+         "size": 3,
+         "total": 1486500.0,
+         "limit": 500000.0,
+         "others": [
+          "WF-SPLIT-1",
+          "WF-SPLIT-3"
+         ],
+         "days": 8,
+         "segments": [
+          "part:1",
+          "part:2",
+          "part:3"
+         ],
+         "kind": "split"
+        }
        }
       ],
       "picture": {
@@ -3484,7 +3603,7 @@
    "id": "time_fast",
    "agent": "time_rules",
    "title": "A 350 m road \"complete\" 6 days after sanction",
-   "story": "Jan Suvidha Works promised the road in 120 days. The record says it was complete 6 days after sanction, and no site video shows it being built. A road that size needs at least a month even for a fast, honest contractor.",
+   "story": "Promised in 120 days; recorded complete 6 days after sanction.",
    "later": [
     "Sanctioned 24 Jun 2026",
     "Recorded complete 30 Jun 2026, 6 days later",
@@ -3866,7 +3985,13 @@
         "risk": 0.6,
         "hard": false,
         "rule": null,
-        "severity": null
+        "severity": null,
+        "facts": {
+         "value": 6,
+         "limit": 30,
+         "early": "2026-07-31",
+         "videos": 0
+        }
        }
       ],
       "picture": {
@@ -3986,7 +4111,7 @@
    "id": "time_late",
    "agent": "time_rules",
    "title": "Eight months promised, sixteen months on, and stopped",
-   "story": "Prakash Urja Agency promised the hall in 8 months. Sixteen months after sanction it is still open, and the last three monthly videos show no change at the same viewpoints: past its own promised time, after allowing for the monsoon.",
+   "story": "Promised in 8 months; 16 months later it is not finished and the site is still.",
    "later": [
     "Sanctioned 30 May 2025",
     "Still not complete",
@@ -4350,7 +4475,12 @@
         "risk": 0.4,
         "hard": false,
         "rule": null,
-        "severity": null
+        "severity": null,
+        "facts": {
+         "value": 128,
+         "late": "2026-05-27",
+         "stalled": true
+        }
        }
       ],
       "picture": {
@@ -4655,7 +4785,7 @@
    "id": "site_reused",
    "agent": "site_progress",
    "title": "The first site video was filmed for another work",
-   "story": "Sahyog Construction Cell's first site video carries 42 frames already seen on the video of another hall, and its viewpoints show that hall's place. (These readings are the ones the video job made in the team's end-to-end trial, filming one made-up site for two works.)",
+   "story": "The first site video reuses footage from another hall's video.",
    "later": [
     "Sanctioned 14 Jun 2026",
     "First site video 04 Jul 2026"
@@ -5093,7 +5223,17 @@
         "risk": 0.8,
         "hard": false,
         "rule": null,
-        "severity": null
+        "severity": null,
+        "facts": {
+         "visit": "V1",
+         "reused_from": [
+          {
+           "work_id": "WF-TIME-2",
+           "visit_id": "V3",
+           "frames": 42
+          }
+         ]
+        }
        },
        {
         "code": "SAME_PLACE_AS_ANOTHER_WORK",
@@ -5101,7 +5241,16 @@
         "risk": 0.7,
         "hard": false,
         "rule": null,
-        "severity": null
+        "severity": null,
+        "facts": {
+         "visit": "V1",
+         "same_place_as": [
+          {
+           "work_id": "WF-TIME-2",
+           "inliers": 875
+          }
+         ]
+        }
        }
       ],
       "picture": {
@@ -5194,7 +5343,7 @@
    "id": "site_claim",
    "agent": "site_progress",
    "title": "\"Roof slab cast\", twice, and the videos don't show it",
-   "story": "Nirman Seva Agency claims the roof slab is cast on two monthly visits in a row. At the same five viewpoints, both videos show walls with no slab. One month could be a timing slip; two in a row is a question.",
+   "story": "\"Roof slab cast\" claimed in two monthly videos that show no slab.",
    "later": [
     "Sanctioned 15 Apr 2026",
     "Four site videos: the claim matches the first two, not the last two"
@@ -5611,7 +5760,17 @@
         "risk": 0.5,
         "hard": false,
         "rule": null,
-        "severity": null
+        "severity": null,
+        "facts": {
+         "visits": [
+          "V4",
+          "V5"
+         ],
+         "claims": [
+          "roof slab cast",
+          "roof slab cast, plaster started"
+         ]
+        }
        }
       ],
       "picture": {
@@ -5742,7 +5901,7 @@
    "id": "site_elsewhere",
    "agent": "site_progress",
    "title": "A monthly video filmed 2.4 km away",
-   "story": "Jan Suvidha Works' third site video was filmed 2.4 km outside the road's mapped alignment, and none of its views match the five viewpoints marked on the first visit. GPS alone can be wrong and views alone can change; both together cannot.",
+   "story": "The third monthly video was filmed 2.4 km from the road.",
    "later": [
     "Sanctioned 25 May 2026",
     "Three site videos: the third filmed elsewhere"
@@ -6177,7 +6336,12 @@
         "risk": 0.8,
         "hard": false,
         "rule": null,
-        "severity": null
+        "severity": null,
+        "facts": {
+         "visit": "V3",
+         "metres": 2400.0,
+         "mock_location": false
+        }
        }
       ],
       "picture": {
@@ -6280,5 +6444,392 @@
     }
    }
   }
- ]
+ ],
+ "data": {
+  "where": "Jaunpur, Uttar Pradesh",
+  "rates": [
+   {
+    "item": "Cement OPC 43 grade",
+    "unit": "bag",
+    "usual": 380.0,
+    "low": 365.0,
+    "high": 464.0,
+    "forms": 22,
+    "agencies": 10
+   },
+   {
+    "item": "Coarse sand",
+    "unit": "m3",
+    "usual": 1800.0,
+    "low": 1728.0,
+    "high": 2196.0,
+    "forms": 22,
+    "agencies": 10
+   },
+   {
+    "item": "Stone aggregate 20 mm",
+    "unit": "m3",
+    "usual": 2100.0,
+    "low": 2016.0,
+    "high": 2562.0,
+    "forms": 22,
+    "agencies": 10
+   },
+   {
+    "item": "Mason (skilled)",
+    "unit": "day",
+    "usual": 750.0,
+    "low": 720.0,
+    "high": 915.0,
+    "forms": 22,
+    "agencies": 10
+   },
+   {
+    "item": "Labourer (unskilled)",
+    "unit": "day",
+    "usual": 420.0,
+    "low": 403.0,
+    "high": 512.0,
+    "forms": 22,
+    "agencies": 10
+   },
+   {
+    "item": "WBM base, graded stone",
+    "unit": "m3",
+    "usual": 1450.0,
+    "low": 1392.0,
+    "high": 1769.0,
+    "forms": 17,
+    "agencies": 9
+   },
+   {
+    "item": "TMT steel Fe 500",
+    "unit": "kg",
+    "usual": 68.0,
+    "low": 68.0,
+    "high": 68.0,
+    "forms": 5,
+    "agencies": 4
+   },
+   {
+    "item": "Bricks, first class",
+    "unit": "nos",
+    "usual": 8.0,
+    "low": 8.0,
+    "high": 8.0,
+    "forms": 5,
+    "agencies": 4
+   },
+   {
+    "item": "Vitrified floor tiles",
+    "unit": "m2",
+    "usual": 650.0,
+    "low": 650.0,
+    "high": 650.0,
+    "forms": 5,
+    "agencies": 4
+   },
+   {
+    "item": "Doors and windows, steel frame",
+    "unit": "nos",
+    "usual": 9500.0,
+    "low": 9500.0,
+    "high": 9500.0,
+    "forms": 5,
+    "agencies": 4
+   }
+  ],
+  "standard": [
+   {
+    "item": "Solar street light, 12 W LED, 40 Wp panel",
+    "unit": "light",
+    "usual": 20896,
+    "ask_above": 26120.0,
+    "works": 136,
+    "where": "real eSAKSHI works in Jaunpur"
+   }
+  ],
+  "rules": [
+   {
+    "agent": "cost_estimate",
+    "text": "Cement in M20 concrete: 8.06 bags per m3, plus 5%"
+   },
+   {
+    "agent": "cost_estimate",
+    "text": "The whole estimate is asked about when it is 15%+ and Rs 50,000+ above the fair price"
+   },
+   {
+    "agent": "dup_split",
+    "text": "Map pins within 50 m of a sanctioned work of the same kind are one site"
+   },
+   {
+    "agent": "dup_split",
+    "text": "A rebuild within 3 years of completion is asked about"
+   },
+   {
+    "agent": "dup_split",
+    "text": "Split: 2 to 5 alike pieces, every one 96% to 100% of a limit (Rs 5 or 10 lakh)"
+   },
+   {
+    "agent": "time_rules",
+    "text": "A 350 m CC road takes at least 30 days"
+   },
+   {
+    "agent": "time_rules",
+    "text": "Late after the promised time plus half of it again (at least 61 days)"
+   },
+   {
+    "agent": "site_progress",
+    "text": "Not filmed here only when the GPS and the views both disagree"
+   },
+   {
+    "agent": "site_progress",
+    "text": "A claim not shown on two monthly videos in a row"
+   }
+  ],
+  "works": [
+   {
+    "id": "WF-OLD-ROAD",
+    "what": "CC road from the primary school to the panchayat bhawan, Sonbarsa",
+    "agency": "Sadak Vikas Prakoshth",
+    "amount": 1452000.0,
+    "state": "Completed 06 Nov 2025"
+   },
+   {
+    "id": "WF-OLD-HALL",
+    "what": "Community hall at the panchayat ground, Ujarpur",
+    "agency": "Nagar Seva Kendra",
+    "amount": 2475000.0,
+    "state": "Completed 10 Apr 2025"
+   },
+   {
+    "id": "WF-SPLIT-1",
+    "what": "CC road in village Pratappur, part 1",
+    "agency": "Gramin Path Nigam",
+    "amount": 493000.0,
+    "state": "Recommended"
+   },
+   {
+    "id": "WF-SPLIT-3",
+    "what": "CC road in village Pratappur, part 3",
+    "agency": "Gramin Path Nigam",
+    "amount": 498000.0,
+    "state": "Recommended"
+   }
+  ],
+  "filings": [
+   {
+    "id": "WF-BG-1",
+    "what": "CC road from the primary school to the panchayat bhawan, Rampur Kalan",
+    "agency": "Lok Nirman Mandal",
+    "amount": 1190000.0,
+    "filed": "05 May 2026"
+   },
+   {
+    "id": "WF-BG-2",
+    "what": "CC road from the primary school to the panchayat bhawan, Sarai Khas",
+    "agency": "Sadak Vikas Prakoshth",
+    "amount": 1435000.0,
+    "filed": "23 May 2026"
+   },
+   {
+    "id": "WF-BG-3",
+    "what": "CC road from the primary school to the panchayat bhawan, Dhanapur",
+    "agency": "Nagar Seva Kendra",
+    "amount": 1652000.0,
+    "filed": "10 Jun 2026"
+   },
+   {
+    "id": "WF-BG-4",
+    "what": "CC road from the primary school to the panchayat bhawan, Mirpur",
+    "agency": "Gram Unnati Agency",
+    "amount": 1740000.0,
+    "filed": "28 Jun 2026"
+   },
+   {
+    "id": "WF-BG-5",
+    "what": "CC road from the primary school to the panchayat bhawan, Chandpur",
+    "agency": "Shramik Works Cooperative",
+    "amount": 1978000.0,
+    "filed": "16 Jul 2026"
+   },
+   {
+    "id": "WF-BG-6",
+    "what": "CC road from the primary school to the panchayat bhawan, Tilwari",
+    "agency": "Lok Nirman Mandal",
+    "amount": 2204000.0,
+    "filed": "03 Aug 2026"
+   },
+   {
+    "id": "WF-BG-7",
+    "what": "CC road from the primary school to the panchayat bhawan, Karanja",
+    "agency": "Sadak Vikas Prakoshth",
+    "amount": 2236000.0,
+    "filed": "21 Aug 2026"
+   }
+  ],
+  "after": {
+   "clean": [
+    "Sanctioned 19 Jul 2026, 35 days after the recommendation",
+    "Three site videos so far: the first visit, then new work at the same viewpoints each month, the agency's claim shown"
+   ],
+   "cost_padded": [
+    "Not sanctioned yet: this is the check before sanction"
+   ],
+   "cost_quantity": [
+    "Not sanctioned yet: this is the check before sanction"
+   ],
+   "cost_lights": [
+    "Not sanctioned yet: this is the check before sanction"
+   ],
+   "dup_pin": [
+    "Not sanctioned yet: this is the check before sanction",
+    "Earlier road WF-OLD-ROAD: sanctioned, completed 11 months ago, pinned 20 m away"
+   ],
+   "dup_rebuild": [
+    "Not sanctioned yet: this is the check before sanction",
+    "Earlier hall WF-OLD-HALL: completed 10 Apr 2025"
+   ],
+   "dup_split": [
+    "Not sanctioned yet: this is the check before sanction",
+    "The other parts: WF-SPLIT-1 and WF-SPLIT-3"
+   ],
+   "time_fast": [
+    "Sanctioned 24 Jun 2026",
+    "Recorded complete 30 Jun 2026, 6 days later",
+    "No site video filmed"
+   ],
+   "time_late": [
+    "Sanctioned 30 May 2025",
+    "Still not complete",
+    "The last three monthly videos show no change"
+   ],
+   "site_reused": [
+    "Sanctioned 14 Jun 2026",
+    "First site video 04 Jul 2026"
+   ],
+   "site_claim": [
+    "Sanctioned 15 Apr 2026",
+    "Four site videos: the claim matches the first two, not the last two"
+   ],
+   "site_elsewhere": [
+    "Sanctioned 25 May 2026",
+    "Three site videos: the third filmed elsewhere"
+   ]
+  },
+  "videos": {
+   "clean": [
+    {
+     "visit": "V1",
+     "date": "02 Aug 2026",
+     "kind": "First visit",
+     "reading": "at the site, all 5 viewpoints marked"
+    },
+    {
+     "visit": "V2",
+     "date": "01 Sep 2026",
+     "kind": "Monthly visit",
+     "reading": "claim \"base laid on the first 150 m\": shown"
+    },
+    {
+     "visit": "V3",
+     "date": "01 Oct 2026",
+     "kind": "Monthly visit",
+     "reading": "claim \"concrete laid on 200 m\": shown"
+    }
+   ],
+   "time_late": [
+    {
+     "visit": "V1",
+     "date": "20 Jun 2025",
+     "kind": "First visit",
+     "reading": "at the site, all 5 viewpoints marked"
+    },
+    {
+     "visit": "V2 to V12",
+     "date": "monthly",
+     "kind": "Monthly visits",
+     "reading": "new work each month; the claim shown"
+    },
+    {
+     "visit": "V13",
+     "date": "15 Jun 2026",
+     "kind": "Monthly visit",
+     "reading": "claim \"plastering in progress\": can't tell; no change since last month"
+    },
+    {
+     "visit": "V14",
+     "date": "15 Jul 2026",
+     "kind": "Monthly visit",
+     "reading": "claim \"plastering in progress\": can't tell; no change since last month"
+    },
+    {
+     "visit": "V15",
+     "date": "14 Aug 2026",
+     "kind": "Monthly visit",
+     "reading": "claim \"plastering in progress\": can't tell; no change since last month"
+    }
+   ],
+   "site_reused": [
+    {
+     "visit": "V1",
+     "date": "04 Jul 2026",
+     "kind": "First visit",
+     "reading": "42 frames already seen in WF-TIME-2's video; same place as WF-TIME-2's site"
+    }
+   ],
+   "site_claim": [
+    {
+     "visit": "V1",
+     "date": "05 May 2026",
+     "kind": "First visit",
+     "reading": "at the site, all 5 viewpoints marked"
+    },
+    {
+     "visit": "V2",
+     "date": "04 Jun 2026",
+     "kind": "Monthly visit",
+     "reading": "claim \"foundation done\": shown"
+    },
+    {
+     "visit": "V3",
+     "date": "04 Jul 2026",
+     "kind": "Monthly visit",
+     "reading": "claim \"walls up to lintel\": shown"
+    },
+    {
+     "visit": "V4",
+     "date": "03 Aug 2026",
+     "kind": "Monthly visit",
+     "reading": "claim \"roof slab cast\": not shown"
+    },
+    {
+     "visit": "V5",
+     "date": "02 Sep 2026",
+     "kind": "Monthly visit",
+     "reading": "claim \"roof slab cast, plaster started\": not shown; no change since last month"
+    }
+   ],
+   "site_elsewhere": [
+    {
+     "visit": "V1",
+     "date": "14 Jun 2026",
+     "kind": "First visit",
+     "reading": "at the site, all 5 viewpoints marked"
+    },
+    {
+     "visit": "V2",
+     "date": "14 Jul 2026",
+     "kind": "Monthly visit",
+     "reading": "claim \"base laid\": shown"
+    },
+    {
+     "visit": "V3",
+     "date": "13 Aug 2026",
+     "kind": "Monthly visit",
+     "reading": "GPS 2.4 km outside the site; views don't match the site; claim \"concrete laid on 200 m\""
+    }
+   ]
+  }
+ }
 }

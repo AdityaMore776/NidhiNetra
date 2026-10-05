@@ -26,7 +26,8 @@ Compliance (its timing rules live on in Time & Rules), Fund Flow, Office Pattern
 dashboard's 40,935 works the review queue went from 439 to 217 (185 R14, 34 split pieces, 2 both).
 
 The website's work intelligence form (`/work-form`, T134) is read by all four: twelve example filings in Jaunpur show
-each agent asking (made-up agencies; FINDINGS "T134"), and "Check this form" runs them on any filled form.
+each agent flagging, with the flagged fields outlined in the form (made-up agencies; FINDINGS "T134"), and "Check this
+form" runs them on any filled form against the same example data, shown on the page's Data tab.
 
 ## Status at a glance (history, before the four agents)
 
