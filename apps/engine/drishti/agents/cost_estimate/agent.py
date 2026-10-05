@@ -137,9 +137,10 @@ def assess(work: dict, ctx) -> AgentResult:
                 name = catalog.material(q["material"])["label"].lower()
                 findings.append(Finding(
                     "MATERIAL_QUANTITY_ABOVE_SIZE",
-                    f"{label.capitalize()}: {name}, {q['quantity']:,.0f} {q['unit']} in the "
-                    f"estimate, but the size needs {q['needed']:,.0f} ({q['why']}); the agency "
-                    f"confirmed the quantity when filling the form. Please check the estimate.",
+                    f"{label.capitalize()}: {name}, "
+                    f"{catalog.quantity_text(q['quantity'], q['unit'])} in the estimate, but the "
+                    f"size needs {q['needed']:,.0f} ({q['why']}); the agency confirmed the "
+                    "quantity when filling the form. Please check the estimate.",
                     hard=False, risk=QUANTITY_RISK,
                     evidence={"site": i, **{k: q[k] for k in ("material", "quantity", "needed",
                                                               "unit", "why")},

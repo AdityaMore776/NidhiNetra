@@ -1265,7 +1265,7 @@
       "status": "ASSESSED",
       "verdict": "MATERIAL_QUANTITY_ABOVE_SIZE",
       "risk": 0.6,
-      "headline": "The work: cement, 2,614 bag in the estimate, but the size needs 1,334 (157.5 m3 of M20 concrete (300 m x 3.5 m x 150 mm), 8.06 bags per m3, plus 5%); the agency confirmed the quantity when filling the form. Please check the estimate.",
+      "headline": "The work: cement, 2,614 bags in the estimate, but the size needs 1,334 (157.5 m3 of M20 concrete (300 m x 3.5 m x 150 mm), 8.06 bags per m3, plus 5%); the agency confirmed the quantity when filling the form. Please check the estimate.",
       "limitations": [
        "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
@@ -1273,7 +1273,7 @@
       "findings": [
        {
         "code": "MATERIAL_QUANTITY_ABOVE_SIZE",
-        "text": "The work: cement, 2,614 bag in the estimate, but the size needs 1,334 (157.5 m3 of M20 concrete (300 m x 3.5 m x 150 mm), 8.06 bags per m3, plus 5%); the agency confirmed the quantity when filling the form. Please check the estimate.",
+        "text": "The work: cement, 2,614 bags in the estimate, but the size needs 1,334 (157.5 m3 of M20 concrete (300 m x 3.5 m x 150 mm), 8.06 bags per m3, plus 5%); the agency confirmed the quantity when filling the form. Please check the estimate.",
         "risk": 0.6,
         "hard": false,
         "rule": null,
@@ -1281,7 +1281,7 @@
        },
        {
         "code": "ESTIMATE_ABOVE_FAIR_PRICE",
-        "text": "The estimate (Rs 19.48 lakh) is Rs 4.36 lakh (29%) above the fair price for this size of work in this district (Rs 15.12 lakh), pricing the 96% of the money that could be compared. Most of the gap: cement +Rs 4.36 lakh (2,614 bag where the size needs 1,334). 0 of the 6 priced lines are above their fair rate. Needs checking before sanction.",
+        "text": "The estimate (Rs 19.48 lakh) is Rs 4.36 lakh (29%) above the fair price for this size of work in this district (Rs 15.12 lakh), pricing the 96% of the money that could be compared. Most of the gap: cement +Rs 4.36 lakh (2,614 bags where the size needs 1,334). 0 of the 6 priced lines are above their fair rate. Needs checking before sanction.",
         "risk": 0.6,
         "hard": false,
         "rule": null,
@@ -1507,7 +1507,7 @@
      "reasons": [
       {
        "engine": "Cost",
-       "text": "The work: cement, 2,614 bag in the estimate, but the size needs 1,334 (157.5 m3 of M20 concrete (300 m x 3.5 m x 150 mm), 8.06 bags per m3, plus 5%); the agency confirmed the quantity when filling the form. Please check the estimate.",
+       "text": "The work: cement, 2,614 bags in the estimate, but the size needs 1,334 (157.5 m3 of M20 concrete (300 m x 3.5 m x 150 mm), 8.06 bags per m3, plus 5%); the agency confirmed the quantity when filling the form. Please check the estimate.",
        "text_hi": "इस कार्य पर एक जाँच ने ध्यान देने योग्य बात पाई है। विवरण देखें।",
        "chance": 0.4375,
        "basis": "prior",

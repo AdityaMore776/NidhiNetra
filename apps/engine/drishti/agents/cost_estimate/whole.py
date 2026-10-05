@@ -168,7 +168,8 @@ def sentence(w: Whole, label: str = "this size of work in this district") -> str
         if x.fair_rate is not None and x.rate > x.fair_rate:
             why.append(f"{_rs(x.rate)} a {x.unit} against {_rs(x.fair_rate)}")
         if x.needed is not None and x.quantity > x.needed * QTY_TOLERANCE:
-            why.append(f"{x.quantity:,.0f} {x.unit} where the size needs {x.needed:,.0f}")
+            why.append(f"{catalog.quantity_text(x.quantity, x.unit)} where the size needs "
+                       f"{x.needed:,.0f}")
         parts.append(f"{x.label.lower()} +{_rs(x.extra)}" + (f" ({'; '.join(why)})" if why else ""))
     text = (f"The estimate ({_rs(w.grand)}) is {_rs(w.gap)} ({w.gap_share:.0%}) above the fair "
             f"price for {label} ({_rs(w.fair_grand)}), pricing the {w.coverage:.0%} of the money "
