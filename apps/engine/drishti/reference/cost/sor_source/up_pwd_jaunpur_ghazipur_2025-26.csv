@@ -1,0 +1,39 @@
+row,chapter,sl_no,item,unit,rate,material_id,mapped_unit,basis,effective_from,superseded_by,source,pdf_page,printed_page,note
+m01,Materials,1.A,Bricks Class 150 (PWD spec 1.1.1),per 1000 nos,6900.00,brick,thousand,gst_excluded;cartage_8km_included,2025-05-01,,SOR25-26,8,7,
+m02,Materials,1.B,Bricks straight over burnt Class-275,per 1000 nos,6350.00,,,gst_excluded;cartage_8km_included,2025-05-01,,SOR25-26,8,7,a different class from the form's 'first class' brick
+m03,Materials,1.C,Bricks Class-100,per 1000 nos,5750.00,,,gst_excluded;cartage_8km_included,2025-05-01,,SOR25-26,8,7,
+m04,Materials,1.1,F.P.S. (non modular) clay fly ash brick class 7.5,per 1000 nos,6200.00,,,gst_excluded,2025-05-01,,SOR25-26,8,7,
+m05,Materials,1.2,Autoclaved aerated cement (AAC) blocks,cum,3000.00,,,gst_excluded,2025-05-01,,SOR25-26,8,7,
+m06,Materials,2.A,Brick ballast Class M-150 40 mm gauge,cum,1300.00,,,gst_excluded;cartage_8km_included,2025-05-01,,SOR25-26,8,7,
+m07,Materials,2.B,Brick ballast Class-150 25 mm gauge,cum,1350.00,,,gst_excluded;cartage_8km_included,2025-05-01,,SOR25-26,8,7,
+m08,Materials,4.A,TMT steel reinforcement (Fe-550),kg,55.50,,,gst_excluded,2025-05-01,r01,SOR25-26,8,7,replaced on 15.10.2025 by 'as per CPWD DSR'
+m09,Materials,4.B,Binding wire,kg,52.00,,,gst_excluded,2025-05-01,,SOR25-26,8,7,
+m10,Materials,5.A,Portland cement OPC-43 grade (50 kg bag),bag,325.00,,,gst_excluded,2025-05-01,r02;r03,SOR25-26,8,7,replaced on 15.10.2025
+m11,Materials,5.B,Portland cement PPC (50 kg bag),bag,300.00,,,gst_excluded,2025-05-01,r04,SOR25-26,8,7,replaced on 15.10.2025
+m12,Materials,5.C,White cement (50 kg bag),bag,800.00,,,gst_excluded,2025-05-01,,SOR25-26,8,7,
+m13,Materials,6.A,Local river sand (within 8 km),cum,650.00,,,gst_excluded;cartage_8km_included,2025-05-01,,SOR25-26,8,7,not mapped: concrete needs coarse sand (FM 2.6+); this local sand is a different grade
+m14,Materials,6.B,Fine sand (approved quarry) FM more than 1.25,cum,900.00,,,gst_excluded;cartage_8km_included,2025-05-01,,SOR25-26,8,7,
+m15,Materials,22,MS wire mesh,kg,60.00,,,gst_excluded,2025-05-01,,SOR25-26,9,8,
+l01,Labour,1,Beldar / mazdoor (unskilled),day,423,labour_unskilled,day,gst_excluded,2025-05-01,,SOR25-26,10,9,
+l02,Labour,2,Beldar / mazdoor (semi-skilled),day,465,,,gst_excluded,2025-05-01,,SOR25-26,10,9,
+l03,Labour,3,Labour (skilled),day,521,labour_skilled,day,gst_excluded,2025-05-01,,SOR25-26,10,9,
+l04,Labour,4,Mate,day,525,,,gst_excluded,2025-05-01,,SOR25-26,10,9,
+l05,Labour,5.a,Mason grade-I,day,525,,,gst_excluded,2025-05-01,,SOR25-26,10,9,
+l06,Labour,5.b,Mason grade-2,day,465,,,gst_excluded,2025-05-01,,SOR25-26,10,9,
+l07,Labour,6.a,Carpenter grade-I,day,525,,,gst_excluded,2025-05-01,,SOR25-26,10,9,
+l08,Labour,18,Supervisor,day,529,,,gst_excluded,2025-05-01,,SOR25-26,10,9,
+l09,Labour,19,Chowkidar,day,423,,,gst_excluded,2025-05-01,,SOR25-26,10,9,
+q01,Quarry (Mirzapur circle),A.1,20 mm Dala grit (building work),cum,1600.00,,,gst_excluded;at_quarry,2025-04-28,,SOR25-26,5,4,at the Dala quarry: carriage to site and contractor's profit extra; not a delivered price
+q02,Quarry (Mirzapur circle),A.2,19 mm Dala grit (road work),cum,1500.00,,,gst_excluded;at_quarry,2025-04-28,,SOR25-26,5,4,at the quarry
+q03,Quarry (Mirzapur circle),A.9,37.5-25 mm,cum,1450.00,,,gst_excluded;at_quarry,2025-04-28,,SOR25-26,5,4,at the quarry
+q04,Quarry (Mirzapur circle),A.10,25-10 mm,cum,1480.00,,,gst_excluded;at_quarry,2025-04-28,,SOR25-26,5,4,at the quarry
+q05,Quarry (Mirzapur circle),A.14,Stone dust,cum,570.00,,,gst_excluded;at_quarry,2025-04-28,,SOR25-26,5,4,at the quarry
+q06,Quarry (Mirzapur circle),A.18,20 mm-10 mm,cum,1480.00,,,gst_excluded;at_quarry,2025-04-28,,SOR25-26,5,4,at the quarry
+q07,Quarry (Mirzapur circle),A.19,Coarse sand FM 2.6+ (approved Dudhee quarry),cum,1180.00,,,gst_excluded;at_quarry,2025-04-28,,SOR25-26,5,4,at the quarry
+q08,Quarry (Mirzapur circle),A.20,Fine sand FM 1.25+ (approved Chopan quarry),cum,950.00,,,gst_excluded;at_quarry,2025-04-28,,SOR25-26,5,4,at the quarry
+q09,Quarry (Mirzapur circle),B.1,45-90 mm stone ballast (hand broken),cum,550.00,,,gst_excluded;at_quarry,2025-04-28,,SOR25-26,5,4,at the Sukrit quarry
+q10,Quarry (Mirzapur circle),B.6,Fine aggregate / crushed sand 2.36 mm to 75 micron,cum,520.00,,,gst_excluded;at_quarry,2025-04-28,,SOR25-26,5,4,at the Sukrit quarry
+r01,Revision 15.10.2025,4A,Steel reinforcement (IS:1786-2008),kg,,,,gst_excluded,2025-10-15,,Circle-2025-10,1,1,as per CPWD DSR (no figure in this circle's schedule)
+r02,Revision 15.10.2025,5.A,Portland cement OPC-43 grade,bag,,,,gst_excluded,2025-10-15,,Circle-2025-10,1,1,as per CPWD DSR (no figure in this circle's schedule)
+r03,Revision 15.10.2025,5.B.a,Portland cement OPC-43 grade 50 kg (small work: up to 1000 bags),bag,300.00,cement,bag,gst_excluded,2025-10-15,,Circle-2025-10,1,1,"applies only to a work using up to 1000 bags (larger: as per CPWD DSR); Jaunpur and Ghazipur alike"
+r04,Revision 15.10.2025,5.B.b,Portland cement PPC 50 kg (small work: up to 1000 bags),bag,285.00,,,gst_excluded,2025-10-15,,Circle-2025-10,1,1,

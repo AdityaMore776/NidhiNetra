@@ -22,6 +22,7 @@ Drive folder**, shared by the owner with teammates only.
 | `data/raw/MPLADS_real.csv`, `inrolls/` (MP fund files, raw work lists) | `~/saakshya/data/raw/` | rebuilding the corpus, Fund Flow (T402), the harvester |
 | `data/raw/lgd/` (PIN ↔ district file, LGD lists) | `~/saakshya/data/raw/lgd/` | Geo PIN check (T304) |
 | `data/raw/guidelines/`, `data/raw/cag/` | `~/saakshya/data/raw/` | clause checks, CAG figures for the deck |
+| `data/raw/rates/up_pwd/` (UP PWD Schedule of Rates 2025-26 PDFs, public, from uppwd.gov.in; the URLs are in `data/build_sor.py`) | repo `data/raw/rates/` | checking the digitised rate books (T096) |
 | the old research build's **code** (snapshot `abf2da4`) | `~/saakshya/` | tasks that port code from it (duplicates, hashing, geo, fusion calibration) |
 
 `~/saakshya` is the old research version of DRISHTI (it was called SAAKSHYA before). Several scripts look
