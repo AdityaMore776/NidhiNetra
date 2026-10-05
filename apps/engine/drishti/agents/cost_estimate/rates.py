@@ -78,12 +78,24 @@ def sor_rate(sor: dict | None, material_id: str,
 def _form_month(form: dict, fallback) -> date | None:
     t = form.get("timing") if isinstance(form.get("timing"), dict) else {}
     m = t.get("estimate_month")
-    if isinstance(m, str) and len(m) >= 7:
-        try:
-            return date(int(m[:4]), int(m[5:7]), 1)
-        except ValueError:
-            pass
+    # the website's form asks no price month: the day the agency filed it stands in (T134)
+    for v in (m, form.get("filed_on")):
+        if isinstance(v, str) and len(v) >= 7:
+            try:
+                return date(int(v[:4]), int(v[5:7]), 1)
+            except ValueError:
+                pass
     return fallback if isinstance(fallback, date) else None
+
+
+def agency_of(work: dict) -> str:
+    """Who filed the form: the account that submitted it, else the implementing agency the form
+    names, else the work itself. An agency never counts in its own district baseline."""
+    meta = work.get("cost_form_meta") if isinstance(work.get("cost_form_meta"), dict) else {}
+    for v in (meta.get("saved_by"), work.get("agency_name")):
+        if isinstance(v, str) and v.strip():
+            return v.strip().lower()
+    return str(work.get("work_id"))
 
 
 def confirmed_lines(form: dict):
@@ -121,7 +133,7 @@ class RateIndex:
             d = w.get("district_lgd")
             if not isinstance(form, dict) or not d:
                 continue
-            agency = str((w.get("cost_form_meta") or {}).get("saved_by") or w.get("work_id"))
+            agency = agency_of(w)
             month = _form_month(form, (w.get("cost_form_meta") or {}).get("submitted_on"))
             for _i, _j, mid, r, _q, _ln in confirmed_lines(form):
                 out[(str(d), mid)].append((agency, str(w.get("work_id")), r, month))

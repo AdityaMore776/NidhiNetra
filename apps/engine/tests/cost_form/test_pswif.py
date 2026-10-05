@@ -166,3 +166,26 @@ def test_damaged_filings_never_break_the_adapter():
         validate(f, today=TODAY)
         pswif.to_work(p)
     assert pswif.to_cost_form("not a dict")["work"]["work_type"] == "OTHER"
+
+
+def test_the_rate_index_knows_which_agency_filed_and_when():
+    from drishti.agents.cost_estimate import rates
+
+    def filing(i, agency, filed="2026-06-14"):
+        return pswif.to_work(road(recommendation_ref=f"WF-{i}", implementing_agency=agency,
+                                  ida_received_date=filed), district_lgd="181", today=TODAY)
+
+    same = [filing(i, "Rural Engineering Department") for i in range(5)]
+    idx = rates.RateIndex.build(same)
+    # five forms, but all from one agency: no district rate for anyone
+    assert idx.district_rate("181", "cement", "pwd", "WF-X", date(2026, 7, 1)) is None
+    mixed = same + [filing(5, "PWD Division 2"), filing(6, "Jal Nigam")]
+    idx = rates.RateIndex.build(mixed)
+    rate, forms, agencies = idx.district_rate("181", "cement", "zila panchayat", "WF-X",
+                                              date(2026, 7, 1))
+    assert rate == 380 and forms == 7 and agencies == 3
+    # never the agency's own forms
+    assert idx.district_rate("181", "cement", "rural engineering department", "WF-X",
+                             date(2026, 7, 1)) is None
+    # filed more than six months before: too old to count
+    assert idx.district_rate("181", "cement", "zila panchayat", "WF-X", date(2027, 3, 1)) is None

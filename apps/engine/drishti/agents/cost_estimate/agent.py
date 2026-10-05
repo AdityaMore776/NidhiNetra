@@ -210,11 +210,9 @@ def assess(work: dict, ctx) -> AgentResult:
 
     # 3. every line against its fair rate, then the whole estimate (T121)
     sor = data.get("sor") if "sor" in data else rates.load_sor(work.get("state_name"))
-    meta = work.get("cost_form_meta") if isinstance(work.get("cost_form_meta"), dict) else {}
     when = rates._form_month(form, as_of)
     w = whole.judge(form, c, work_type, sor, data.get("rates"), work.get("district_lgd"),
-                    str(meta.get("saved_by") or work.get("work_id")), str(work.get("work_id")),
-                    when)
+                    rates.agency_of(work), str(work.get("work_id")), when)
     if w.lines:
         compared = True
     if w.verdict == "CANT_CHECK":

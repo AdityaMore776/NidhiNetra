@@ -429,7 +429,9 @@ def to_cost_form(p: dict, today: date | None = None) -> dict:
     site = {"location": _location(p, linear), "size": _size(p, code), "lines": _lines(p, goods)}
     if conditions:
         site["site_conditions"] = conditions
-    form = {"form_version": versions.PSWIF, "recommendation": rec, "work": work, "sites": [site],
+    filed = _date(p.get("ida_received_date")) or _date(p.get("mp_recommendation_date"))
+    form = {"form_version": versions.PSWIF, "filed_on": filed,
+            "recommendation": rec, "work": work, "sites": [site],
             "charges": charges, "timing": timing, "totals": totals, "prepared": prepared,
             "declarations": declarations, "earlier_works": _earlier(p)}
     form["confirmed"] = _confirmed(form, p, today)
