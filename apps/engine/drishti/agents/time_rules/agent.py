@@ -116,14 +116,18 @@ def too_fast(work: dict, w: win.Window, vs: list[site_visits.Visit]) -> Finding 
     shown = [v for v in vs if v.shows_work and v.captured <= done]
     if shown:
         return None        # a real fast finish: the videos show the work going on
-    took = (done - w.start).days
+    # recorded complete before its own planned start month: count from the sanction instead
+    sanctioned = as_date(work.get("sanction_date"))
+    start = w.start if done >= w.start or not sanctioned or sanctioned > done else sanctioned
+    took = (done - start).days
     type_name = reference.work_type_name(work.get("work_type_code"))
     type_name = type_name[:1].lower() + type_name[1:]       # mid-sentence
     early_days = (w.early - w.start).days
     filmed = ("No site video shows the work going on" if vs else
               "There are no site videos of the work")
-    text = (f"Recorded complete {_days(max(took, 0))} after the work could start "
-            f"({w.start:%d %b %Y} to {done:%d %b %Y}). The agency's own estimate was "
+    since = "the work could start" if start == w.start else "its sanction"
+    text = (f"Recorded complete {_days(max(took, 0))} after {since} "
+            f"({start:%d %b %Y} to {done:%d %b %Y}). The agency's own estimate was "
             f"{_months(w.estimate_days)}, and "
             f"a {type_name} work of this size is not finished in under {_days(early_days)} "
             f"(the early line of its comfort window). {filmed}. Check the completion: whether "

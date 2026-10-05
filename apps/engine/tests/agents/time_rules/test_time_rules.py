@@ -160,6 +160,15 @@ def test_finished_before_the_early_line_with_no_video_is_asked_about():
     assert r.evidence["window"]["early"]
 
 
+def test_complete_before_its_own_planned_start_counts_from_the_sanction():
+    # sanctioned 24 Jun, planned to start in July, recorded complete 30 Jun: 6 days, not "0"
+    w = _work(status="COMPLETED", sanction_date=date(2026, 6, 24),
+              completed_date=date(2026, 6, 30), cost_form=_form(months=4, start="2026-07"))
+    f = _f(assess(w, AS_OF), "FINISHED_TOO_FAST")
+    assert "6 days after its sanction (24 Jun 2026 to 30 Jun 2026)" in f.text
+    assert f.evidence["value"] == 6
+
+
 def test_a_fast_finish_the_videos_show_is_good_work_never_asked_about():
     vs = [_visit(date(2026, 2, 9), kind="baseline", change=None),
           _visit(date(2026, 2, 15)), _visit(date(2026, 2, 19), kind="final")]
