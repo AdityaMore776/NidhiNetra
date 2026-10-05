@@ -11,7 +11,8 @@ import { Button } from "@/components/ui/button";
 import type { Trace } from "@/lib/explain";
 import { agentMeta, inr } from "@/lib/format";
 import FORM_HTML from "@/lib/forms/pre-sanction-work-intelligence-form";
-import { type AgentLine, agentLines, markForm } from "@/lib/work-form-flags";
+import { FormMap } from "@/components/nn/form-map";
+import { type AgentLine, agentLines, type Flag, markForm } from "@/lib/work-form-flags";
 import { cn } from "@/lib/utils";
 import { fillForm } from "@/lib/work-form-frame";
 
@@ -297,30 +298,75 @@ function EndToEnd() {
   );
 }
 
+/** The agents' flags for this filing, the Cost agent's marking every estimate line it reads as high
+ *  (ex.cost), not only the three lines its sentence names. */
+function filingFlags(ex: Filing): { lines: AgentLine[]; flags: Flag[] } {
+  const lines = agentLines(ex.trace, ex.form);
+  const flags = lines.flatMap((l) => l.flags);
+  const cost = flags.find((f) => f.agent === "cost_estimate");
+  if (cost && ex.cost) {
+    const extra: Flag["fields"] = [];
+    for (const l of ex.cost.lines) {
+      if (l.level !== "high") continue;
+      if (l.state === "rate" && l.fair_rate !== undefined)
+        extra.push({ name: `boq_rate_${l.n}`, label: `+${pctOf(l.pct ?? 0)} · usual ${rs(l.fair_rate)}` });
+      if (l.state === "unread") extra.push({ name: `boq_qty_${l.n}`, label: `${pctOf(l.share ?? 0)} of lines, unpriced` });
+      if ((l.qty_ratio ?? 0) > 1 + ex.cost.summary.qty_slack)
+        extra.push({ name: `boq_qty_${l.n}`, label: `${(l.qty_ratio ?? 0).toFixed(1)}× what the size needs` });
+    }
+    const keep = cost.fields.filter((f) => !f.name.startsWith("boq_") || !extra.some((e) => e.name === f.name));
+    cost.fields = [...keep, ...extra];
+  }
+  return { lines, flags };
+}
+
 function FormStep({ ex }: { ex: Filing }) {
   const frame = useRef<HTMLIFrameElement>(null);
+  const [mode, setMode] = useState<"sections" | "form">("sections");
   const y = ex.yardstick;
+  const { lines, flags } = filingFlags(ex);
 
   // the one work intelligence form the agency fills (the same as /work-form), filled with this
   // filing through the form's own functions, the agents' flagged fields outlined
   function load() {
-    if (fillForm(frame.current, ex.form))
-      markForm(
-        frame.current?.contentDocument,
-        agentLines(ex.trace, ex.form).flatMap((l) => l.flags),
-      );
+    if (fillForm(frame.current, ex.form)) markForm(frame.current?.contentDocument, flags);
   }
 
   return (
     <div className="space-y-3">
-      <p className="text-[13px] text-muted-foreground">
-        The agency&apos;s filing in the work intelligence form, every section exactly as on the{" "}
-        <Link href="/work-form" className="font-medium text-brand-700 underline-offset-2 hover:underline">
-          Work intelligence form
-        </Link>{" "}
-        page. Fields an agent asks about are outlined. Scroll inside the form to see all of it.
-      </p>
-      <div className="overflow-hidden rounded-xl border">
+      <div className="flex flex-wrap items-center gap-2">
+        <p className="min-w-0 flex-1 text-[13px] text-muted-foreground">
+          The agency&apos;s filing in the{" "}
+          <Link href="/work-form" className="font-medium text-brand-700 underline-offset-2 hover:underline">
+            work intelligence form
+          </Link>
+          : every section, what each agent reads, and every field an agent asks about, in its colour.
+        </p>
+        <div className="flex gap-1 rounded-xl bg-muted p-1 text-xs font-medium" role="tablist">
+          {(
+            [
+              ["sections", "Section by section"],
+              ["form", "The form as filed"],
+            ] as const
+          ).map(([id, label]) => (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={mode === id}
+              onClick={() => setMode(id)}
+              className={cn(
+                "rounded-lg px-2.5 py-1 transition-colors",
+                mode === id ? "bg-white text-brand-950 shadow-sm" : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+      {mode === "sections" && <FormMap form={ex.form} flags={flags} agents={lines} />}
+      <div className={cn("overflow-hidden rounded-xl border", mode !== "form" && "hidden")}>
         <iframe
           ref={frame}
           title={`Work intelligence form: ${ex.title}`}

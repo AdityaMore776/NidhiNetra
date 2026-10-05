@@ -88,6 +88,19 @@ export function flagOf(agent: string, f: TraceFinding, form: Form): Flag {
     }
     case "ESTIMATE_ABOVE_FAIR_PRICE": {
       why = `Estimate ${inr(num(x.grand_total))}; a fair price for this work here is ${inr(num(x.fair_total))} (${Math.round(num(x.gap_share) * 100)}% more).`;
+      {
+        // where the gap is: the lines that make it, then money no line explains
+        const parts = list(x.top).map((t) => `${String(t.label ?? t.material).toLowerCase()} +${inr(num(t.extra))}`);
+        const loose = (x.unexplained ?? {}) as Record<string, number>;
+        const words: Record<string, string> = {
+          unread_items: "items no price list covers",
+          lump_sums: "lump sums",
+          other_charges: "'other' charges",
+          contingency: "contingency",
+        };
+        for (const [k, v] of Object.entries(loose)) if (v > 0) parts.push(`${words[k] ?? k} +${inr(v)}`);
+        if (parts.length) why += ` Most of the gap: ${parts.join(", ")}.`;
+      }
       fields.push({ name: "technical_estimate", label: `fair price ${inr(num(x.fair_total))}` });
       for (const t of list(x.top)) {
         const row = rowOf(boq, t);
@@ -191,9 +204,36 @@ export function flagOf(agent: string, f: TraceFinding, form: Form): Flag {
         : `Video ${x.visit} was filmed ${(num(x.metres) / 1000).toFixed(1)} km from the site, and its views do not match.`;
       fields.push({ name: pinField(form), label: `video ${x.visit} filmed elsewhere` });
       break;
+    case "SANCTION_OVERDUE":
+    case "SANCTIONED_LATE":
+      fields.push({ name: "ida_received_date", label: `${n(x.value)} days to sanction (limit ${n(x.limit)})` });
+      break;
+    case "NEAR_SANCTIONED_WORK":
+    case "LOOKS_LIKE_SANCTIONED_WORK":
+      fields.push({ name: "known_nearby_work_ids", label: "a similar work nearby" });
+      break;
+    case "ALREADY_BUILT_AT_START":
+      fields.push({ name: "baseline_existing_condition", label: "already built in the first video" });
+      break;
+    case "ASSET_NOT_SHOWN":
+    case "COMPLETE_NOT_SHOWN":
+      fields.push({ name: "completion_evidence_definition", label: "not shown in the videos" });
+      break;
+    case "PLAQUE_DATED_BEFORE_RECOMMENDATION":
+      fields.push({ name: "plaque_provision", label: "plaque dated before the recommendation" });
+      break;
   }
+  // every question points somewhere on the form: the field each agent reads first
+  if (!fields.length) fields.push({ name: FALLBACK[agent] ?? "technical_estimate", label: "see why" });
   return { agent, code: f.code, why, fields };
 }
+
+const FALLBACK: Record<string, string> = {
+  cost_estimate: "technical_estimate",
+  dup_split: "known_nearby_work_ids",
+  time_rules: "expected_completion_date",
+  site_progress: "capture_frequency",
+};
 
 const LATER: Record<string, string> = {
   time_rules: "Starts at sanction.",
