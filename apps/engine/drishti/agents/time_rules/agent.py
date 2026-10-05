@@ -32,7 +32,7 @@ from __future__ import annotations
 import time
 from datetime import date
 
-from drishti import reference
+from drishti import records, reference
 from drishti.agents.compliance import agent as rules_lib
 from drishti.agents.contract import AgentResult, Finding, Status
 from drishti.agents.office_patterns.index import as_date, is_construction
@@ -104,7 +104,7 @@ def sanctioned_late(work: dict) -> Finding | None:
 
 
 def _first_work_seen(vs: list[site_visits.Visit]) -> date | None:
-    return next((v.captured for v in vs if v.shows_work), None)
+    return next((v.captured for v in vs if v.shows_work and site_visits.genuine(v)), None)
 
 
 def too_fast(work: dict, w: win.Window, vs: list[site_visits.Visit]) -> Finding | None:
@@ -113,7 +113,7 @@ def too_fast(work: dict, w: win.Window, vs: list[site_visits.Visit]) -> Finding 
             or done >= w.early or not is_construction(work)
             or float(work.get("amount") or 0) < float(win.floors().get("min_amount_rs", 0))):
         return None
-    shown = [v for v in vs if v.shows_work and v.captured <= done]
+    shown = [v for v in vs if v.shows_work and site_visits.genuine(v) and v.captured <= done]
     if shown:
         return None        # a real fast finish: the videos show the work going on
     # recorded complete before its own planned start month: count from the sanction instead
@@ -182,6 +182,7 @@ def assess(work: dict, as_of: date, timeline=None, offices=None) -> AgentResult:
                            findings=list(findings), limitations=list(limitations),
                            evidence=evidence, duration_ms=int((time.perf_counter() - t0) * 1000))
 
+    work = records.work(work)      # dates as dates, the status in capitals, whoever calls it
     if not work.get("status"):
         return done(Status.NOT_ASSESSABLE, "Cannot be assessed: the record carries no status, "
                     "so its dates cannot be checked. This is not a clean chit.")
@@ -221,6 +222,11 @@ def assess(work: dict, as_of: date, timeline=None, offices=None) -> AgentResult:
     if work.get("status") == "COMPLETED" and not work.get("sanction_date"):
         limitations.append("The record carries no sanction date, so the time from sanction to "
                            "completion was not checked.")
+    if work.get("status") == "COMPLETED" and not as_date(work.get("completed_date")):
+        limitations.append("Recorded complete without a completion date, so how fast it was "
+                           "finished could not be checked: ask for the date.")
+    if w is not None:
+        limitations += w.notes     # an estimate or start the window did not take as written
     headline = (max(findings, key=lambda f: f.risk).text if findings else
                 "No timing problem the dates and the agency's own estimate can show.")
     return done(Status.ASSESSED, headline, findings, limitations,

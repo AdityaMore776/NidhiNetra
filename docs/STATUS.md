@@ -44,6 +44,14 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
+**5 Oct 2026: the four agents went through a self-improvement loop (T135).** An attack harness
+(`data/trial/agent_robustness_loop.py`) tried random damage, honest noise, deliberate evasions,
+scarce data and scale; every failure was fixed with a regression test. It ends at 65 probes, 59 PASS,
+0 FAIL, 6 LIMIT (the limits written down with their reasons), and 3,000 random damages crash none.
+A price the data cannot support is switched off for that material and recorded as a gap
+(`GET /api/v1/cost/data-gaps`); the live check now also uses the state's forms. Planted forms and
+the dashboard's 40,935 works answer as before. FINDINGS "T135"; plan `docs/plans/T135-robustness-loop.md`.
+
 **5 Oct 2026: the website's work intelligence form reaches the four agents (T134).** `/work-form` shows twelve example
 filings by made-up agencies in Jaunpur, each caught by one agent (one honest road passes all four): each agent says
 flagged / clear / not checked with one line on why, and the flagged fields are outlined in the form. "Check this form"

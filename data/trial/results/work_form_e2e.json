@@ -109,15 +109,17 @@
       "filled": true,
       "boq_rows": 7,
       "panel_ok": true,
-      "flagged_agents": 1,
-      "fields_marked": 1,
+      "flagged_agents": 2,
+      "fields_marked": 2,
       "codes": [
-        "FINISHED_TOO_FAST"
+        "FINISHED_TOO_FAST",
+        "NO_SITE_VIDEO"
       ],
       "live_codes": [
-        "FINISHED_TOO_FAST"
+        "FINISHED_TOO_FAST",
+        "NO_SITE_VIDEO"
       ],
-      "live_marks": 1
+      "live_marks": 2
     },
     {
       "id": "time_late",

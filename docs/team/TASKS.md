@@ -102,6 +102,18 @@ dashboard queue before / after in FINDINGS (439 → 217)
 of §9.6 planted. Only readings and blurred frames are kept; no video enters the repo.
 **Done when:** [ ] each trick caught 9 in 10 · [ ] a finding on at most 1 in 30 honest visits · [ ] FINDINGS
 
+### T135 · The four agents' self-improvement loop  ·  L  ·  engine + data  ·  Depends on: T134
+**What:** run each agent through samples and attack it (random damage, honest noise, evasions,
+scarce data, scale) until it stops giving wrong answers, being bypassed or breaking; where the
+data cannot support a price, switch that price off and record the gap to learn from. Plan:
+[`docs/plans/T135-robustness-loop.md`](../plans/T135-robustness-loop.md).
+**Done when:** [x] the harness (`data/trial/agent_robustness_loop.py`) ends with no FAIL (65 probes:
+59 PASS, 6 LIMIT with reasons) and 3,000 random damages crash no agent · [x] every fix has a
+regression test in the engine suite · [x] planted forms still meet the target at a 10% spread
+(94.2% / 0.1%) and the dashboard's 40,935 works answer as before (queue 217, every finding on the
+same works) · [x] data gaps recorded and listed (`GET /cost/data-gaps`) · [ ] the new findings read
+on real forms (T098)
+
 ### T134 · The website's work intelligence form, read by the four agents, with example filings  ·  M  ·  engine + web + data  ·  Depends on: T125, T133
 **What:** the form on `/work-form` (PSWIF v1.0) reaches the agents: an adapter to the engine's cost form
 (`cost_form/pswif.py`, `versions.py`), `POST /api/v1/work-form/check` (nothing stored), and example filings by made-up

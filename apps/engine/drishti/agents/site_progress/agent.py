@@ -21,6 +21,15 @@ FINDINGS (only facts that are yes or no, or the agency's own claim failing twice
                                unfinished zones
   ALREADY_BUILT_AT_START       the first visit shows the asset already standing, for a work the
                                form calls new
+  NO_SITE_VIDEO                (T135) a work with a form, sanctioned, NO_VIDEO_DAYS past its
+                               planned start, and not one video accepted (never filmed, or every
+                               upload unsealed): never filming was the way past every other check
+  SITE_NOT_AT_FORM_PIN         (T135) two or more videos, each filmed about the same distance
+                               (100 m or more) from the form's map pin, at views that match the
+                               site's own: the work is not where the form says, and the form's pin
+                               is what Duplicate Work compared
+A claim "not shown" twice with only "can't tell" between counts as twice in a row (T135: slipping
+a "can't tell" between them reset the count). Videos dated after today are not counted.
 NOTES, never counted: a month missed, no change for a month or two, a zone not shown, "can't
 tell", a video that was not sealed or not filmed in the app (it is not accepted: retake), GPS and
 views disagreeing (one proof only).
@@ -31,8 +40,10 @@ views disagreeing (one proof only).
 
 from __future__ import annotations
 
+import re
+import statistics
 import time
-from datetime import date
+from datetime import date, timedelta
 
 from drishti.agents.contract import AgentResult, Finding, Status
 from drishti.agents.site_progress import visits as site_visits
@@ -42,13 +53,23 @@ VERSION = "site-progress-3.0.0"
 QUESTION = ("Do the monthly site videos show real, new work, at this work's site, for this "
             "work only?")
 CONFIDENCE = 0.8
-MIN_REUSED_FRAMES = 3
-MIN_INLIERS = 40
+MIN_REUSED_FRAMES = site_visits.MIN_REUSED_FRAMES
+MIN_INLIERS = site_visits.MIN_INLIERS
 MISSED_DAYS = 45
+NO_VIDEO_DAYS = 60            # past the planned start (capped) with no accepted video
+NO_VIDEO_RISK = 0.4
+PIN_OFF_METRES = 100.0        # filmed this far from the pin, consistently: the pin is elsewhere
+PIN_OFF_RISK = 0.5
+START_CAP_DAYS = 183          # a declared start counts at most this long after the sanction
 RISK = {"FOOTAGE_USED_BEFORE": 0.8, "SAME_PLACE_AS_ANOTHER_WORK": 0.7,
         "NOT_FILMED_AT_THIS_SITE": 0.8, "CLAIM_NOT_SHOWN": 0.5, "COMPLETE_NOT_SHOWN": 0.6,
-        "ALREADY_BUILT_AT_START": 0.6}
+        "ALREADY_BUILT_AT_START": 0.6, "NO_SITE_VIDEO": NO_VIDEO_RISK,
+        "SITE_NOT_AT_FORM_PIN": PIN_OFF_RISK}
 HI = {
+    "NO_SITE_VIDEO": "स्वीकृति और नियोजित आरंभ के बाद भी कोई साइट वीडियो स्वीकार नहीं हुआ। एजेंसी "
+                     "से वीडियो माँगें और स्थल की जाँच करें।",
+    "SITE_NOT_AT_FORM_PIN": "साइट वीडियो फ़ॉर्म के मानचित्र पिन से लगभग एक ही दूरी पर फ़िल्माए गए "
+                            "हैं: कार्य फ़ॉर्म में बताए स्थान पर नहीं है। स्थान की जाँच करें।",
     "FOOTAGE_USED_BEFORE": "इस वीडियो के दृश्य पहले किसी अन्य वीडियो में देखे जा चुके हैं। साइट "
                            "वीडियो इसी साइट पर नया फ़िल्माया जाना चाहिए; जाँच करें।",
     "SAME_PLACE_AS_ANOTHER_WORK": "इस साइट के दृश्य किसी अन्य कार्य की साइट जैसे ही स्थान को "
@@ -63,6 +84,11 @@ HI = {
                               "कार्य बताता है। जाँचें कि कार्य स्वीकृति से पहले तो नहीं हुआ।",
 }
 CONTINUING = ("continuation", "extension", "upgrade", "reconstruction")
+# a claim that names no stage or quantity: the video can neither show it nor not
+VAGUE = re.compile(r"^(?:the\s+)?(?:works?\s+)?(?:is\s+)?(?:in\s+progress|on\s*going|going\s+on|"
+                   r"progress(?:ing)?|as\s+per\s+(?:plan|schedule|estimate)|continu\w*|"
+                   r"under\s+(?:construction|progress)|started|in\s+hand|na|n/a|nil|none|"
+                   r"work|progress|-+)$", re.IGNORECASE)
 
 
 def _f(code: str, text: str, **evidence) -> Finding:
@@ -99,6 +125,48 @@ def _nature(work: dict) -> str | None:
     form = work.get("cost_form") if isinstance(work.get("cost_form"), dict) else {}
     part = form.get("work") if isinstance(form.get("work"), dict) else {}
     return part.get("nature") if isinstance(part.get("nature"), str) else None
+
+
+def _no_video(work: dict, as_of: date, vs: list[site_visits.Visit]) -> Finding | None:
+    """NO_SITE_VIDEO (module note), or None."""
+    form = work.get("cost_form")
+    san = _day(work.get("sanction_date"))
+    if not isinstance(form, dict) or san is None or any(site_visits.accepted(v) for v in vs):
+        return None
+    timing = form.get("timing") if isinstance(form.get("timing"), dict) else {}
+    declared = _month_start(timing.get("start_month"))
+    start = san if declared is None else max(san, min(declared,
+                                                       san + timedelta(days=START_CAP_DAYS)))
+    late = (as_of - start).days
+    if late <= NO_VIDEO_DAYS:
+        return None
+    filmed = (f" ({len(vs)} filmed, none accepted: not sealed, or not filmed in the app)"
+              if vs else "")
+    return _f("NO_SITE_VIDEO",
+              f"Sanctioned on {san:%d %b %Y} and {late:,} days past its planned start "
+              f"({start:%d %b %Y}), but no site video has been accepted yet{filmed}. The first "
+              "visit is filmed before work begins and then every month: ask the agency for the "
+              "videos, and check the site.", days=late, filmed=len(vs))
+
+
+def _day(v) -> date | None:
+    if isinstance(v, date):
+        return v
+    if isinstance(v, str) and len(v) >= 10:
+        try:
+            return date.fromisoformat(v[:10])
+        except ValueError:
+            return None
+    return None
+
+
+def _month_start(v) -> date | None:
+    if isinstance(v, str) and len(v) >= 7:
+        try:
+            return date(int(v[:4]), int(v[5:7]), 1)
+        except ValueError:
+            return None
+    return None
 
 
 def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Finding], list[str]]:
@@ -168,22 +236,52 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
                             "the views do not match the earlier ones but the GPS is at the site")
                          + "; one proof only, not a finding.")
 
-    # 4. the agency's claim not shown twice in a row
+    # 4. the agency's claim not shown twice in a row ("can't tell" between them does not reset)
     monthly = [v for v in trusted if v.kind in ("monthly", "check", "final")]
-    for a, b in zip(monthly, monthly[1:], strict=False):
-        if a.claim_verdict == "not_shown" and b.claim_verdict == "not_shown":
-            reason = b.get("claim_reason")
-            findings.append(_f("CLAIM_NOT_SHOWN",
-                               f"The agency's claim is not shown at the same viewpoints on two "
-                               f"visits in a row ({a.captured:%d %b %Y}: {a.claim or 'no claim'}; "
-                               f"{b.captured:%d %b %Y}: {b.claim or 'no claim'})"
-                               + (f". Reader: {reason}" if reason else "")
-                               + ". Check at the site.", visits=[a.visit_id, b.visit_id],
-                               claims=[a.claim, b.claim]))
-            break
+    prev = None
+    for b in monthly:
+        if b.claim_verdict == "shown":
+            prev = None
+            continue
+        if b.claim_verdict != "not_shown":
+            continue
+        if prev is None:
+            prev = b
+            continue
+        a, reason = prev, b.get("claim_reason")
+        findings.append(_f("CLAIM_NOT_SHOWN",
+                           f"The agency's claim is not shown at the same viewpoints on two "
+                           f"visits in a row ({a.captured:%d %b %Y}: {a.claim or 'no claim'}; "
+                           f"{b.captured:%d %b %Y}: {b.claim or 'no claim'})"
+                           + (f". Reader: {reason}" if reason else "")
+                           + ". Check at the site.", visits=[a.visit_id, b.visit_id],
+                           claims=[a.claim, b.claim]))
+        break
     for v in monthly:
         if v.claim_verdict == "cant_tell":
             notes.append(f"{_when_cap(v)}: the claim could not be judged from the video.")
+    vague = [v for v in monthly if v.claim and VAGUE.match(v.claim.strip(" .!"))]
+    if len(vague) >= 2:
+        notes.append(f"{len(vague)} monthly claims are vague ({vague[0].claim!r}): ask the agency "
+                     "to name what was built since the last visit (a stage or a quantity), so "
+                     "the video can show it or not.")
+
+    # 4b. filmed somewhere other than the form's pin, every time (T135)
+    off = [v for v in trusted if v.get("gps_inside") is False and v.get("mock_location") is not True
+           and v.get("views_match_site") is not False
+           and (v.get("gps_distance_m") or 0) >= PIN_OFF_METRES]
+    gps_read = [v for v in trusted if v.get("gps_inside") is not None]
+    if len(off) >= 2 and len(off) * 2 >= len(gps_read):
+        ds = [v.get("gps_distance_m") for v in off]
+        mid = statistics.median(ds)
+        if all(abs(d - mid) <= 0.3 * mid + 30 for d in ds):
+            findings.append(_f("SITE_NOT_AT_FORM_PIN",
+                               f"{len(off)} site videos ({', '.join(v.visit_id for v in off)}) are "
+                               f"each filmed about {mid:,.0f} m from the form's map pin, at views "
+                               "that match one another: the work is not where the form puts it. "
+                               "Check the location (the form's pin decides which earlier works it "
+                               "was compared with).", visits=[v.visit_id for v in off],
+                               metres=round(mid, 1)))
 
     # 5. complete, but not shown complete
     finals = [v for v in trusted if v.kind == "final"]
@@ -242,14 +340,23 @@ def assess(work: dict, as_of: date) -> AgentResult:
                            duration_ms=int((time.perf_counter() - t0) * 1000))
 
     vs = site_visits.of(work)
+    early = [f"{_when_cap(v)} is dated after today, so it is not counted: check the phone's "
+             "clock or the upload." for v in vs if v.captured > as_of]
+    vs = [v for v in vs if v.captured <= as_of]
+    missing = _no_video(work, as_of, vs)
     if not vs:
+        if missing:
+            return out(Status.ASSESSED, missing.text, [missing], early)
         return out(Status.NOT_APPLICABLE, "No site video yet: Site Progress starts with the first "
-                   "visit, filmed before work begins. This is not a clean chit.")
+                   "visit, filmed before work begins. This is not a clean chit.", notes=early)
     read = [v for v in vs if any(x not in (None, [], "") for x in v.readings.values())]
     if not read:
         return out(Status.NOT_ASSESSABLE, f"{len(vs)} site video{'s' * (len(vs) != 1)} filmed, "
                    "none read yet. This is not a clean chit.", visits=len(vs))
     findings, notes = judge(work, read, as_of)
+    notes = early + notes
+    if missing:
+        findings.append(missing)
     summary = [{"visit": v.visit_id, "kind": v.kind, "captured": v.captured.isoformat(),
                 "change": v.change, "claim": v.claim_verdict,
                 "zones_shown": len(v.get("zones_shown") or []),

@@ -33,10 +33,13 @@ This module only reads: it never raises on a malformed visit, it drops it.
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 from datetime import date, datetime
 
 KINDS = ("baseline", "monthly", "check", "final")
+MIN_REUSED_FRAMES = 3         # frames already seen elsewhere that make a video not new footage
+MIN_INLIERS = 40              # matching points that make two works' views one place
 
 
 def _date(v) -> date | None:
@@ -50,6 +53,10 @@ def _date(v) -> date | None:
         except ValueError:
             return None
     return None
+
+
+def _finite(v) -> bool:
+    return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
 
 
 def _bool(v) -> bool | None:
@@ -66,8 +73,7 @@ def _refs(v, key: str) -> list[dict]:
     for x in v if isinstance(v, list) else []:
         if isinstance(x, dict) and isinstance(x.get("work_id"), str) and x["work_id"]:
             n = x.get(key)
-            out.append({**x, key: int(n) if isinstance(n, (int, float))
-                        and not isinstance(n, bool) else 0})
+            out.append({**x, key: int(n) if _finite(n) else 0})
     return out
 
 
@@ -117,8 +123,7 @@ def of(work: dict) -> list[Visit]:
                                                   "quality_ok", "motion_consistent")}
         for k in ("gps_distance_m", "viewpoints_expected", "viewpoints_matched"):
             n = r.get(k)
-            readings[k] = float(n) if isinstance(n, (int, float)) and not isinstance(n, bool) \
-                else None
+            readings[k] = float(n) if _finite(n) else None
         readings["zones_shown"] = _ids(r.get("zones_shown"))
         readings["zones_new"] = _ids(r.get("zones_new"))
         for k in ("change", "claim_verdict"):
@@ -134,3 +139,25 @@ def of(work: dict) -> list[Visit]:
                          readings))
     out.sort(key=lambda x: (x.captured, KINDS.index(x.kind)))
     return out
+
+
+def accepted(v: Visit) -> bool:
+    """Sealed and filmed in the app, its motion matching its picture: Site Progress reads no
+    other video (a rejected one is a note, and a retake is asked for)."""
+    return (v.get("sealed") is not False and v.get("in_app") is not False
+            and v.get("motion_consistent") is not False)
+
+
+def genuine(v: Visit) -> bool:
+    """Accepted, and nothing in its readings says it is not this site's own new footage: no
+    frames seen before, no other work's place, not filmed elsewhere by both GPS and views. Only
+    such a video can show the work going on to another agent (T135: one reused video silenced
+    Time & Rules' "finished too fast")."""
+    if not accepted(v):
+        return False
+    if any(r["frames"] >= MIN_REUSED_FRAMES for r in v.get("reused_from") or []):
+        return False
+    if any(r["inliers"] >= MIN_INLIERS for r in v.get("same_place_as") or []):
+        return False
+    gps_out = v.get("mock_location") is True or v.get("gps_inside") is False
+    return not (gps_out and v.get("views_match_site") is False)

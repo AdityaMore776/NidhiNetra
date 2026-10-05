@@ -61,6 +61,11 @@ from drishti.agents.statistical.scope import many_sites, undescribed
 from drishti.cost_form import catalog
 
 PIN_METRES = 50.0                 # two pins this close are one site
+OVERLAP_METRES = 25.0             # a point of a road this close to another road's line lies on it
+OVERLAP_SHARE = 0.80              # this share of a road on another's line: the same ground (T135)
+MIN_ROAD_METRES = 50.0            # shorter alignments are compared by their pins only
+SIZE_ALIKE = 0.25                 # two forms' sizes this close: the same asset again
+INDIA = (6.0, 37.6, 68.0, 97.5)   # lat min, lat max, lon min, lon max: a pin outside is a typo
 TEXT_MIN = 0.90                   # look-alike wording (the trial's strictest rule)
 PLACE_MIN = 100.0                 # every place word shared
 SPLIT_SHARE = 0.96                # every piece at least this share of the limit it sits under
@@ -100,8 +105,13 @@ def _work_type(rec: Rec) -> str | None:
     return t if isinstance(t, str) and t else rec.work_type
 
 
+def in_india(lat: float, lon: float) -> bool:
+    return INDIA[0] <= lat <= INDIA[1] and INDIA[2] <= lon <= INDIA[3]
+
+
 def pins(form) -> list[tuple[tuple[float, float], tuple[float, float] | None]]:
-    """Each site's map pin and, for a linear work, its other end; sites without a pin left out."""
+    """Each site's map pin and, for a linear work, its other end; sites without a pin, or with a
+    pin outside India (0, 0; latitude and longitude swapped), left out (T135)."""
     out = []
     sites = form.get("sites") if isinstance(form, dict) else None
     for s in sites if isinstance(sites, list) else []:
@@ -109,11 +119,88 @@ def pins(form) -> list[tuple[tuple[float, float], tuple[float, float] | None]]:
         if not isinstance(loc, dict):
             continue
         lat, lon = _num(loc.get("lat")), _num(loc.get("lon"))
-        if lat is None or lon is None:
+        if lat is None or lon is None or not in_india(lat, lon):
             continue
         elat, elon = _num(loc.get("end_lat")), _num(loc.get("end_lon"))
-        out.append(((lat, lon), (elat, elon) if elat is not None and elon is not None else None))
+        end = (elat, elon) if elat is not None and elon is not None else None
+        out.append(((lat, lon), end if end and in_india(*end) else None))
     return out
+
+
+def pin_problems(form, linear: bool) -> list[str]:
+    """What is wrong with the form's map pins, in words (the check says it could not use them)."""
+    out = []
+    sites = form.get("sites") if isinstance(form, dict) else None
+    for i, s in enumerate(sites if isinstance(sites, list) else []):
+        loc = s.get("location") if isinstance(s, dict) else None
+        if not isinstance(loc, dict):
+            continue
+        where = f"site {i + 1}'s" if len(sites) > 1 else "the"
+        lat, lon = _num(loc.get("lat")), _num(loc.get("lon"))
+        if lat is not None and lon is not None and not in_india(lat, lon):
+            out.append(f"{where.capitalize()} map pin ({lat:g}, {lon:g}) is not in India "
+                       "(0, 0, or latitude and longitude swapped), so it was not compared: "
+                       "ask for the right pin.")
+            continue
+        elat, elon = _num(loc.get("end_lat")), _num(loc.get("end_lon"))
+        if linear and lat is not None and (elat is None or elon is None):
+            out.append(f"The form gives one end of the {'site' if where != 'the' else 'work'}'s "
+                       "alignment only, so it could not be compared end to end: ask for its "
+                       "other end.")
+        elif linear and elat is not None and elon is not None and not in_india(elat, elon):
+            out.append(f"{where.capitalize()} far-end pin ({elat:g}, {elon:g}) is not in India, "
+                       "so the alignment could not be compared: ask for the right pin.")
+    return out
+
+
+def _xy(p: tuple[float, float], origin: tuple[float, float]) -> tuple[float, float]:
+    """Metres east and north of `origin` (flat near a site)."""
+    return ((p[1] - origin[1]) * 111_320 * math.cos(math.radians(origin[0])),
+            (p[0] - origin[0]) * 110_574)
+
+
+def _off_line(p, a, b) -> float:
+    """Metres from point p to the segment ab (all in metres)."""
+    dx, dy = b[0] - a[0], b[1] - a[1]
+    t = 0.0 if dx == dy == 0 else max(0.0, min(1.0, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy)
+                                                / (dx * dx + dy * dy)))
+    return math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy)
+
+
+def on_line(a, b) -> float | None:
+    """The share of linear site a's length lying within OVERLAP_METRES of site b's line (each a
+    (start, end) pair), or None when either lacks an end or a is too short to say."""
+    (sa, ea), (sb, eb) = a, b
+    if ea is None or eb is None or metres(sa, ea) < MIN_ROAD_METRES:
+        return None
+    # far apart: no point of one is near the other (cheap, so a district of thousands of roads
+    # stays fast: each road is sampled only against the few near it)
+    pad = (OVERLAP_METRES + 10) / 110_574
+    if (max(sa[0], ea[0]) + pad < min(sb[0], eb[0]) or max(sb[0], eb[0]) + pad < min(sa[0], ea[0])
+            or max(sa[1], ea[1]) + 2 * pad < min(sb[1], eb[1])
+            or max(sb[1], eb[1]) + 2 * pad < min(sa[1], ea[1])):
+        return 0.0
+    n = max(2, min(200, int(metres(sa, ea) // 10) + 1))
+    A, B = _xy(sb, sa), _xy(eb, sa)
+    near = sum(1 for k in range(n)
+               if _off_line(_xy((sa[0] + (ea[0] - sa[0]) * k / (n - 1),
+                                 sa[1] + (ea[1] - sa[1]) * k / (n - 1)), sa), A, B)
+               <= OVERLAP_METRES)
+    return near / n
+
+
+def size_alike(a: dict | None, b: dict | None) -> bool:
+    """The two forms give the first site the same size (every size both give within
+    SIZE_ALIKE): the same asset filed again."""
+    def size(f):
+        sites = f.get("sites") if isinstance(f, dict) else None
+        s0 = sites[0] if isinstance(sites, list) and sites and isinstance(sites[0], dict) else {}
+        sz = s0.get("size") if isinstance(s0.get("size"), dict) else {}
+        return {k: v for k, v in ((k, _num(v)) for k, v in sz.items()) if v and v > 0}
+    x, y = size(a), size(b)
+    shared = set(x) & set(y)
+    return bool(shared) and all(abs(x[k] - y[k]) <= SIZE_ALIKE * max(x[k], y[k])
+                                for k in shared)
 
 
 def same_site(a, b, linear: bool) -> float | None:
@@ -204,6 +291,19 @@ class Rec:
         if not r.work_id or r.first is None or (undescribed(desc) and not r.sites):
             return None
         return r
+
+
+def same_ground(me: Rec, x: Rec) -> bool:
+    """A work declared to continue, extend or upgrade x that covers x's own ground instead: a
+    road lying mostly on x's line, or a building at x's pin with x's size (T135: declaring a
+    re-filed work a "continuation" kept it from being asked about)."""
+    if not me.sites or not x.sites or x.family != me.family:
+        return False
+    if me.linear:            # either lies mostly on the other: the old road is built again
+        return any((v := on_line(p, q)) is not None and v >= OVERLAP_SHARE
+                   for a in me.sites for b in x.sites for p, q in ((a, b), (b, a)))
+    near = any(metres(a[0], b[0]) <= PIN_METRES for a in me.sites for b in x.sites)
+    return near and size_alike(me.form, x.form)
 
 
 def _together_key(r: Rec) -> tuple:
@@ -325,12 +425,22 @@ class RepeatIndex:
         earlier = [x for x in others if x.sanctioned and x.before(me)]
         fam = me.family
 
-        at_site = []
+        at_site, overlap = [], {}
         for x in earlier:
             if not x.sites or not me.sites or x.family is None or x.family != fam:
                 continue
             best = min((d for a in me.sites for b in x.sites
                         if (d := same_site(a, b, me.linear)) is not None), default=None)
+            if best is None and me.linear:
+                # a road filed again a little longer, or a part of it inside a longer road: most
+                # of either lies on the other's line (T135)
+                share = max((v for a in me.sites for b in x.sites
+                             for v in (on_line(b, a), on_line(a, b)) if v is not None),
+                            default=0.0)
+                if share >= OVERLAP_SHARE:
+                    best = min(metres(p, q) for a in me.sites for b in x.sites
+                               for p in (a[0], a[1]) if p for q in (b[0], b[1]) if q)
+                    overlap[x.work_id] = round(share, 3)
             if best is not None:
                 at_site.append((x, best))
 
@@ -338,8 +448,9 @@ class RepeatIndex:
         link = None
         if wid:
             x = self._ids.get(wid)
-            link = {"nature": nature, "work_id": wid, "rec": x if x and x.district == me.district
-                    else None}
+            x = x if x and x.district == me.district else None
+            link = {"nature": nature, "work_id": wid, "rec": x,
+                    "same_ground": bool(x) and same_ground(me, x)}
 
         alike = []
         if me.place:
@@ -363,7 +474,8 @@ class RepeatIndex:
             _count_copies(others)
         alike.sort(key=lambda p: (-p[1], p[0].work_id))
         at_site.sort(key=lambda p: (p[1], p[0].work_id))
-        return {"me": me, "at_site": at_site, "declared": link, "look_alike": alike[:5],
+        return {"me": me, "at_site": at_site, "overlap": overlap, "declared": link,
+                "look_alike": alike[:5],
                 "answers": answers(me.form), "compared": len(others), "split": split,
                 "sanctioned_earlier": len(earlier), "place_named": bool(me.place)}
 

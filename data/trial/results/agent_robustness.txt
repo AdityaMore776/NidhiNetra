@@ -1,0 +1,141 @@
+Agent robustness loop (T135): 65 probes on the work form's example filings in Jaunpur (1,038 real works, 11 background filings), as of 2026-10-02
+PASS 59  FAIL 0  LIMIT 6
+
+== cost_estimate
+  PASS  noise    honest rates a few % apart (seeded): no question
+        12 honest variants, 0 asked: []
+  PASS  noise    lines in another order: same answer
+        changed: none
+  PASS  noise    one line split in two (half each): same answer
+        changed: none
+  PASS  noise    other words and units for the same items: same answer
+        changed: none
+  PASS  noise    cement written in kg instead of bags: same answer
+        changed: none
+  PASS  evasion  padded items given names no reader knows
+        ['ESTIMATE_NOT_ITEMISED'] (ASSESSED); says what it could not price: True
+  PASS  evasion  the padding moved into a lump-sum line
+        Rs 303,139 as a lump sum: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
+  PASS  evasion  the padding moved into 'other charges'
+        Rs 303,139 as other charges: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
+  PASS  evasion  padded items priced in units nobody converts (brass, quintal)
+        sand in brass, cement in quintal: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
+  PASS  evasion  one agency files under name variants to lift the district price
+        4 padded forms under name variants of the same agency: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
+  LIMIT evasion  padding 14%: just under the 15% line
+        nothing: the line is 15% and Rs 50,000 (plan T120 §6.5, measured on planted forms); below it a gap is an honest spread
+  PASS  scarce   only 4 other filings in the district: prices off, gap recorded
+        no question (ASSESSED); data gaps recorded: 6
+  PASS  scarce   district prices all over the place: the honest road is not asked
+        no question (ASSESSED); unreliable prices recorded as gaps: 6
+  PASS  scarce   one agency files most forms, 30% under: the honest road not asked
+        10 forms by one agency at 70% of the usual rates: nothing (ASSESSED)
+  PASS  scarce   every other filing older than 6 months: prices off, gap recorded
+        no question (ASSESSED); gaps recorded: 6
+  PASS  scarce   a typo'd price (Rs 38,000 a bag) among the filings: answers hold
+        changed: none
+  PASS  scarce   a work in a state with no reference prices: no question
+        solar lights in a state without a reference: nothing (ASSESSED)
+  PASS  noise    GST 'added separately', 18% in other charges: honest, not asked
+        18% GST in other charges: nothing (NOT_ASSESSABLE)
+  PASS  noise    a 2% lump sum for sundries: honest, not asked
+        2% lump sum: nothing (ASSESSED)
+  PASS  noise    a typed extra zero (cement Rs 3,800 a bag), not explained
+        no question; says a line was held as a likely typing mistake: True
+  PASS  evasion  padded items given units that do not fit them
+        cement in nos: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
+  PASS  scarce   a district with no forms: the state's forms stand in
+        honest: nothing; +50%: ['ESTIMATE_ABOVE_FAIR_PRICE']; priced from: 12 recent forms of 8 other agencies across the state, plus 10% for local prices 15 recent 
+  LIMIT evasion  22% padding where only the state's forms can price it
+        nothing: a state-wide rate carries 10% for local prices, so padding is asked from about 27% there; the district's own forms (or the SoR, T096) ask from 15%
+  LIMIT evasion  every agency in the district pads 22% together
+        nothing: when every agency raises its rates together, only the state's Schedule of Rates (T096, not loaded yet) can cap the district's own rate
+  PASS  noise    items written in Hindi: same answers
+        changed: none
+  PASS  evasion  a bigger size claimed (7 m wide road) to justify the cement
+        ['SIZE_NOT_AS_DESCRIBED']: the form's own scope still says 3.5 m wide
+  LIMIT evasion  a bigger size claimed everywhere (field and scope both 7 m)
+        nothing: a size claimed the same way everywhere is the agency's word; the site videos and the officer's visit check it, not the estimate
+== dup_split
+  PASS  noise    GPS jitter of 5 m: the repeat still asked, the honest road not
+        changed: none
+  PASS  noise    the road's two ends swapped: still asked
+        ends swapped: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
+  PASS  noise    the repeat described in other words: still asked
+        new words: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
+  PASS  evasion  the old road re-filed 100 m longer at one end
+        300 m of old road + 100 m: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
+  PASS  evasion  the same stretch declared a 'continuation' of the old road
+        ['REBUILT_SOON_AFTER_COMPLETION'] (old road completed 11 months ago, same 300 m)
+  PASS  evasion  the hall rebuild declared a 'repair / renovation' instead
+        renovation 16 months on: REBUILT_SOON_AFTER_COMPLETION (ASSESSED)
+  PASS  evasion  the rebuild with no nature declared, the old hall only named nearby
+        named nearby only: REBUILT_SOON_AFTER_COMPLETION (ASSESSED)
+  PASS  noise    a real extension beside the old road (from its end onward): not asked
+        the next 290 m from the old road's end: nothing (ASSESSED)
+  PASS  noise    a first floor on a finished hall (another size): not asked
+        nothing: an extension of another size is not the same asset again
+  PASS  evasion  the old road re-filed 100 m longer and declared a 'continuation'
+        ['REBUILT_SOON_AFTER_COMPLETION'] (the old 300 m inside the new 400 m)
+  PASS  evasion  the hall rebuild declared 'new' (no link) at the same pin
+        a 'new' hall 10 m from the old: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
+  PASS  evasion  the road's far end left out of the form
+        nothing (ASSESSED); says an end is missing: True
+  PASS  evasion  a map pin at (0, 0), or latitude and longitude swapped
+        zero: nothing, says the pin is wrong: True; swapped: nothing, says the pin is wrong: True
+  PASS  evasion  pins moved 60 m off the real site
+        ['SANCTIONED_WORK_AT_THIS_SITE']: two pins 50 m apart are one site by rule; a pin off the real site is for Site Progress to see (the videos are filmed where the work is)
+  LIMIT evasion  split into pieces each 95% of the limit (under the 96% rule)
+        nothing: the 96-100% rule read 12 of 14 right; looser splits read 18 of 32 (T100), so they stay unasked
+  PASS  noise    split pieces filed by three differently-spelled agencies: still asked
+        agency names differ: SPLIT_JUST_UNDER_LIMIT (ASSESSED)
+  PASS  noise    a hall at the old road's pin (another kind of work): not asked
+        nothing
+  PASS  noise    pins rounded to 4 decimals (about 11 m): same answers
+        changed: none
+  PASS  scale    3,000 filed roads in one district: one check stays under 2 s
+        0.06 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']
+== time_rules
+  PASS  evasion  the late hall: start month declared two years after sanction
+        start promised 2 years after sanction: PAST_PROMISED_TIME (ASSESSED)
+  PASS  evasion  the late hall: 10 years promised
+        estimate 3,650 days: PAST_PROMISED_TIME (ASSESSED)
+  PASS  evasion  the late hall: 30 'lost months' declared on the native form
+        30 lost months: PAST_PROMISED_TIME (ASSESSED)
+  PASS  evasion  the 6-day road: one reused video 'shows' work going on
+        a reused video before completion: FINISHED_TOO_FAST (ASSESSED)
+  PASS  noise    dates with times and status in lower case: same answer
+        changed: none
+  PASS  scarce   complete with no completion date: says so, asks nothing wrong
+        nothing; says the completion date is missing: True
+  PASS  scarce   completion dated after today: no false question, says so
+        ['IMPOSSIBLE_TIMELINE']; says the date is after today: True
+  PASS  scarce   an estimate of 0 days: no false question, says so
+        nothing; says the estimate is missing: True
+  PASS  evasion  'complete' just past the 30-day floor, never filmed
+        ['FINISHED_TOO_FAST', 'NO_SITE_VIDEO']: Time's floor is passed, but no site video was ever filmed
+== site_progress
+  PASS  evasion  sanctioned months ago, never filmed
+        ['NO_SITE_VIDEO'] (ASSESSED); sanctioned 2026-04-15, no video
+  PASS  evasion  every video uploaded unsealed (none accepted)
+        ['NO_SITE_VIDEO'] (ASSESSED)
+  PASS  evasion  'can't tell' slipped between two 'not shown' claims
+        not shown, can't tell, not shown: CLAIM_NOT_SHOWN (ASSESSED)
+  PASS  evasion  every claim vague ('work in progress')
+        nothing; asks for a specific claim: True
+  PASS  evasion  the form's pin is not where every video is filmed
+        ['SITE_NOT_AT_FORM_PIN']: three videos all 320 m from the pin, views matching each other
+  PASS  evasion  a video dated after today
+        nothing; says the date is wrong: True
+  PASS  noise    visits listed in another order, one listed twice: same answer
+        changed: none
+  LIMIT evasion  GPS faked inside the site, views elsewhere
+        nothing: one proof (the views) is a note by design; GPS error alone or views alone never fail a video
+  PASS  noise    one video with a bad GPS fix (300 m off), views fine: not asked
+        one GPS-off video: nothing (ASSESSED)
+  PASS  noise    sanctioned 50 days ago, first video not yet due: not asked
+        50 days, no video: nothing (NOT_APPLICABLE)
+
+Random damage: 3000 runs (seed 7), half through the website form, half inside the engine's own form, visits and record
+  agent errors: 0 {}
+  contract broken: 0; a different answer the second time: 0

@@ -14,6 +14,9 @@ agents/evidence.py checks a work's evidence:
   quantity  anything else is no value
   dates     a date; a datetime gives its day; ISO text ("2024-02-01") and Indian day-first
             text ("01/02/2024", "01-02-2024") read; anything else is no date
+  status    a coded value: upper case, single spaces ("completed " -> "COMPLETED"; "complete"
+            and "completion" read as COMPLETED), so a clerk's casing never changes an answer
+            (found by the T135 robustness loop: "completed" read as not complete)
   outside   True / False (also 1 / 0 and "yes" / "no"); anything else is no value
   signals   an object, else an empty one
 Malformed values are dropped, never repaired by guessing. A clean record comes back as the
@@ -31,7 +34,7 @@ from drishti.agents.evidence import num
 
 TEXT = ("work_id", "source", "house", "term", "state_lgd", "state_name", "district_lgd",
         "district_name", "constituency", "mp_name", "agency_name", "fy", "work_type_code",
-        "category", "description", "status", "quantity_unit")
+        "category", "description", "quantity_unit")
 NUMBERS = ("amount", "quantity")
 DATES = ("recommended_date", "completed_date", "sanction_date")
 YES = {"true", "yes", "y", "1"}
@@ -70,6 +73,17 @@ def day(x) -> date | None:
     return None
 
 
+STATUS_WORDS = {"COMPLETE": "COMPLETED", "COMPLETION": "COMPLETED"}
+
+
+def status(x) -> str | None:
+    t = text(x)
+    if t is None:
+        return None
+    s = " ".join(t.split()).upper()
+    return STATUS_WORDS.get(s, s) if s else t
+
+
 def flag(x) -> bool | None:
     if x is None or isinstance(x, bool):
         return x
@@ -92,7 +106,7 @@ def work(w: dict) -> dict:
     if not isinstance(w, dict):
         return {}
     changes = {}
-    for keys, fn in ((TEXT, text), (NUMBERS, num), (DATES, day),
+    for keys, fn in ((TEXT, text), (NUMBERS, num), (DATES, day), (("status",), status),
                      (("is_outside_constituency",), flag)):
         for k in keys:
             if k in w:

@@ -22,7 +22,7 @@ cost_lights     flags ESTIMATE_ABOVE_STANDARD_AND_MP; live same; fields marked 2
 dup_pin         flags SANCTIONED_WORK_AT_THIS_SITE; live same; fields marked 2 (after the live check 2)
 dup_rebuild     flags REBUILT_SOON_AFTER_COMPLETION; live same; fields marked 1 (after the live check 1)
 dup_split       flags SPLIT_JUST_UNDER_LIMIT; live same; fields marked 2 (after the live check 2)
-time_fast       flags FINISHED_TOO_FAST; live same; fields marked 1 (after the live check 1)
+time_fast       flags FINISHED_TOO_FAST, NO_SITE_VIDEO; live same; fields marked 2 (after the live check 2)
 time_late       flags PAST_PROMISED_TIME; live same; fields marked 1 (after the live check 1)
 site_reused     flags FOOTAGE_USED_BEFORE, SAME_PLACE_AS_ANOTHER_WORK; live same; fields marked 2 (after the live check 2)
 site_claim      flags CLAIM_NOT_SHOWN; live same; fields marked 1 (after the live check 1)

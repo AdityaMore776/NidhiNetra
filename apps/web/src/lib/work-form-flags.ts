@@ -96,8 +96,22 @@ export function flagOf(agent: string, f: TraceFinding, form: Form): Flag {
         if (t.fair_rate != null && num(t.rate) > num(t.fair_rate) * 1.001)
           fields.push({ name: `boq_rate_${row.n}`, label: `usual ${rs(t.fair_rate)}` });
       }
+      const loose = (x.unexplained ?? {}) as Record<string, number>;
+      if (loose.lump_sums) fields.push({ name: "lumpsum_components", label: `${inr(loose.lump_sums)} not itemised` });
+      if (loose.other_charges) fields.push({ name: "other_charges", label: `${inr(loose.other_charges)} not explained` });
       break;
     }
+    case "SIZE_NOT_AS_DESCRIBED": {
+      why = `The form says ${x.form_size}, but its own scope says ${x.scope_size}: at that size the ${String(x.material ?? "").split("_")[0]} is ${num(x.ratio).toFixed(1)}× what is needed.`;
+      const key = String(x.form_size ?? "").includes("wide") ? "road_width_m" : "road_length_m";
+      fields.push({ name: key, label: `scope says ${x.scope_size}` });
+      break;
+    }
+    case "ESTIMATE_NOT_ITEMISED":
+      why = `${Math.round(num(x.share) * 100)}% of the estimate (${inr(num(x.amount))}) is lump sums or items no standard name fits, so its price cannot be checked.`;
+      fields.push({ name: "technical_estimate", label: "not itemised" });
+      if (num(form.lumpsum_components) > 0) fields.push({ name: "lumpsum_components", label: "itemise this" });
+      break;
     case "ESTIMATE_ABOVE_STANDARD_AND_MP": {
       const times = Math.round((1 + num(x.mp_gap)) * 10) / 10;
       why = `${rs(x.price_per_unit)} per ${x.unit ?? "unit"}; it usually costs ${rs(x.median)}. The estimate is ${times}× what the MP recommended.`;
@@ -107,12 +121,17 @@ export function flagOf(agent: string, f: TraceFinding, form: Form): Flag {
       break;
     }
     case "SANCTIONED_WORK_AT_THIS_SITE":
-      why = `The map pin is ${n(x.metres)} m from work ${x.other}, already sanctioned${x.other_completed ? ` and completed on ${day(x.other_completed)}` : ""}. The form does not mention it.`;
+      why = x.overlap
+        ? `Its alignment runs over ${Math.round(num(x.overlap) * 100)}% of work ${x.other}, already sanctioned${x.other_completed ? ` and completed on ${day(x.other_completed)}` : ""}.`
+        : `The map pin is ${n(x.metres)} m from work ${x.other}, already sanctioned${x.other_completed ? ` and completed on ${day(x.other_completed)}` : ""}.`;
+      why += x.declared ? " The form calls it a continuation, but it lies on that work's own ground." : " The form does not mention it.";
       fields.push({ name: pinField(form), label: `${n(x.metres)} m from ${x.other}` });
       fields.push({ name: "known_nearby_work_ids", label: `${x.other} not named` });
       break;
     case "REBUILT_SOON_AFTER_COMPLETION":
-      why = `Rebuilds work ${x.other}, which was finished only ${x.months_after_completion} months earlier.`;
+      why = x.same_ground
+        ? `Called a continuation or repair of work ${x.other}, but it covers the same ground with the same size, finished only ${x.months_after_completion} months earlier.`
+        : `Rebuilds work ${x.other}, which was finished only ${x.months_after_completion} months earlier.`;
       fields.push({ name: "prior_work_id", label: `finished ${x.months_after_completion} months before` });
       break;
     case "SPLIT_JUST_UNDER_LIMIT":
@@ -147,6 +166,14 @@ export function flagOf(agent: string, f: TraceFinding, form: Form): Flag {
       fields.push({ name: "capture_frequency", label: "claim not shown, twice" });
       break;
     }
+    case "NO_SITE_VIDEO":
+      why = `No site video ${n(x.days)} days past its planned start${num(x.filmed) > 0 ? ` (${n(x.filmed)} filmed, none accepted)` : ""}.`;
+      fields.push({ name: "baseline_video_date", label: "no video yet" });
+      break;
+    case "SITE_NOT_AT_FORM_PIN":
+      why = `Every site video is filmed about ${n(x.metres)} m from the form's map pin: the work is not where the form puts it.`;
+      fields.push({ name: pinField(form), label: `videos ${n(x.metres)} m away` });
+      break;
     case "NOT_FILMED_AT_THIS_SITE":
       why = x.mock_location
         ? `Video ${x.visit}: the phone faked its location, and the views do not match the site.`

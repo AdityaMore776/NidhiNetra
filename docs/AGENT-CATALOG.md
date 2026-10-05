@@ -25,6 +25,12 @@ Retired in T125 (results stored before still read by name until re-assessed; cod
 Compliance (its timing rules live on in Time & Rules), Fund Flow, Office Patterns, Paperwork and Photo Evidence. On the
 dashboard's 40,935 works the review queue went from 439 to 217 (185 R14, 34 split pieces, 2 both).
 
+**Hardened by the robustness loop (T135, FINDINGS "T135")**: 65 probes of damage, honest noise,
+evasions, scarce data and scale end 59 PASS, 0 FAIL, 6 LIMIT, and 3,000 random damages crash none.
+New questions: Cost `ESTIMATE_NOT_ITEMISED` and `SIZE_NOT_AS_DESCRIBED`, Site Progress
+`NO_SITE_VIDEO` and `SITE_NOT_AT_FORM_PIN` (each at the 1-in-4 prior until read). A price the data
+cannot support is switched off for that material and recorded as a gap (`GET /cost/data-gaps`).
+
 The website's work intelligence form (`/work-form`, T134) is read by all four: twelve example filings in Jaunpur show
 each agent flagging, with the flagged fields outlined in the form (made-up agencies; FINDINGS "T134"), and "Check this
 form" runs them on any filled form against the same example data, shown on the page's Data tab.

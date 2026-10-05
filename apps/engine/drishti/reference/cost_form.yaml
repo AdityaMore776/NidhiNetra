@@ -525,8 +525,8 @@ materials:
   - {id: cement, label: "Cement", names: [cement, opc, ppc, psc, "सीमेंट"], units: [bag, kg, quintal, t], guard: [100, 3000]}
   - {id: steel_rebar, label: "Reinforcement steel", names: [steel, tmt, sariya, saria, rebar, reinforcement, "सरिया"], units: [kg, quintal, t], guard: [15, 500]}
   - {id: structural_steel, label: "Structural steel", names: [structural steel, ms angle, ms channel, girder, joist, truss], units: [kg, quintal, t], guard: [15, 800]}
-  - {id: sand, label: "Sand", names: [sand, balu, baalu, ret, reti, "बालू", "रेत", "मौरंग", morang, moorang], units: [m3, cft, brass], guard: [100, 30000]}
-  - {id: aggregate, label: "Stone aggregate", names: [aggregate, gitti, giti, stone chips, ballast, grit, "गिट्टी"], units: [m3, cft, brass], guard: [100, 30000]}
+  - {id: sand, label: "Sand", names: [sand, balu, baalu, ret, reti, "बालू", "रेत", "मौरंग", morang, moorang, fine aggregate, badarpur], units: [m3, cft, brass], guard: [100, 30000]}
+  - {id: aggregate, label: "Stone aggregate", names: [aggregate, gitti, giti, stone chips, ballast, grit, "गिट्टी", coarse aggregate, kapchi, rodi, jelly, crushed stone, stone metal], units: [m3, cft, brass], guard: [100, 30000]}
   - {id: brick, label: "Bricks", names: [brick, bricks, eent, eint, "ईंट", fly ash brick], units: [nos, thousand], guard: [0.5, 100]}
   - {id: paver_block, label: "Paver / interlocking blocks", names: [paver, pavers, interlocking, interlocking tile, paver block], units: [m2, sqft, nos], guard: [30, 10000]}
   - {id: rmc, label: "Ready-mix concrete", names: [rmc, ready mix, readymix, ready mix concrete], units: [m3], guard: [500, 50000]}

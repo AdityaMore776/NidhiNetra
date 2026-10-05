@@ -1389,6 +1389,92 @@ questions (`results/work_form_examples.txt`):
 - Engine fixes found by the examples: a work recorded complete before its own planned start counts "too fast" from
   the sanction (it said "0 days after the work could start"); quantities read "2,614 bags", not "2,614 bag".
 
+## T135 (5 Oct 2026): the agents' self-improvement loop
+
+Each agent was run through samples and attacked until it stopped breaking
+(`data/trial/agent_robustness_loop.py`, plan `docs/plans/T135-robustness-loop.md`). The samples are
+the work form's example filings in Jaunpur on top of the district's 1,038 real works. The probes are
+random damage, honest noise, deliberate evasions, scarce data and scale. The final run
+(`results/agent_robustness.txt`):
+
+| | |
+|---|---|
+| Probes | **65: 59 PASS, 0 FAIL, 6 LIMIT** |
+| Random damage (seed 7) | **3,000 runs: 0 agent errors, 0 broken contracts, 0 different answers the second time** |
+| Scale | 3,000 filed roads in one district: one work's four agents in 0.06 s |
+
+**What the loop broke, and how it is fixed** (each with a regression test in the engine suite):
+
+- **Crashes**: infinity as an estimated duration, NaN or infinity as a video's frame count, a list
+  where a unit belongs. Every number reader now takes finite numbers only, every unit reader text
+  only. `tests/evaluation/test_random_forms.py` keeps 300 damaged forms and videos in CI.
+- **Cost**:
+  - Padding hidden in a lump sum or "other charges" was invisible. Lump sums beyond 2% of a
+    construction estimate, other charges beyond 5% (23% when the form names no GST) and
+    contingency beyond 5% now count as not shown to be fair.
+  - Items given names no reader knows: `ESTIMATE_NOT_ITEMISED` when over 40% of a construction
+    estimate is lump sums or unrecognised items.
+  - One unanswered warning switched the whole check off. Now only a line whose rate or unit looks
+    like a typing mistake is held out; the rest is judged.
+  - One agency filing many forms dragged the district's price. Now one vote per agency, and name
+    variants are one agency.
+  - Prices that disagree were trusted. Now they are switched off for that material and recorded as
+    a gap (with the state's forms, 10% more leniently, when the district has too few).
+  - A held or unpriced line watered the gap down. The gap is now measured against the fair price
+    of what was priced.
+  - A size the form's own scope contradicts: `SIZE_NOT_AS_DESCRIBED`.
+  - Two adapter faults: a website filing with any lump sum could never be judged, and the trade
+    words *kapchi*, *rodi*, *jelly* and "fine / coarse aggregate" were not recognised.
+- **Duplicate Work**:
+  - An old road filed again 100 m longer, or pinned 60 m off: a road lying 80% on another's line
+    is the same ground.
+  - A re-filed work declared a "continuation" or "repair", or named only among the nearby works:
+    on a finished work's own ground it is a rebuild (`REBUILT_SOON_AFTER_COMPLETION`); on an
+    unfinished one it is asked about.
+  - Map pins outside India (0, 0; swapped) and roads with one end are set aside, and the result
+    says so.
+- **Time & Rules**:
+  - An estimate over twice what 9 in 10 such works take falls back to the typical time.
+  - A start promised more than 6 months after sanction counts from 6 months.
+  - Lost months count as calendar months, at most 4.
+  - A reused or elsewhere-filmed video no longer counts as showing the work built.
+  - "completed" in lower case was read as not complete.
+- **Site Progress**:
+  - Never filming (or uploading only unsealed videos): `NO_SITE_VIDEO` 60 days past the start.
+  - "can't tell" slipped between two "not shown" no longer resets the claim check.
+  - Every video filmed consistently away from the form's pin: `SITE_NOT_AT_FORM_PIN`.
+  - Videos dated after today are not counted.
+  - Vague claims ("work in progress") are asked to be specific.
+
+**Price data that cannot be trusted is switched off, then learned.** A material whose district
+prices are too few, too old or disagree is not priced. The gap is recorded with its reason, and
+`GET /api/v1/cost/data-gaps?district=` lists what to collect where. Every form filed joins the
+index, so a gap closes by itself once enough agree. The live check now also reads the state's
+other forms (`batch.state_forms`).
+
+**The measurements the fixes could move:**
+
+- **Planted forms** (`results/cost_whole_trial.txt`):
+  - District rates, 10% honest spread: +20% padding asked **94.2%**, honest asked **0.1%** (target:
+    at least 90%, at most 2%).
+  - District rates, 5% spread: 95.9% and 0.0%. SoR rates, 10% spread: 86.5% and 0.2%.
+  - At a 15% spread, honest forms are asked 3.6% (district) and 2.8% (SoR): over the 2% target, as
+    before the loop.
+- **The dashboard's 40,935 real works** (`results/dashboard_t135_after.json` against
+  `t125_after`): the same bands, the same queue of 217, and every finding on the same works
+  (compared work by work). The fixes touch forms and videos, which no real work has yet.
+- **The example filings**: 12 of 12 raise what they are meant to. The 6-day road also gets
+  `NO_SITE_VIDEO` (never filmed, 100 days after sanction). The page passes in a browser with 0
+  page errors (`results/work_form_e2e.txt`).
+
+**Still limits** (`results/agent_robustness.txt`, reasons in the plan):
+- padding just under 15%;
+- split pieces at 95% of a limit;
+- GPS faked inside the site with the views elsewhere (one proof);
+- 22% padding priced only from the state's forms;
+- every agency in a district padding together (needs the SoR, T096);
+- a bigger size claimed consistently everywhere (needs the site videos to measure it).
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

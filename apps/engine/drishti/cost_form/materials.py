@@ -53,7 +53,7 @@ def per_first_unit(material: dict, rate: float, unit: str) -> float | None:
     bag), or None when the unit cannot be converted to it."""
     table = catalog.units()
     first = material["units"][0]
-    if unit not in table or first not in table:
+    if not isinstance(unit, str) or unit not in table or first not in table:
         return None
     (dim_u, f_u), (dim_f, f_f) = table[unit], table[first]
     if dim_u != dim_f or f_u <= 0:

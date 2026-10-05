@@ -1,0 +1,466 @@
+{
+ "probes": [
+  {
+   "agent": "cost_estimate",
+   "kind": "noise",
+   "probe": "honest rates a few % apart (seeded): no question",
+   "verdict": "PASS",
+   "detail": "12 honest variants, 0 asked: []"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "noise",
+   "probe": "lines in another order: same answer",
+   "verdict": "PASS",
+   "detail": "changed: none"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "noise",
+   "probe": "one line split in two (half each): same answer",
+   "verdict": "PASS",
+   "detail": "changed: none"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "noise",
+   "probe": "other words and units for the same items: same answer",
+   "verdict": "PASS",
+   "detail": "changed: none"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "noise",
+   "probe": "cement written in kg instead of bags: same answer",
+   "verdict": "PASS",
+   "detail": "changed: none"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "padded items given names no reader knows",
+   "verdict": "PASS",
+   "detail": "['ESTIMATE_NOT_ITEMISED'] (ASSESSED); says what it could not price: True"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "the padding moved into a lump-sum line",
+   "verdict": "PASS",
+   "detail": "Rs 303,139 as a lump sum: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "the padding moved into 'other charges'",
+   "verdict": "PASS",
+   "detail": "Rs 303,139 as other charges: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "padded items priced in units nobody converts (brass, quintal)",
+   "verdict": "PASS",
+   "detail": "sand in brass, cement in quintal: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "one agency files under name variants to lift the district price",
+   "verdict": "PASS",
+   "detail": "4 padded forms under name variants of the same agency: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "padding 14%: just under the 15% line",
+   "verdict": "LIMIT",
+   "detail": "nothing: the line is 15% and Rs 50,000 (plan T120 §6.5, measured on planted forms); below it a gap is an honest spread"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "scarce",
+   "probe": "only 4 other filings in the district: prices off, gap recorded",
+   "verdict": "PASS",
+   "detail": "no question (ASSESSED); data gaps recorded: 6"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "scarce",
+   "probe": "district prices all over the place: the honest road is not asked",
+   "verdict": "PASS",
+   "detail": "no question (ASSESSED); unreliable prices recorded as gaps: 6"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "scarce",
+   "probe": "one agency files most forms, 30% under: the honest road not asked",
+   "verdict": "PASS",
+   "detail": "10 forms by one agency at 70% of the usual rates: nothing (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "scarce",
+   "probe": "every other filing older than 6 months: prices off, gap recorded",
+   "verdict": "PASS",
+   "detail": "no question (ASSESSED); gaps recorded: 6"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "scarce",
+   "probe": "a typo'd price (Rs 38,000 a bag) among the filings: answers hold",
+   "verdict": "PASS",
+   "detail": "changed: none"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "scarce",
+   "probe": "a work in a state with no reference prices: no question",
+   "verdict": "PASS",
+   "detail": "solar lights in a state without a reference: nothing (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "noise",
+   "probe": "GPS jitter of 5 m: the repeat still asked, the honest road not",
+   "verdict": "PASS",
+   "detail": "changed: none"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "noise",
+   "probe": "the road's two ends swapped: still asked",
+   "verdict": "PASS",
+   "detail": "ends swapped: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "noise",
+   "probe": "the repeat described in other words: still asked",
+   "verdict": "PASS",
+   "detail": "new words: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "the old road re-filed 100 m longer at one end",
+   "verdict": "PASS",
+   "detail": "300 m of old road + 100 m: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "the same stretch declared a 'continuation' of the old road",
+   "verdict": "PASS",
+   "detail": "['REBUILT_SOON_AFTER_COMPLETION'] (old road completed 11 months ago, same 300 m)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "the hall rebuild declared a 'repair / renovation' instead",
+   "verdict": "PASS",
+   "detail": "renovation 16 months on: REBUILT_SOON_AFTER_COMPLETION (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "the rebuild with no nature declared, the old hall only named nearby",
+   "verdict": "PASS",
+   "detail": "named nearby only: REBUILT_SOON_AFTER_COMPLETION (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "noise",
+   "probe": "a real extension beside the old road (from its end onward): not asked",
+   "verdict": "PASS",
+   "detail": "the next 290 m from the old road's end: nothing (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "noise",
+   "probe": "a first floor on a finished hall (another size): not asked",
+   "verdict": "PASS",
+   "detail": "nothing: an extension of another size is not the same asset again"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "the old road re-filed 100 m longer and declared a 'continuation'",
+   "verdict": "PASS",
+   "detail": "['REBUILT_SOON_AFTER_COMPLETION'] (the old 300 m inside the new 400 m)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "the hall rebuild declared 'new' (no link) at the same pin",
+   "verdict": "PASS",
+   "detail": "a 'new' hall 10 m from the old: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "the road's far end left out of the form",
+   "verdict": "PASS",
+   "detail": "nothing (ASSESSED); says an end is missing: True"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "a map pin at (0, 0), or latitude and longitude swapped",
+   "verdict": "PASS",
+   "detail": "zero: nothing, says the pin is wrong: True; swapped: nothing, says the pin is wrong: True"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "pins moved 60 m off the real site",
+   "verdict": "PASS",
+   "detail": "['SANCTIONED_WORK_AT_THIS_SITE']: two pins 50 m apart are one site by rule; a pin off the real site is for Site Progress to see (the videos are filmed where the work is)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "split into pieces each 95% of the limit (under the 96% rule)",
+   "verdict": "LIMIT",
+   "detail": "nothing: the 96-100% rule read 12 of 14 right; looser splits read 18 of 32 (T100), so they stay unasked"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "noise",
+   "probe": "split pieces filed by three differently-spelled agencies: still asked",
+   "verdict": "PASS",
+   "detail": "agency names differ: SPLIT_JUST_UNDER_LIMIT (ASSESSED)"
+  },
+  {
+   "agent": "time_rules",
+   "kind": "evasion",
+   "probe": "the late hall: start month declared two years after sanction",
+   "verdict": "PASS",
+   "detail": "start promised 2 years after sanction: PAST_PROMISED_TIME (ASSESSED)"
+  },
+  {
+   "agent": "time_rules",
+   "kind": "evasion",
+   "probe": "the late hall: 10 years promised",
+   "verdict": "PASS",
+   "detail": "estimate 3,650 days: PAST_PROMISED_TIME (ASSESSED)"
+  },
+  {
+   "agent": "time_rules",
+   "kind": "evasion",
+   "probe": "the late hall: 30 'lost months' declared on the native form",
+   "verdict": "PASS",
+   "detail": "30 lost months: PAST_PROMISED_TIME (ASSESSED)"
+  },
+  {
+   "agent": "time_rules",
+   "kind": "evasion",
+   "probe": "the 6-day road: one reused video 'shows' work going on",
+   "verdict": "PASS",
+   "detail": "a reused video before completion: FINISHED_TOO_FAST (ASSESSED)"
+  },
+  {
+   "agent": "time_rules",
+   "kind": "noise",
+   "probe": "dates with times and status in lower case: same answer",
+   "verdict": "PASS",
+   "detail": "changed: none"
+  },
+  {
+   "agent": "time_rules",
+   "kind": "scarce",
+   "probe": "complete with no completion date: says so, asks nothing wrong",
+   "verdict": "PASS",
+   "detail": "nothing; says the completion date is missing: True"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "evasion",
+   "probe": "sanctioned months ago, never filmed",
+   "verdict": "PASS",
+   "detail": "['NO_SITE_VIDEO'] (ASSESSED); sanctioned 2026-04-15, no video"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "evasion",
+   "probe": "every video uploaded unsealed (none accepted)",
+   "verdict": "PASS",
+   "detail": "['NO_SITE_VIDEO'] (ASSESSED)"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "evasion",
+   "probe": "'can't tell' slipped between two 'not shown' claims",
+   "verdict": "PASS",
+   "detail": "not shown, can't tell, not shown: CLAIM_NOT_SHOWN (ASSESSED)"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "evasion",
+   "probe": "every claim vague ('work in progress')",
+   "verdict": "PASS",
+   "detail": "nothing; asks for a specific claim: True"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "evasion",
+   "probe": "the form's pin is not where every video is filmed",
+   "verdict": "PASS",
+   "detail": "['SITE_NOT_AT_FORM_PIN']: three videos all 320 m from the pin, views matching each other"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "evasion",
+   "probe": "a video dated after today",
+   "verdict": "PASS",
+   "detail": "nothing; says the date is wrong: True"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "noise",
+   "probe": "visits listed in another order, one listed twice: same answer",
+   "verdict": "PASS",
+   "detail": "changed: none"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "evasion",
+   "probe": "GPS faked inside the site, views elsewhere",
+   "verdict": "LIMIT",
+   "detail": "nothing: one proof (the views) is a note by design; GPS error alone or views alone never fail a video"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "noise",
+   "probe": "GST 'added separately', 18% in other charges: honest, not asked",
+   "verdict": "PASS",
+   "detail": "18% GST in other charges: nothing (NOT_ASSESSABLE)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "noise",
+   "probe": "a 2% lump sum for sundries: honest, not asked",
+   "verdict": "PASS",
+   "detail": "2% lump sum: nothing (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "noise",
+   "probe": "a typed extra zero (cement Rs 3,800 a bag), not explained",
+   "verdict": "PASS",
+   "detail": "no question; says a line was held as a likely typing mistake: True"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "padded items given units that do not fit them",
+   "verdict": "PASS",
+   "detail": "cement in nos: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "scarce",
+   "probe": "a district with no forms: the state's forms stand in",
+   "verdict": "PASS",
+   "detail": "honest: nothing; +50%: ['ESTIMATE_ABOVE_FAIR_PRICE']; priced from: 12 recent forms of 8 other agencies across the state, plus 10% for local prices 15 recent "
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "22% padding where only the state's forms can price it",
+   "verdict": "LIMIT",
+   "detail": "nothing: a state-wide rate carries 10% for local prices, so padding is asked from about 27% there; the district's own forms (or the SoR, T096) ask from 15%"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "every agency in the district pads 22% together",
+   "verdict": "LIMIT",
+   "detail": "nothing: when every agency raises its rates together, only the state's Schedule of Rates (T096, not loaded yet) can cap the district's own rate"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "noise",
+   "probe": "a hall at the old road's pin (another kind of work): not asked",
+   "verdict": "PASS",
+   "detail": "nothing"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "noise",
+   "probe": "pins rounded to 4 decimals (about 11 m): same answers",
+   "verdict": "PASS",
+   "detail": "changed: none"
+  },
+  {
+   "agent": "time_rules",
+   "kind": "scarce",
+   "probe": "completion dated after today: no false question, says so",
+   "verdict": "PASS",
+   "detail": "['IMPOSSIBLE_TIMELINE']; says the date is after today: True"
+  },
+  {
+   "agent": "time_rules",
+   "kind": "scarce",
+   "probe": "an estimate of 0 days: no false question, says so",
+   "verdict": "PASS",
+   "detail": "nothing; says the estimate is missing: True"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "noise",
+   "probe": "one video with a bad GPS fix (300 m off), views fine: not asked",
+   "verdict": "PASS",
+   "detail": "one GPS-off video: nothing (ASSESSED)"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "noise",
+   "probe": "sanctioned 50 days ago, first video not yet due: not asked",
+   "verdict": "PASS",
+   "detail": "50 days, no video: nothing (NOT_APPLICABLE)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "scale",
+   "probe": "3,000 filed roads in one district: one check stays under 2 s",
+   "verdict": "PASS",
+   "detail": "0.06 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "noise",
+   "probe": "items written in Hindi: same answers",
+   "verdict": "PASS",
+   "detail": "changed: none"
+  },
+  {
+   "agent": "time_rules",
+   "kind": "evasion",
+   "probe": "'complete' just past the 30-day floor, never filmed",
+   "verdict": "PASS",
+   "detail": "['FINISHED_TOO_FAST', 'NO_SITE_VIDEO']: Time's floor is passed, but no site video was ever filmed"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "a bigger size claimed (7 m wide road) to justify the cement",
+   "verdict": "PASS",
+   "detail": "['SIZE_NOT_AS_DESCRIBED']: the form's own scope still says 3.5 m wide"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "a bigger size claimed everywhere (field and scope both 7 m)",
+   "verdict": "LIMIT",
+   "detail": "nothing: a size claimed the same way everywhere is the agency's word; the site videos and the officer's visit check it, not the estimate"
+  }
+ ],
+ "damage": {
+  "runs": 3000,
+  "errors": {},
+  "contract": [],
+  "different_twice": [],
+  "samples": []
+ }
+}

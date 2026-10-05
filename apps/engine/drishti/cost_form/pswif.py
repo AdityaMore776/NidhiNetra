@@ -312,7 +312,10 @@ def _lines(p: dict, goods: bool) -> list[dict]:
     lump = _n(p.get("lumpsum_components"))
     if lump:
         lines.append({"group": "other", "item": "Lump-sum components (as on the estimate)",
-                      "unit": "ls", "amount": lump, "basis": "other"})
+                      "unit": "ls", "amount": lump, "basis": "other",
+                      # the website form asks no source for it (T135: without one, a filing
+                      # with any lump sum could never be judged)
+                      "basis_other": "Lump sum on the agency's estimate (section F)"})
     return lines
 
 

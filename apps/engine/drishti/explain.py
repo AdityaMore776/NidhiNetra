@@ -197,7 +197,10 @@ FACT_KEYS = frozenset({
     "lines", "price_per_unit", "where", "p98", "median", "n", "mp_amount", "mp_gap", "other",
     "metres", "other_amount", "other_completed", "months_after_completion", "nature", "size",
     "total", "limit", "others", "days", "segments", "value", "early", "late", "videos", "stalled",
-    "visit", "visits", "claims", "reused_from", "same_place_as", "mock_location", "kind"})
+    "visit", "visits", "claims", "reused_from", "same_place_as", "mock_location", "kind",
+    # T135
+    "unexplained", "overlap", "declared", "same_ground", "share", "amount", "items", "filmed",
+    "form_size", "scope_size"})
 
 
 def _plain(v, depth: int = 0) -> bool:

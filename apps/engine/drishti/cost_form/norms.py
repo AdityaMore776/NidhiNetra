@@ -47,7 +47,8 @@ def _num(v) -> float | None:
 def to_first_unit(material_id: str, quantity, unit) -> float | None:
     """A quantity restated in the material's first unit (e.g. 2,500 kg of cement -> 50 bags)."""
     mat, table, q = catalog.material(material_id), catalog.units(), _num(quantity)
-    if not mat or q is None or unit not in table or mat["units"][0] not in table:
+    if not mat or q is None or not isinstance(unit, str) or unit not in table \
+            or mat["units"][0] not in table:
         return None
     (dim_u, f_u), (dim_f, f_f) = table[unit], table[mat["units"][0]]
     return q * f_u / f_f if dim_u == dim_f and f_f > 0 else None

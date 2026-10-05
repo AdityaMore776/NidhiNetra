@@ -10,15 +10,26 @@ A line is compared when it has a fair rate, or when the size says how much of it
 only its extra quantity counts, at the agency's own rate). The verdict:
 
     CANT_CHECK  compared lines carry less than MIN_COVERAGE of the money (a status, not a score)
-    ASK         the gap is at least GAP_SHARE of the fair estimate AND at least GAP_MIN_RS
+    ASK         the gap is at least GAP_SHARE of the fair price of what was priced (T135: of the
+                fair estimate, a line left unpriced counted at its own value on both sides and
+                watered the share down, so one padded line given an odd unit hid the rest) AND
+                at least GAP_MIN_RS
     FAIR        otherwise
 
 The thresholds are the plan's starting values; the planted-form trial and the first real
 estimates (T098) set the final ones.
+
+Money that is not shown to be fair (T135, the robustness loop: padding moved out of the priced
+lines was invisible): in a construction estimate (one whose size says how much cement, sand or
+stone it needs) lump sums beyond LUMP_SHARE of the lines, and "other" charges or contingency
+beyond OTHER_SHARE / CONTINGENCY_SHARE of the lines, are not part of the fair estimate. The
+officer's sentence names them. A material that could not be priced here records its gap
+(rates.Gap): the check is off for that price, never guessed, and the team knows what to collect.
 """
 
 from __future__ import annotations
 
+import math
 from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import date
@@ -31,6 +42,11 @@ MIN_COVERAGE = 0.60
 GAP_SHARE = 0.15
 GAP_MIN_RS = 50_000
 TOP_LINES = 3
+LUMP_SHARE = 0.02             # lump sums a construction estimate may carry unitemised
+OTHER_SHARE = 0.05            # "other" charges, beyond taxes the form names
+OTHER_SHARE_NO_TAX = 0.23     # ... when the form says nothing of GST (it may sit in "other")
+CONTINGENCY_SHARE = 0.05      # CPWD allows 3%; 5% is the form's own soft limit
+CIVIL = {"cement", "sand", "aggregate", "steel_rebar", "brick", "granular_base", "bitumen"}
 
 
 def _rs(v: float) -> str:
@@ -87,6 +103,9 @@ class Whole:
     priced: int = 0
     sources: list[str] = field(default_factory=list)
     sor_mismatch: list[dict] = field(default_factory=list)
+    gaps: list[rates.Gap] = field(default_factory=list)        # not priced at all
+    fallbacks: list[rates.Gap] = field(default_factory=list)   # priced from the state instead
+    unexplained: dict = field(default_factory=dict)   # {"lump_sums", "other_charges", ...: Rs}
 
     def top(self) -> list[Line]:
         return sorted((x for x in self.lines if x.extra > 0), key=lambda x: -x.extra)[:TOP_LINES]
@@ -98,13 +117,44 @@ class Whole:
                 "above_fair_rate": self.above_fair, "priced_lines": self.priced,
                 "sources": self.sources, "sor_mismatch": self.sor_mismatch,
                 "lines": [x.to_json() for x in self.lines],
+                "data_gaps": [g.to_json() for g in self.gaps],
+                "priced_from_state": [g.to_json() for g in self.fallbacks],
+                "unexplained": {k: round(v, 2) for k, v in self.unexplained.items()},
                 "rule": {"min_coverage": MIN_COVERAGE, "gap_share": GAP_SHARE,
                          "gap_min_rs": GAP_MIN_RS, "qty_tolerance": QTY_TOLERANCE}}
 
 
+def _num(v) -> float:
+    return float(v) if isinstance(v, (int, float)) and not isinstance(v, bool) \
+        and math.isfinite(v) else 0.0
+
+
+def unexplained(form: dict, computed: dict, civil: bool) -> dict:
+    """Money in the estimate that is not shown to be fair (module note), by kind."""
+    lines_total = _num(computed.get("lines_total"))
+    if lines_total <= 0:
+        return {}
+    out = {}
+    if civil:
+        ls = 0.0
+        for site in form.get("sites") if isinstance(form.get("sites"), list) else []:
+            for ln in (site.get("lines") or []) if isinstance(site, dict) else []:
+                if isinstance(ln, dict) and ln.get("unit") == "ls":
+                    ls += max(0.0, _num(ln.get("amount")))
+        out["lump_sums"] = max(0.0, ls - LUMP_SHARE * lines_total)
+    charges = form.get("charges") if isinstance(form.get("charges"), dict) else {}
+    taxed = any(isinstance(charges.get(k), (int, float)) for k in ("gst_percent", "gst_amount"))
+    other = max(0.0, _num(charges.get("other_fees_amount")))
+    out["other_charges"] = max(0.0, other - (OTHER_SHARE if taxed else OTHER_SHARE_NO_TAX)
+                               * lines_total)
+    cont = max(0.0, _num(computed.get("contingency_amount")))
+    out["contingency"] = max(0.0, cont - CONTINGENCY_SHARE * lines_total)
+    return {k: v for k, v in out.items() if v >= 1}
+
+
 def judge(form: dict, computed: dict, work_type: str | None, sor: dict | None,
           index: rates.RateIndex | None, district, agency: str, work_id: str,
-          when: date | None) -> Whole:
+          when: date | None, state: str | None = None) -> Whole:
     grand = float(computed.get("grand_total") or 0.0)
     lines_total = float(computed.get("lines_total") or 0.0)
     sites = form.get("sites") if isinstance(form.get("sites"), list) else []
@@ -123,8 +173,12 @@ def judge(form: dict, computed: dict, work_type: str | None, sor: dict | None,
     out: list[Line] = []
     mismatch: list[dict] = []
     sources: set[str] = set()
+    gaps: dict[str, rates.Gap] = {}
+    fallbacks: dict[str, rates.Gap] = {}
     for i, j, mid, r, q, ln in confirmed:
-        fair = rates.fair_rate(mid, ln, sor, index, district, agency, work_id, when)
+        fair, gap = rates.price_line(mid, ln, sor, index, district, agency, work_id, when, state)
+        if gap:
+            (fallbacks if fair else gaps).setdefault(mid, gap)
         total_need = need.get((i, mid))
         needed = (total_need * q / stated[(i, mid)]) if total_need is not None else None
         fair_q = q if needed is None else min(q, needed * QTY_TOLERANCE)
@@ -144,10 +198,19 @@ def judge(form: dict, computed: dict, work_type: str | None, sor: dict | None,
 
     compared = sum(x.amount for x in out)
     coverage = compared / lines_total if lines_total > 0 else 0.0
-    fair_lines = lines_total - compared + sum(x.fair_amount for x in out)
-    fair_grand = fair_lines * (grand / lines_total) if lines_total > 0 else grand
+    civil = any(m in CIVIL for (_i, m) in need)
+    extra = unexplained(form, computed, civil)
+    lump = extra.get("lump_sums", 0.0)
+    charged = extra.get("other_charges", 0.0) + extra.get("contingency", 0.0)
+    fair_lines = lines_total - compared + sum(x.fair_amount for x in out) - lump
+    fair_grand = (fair_lines * ((grand - charged) / lines_total) if lines_total > 0
+                  else grand)
     gap = grand - fair_grand
-    share = gap / fair_grand if fair_grand > 0 else 0.0
+    # the share of the fair price of what was priced (module note); the same as of the whole
+    # fair estimate when everything is priced
+    ratio = (grand - charged) / lines_total if lines_total > 0 else 1.0
+    base = sum(x.fair_amount for x in out) * ratio
+    share = gap / base if base > 0 else 0.0
     priced = [x for x in out if x.fair_rate is not None]
     above = sum(1 for x in priced if x.rate > x.fair_rate)
     if coverage < MIN_COVERAGE or not out:
@@ -157,7 +220,7 @@ def judge(form: dict, computed: dict, work_type: str | None, sor: dict | None,
     else:
         verdict = "FAIR"
     return Whole(verdict, grand, fair_grand, gap, share, coverage, out, above, len(priced),
-                 sorted(sources), mismatch)
+                 sorted(sources), mismatch, list(gaps.values()), list(fallbacks.values()), extra)
 
 
 def sentence(w: Whole, label: str = "this size of work in this district") -> str:
@@ -171,9 +234,17 @@ def sentence(w: Whole, label: str = "this size of work in this district") -> str
             why.append(f"{catalog.quantity_text(x.quantity, x.unit)} where the size needs "
                        f"{x.needed:,.0f}")
         parts.append(f"{x.label.lower()} +{_rs(x.extra)}" + (f" ({'; '.join(why)})" if why else ""))
-    text = (f"The estimate ({_rs(w.grand)}) is {_rs(w.gap)} ({w.gap_share:.0%}) above the fair "
-            f"price for {label} ({_rs(w.fair_grand)}), pricing the {w.coverage:.0%} of the money "
-            "that could be compared")
+    of = ("" if w.coverage >= 0.995 else
+          f", {w.gap_share:.0%} above the fair price of the {w.coverage:.0%} of the money that "
+          "could be priced")
+    text = (f"The estimate ({_rs(w.grand)}) is {_rs(w.gap)}"
+            + (f" ({w.gap_share:.0%})" if not of else "")
+            + f" above the fair price for {label} ({_rs(w.fair_grand)}){of}")
+    words = {"lump_sums": f"lump sums beyond {LUMP_SHARE:.0%} of the lines",
+             "other_charges": "'other' charges beyond the usual share",
+             "contingency": f"contingency beyond {CONTINGENCY_SHARE:.0%}"}
+    parts += [f"{words[k]} +{_rs(v)} (not itemised)" for k, v in w.unexplained.items()
+              if k in words]
     text += f". Most of the gap: {', '.join(parts)}." if parts else "."
     if w.priced >= 3:
         text += (f" {w.above_fair} of the {w.priced} priced lines are above their fair rate.")

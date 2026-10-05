@@ -28,7 +28,8 @@ GPS_MARGIN_M = 20.0
 
 
 def _num(v) -> float | None:
-    return float(v) if isinstance(v, (int, float)) and not isinstance(v, bool) and v == v else None
+    return (float(v) if isinstance(v, (int, float)) and not isinstance(v, bool)
+            and math.isfinite(v) else None)
 
 
 def metres(lat1: float, lon1: float, lat2: float, lon2: float) -> float:

@@ -401,7 +401,8 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
     old_hall = hall("WF-OLD-HALL", AG[7], VILLAGES[5], 6, m(980), m(930))
     bg_works.append(pswif.to_work(old_hall, today=as_of, status="COMPLETED",
                                   completed_date=d(m(540))))
-    p = hall("WF-DUP-2", AG[0], VILLAGES[5], 7, m(45), None,
+    # rebuilt where the old hall stands (its own pin: the form says the hall is on the site)
+    p = hall("WF-DUP-2", AG[0], VILLAGES[5], 6, m(45), None,
              work_nature="Reconstruction / rebuild", prior_work_id="WF-OLD-HALL",
              prior_completion_date=d(m(540)), existing_asset_same_site="Yes",
              repeat_reason="Cracks in the walls after the last monsoon",
@@ -441,7 +442,9 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
     rec = m(140)
     san = rec + timedelta(days=40)
     p = road("WF-TIME-1", AG[2], VILLAGES[7], 9, rec, san, length=350, days=120)
-    add("time_fast", "time_rules", {"time_rules": ["FINISHED_TOO_FAST"]},
+    add("time_fast", "time_rules", {"time_rules": ["FINISHED_TOO_FAST"],
+                                     # never filmed, 100 days after sanction (T135)
+                                     "site_progress": ["NO_SITE_VIDEO"]},
         "A 350 m road \"complete\" 6 days after sanction",
         "Promised in 120 days; recorded complete 6 days after sanction.",
         [f"Sanctioned {san:%d %b %Y}",

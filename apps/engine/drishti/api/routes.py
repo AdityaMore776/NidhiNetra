@@ -18,6 +18,7 @@ from pydantic import BaseModel, Field
 from drishti import config, reference
 from drishti import demo as work_demo
 from drishti.agents import registry
+from drishti.agents.cost_estimate import rates as cost_rates
 from drishti.agents.office_patterns.index import OfficeIndex
 from drishti.agents.statistical.cohort import StatsStore
 from drishti.auth import Principal, current_user, viewer
@@ -455,6 +456,35 @@ def work_form_check(form: dict = Body(...), demo: bool = Query(False),
                             if i["level"] == "fix" or i["key"] not in confirmed]},
         "trace": explain_work(work, ctx),
     }
+
+
+@router.get("/cost/data-gaps")
+def cost_data_gaps(district: str = Query(..., max_length=64),
+                   user: Principal = Depends(viewer)) -> dict:
+    """Which prices the Cost check can judge in this district, and from where; for the rest, why
+    not and what would close the gap (T135). Read live from the submitted forms: nothing
+    stored, and a gap closes by itself as agencies file forms."""
+    scope = user.scope_district()
+    if scope is not None and district != scope:
+        raise HTTPException(404, "no such district in your area")
+    as_of = config.snapshot_date()
+    with connect() as con:
+        d = con.execute("SELECT district_lgd, name, state_lgd, state_name FROM districts "
+                        "WHERE district_lgd = %s", (district,)).fetchone()
+        if not d:
+            raise HTTPException(404, "no such district")
+        ctx = with_index(Context(stats=_stats(), as_of=as_of), con,
+                         {"work_id": "", "district_lgd": d["district_lgd"],
+                          "state_lgd": d["state_lgd"]})
+    idx = (ctx.data or {}).get("rates")
+    state = cost_rates._state({"state_lgd": d["state_lgd"], "state_name": d["state_name"]})
+    rows = cost_rates.coverage(idx, d["district_lgd"], state, as_of,
+                               cost_rates.load_sor(d["state_name"]))
+    return {"district": {"district_lgd": d["district_lgd"], "name": d["name"],
+                         "state_name": d["state_name"]},
+            "as_of": as_of.isoformat(), "materials": rows,
+            "priced": sum(1 for r in rows if r["source"]),
+            "gaps": sum(1 for r in rows if not r["source"])}
 
 
 @router.get("/presanction/options")

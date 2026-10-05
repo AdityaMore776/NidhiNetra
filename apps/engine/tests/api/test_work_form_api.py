@@ -60,12 +60,22 @@ def test_a_pin_at_a_sanctioned_road_is_asked_about(client, api_db):
     body = _check(client, **near).json()
     dup = next(c for c in body["trace"]["checks"] if c["id"] == "dup_split")
     assert [f["code"] for f in dup["findings"]] == ["SANCTIONED_WORK_AT_THIS_SITE"]
-    # the agency declares it continues that road: a note, never a question
-    body = _check(client, **near, work_nature="Continuation / next phase",
-                  prior_work_id="W-TYPICAL", known_nearby_work_ids="W-TYPICAL",
-                  nearby_work_relationship="Same asset, separate phase").json()
+    declared = dict(work_nature="Continuation / next phase", prior_work_id="W-TYPICAL",
+                    known_nearby_work_ids="W-TYPICAL",
+                    nearby_work_relationship="Same asset, separate phase")
+    # the next phase, from where that road ends: a note, never a question
+    beyond = {"start_lat": str(PIN[0] + 300 * METRE), "start_lon": str(PIN[1]),
+              "end_lat": str(PIN[0] + 600 * METRE), "end_lon": str(PIN[1]),
+              "latitude": str(PIN[0] + 300 * METRE), "longitude": str(PIN[1])}
+    body = _check(client, **beyond, **declared).json()
     dup = next(c for c in body["trace"]["checks"] if c["id"] == "dup_split")
     assert not [f for f in dup["findings"] if f["risk"] > 0]
+    # a "continuation" on that road's own ground, not finished yet, is asked (T135)
+    body = _check(client, **near, **declared).json()
+    dup = next(c for c in body["trace"]["checks"] if c["id"] == "dup_split")
+    asked = [f for f in dup["findings"] if f["risk"] > 0]
+    assert [f["code"] for f in asked] == ["SANCTIONED_WORK_AT_THIS_SITE"]
+    assert "own ground" in asked[0]["text"]
 
 
 def test_bad_requests_are_refused_plainly(client):
@@ -123,3 +133,48 @@ def test_the_demo_never_gives_another_work_an_examples_record(client, monkeypatc
     body = client.post("/api/v1/work-form/check?demo=true", json=road(**ANAND)).json()
     time_rules = next(c for c in body["trace"]["checks"] if c["id"] == "time_rules")
     assert time_rules["picture"]["completed"] is None
+
+
+def _kheda_forms(api_db, n=8, agencies=4):
+    """n submitted road forms in Kheda (Anand's state), from `agencies` agencies, filed April."""
+    from drishti.cost_form import pswif
+    with psycopg.connect(api_db) as con:
+        for i in range(n):
+            wid = f"W-KHEDA-{i}"
+            con.execute("INSERT INTO works (work_id, source, state_lgd, state_name, district_lgd, "
+                        "district_name, work_type_code, description, amount, status, "
+                        "recommended_date) VALUES (%s,'REAL','24','Gujarat','640','Kheda',"
+                        "'ROAD_CC',%s,868000,'SANCTIONED','2026-04-01')",
+                        (wid, f"CC road number {i} in Kheda"))
+            form = pswif.to_cost_form(road(recommendation_ref=wid, district="Kheda",
+                                           ida_received_date="2026-04-15"), None)
+            con.execute("INSERT INTO cost_forms (work_id, status, form, ready, saved_by, "
+                        "submitted_at) VALUES (%s,'submitted',%s,true,%s,'2026-04-15')",
+                        (wid, Jsonb(form), f"kheda-agency-{i % agencies}"))
+        con.commit()
+
+
+def test_a_district_without_forms_is_priced_from_its_states_forms(client, api_db):
+    # T135: the live check loads the state's other submitted forms, so a district with none of
+    # its own still has fair rates (10% more lenient), and says where they came from
+    before = client.get("/api/v1/cost/data-gaps?district=639").json()
+    cement = next(m for m in before["materials"] if m["material"] == "cement")
+    assert cement["source"] is None and cement["gap"]["reason"] == "none"
+    _kheda_forms(api_db)
+    after = client.get("/api/v1/cost/data-gaps?district=639").json()
+    cement = next(m for m in after["materials"] if m["material"] == "cement")
+    assert cement["source"] == "state" and "across the state" in cement["where"]
+    assert cement["gap"]["reason"] == "none"            # the district itself still has none
+    body = _check(client, ida_received_date="2026-05-20").json()
+    cost = next(c for c in body["trace"]["checks"] if c["id"] == "cost_estimate")
+    assert cost["status"] == "ASSESSED"
+    assert not [f for f in cost["findings"] if f["risk"] > 0]      # the same honest rates
+    assert "across the state" in cost["headline"]
+
+
+def test_the_data_gaps_keep_to_the_users_area(client):
+    assert client.get("/api/v1/cost/data-gaps?district=640",
+                      headers=DISTRICT_ANAND).status_code == 404
+    assert client.get("/api/v1/cost/data-gaps?district=999").status_code == 404
+    body = client.get("/api/v1/cost/data-gaps?district=639", headers=DISTRICT_ANAND).json()
+    assert body["gaps"] == len(body["materials"]) and body["priced"] == 0
