@@ -29,11 +29,31 @@ def test_one_dark_video_between_good_ones_is_a_note_not_a_finding():
     assert codes(r) == [] and "too dark, blurred or short" in notes(r)
 
 
-def test_the_last_two_videos_unusable_is_asked():
+def test_two_unusable_videos_in_a_row_are_a_note_now():
+    """T137: checked every month, "the last two unusable" asked 1 honest work in 4 a year at the
+    assumed error rates (data/trial/architecture_bakeoff.py site); 4 of the last 5 asks 1 in 60."""
     vs = [base(), *months(3), visit(LAST, **DARK), visit(LAST + timedelta(days=30), **PARTIAL)]
     r = assess(work(*vs), AS_OF)
+    assert codes(r) == [] and "too dark" in notes(r)
+
+
+def test_four_of_the_last_five_videos_unusable_is_asked():
+    vs = [base(), *months(2), visit(LAST, **DARK), visit(LAST + timedelta(days=30), **PARTIAL),
+          visit(LAST + timedelta(days=45)), visit(LAST + timedelta(days=60), **DARK),
+          visit(LAST + timedelta(days=62), **DARK)]
+    r = assess(work(*vs), AS_OF)
     assert codes(r) == ["SITE_VIDEOS_UNUSABLE"]
-    assert "too dark" in r.findings[0].text and "viewpoints not filmed" in r.findings[0].text
+    assert "4 of the last 5" in r.findings[0].text
+
+
+def test_every_video_so_far_unusable_is_asked_from_the_third():
+    """A dodger who films three bad videos and stops is not left waiting for a fifth."""
+    first = visit(date(2026, 2, 1), kind="baseline", claim=None, quality_ok=False,
+                  views_match_site=None, change=None, claim_verdict=None, viewpoints_expected=0,
+                  viewpoints_matched=0)
+    vs = [first, visit(date(2026, 3, 1), **DARK), visit(date(2026, 4, 1), **PARTIAL)]
+    assert codes(assess(work(*vs), AS_OF)) == ["SITE_VIDEOS_UNUSABLE"]
+    assert codes(assess(work(*vs[:2]), AS_OF)) == []
 
 
 def test_two_unusable_then_a_good_one_is_not_asked():
@@ -86,12 +106,44 @@ def test_readings_that_were_never_made_say_nothing():
     assert unusable(v) is None
 
 
-def test_views_that_never_match_while_the_gps_is_at_the_site_twice_is_asked():
-    """The way round "filmed elsewhere" (needs GPS and views both): fake the GPS inside. Two
-    videos in a row whose views do not match the site are asked about, with a lower weight."""
+def test_views_that_never_match_while_the_gps_is_at_the_site_are_asked():
+    """The way round "filmed elsewhere" (needs GPS and views both): fake the GPS inside. Videos
+    whose views do not match the site are unusable; 4 of the last 5 are asked."""
     off = {"views_match_site": False, "viewpoints_matched": 0, "change": "cant_tell"}
-    vs = [base(), *months(2), visit(LAST, **off), visit(LAST + timedelta(days=30), **off)]
+    vs = [base(), *months(2), *[visit(LAST + timedelta(days=20 * k), **off) for k in range(4)]]
     assert codes(assess(work(*vs), AS_OF)) == ["SITE_VIDEOS_UNUSABLE"]
+
+
+def test_filmed_elsewhere_needs_the_gps_far_out_a_near_one_is_unusable():
+    """T137: GPS jitter (60-300 m in a village) with views lost in the same video read as "filmed
+    elsewhere" for 1 honest work in 130 a year; it now needs the GPS FAR_M+ out (or a mock
+    location). Filming 200 m away is still caught: those views do not match the site."""
+    near = {"gps_inside": False, "gps_distance_m": 180.0, "views_match_site": False,
+            "viewpoints_matched": 0, "change": "cant_tell"}
+    r = assess(work(base(), *months(2), visit(LAST, **near)), AS_OF)
+    assert codes(r) == [] and "views do not match the site" in notes(r)
+    vs = [base(), *months(2), *[visit(LAST + timedelta(days=20 * k), **near) for k in range(4)]]
+    assert codes(assess(work(*vs), AS_OF)) == ["SITE_VIDEOS_UNUSABLE"]
+    far = dict(near, gps_distance_m=900.0)
+    assert codes(assess(work(base(), *months(2), visit(LAST, **far)), AS_OF)) == \
+        ["NOT_FILMED_AT_THIS_SITE"]
+    unknown = dict(near, gps_distance_m=None)          # an older reading without the distance
+    assert codes(assess(work(base(), *months(2), visit(LAST, **unknown)), AS_OF)) == \
+        ["NOT_FILMED_AT_THIS_SITE"]
+
+
+def test_recorded_complete_without_a_final_video_is_asked_after_the_grace():
+    """T137: two honest months filmed, then "complete" with no final video was only a note."""
+    done = AS_OF - timedelta(days=40)
+    vs = [base(), *months(2)]
+    r = assess(work(*vs, status="COMPLETED", completed_date=done.isoformat()), AS_OF)
+    assert codes(r) == ["COMPLETE_NOT_FILMED"]
+    soon = AS_OF - timedelta(days=10)                   # inside the grace: a note
+    r = assess(work(*vs, status="COMPLETED", completed_date=soon.isoformat()), AS_OF)
+    assert codes(r) == []
+    final = visit(done + timedelta(days=5), kind="final", complete_shown=True)
+    r = assess(work(*vs, final, status="COMPLETED", completed_date=done.isoformat()), AS_OF)
+    assert codes(r) == []
 
 
 def test_complete_with_not_one_video_is_asked_at_once():

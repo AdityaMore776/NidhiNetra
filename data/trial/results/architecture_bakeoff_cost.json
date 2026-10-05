@@ -1,0 +1,1343 @@
+{
+ "target_fpr": 0.01,
+ "lines": {
+  "gap": 0.15,
+  "gap_cal": 0.14574649636181783,
+  "z_ivw": 3.335766049380094,
+  "peer_gap": 2.768792034756508,
+  "peer_ivw": 0.5151610487119719,
+  "iforest": 0.5742947141214819,
+  "line_stricter_only": 3.5,
+  "line_band_12_20": 2.5,
+  "cur_or_peer_gap": 3.434382878525123,
+  "cur_or_peer_ivw": 0.5797690635636329
+ },
+ "current_rule_pooled_fpr": 0.008333333333333333,
+ "forms_per_cell": 500,
+ "rows": [
+  {
+   "scenario": "district 5%",
+   "honest_asked": {
+    "gap": 0.0,
+    "gap_cal": 0.0,
+    "z_ivw": 0.0,
+    "peer_gap": 0.002,
+    "peer_ivw": 0.0,
+    "iforest": 0.002,
+    "cur_or_peer_gap": 0.0,
+    "cur_or_peer_ivw": 0.0,
+    "line_stricter_only": 0.0,
+    "line_band_12_20": 0.0
+   },
+   "caught": {
+    "every line +10%": {
+     "gap": 0.014,
+     "gap_cal": 0.026,
+     "z_ivw": 0.912,
+     "peer_gap": 0.942,
+     "peer_ivw": 0.024,
+     "iforest": 0.888,
+     "cur_or_peer_gap": 0.836,
+     "cur_or_peer_ivw": 0.014,
+     "line_stricter_only": 0.79,
+     "line_band_12_20": 0.204
+    },
+    "every line +15%": {
+     "gap": 0.504,
+     "gap_cal": 0.58,
+     "z_ivw": 1.0,
+     "peer_gap": 1.0,
+     "peer_ivw": 0.538,
+     "iforest": 0.998,
+     "cur_or_peer_gap": 1.0,
+     "cur_or_peer_ivw": 0.508,
+     "line_stricter_only": 1.0,
+     "line_band_12_20": 0.884
+    },
+    "every line +20%": {
+     "gap": 0.976,
+     "gap_cal": 0.988,
+     "z_ivw": 1.0,
+     "peer_gap": 1.0,
+     "peer_ivw": 0.97,
+     "iforest": 1.0,
+     "cur_or_peer_gap": 1.0,
+     "cur_or_peer_ivw": 0.978,
+     "line_stricter_only": 1.0,
+     "line_band_12_20": 1.0
+    },
+    "every line +30%": {
+     "gap": 1.0,
+     "gap_cal": 1.0,
+     "z_ivw": 1.0,
+     "peer_gap": 1.0,
+     "peer_ivw": 1.0,
+     "iforest": 1.0,
+     "cur_or_peer_gap": 1.0,
+     "cur_or_peer_ivw": 1.0,
+     "line_stricter_only": 1.0,
+     "line_band_12_20": 1.0
+    },
+    "cement rate x2": {
+     "gap": 1.0,
+     "gap_cal": 1.0,
+     "z_ivw": 0.564,
+     "peer_gap": 1.0,
+     "peer_ivw": 0.0,
+     "iforest": 0.16,
+     "cur_or_peer_gap": 1.0,
+     "cur_or_peer_ivw": 1.0,
+     "line_stricter_only": 1.0,
+     "line_band_12_20": 1.0
+    },
+    "cement and aggregate +40%": {
+     "gap": 0.958,
+     "gap_cal": 0.966,
+     "z_ivw": 0.968,
+     "peer_gap": 1.0,
+     "peer_ivw": 0.07,
+     "iforest": 0.47,
+     "cur_or_peer_gap": 1.0,
+     "cur_or_peer_ivw": 0.958,
+     "line_stricter_only": 1.0,
+     "line_band_12_20": 1.0
+    },
+    "sand rate x2": {
+     "gap": 0.006,
+     "gap_cal": 0.016,
+     "z_ivw": 0.872,
+     "peer_gap": 0.926,
+     "peer_ivw": 0.016,
+     "iforest": 0.174,
+     "cur_or_peer_gap": 0.818,
+     "cur_or_peer_ivw": 0.006,
+     "line_stricter_only": 0.756,
+     "line_band_12_20": 0.162
+    }
+   }
+  },
+  {
+   "scenario": "district 10%",
+   "honest_asked": {
+    "gap": 0.0,
+    "gap_cal": 0.0,
+    "z_ivw": 0.0,
+    "peer_gap": 0.004,
+    "peer_ivw": 0.0,
+    "iforest": 0.01,
+    "cur_or_peer_gap": 0.0,
+    "cur_or_peer_ivw": 0.0,
+    "line_stricter_only": 0.0,
+    "line_band_12_20": 0.0
+   },
+   "caught": {
+    "every line +10%": {
+     "gap": 0.12,
+     "gap_cal": 0.13,
+     "z_ivw": 0.114,
+     "peer_gap": 0.32,
+     "peer_ivw": 0.21,
+     "iforest": 0.174,
+     "cur_or_peer_gap": 0.154,
+     "cur_or_peer_ivw": 0.15,
+     "line_stricter_only": 0.15,
+     "line_band_12_20": 0.25
+    },
+    "every line +15%": {
+     "gap": 0.376,
+     "gap_cal": 0.416,
+     "z_ivw": 0.39,
+     "peer_gap": 0.754,
+     "peer_ivw": 0.62,
+     "iforest": 0.508,
+     "cur_or_peer_gap": 0.51,
+     "cur_or_peer_ivw": 0.464,
+     "line_stricter_only": 0.478,
+     "line_band_12_20": 0.672
+    },
+    "every line +20%": {
+     "gap": 0.786,
+     "gap_cal": 0.818,
+     "z_ivw": 0.778,
+     "peer_gap": 0.944,
+     "peer_ivw": 0.898,
+     "iforest": 0.784,
+     "cur_or_peer_gap": 0.844,
+     "cur_or_peer_ivw": 0.838,
+     "line_stricter_only": 0.838,
+     "line_band_12_20": 0.918
+    },
+    "every line +30%": {
+     "gap": 0.99,
+     "gap_cal": 0.994,
+     "z_ivw": 0.986,
+     "peer_gap": 0.996,
+     "peer_ivw": 0.996,
+     "iforest": 0.99,
+     "cur_or_peer_gap": 0.994,
+     "cur_or_peer_ivw": 0.992,
+     "line_stricter_only": 0.994,
+     "line_band_12_20": 0.996
+    },
+    "cement rate x2": {
+     "gap": 0.966,
+     "gap_cal": 0.968,
+     "z_ivw": 0.624,
+     "peer_gap": 0.99,
+     "peer_ivw": 0.776,
+     "iforest": 0.416,
+     "cur_or_peer_gap": 0.978,
+     "cur_or_peer_ivw": 0.966,
+     "line_stricter_only": 0.974,
+     "line_band_12_20": 0.986
+    },
+    "cement and aggregate +40%": {
+     "gap": 0.756,
+     "gap_cal": 0.78,
+     "z_ivw": 0.296,
+     "peer_gap": 0.932,
+     "peer_ivw": 0.496,
+     "iforest": 0.434,
+     "cur_or_peer_gap": 0.82,
+     "cur_or_peer_ivw": 0.758,
+     "line_stricter_only": 0.81,
+     "line_band_12_20": 0.89
+    },
+    "sand rate x2": {
+     "gap": 0.088,
+     "gap_cal": 0.11,
+     "z_ivw": 0.01,
+     "peer_gap": 0.31,
+     "peer_ivw": 0.044,
+     "iforest": 0.054,
+     "cur_or_peer_gap": 0.144,
+     "cur_or_peer_ivw": 0.088,
+     "line_stricter_only": 0.13,
+     "line_band_12_20": 0.224
+    }
+   }
+  },
+  {
+   "scenario": "district 15%",
+   "honest_asked": {
+    "gap": 0.03,
+    "gap_cal": 0.032,
+    "z_ivw": 0.0,
+    "peer_gap": 0.008,
+    "peer_ivw": 0.008,
+    "iforest": 0.006,
+    "cur_or_peer_gap": 0.03,
+    "cur_or_peer_ivw": 0.03,
+    "line_stricter_only": 0.03,
+    "line_band_12_20": 0.018
+   },
+   "caught": {
+    "every line +10%": {
+     "gap": 0.326,
+     "gap_cal": 0.342,
+     "z_ivw": 0.03,
+     "peer_gap": 0.202,
+     "peer_ivw": 0.292,
+     "iforest": 0.054,
+     "cur_or_peer_gap": 0.326,
+     "cur_or_peer_ivw": 0.342,
+     "line_stricter_only": 0.326,
+     "line_band_12_20": 0.256
+    },
+    "every line +15%": {
+     "gap": 0.538,
+     "gap_cal": 0.57,
+     "z_ivw": 0.122,
+     "peer_gap": 0.42,
+     "peer_ivw": 0.516,
+     "iforest": 0.13,
+     "cur_or_peer_gap": 0.538,
+     "cur_or_peer_ivw": 0.548,
+     "line_stricter_only": 0.538,
+     "line_band_12_20": 0.482
+    },
+    "every line +20%": {
+     "gap": 0.784,
+     "gap_cal": 0.802,
+     "z_ivw": 0.326,
+     "peer_gap": 0.646,
+     "peer_ivw": 0.782,
+     "iforest": 0.31,
+     "cur_or_peer_gap": 0.784,
+     "cur_or_peer_ivw": 0.79,
+     "line_stricter_only": 0.784,
+     "line_band_12_20": 0.724
+    },
+    "every line +30%": {
+     "gap": 0.978,
+     "gap_cal": 0.978,
+     "z_ivw": 0.782,
+     "peer_gap": 0.95,
+     "peer_ivw": 0.984,
+     "iforest": 0.742,
+     "cur_or_peer_gap": 0.978,
+     "cur_or_peer_ivw": 0.984,
+     "line_stricter_only": 0.978,
+     "line_band_12_20": 0.97
+    },
+    "cement rate x2": {
+     "gap": 0.926,
+     "gap_cal": 0.932,
+     "z_ivw": 0.216,
+     "peer_gap": 0.852,
+     "peer_ivw": 0.614,
+     "iforest": 0.066,
+     "cur_or_peer_gap": 0.926,
+     "cur_or_peer_ivw": 0.926,
+     "line_stricter_only": 0.926,
+     "line_band_12_20": 0.908
+    },
+    "cement and aggregate +40%": {
+     "gap": 0.762,
+     "gap_cal": 0.78,
+     "z_ivw": 0.154,
+     "peer_gap": 0.606,
+     "peer_ivw": 0.558,
+     "iforest": 0.2,
+     "cur_or_peer_gap": 0.762,
+     "cur_or_peer_ivw": 0.762,
+     "line_stricter_only": 0.762,
+     "line_band_12_20": 0.702
+    },
+    "sand rate x2": {
+     "gap": 0.302,
+     "gap_cal": 0.316,
+     "z_ivw": 0.062,
+     "peer_gap": 0.164,
+     "peer_ivw": 0.44,
+     "iforest": 0.152,
+     "cur_or_peer_gap": 0.302,
+     "cur_or_peer_ivw": 0.386,
+     "line_stricter_only": 0.302,
+     "line_band_12_20": 0.224
+    }
+   }
+  },
+  {
+   "scenario": "district mixed",
+   "honest_asked": {
+    "gap": 0.0,
+    "gap_cal": 0.0,
+    "z_ivw": 0.0,
+    "peer_gap": 0.004,
+    "peer_ivw": 0.0,
+    "iforest": 0.002,
+    "cur_or_peer_gap": 0.0,
+    "cur_or_peer_ivw": 0.0,
+    "line_stricter_only": 0.0,
+    "line_band_12_20": 0.0
+   },
+   "caught": {
+    "every line +10%": {
+     "gap": 0.12,
+     "gap_cal": 0.146,
+     "z_ivw": 0.438,
+     "peer_gap": 0.496,
+     "peer_ivw": 0.242,
+     "iforest": 0.186,
+     "cur_or_peer_gap": 0.268,
+     "cur_or_peer_ivw": 0.164,
+     "line_stricter_only": 0.262,
+     "line_band_12_20": 0.342
+    },
+    "every line +15%": {
+     "gap": 0.506,
+     "gap_cal": 0.536,
+     "z_ivw": 0.918,
+     "peer_gap": 0.884,
+     "peer_ivw": 0.764,
+     "iforest": 0.482,
+     "cur_or_peer_gap": 0.718,
+     "cur_or_peer_ivw": 0.652,
+     "line_stricter_only": 0.7,
+     "line_band_12_20": 0.768
+    },
+    "every line +20%": {
+     "gap": 0.886,
+     "gap_cal": 0.906,
+     "z_ivw": 0.996,
+     "peer_gap": 0.986,
+     "peer_ivw": 0.986,
+     "iforest": 0.78,
+     "cur_or_peer_gap": 0.962,
+     "cur_or_peer_ivw": 0.956,
+     "line_stricter_only": 0.952,
+     "line_band_12_20": 0.97
+    },
+    "every line +30%": {
+     "gap": 1.0,
+     "gap_cal": 1.0,
+     "z_ivw": 1.0,
+     "peer_gap": 1.0,
+     "peer_ivw": 1.0,
+     "iforest": 0.976,
+     "cur_or_peer_gap": 1.0,
+     "cur_or_peer_ivw": 1.0,
+     "line_stricter_only": 1.0,
+     "line_band_12_20": 1.0
+    },
+    "cement rate x2": {
+     "gap": 0.998,
+     "gap_cal": 0.998,
+     "z_ivw": 1.0,
+     "peer_gap": 1.0,
+     "peer_ivw": 1.0,
+     "iforest": 0.016,
+     "cur_or_peer_gap": 1.0,
+     "cur_or_peer_ivw": 1.0,
+     "line_stricter_only": 1.0,
+     "line_band_12_20": 1.0
+    },
+    "cement and aggregate +40%": {
+     "gap": 0.874,
+     "gap_cal": 0.896,
+     "z_ivw": 1.0,
+     "peer_gap": 0.982,
+     "peer_ivw": 0.996,
+     "iforest": 0.202,
+     "cur_or_peer_gap": 0.952,
+     "cur_or_peer_ivw": 0.986,
+     "line_stricter_only": 0.948,
+     "line_band_12_20": 0.97
+    },
+    "sand rate x2": {
+     "gap": 0.154,
+     "gap_cal": 0.17,
+     "z_ivw": 0.0,
+     "peer_gap": 0.488,
+     "peer_ivw": 0.0,
+     "iforest": 0.068,
+     "cur_or_peer_gap": 0.278,
+     "cur_or_peer_ivw": 0.154,
+     "line_stricter_only": 0.274,
+     "line_band_12_20": 0.338
+    }
+   }
+  },
+  {
+   "scenario": "district 5% +carriage 10%",
+   "honest_asked": {
+    "gap": 0.002,
+    "gap_cal": 0.002,
+    "z_ivw": 0.012,
+    "peer_gap": 0.02,
+    "peer_ivw": 0.0,
+    "iforest": 0.038,
+    "cur_or_peer_gap": 0.004,
+    "cur_or_peer_ivw": 0.002,
+    "line_stricter_only": 0.004,
+    "line_band_12_20": 0.014
+   },
+   "caught": {
+    "every line +10%": {
+     "gap": 0.15,
+     "gap_cal": 0.172,
+     "z_ivw": 0.61,
+     "peer_gap": 0.366,
+     "peer_ivw": 0.184,
+     "iforest": 0.5,
+     "cur_or_peer_gap": 0.2,
+     "cur_or_peer_ivw": 0.19,
+     "line_stricter_only": 0.19,
+     "line_band_12_20": 0.318
+    },
+    "every line +15%": {
+     "gap": 0.46,
+     "gap_cal": 0.49,
+     "z_ivw": 0.938,
+     "peer_gap": 0.71,
+     "peer_ivw": 0.658,
+     "iforest": 0.868,
+     "cur_or_peer_gap": 0.54,
+     "cur_or_peer_ivw": 0.61,
+     "line_stricter_only": 0.524,
+     "line_band_12_20": 0.66
+    },
+    "every line +20%": {
+     "gap": 0.774,
+     "gap_cal": 0.79,
+     "z_ivw": 0.996,
+     "peer_gap": 0.938,
+     "peer_ivw": 0.962,
+     "iforest": 0.99,
+     "cur_or_peer_gap": 0.85,
+     "cur_or_peer_ivw": 0.924,
+     "line_stricter_only": 0.828,
+     "line_band_12_20": 0.914
+    },
+    "every line +30%": {
+     "gap": 0.996,
+     "gap_cal": 0.996,
+     "z_ivw": 1.0,
+     "peer_gap": 1.0,
+     "peer_ivw": 1.0,
+     "iforest": 1.0,
+     "cur_or_peer_gap": 0.996,
+     "cur_or_peer_ivw": 1.0,
+     "line_stricter_only": 0.996,
+     "line_band_12_20": 1.0
+    },
+    "cement rate x2": {
+     "gap": 0.99,
+     "gap_cal": 0.992,
+     "z_ivw": 0.886,
+     "peer_gap": 1.0,
+     "peer_ivw": 0.472,
+     "iforest": 0.184,
+     "cur_or_peer_gap": 0.992,
+     "cur_or_peer_ivw": 0.99,
+     "line_stricter_only": 0.992,
+     "line_band_12_20": 1.0
+    },
+    "cement and aggregate +40%": {
+     "gap": 0.736,
+     "gap_cal": 0.776,
+     "z_ivw": 0.388,
+     "peer_gap": 0.926,
+     "peer_ivw": 0.038,
+     "iforest": 0.352,
+     "cur_or_peer_gap": 0.824,
+     "cur_or_peer_ivw": 0.736,
+     "line_stricter_only": 0.804,
+     "line_band_12_20": 0.898
+    },
+    "sand rate x2": {
+     "gap": 0.154,
+     "gap_cal": 0.172,
+     "z_ivw": 0.062,
+     "peer_gap": 0.346,
+     "peer_ivw": 0.004,
+     "iforest": 0.052,
+     "cur_or_peer_gap": 0.204,
+     "cur_or_peer_ivw": 0.154,
+     "line_stricter_only": 0.192,
+     "line_band_12_20": 0.302
+    }
+   }
+  },
+  {
+   "scenario": "district 10% +carriage 10%",
+   "honest_asked": {
+    "gap": 0.0,
+    "gap_cal": 0.002,
+    "z_ivw": 0.0,
+    "peer_gap": 0.0,
+    "peer_ivw": 0.006,
+    "iforest": 0.004,
+    "cur_or_peer_gap": 0.0,
+    "cur_or_peer_ivw": 0.002,
+    "line_stricter_only": 0.0,
+    "line_band_12_20": 0.004
+   },
+   "caught": {
+    "every line +10%": {
+     "gap": 0.202,
+     "gap_cal": 0.226,
+     "z_ivw": 0.134,
+     "peer_gap": 0.198,
+     "peer_ivw": 0.27,
+     "iforest": 0.134,
+     "cur_or_peer_gap": 0.202,
+     "cur_or_peer_ivw": 0.244,
+     "line_stricter_only": 0.202,
+     "line_band_12_20": 0.27
+    },
+    "every line +15%": {
+     "gap": 0.472,
+     "gap_cal": 0.498,
+     "z_ivw": 0.408,
+     "peer_gap": 0.47,
+     "peer_ivw": 0.58,
+     "iforest": 0.374,
+     "cur_or_peer_gap": 0.472,
+     "cur_or_peer_ivw": 0.54,
+     "line_stricter_only": 0.472,
+     "line_band_12_20": 0.57
+    },
+    "every line +20%": {
+     "gap": 0.72,
+     "gap_cal": 0.734,
+     "z_ivw": 0.694,
+     "peer_gap": 0.718,
+     "peer_ivw": 0.814,
+     "iforest": 0.64,
+     "cur_or_peer_gap": 0.72,
+     "cur_or_peer_ivw": 0.776,
+     "line_stricter_only": 0.72,
+     "line_band_12_20": 0.782
+    },
+    "every line +30%": {
+     "gap": 0.962,
+     "gap_cal": 0.968,
+     "z_ivw": 0.97,
+     "peer_gap": 0.962,
+     "peer_ivw": 0.994,
+     "iforest": 0.948,
+     "cur_or_peer_gap": 0.962,
+     "cur_or_peer_ivw": 0.978,
+     "line_stricter_only": 0.962,
+     "line_band_12_20": 0.98
+    },
+    "cement rate x2": {
+     "gap": 0.938,
+     "gap_cal": 0.942,
+     "z_ivw": 0.42,
+     "peer_gap": 0.938,
+     "peer_ivw": 0.584,
+     "iforest": 0.112,
+     "cur_or_peer_gap": 0.938,
+     "cur_or_peer_ivw": 0.938,
+     "line_stricter_only": 0.938,
+     "line_band_12_20": 0.954
+    },
+    "cement and aggregate +40%": {
+     "gap": 0.692,
+     "gap_cal": 0.714,
+     "z_ivw": 0.17,
+     "peer_gap": 0.692,
+     "peer_ivw": 0.324,
+     "iforest": 0.258,
+     "cur_or_peer_gap": 0.692,
+     "cur_or_peer_ivw": 0.692,
+     "line_stricter_only": 0.692,
+     "line_band_12_20": 0.76
+    },
+    "sand rate x2": {
+     "gap": 0.202,
+     "gap_cal": 0.222,
+     "z_ivw": 0.08,
+     "peer_gap": 0.204,
+     "peer_ivw": 0.176,
+     "iforest": 0.096,
+     "cur_or_peer_gap": 0.202,
+     "cur_or_peer_ivw": 0.222,
+     "line_stricter_only": 0.202,
+     "line_band_12_20": 0.27
+    }
+   }
+  },
+  {
+   "scenario": "district mixed +carriage 10%",
+   "honest_asked": {
+    "gap": 0.018,
+    "gap_cal": 0.02,
+    "z_ivw": 0.0,
+    "peer_gap": 0.018,
+    "peer_ivw": 0.0,
+    "iforest": 0.006,
+    "cur_or_peer_gap": 0.018,
+    "cur_or_peer_ivw": 0.018,
+    "line_stricter_only": 0.018,
+    "line_band_12_20": 0.024
+   },
+   "caught": {
+    "every line +10%": {
+     "gap": 0.314,
+     "gap_cal": 0.34,
+     "z_ivw": 0.36,
+     "peer_gap": 0.304,
+     "peer_ivw": 0.162,
+     "iforest": 0.31,
+     "cur_or_peer_gap": 0.314,
+     "cur_or_peer_ivw": 0.328,
+     "line_stricter_only": 0.314,
+     "line_band_12_20": 0.384
+    },
+    "every line +15%": {
+     "gap": 0.584,
+     "gap_cal": 0.61,
+     "z_ivw": 0.842,
+     "peer_gap": 0.56,
+     "peer_ivw": 0.668,
+     "iforest": 0.642,
+     "cur_or_peer_gap": 0.584,
+     "cur_or_peer_ivw": 0.66,
+     "line_stricter_only": 0.584,
+     "line_band_12_20": 0.654
+    },
+    "every line +20%": {
+     "gap": 0.838,
+     "gap_cal": 0.854,
+     "z_ivw": 0.986,
+     "peer_gap": 0.83,
+     "peer_ivw": 0.954,
+     "iforest": 0.892,
+     "cur_or_peer_gap": 0.838,
+     "cur_or_peer_ivw": 0.942,
+     "line_stricter_only": 0.838,
+     "line_band_12_20": 0.888
+    },
+    "every line +30%": {
+     "gap": 0.99,
+     "gap_cal": 0.99,
+     "z_ivw": 1.0,
+     "peer_gap": 0.99,
+     "peer_ivw": 1.0,
+     "iforest": 0.99,
+     "cur_or_peer_gap": 0.99,
+     "cur_or_peer_ivw": 1.0,
+     "line_stricter_only": 0.99,
+     "line_band_12_20": 0.99
+    },
+    "cement rate x2": {
+     "gap": 0.99,
+     "gap_cal": 0.99,
+     "z_ivw": 1.0,
+     "peer_gap": 0.99,
+     "peer_ivw": 1.0,
+     "iforest": 0.102,
+     "cur_or_peer_gap": 0.99,
+     "cur_or_peer_ivw": 1.0,
+     "line_stricter_only": 0.99,
+     "line_band_12_20": 0.99
+    },
+    "cement and aggregate +40%": {
+     "gap": 0.84,
+     "gap_cal": 0.844,
+     "z_ivw": 0.99,
+     "peer_gap": 0.83,
+     "peer_ivw": 0.99,
+     "iforest": 0.366,
+     "cur_or_peer_gap": 0.84,
+     "cur_or_peer_ivw": 0.99,
+     "line_stricter_only": 0.84,
+     "line_band_12_20": 0.87
+    },
+    "sand rate x2": {
+     "gap": 0.304,
+     "gap_cal": 0.326,
+     "z_ivw": 0.0,
+     "peer_gap": 0.3,
+     "peer_ivw": 0.0,
+     "iforest": 0.134,
+     "cur_or_peer_gap": 0.304,
+     "cur_or_peer_ivw": 0.304,
+     "line_stricter_only": 0.304,
+     "line_band_12_20": 0.362
+    }
+   }
+  },
+  {
+   "scenario": "district 5% +site 5%",
+   "honest_asked": {
+    "gap": 0.004,
+    "gap_cal": 0.006,
+    "z_ivw": 0.028,
+    "peer_gap": 0.004,
+    "peer_ivw": 0.01,
+    "iforest": 0.026,
+    "cur_or_peer_gap": 0.004,
+    "cur_or_peer_ivw": 0.004,
+    "line_stricter_only": 0.004,
+    "line_band_12_20": 0.004
+   },
+   "caught": {
+    "every line +10%": {
+     "gap": 0.214,
+     "gap_cal": 0.216,
+     "z_ivw": 0.438,
+     "peer_gap": 0.154,
+     "peer_ivw": 0.312,
+     "iforest": 0.428,
+     "cur_or_peer_gap": 0.214,
+     "cur_or_peer_ivw": 0.23,
+     "line_stricter_only": 0.214,
+     "line_band_12_20": 0.216
+    },
+    "every line +15%": {
+     "gap": 0.496,
+     "gap_cal": 0.526,
+     "z_ivw": 0.75,
+     "peer_gap": 0.422,
+     "peer_ivw": 0.66,
+     "iforest": 0.762,
+     "cur_or_peer_gap": 0.496,
+     "cur_or_peer_ivw": 0.542,
+     "line_stricter_only": 0.496,
+     "line_band_12_20": 0.516
+    },
+    "every line +20%": {
+     "gap": 0.802,
+     "gap_cal": 0.814,
+     "z_ivw": 0.926,
+     "peer_gap": 0.726,
+     "peer_ivw": 0.88,
+     "iforest": 0.94,
+     "cur_or_peer_gap": 0.802,
+     "cur_or_peer_ivw": 0.824,
+     "line_stricter_only": 0.802,
+     "line_band_12_20": 0.804
+    },
+    "every line +30%": {
+     "gap": 0.992,
+     "gap_cal": 0.996,
+     "z_ivw": 1.0,
+     "peer_gap": 0.986,
+     "peer_ivw": 1.0,
+     "iforest": 1.0,
+     "cur_or_peer_gap": 0.992,
+     "cur_or_peer_ivw": 0.996,
+     "line_stricter_only": 0.992,
+     "line_band_12_20": 0.994
+    },
+    "cement rate x2": {
+     "gap": 0.964,
+     "gap_cal": 0.974,
+     "z_ivw": 0.664,
+     "peer_gap": 0.942,
+     "peer_ivw": 0.528,
+     "iforest": 0.124,
+     "cur_or_peer_gap": 0.964,
+     "cur_or_peer_ivw": 0.964,
+     "line_stricter_only": 0.964,
+     "line_band_12_20": 0.97
+    },
+    "cement and aggregate +40%": {
+     "gap": 0.776,
+     "gap_cal": 0.792,
+     "z_ivw": 0.724,
+     "peer_gap": 0.7,
+     "peer_ivw": 0.6,
+     "iforest": 0.58,
+     "cur_or_peer_gap": 0.776,
+     "cur_or_peer_ivw": 0.776,
+     "line_stricter_only": 0.776,
+     "line_band_12_20": 0.786
+    },
+    "sand rate x2": {
+     "gap": 0.194,
+     "gap_cal": 0.212,
+     "z_ivw": 0.348,
+     "peer_gap": 0.13,
+     "peer_ivw": 0.238,
+     "iforest": 0.06,
+     "cur_or_peer_gap": 0.194,
+     "cur_or_peer_ivw": 0.198,
+     "line_stricter_only": 0.194,
+     "line_band_12_20": 0.204
+    }
+   }
+  },
+  {
+   "scenario": "district 10% +site 5%",
+   "honest_asked": {
+    "gap": 0.028,
+    "gap_cal": 0.034,
+    "z_ivw": 0.022,
+    "peer_gap": 0.06,
+    "peer_ivw": 0.02,
+    "iforest": 0.016,
+    "cur_or_peer_gap": 0.028,
+    "cur_or_peer_ivw": 0.032,
+    "line_stricter_only": 0.028,
+    "line_band_12_20": 0.064
+   },
+   "caught": {
+    "every line +10%": {
+     "gap": 0.298,
+     "gap_cal": 0.318,
+     "z_ivw": 0.312,
+     "peer_gap": 0.41,
+     "peer_ivw": 0.304,
+     "iforest": 0.218,
+     "cur_or_peer_gap": 0.298,
+     "cur_or_peer_ivw": 0.324,
+     "line_stricter_only": 0.298,
+     "line_band_12_20": 0.424
+    },
+    "every line +15%": {
+     "gap": 0.534,
+     "gap_cal": 0.556,
+     "z_ivw": 0.55,
+     "peer_gap": 0.67,
+     "peer_ivw": 0.548,
+     "iforest": 0.46,
+     "cur_or_peer_gap": 0.534,
+     "cur_or_peer_ivw": 0.58,
+     "line_stricter_only": 0.534,
+     "line_band_12_20": 0.688
+    },
+    "every line +20%": {
+     "gap": 0.78,
+     "gap_cal": 0.794,
+     "z_ivw": 0.792,
+     "peer_gap": 0.872,
+     "peer_ivw": 0.778,
+     "iforest": 0.694,
+     "cur_or_peer_gap": 0.78,
+     "cur_or_peer_ivw": 0.814,
+     "line_stricter_only": 0.78,
+     "line_band_12_20": 0.878
+    },
+    "every line +30%": {
+     "gap": 0.974,
+     "gap_cal": 0.978,
+     "z_ivw": 0.978,
+     "peer_gap": 0.99,
+     "peer_ivw": 0.978,
+     "iforest": 0.958,
+     "cur_or_peer_gap": 0.974,
+     "cur_or_peer_ivw": 0.982,
+     "line_stricter_only": 0.974,
+     "line_band_12_20": 0.992
+    },
+    "cement rate x2": {
+     "gap": 0.934,
+     "gap_cal": 0.942,
+     "z_ivw": 0.268,
+     "peer_gap": 0.966,
+     "peer_ivw": 0.26,
+     "iforest": 0.066,
+     "cur_or_peer_gap": 0.934,
+     "cur_or_peer_ivw": 0.934,
+     "line_stricter_only": 0.934,
+     "line_band_12_20": 0.966
+    },
+    "cement and aggregate +40%": {
+     "gap": 0.764,
+     "gap_cal": 0.772,
+     "z_ivw": 0.178,
+     "peer_gap": 0.854,
+     "peer_ivw": 0.174,
+     "iforest": 0.112,
+     "cur_or_peer_gap": 0.764,
+     "cur_or_peer_ivw": 0.764,
+     "line_stricter_only": 0.764,
+     "line_band_12_20": 0.862
+    },
+    "sand rate x2": {
+     "gap": 0.288,
+     "gap_cal": 0.3,
+     "z_ivw": 0.644,
+     "peer_gap": 0.384,
+     "peer_ivw": 0.638,
+     "iforest": 0.052,
+     "cur_or_peer_gap": 0.288,
+     "cur_or_peer_ivw": 0.546,
+     "line_stricter_only": 0.288,
+     "line_band_12_20": 0.402
+    }
+   }
+  },
+  {
+   "scenario": "scarce 10% +carriage 10%",
+   "honest_asked": {
+    "gap": 0.0,
+    "gap_cal": 0.002,
+    "z_ivw": 0.002,
+    "peer_gap": 0.0,
+    "peer_ivw": 0.0,
+    "iforest": 0.0,
+    "cur_or_peer_gap": 0.0,
+    "cur_or_peer_ivw": 0.0,
+    "line_stricter_only": 0.0,
+    "line_band_12_20": 0.0
+   },
+   "caught": {
+    "every line +10%": {
+     "gap": 0.094,
+     "gap_cal": 0.106,
+     "z_ivw": 0.092,
+     "peer_gap": 0.094,
+     "peer_ivw": 0.094,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.094,
+     "cur_or_peer_ivw": 0.094,
+     "line_stricter_only": 0.094,
+     "line_band_12_20": 0.094
+    },
+    "every line +15%": {
+     "gap": 0.304,
+     "gap_cal": 0.328,
+     "z_ivw": 0.332,
+     "peer_gap": 0.304,
+     "peer_ivw": 0.304,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.304,
+     "cur_or_peer_ivw": 0.304,
+     "line_stricter_only": 0.304,
+     "line_band_12_20": 0.304
+    },
+    "every line +20%": {
+     "gap": 0.576,
+     "gap_cal": 0.598,
+     "z_ivw": 0.556,
+     "peer_gap": 0.576,
+     "peer_ivw": 0.576,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.576,
+     "cur_or_peer_ivw": 0.576,
+     "line_stricter_only": 0.576,
+     "line_band_12_20": 0.576
+    },
+    "every line +30%": {
+     "gap": 0.932,
+     "gap_cal": 0.934,
+     "z_ivw": 0.91,
+     "peer_gap": 0.932,
+     "peer_ivw": 0.932,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.932,
+     "cur_or_peer_ivw": 0.932,
+     "line_stricter_only": 0.932,
+     "line_band_12_20": 0.932
+    },
+    "cement rate x2": {
+     "gap": 0.866,
+     "gap_cal": 0.88,
+     "z_ivw": 0.158,
+     "peer_gap": 0.866,
+     "peer_ivw": 0.866,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.866,
+     "cur_or_peer_ivw": 0.866,
+     "line_stricter_only": 0.866,
+     "line_band_12_20": 0.866
+    },
+    "cement and aggregate +40%": {
+     "gap": 0.556,
+     "gap_cal": 0.584,
+     "z_ivw": 0.146,
+     "peer_gap": 0.556,
+     "peer_ivw": 0.556,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.556,
+     "cur_or_peer_ivw": 0.556,
+     "line_stricter_only": 0.556,
+     "line_band_12_20": 0.556
+    },
+    "sand rate x2": {
+     "gap": 0.084,
+     "gap_cal": 0.09,
+     "z_ivw": 0.158,
+     "peer_gap": 0.084,
+     "peer_ivw": 0.084,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.084,
+     "cur_or_peer_ivw": 0.084,
+     "line_stricter_only": 0.084,
+     "line_band_12_20": 0.084
+    }
+   }
+  },
+  {
+   "scenario": "district 10%, 3 noisy agencies",
+   "honest_asked": {
+    "gap": 0.014,
+    "gap_cal": 0.018,
+    "z_ivw": 0.0,
+    "peer_gap": 0.0,
+    "peer_ivw": 0.004,
+    "iforest": 0.0,
+    "cur_or_peer_gap": 0.014,
+    "cur_or_peer_ivw": 0.014,
+    "line_stricter_only": 0.014,
+    "line_band_12_20": 0.0
+   },
+   "caught": {
+    "every line +10%": {
+     "gap": 0.312,
+     "gap_cal": 0.324,
+     "z_ivw": 0.02,
+     "peer_gap": 0.034,
+     "peer_ivw": 0.144,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.312,
+     "cur_or_peer_ivw": 0.312,
+     "line_stricter_only": 0.312,
+     "line_band_12_20": 0.118
+    },
+    "every line +15%": {
+     "gap": 0.606,
+     "gap_cal": 0.628,
+     "z_ivw": 0.122,
+     "peer_gap": 0.154,
+     "peer_ivw": 0.394,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.606,
+     "cur_or_peer_ivw": 0.612,
+     "line_stricter_only": 0.606,
+     "line_band_12_20": 0.316
+    },
+    "every line +20%": {
+     "gap": 0.848,
+     "gap_cal": 0.86,
+     "z_ivw": 0.322,
+     "peer_gap": 0.366,
+     "peer_ivw": 0.716,
+     "iforest": 0.01,
+     "cur_or_peer_gap": 0.848,
+     "cur_or_peer_ivw": 0.85,
+     "line_stricter_only": 0.848,
+     "line_band_12_20": 0.602
+    },
+    "every line +30%": {
+     "gap": 0.988,
+     "gap_cal": 0.992,
+     "z_ivw": 0.842,
+     "peer_gap": 0.858,
+     "peer_ivw": 0.974,
+     "iforest": 0.144,
+     "cur_or_peer_gap": 0.988,
+     "cur_or_peer_ivw": 0.988,
+     "line_stricter_only": 0.988,
+     "line_band_12_20": 0.946
+    },
+    "cement rate x2": {
+     "gap": 0.976,
+     "gap_cal": 0.98,
+     "z_ivw": 0.012,
+     "peer_gap": 0.72,
+     "peer_ivw": 0.104,
+     "iforest": 0.002,
+     "cur_or_peer_gap": 0.976,
+     "cur_or_peer_ivw": 0.976,
+     "line_stricter_only": 0.976,
+     "line_band_12_20": 0.884
+    },
+    "cement and aggregate +40%": {
+     "gap": 0.82,
+     "gap_cal": 0.838,
+     "z_ivw": 0.006,
+     "peer_gap": 0.35,
+     "peer_ivw": 0.072,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.82,
+     "cur_or_peer_ivw": 0.82,
+     "line_stricter_only": 0.82,
+     "line_band_12_20": 0.582
+    },
+    "sand rate x2": {
+     "gap": 0.3,
+     "gap_cal": 0.324,
+     "z_ivw": 0.004,
+     "peer_gap": 0.042,
+     "peer_ivw": 0.028,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.3,
+     "cur_or_peer_ivw": 0.3,
+     "line_stricter_only": 0.3,
+     "line_band_12_20": 0.106
+    }
+   }
+  },
+  {
+   "scenario": "SoR 10% +carriage 10%",
+   "honest_asked": {
+    "gap": 0.02,
+    "gap_cal": 0.022,
+    "z_ivw": 0.022,
+    "peer_gap": 0.02,
+    "peer_ivw": 0.02,
+    "iforest": 0.0,
+    "cur_or_peer_gap": 0.02,
+    "cur_or_peer_ivw": 0.02,
+    "line_stricter_only": 0.02,
+    "line_band_12_20": 0.02
+   },
+   "caught": {
+    "every line +10%": {
+     "gap": 0.308,
+     "gap_cal": 0.318,
+     "z_ivw": 0.3,
+     "peer_gap": 0.308,
+     "peer_ivw": 0.308,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.308,
+     "cur_or_peer_ivw": 0.308,
+     "line_stricter_only": 0.308,
+     "line_band_12_20": 0.308
+    },
+    "every line +15%": {
+     "gap": 0.558,
+     "gap_cal": 0.586,
+     "z_ivw": 0.544,
+     "peer_gap": 0.558,
+     "peer_ivw": 0.558,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.558,
+     "cur_or_peer_ivw": 0.558,
+     "line_stricter_only": 0.558,
+     "line_band_12_20": 0.558
+    },
+    "every line +20%": {
+     "gap": 0.8,
+     "gap_cal": 0.818,
+     "z_ivw": 0.794,
+     "peer_gap": 0.8,
+     "peer_ivw": 0.8,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.8,
+     "cur_or_peer_ivw": 0.8,
+     "line_stricter_only": 0.8,
+     "line_band_12_20": 0.8
+    },
+    "every line +30%": {
+     "gap": 0.994,
+     "gap_cal": 0.994,
+     "z_ivw": 0.984,
+     "peer_gap": 0.994,
+     "peer_ivw": 0.994,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.994,
+     "cur_or_peer_ivw": 0.994,
+     "line_stricter_only": 0.994,
+     "line_band_12_20": 0.994
+    },
+    "cement rate x2": {
+     "gap": 0.96,
+     "gap_cal": 0.964,
+     "z_ivw": 0.41,
+     "peer_gap": 0.96,
+     "peer_ivw": 0.96,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.96,
+     "cur_or_peer_ivw": 0.96,
+     "line_stricter_only": 0.96,
+     "line_band_12_20": 0.96
+    },
+    "cement and aggregate +40%": {
+     "gap": 0.78,
+     "gap_cal": 0.796,
+     "z_ivw": 0.382,
+     "peer_gap": 0.78,
+     "peer_ivw": 0.78,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.78,
+     "cur_or_peer_ivw": 0.78,
+     "line_stricter_only": 0.78,
+     "line_band_12_20": 0.78
+    },
+    "sand rate x2": {
+     "gap": 0.302,
+     "gap_cal": 0.322,
+     "z_ivw": 0.41,
+     "peer_gap": 0.302,
+     "peer_ivw": 0.302,
+     "iforest": 0.0,
+     "cur_or_peer_gap": 0.302,
+     "cur_or_peer_ivw": 0.302,
+     "line_stricter_only": 0.302,
+     "line_band_12_20": 0.302
+    }
+   }
+  }
+ ],
+ "summary": {
+  "gap": {
+   "worst_honest_asked": 0.03,
+   "mean_honest_asked": 0.009666666666666665,
+   "min_caught_+20%": 0.576,
+   "mean_caught_+20%": 0.7975,
+   "mean_caught_+15%": 0.4948333333333333,
+   "mean_caught_one_line": 0.6444444444444444,
+   "mean_caught_all": 0.6306666666666667,
+   "cells_meeting_target": 1,
+   "decide_ms": 0.0008
+  },
+  "gap_cal": {
+   "worst_honest_asked": 0.034,
+   "mean_honest_asked": 0.011500000000000002,
+   "min_caught_+20%": 0.598,
+   "mean_caught_+20%": 0.8146666666666667,
+   "mean_caught_+15%": 0.527,
+   "mean_caught_one_line": 0.6577777777777778,
+   "mean_caught_all": 0.646,
+   "cells_meeting_target": 2,
+   "decide_ms": 0.0003
+  },
+  "z_ivw": {
+   "worst_honest_asked": 0.028,
+   "mean_honest_asked": 0.007166666666666666,
+   "min_caught_+20%": 0.322,
+   "mean_caught_+20%": 0.7638333333333334,
+   "mean_caught_+15%": 0.5763333333333334,
+   "mean_caught_one_line": 0.39649999999999996,
+   "mean_caught_all": 0.5424761904761904,
+   "cells_meeting_target": 4,
+   "decide_ms": 0.0013
+  },
+  "peer_gap": {
+   "worst_honest_asked": 0.06,
+   "mean_honest_asked": 0.011666666666666665,
+   "min_caught_+20%": 0.366,
+   "mean_caught_+20%": 0.7835,
+   "mean_caught_+15%": 0.5755,
+   "mean_caught_one_line": 0.6697777777777777,
+   "mean_caught_all": 0.665547619047619,
+   "cells_meeting_target": 4,
+   "decide_ms": 0.001
+  },
+  "peer_ivw": {
+   "worst_honest_asked": 0.02,
+   "mean_honest_asked": 0.005666666666666667,
+   "min_caught_+20%": 0.576,
+   "mean_caught_+20%": 0.843,
+   "mean_caught_+15%": 0.5673333333333334,
+   "mean_caught_one_line": 0.4107777777777778,
+   "mean_caught_all": 0.5489285714285714,
+   "cells_meeting_target": 4,
+   "decide_ms": 0.0008
+  },
+  "iforest": {
+   "worst_honest_asked": 0.038,
+   "mean_honest_asked": 0.009166666666666667,
+   "min_caught_+20%": 0.0,
+   "mean_caught_+20%": 0.5866666666666667,
+   "mean_caught_+15%": 0.43533333333333335,
+   "mean_caught_one_line": 0.14066666666666666,
+   "mean_caught_all": 0.34485714285714286,
+   "cells_meeting_target": 1,
+   "decide_ms": 2.3482
+  },
+  "cur_or_peer_gap": {
+   "worst_honest_asked": 0.03,
+   "mean_honest_asked": 0.009833333333333333,
+   "min_caught_+20%": 0.576,
+   "mean_caught_+20%": 0.8170000000000001,
+   "mean_caught_+15%": 0.5716666666666667,
+   "mean_caught_one_line": 0.6813888888888889,
+   "mean_caught_all": 0.6728571428571429,
+   "cells_meeting_target": 2,
+   "decide_ms": 0.0013
+  },
+  "cur_or_peer_ivw": {
+   "worst_honest_asked": 0.032,
+   "mean_honest_asked": 0.010166666666666666,
+   "min_caught_+20%": 0.576,
+   "mean_caught_+20%": 0.839,
+   "mean_caught_+15%": 0.5481666666666667,
+   "mean_caught_one_line": 0.6622777777777777,
+   "mean_caught_all": 0.6551666666666667,
+   "cells_meeting_target": 4,
+   "decide_ms": 0.0009
+  },
+  "line_stricter_only": {
+   "worst_honest_asked": 0.03,
+   "mean_honest_asked": 0.009833333333333333,
+   "min_caught_+20%": 0.576,
+   "mean_caught_+20%": 0.8138333333333333,
+   "mean_caught_+15%": 0.5661666666666666,
+   "mean_caught_one_line": 0.6777777777777777,
+   "mean_caught_all": 0.6692857142857143,
+   "cells_meeting_target": 2,
+   "decide_ms": 0.0004
+  },
+  "line_band_12_20": {
+   "worst_honest_asked": 0.064,
+   "mean_honest_asked": 0.012333333333333333,
+   "min_caught_+20%": 0.576,
+   "mean_caught_+20%": 0.8213333333333334,
+   "mean_caught_+15%": 0.5893333333333334,
+   "mean_caught_one_line": 0.67,
+   "mean_caught_all": 0.6669761904761905,
+   "cells_meeting_target": 4,
+   "decide_ms": 0.0003
+  }
+ }
+}

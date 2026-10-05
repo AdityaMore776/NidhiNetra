@@ -44,6 +44,16 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
+**5 Oct 2026: other agent architectures tested against the current ones (T137).**
+`data/trial/architecture_bakeoff.py` ran the alternatives on the same benchmarks at the same
+false-alarm rate. Switched only what was proven better:
+- Site Progress's video decisions: honest works asked 25.7% → 5.0% a year at assumed error rates,
+  tricks still caught, two more loopholes closed.
+- Duplicate Work's map grid: the same answers, 8–10x faster.
+
+Cost keeps its rule; the alternatives were worse or only better on assumptions. The loop: 85 probes,
+0 FAIL. The dashboard is identical. FINDINGS "T137"; plan `docs/plans/T137-architecture-bakeoff.md`.
+
 **5 Oct 2026: five filings end to end, Site Progress with room for error, and Uttar Pradesh (T136).**
 `/end-to-end` follows five filings in Jaunpur (two honest, three to find) from the form to the
 risk score through the real engine; Site Progress is a placeholder there until its field trial

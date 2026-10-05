@@ -8,6 +8,6 @@ H1 Monthly visit (h1_plaster): job ['read'], video deleted True, frames kept 3
     readings {"sealed": true, "in_app": true, "quality_ok": true, "gps_inside": null, "views_match_site": true, "viewpoints_expected": 5, "viewpoints_matched": 5, "change": "changed", "reused_from": [], "same_place_as": [], "motion_consistent": null, "gps_weak": true, "viewpoints_skipped": ["v4", "v5"]}
     page warnings at stop: • GPS is weak (±90 m): stand in the open for a moment. The views still show where you are.
 H2 First visit (h1_base): job ['read'], video deleted True, frames kept 5
-    readings {"sealed": true, "in_app": true, "quality_ok": true, "gps_inside": true, "views_match_site": null, "viewpoints_expected": 5, "viewpoints_matched": 5, "change": null, "reused_from": [{"frames": 43, "work_id": "H1", "visit_id": "cb8d300b5bb1487ab480c7479aef290e"}], "same_place_as": [{"inliers": 870, "work_id": "H1"}], "motion_consistent": null, "gps_weak": false, "viewpoints_skipped": []}
+    readings {"sealed": true, "in_app": true, "quality_ok": true, "gps_inside": true, "views_match_site": null, "viewpoints_expected": 5, "viewpoints_matched": 5, "change": null, "reused_from": [{"frames": 42, "work_id": "H1", "visit_id": "ebe0122e40994f87a6fdcb08c04d372f"}], "same_place_as": [{"inliers": 870, "work_id": "H1"}], "motion_consistent": null, "gps_weak": false, "viewpoints_skipped": []}
 Site Progress on H1: ASSESSED, findings []
 Site Progress on H2: ASSESSED, findings ['FOOTAGE_USED_BEFORE', 'SAME_PLACE_AS_ANOTHER_WORK']

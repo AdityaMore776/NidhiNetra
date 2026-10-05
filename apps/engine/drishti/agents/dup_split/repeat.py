@@ -66,6 +66,8 @@ from drishti.cost_form import catalog
 
 PIN_METRES = 50.0                 # two pins this close are one site
 NEAR_METRES = 150.0               # a same-kind building this close, just past the line: a note
+CELL_DEG = 0.005                  # the map grid (about 550 m) the index files pinned works in
+GRID_MARGIN_M = 200.0             # a check looks this far around its own pins (> NEAR_METRES)
 OVERLAP_METRES = 25.0             # a point of a road this close to another road's line lies on it
 OVERLAP_SHARE = 0.80              # this share of a road on another's line: the same ground (T135)
 MIN_ROAD_METRES = 50.0            # shorter alignments are compared by their pins only
@@ -320,6 +322,24 @@ def same_ground(me: Rec, x: Rec) -> bool:
     return near and size_alike(me.form, x.form)
 
 
+def _cells(sites: list, margin_m: float = 0.0) -> list[tuple[int, int]]:
+    """The grid cells under every pin and alignment of a work, widened by margin_m (T137: a check
+    looks only at works filed near its own pins, so a district of 10,000 forms stays fast)."""
+    pts = [p for s, e in sites for p in (s, e) if p]
+    if not pts:
+        return []
+    lat0 = min(p[0] for p in pts)
+    dlat = margin_m / 110_574
+    dlon = margin_m / (111_320 * max(0.2, math.cos(math.radians(lat0))))
+    la = (math.floor((min(p[0] for p in pts) - dlat) / CELL_DEG),
+          math.floor((max(p[0] for p in pts) + dlat) / CELL_DEG))
+    lo = (math.floor((min(p[1] for p in pts) - dlon) / CELL_DEG),
+          math.floor((max(p[1] for p in pts) + dlon) / CELL_DEG))
+    if (la[1] - la[0] + 1) * (lo[1] - lo[0] + 1) > 40_000:     # an alignment hundreds of km long
+        return []
+    return [(i, j) for i in range(la[0], la[1] + 1) for j in range(lo[0], lo[1] + 1)]
+
+
 def _together_key(r: Rec) -> tuple:
     return (r.district, r.mp, _key(r.description), r.rec)
 
@@ -450,6 +470,9 @@ class RepeatIndex:
     # as one case (migration 012), so 11 rows of one street-light purchase read as one.
     _together: dict[tuple, list[str]] = field(default_factory=dict)
     _splits: dict[str, dict] = field(default_factory=dict)
+    # pinned works by district and map cell, and those too long to file in cells (always looked at)
+    _grid: dict[str, dict[tuple[int, int], list[Rec]]] = field(default_factory=dict)
+    _wide: dict[str, list[Rec]] = field(default_factory=dict)
 
     @classmethod
     def build(cls, works) -> RepeatIndex:
@@ -466,6 +489,14 @@ class RepeatIndex:
                 if r.rec is not None and _key(r.description):
                     idx._together.setdefault(_together_key(r), []).append(r.work_id)
             idx._splits.update(split_groups(recs))
+            for r in recs:
+                if not r.sites:
+                    continue
+                cells = _cells(r.sites)
+                if not cells:
+                    idx._wide.setdefault(r.district, []).append(r)
+                for c in cells:
+                    idx._grid.setdefault(r.district, {}).setdefault(c, []).append(r)
         return idx
 
     def filed_together(self, work_id: str | None) -> tuple[str, int] | None:
@@ -495,9 +526,18 @@ class RepeatIndex:
             me.place, me.copies = known.place, known.copies
         earlier = [x for x in others if x.sanctioned and x.before(me)]
         fam = me.family
+        # the works filed near this one's pins, from the map grid (T137); every earlier work when
+        # this one's pins are too spread to look up by cell
+        nearby = earlier
+        cells = _cells(me.sites, GRID_MARGIN_M) if me.sites else []
+        if cells and me.district in self._grid:
+            grid = self._grid[me.district]
+            ids = {x.work_id for c in cells for x in grid.get(c, ())}
+            ids |= {x.work_id for x in self._wide.get(me.district, [])}
+            nearby = [x for x in earlier if x.work_id in ids]
 
         at_site, overlap = [], {}
-        for x in earlier:
+        for x in nearby:
             if not x.sites or not me.sites or x.family is None or x.family != fam:
                 continue
             best = min((d for a in me.sites for b in x.sites
@@ -520,7 +560,7 @@ class RepeatIndex:
         near = []
         if me.sites and not me.linear:
             seen = {x.work_id for x, _ in at_site}
-            for x in earlier:
+            for x in nearby:
                 if x.work_id in seen or not x.sites or x.family != fam or x.linear:
                     continue
                 d = min(metres(a[0], b[0]) for a in me.sites for b in x.sites)

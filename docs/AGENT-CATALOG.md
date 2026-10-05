@@ -31,6 +31,13 @@ New questions: Cost `ESTIMATE_NOT_ITEMISED` and `SIZE_NOT_AS_DESCRIBED`, Site Pr
 `NO_SITE_VIDEO` and `SITE_NOT_AT_FORM_PIN` (each at the 1-in-4 prior until read). A price the data
 cannot support is switched off for that material and recorded as a gap (`GET /cost/data-gaps`).
 
+**Architectures tested (T137, FINDINGS "T137")**: other designs for each agent, on the same
+benchmarks at the same false-alarm rate. Cost keeps its money-gap rule: z-tests read a remote site
+as padding, and an isolation forest catches half as much. Site Progress switched to "4 of the last 5
+videos unusable" and a 300 m rule for "filmed elsewhere": honest works asked in a simulated year
+fall from 25.7% to 5.0%, and every trick is still caught. It also asks `COMPLETE_NOT_FILMED`.
+Duplicate Work looks nearby works up on a map grid: the same answers, 8–10x faster.
+
 **Round 6 and room for error (T136, FINDINGS "T136")**: 81 probes end 74 PASS, 0 FAIL, 7 LIMIT;
 3,000 random damages crash none. Cost norms sand by the IS 456 mix and counts unread items beyond
 15% of a construction estimate; Duplicate Work finds the strictest split by map pins too and names a

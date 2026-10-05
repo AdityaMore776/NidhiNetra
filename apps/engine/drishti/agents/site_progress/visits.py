@@ -42,6 +42,8 @@ from datetime import date, datetime
 KINDS = ("baseline", "monthly", "check", "final")
 MIN_REUSED_FRAMES = 3         # frames already seen elsewhere that make a video not new footage
 MIN_INLIERS = 40              # matching points that make two works' views one place
+FAR_M = 300.0                 # GPS this far out is past phone multipath in a village or town
+                              # (T137: 60-300 m jitter with views lost read as "filmed elsewhere")
 
 
 def _date(v) -> date | None:
@@ -152,13 +154,23 @@ def accepted(v: Visit) -> bool:
             and v.get("motion_consistent") is not False)
 
 
+def far_out(v: Visit) -> bool:
+    """The phone was clearly not at the site: a mock location, or GPS FAR_M+ outside it (a
+    reading without the distance counts as far, as before T137)."""
+    if v.get("mock_location") is True:
+        return True
+    d = v.get("gps_distance_m")
+    return v.get("gps_inside") is False and (d is None or d >= FAR_M)
+
+
 def unusable(v: Visit) -> str | None:
     """Why an accepted video cannot show this site's progress (T136), or None. Only what the
     readings say counts: a reading that is missing was not made, and says nothing.
         "too dark, blurred or short"   quality_ok is False
         "no viewpoint marked"          a first visit with no viewpoint to compare later ones with
         "viewpoints not filmed"        fewer than half the site's viewpoints found again
-        "views do not match the site"  none found again, though the GPS puts it at the site"""
+        "views do not match the site"  none found again, the GPS at the site or near it (under
+                                       FAR_M: filming 200 m away is unusable, not "elsewhere")"""
     if v.get("quality_ok") is False:
         return "too dark, blurred or short"
     expected, matched = v.get("viewpoints_expected"), v.get("viewpoints_matched")
@@ -169,8 +181,7 @@ def unusable(v: Visit) -> str | None:
     if v.kind == "baseline":
         return None
     if v.get("views_match_site") is False:
-        gps_out = v.get("mock_location") is True or v.get("gps_inside") is False
-        return None if gps_out else "views do not match the site"
+        return None if far_out(v) else "views do not match the site"
     if v.get("views_match_site") is None and matched is not None and matched < expected:
         return "viewpoints not filmed"
     return None

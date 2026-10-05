@@ -173,10 +173,14 @@ export function flagOf(agent: string, f: TraceFinding, form: Form): Flag {
     case "SITE_VIDEOS_UNUSABLE": {
       const visits = (Array.isArray(x.visits) ? x.visits : []).map(String);
       const whys = (Array.isArray(x.why) ? x.why : []).map(String);
-      why = `The last two site videos (${visits.join(" and ")}) cannot show the work: ${whys.join("; ")}. One poor video is forgiven, not two.`;
-      fields.push({ name: "capture_frequency", label: "two unusable videos" });
+      why = `${visits.length} recent site videos (${visits.join(", ")}) cannot show the work: ${[...new Set(whys)].join("; ")}. A poor video now and then is forgiven, not this many.`;
+      fields.push({ name: "capture_frequency", label: "videos unusable" });
       break;
     }
+    case "COMPLETE_NOT_FILMED":
+      why = `Recorded complete ${n(x.days)} days ago, but no final site video shows the finished work.`;
+      fields.push({ name: "completion_capture_required", label: "no final video" });
+      break;
     case "SITE_NOT_AT_FORM_PIN":
       why = `Every site video is filmed about ${n(x.metres)} m from the form's map pin: the work is not where the form puts it.`;
       fields.push({ name: pinField(form), label: `videos ${n(x.metres)} m away` });

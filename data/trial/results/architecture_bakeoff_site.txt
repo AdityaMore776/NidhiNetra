@@ -1,0 +1,41 @@
+Site Progress decision bake-off: simulated works filmed for 12 months, every design checked at each month's end (asked = asked at any check). The person and the reader err at assumed rates (x1: miss 8%, dark 8%, partial 8%, gps_weak 10%, gps_jitter 3%, views_lost 2%, unsealed 2%, pause 15%; an honest claim judged not shown 5%), tried at half, as assumed and 1.5 times.
+
+errors x0.5 (cusum line 5.0)
+                                             current   engine   far300   window    tunedtuned_claims    cusum
+  honest works asked anything                  10.4%     2.9%    10.2%     6.9%     2.9%     0.9%     0.9%
+  caught: ghost claims                         99.8%    99.6%    99.8%    99.8%    99.6%    97.0%    98.2%
+  caught: ghost claims, reader fooled 1 in 3    90.0%    89.2%    90.0%    97.0%    89.2%    81.2%    75.8%
+  caught: reused footage                      100.0%   100.0%   100.0%   100.0%   100.0%   100.0%   100.0%
+  caught: filmed elsewhere                    100.0%   100.0%   100.0%   100.0%   100.0%   100.0%   100.0%
+  caught: filmed 200 m away                   100.0%   100.0%   100.0%   100.0%   100.0%   100.0%    93.6%
+  caught: GPS faked inside, filmed elsewhere   100.0%   100.0%   100.0%   100.0%   100.0%   100.0%    95.4%
+  caught: bad videos on purpose                99.8%    95.4%    99.8%    98.6%    95.4%    95.4%    36.8%
+  caught: never filmed                        100.0%   100.0%   100.0%   100.0%   100.0%   100.0%   100.0%
+  honest works' questions: {"current": {"CLAIM_NOT_SHOWN": 49, "NOT_FILMED_AT_THIS_SITE": 5, "SITE_NOT_AT_FORM_PIN": 2, "SITE_VIDEOS_UNUSABLE": 156}, "engine": {"CLAIM_NOT_SHOWN": 49, "SITE_NOT_AT_FORM_PIN": 2, "SITE_VIDEOS_UNUSABLE": 8}, "far300": {"CLAIM_NOT_SHOWN": 49, "SITE_NOT_AT_FORM_PIN": 2, "SITE_VIDEOS_UNUSABLE": 156}, "window": {"CLAIM_NOT_SHOWN": 102, "SITE_NOT_AT_FORM_PIN": 2, "SITE_VIDEOS_UNUSABLE": 35}, "tuned": {"CLAIM_NOT_SHOWN": 49, "SITE_NOT_AT_FORM_PIN": 2, "SITE_VIDEOS_UNUSABLE": 8}, "tuned_claims": {"CLAIM_NOT_SHOWN": 9, "SITE_NOT_AT_FORM_PIN": 2, "SITE_VIDEOS_UNUSABLE": 8}, "cusum": {"PROGRESS_NOT_AS_CLAIMED": 18, "SITE_NOT_AT_FORM_PIN": 2}}
+
+errors x1.0 (cusum line 5.0)
+                                             current   engine   far300   window    tunedtuned_claims    cusum
+  honest works asked anything                  25.7%     5.0%    25.1%    14.0%     4.8%     2.7%     2.2%
+  caught: ghost claims                         99.2%    98.8%    99.2%    99.4%    98.8%    93.6%    97.2%
+  caught: ghost claims, reader fooled 1 in 3    89.0%    86.4%    89.0%    93.0%    86.4%    74.2%    74.8%
+  caught: reused footage                      100.0%   100.0%   100.0%   100.0%   100.0%   100.0%   100.0%
+  caught: filmed elsewhere                    100.0%   100.0%   100.0%   100.0%   100.0%   100.0%   100.0%
+  caught: filmed 200 m away                   100.0%   100.0%   100.0%   100.0%   100.0%   100.0%    83.2%
+  caught: GPS faked inside, filmed elsewhere   100.0%   100.0%   100.0%   100.0%   100.0%   100.0%    82.2%
+  caught: bad videos on purpose                99.6%    95.4%    99.6%    98.8%    95.4%    95.4%    39.2%
+  caught: never filmed                        100.0%   100.0%   100.0%   100.0%   100.0%   100.0%   100.0%
+  honest works' questions: {"current": {"CLAIM_NOT_SHOWN": 54, "NOT_FILMED_AT_THIS_SITE": 15, "NO_SITE_VIDEO": 1, "SITE_NOT_AT_FORM_PIN": 9, "SITE_VIDEOS_UNUSABLE": 449}, "engine": {"CLAIM_NOT_SHOWN": 54, "NO_SITE_VIDEO": 1, "SITE_NOT_AT_FORM_PIN": 9, "SITE_VIDEOS_UNUSABLE": 36}, "far300": {"CLAIM_NOT_SHOWN": 54, "NO_SITE_VIDEO": 1, "SITE_NOT_AT_FORM_PIN": 9, "SITE_VIDEOS_UNUSABLE": 451}, "window": {"CLAIM_NOT_SHOWN": 105, "NO_SITE_VIDEO": 1, "SITE_NOT_AT_FORM_PIN": 9, "SITE_VIDEOS_UNUSABLE": 176}, "tuned": {"CLAIM_NOT_SHOWN": 54, "NO_SITE_VIDEO": 1, "SITE_NOT_AT_FORM_PIN": 9, "SITE_VIDEOS_UNUSABLE": 33}, "tuned_claims": {"CLAIM_NOT_SHOWN": 11, "NO_SITE_VIDEO": 1, "SITE_NOT_AT_FORM_PIN": 9, "SITE_VIDEOS_UNUSABLE": 33}, "cusum": {"NO_SITE_VIDEO": 1, "PROGRESS_NOT_AS_CLAIMED": 34, "SITE_NOT_AT_FORM_PIN": 9}}
+
+errors x1.5 (cusum line 5.5)
+                                             current   engine   far300   window    tunedtuned_claims    cusum
+  honest works asked anything                  45.0%     9.4%    44.5%    26.0%     8.8%     7.7%     1.9%
+  caught: ghost claims                         98.6%    97.0%    98.6%    98.8%    97.0%    91.8%    93.0%
+  caught: ghost claims, reader fooled 1 in 3    89.6%    79.4%    89.4%    92.6%    79.4%    68.6%    62.6%
+  caught: reused footage                      100.0%   100.0%   100.0%   100.0%   100.0%   100.0%   100.0%
+  caught: filmed elsewhere                    100.0%   100.0%   100.0%   100.0%   100.0%   100.0%   100.0%
+  caught: filmed 200 m away                   100.0%   100.0%   100.0%   100.0%   100.0%   100.0%    71.4%
+  caught: GPS faked inside, filmed elsewhere   100.0%   100.0%   100.0%   100.0%   100.0%   100.0%    69.0%
+  caught: bad videos on purpose                99.6%    97.6%    99.6%    99.4%    97.6%    97.6%    38.8%
+  caught: never filmed                        100.0%   100.0%   100.0%   100.0%   100.0%   100.0%   100.0%
+  honest works' questions: {"current": {"CLAIM_NOT_SHOWN": 28, "NOT_FILMED_AT_THIS_SITE": 21, "SITE_NOT_AT_FORM_PIN": 20, "SITE_VIDEOS_UNUSABLE": 855}, "engine": {"CLAIM_NOT_SHOWN": 28, "SITE_NOT_AT_FORM_PIN": 20, "SITE_VIDEOS_UNUSABLE": 141}, "far300": {"CLAIM_NOT_SHOWN": 28, "SITE_NOT_AT_FORM_PIN": 20, "SITE_VIDEOS_UNUSABLE": 864}, "window": {"CLAIM_NOT_SHOWN": 59, "SITE_NOT_AT_FORM_PIN": 20, "SITE_VIDEOS_UNUSABLE": 460}, "tuned": {"CLAIM_NOT_SHOWN": 28, "SITE_NOT_AT_FORM_PIN": 20, "SITE_VIDEOS_UNUSABLE": 130}, "tuned_claims": {"CLAIM_NOT_SHOWN": 4, "SITE_NOT_AT_FORM_PIN": 20, "SITE_VIDEOS_UNUSABLE": 130}, "cusum": {"PROGRESS_NOT_AS_CLAIMED": 18, "SITE_NOT_AT_FORM_PIN": 20}}
+

@@ -1,5 +1,5 @@
-Agent robustness loop (T135, T136): 81 probes on the work form's example filings in Jaunpur (1,038 real works, 11 background filings), as of 2026-10-02
-PASS 74  FAIL 0  LIMIT 7
+Agent robustness loop (T135, T136): 85 probes on the work form's example filings in Jaunpur (1,038 real works, 11 background filings), as of 2026-10-02
+PASS 78  FAIL 0  LIMIT 7
 
 == cost_estimate
   PASS  noise    honest rates a few % apart (seeded): no question
@@ -106,7 +106,7 @@ PASS 74  FAIL 0  LIMIT 7
   PASS  noise    pins rounded to 4 decimals (about 11 m): same answers
         changed: none
   PASS  scale    3,000 filed roads in one district: one check stays under 2 s
-        0.07 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']
+        0.02 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']
   PASS  evasion  a 'new' hall pinned 60 m from the old (just past the 50 m line)
         note: True; a pin past 50 m is another site by rule, so it is named in a note and the first site video (the hall already standing) settles it
   PASS  evasion  split with the checked piece called a paver road / 'Other'
@@ -157,15 +157,23 @@ PASS 74  FAIL 0  LIMIT 7
         50 days, no video: nothing (NOT_APPLICABLE)
   PASS  noise    one dark video between good ones: a note, not a question
         one dark month: nothing (ASSESSED)
-  PASS  evasion  the last two videos dark / viewpoints not filmed
-        two unusable in a row: SITE_VIDEOS_UNUSABLE (ASSESSED)
+  PASS  noise    two videos in a row dark / viewpoints not filmed: a note (T137)
+        two unusable in a row (1 honest work in 4 a year was asked by that rule): nothing (ASSESSED)
+  PASS  evasion  4 of the last 5 videos dark / viewpoints not filmed
+        4 of the last 5 unusable: SITE_VIDEOS_UNUSABLE (ASSESSED)
+  PASS  evasion  three bad videos, then filming stops
+        every video so far unusable: SITE_VIDEOS_UNUSABLE (ASSESSED)
+  PASS  evasion  two honest months filmed, then 'complete' with no final video
+        complete 40 days ago, no final video: COMPLETE_NOT_FILMED (ASSESSED)
+  PASS  noise    GPS jitter 180 m and views lost in one video: not 'elsewhere'
+        one jittered video with lost views: nothing (ASSESSED)
   PASS  noise    weak GPS on every video, a viewpoint skipped: not asked
         weak GPS, v4 skipped: nothing (ASSESSED)
   PASS  noise    a dark video with its GPS off the site: never 'filmed elsewhere'
         nothing: a dark video is no proof of anything
   PASS  evasion  'not shown', a dark video, 'not shown': still twice in a row
         a dark video slipped between the two: CLAIM_NOT_SHOWN (ASSESSED)
-  PASS  evasion  views never match while the GPS says 'at the site', twice
+  PASS  evasion  views never match while the GPS says 'at the site'
         GPS faked inside, another place filmed: SITE_VIDEOS_UNUSABLE (ASSESSED)
 
 Random damage: 3000 runs (seed 7), half through the website form, half inside the engine's own form, visits and record

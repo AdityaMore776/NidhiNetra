@@ -1,0 +1,402 @@
+{
+ "scales": {
+  "0.5": {
+   "cusum_line": 5.0,
+   "honest_asked": {
+    "current": 0.104,
+    "engine": 0.029,
+    "far300": 0.1015,
+    "window": 0.0685,
+    "tuned": 0.029,
+    "tuned_claims": 0.0095,
+    "cusum": 0.0095
+   },
+   "honest_codes": {
+    "current": {
+     "CLAIM_NOT_SHOWN": 49,
+     "NOT_FILMED_AT_THIS_SITE": 5,
+     "SITE_NOT_AT_FORM_PIN": 2,
+     "SITE_VIDEOS_UNUSABLE": 156
+    },
+    "engine": {
+     "CLAIM_NOT_SHOWN": 49,
+     "SITE_NOT_AT_FORM_PIN": 2,
+     "SITE_VIDEOS_UNUSABLE": 8
+    },
+    "far300": {
+     "CLAIM_NOT_SHOWN": 49,
+     "SITE_NOT_AT_FORM_PIN": 2,
+     "SITE_VIDEOS_UNUSABLE": 156
+    },
+    "window": {
+     "CLAIM_NOT_SHOWN": 102,
+     "SITE_NOT_AT_FORM_PIN": 2,
+     "SITE_VIDEOS_UNUSABLE": 35
+    },
+    "tuned": {
+     "CLAIM_NOT_SHOWN": 49,
+     "SITE_NOT_AT_FORM_PIN": 2,
+     "SITE_VIDEOS_UNUSABLE": 8
+    },
+    "tuned_claims": {
+     "CLAIM_NOT_SHOWN": 9,
+     "SITE_NOT_AT_FORM_PIN": 2,
+     "SITE_VIDEOS_UNUSABLE": 8
+    },
+    "cusum": {
+     "PROGRESS_NOT_AS_CLAIMED": 18,
+     "SITE_NOT_AT_FORM_PIN": 2
+    }
+   },
+   "caught": {
+    "ghost claims": {
+     "current": 0.998,
+     "engine": 0.996,
+     "far300": 0.998,
+     "window": 0.998,
+     "tuned": 0.996,
+     "tuned_claims": 0.97,
+     "cusum": 0.982
+    },
+    "ghost claims, reader fooled 1 in 3": {
+     "current": 0.9,
+     "engine": 0.892,
+     "far300": 0.9,
+     "window": 0.97,
+     "tuned": 0.892,
+     "tuned_claims": 0.812,
+     "cusum": 0.758
+    },
+    "reused footage": {
+     "current": 1.0,
+     "engine": 1.0,
+     "far300": 1.0,
+     "window": 1.0,
+     "tuned": 1.0,
+     "tuned_claims": 1.0,
+     "cusum": 1.0
+    },
+    "filmed elsewhere": {
+     "current": 1.0,
+     "engine": 1.0,
+     "far300": 1.0,
+     "window": 1.0,
+     "tuned": 1.0,
+     "tuned_claims": 1.0,
+     "cusum": 1.0
+    },
+    "filmed 200 m away": {
+     "current": 1.0,
+     "engine": 1.0,
+     "far300": 1.0,
+     "window": 1.0,
+     "tuned": 1.0,
+     "tuned_claims": 1.0,
+     "cusum": 0.936
+    },
+    "GPS faked inside, filmed elsewhere": {
+     "current": 1.0,
+     "engine": 1.0,
+     "far300": 1.0,
+     "window": 1.0,
+     "tuned": 1.0,
+     "tuned_claims": 1.0,
+     "cusum": 0.954
+    },
+    "bad videos on purpose": {
+     "current": 0.998,
+     "engine": 0.954,
+     "far300": 0.998,
+     "window": 0.986,
+     "tuned": 0.954,
+     "tuned_claims": 0.954,
+     "cusum": 0.368
+    },
+    "never filmed": {
+     "current": 1.0,
+     "engine": 1.0,
+     "far300": 1.0,
+     "window": 1.0,
+     "tuned": 1.0,
+     "tuned_claims": 1.0,
+     "cusum": 1.0
+    }
+   }
+  },
+  "1.0": {
+   "cusum_line": 5.0,
+   "honest_asked": {
+    "current": 0.2565,
+    "engine": 0.0495,
+    "far300": 0.2505,
+    "window": 0.1395,
+    "tuned": 0.048,
+    "tuned_claims": 0.027,
+    "cusum": 0.022
+   },
+   "honest_codes": {
+    "current": {
+     "CLAIM_NOT_SHOWN": 54,
+     "NOT_FILMED_AT_THIS_SITE": 15,
+     "NO_SITE_VIDEO": 1,
+     "SITE_NOT_AT_FORM_PIN": 9,
+     "SITE_VIDEOS_UNUSABLE": 449
+    },
+    "engine": {
+     "CLAIM_NOT_SHOWN": 54,
+     "NO_SITE_VIDEO": 1,
+     "SITE_NOT_AT_FORM_PIN": 9,
+     "SITE_VIDEOS_UNUSABLE": 36
+    },
+    "far300": {
+     "CLAIM_NOT_SHOWN": 54,
+     "NO_SITE_VIDEO": 1,
+     "SITE_NOT_AT_FORM_PIN": 9,
+     "SITE_VIDEOS_UNUSABLE": 451
+    },
+    "window": {
+     "CLAIM_NOT_SHOWN": 105,
+     "NO_SITE_VIDEO": 1,
+     "SITE_NOT_AT_FORM_PIN": 9,
+     "SITE_VIDEOS_UNUSABLE": 176
+    },
+    "tuned": {
+     "CLAIM_NOT_SHOWN": 54,
+     "NO_SITE_VIDEO": 1,
+     "SITE_NOT_AT_FORM_PIN": 9,
+     "SITE_VIDEOS_UNUSABLE": 33
+    },
+    "tuned_claims": {
+     "CLAIM_NOT_SHOWN": 11,
+     "NO_SITE_VIDEO": 1,
+     "SITE_NOT_AT_FORM_PIN": 9,
+     "SITE_VIDEOS_UNUSABLE": 33
+    },
+    "cusum": {
+     "NO_SITE_VIDEO": 1,
+     "PROGRESS_NOT_AS_CLAIMED": 34,
+     "SITE_NOT_AT_FORM_PIN": 9
+    }
+   },
+   "caught": {
+    "ghost claims": {
+     "current": 0.992,
+     "engine": 0.988,
+     "far300": 0.992,
+     "window": 0.994,
+     "tuned": 0.988,
+     "tuned_claims": 0.936,
+     "cusum": 0.972
+    },
+    "ghost claims, reader fooled 1 in 3": {
+     "current": 0.89,
+     "engine": 0.864,
+     "far300": 0.89,
+     "window": 0.93,
+     "tuned": 0.864,
+     "tuned_claims": 0.742,
+     "cusum": 0.748
+    },
+    "reused footage": {
+     "current": 1.0,
+     "engine": 1.0,
+     "far300": 1.0,
+     "window": 1.0,
+     "tuned": 1.0,
+     "tuned_claims": 1.0,
+     "cusum": 1.0
+    },
+    "filmed elsewhere": {
+     "current": 1.0,
+     "engine": 1.0,
+     "far300": 1.0,
+     "window": 1.0,
+     "tuned": 1.0,
+     "tuned_claims": 1.0,
+     "cusum": 1.0
+    },
+    "filmed 200 m away": {
+     "current": 1.0,
+     "engine": 1.0,
+     "far300": 1.0,
+     "window": 1.0,
+     "tuned": 1.0,
+     "tuned_claims": 1.0,
+     "cusum": 0.832
+    },
+    "GPS faked inside, filmed elsewhere": {
+     "current": 1.0,
+     "engine": 1.0,
+     "far300": 1.0,
+     "window": 1.0,
+     "tuned": 1.0,
+     "tuned_claims": 1.0,
+     "cusum": 0.822
+    },
+    "bad videos on purpose": {
+     "current": 0.996,
+     "engine": 0.954,
+     "far300": 0.996,
+     "window": 0.988,
+     "tuned": 0.954,
+     "tuned_claims": 0.954,
+     "cusum": 0.392
+    },
+    "never filmed": {
+     "current": 1.0,
+     "engine": 1.0,
+     "far300": 1.0,
+     "window": 1.0,
+     "tuned": 1.0,
+     "tuned_claims": 1.0,
+     "cusum": 1.0
+    }
+   }
+  },
+  "1.5": {
+   "cusum_line": 5.5,
+   "honest_asked": {
+    "current": 0.4495,
+    "engine": 0.094,
+    "far300": 0.4455,
+    "window": 0.26,
+    "tuned": 0.0885,
+    "tuned_claims": 0.077,
+    "cusum": 0.019
+   },
+   "honest_codes": {
+    "current": {
+     "CLAIM_NOT_SHOWN": 28,
+     "NOT_FILMED_AT_THIS_SITE": 21,
+     "SITE_NOT_AT_FORM_PIN": 20,
+     "SITE_VIDEOS_UNUSABLE": 855
+    },
+    "engine": {
+     "CLAIM_NOT_SHOWN": 28,
+     "SITE_NOT_AT_FORM_PIN": 20,
+     "SITE_VIDEOS_UNUSABLE": 141
+    },
+    "far300": {
+     "CLAIM_NOT_SHOWN": 28,
+     "SITE_NOT_AT_FORM_PIN": 20,
+     "SITE_VIDEOS_UNUSABLE": 864
+    },
+    "window": {
+     "CLAIM_NOT_SHOWN": 59,
+     "SITE_NOT_AT_FORM_PIN": 20,
+     "SITE_VIDEOS_UNUSABLE": 460
+    },
+    "tuned": {
+     "CLAIM_NOT_SHOWN": 28,
+     "SITE_NOT_AT_FORM_PIN": 20,
+     "SITE_VIDEOS_UNUSABLE": 130
+    },
+    "tuned_claims": {
+     "CLAIM_NOT_SHOWN": 4,
+     "SITE_NOT_AT_FORM_PIN": 20,
+     "SITE_VIDEOS_UNUSABLE": 130
+    },
+    "cusum": {
+     "PROGRESS_NOT_AS_CLAIMED": 18,
+     "SITE_NOT_AT_FORM_PIN": 20
+    }
+   },
+   "caught": {
+    "ghost claims": {
+     "current": 0.986,
+     "engine": 0.97,
+     "far300": 0.986,
+     "window": 0.988,
+     "tuned": 0.97,
+     "tuned_claims": 0.918,
+     "cusum": 0.93
+    },
+    "ghost claims, reader fooled 1 in 3": {
+     "current": 0.896,
+     "engine": 0.794,
+     "far300": 0.894,
+     "window": 0.926,
+     "tuned": 0.794,
+     "tuned_claims": 0.686,
+     "cusum": 0.626
+    },
+    "reused footage": {
+     "current": 1.0,
+     "engine": 1.0,
+     "far300": 1.0,
+     "window": 1.0,
+     "tuned": 1.0,
+     "tuned_claims": 1.0,
+     "cusum": 1.0
+    },
+    "filmed elsewhere": {
+     "current": 1.0,
+     "engine": 1.0,
+     "far300": 1.0,
+     "window": 1.0,
+     "tuned": 1.0,
+     "tuned_claims": 1.0,
+     "cusum": 1.0
+    },
+    "filmed 200 m away": {
+     "current": 1.0,
+     "engine": 1.0,
+     "far300": 1.0,
+     "window": 1.0,
+     "tuned": 1.0,
+     "tuned_claims": 1.0,
+     "cusum": 0.714
+    },
+    "GPS faked inside, filmed elsewhere": {
+     "current": 1.0,
+     "engine": 1.0,
+     "far300": 1.0,
+     "window": 1.0,
+     "tuned": 1.0,
+     "tuned_claims": 1.0,
+     "cusum": 0.69
+    },
+    "bad videos on purpose": {
+     "current": 0.996,
+     "engine": 0.976,
+     "far300": 0.996,
+     "window": 0.994,
+     "tuned": 0.976,
+     "tuned_claims": 0.976,
+     "cusum": 0.388
+    },
+    "never filmed": {
+     "current": 1.0,
+     "engine": 1.0,
+     "far300": 1.0,
+     "window": 1.0,
+     "tuned": 1.0,
+     "tuned_claims": 1.0,
+     "cusum": 1.0
+    }
+   }
+  }
+ },
+ "assumed_errors": {
+  "miss": 0.08,
+  "dark": 0.08,
+  "partial": 0.08,
+  "gps_weak": 0.1,
+  "gps_jitter": 0.03,
+  "views_lost": 0.02,
+  "unsealed": 0.02,
+  "pause": 0.15
+ },
+ "judge_honest": {
+  "shown": 0.8,
+  "cant_tell": 0.15,
+  "not_shown": 0.05
+ },
+ "judge_ghost": {
+  "not_shown": 0.7,
+  "cant_tell": 0.2,
+  "shown": 0.1
+ },
+ "far_m": 300.0,
+ "seconds": 109.2
+}

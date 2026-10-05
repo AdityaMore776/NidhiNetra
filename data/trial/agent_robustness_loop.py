@@ -1,4 +1,4 @@
-r"""The four agents' self-improvement loop (T135, T136): every way we could think of for them to go wrong.
+r"""The four agents' self-improvement loop (T135-T137): every way we could think of for them to go wrong.
 
 The owner (5 Oct 2026): "take each agent and run them through samples, then try to find ways where
 this agent can go wrong, give a wrong answer, or can be bypassed ... keep iterating until the agents
@@ -1279,13 +1279,69 @@ def _(world):
     return quiet(res, "site_progress", "one dark month")
 
 
-@probe("site_progress", "evasion", "the last two videos dark / viewpoints not filmed")
+def _more_visits(world, n: int, back: int = 0) -> list[dict]:
+    """The honest road's site visits and n more ordinary monthly ones, all dated before today
+    (spread evenly from the first visit to `back` days ago) (T137)."""
+    vs = _clean_visits(world)
+    for _ in range(n):
+        v = copy.deepcopy(vs[-1])
+        v["visit_id"] = f"V{len(vs) + 1}"
+        vs.append(v)
+    first = date.fromisoformat(vs[0]["captured_at"][:10]) - timedelta(days=back)
+    end = world.as_of - timedelta(days=1 + back)
+    step = (end - first).days / (len(vs) - 1)
+    for k, v in enumerate(vs):
+        v["captured_at"] = (first + timedelta(days=round(step * k))).isoformat()
+    return vs
+
+
+@probe("site_progress", "noise", "two videos in a row dark / viewpoints not filmed: a note (T137)")
 def _(world):
     vs = _clean_visits(world)
     vs[1]["readings"].update(DARK)
     vs[2]["readings"].update(views_match_site=None, viewpoints_matched=1, change="cant_tell")
+    return quiet(run(world, _site(world, "clean", vs)), "site_progress",
+                 "two unusable in a row (1 honest work in 4 a year was asked by that rule)")
+
+
+@probe("site_progress", "evasion", "4 of the last 5 videos dark / viewpoints not filmed")
+def _(world):
+    vs = _more_visits(world, 3)
+    for v, kind in zip(vs[1:], ("dark", "partial", "ok", "dark", "partial"), strict=True):
+        if kind == "dark":
+            v["readings"].update(DARK)
+        elif kind == "partial":
+            v["readings"].update(views_match_site=None, viewpoints_matched=1, change="cant_tell")
     res = run(world, _site(world, "clean", vs))
-    return still(res, "site_progress", "SITE_VIDEOS_UNUSABLE", "two unusable in a row")
+    return still(res, "site_progress", "SITE_VIDEOS_UNUSABLE", "4 of the last 5 unusable")
+
+
+@probe("site_progress", "evasion", "three bad videos, then filming stops")
+def _(world):
+    vs = _clean_visits(world)
+    vs[0]["readings"].update(quality_ok=False, viewpoints_expected=0, viewpoints_matched=0)
+    for v in vs[1:]:
+        v["readings"].update(DARK)
+    res = run(world, _site(world, "clean", vs))
+    return still(res, "site_progress", "SITE_VIDEOS_UNUSABLE", "every video so far unusable")
+
+
+@probe("site_progress", "evasion", "two honest months filmed, then 'complete' with no final video")
+def _(world):
+    vs = _more_visits(world, 0, back=60)
+    done = world.as_of - timedelta(days=40)
+    res = run(world, _site(world, "clean", vs, status="COMPLETED", completed_date=done.isoformat()))
+    return still(res, "site_progress", "COMPLETE_NOT_FILMED",
+                 f"complete {(world.as_of - done).days} days ago, no final video")
+
+
+@probe("site_progress", "noise", "GPS jitter 180 m and views lost in one video: not 'elsewhere'")
+def _(world):
+    vs = _clean_visits(world)
+    vs[2]["readings"].update(gps_inside=False, gps_distance_m=180.0, views_match_site=False,
+                             viewpoints_matched=0, change="cant_tell")
+    return quiet(run(world, _site(world, "clean", vs)), "site_progress",
+                 "one jittered video with lost views")
 
 
 @probe("site_progress", "noise", "weak GPS on every video, a viewpoint skipped: not asked")
@@ -1320,9 +1376,9 @@ def _(world):
                  "a dark video slipped between the two")
 
 
-@probe("site_progress", "evasion", "views never match while the GPS says 'at the site', twice")
+@probe("site_progress", "evasion", "views never match while the GPS says 'at the site'")
 def _(world):
-    vs = _clean_visits(world)
+    vs = _more_visits(world, 3)
     for v in vs[1:]:
         v["readings"].update(views_match_site=False, viewpoints_matched=0, change="cant_tell",
                              claim_verdict="cant_tell")
@@ -1431,7 +1487,7 @@ def main() -> None:
         print(f"{verdict:5} {pr.agent:13} {pr.kind:8} {pr.name}\n      {detail}", flush=True)
     dmg = damage_rounds(world, args.damage, args.seed) if args.damage and not args.only else None
     tally = Counter(r["verdict"] for r in rows)
-    lines = [f"Agent robustness loop (T135, T136): {len(rows)} probes on the work form's example "
+    lines = [f"Agent robustness loop (T135-T137): {len(rows)} probes on the work form's example "
              f"filings in {wf.DISTRICT} ({len(world.district):,} real works, "
              f"{len(world.background)} background filings), as of {world.as_of}",
              f"PASS {tally['PASS']}  FAIL {tally['FAIL']}  LIMIT {tally['LIMIT']}", ""]

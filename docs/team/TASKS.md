@@ -102,6 +102,16 @@ dashboard queue before / after in FINDINGS (439 → 217)
 of §9.6 planted. Only readings and blurred frames are kept; no video enters the repo.
 **Done when:** [ ] each trick caught 9 in 10 · [ ] a finding on at most 1 in 30 honest visits · [ ] FINDINGS
 
+### T137 · Other agent architectures, tested against the current ones  ·  L  ·  engine + data  ·  Depends on: T136
+**What:** (owner, 5 Oct 2026) test other designs for each agent on the same benchmarks at the same
+false-alarm rate; switch only a design proven better that keeps every loophole closed. Plan:
+[`docs/plans/T137-architecture-bakeoff.md`](../plans/T137-architecture-bakeoff.md).
+**Done when:** [x] Cost: six candidate decisions on 12 planted scenarios; the current rule kept,
+"current OR peer line" ready for real forms · [x] Site Progress: six designs on a simulated year at
+three error levels; switched (honest works asked 25.7% → 5.0% a year at the assumed rates, tricks
+still caught) · [x] Duplicate Work: map grid, same answers, 8–10x faster · [x] the loop 85 probes,
+0 FAIL; the dashboard identical · [ ] T098 / T126 data to re-run the Cost and claim comparisons
+
 ### T136 · Five filings end to end, Site Progress with room for error, one real region  ·  L  ·  engine + web + data  ·  Depends on: T135
 **What:** (owner, 5 Oct 2026) a set of five filings followed from the form to the risk score, Site
 Progress as a placeholder there (it starts after sanction; T126 tests it), honest values set against

@@ -425,7 +425,7 @@
    "kind": "scale",
    "probe": "3,000 filed roads in one district: one check stays under 2 s",
    "verdict": "PASS",
-   "detail": "0.07 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']"
+   "detail": "0.02 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']"
   },
   {
    "agent": "cost_estimate",
@@ -534,10 +534,38 @@
   },
   {
    "agent": "site_progress",
-   "kind": "evasion",
-   "probe": "the last two videos dark / viewpoints not filmed",
+   "kind": "noise",
+   "probe": "two videos in a row dark / viewpoints not filmed: a note (T137)",
    "verdict": "PASS",
-   "detail": "two unusable in a row: SITE_VIDEOS_UNUSABLE (ASSESSED)"
+   "detail": "two unusable in a row (1 honest work in 4 a year was asked by that rule): nothing (ASSESSED)"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "evasion",
+   "probe": "4 of the last 5 videos dark / viewpoints not filmed",
+   "verdict": "PASS",
+   "detail": "4 of the last 5 unusable: SITE_VIDEOS_UNUSABLE (ASSESSED)"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "evasion",
+   "probe": "three bad videos, then filming stops",
+   "verdict": "PASS",
+   "detail": "every video so far unusable: SITE_VIDEOS_UNUSABLE (ASSESSED)"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "evasion",
+   "probe": "two honest months filmed, then 'complete' with no final video",
+   "verdict": "PASS",
+   "detail": "complete 40 days ago, no final video: COMPLETE_NOT_FILMED (ASSESSED)"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "noise",
+   "probe": "GPS jitter 180 m and views lost in one video: not 'elsewhere'",
+   "verdict": "PASS",
+   "detail": "one jittered video with lost views: nothing (ASSESSED)"
   },
   {
    "agent": "site_progress",
@@ -563,7 +591,7 @@
   {
    "agent": "site_progress",
    "kind": "evasion",
-   "probe": "views never match while the GPS says 'at the site', twice",
+   "probe": "views never match while the GPS says 'at the site'",
    "verdict": "PASS",
    "detail": "GPS faked inside, another place filmed: SITE_VIDEOS_UNUSABLE (ASSESSED)"
   }

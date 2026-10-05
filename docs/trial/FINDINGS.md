@@ -1596,6 +1596,119 @@ for error. What got past, and how it is fixed (each with a regression test):
 labour days multiplied 2.5 times are not asked, because labour per m³ is not normed yet (CPWD's
 Analysis of Rates gives it, T096).
 
+## T137 (5 Oct 2026): other agent architectures, tested against the current ones
+
+The owner asked for other designs to be tested against the current agents. Two conditions:
+- a switch only when the other design is proven better;
+- it must stay immune to the loopholes the loop closed.
+
+Every candidate ran on the same benchmarks. Where a design has a free line, the line is set so the
+same share of honest cases is asked (`data/trial/architecture_bakeoff.py`; results
+`results/architecture_bakeoff_{cost,site,dup}.txt`). Everything below is planted or simulated:
+the honest spreads and the video reader's error rates are assumptions until real forms (T098) and
+the field trial (T126).
+
+### Cost: the whole-estimate decision. Not switched; the current rule holds up best
+
+500 planted CC-road forms per cell, 12 scenarios. The scenarios cover:
+- honest spreads of 5, 10 and 15% and a different spread per material;
+- a per-site **carriage** factor on sand, aggregate and base, or one moving **every** line of a
+  form (a remote site);
+- a scarce district, 3 agencies filing scattered rates on purpose, and the SoR.
+
+Paddings tried: every line +10 to +30%, one line ×2, two lines +40%.
+
+| Candidate | Worst honest asked | +20% caught (mean) | All paddings caught | Cells meeting the target |
+|---|---|---|---|---|
+| **current: money gap 15% and Rs 50,000** | 3.0% | 79.8% | 63.1% | 1 of 12 |
+| current OR peer-adaptive money line | 3.0% | 81.7% | 67.3% | 2 of 12 |
+| z-test, precision-weighted (lines independent) | 2.8% | 76.4% | 54.2% | 4 of 12 |
+| z-test against the peers' own scatter | 2.0% | 84.3% | 54.9% | 4 of 12 |
+| isolation forest (machine learning) | 3.8% | 58.7% | 34.5% | 1 of 12 |
+
+- **The statistical tests read an honest site as padding.**
+  - They assume each line varies on its own. They ask no honest form when that is true (0.0% in
+    the four independent scenarios).
+  - When a remote site lifts every line together, they ask 2.2–2.8% of honest forms.
+  - They also catch only about 40% of one doubled line, which the money gap catches 93–100% of
+    the time.
+- **The isolation forest catches half as much.** It has only the district's own forms to learn
+  from.
+- **"Current OR peer-adaptive line"**:
+  - It asks the same honest forms as today in every scenario (0.2 → 0.4% in one, noise).
+  - It catches more only where honest prices are tight: +15% padding in a 5%-spread district goes
+    from 50.4% to 100%.
+  - It can never ask less than today, so no loophole opens.
+  - But the gain rests on the assumption that tight districts exist. **Not switched.** The
+    reference code is in the bake-off script, ready to adopt when real forms (T098) show tight
+    districts.
+
+### Site Progress's decisions: switched
+
+A simulated year of monthly visits for 2,000 honest works and 500 of each trick.
+- The person and the reader err at assumed rates: 8% dark, 8% partial, 8% a month missed, 10%
+  weak GPS, 3% GPS jitter, 2% views lost, and a real claim judged "not shown" 5% of the time.
+- These rates are also tried at half and 1.5 times.
+- Each design is checked at every month's end, as the daily batch does.
+
+| Errors | **T136 design**: honest works asked in a year | **switched design** | tricks caught (switched) |
+|---|---|---|---|
+| half | 10.4% | 2.9% | 89–100% |
+| assumed | **25.7%** | **5.0%** | 86–100% |
+| 1.5× | 45.0% | 9.4% | 79–100% |
+
+- "The last two videos unusable" asked 449 of 2,000 honest works a year (assumed rates). Two bad
+  videos in a row turn up sometime in most honest years.
+  - **Now:** 4 of the last 5 videos unusable, or every video so far from the third. That asks 33
+    honest works.
+  - On-purpose bad videos are still caught 95.4% of the time (99.6% before).
+- A GPS jitter in the same video as lost views read as "filmed elsewhere" for 15 honest works.
+  - **Now** that needs the GPS 300 m or more out, or a mock location. Nearer, the views count as
+    unusable.
+  - A video filmed 200 m away is still caught 100% of the time.
+- Two loopholes found while doing this are closed:
+  - three bad videos and then no more filming;
+  - two honest months filmed, then the work recorded complete with no final video. Now
+    `COMPLETE_NOT_FILMED`, 30 days after completion.
+- Kept: the claim rule ("not shown twice in a row"). It is now most of the honest questions (54
+  of 2,000 a year at a 5% reader error). "3 of the last 5" would ask 11 and catch 5–12 points
+  fewer ghost claims. The reader's real error rate (T126) decides it.
+- Rejected: a single running score (CUSUM). Set to 2% of honest works, it caught only 37–39% of
+  on-purpose bad videos.
+
+### Duplicate Work: a map grid. Switched; same answers, up to 10× faster
+
+A check now looks only at works filed within 200 m of its own pins. That margin covers the
+150 m note radius, the 50 m one-site rule and the 25 m road overlap.
+- Measured on one district of n filed roads (`results/architecture_bakeoff_dup.txt`, same answers
+  every time):
+
+| Filed forms | One check, before → now | The district's batch, before → now |
+|---|---|---|
+| 1,000 | 8.4 → 1.1 ms | 8 → 1 s |
+| 3,000 | 20.9 → 2.1 ms | 63 → 6 s |
+| 10,000 | 72.6 → 9.1 ms | 726 → 91 s |
+
+- Every at-site work, distance, overlap and nearby note is identical to the full scan on random
+  dense districts of 700 works (`tests/agents/dup_split/test_dup_grid.py`).
+- That covers roads and halls, roads with one end, and far ends typed hundreds of km away.
+
+### The score (fusion): not re-tested
+
+Its labelled benchmark (the planted test, T080) needs the 2,09,993-work build, which is not on the
+build machine. The four agents' new questions also all sit at the 1-in-4 prior until read. So any
+sensible combination ranks works the same, except for ties.
+
+### Proof that nothing else moved
+
+- The loop: **85 probes, 78 PASS, 0 FAIL, 7 LIMIT**; 3,000 random damages, 0 errors. Four new
+  probes cover the switched rules and the two closed loopholes.
+- The engine suite: 799 passed.
+- The 12 work-form examples and the five end-to-end filings raise exactly what they did.
+- The capture page end to end: the honest imperfect hall is asked nothing, and the hall filmed at
+  another hall's site is still asked.
+- The dashboard's 40,935 works: identical bands, queue (217) and flags (`dashboard_t137_after`).
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

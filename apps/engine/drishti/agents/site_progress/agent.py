@@ -14,7 +14,9 @@ FINDINGS (only facts that are yes or no, or the agency's own claim failing twice
                                does not name that work as the one this work continues
   NOT_FILMED_AT_THIS_SITE      the GPS points are outside the site (or the phone reported a mock
                                location) AND the views do not match this site's earlier views:
-                               two independent proofs; GPS error alone never fails a video
+                               two independent proofs; GPS error alone never fails a video,
+                               and the GPS must be FAR_M+ out (T137: jitter near the site with
+                               lost views is unusable, not "elsewhere")
   CLAIM_NOT_SHOWN              the agency's claim for the month is "not shown" at the same
                                viewpoints on two visits in a row (one bad month is never enough)
   COMPLETE_NOT_SHOWN           "complete" is filmed or recorded, but the final video shows
@@ -28,10 +30,13 @@ FINDINGS (only facts that are yes or no, or the agency's own claim failing twice
                                (100 m or more) from the form's map pin, at views that match the
                                site's own: the work is not where the form says, and the form's pin
                                is what Duplicate Work compared
-  SITE_VIDEOS_UNUSABLE         (T136) the last two accepted videos both cannot show this site's
-                               progress (too dark or short, the fixed viewpoints not filmed, or
-                               views that do not match while the GPS is at the site): one poor
-                               month is forgiven, two in a row would let every check be dodged
+  SITE_VIDEOS_UNUSABLE         (T136, T137) 4 of the last 5 accepted videos (or every one so
+                               far, from the third) cannot show this site's progress (too dark
+                               or short, the fixed viewpoints not filmed, or views that do not
+                               match while the GPS is at or near the site): a poor video now and
+                               then is forgiven, filming badly every month would dodge every check
+  COMPLETE_NOT_FILMED          (T137) recorded complete FINAL_GRACE_DAYS+ ago, videos filmed, but
+                               no final video showing the finished work
 ROOM FOR ERROR (T136): a dark or short video, weak GPS, a viewpoint missed or skipped, a month
 missed, are notes; a poor video is never a proof that work is not there, nor that it was filmed
 elsewhere.
@@ -56,7 +61,7 @@ from drishti.agents.contract import AgentResult, Finding, Status
 from drishti.agents.site_progress import visits as site_visits
 
 AGENT = "site_progress"
-VERSION = "site-progress-3.1.0"
+VERSION = "site-progress-3.2.0"
 QUESTION = ("Do the monthly site videos show real, new work, at this work's site, for this "
             "work only?")
 CONFIDENCE = 0.8
@@ -68,15 +73,20 @@ NO_VIDEO_RISK = 0.4
 PIN_OFF_METRES = 100.0        # filmed this far from the pin, consistently: the pin is elsewhere
 PIN_OFF_RISK = 0.5
 START_CAP_DAYS = 183          # a declared start counts at most this long after the sanction
-UNUSABLE_IN_A_ROW = 2         # this many latest videos that cannot show the site: a question
+UNUSABLE_OF, UNUSABLE_LAST = 4, 5   # this many of the latest videos cannot show the site (T137)
+UNUSABLE_ALL_FROM = 3         # ... or every video so far, from the third
 UNUSABLE_RISK = 0.4           # as NO_SITE_VIDEO: the same way past every other check
+FINAL_GRACE_DAYS = 30         # recorded complete: the final video is due within this many days
 RISK = {"FOOTAGE_USED_BEFORE": 0.8, "SAME_PLACE_AS_ANOTHER_WORK": 0.7,
         "NOT_FILMED_AT_THIS_SITE": 0.8, "CLAIM_NOT_SHOWN": 0.5, "COMPLETE_NOT_SHOWN": 0.6,
         "ALREADY_BUILT_AT_START": 0.6, "NO_SITE_VIDEO": NO_VIDEO_RISK,
-        "SITE_NOT_AT_FORM_PIN": PIN_OFF_RISK, "SITE_VIDEOS_UNUSABLE": UNUSABLE_RISK}
+        "SITE_NOT_AT_FORM_PIN": PIN_OFF_RISK, "SITE_VIDEOS_UNUSABLE": UNUSABLE_RISK,
+        "COMPLETE_NOT_FILMED": NO_VIDEO_RISK}
 HI = {
-    "SITE_VIDEOS_UNUSABLE": "पिछले दो साइट वीडियो से साइट की प्रगति नहीं देखी जा सकती (बहुत अँधेरा, "
-                            "बहुत छोटा, या तय दृश्य-बिंदु नहीं फ़िल्माए गए)। एजेंसी से दिन के उजाले में "
+    "COMPLETE_NOT_FILMED": "कार्य पूर्ण दर्ज है, पर तब से कोई अंतिम साइट वीडियो पूरा कार्य नहीं "
+                           "दिखाता। अंतिम वीडियो माँगें और बंद करने से पहले जाँच करें।",
+    "SITE_VIDEOS_UNUSABLE": "हाल के अधिकांश साइट वीडियो से साइट की प्रगति नहीं देखी जा सकती (बहुत "
+                            "अँधेरा, बहुत छोटा, या तय दृश्य-बिंदु नहीं फ़िल्माए गए)। एजेंसी से दिन के उजाले में "
                             "हर तय दृश्य-बिंदु का वीडियो माँगें।",
     "NO_SITE_VIDEO": "स्वीकृति और नियोजित आरंभ के बाद भी कोई साइट वीडियो स्वीकार नहीं हुआ। एजेंसी "
                      "से वीडियो माँगें और स्थल की जाँच करें।",
@@ -238,11 +248,12 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
                                visit=v.visit_id, same_place_as=same))
             break
 
-    # 3. not filmed at this site: GPS and views must both disagree (a poor video proves nothing)
+    # 3. not filmed at this site: GPS and views must both disagree (a poor video proves nothing;
+    #    the GPS must be far out, T137: near the site it is jitter, and the views are unusable)
     for v in trusted:
         gps_out = v.get("mock_location") is True or v.get("gps_inside") is False
         views_out = v.get("views_match_site") is False and v.get("quality_ok") is not False
-        if gps_out and views_out:
+        if site_visits.far_out(v) and views_out:
             why = ("the phone reported a mock location" if v.get("mock_location") else
                    f"its GPS points are {v.get('gps_distance_m') or 0:,.0f} m outside the site")
             findings.append(_f("NOT_FILMED_AT_THIS_SITE",
@@ -314,7 +325,18 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
                                                  else "") + ". Check before it is closed.",
                            visit=v.visit_id))
     elif work.get("status") == "COMPLETED" and trusted and not finals:
-        notes.append("Recorded complete, but there is no final site video yet.")
+        done = _day(work.get("completed_date"))
+        if done is not None and (as_of - done).days > FINAL_GRACE_DAYS:
+            # T137: two honest months filmed, then "complete" with no final video was a note
+            findings.append(_f("COMPLETE_NOT_FILMED",
+                               f"Recorded complete on {done:%d %b %Y}, but in the "
+                               f"{(as_of - done).days:,} days since, no final site video has "
+                               "shown the finished work (every fixed viewpoint). The last video "
+                               f"is {_when(trusted[-1])}. Ask for the final video, and check "
+                               "before it is closed.", days=(as_of - done).days,
+                               visit=trusted[-1].visit_id))
+        else:
+            notes.append("Recorded complete, but there is no final site video yet.")
 
     # 6. already built at the start
     base = [v for v in trusted if v.kind == "baseline"]
@@ -348,17 +370,22 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
         if v.get("gps_weak") is True:
             notes.append(f"{_when_cap(v)}: the phone's GPS was too weak to place it; the views "
                          "decide where it was filmed.")
-    last = poor[-UNUSABLE_IN_A_ROW:]
-    if len(last) == UNUSABLE_IN_A_ROW and all(why for _v, why in last) \
+    # T137: UNUSABLE_OF of the last UNUSABLE_LAST (two in a row asked 1 honest work in 4 a year,
+    # checked monthly at the assumed error rates), or every video so far from the third
+    last = poor[-UNUSABLE_LAST:]
+    bad = [(v, why) for v, why in last if why]
+    every = len(poor) >= UNUSABLE_ALL_FROM and all(why for _v, why in poor)
+    if (len(bad) >= UNUSABLE_OF or every) \
             and not any(f.code == "NOT_FILMED_AT_THIS_SITE" for f in findings):
+        which = (f"all {len(poor)} site videos so far" if every and len(poor) < UNUSABLE_LAST
+                 else f"{len(bad)} of the last {len(last)} site videos")
         findings.append(_f("SITE_VIDEOS_UNUSABLE",
-                           f"The last {UNUSABLE_IN_A_ROW} site videos cannot show this site's "
-                           "progress (" + "; ".join(f"{v.captured:%d %b %Y}: {why}"
-                                                    for v, why in last)
-                           + "). One poor video is forgiven; two in a row leave the work "
+                           f"{which[:1].upper()}{which[1:]} cannot show this site's progress ("
+                           + "; ".join(f"{v.captured:%d %b %Y}: {why}" for v, why in bad)
+                           + "). A poor video now and then is forgiven; this many leave the work "
                            "unchecked. Ask the agency to film every fixed viewpoint in daylight, "
-                           "and check the site.", visits=[v.visit_id for v, _w in last],
-                           why=[why for _v, why in last]))
+                           "and check the site.", visits=[v.visit_id for v, _w in bad],
+                           why=[why for _v, why in bad]))
 
     # notes: missed months, standing still
     open_work = work.get("status") != "COMPLETED"
