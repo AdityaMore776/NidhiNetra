@@ -49,7 +49,7 @@ interface CheckResult {
 
 type Shown =
   | { kind: "example"; ex: FormExample }
-  | { kind: "own"; result: CheckResult }
+  | { kind: "own"; result: CheckResult; from?: FormExample }
   | { kind: "error"; message: string }
   | { kind: "checking" };
 
@@ -127,10 +127,13 @@ function WorkForm() {
   async function checkOwn() {
     const w = frame.current?.contentWindow as FormWindow | null | undefined;
     if (!w || typeof w.serialize !== "function") return;
+    const sent = w.serialize();
+    // an example (changed or not) keeps its reference number: say how the live answer compares
+    const from = file?.examples.find((e) => e.form.recommendation_ref === sent.recommendation_ref);
     setShown({ kind: "checking" });
     try {
-      const result = await apiPost<CheckResult>("/work-form/check", w.serialize());
-      setShown({ kind: "own", result });
+      const result = await apiPost<CheckResult>("/work-form/check", sent);
+      setShown({ kind: "own", result, from });
     } catch (e) {
       const message =
         e instanceof ApiError && e.status === 422
@@ -284,8 +287,9 @@ function Verdict({ shown }: { shown: Shown | null }) {
       </div>
     );
   }
-  const { result } = shown;
+  const { result, from } = shown;
   const fixes = result.form.issues.filter((i) => i.level === "fix");
+  const same = from && asking(from.trace).join() === asking(result.trace).join();
   return (
     <div className="panel space-y-4 p-5">
       <div className="space-y-1.5">
@@ -307,10 +311,32 @@ function Verdict({ shown }: { shown: Shown | null }) {
         ) : (
           <p className="text-xs text-muted-foreground">Everything the agents read is filled in.</p>
         )}
+        {from && (
+          <p className="rounded-lg bg-brand-50/70 p-2.5 text-xs leading-relaxed text-brand-950">
+            {same ? (
+              <>
+                Live check on the example &ldquo;{from.title}&rdquo;:{" "}
+                {asking(result.trace).length ? "the same questions as in its worked verdict." : "as in its worked verdict, no agent asks."}
+              </>
+            ) : (
+              <>
+                Live check on the example &ldquo;{from.title}&rdquo;, against the database, which holds real eSAKSHI records only. Its worked
+                verdict also used made-up records the form does not carry (its later sanction, completion and site videos; other agencies&apos;
+                filings and earlier works in Jaunpur), so a check that needs them says below what it could not compare. Pick the example
+                again to see its verdict.
+              </>
+            )}
+          </p>
+        )}
       </div>
       <Agents trace={result.trace} />
     </div>
   );
+}
+
+/** The questions asked (agent, finding and weight), in order. */
+function asking(trace: Trace): string[] {
+  return trace.checks.flatMap((c) => c.findings.filter((f) => f.risk > 0).map((f) => `${c.id}:${f.code}:${f.risk}`));
 }
 
 const STATE: Record<Check["status"], string> = {

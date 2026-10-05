@@ -4,11 +4,13 @@ A local Postgres (pgserver) holds the district of Jaunpur's 1,038 real works fro
 dashboard tables; the engine (uvicorn, the public view: no sign-in) and the web app (next dev)
 run on top. Headless Chromium then does what a judge would on /work-form:
 
+  0. the public dashboard's card opens the page;
   1. every example filing: the chip fills the framed form (its own fields, read back), and the
      side panel shows the agents' verdict the examples file holds for it;
   2. a deep link /work-form?example=<id> opens with that filing;
-  3. "Check this form with the agents" on a loaded example sends the form to
-     POST /api/v1/work-form/check and shows the live answer (four agents, nothing stored);
+  3. "Check this form with the agents" on each loaded example sends the form to
+     POST /api/v1/work-form/check and shows the live answer (four agents, nothing stored), with
+     a note saying whether it matches the example's worked verdict;
   4. the same on a form with its district removed: a plain message, no error page.
 
 Needs: the engine's requirements and Playwright for Python (the video job's environment has
@@ -112,8 +114,13 @@ def main() -> None:
             b = p.chromium.launch(executable_path=exe)
             page = b.new_page(viewport={"width": 1440, "height": 1000})
             page.on("pageerror", lambda e: errors.append(str(e)))
-            page.goto(f"http://localhost:{wport}/work-form", wait_until="networkidle")
+            # the public dashboard links to the filings
+            page.goto(f"http://localhost:{wport}/", wait_until="networkidle")
+            page.get_by_text("Twelve example filings of the work intelligence form").click(
+                timeout=120_000)
+            page.wait_for_url("**/work-form", timeout=120_000)
             page.get_by_role("heading", name="Example filings").wait_for(timeout=120_000)
+            out["from_dashboard"] = page.evaluate("location.pathname")
             frame = page.frame_locator("iframe[title*='Work Intelligence Form']")
             for ex in examples:
                 page.get_by_role("button", name=ex["title"], exact=True).click()
@@ -128,9 +135,23 @@ def main() -> None:
                       and agency == ex["form"]["implementing_agency"]
                       and ex["title"] in aside
                       and len(re.findall(r"asks (?:a question|\d+ questions)", aside)) == len(asked))
-                out["examples"].append({"id": ex["id"], "filled": title == ex["form"]["work_title"],
-                                        "boq_rows": rows, "panel_ok": ok})
                 page.screenshot(path=str(shots / f"{ex['id']}.png"))
+                # the live check on the loaded filing: the form alone, against real records only
+                with page.expect_response("**/api/v1/work-form/check", timeout=180_000) as r:
+                    page.get_by_role("button", name="Check this form with the agents").click()
+                live = r.value.json()
+                page.get_by_text("Your form").wait_for(timeout=60_000)
+                live_codes = sorted(f["code"] for c in live["trace"]["checks"]
+                                    for f in c["findings"] if f["risk"] > 0)
+                codes = sorted(f["code"] for c in ex["trace"]["checks"]
+                               for f in c["findings"] if f["risk"] > 0)
+                note = page.locator("aside").inner_text()
+                out["examples"].append({
+                    "id": ex["id"], "filled": title == ex["form"]["work_title"],
+                    "boq_rows": rows, "panel_ok": ok, "codes": codes, "live_codes": live_codes,
+                    "live_note": ("same" if "as in its worked verdict" in note
+                                  else "differs" if "does not carry" in note else "none")})
+                page.screenshot(path=str(shots / f"check_{ex['id']}.png"))
             # a deep link opens with its filing
             page.goto(f"http://localhost:{wport}/work-form?example=time_fast",
                       wait_until="networkidle")
@@ -138,15 +159,9 @@ def main() -> None:
                 timeout=60_000)
             page.wait_for_timeout(1500)
             out["deep_link"] = frame.locator("input[name='recommendation_ref']").input_value()
-            # the live check, on a loaded example
+            # no district: a plain message
             page.get_by_role("button", name="Every line a little high", exact=False).click()
             page.wait_for_timeout(400)
-            page.get_by_role("button", name="Check this form with the agents").click()
-            page.get_by_text("Your form").wait_for(timeout=180_000)
-            aside = page.locator("aside").inner_text()
-            out["checks"].append({"form": "cost_padded", "answer": aside[:1200]})
-            page.screenshot(path=str(shots / "check_cost_padded.png"))
-            # no district: a plain message
             frame.locator("input[name='district']").fill("")
             page.get_by_role("button", name="Check this form with the agents").click()
             page.get_by_text("Write the district in section C").wait_for(timeout=60_000)
@@ -163,15 +178,17 @@ def main() -> None:
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.with_suffix(".json").write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
     lines = [f"Work intelligence form page end to end: {len(jaunpur)} real Jaunpur works loaded",
-             ""]
+             f"public dashboard link opened {out.get('from_dashboard')}", ""]
     for e in out["examples"]:
         lines.append(f"{e['id']:15} form filled {e['filled']!s:5} BOQ rows {e['boq_rows']:2} "
                      f"verdict panel {'ok' if e['panel_ok'] else 'WRONG'}")
-    lines.append(f"deep link ?example=time_fast opened {out.get('deep_link')}")
-    answer = [x for x in out["checks"][0]["answer"].splitlines() if x.strip()]
-    lines.append("live check on cost_padded (no other agencies' filings in this database): "
-                 + " / ".join(answer[:8]))
-    lines.append(f"live check without a district: {out['checks'][1]['answer']}")
+    lines += ["", "Live check of each loaded filing (the form alone, against the real works only; "
+              "the worked verdicts also use the examples' made-up records):"]
+    for e in out["examples"]:
+        lines.append(f"{e['id']:15} worked {', '.join(e['codes']) or '-'}; live "
+                     f"{', '.join(e['live_codes']) or '-'}; panel note {e['live_note']}")
+    lines += ["", f"deep link ?example=time_fast opened {out.get('deep_link')}"]
+    lines.append(f"live check without a district: {out['checks'][0]['answer']}")
     lines.append(f"page errors: {len(errors)}")
     OUT.with_suffix(".txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines))

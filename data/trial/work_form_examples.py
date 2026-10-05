@@ -419,7 +419,7 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
         "should not need "
         "rebuilding, so Duplicate Work asks why, even though the link is declared.",
         ["Not sanctioned yet: this is the check before sanction",
-         "Earlier hall WF-OLD-HALL: completed about 18 months before today"], p)
+         f"Earlier hall WF-OLD-HALL: completed {m(540):%d %b %Y}"], p)
 
     pieces = []
     for i in range(3):

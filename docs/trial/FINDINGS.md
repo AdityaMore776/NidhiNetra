@@ -1336,6 +1336,52 @@ accepted.
 - Every look-alike stays out of the queue: 0 of 5,694 temple landmarks, 1,044 schools named "Mandir", 1,343 batches
   for different villages, 300 opposite sides of one road and the map-pin look-alikes.
 
+## T134 (5 Oct 2026): the website's work intelligence form, read by the four agents, with example filings
+
+The website's form (PSWIF v1.0, `/work-form`) now reaches the agents: `cost_form/pswif.py` turns a filled form into the
+engine's cost form and work record, and `POST /api/v1/work-form/check` runs the four agents on it (nothing stored).
+Twelve made-up filings in the real district of Jaunpur show each agent asking: made-up agencies and villages, honest
+quantities from the size norms unless the example pads them, checked by the real engines against the dashboard's
+40,935 works plus 11 made-up background filings (other agencies' roads, an earlier road and hall, a split's other
+pieces). `data/trial/work_form_examples.py` refuses to write the file unless each example raises exactly its
+questions (`results/work_form_examples.txt`):
+
+| Example | Agent that asks | What it raises | Band (score) |
+|---|---|---|---|
+| An honest CC road | none | nothing; all four checks assessed | LOW (0) |
+| Every line a little high | Cost | `ESTIMATE_ABOVE_FAIR_PRICE` | MEDIUM (0.25) |
+| Twice the cement the road can use | Cost | `MATERIAL_QUANTITY_ABOVE_SIZE` + `ESTIMATE_ABOVE_FAIR_PRICE` | MEDIUM (0.44) |
+| Solar lights at more than twice the usual price | Cost | `ESTIMATE_ABOVE_STANDARD_AND_MP` | MEDIUM (0.25) |
+| A "new" road on top of one the scheme already paid for | Duplicate Work | `SANCTIONED_WORK_AT_THIS_SITE` | MEDIUM (0.25) |
+| Rebuilding a hall finished 16 months earlier | Duplicate Work | `REBUILT_SOON_AFTER_COMPLETION` | MEDIUM (0.25) |
+| One lane filed as three works, each just under Rs 5 lakh | Duplicate Work | `SPLIT_JUST_UNDER_LIMIT` | HIGH (0.72), queued |
+| A 350 m road "complete" 6 days after sanction | Time & Rules | `FINISHED_TOO_FAST` | MEDIUM (0.25) |
+| Eight months promised, sixteen months on, and stopped | Time & Rules | `PAST_PROMISED_TIME` | MEDIUM (0.25) |
+| The first site video was filmed for another work | Site Progress | `FOOTAGE_USED_BEFORE` + `SAME_PLACE_AS_ANOTHER_WORK` | MEDIUM (0.44) |
+| "Roof slab cast", twice, and the videos don't show it | Site Progress | `CLAIM_NOT_SHOWN` | MEDIUM (0.25) |
+| A monthly video filmed 2.4 km away | Site Progress | `NOT_FILMED_AT_THIS_SITE` | MEDIUM (0.25) |
+
+- One finding is MEDIUM (the 1-in-4 prior of fusion v3 until its findings are read by eye); only the split reaches
+  the review queue on its own. The two halls whose filing predates the district's rates get Cost "could not check",
+  shown as such, never as a pass.
+- **In a real browser** (`data/trial/work_form_e2e.py`, `results/work_form_e2e.txt`): a local Postgres with Jaunpur's
+  1,038 real works, the engine and the web app in the public view. The dashboard's card opens `/work-form`; every
+  example fills the framed form (title, agency and BOQ rows read back) and the panel shows its verdict; a deep link
+  `?example=time_fast` opens with its filing; a form without its district gets a plain message; 0 page errors.
+- **The live check of an example differs from its worked verdict, and the page says so.** The live database holds
+  real records only, so pressing "Check this form" on a loaded example uses the form alone. The honest road stays
+  quiet and the solar lights ask the same question (the panel says "same"); the cement question and the late hall
+  (at half weight, without its videos) still ask; the other 8 ask nothing live, because they need records the form
+  does not carry (other agencies' filings, the earlier works, the later sanction, completion and site videos). The
+  panel names the difference instead of showing a quiet "nothing to ask".
+- **Adapter rules** (`test_pswif.py`, 21 tests; `test_work_form_api.py`, 4): fill only what the agency wrote; fields
+  PSWIF never asks are skipped by the required checks (`cost_form/versions.py`), never guessed; a BOQ line's
+  justification confirms that line, the rate-deviation note the whole estimate; the work type from the title before
+  the scope (a road "near the primary school" is a road); the rate index groups forms by the agency that filed them
+  and dates them by the form's filing date (`rates.agency_of`, `filed_on`).
+- Engine fixes found by the examples: a work recorded complete before its own planned start counts "too fast" from
+  the sanction (it said "0 days after the work could start"); quantities read "2,614 bags", not "2,614 bag".
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

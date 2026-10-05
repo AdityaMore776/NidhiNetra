@@ -1,4 +1,5 @@
 Work intelligence form page end to end: 1038 real Jaunpur works loaded
+public dashboard link opened /work-form
 
 clean           form filled True  BOQ rows  7 verdict panel ok
 cost_padded     form filled True  BOQ rows  7 verdict panel ok
@@ -12,7 +13,21 @@ time_late       form filled True  BOQ rows  9 verdict panel ok
 site_reused     form filled True  BOQ rows  9 verdict panel ok
 site_claim      form filled True  BOQ rows  9 verdict panel ok
 site_elsewhere  form filled True  BOQ rows  7 verdict panel ok
+
+Live check of each loaded filing (the form alone, against the real works only; the worked verdicts also use the examples' made-up records):
+clean           worked -; live -; panel note same
+cost_padded     worked ESTIMATE_ABOVE_FAIR_PRICE; live -; panel note differs
+cost_quantity   worked ESTIMATE_ABOVE_FAIR_PRICE, MATERIAL_QUANTITY_ABOVE_SIZE; live MATERIAL_QUANTITY_ABOVE_SIZE; panel note differs
+cost_lights     worked ESTIMATE_ABOVE_STANDARD_AND_MP; live ESTIMATE_ABOVE_STANDARD_AND_MP; panel note same
+dup_pin         worked SANCTIONED_WORK_AT_THIS_SITE; live -; panel note differs
+dup_rebuild     worked REBUILT_SOON_AFTER_COMPLETION; live -; panel note differs
+dup_split       worked SPLIT_JUST_UNDER_LIMIT; live -; panel note differs
+time_fast       worked FINISHED_TOO_FAST; live -; panel note differs
+time_late       worked PAST_PROMISED_TIME; live PAST_PROMISED_TIME; panel note differs
+site_reused     worked FOOTAGE_USED_BEFORE, SAME_PLACE_AS_ANOTHER_WORK; live -; panel note differs
+site_claim      worked CLAIM_NOT_SHOWN; live -; panel note differs
+site_elsewhere  worked NOT_FILMED_AT_THIS_SITE; live -; panel note differs
+
 deep link ?example=time_fast opened WF-TIME-1
-live check on cost_padded (no other agencies' filings in this database): YOUR FORM / Jaunpur, Uttar Pradesh · ₹17.55 L / Everything the agents read is filled in. / Low risk / · 0 / not in the review queue / 01 / CostNothing to ask
 live check without a district: asks for the district
 page errors: 0

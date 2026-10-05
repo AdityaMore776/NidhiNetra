@@ -25,6 +25,9 @@ Retired in T125 (results stored before still read by name until re-assessed; cod
 Compliance (its timing rules live on in Time & Rules), Fund Flow, Office Patterns, Paperwork and Photo Evidence. On the
 dashboard's 40,935 works the review queue went from 439 to 217 (185 R14, 34 split pieces, 2 both).
 
+The website's work intelligence form (`/work-form`, T134) is read by all four: twelve example filings in Jaunpur show
+each agent asking (made-up agencies; FINDINGS "T134"), and "Check this form" runs them on any filled form.
+
 ## Status at a glance (history, before the four agents)
 
 | # | Agent | Stage | State | Trial verdict on real data |
