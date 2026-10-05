@@ -102,6 +102,56 @@ dashboard queue before / after in FINDINGS (439 → 217)
 of §9.6 planted. Only readings and blurred frames are kept; no video enters the repo.
 **Done when:** [ ] each trick caught 9 in 10 · [ ] a finding on at most 1 in 30 honest visits · [ ] FINDINGS
 
+### T137 · Other agent architectures, tested against the current ones  ·  L  ·  engine + data  ·  Depends on: T136
+**What:** (owner, 5 Oct 2026) test other designs for each agent on the same benchmarks at the same
+false-alarm rate; switch only a design proven better that keeps every loophole closed. Plan:
+[`docs/plans/T137-architecture-bakeoff.md`](../plans/T137-architecture-bakeoff.md).
+**Done when:** [x] Cost: six candidate decisions on 12 planted scenarios; the current rule kept,
+"current OR peer line" ready for real forms · [x] Site Progress: six designs on a simulated year at
+three error levels; switched (honest works asked 25.7% → 5.0% a year at the assumed rates, tricks
+still caught) · [x] Duplicate Work: map grid, same answers, 8–10x faster · [x] the loop 85 probes,
+0 FAIL; the dashboard identical · [ ] T098 / T126 data to re-run the Cost and claim comparisons
+
+### T136 · Five filings end to end, Site Progress with room for error, one real region  ·  L  ·  engine + web + data  ·  Depends on: T135
+**What:** (owner, 5 Oct 2026) a set of five filings followed from the form to the risk score, Site
+Progress as a placeholder there (it starts after sanction; T126 tests it), honest values set against
+real works; Site Progress easy to use and forgiving of honest mistakes yet still catching tricks; the
+other agents hardened further (round 6 of the loop); one region's real works to test on (Uttar
+Pradesh). Plan: [`docs/plans/T136-end-to-end-and-room-for-error.md`](../plans/T136-end-to-end-and-room-for-error.md).
+**Done when:** [x] `/end-to-end`: five filings (two honest, three to find) through the real engine
+(`data/trial/end_to_end_examples.py`, which refuses a filing that no longer raises what it should),
+in a real browser with 0 page errors · [x] Site Progress: a poor video is "can't tell", weak GPS
+counts its accuracy, a missed viewpoint is compared next time, a skipped one is not counted, two
+unusable videos in a row are asked; the capture page uploads an honest imperfect visit with tips
+(`capture_e2e.py`) · [x] the loop's round 6 ends 81 probes, 0 FAIL, 3,000 damages crash none ·
+[x] every UP work through the four agents with 0 errors, the Time caps checked against UP's own
+works (`up_real_check.py`) · [ ] the field trial on real sites (T126) · [ ] the SoR (T096) for the
+labour-day limit
+
+### T135 · The four agents' self-improvement loop  ·  L  ·  engine + data  ·  Depends on: T134
+**What:** run each agent through samples and attack it (random damage, honest noise, evasions,
+scarce data, scale) until it stops giving wrong answers, being bypassed or breaking; where the
+data cannot support a price, switch that price off and record the gap to learn from. Plan:
+[`docs/plans/T135-robustness-loop.md`](../plans/T135-robustness-loop.md).
+**Done when:** [x] the harness (`data/trial/agent_robustness_loop.py`) ends with no FAIL (65 probes:
+59 PASS, 6 LIMIT with reasons) and 3,000 random damages crash no agent · [x] every fix has a
+regression test in the engine suite · [x] planted forms still meet the target at a 10% spread
+(94.2% / 0.1%) and the dashboard's 40,935 works answer as before (queue 217, every finding on the
+same works) · [x] data gaps recorded and listed (`GET /cost/data-gaps`) · [ ] the new findings read
+on real forms (T098)
+
+### T134 · The website's work intelligence form, read by the four agents, with example filings  ·  M  ·  engine + web + data  ·  Depends on: T125, T133
+**What:** the form on `/work-form` (PSWIF v1.0) reaches the agents: an adapter to the engine's cost form
+(`cost_form/pswif.py`, `versions.py`), `POST /api/v1/work-form/check` (nothing stored), and example filings by made-up
+agencies in Jaunpur, each caught by one agent, shown on the page for judges: each agent flagged / clear / not
+checked with one line on why, the flagged fields outlined in the form, a Data tab with the example data in plain
+words, and a live check (`?demo=true`) against the same data.
+**Done when:** [x] adapter and route tested (`test_pswif.py` 21, `test_work_form_api.py` 4) · [x] 12 examples, each
+raising exactly its questions through the real engines (`data/trial/work_form_examples.py`, which refuses otherwise) ·
+[x] the page end to end in a real browser, from the dashboard's card to a live check, 0 page errors
+(`data/trial/work_form_e2e.py`) · [x] the live demo check raises exactly the worked flags on 12 of 12, and a fixed
+field clears its flag · [x] FINDINGS "T134" · [ ] seen on the live site after merge
+
 ---
 
 ## M0 — Foundations

@@ -39,7 +39,7 @@ import time
 from datetime import timedelta
 
 from drishti.agents.contract import AgentResult, Finding, Status
-from drishti.agents.dup_split.repeat import PIN_METRES, RepeatIndex
+from drishti.agents.dup_split.repeat import PIN_METRES, RepeatIndex, pin_problems, same_ground
 
 AGENT = "dup_split"
 VERSION = "dup-split-3.0.0"
@@ -95,6 +95,22 @@ def _said(answers: dict, wid: str) -> str:
             f"{f': {why!r}' if isinstance(why, str) and why.strip() else ''}.")
 
 
+def _rebuilt(me, x, lead: str, nature: str | None, ground: bool) -> Finding:
+    """REBUILT_SOON_AFTER_COMPLETION for earlier work x (completed less than 3 years before)."""
+    months = (me.first - x.done).days // 30
+    same = (" It is called a continuation or an upgrade, but it covers that work's own ground "
+            "with the same size: the same asset built again." if ground else "")
+    return Finding(
+        "REBUILT_SOON_AFTER_COMPLETION",
+        f"{lead} {x.work_id} ({_lakh(x.amount)}), which was completed on "
+        f"{x.done.isoformat()}, {months} months before this one was recommended.{same} A new "
+        "asset should not need rebuilding this soon: please check the first work's completion "
+        "and quality.",
+        hard=False, risk=REBUILT_RISK,
+        evidence={"other": x.work_id, "nature": nature, "months_after_completion": months,
+                  "other_amount": x.amount, "same_ground": ground, "kind": "declared"})
+
+
 def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
     t0 = time.perf_counter()
     if index is None or not work.get("district_lgd"):
@@ -107,22 +123,32 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
     me, answers, link = found["me"], found["answers"], found["declared"]
     findings: list[Finding] = []
 
-    # 1. the same site by map pin, not declared as the work this one continues
+    # 1. the same site by map pin, not declared as the work this one continues. Declared, but
+    #    lying on the ground of an earlier work that is not finished yet: still asked (T135)
+    finished_named = []                  # named, finished and on the same ground: rebuilt?
     for x, d in found["at_site"]:
-        if link and link["work_id"] == x.work_id:
+        named = ((link and link["work_id"] == x.work_id)
+                 or (answers.get(x.work_id) or {}).get("answer") == "continues")
+        if named and not same_ground(me, x):
+            continue                     # a real continuation beside it
+        if named and x.done:
+            finished_named.append(x)
             continue
-        if (answers.get(x.work_id) or {}).get("answer") == "continues":
-            continue
+        share = found.get("overlap", {}).get(x.work_id)
+        where = (f"Its alignment runs over {share:.0%} of sanctioned work {x.work_id}'s"
+                 if share else f"The map pin is {d:,.0f} m from sanctioned work {x.work_id},")
+        tail = (" The form names it as the work this one continues, but it lies on that work's "
+                "own ground, which is not finished yet."
+                if named else " The form does not name it as the work this one continues.")
         findings.append(Finding(
             "SANCTIONED_WORK_AT_THIS_SITE",
-            f"The map pin is {d:,.0f} m from sanctioned work {x.work_id} of the same kind "
-            f"({_lakh(x.amount)}, {_state(x)}), and the form does not name it as the work this "
-            f"one continues.{_said(answers, x.work_id)} Please check on site whether it is the "
-            "same work.",
+            f"{where} of the same kind ({_lakh(x.amount)}, {_state(x)}).{tail}"
+            f"{_said(answers, x.work_id)} Please check on site whether it is the same work.",
             hard=False, risk=SITE_RISK,
             evidence={"other": x.work_id, "metres": round(d, 1), "other_amount": x.amount,
                       "other_completed": x.done.isoformat() if x.done else None,
-                      "pin_metres": PIN_METRES, "kind": "at_site"}))
+                      "pin_metres": PIN_METRES, "overlap": share, "declared": bool(named),
+                      "kind": "at_site"}))
 
     # 2. what the agency declares this work continues
     if link:
@@ -135,19 +161,10 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
                 hard=False, risk=0.0,
                 evidence={"other": link["work_id"], "nature": link["nature"], "on_record": False,
                           "kind": "declared"}))
-        elif (link["nature"] == "reconstruction" and x.done and me.first
-              and timedelta(0) <= me.first - x.done < REBUILT_WITHIN):
-            months = (me.first - x.done).days // 30
-            findings.append(Finding(
-                "REBUILT_SOON_AFTER_COMPLETION",
-                f"The agency says this work rebuilds work {x.work_id} ({_lakh(x.amount)}), which "
-                f"was completed on {x.done.isoformat()}, {months} months before this one was "
-                "recommended. A new asset should not need rebuilding this soon: please check "
-                "the first work's completion and quality.",
-                hard=False, risk=REBUILT_RISK,
-                evidence={"other": x.work_id, "nature": link["nature"],
-                          "months_after_completion": months, "other_amount": x.amount,
-                          "kind": "declared"}))
+        elif ((link["nature"] == "reconstruction" or link.get("same_ground")) and x.done
+              and me.first and timedelta(0) <= me.first - x.done < REBUILT_WITHIN):
+            findings.append(_rebuilt(me, x, f"The agency says this work {verb} work",
+                                     link["nature"], link["nature"] != "reconstruction"))
         else:
             findings.append(Finding(
                 "CONTINUES_SANCTIONED_WORK",
@@ -157,6 +174,14 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
                 evidence={"other": x.work_id, "nature": link["nature"], "on_record": True,
                           "kind": "declared"}))
 
+    # 2b. a finished work the form names only among its nearby works, on the same ground
+    for x in finished_named:
+        if link and link["work_id"] == x.work_id:
+            continue                     # judged above
+        if me.first and timedelta(0) <= me.first - x.done < REBUILT_WITHIN:
+            findings.append(_rebuilt(me, x, "The form names as the work this one continues "
+                                     "work", None, True))
+
     # 3. one job cut into pieces just under a limit (the strictest form only)
     g = found["split"]
     if g:
@@ -165,9 +190,11 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
         span = "on the same day" if not g["days"] else f"within {g['days']} days"
         parts = (f" ({', '.join(x.replace(':', ' ') for x in g['segments'])})"
                  if g.get("segments") else "")
+        what = ("works whose forms' map pins put them end to end or at one site"
+                if g.get("kind") == "pins_split" else "alike works at one place")
         findings.append(Finding(
             "SPLIT_JUST_UNDER_LIMIT",
-            f"One of {g['size']} alike works at one place{parts}, recommended {span}: each "
+            f"One of {g['size']} {what}{parts}, recommended {span}: each "
             f"{_rupees(lo)}{'' if lo == hi else f' to {_rupees(hi)}'}, just under the "
             f"{_lakh(g['limit'])} limit, {_lakh(g['total'])} together. Please check whether one "
             f"job was cut into pieces to stay under the limit. Others: {', '.join(others)}.",
@@ -192,8 +219,26 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
                       "other_amount": x.amount, "answer": (answers.get(x.work_id) or {})
                       .get("answer"), "kind": "look_alike"}))
 
+    # 5. a same-kind building just past the one-site line (T136): a note, never counted
+    for x, d in found.get("near") or []:
+        if x.work_id in asked:
+            continue
+        named = x.work_id in answers or (link and link["work_id"] == x.work_id)
+        findings.append(Finding(
+            "NEAR_SANCTIONED_WORK",
+            f"Sanctioned work {x.work_id} ({_lakh(x.amount)}, {_state(x)}) of the same kind has "
+            f"its map pin {d:,.0f} m from this one, just past the {PIN_METRES:.0f} m that makes "
+            "two pins one site"
+            + (", and the form names it." if named else
+               ", and the form names no nearby work. Check it is not the same building; the "
+               "first site video shows whether the asset already stands.")
+            + " A note, not a question.",
+            hard=False, risk=0.0,
+            evidence={"other": x.work_id, "metres": round(d, 1), "other_amount": x.amount,
+                      "kind": "near"}))
+
     n, pinned = found["compared"], bool(me.sites)
-    limits = []
+    limits = pin_problems(me.form, me.linear)
     if not pinned:
         limits.append("Without the cost estimate form's map pin a repeat can only be looked for "
                       "by words, which are right about 2 times in 3: shown as notes, never "

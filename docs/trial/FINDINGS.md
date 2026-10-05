@@ -1336,6 +1336,379 @@ accepted.
 - Every look-alike stays out of the queue: 0 of 5,694 temple landmarks, 1,044 schools named "Mandir", 1,343 batches
   for different villages, 300 opposite sides of one road and the map-pin look-alikes.
 
+## T134 (5 Oct 2026): the website's work intelligence form, read by the four agents, with example filings
+
+The website's form (PSWIF v1.0, `/work-form`) now reaches the agents: `cost_form/pswif.py` turns a filled form into the
+engine's cost form and work record, and `POST /api/v1/work-form/check` runs the four agents on it (nothing stored).
+Twelve made-up filings in the real district of Jaunpur show each agent asking: made-up agencies and villages, honest
+quantities from the size norms unless the example pads them, checked by the real engines against the dashboard's
+40,935 works plus 11 made-up background filings (other agencies' roads, an earlier road and hall, a split's other
+pieces). `data/trial/work_form_examples.py` refuses to write the file unless each example raises exactly its
+questions (`results/work_form_examples.txt`):
+
+| Example | Agent that asks | What it raises | Band (score) |
+|---|---|---|---|
+| An honest CC road | none | nothing; all four checks assessed | LOW (0) |
+| Every line a little high | Cost | `ESTIMATE_ABOVE_FAIR_PRICE` | MEDIUM (0.25) |
+| Twice the cement the road can use | Cost | `MATERIAL_QUANTITY_ABOVE_SIZE` + `ESTIMATE_ABOVE_FAIR_PRICE` | MEDIUM (0.44) |
+| Solar lights at more than twice the usual price | Cost | `ESTIMATE_ABOVE_STANDARD_AND_MP` | MEDIUM (0.25) |
+| A "new" road on top of one the scheme already paid for | Duplicate Work | `SANCTIONED_WORK_AT_THIS_SITE` | MEDIUM (0.25) |
+| Rebuilding a hall finished 16 months earlier | Duplicate Work | `REBUILT_SOON_AFTER_COMPLETION` | MEDIUM (0.25) |
+| One lane filed as three works, each just under Rs 5 lakh | Duplicate Work | `SPLIT_JUST_UNDER_LIMIT` | HIGH (0.72), queued |
+| A 350 m road "complete" 6 days after sanction | Time & Rules | `FINISHED_TOO_FAST` | MEDIUM (0.25) |
+| Eight months promised, sixteen months on, and stopped | Time & Rules | `PAST_PROMISED_TIME` | MEDIUM (0.25) |
+| The first site video was filmed for another work | Site Progress | `FOOTAGE_USED_BEFORE` + `SAME_PLACE_AS_ANOTHER_WORK` | MEDIUM (0.44) |
+| "Roof slab cast", twice, and the videos don't show it | Site Progress | `CLAIM_NOT_SHOWN` | MEDIUM (0.25) |
+| A monthly video filmed 2.4 km away | Site Progress | `NOT_FILMED_AT_THIS_SITE` | MEDIUM (0.25) |
+
+- One finding is MEDIUM (the 1-in-4 prior of fusion v3 until its findings are read by eye); only the split reaches
+  the review queue on its own. The two halls whose filing predates the district's rates get Cost "could not check",
+  shown as such, never as a pass.
+- **In a real browser** (`data/trial/work_form_e2e.py`, `results/work_form_e2e.txt`): a local Postgres with Jaunpur's
+  1,038 real works, the engine and the web app in the public view. The dashboard's card opens `/work-form`; every
+  example fills the framed form (title, agency and BOQ rows read back) and the panel shows its verdict; a deep link
+  `?example=time_fast` opens with its filing; a form without its district gets a plain message; 0 page errors.
+- **The demo's live check uses the same example data** (`POST /work-form/check?demo=true`, `drishti/demo.py`, the
+  file `reference/demo/work_form.json` written by the examples script): the other agencies' filings, the earlier
+  works and each example's record after sanction, placed in the form's district; nothing stored, never used by any
+  other route. In the browser, all 12 loaded examples raise **exactly** their worked flags live, and the script
+  checks the same path without a browser before it writes the files.
+- **The page shows what is flagged and why, simply**: each agent says Flagged, Clear, Not checked or After sanction,
+  with one line built from the finding's own numbers (the trace now carries a whitelisted `facts` part: numbers,
+  dates, work IDs, item names); the flagged fields are outlined in the form in the agent's colour (1 to 4 fields per
+  example; the padded estimate marks its total and its three highest rates); "Show in form" scrolls to one.
+- **Editing a field changes the answer**: "Twice the cement" with the cement set back to 1,307 bags clears both of
+  Cost's flags (LOW). The **Data tab** shows, in plain words, the prices other agencies filed (10 items; cement Rs
+  380 a bag on 22 forms), the standard solar-light price (Rs 20,896, 136 real eSAKSHI works in Jaunpur), the works
+  on record, what happened after sanction (dates, site videos) and the rules the agents use.
+- **Adapter rules** (`test_pswif.py`, 21 tests; `test_work_form_api.py`, 4): fill only what the agency wrote; fields
+  PSWIF never asks are skipped by the required checks (`cost_form/versions.py`), never guessed; a BOQ line's
+  justification confirms that line, the rate-deviation note the whole estimate; the work type from the title before
+  the scope (a road "near the primary school" is a road); the rate index groups forms by the agency that filed them
+  and dates them by the form's filing date (`rates.agency_of`, `filed_on`).
+- Engine fixes found by the examples: a work recorded complete before its own planned start counts "too fast" from
+  the sanction (it said "0 days after the work could start"); quantities read "2,614 bags", not "2,614 bag".
+
+## T135 (5 Oct 2026): the agents' self-improvement loop
+
+Each agent was run through samples and attacked until it stopped breaking
+(`data/trial/agent_robustness_loop.py`, plan `docs/plans/T135-robustness-loop.md`). The samples are
+the work form's example filings in Jaunpur on top of the district's 1,038 real works. The probes are
+random damage, honest noise, deliberate evasions, scarce data and scale. The final run
+(`results/agent_robustness.txt`):
+
+| | |
+|---|---|
+| Probes | **65: 59 PASS, 0 FAIL, 6 LIMIT** |
+| Random damage (seed 7) | **3,000 runs: 0 agent errors, 0 broken contracts, 0 different answers the second time** |
+| Scale | 3,000 filed roads in one district: one work's four agents in 0.06 s |
+
+**What the loop broke, and how it is fixed** (each with a regression test in the engine suite):
+
+- **Crashes**: infinity as an estimated duration, NaN or infinity as a video's frame count, a list
+  where a unit belongs. Every number reader now takes finite numbers only, every unit reader text
+  only. `tests/evaluation/test_random_forms.py` keeps 300 damaged forms and videos in CI.
+- **Cost**:
+  - Padding hidden in a lump sum or "other charges" was invisible. Lump sums beyond 2% of a
+    construction estimate, other charges beyond 5% (23% when the form names no GST) and
+    contingency beyond 5% now count as not shown to be fair.
+  - Items given names no reader knows: `ESTIMATE_NOT_ITEMISED` when over 40% of a construction
+    estimate is lump sums or unrecognised items.
+  - One unanswered warning switched the whole check off. Now only a line whose rate or unit looks
+    like a typing mistake is held out; the rest is judged.
+  - One agency filing many forms dragged the district's price. Now one vote per agency, and name
+    variants are one agency.
+  - Prices that disagree were trusted. Now they are switched off for that material and recorded as
+    a gap (with the state's forms, 10% more leniently, when the district has too few).
+  - A held or unpriced line watered the gap down. The gap is now measured against the fair price
+    of what was priced.
+  - A size the form's own scope contradicts: `SIZE_NOT_AS_DESCRIBED`.
+  - Two adapter faults: a website filing with any lump sum could never be judged, and the trade
+    words *kapchi*, *rodi*, *jelly* and "fine / coarse aggregate" were not recognised.
+- **Duplicate Work**:
+  - An old road filed again 100 m longer, or pinned 60 m off: a road lying 80% on another's line
+    is the same ground.
+  - A re-filed work declared a "continuation" or "repair", or named only among the nearby works:
+    on a finished work's own ground it is a rebuild (`REBUILT_SOON_AFTER_COMPLETION`); on an
+    unfinished one it is asked about.
+  - Map pins outside India (0, 0; swapped) and roads with one end are set aside, and the result
+    says so.
+- **Time & Rules**:
+  - An estimate over twice what 9 in 10 such works take falls back to the typical time.
+  - A start promised more than 6 months after sanction counts from 6 months.
+  - Lost months count as calendar months, at most 4.
+  - A reused or elsewhere-filmed video no longer counts as showing the work built.
+  - "completed" in lower case was read as not complete.
+- **Site Progress**:
+  - Never filming (or uploading only unsealed videos): `NO_SITE_VIDEO` 60 days past the start.
+  - "can't tell" slipped between two "not shown" no longer resets the claim check.
+  - Every video filmed consistently away from the form's pin: `SITE_NOT_AT_FORM_PIN`.
+  - Videos dated after today are not counted.
+  - Vague claims ("work in progress") are asked to be specific.
+
+**Price data that cannot be trusted is switched off, then learned.** A material whose district
+prices are too few, too old or disagree is not priced. The gap is recorded with its reason, and
+`GET /api/v1/cost/data-gaps?district=` lists what to collect where. Every form filed joins the
+index, so a gap closes by itself once enough agree. The live check now also reads the state's
+other forms (`batch.state_forms`).
+
+**The measurements the fixes could move:**
+
+- **Planted forms** (`results/cost_whole_trial.txt`):
+  - District rates, 10% honest spread: +20% padding asked **94.2%**, honest asked **0.1%** (target:
+    at least 90%, at most 2%).
+  - District rates, 5% spread: 95.9% and 0.0%. SoR rates, 10% spread: 86.5% and 0.2%.
+  - At a 15% spread, honest forms are asked 3.6% (district) and 2.8% (SoR): over the 2% target, as
+    before the loop.
+- **The dashboard's 40,935 real works** (`results/dashboard_t135_after.json` against
+  `t125_after`): the same bands, the same queue of 217, and every finding on the same works
+  (compared work by work). The fixes touch forms and videos, which no real work has yet.
+- **The example filings**: 12 of 12 raise what they are meant to. The 6-day road also gets
+  `NO_SITE_VIDEO` (never filmed, 100 days after sanction). The page passes in a browser with 0
+  page errors (`results/work_form_e2e.txt`).
+
+**Still limits** (`results/agent_robustness.txt`, reasons in the plan):
+- padding just under 15%;
+- split pieces at 95% of a limit;
+- GPS faked inside the site with the views elsewhere (one proof);
+- 22% padding priced only from the state's forms;
+- every agency in a district padding together (needs the SoR, T096);
+- a bigger size claimed consistently everywhere (needs the site videos to measure it).
+
+## T136 (5 Oct 2026): five filings end to end, Site Progress with room for error, and one real region
+
+**One region's real works: Uttar Pradesh** (`data/trial/up_real_check.py`, `results/up_real_check.txt`).
+The government sites (eSAKSHI, data.gov.in, the PWD Schedules of Rates) cannot be reached from
+the build machine, so the real data is the eSAKSHI dashboard tables already in the team pack.
+Uttar Pradesh is their largest state: 8,702 of 40,935 works, in 74 districts; Jaunpur has 1,038.
+
+- **All four agents on every UP work**: 10.3 s (1.19 ms a work, slowest 458 ms), **0 agent
+  errors**. Cost and Site Progress are not applicable (no form or video exists for these works).
+  Duplicate Work assessed 8,641 and could not assess 61 (no description). Time & Rules assessed
+  all 8,702. It asked `SANCTIONED_LATE` 2,292 times (an office fact, risk 0.05, never queues
+  alone), `SANCTION_OVERDUE` 30, `BUILT_IN_DAYS` 2 and `BUILT_RIGHT_AFTER_SANCTION` 2. Bands:
+  HIGH 2, MEDIUM 30, LOW 8,670.
+- **The Time agent's caps hold for UP**:
+  - The national "longest usual time" is within ±2.2% of UP's own 90th percentile for its five
+    big types:
+    - street lights: UP 460 days, India 450;
+    - CC roads: 471 / 462;
+    - borewells: 392 / 396;
+    - paths: 463 / 470;
+    - solar plants: 306 / 306.
+  - 86.6–100% of UP's finished works fall within it. UP works are slower in the middle: median
+    286–295 days against 199–203 nationally.
+  - **Decision: keep the national bands; no per-state bands.** A state whose works close
+    suspiciously fast would make its own cap stricter for honest works. In Bihar, 87 libraries
+    were "completed" a median 6 days after sanction.
+  - Recommendation to sanction: UP median 82 days, 53.9% past 75 days (India 90 days, 60.0%).
+- **UP's real prices per unit of size**, the yardstick for the demo's honest values:
+  - CC roads: Rs 4,491 to 12,201 a metre (middle 80% of 493 works, median 7,698);
+  - paths: Rs 4,505 to 11,284 a metre (206 works);
+  - high masts: median Rs 1,72,675 (232 works);
+  - **solar street lights: median Rs 20,944 a light, tight** (334 works; Jaunpur 136 works,
+    median Rs 20,896).
+
+**Five filings, form to risk score** (`data/trial/end_to_end_examples.py`, `/end-to-end`,
+`results/end_to_end_examples.txt`). Each filing goes through the same path as the live check: the
+website form, the form's own check, the four agents and the fused score. Site Progress is shown
+as a placeholder until its field trial (T126).
+
+| Filing | Ready | Agents ask | Score | Band |
+|---|---|---|---|---|
+| An honest 300 m CC road (Rs 4,838 a metre: inside UP's real range) | yes | none | 0 | LOW |
+| 20 solar lights at Rs 20,900 (Jaunpur's real median) | yes | none | 0 | LOW |
+| The honest road with Rs 5.5 lakh in equipment hire | yes | Cost | 25 | MEDIUM |
+| One lane as three pieces end to end, each just under Rs 5 lakh, one described in other words | yes | Duplicate | 72 | HIGH |
+| A "new" hall 20 m from a finished one, rates +25%, waiting 100 days | yes | Cost, Duplicate, Time | 46 | MEDIUM |
+
+The road with hidden hire costs Rs 6,672 a metre, which is inside UP's real range. A price check
+on the record alone would pass it; the line-by-line check of the form asks.
+
+The page passes in a real browser (`results/work_form_e2e.txt`):
+- each filing's score is shown as computed;
+- the placeholder and the decision are on the page;
+- 0 page errors;
+- the 12 work-form examples still match the live check.
+
+**Robustness loop, round 6** (`results/agent_robustness.txt`): **81 probes, 74 PASS, 0 FAIL, 7
+LIMIT**; 3,000 random damages (seed 7): 0 agent errors, 0 broken contracts, 0 different answers.
+The round tried "just past a line", lines nobody prices, renamed pieces, and Site Progress's room
+for error. What got past, and how it is fixed (each with a regression test):
+
+- **Cost**:
+  - Sand doubled went unasked. The only CC-road norm was cement. Sand now follows the same IS 456
+    nominal mix (M20 = 1:1.5:3, 0.42 m³ of dry sand per m³). It allows 20% for moist sand's
+    bulking, so honest estimates of 0.44–0.47 m³ are never asked. It applies only under bases
+    that take no sand.
+  - A line no reader prices (equipment hire, 30 days raised to 250) hid Rs 5.5 lakh. In a
+    construction estimate, such items beyond 15% of the lines now count as not shown to be fair,
+    like lump sums. Honest earthwork, shuttering and curing (about 10%) are not asked.
+  - Rates typed "Rs 464/-" read as no rate. The adapter now reads Rs, ₹, INR, /- and Devanagari
+    digits.
+  - A form whose lines carried no readable rate passed as "ready". It now asks for the rate.
+- **Duplicate Work**:
+  - A split with one piece called a paver road, "Other" or "Gravel / WBM", or described in other
+    words, escaped the wording rule. The forms' map pins now find the strictest split too: pieces
+    of one lane laid end to end or at one pin, recommended within 30 days, every piece 96–100% of
+    a limit.
+  - A road subtype the engine has no code for kept only one end. It now keeps both.
+  - A "new" hall pinned 60 m from a finished one (just past the 50 m line) is now named in a note
+    (`NEAR_SANCTIONED_WORK`, within 150 m, never counted). Site Progress's first video
+    (`ALREADY_BUILT_AT_START`) settles it.
+- **Site Progress**:
+  - A work recorded complete with not one accepted video is now asked at once. Before, it waited
+    60 days past the start.
+  - **Room for error.**
+    - A dark, blurred or very short video says "can't tell", never "does not match". The
+      agent's "filmed elsewhere" and "claim not shown" no longer count such a video.
+    - A GPS fix counts with its own reported accuracy; when every fix is poorer than 50 m, the
+      GPS says "can't tell".
+    - A viewpoint missed one month is still compared the next. Every viewpoint the site ever had
+      is compared, from its last 3 good frames; a visit that did not match never becomes the
+      reference.
+    - A viewpoint the person could not reach is skipped with a reason and not counted against
+      the visit.
+  - **Still does its job**: two unusable videos in a row (dark, short, viewpoints not filmed, or
+    views not matching while the GPS says "at the site") ask `SITE_VIDEOS_UNUSABLE`. This also
+    closes "GPS faked inside" when it is repeated. One poor month is never a finding.
+  - **The capture page** no longer refuses an honest visit. Only a useless video stops the upload
+    (under 20 s, a viewpoint half marked, a first visit with under 2 viewpoints). Everything else
+    is a tip noted with the video: "Can't reach" a viewpoint, weak GPS, the phone placing you
+    away from the pin, poor light, walking fast.
+- **Proof in a real browser** (`results/capture_e2e.txt`, fake camera, local engine and storage):
+  - The honest visit was uploaded with one tip: 3 of 5 viewpoints marked, 2 "can't reach",
+    GPS ±90 m and 150 m off the pin.
+  - The reader found all 5 views, saw the work changed, and said "can't tell" for the GPS.
+    Site Progress asks nothing on H1.
+  - The hall filmed at another hall's site is still asked (`FOOTAGE_USED_BEFORE`,
+    `SAME_PLACE_AS_ANOTHER_WORK`).
+- **Video reader**: 20 tests on drawn scenes (6 new; each new one fails on the old reader).
+
+**Unchanged where it should be.**
+- The dashboard's 40,935 real works (`results/dashboard_t136_after.json` against `t135_after`):
+  the same bands, queue (217) and flags, work by work.
+- The 12 work-form examples raise exactly what they did. Two outputs changed:
+  - the 6-day road's `NO_SITE_VIDEO` now says it was recorded complete with no video;
+  - two Cost limitations quote a higher priced share, because sand is now normed.
+
+**Limits now 7.** The six of T135 (with "GPS faked inside" now caught when repeated), plus:
+labour days multiplied 2.5 times are not asked, because labour per m³ is not normed yet (CPWD's
+Analysis of Rates gives it, T096).
+
+## T137 (5 Oct 2026): other agent architectures, tested against the current ones
+
+The owner asked for other designs to be tested against the current agents. Two conditions:
+- a switch only when the other design is proven better;
+- it must stay immune to the loopholes the loop closed.
+
+Every candidate ran on the same benchmarks. Where a design has a free line, the line is set so the
+same share of honest cases is asked (`data/trial/architecture_bakeoff.py`; results
+`results/architecture_bakeoff_{cost,site,dup}.txt`). Everything below is planted or simulated:
+the honest spreads and the video reader's error rates are assumptions until real forms (T098) and
+the field trial (T126).
+
+### Cost: the whole-estimate decision. Not switched; the current rule holds up best
+
+500 planted CC-road forms per cell, 12 scenarios. The scenarios cover:
+- honest spreads of 5, 10 and 15% and a different spread per material;
+- a per-site **carriage** factor on sand, aggregate and base, or one moving **every** line of a
+  form (a remote site);
+- a scarce district, 3 agencies filing scattered rates on purpose, and the SoR.
+
+Paddings tried: every line +10 to +30%, one line ×2, two lines +40%.
+
+| Candidate | Worst honest asked | +20% caught (mean) | All paddings caught | Cells meeting the target |
+|---|---|---|---|---|
+| **current: money gap 15% and Rs 50,000** | 3.0% | 79.8% | 63.1% | 1 of 12 |
+| current OR peer-adaptive money line | 3.0% | 81.7% | 67.3% | 2 of 12 |
+| z-test, precision-weighted (lines independent) | 2.8% | 76.4% | 54.2% | 4 of 12 |
+| z-test against the peers' own scatter | 2.0% | 84.3% | 54.9% | 4 of 12 |
+| isolation forest (machine learning) | 3.8% | 58.7% | 34.5% | 1 of 12 |
+
+- **The statistical tests read an honest site as padding.**
+  - They assume each line varies on its own. They ask no honest form when that is true (0.0% in
+    the four independent scenarios).
+  - When a remote site lifts every line together, they ask 2.2–2.8% of honest forms.
+  - They also catch only about 40% of one doubled line, which the money gap catches 93–100% of
+    the time.
+- **The isolation forest catches half as much.** It has only the district's own forms to learn
+  from.
+- **"Current OR peer-adaptive line"**:
+  - It asks the same honest forms as today in every scenario (0.2 → 0.4% in one, noise).
+  - It catches more only where honest prices are tight: +15% padding in a 5%-spread district goes
+    from 50.4% to 100%.
+  - It can never ask less than today, so no loophole opens.
+  - But the gain rests on the assumption that tight districts exist. **Not switched.** The
+    reference code is in the bake-off script, ready to adopt when real forms (T098) show tight
+    districts.
+
+### Site Progress's decisions: switched
+
+A simulated year of monthly visits for 2,000 honest works and 500 of each trick.
+- The person and the reader err at assumed rates: 8% dark, 8% partial, 8% a month missed, 10%
+  weak GPS, 3% GPS jitter, 2% views lost, and a real claim judged "not shown" 5% of the time.
+- These rates are also tried at half and 1.5 times.
+- Each design is checked at every month's end, as the daily batch does.
+
+| Errors | **T136 design**: honest works asked in a year | **switched design** | tricks caught (switched) |
+|---|---|---|---|
+| half | 10.4% | 2.9% | 89–100% |
+| assumed | **25.7%** | **5.0%** | 86–100% |
+| 1.5× | 45.0% | 9.4% | 79–100% |
+
+- "The last two videos unusable" asked 449 of 2,000 honest works a year (assumed rates). Two bad
+  videos in a row turn up sometime in most honest years.
+  - **Now:** 4 of the last 5 videos unusable, or every video so far from the third. That asks 33
+    honest works.
+  - On-purpose bad videos are still caught 95.4% of the time (99.6% before).
+- A GPS jitter in the same video as lost views read as "filmed elsewhere" for 15 honest works.
+  - **Now** that needs the GPS 300 m or more out, or a mock location. Nearer, the views count as
+    unusable.
+  - A video filmed 200 m away is still caught 100% of the time.
+- Two loopholes found while doing this are closed:
+  - three bad videos and then no more filming;
+  - two honest months filmed, then the work recorded complete with no final video. Now
+    `COMPLETE_NOT_FILMED`, 30 days after completion.
+- Kept: the claim rule ("not shown twice in a row"). It is now most of the honest questions (54
+  of 2,000 a year at a 5% reader error). "3 of the last 5" would ask 11 and catch 5–12 points
+  fewer ghost claims. The reader's real error rate (T126) decides it.
+- Rejected: a single running score (CUSUM). Set to 2% of honest works, it caught only 37–39% of
+  on-purpose bad videos.
+
+### Duplicate Work: a map grid. Switched; same answers, up to 10× faster
+
+A check now looks only at works filed within 200 m of its own pins. That margin covers the
+150 m note radius, the 50 m one-site rule and the 25 m road overlap.
+- Measured on one district of n filed roads (`results/architecture_bakeoff_dup.txt`, same answers
+  every time):
+
+| Filed forms | One check, before → now | The district's batch, before → now |
+|---|---|---|
+| 1,000 | 8.4 → 1.1 ms | 8 → 1 s |
+| 3,000 | 20.9 → 2.1 ms | 63 → 6 s |
+| 10,000 | 72.6 → 9.1 ms | 726 → 91 s |
+
+- Every at-site work, distance, overlap and nearby note is identical to the full scan on random
+  dense districts of 700 works (`tests/agents/dup_split/test_dup_grid.py`).
+- That covers roads and halls, roads with one end, and far ends typed hundreds of km away.
+
+### The score (fusion): not re-tested
+
+Its labelled benchmark (the planted test, T080) needs the 2,09,993-work build, which is not on the
+build machine. The four agents' new questions also all sit at the 1-in-4 prior until read. So any
+sensible combination ranks works the same, except for ties.
+
+### Proof that nothing else moved
+
+- The loop: **85 probes, 78 PASS, 0 FAIL, 7 LIMIT**; 3,000 random damages, 0 errors. Four new
+  probes cover the switched rules and the two closed loopholes.
+- The engine suite: 799 passed.
+- The 12 work-form examples and the five end-to-end filings raise exactly what they did.
+- The capture page end to end: the honest imperfect hall is asked nothing, and the hall filmed at
+  another hall's site is still asked.
+- The dashboard's 40,935 works: identical bands, queue (217) and flags (`dashboard_t137_after`).
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

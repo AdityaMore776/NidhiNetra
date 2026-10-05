@@ -45,7 +45,7 @@ def _earlier(row: dict, store, with_frames: bool) -> vv.Earlier:
             except Exception:          # a missing frame only makes that viewpoint unmatched
                 continue
     return vv.Earlier(row["work_id"], row["visit_id"], row["kind"], frames,
-                      list(kept.get("hashes") or []))
+                      list(kept.get("hashes") or []), row.get("readings") or {})
 
 
 def process(con, store, judge: Callable | None = None, limit: int | None = None) -> list[dict]:

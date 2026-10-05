@@ -22,7 +22,7 @@ import type { GlobeMetric } from "@/components/map/IndiaGlobe";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { useMe } from "@/components/me";
 import { PageHeader, SectionHeader, StatTile } from "@/components/nn/layout-bits";
-import { ExampleGallery, useShowcase } from "@/components/nn/showcase";
+import { ExampleGallery, FormExamplesCard, useShowcase } from "@/components/nn/showcase";
 import { WorkTable } from "@/components/nn/work-table";
 import { Button } from "@/components/ui/button";
 import type { Band, DistrictRow, OfficeRow, Page, Summary, WorkRow } from "@/lib/api";
@@ -193,6 +193,7 @@ export default function Dashboard() {
               description="Each one is a textbook case: a check asking for a look where it should, two checks agreeing, or the checks staying quiet on an ordinary work. Open one to see the score, the reasons and all four checks."
             />
             <ExampleGallery file={file} />
+            <FormExamplesCard />
           </section>
 
           <section className="grid gap-5 lg:grid-cols-12">

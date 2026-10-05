@@ -1,0 +1,236 @@
+{
+  "works_loaded": 1038,
+  "examples": [
+    {
+      "id": "clean",
+      "filled": true,
+      "boq_rows": 7,
+      "panel_ok": true,
+      "flagged_agents": 0,
+      "fields_marked": 0,
+      "codes": [],
+      "live_codes": [],
+      "live_marks": 0
+    },
+    {
+      "id": "cost_padded",
+      "filled": true,
+      "boq_rows": 7,
+      "panel_ok": true,
+      "flagged_agents": 1,
+      "fields_marked": 4,
+      "codes": [
+        "ESTIMATE_ABOVE_FAIR_PRICE"
+      ],
+      "live_codes": [
+        "ESTIMATE_ABOVE_FAIR_PRICE"
+      ],
+      "live_marks": 4
+    },
+    {
+      "id": "cost_quantity",
+      "filled": true,
+      "boq_rows": 7,
+      "panel_ok": true,
+      "flagged_agents": 1,
+      "fields_marked": 2,
+      "codes": [
+        "ESTIMATE_ABOVE_FAIR_PRICE",
+        "MATERIAL_QUANTITY_ABOVE_SIZE"
+      ],
+      "live_codes": [
+        "ESTIMATE_ABOVE_FAIR_PRICE",
+        "MATERIAL_QUANTITY_ABOVE_SIZE"
+      ],
+      "live_marks": 2
+    },
+    {
+      "id": "cost_lights",
+      "filled": true,
+      "boq_rows": 1,
+      "panel_ok": true,
+      "flagged_agents": 1,
+      "fields_marked": 2,
+      "codes": [
+        "ESTIMATE_ABOVE_STANDARD_AND_MP"
+      ],
+      "live_codes": [
+        "ESTIMATE_ABOVE_STANDARD_AND_MP"
+      ],
+      "live_marks": 2
+    },
+    {
+      "id": "dup_pin",
+      "filled": true,
+      "boq_rows": 7,
+      "panel_ok": true,
+      "flagged_agents": 1,
+      "fields_marked": 2,
+      "codes": [
+        "SANCTIONED_WORK_AT_THIS_SITE"
+      ],
+      "live_codes": [
+        "SANCTIONED_WORK_AT_THIS_SITE"
+      ],
+      "live_marks": 2
+    },
+    {
+      "id": "dup_rebuild",
+      "filled": true,
+      "boq_rows": 9,
+      "panel_ok": true,
+      "flagged_agents": 1,
+      "fields_marked": 1,
+      "codes": [
+        "REBUILT_SOON_AFTER_COMPLETION"
+      ],
+      "live_codes": [
+        "REBUILT_SOON_AFTER_COMPLETION"
+      ],
+      "live_marks": 1
+    },
+    {
+      "id": "dup_split",
+      "filled": true,
+      "boq_rows": 7,
+      "panel_ok": true,
+      "flagged_agents": 1,
+      "fields_marked": 2,
+      "codes": [
+        "SPLIT_JUST_UNDER_LIMIT"
+      ],
+      "live_codes": [
+        "SPLIT_JUST_UNDER_LIMIT"
+      ],
+      "live_marks": 2
+    },
+    {
+      "id": "time_fast",
+      "filled": true,
+      "boq_rows": 7,
+      "panel_ok": true,
+      "flagged_agents": 2,
+      "fields_marked": 2,
+      "codes": [
+        "FINISHED_TOO_FAST",
+        "NO_SITE_VIDEO"
+      ],
+      "live_codes": [
+        "FINISHED_TOO_FAST",
+        "NO_SITE_VIDEO"
+      ],
+      "live_marks": 2
+    },
+    {
+      "id": "time_late",
+      "filled": true,
+      "boq_rows": 9,
+      "panel_ok": true,
+      "flagged_agents": 1,
+      "fields_marked": 1,
+      "codes": [
+        "PAST_PROMISED_TIME"
+      ],
+      "live_codes": [
+        "PAST_PROMISED_TIME"
+      ],
+      "live_marks": 1
+    },
+    {
+      "id": "site_reused",
+      "filled": true,
+      "boq_rows": 9,
+      "panel_ok": true,
+      "flagged_agents": 1,
+      "fields_marked": 2,
+      "codes": [
+        "FOOTAGE_USED_BEFORE",
+        "SAME_PLACE_AS_ANOTHER_WORK"
+      ],
+      "live_codes": [
+        "FOOTAGE_USED_BEFORE",
+        "SAME_PLACE_AS_ANOTHER_WORK"
+      ],
+      "live_marks": 2
+    },
+    {
+      "id": "site_claim",
+      "filled": true,
+      "boq_rows": 9,
+      "panel_ok": true,
+      "flagged_agents": 1,
+      "fields_marked": 1,
+      "codes": [
+        "CLAIM_NOT_SHOWN"
+      ],
+      "live_codes": [
+        "CLAIM_NOT_SHOWN"
+      ],
+      "live_marks": 1
+    },
+    {
+      "id": "site_elsewhere",
+      "filled": true,
+      "boq_rows": 7,
+      "panel_ok": true,
+      "flagged_agents": 1,
+      "fields_marked": 1,
+      "codes": [
+        "NOT_FILMED_AT_THIS_SITE"
+      ],
+      "live_codes": [
+        "NOT_FILMED_AT_THIS_SITE"
+      ],
+      "live_marks": 1
+    }
+  ],
+  "checks": [
+    {
+      "form": "no district",
+      "answer": "asks for the district"
+    }
+  ],
+  "from_dashboard": "/work-form",
+  "show_in_form": true,
+  "fixed_cement": {
+    "bags": 1307,
+    "codes": [],
+    "band": "LOW"
+  },
+  "data_tab": true,
+  "form_kept": true,
+  "deep_link": "WF-TIME-1",
+  "end_to_end": [
+    {
+      "id": "legit_road",
+      "score": "0",
+      "meant": 0,
+      "ok": true
+    },
+    {
+      "id": "legit_lights",
+      "score": "0",
+      "meant": 0,
+      "ok": true
+    },
+    {
+      "id": "cost_hidden",
+      "score": "25",
+      "meant": 25,
+      "ok": true
+    },
+    {
+      "id": "dup_pieces",
+      "score": "72",
+      "meant": 72,
+      "ok": true
+    },
+    {
+      "id": "many_flags",
+      "score": "46",
+      "meant": 46,
+      "ok": true
+    }
+  ],
+  "page_errors": []
+}

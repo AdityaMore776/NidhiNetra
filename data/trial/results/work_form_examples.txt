@@ -1,0 +1,13 @@
+40,935 dashboard works, as of 2026-10-02; district Jaunpur; 11 background filings
+clean           LOW     0.000 form ready True  {} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
+cost_padded     MEDIUM  0.250 form ready True  {'cost_estimate': ['ESTIMATE_ABOVE_FAIR_PRICE']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}
+cost_quantity   MEDIUM  0.438 form ready True  {'cost_estimate': ['ESTIMATE_ABOVE_FAIR_PRICE', 'MATERIAL_QUANTITY_ABOVE_SIZE']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}
+cost_lights     MEDIUM  0.250 form ready True  {'cost_estimate': ['ESTIMATE_ABOVE_STANDARD_AND_MP']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}
+dup_pin         MEDIUM  0.250 form ready True  {'dup_split': ['SANCTIONED_WORK_AT_THIS_SITE']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}
+dup_rebuild     MEDIUM  0.250 form ready True  {'dup_split': ['REBUILT_SOON_AFTER_COMPLETION']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}
+dup_split       HIGH    0.722 form ready True  {'dup_split': ['SPLIT_JUST_UNDER_LIMIT']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}
+time_fast       MEDIUM  0.438 form ready True  {'time_rules': ['FINISHED_TOO_FAST'], 'site_progress': ['NO_SITE_VIDEO']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
+time_late       MEDIUM  0.250 form ready True  {'time_rules': ['PAST_PROMISED_TIME']} {'cost_estimate': 'NOT_ASSESSABLE', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
+site_reused     MEDIUM  0.438 form ready True  {'site_progress': ['FOOTAGE_USED_BEFORE', 'SAME_PLACE_AS_ANOTHER_WORK']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
+site_claim      MEDIUM  0.250 form ready True  {'site_progress': ['CLAIM_NOT_SHOWN']} {'cost_estimate': 'NOT_ASSESSABLE', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
+site_elsewhere  MEDIUM  0.250 form ready True  {'site_progress': ['NOT_FILMED_AT_THIS_SITE']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}

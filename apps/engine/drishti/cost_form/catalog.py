@@ -106,3 +106,15 @@ def pricing_size(work_type: str | None, size: dict) -> tuple[str, float] | None:
         unit = rule["unit"] if rule["unit"] != "other" else str(size.get("size_unit") or "other")
         return (unit, value) if value > 0 else None
     return None
+
+
+_PLURAL = {"bag": "bags", "day": "days", "hour": "hours", "month": "months", "year": "years",
+           "pair": "pairs", "set": "sets", "nos": "", "thousand": "thousand"}
+
+
+def quantity_text(n: float, unit: str | None) -> str:
+    """'2,614 bags', '120 days', '150 m3': a quantity as an officer reads it."""
+    word = _PLURAL.get(unit or "", unit or "") if round(n) != 1 else (
+        "" if unit == "nos" else unit or "")
+    return f"{n:,.0f} {word}".rstrip()
+

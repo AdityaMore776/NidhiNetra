@@ -1,0 +1,6 @@
+40,935 dashboard works, as of 2026-10-02; Jaunpur, 1,038 real works and 26 demo filings around the five
+legit_road    LOW        0.0 ready True  {}
+legit_lights  LOW        0.0 ready True  {}
+cost_hidden   MEDIUM    25.0 ready True  {'cost_estimate': ['ESTIMATE_ABOVE_FAIR_PRICE']}
+dup_pieces    HIGH      72.2 ready True  {'dup_split': ['SPLIT_JUST_UNDER_LIMIT']}
+many_flags    MEDIUM    45.6 ready True  {'cost_estimate': ['ESTIMATE_ABOVE_FAIR_PRICE'], 'dup_split': ['SANCTIONED_WORK_AT_THIS_SITE'], 'time_rules': ['SANCTION_OVERDUE']}

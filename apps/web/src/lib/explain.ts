@@ -112,6 +112,8 @@ export interface TraceFinding {
   hard: boolean;
   rule: string | null;
   severity: string | null;
+  /** the finding's numbers, dates and work IDs, for a short line beside it (T134) */
+  facts?: Record<string, unknown>;
 }
 
 export interface Check {

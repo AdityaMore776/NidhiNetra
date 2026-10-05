@@ -188,10 +188,38 @@ def _picture(r, w: dict, ctx: Context) -> dict | None:
     return None
 
 
+# the evidence a page may show in short beside a finding (T134): numbers, dates, work IDs and
+# item names the finding's own sentence already gives; never free text from the record, and never
+# the Hindi sentence
+FACT_KEYS = frozenset({
+    "gap", "gap_share", "fair_total", "coverage", "grand_total", "above_fair_rate",
+    "priced_lines", "top", "site", "material", "quantity", "needed", "unit", "why", "ratio",
+    "lines", "price_per_unit", "where", "p98", "median", "n", "mp_amount", "mp_gap", "other",
+    "metres", "other_amount", "other_completed", "months_after_completion", "nature", "size",
+    "total", "limit", "others", "days", "segments", "value", "early", "late", "videos", "stalled",
+    "visit", "visits", "claims", "reused_from", "same_place_as", "mock_location", "kind",
+    # T135
+    "unexplained", "overlap", "declared", "same_ground", "share", "amount", "items", "filmed",
+    "form_size", "scope_size"})
+
+
+def _plain(v, depth: int = 0) -> bool:
+    if v is None or isinstance(v, bool | int | float):
+        return True
+    if isinstance(v, str):
+        return len(v) <= 160
+    if depth < 2 and isinstance(v, list):
+        return len(v) <= 20 and all(_plain(x, depth + 1) for x in v)
+    if depth < 2 and isinstance(v, dict):
+        return all(isinstance(k, str) and _plain(x, depth + 1) for k, x in v.items())
+    return False
+
+
 def _finding(f) -> dict:
     ev = f.evidence or {}
     return {"code": f.code, "text": f.text, "risk": round(f.risk, 4), "hard": f.hard,
-            "rule": ev.get("rule"), "severity": ev.get("severity")}
+            "rule": ev.get("rule"), "severity": ev.get("severity"),
+            "facts": {k: v for k, v in ev.items() if k in FACT_KEYS and _plain(v)}}
 
 
 def _scoring(a, ctx: Context) -> dict:

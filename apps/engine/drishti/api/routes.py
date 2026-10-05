@@ -6,6 +6,7 @@ is scoped to that user's district when their role has one.
 
 from __future__ import annotations
 
+import json
 from dataclasses import asdict
 from datetime import date
 from functools import lru_cache
@@ -15,7 +16,9 @@ from psycopg.types.json import Jsonb
 from pydantic import BaseModel, Field
 
 from drishti import config, reference
+from drishti import demo as work_demo
 from drishti.agents import registry
+from drishti.agents.cost_estimate import rates as cost_rates
 from drishti.agents.office_patterns.index import OfficeIndex
 from drishti.agents.statistical.cohort import StatsStore
 from drishti.auth import Principal, current_user, viewer
@@ -30,6 +33,7 @@ from drishti.batch import (
     with_index,
 )
 from drishti.cost_form import catalog as cost_form_catalog
+from drishti.cost_form import pswif
 from drishti.cost_form.validate import validate as validate_cost_form
 from drishti.db import connect
 from drishti.explain import explain as explain_work
@@ -400,6 +404,87 @@ def explain(ex: Example, user: Principal = Depends(viewer)) -> dict:
                 "is_outside_constituency": ex.is_outside_constituency, "signals": {}}
         ctx = with_index(Context(stats=_stats(), as_of=as_of), con, work)
     return explain_work(work, ctx)
+
+
+WORK_FORM_MAX = 400_000            # a filled form is a few KB; refuse anything absurd
+
+
+@router.post("/work-form/check")
+def work_form_check(form: dict = Body(...), demo: bool = Query(False),
+                    user: Principal = Depends(viewer)) -> dict:
+    """The website's work intelligence form (PSWIF v1.0, T134), as an agency filled it, through
+    the four agents: what the form still lacks for them, and every step of their verdict,
+    checked against the real works of the form's district. Nothing is stored.
+
+    `demo=true` (the form page's demonstration) also compares it with the example data of
+    drishti/demo.py, placed in the form's district, and gives an example filing what its record
+    shows after sanction."""
+    if len(json.dumps(form, default=str)) > WORK_FORM_MAX:
+        raise HTTPException(413, "this form is too large")
+    district, state = (str(form.get(k) or "").strip() for k in ("district", "state"))
+    if not district:
+        raise HTTPException(422, "the form names no district (section C)")
+    as_of = config.snapshot_date()
+    with connect() as con:
+        rows = con.execute("SELECT district_lgd, name, state_lgd, state_name FROM districts "
+                           "WHERE lower(name) = lower(%s)", (district,)).fetchall()
+        if state and len(rows) > 1:
+            rows = [r for r in rows if r["state_name"].lower() == state.lower()] or rows
+        if not rows:
+            raise HTTPException(404, f"no district named {district!r}")
+        d = rows[0]
+        scope = user.scope_district()
+        if scope is not None and d["district_lgd"] != scope:
+            raise HTTPException(404, "no such district in your area")
+        work = pswif.to_work(form, district_lgd=d["district_lgd"], today=as_of,
+                             state_lgd=d["state_lgd"], state_name=d["state_name"],
+                             district_name=d["name"])
+        extra = None
+        if demo:
+            work.update(work_demo.later(work["work_id"]))
+            extra = [*work_demo.records(work), work]
+        ctx = with_index(Context(stats=_stats(), as_of=as_of), con, work, extra=extra)
+    checked = validate_cost_form(work["cost_form"], today=as_of)
+    confirmed = set(work["cost_form"].get("confirmed") or [])
+    return {
+        "district": {"district_lgd": d["district_lgd"], "name": d["name"],
+                     "state_name": d["state_name"]},
+        "demo": demo,
+        "form": {"ready": checked["ready"], "work_type": work["work_type_code"],
+                 "grand_total": checked["computed"]["grand_total"],
+                 "issues": [i for i in checked["issues"]
+                            if i["level"] == "fix" or i["key"] not in confirmed]},
+        "trace": explain_work(work, ctx),
+    }
+
+
+@router.get("/cost/data-gaps")
+def cost_data_gaps(district: str = Query(..., max_length=64),
+                   user: Principal = Depends(viewer)) -> dict:
+    """Which prices the Cost check can judge in this district, and from where; for the rest, why
+    not and what would close the gap (T135). Read live from the submitted forms: nothing
+    stored, and a gap closes by itself as agencies file forms."""
+    scope = user.scope_district()
+    if scope is not None and district != scope:
+        raise HTTPException(404, "no such district in your area")
+    as_of = config.snapshot_date()
+    with connect() as con:
+        d = con.execute("SELECT district_lgd, name, state_lgd, state_name FROM districts "
+                        "WHERE district_lgd = %s", (district,)).fetchone()
+        if not d:
+            raise HTTPException(404, "no such district")
+        ctx = with_index(Context(stats=_stats(), as_of=as_of), con,
+                         {"work_id": "", "district_lgd": d["district_lgd"],
+                          "state_lgd": d["state_lgd"]})
+    idx = (ctx.data or {}).get("rates")
+    state = cost_rates._state({"state_lgd": d["state_lgd"], "state_name": d["state_name"]})
+    rows = cost_rates.coverage(idx, d["district_lgd"], state, as_of,
+                               cost_rates.load_sor(d["state_name"]))
+    return {"district": {"district_lgd": d["district_lgd"], "name": d["name"],
+                         "state_name": d["state_name"]},
+            "as_of": as_of.isoformat(), "materials": rows,
+            "priced": sum(1 for r in rows if r["source"]),
+            "gaps": sum(1 for r in rows if not r["source"])}
 
 
 @router.get("/presanction/options")

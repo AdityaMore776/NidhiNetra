@@ -1,0 +1,44 @@
+Work intelligence form page end to end: 1038 real Jaunpur works loaded
+public dashboard link opened /work-form
+
+clean           form filled True  BOQ rows  7 verdict panel ok
+cost_padded     form filled True  BOQ rows  7 verdict panel ok
+cost_quantity   form filled True  BOQ rows  7 verdict panel ok
+cost_lights     form filled True  BOQ rows  1 verdict panel ok
+dup_pin         form filled True  BOQ rows  7 verdict panel ok
+dup_rebuild     form filled True  BOQ rows  9 verdict panel ok
+dup_split       form filled True  BOQ rows  7 verdict panel ok
+time_fast       form filled True  BOQ rows  7 verdict panel ok
+time_late       form filled True  BOQ rows  9 verdict panel ok
+site_reused     form filled True  BOQ rows  9 verdict panel ok
+site_claim      form filled True  BOQ rows  9 verdict panel ok
+site_elsewhere  form filled True  BOQ rows  7 verdict panel ok
+
+Live check of each loaded filing (POST /work-form/check?demo=true, the same example data):
+clean           flags -; live same; fields marked 0 (after the live check 0)
+cost_padded     flags ESTIMATE_ABOVE_FAIR_PRICE; live same; fields marked 4 (after the live check 4)
+cost_quantity   flags ESTIMATE_ABOVE_FAIR_PRICE, MATERIAL_QUANTITY_ABOVE_SIZE; live same; fields marked 2 (after the live check 2)
+cost_lights     flags ESTIMATE_ABOVE_STANDARD_AND_MP; live same; fields marked 2 (after the live check 2)
+dup_pin         flags SANCTIONED_WORK_AT_THIS_SITE; live same; fields marked 2 (after the live check 2)
+dup_rebuild     flags REBUILT_SOON_AFTER_COMPLETION; live same; fields marked 1 (after the live check 1)
+dup_split       flags SPLIT_JUST_UNDER_LIMIT; live same; fields marked 2 (after the live check 2)
+time_fast       flags FINISHED_TOO_FAST, NO_SITE_VIDEO; live same; fields marked 2 (after the live check 2)
+time_late       flags PAST_PROMISED_TIME; live same; fields marked 1 (after the live check 1)
+site_reused     flags FOOTAGE_USED_BEFORE, SAME_PLACE_AS_ANOTHER_WORK; live same; fields marked 2 (after the live check 2)
+site_claim      flags CLAIM_NOT_SHOWN; live same; fields marked 1 (after the live check 1)
+site_elsewhere  flags NOT_FILMED_AT_THIS_SITE; live same; fields marked 1 (after the live check 1)
+
+"Show in form" brought the flagged field into view: True
+cost_quantity with the cement set to 1307 bags: flags none; band LOW
+Data tab shows prices, works on record, after sanction, rules: True; the form kept its edit: True
+
+deep link ?example=time_fast opened WF-TIME-1
+live check without a district: asks for the district
+
+End to end (/end-to-end, T136): form, form check, agents, risk score
+legit_road    score shown   0 (meant 0): ok
+legit_lights  score shown   0 (meant 0): ok
+cost_hidden   score shown  25 (meant 25): ok
+dup_pieces    score shown  72 (meant 72): ok
+many_flags    score shown  46 (meant 46): ok
+page errors: 0

@@ -113,6 +113,21 @@ def with_visits(con: psycopg.Connection, works: list[dict]) -> list[dict]:
     return works
 
 
+def state_forms(con: psycopg.Connection, work: dict) -> list[dict]:
+    """The other districts' works of the work's state that carry a submitted form: the Cost
+    check's state-wide rates when the district has too few (T135). Only works with a form, so
+    the read stays small; a database without the forms table gives none."""
+    st, d = work.get("state_lgd"), work.get("district_lgd")
+    if not st or not _one(con.execute("SELECT to_regclass('cost_forms') IS NOT NULL")
+                          .fetchone()):
+        return []
+    rows = con.execute(f"SELECT {WORK_COLUMNS} FROM works WHERE state_lgd = %s "
+                       "AND district_lgd IS DISTINCT FROM %s AND work_id IN "
+                       "(SELECT work_id FROM cost_forms WHERE status = 'submitted')",
+                       (str(st), str(d) if d else None)).fetchall()
+    return with_forms(con, [_normalise(dict(r)) for r in rows])
+
+
 def with_evidence(con: psycopg.Connection, works: list[dict]) -> list[dict]:
     """Forms and site visits: what the agencies filed for each work."""
     return with_visits(con, with_forms(con, works))
@@ -185,15 +200,21 @@ def office_national(con: psycopg.Connection) -> list[int]:
     return _NATIONAL["counts"]
 
 
-def with_index(ctx: Context, con: psycopg.Connection, work: dict) -> Context:
-    """The context with indexes covering this work's district."""
+def with_index(ctx: Context, con: psycopg.Connection, work: dict,
+               extra: list[dict] | None = None) -> Context:
+    """The context with indexes covering this work's district (plus `extra` works, such as the
+    work form's demonstration data, which are never stored)."""
     idx = (ctx.data or {}).get("dup_split")
-    if idx is not None and idx.covers(work.get("district_lgd")):
+    if idx is not None and idx.covers(work.get("district_lgd")) and not extra:
         return ctx
     d = work.get("district_lgd")
     rows = con.execute(f"SELECT {WORK_COLUMNS}, {SIGNALS_COLUMNS} FROM works {SIGNALS_JOIN} "
                        "WHERE works.district_lgd = %s", (d,)).fetchall() if d else []
-    data = indexes(with_evidence(con, [_normalise(dict(r)) for r in rows]))
+    works = with_evidence(con, [_normalise(dict(r)) for r in rows]) + list(extra or ())
+    data = indexes(works)
+    more = state_forms(con, work)
+    if more:                         # the state's other forms price what the district cannot
+        data["rates"] = RateIndex.build(works + more)
     data["offices"].national = office_national(con)
     return replace(ctx, data={**(ctx.data or {}), **data})
 

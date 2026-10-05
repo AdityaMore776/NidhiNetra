@@ -19,7 +19,9 @@
         "change": null,
         "reused_from": [],
         "same_place_as": [],
-        "motion_consistent": null
+        "motion_consistent": null,
+        "gps_weak": false,
+        "viewpoints_skipped": []
       },
       "video_deleted": true,
       "frames_kept": 5
@@ -43,10 +45,41 @@
         "change": "changed",
         "reused_from": [],
         "same_place_as": [],
-        "motion_consistent": null
+        "motion_consistent": null,
+        "gps_weak": false,
+        "viewpoints_skipped": []
       },
       "video_deleted": true,
       "frames_kept": 5
+    },
+    {
+      "work": "H1",
+      "video": "h1_plaster",
+      "kind": "Monthly visit",
+      "page_warnings_at_stop": "\u2022 GPS is weak (\u00b190 m): stand in the open for a moment. The views still show where you are.",
+      "job": [
+        "read"
+      ],
+      "readings": {
+        "sealed": true,
+        "in_app": true,
+        "quality_ok": true,
+        "gps_inside": null,
+        "views_match_site": true,
+        "viewpoints_expected": 5,
+        "viewpoints_matched": 5,
+        "change": "changed",
+        "reused_from": [],
+        "same_place_as": [],
+        "motion_consistent": null,
+        "gps_weak": true,
+        "viewpoints_skipped": [
+          "v4",
+          "v5"
+        ]
+      },
+      "video_deleted": true,
+      "frames_kept": 3
     },
     {
       "work": "H2",
@@ -69,16 +102,18 @@
           {
             "frames": 42,
             "work_id": "H1",
-            "visit_id": "060c0d21705848e38a54d642c8ba6c2f"
+            "visit_id": "ebe0122e40994f87a6fdcb08c04d372f"
           }
         ],
         "same_place_as": [
           {
-            "inliers": 875,
+            "inliers": 870,
             "work_id": "H1"
           }
         ],
-        "motion_consistent": null
+        "motion_consistent": null,
+        "gps_weak": false,
+        "viewpoints_skipped": []
       },
       "video_deleted": true,
       "frames_kept": 5
@@ -87,7 +122,7 @@
   "H1": {
     "status": "ASSESSED",
     "findings": [],
-    "headline": "2 site videos read: nothing the videos show needs checking."
+    "headline": "3 site videos read: nothing the videos show needs checking."
   },
   "H2": {
     "status": "ASSESSED",
@@ -95,6 +130,6 @@
       "FOOTAGE_USED_BEFORE",
       "SAME_PLACE_AS_ANOTHER_WORK"
     ],
-    "headline": "The baseline visit of 04 oct 2026 carries 42 frames already seen on work H1: the same footage, not new filming. A site video must be filmed fresh at this site; needs checking."
+    "headline": "The first visit of 05 Oct 2026 carries 42 frames already seen on work H1: the same footage, not new filming. A site video must be filmed fresh at this site; needs checking."
   }
 }

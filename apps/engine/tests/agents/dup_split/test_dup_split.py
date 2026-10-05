@@ -118,7 +118,8 @@ def test_a_road_is_one_site_only_when_both_ends_meet():
     assert same_site(((LAT, LON), None), ((LAT, LON), None), linear=True) is None    # no ends
     old = _w("OLD", "CC road", wtype="ROAD_CC", status="COMPLETED", rec=date(2023, 3, 1),
              done=date(2024, 2, 1), form=_form(wtype="ROAD_CC", end=a[1]))
-    nxt = _w("NEXT", "CC road", wtype="ROAD_CC", rec=date(2025, 1, 5),
+    # (not just under a limit: two such pieces laid end to end would be a split, T136)
+    nxt = _w("NEXT", "CC road", wtype="ROAD_CC", rec=date(2025, 1, 5), amount=300_000.0,
              form=_form(lat=a[1][0], wtype="ROAD_CC", end=(LAT + 600 * DEG, LON)))
     same = _w("SAME", "CC road", wtype="ROAD_CC", rec=date(2025, 1, 5),
               form=_form(lat=LAT + 5 * DEG, wtype="ROAD_CC", end=(a[1][0] + 5 * DEG, LON)))

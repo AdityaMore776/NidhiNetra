@@ -39,10 +39,44 @@ The sections below are the working notes the team resumes from.
 - Milestone task plans: `docs/plans/`
 - Old research build (read-only source for ported code and raw data): `~/saakshya`
   (snapshot commit `abf2da4`)
-- GitHub (private): https://github.com/AdityaMore776/drishti (the gh login is
+- GitHub (private): https://github.com/AdityaMore776/NidhiNetra (the gh login is
   `AdityaMore776`; "Phoenix-techstuf" no longer resolves)
 
 ## >>> RESUME HERE <<<
+
+**5 Oct 2026: other agent architectures tested against the current ones (T137).**
+`data/trial/architecture_bakeoff.py` ran the alternatives on the same benchmarks at the same
+false-alarm rate. Switched only what was proven better:
+- Site Progress's video decisions: honest works asked 25.7% → 5.0% a year at assumed error rates,
+  tricks still caught, two more loopholes closed.
+- Duplicate Work's map grid: the same answers, 8–10x faster.
+
+Cost keeps its rule; the alternatives were worse or only better on assumptions. The loop: 85 probes,
+0 FAIL. The dashboard is identical. FINDINGS "T137"; plan `docs/plans/T137-architecture-bakeoff.md`.
+
+**5 Oct 2026: five filings end to end, Site Progress with room for error, and Uttar Pradesh (T136).**
+`/end-to-end` follows five filings in Jaunpur (two honest, three to find) from the form to the
+risk score through the real engine; Site Progress is a placeholder there until its field trial
+(T126). Site Progress now forgives one poor video (dark, short, weak GPS, a viewpoint missed or
+skipped) and asks only when the last two cannot show the work; the capture page uploads an honest
+imperfect visit with tips. Round 6 of the loop: 81 probes, 0 FAIL, 7 LIMIT. All 8,702 real UP works
+ran through the four agents with 0 errors; the Time caps hold for UP within ±2.2%. The repository is
+now `AdityaMore776/NidhiNetra`. FINDINGS "T136"; plan `docs/plans/T136-end-to-end-and-room-for-error.md`.
+
+**5 Oct 2026: the four agents went through a self-improvement loop (T135).** An attack harness
+(`data/trial/agent_robustness_loop.py`) tried random damage, honest noise, deliberate evasions,
+scarce data and scale; every failure was fixed with a regression test. It ends at 65 probes, 59 PASS,
+0 FAIL, 6 LIMIT (the limits written down with their reasons), and 3,000 random damages crash none.
+A price the data cannot support is switched off for that material and recorded as a gap
+(`GET /api/v1/cost/data-gaps`); the live check now also uses the state's forms. Planted forms and
+the dashboard's 40,935 works answer as before. FINDINGS "T135"; plan `docs/plans/T135-robustness-loop.md`.
+
+**5 Oct 2026: the website's work intelligence form reaches the four agents (T134).** `/work-form` shows twelve example
+filings by made-up agencies in Jaunpur, each caught by one agent (one honest road passes all four): each agent says
+flagged / clear / not checked with one line on why, and the flagged fields are outlined in the form. "Check this form"
+runs the four agents on any filled form against the same example data (`POST /api/v1/work-form/check?demo=true`,
+nothing stored), shown in plain words on the page's Data tab. Numbers in FINDINGS "T134". Going live needs nothing
+new: the examples and the demo data ship with the web app and the engine.
 
 **4 Oct 2026: the four agents are built (T121–T125, owner's pivot of 3 Oct; PR open).** Cost, Duplicate Work, Time &
 Rules and Site Progress, a quarter of the weight each; Guideline Compliance, Fund Flow, Office Patterns, Paperwork and

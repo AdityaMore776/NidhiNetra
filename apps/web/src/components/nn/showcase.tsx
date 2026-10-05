@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Clapperboard, FlaskConical, Lightbulb, LogIn } from "lucide-react";
+import { ArrowRight, Clapperboard, ClipboardList, FlaskConical, Lightbulb, LogIn } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BandBadge, EngineMark, SourceBadge } from "@/components/nn/badges";
@@ -94,6 +94,27 @@ export function ExampleGallery({ file }: { file: ShowcaseFile | null }) {
         );
       })}
     </ol>
+  );
+}
+
+/** Under the gallery: the example filings of the work intelligence form (T134). */
+export function FormExamplesCard() {
+  return (
+    <Link
+      href="/work-form"
+      className="panel group flex flex-wrap items-center gap-3 p-5 transition-all hover:border-brand-200 hover:shadow-lift"
+    >
+      <ClipboardList className="size-5 shrink-0 text-brand-600" />
+      <div className="min-w-0 flex-1">
+        <h3 className="text-[15px] font-semibold text-brand-950">Twelve example filings of the work intelligence form</h3>
+        <p className="mt-0.5 text-[13px] text-muted-foreground">
+          Made-up agencies fill the form. See what each agent flags in it, and why.
+        </p>
+      </div>
+      <span className="inline-flex items-center gap-1 text-xs font-medium text-brand-700">
+        Open the form <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+      </span>
+    </Link>
   );
 }
 

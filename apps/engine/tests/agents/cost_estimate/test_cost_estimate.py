@@ -211,7 +211,8 @@ def _with_line(f, item, material_id, quantity, unit="nos", rate=1000):
 def test_a_confirmed_quantity_well_above_the_size_is_asked_about():
     r = run(_with_line(light_form(), "LiFePO4 battery 12.8 V", "battery", 13))
     assert codes(r) == ["MATERIAL_QUANTITY_ABOVE_SIZE"]
-    assert "battery, 13 nos" in r.findings[0].text and "10 solar lights" in r.findings[0].text
+    text = r.findings[0].text
+    assert "battery, 13 in the estimate" in text and "10 solar lights" in text
     # 12 batteries for 10 lights: the form asked to confirm it, the engine leaves it
     assert not run(_with_line(light_form(), "LiFePO4 battery 12.8 V", "battery", 12)).findings
 

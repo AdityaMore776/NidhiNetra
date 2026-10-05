@@ -1,0 +1,31 @@
+{
+ "rows": [
+  {
+   "forms": 1000,
+   "index_s": 0.76,
+   "check_ms_grid": 1.1,
+   "check_ms_scan": 8.4,
+   "district_s_grid": 1,
+   "district_s_scan": 8,
+   "same_answers": true
+  },
+  {
+   "forms": 3000,
+   "index_s": 0.24,
+   "check_ms_grid": 2.1,
+   "check_ms_scan": 20.9,
+   "district_s_grid": 6,
+   "district_s_scan": 63,
+   "same_answers": true
+  },
+  {
+   "forms": 10000,
+   "index_s": 0.78,
+   "check_ms_grid": 9.1,
+   "check_ms_scan": 72.6,
+   "district_s_grid": 91,
+   "district_s_scan": 726,
+   "same_answers": true
+  }
+ ]
+}

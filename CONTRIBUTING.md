@@ -8,7 +8,7 @@ progress log, handoffs and the project rules. Humans new to GitHub: [`docs/team/
 |---|---|
 | The manual (every AI follows it) | [`AGENTS.md`](AGENTS.md) |
 | The task plan: every task, how, done-when | [`docs/team/TASKS.md`](docs/team/TASKS.md) |
-| Who is doing what | [GitHub Issues](https://github.com/AdityaMore776/drishti/issues) |
+| Who is doing what | [GitHub Issues](https://github.com/AdityaMore776/NidhiNetra/issues) |
 | What happened lately | [`docs/team/log/`](docs/team/log/) |
 | Private data (not in git) | [`docs/team/DATA-PACK.md`](docs/team/DATA-PACK.md) |
 | Where the build stands | [`docs/STATUS.md`](docs/STATUS.md) |

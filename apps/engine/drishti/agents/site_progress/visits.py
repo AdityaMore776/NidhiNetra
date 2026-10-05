@@ -25,6 +25,8 @@ Readings (every key optional; a missing one means "not read", never "passed"):
     asset_at_start    the first visit shows the asset already standing
     complete_shown    on a final visit: every zone shows the finished work
     quality_ok        the video passed the at-site checks (light, coverage, pace)
+    gps_weak          every GPS fix was poorer than the reader trusts (T136): the GPS says nothing
+    viewpoints_skipped viewpoint ids the person said they could not film (blocked, unsafe, gone)
     motion_consistent the phone's own motion matches the motion in the picture (False: a screen
                       may have been filmed, or the video is not this phone's)
 
@@ -33,10 +35,15 @@ This module only reads: it never raises on a malformed visit, it drops it.
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 from datetime import date, datetime
 
 KINDS = ("baseline", "monthly", "check", "final")
+MIN_REUSED_FRAMES = 3         # frames already seen elsewhere that make a video not new footage
+MIN_INLIERS = 40              # matching points that make two works' views one place
+FAR_M = 300.0                 # GPS this far out is past phone multipath in a village or town
+                              # (T137: 60-300 m jitter with views lost read as "filmed elsewhere")
 
 
 def _date(v) -> date | None:
@@ -50,6 +57,10 @@ def _date(v) -> date | None:
         except ValueError:
             return None
     return None
+
+
+def _finite(v) -> bool:
+    return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
 
 
 def _bool(v) -> bool | None:
@@ -66,8 +77,7 @@ def _refs(v, key: str) -> list[dict]:
     for x in v if isinstance(v, list) else []:
         if isinstance(x, dict) and isinstance(x.get("work_id"), str) and x["work_id"]:
             n = x.get(key)
-            out.append({**x, key: int(n) if isinstance(n, (int, float))
-                        and not isinstance(n, bool) else 0})
+            out.append({**x, key: int(n) if _finite(n) else 0})
     return out
 
 
@@ -114,13 +124,14 @@ def of(work: dict) -> list[Visit]:
         readings = {k: _bool(r.get(k)) for k in ("sealed", "in_app", "gps_inside",
                                                   "mock_location", "views_match_site",
                                                   "asset_at_start", "complete_shown",
-                                                  "quality_ok", "motion_consistent")}
+                                                  "quality_ok", "motion_consistent",
+                                                  "gps_weak")}
         for k in ("gps_distance_m", "viewpoints_expected", "viewpoints_matched"):
             n = r.get(k)
-            readings[k] = float(n) if isinstance(n, (int, float)) and not isinstance(n, bool) \
-                else None
+            readings[k] = float(n) if _finite(n) else None
         readings["zones_shown"] = _ids(r.get("zones_shown"))
         readings["zones_new"] = _ids(r.get("zones_new"))
+        readings["viewpoints_skipped"] = _ids(r.get("viewpoints_skipped"))
         for k in ("change", "claim_verdict"):
             readings[k] = r.get(k) if isinstance(r.get(k), str) else None
         reason = r.get("claim_reason")
@@ -134,3 +145,58 @@ def of(work: dict) -> list[Visit]:
                          readings))
     out.sort(key=lambda x: (x.captured, KINDS.index(x.kind)))
     return out
+
+
+def accepted(v: Visit) -> bool:
+    """Sealed and filmed in the app, its motion matching its picture: Site Progress reads no
+    other video (a rejected one is a note, and a retake is asked for)."""
+    return (v.get("sealed") is not False and v.get("in_app") is not False
+            and v.get("motion_consistent") is not False)
+
+
+def far_out(v: Visit) -> bool:
+    """The phone was clearly not at the site: a mock location, or GPS FAR_M+ outside it (a
+    reading without the distance counts as far, as before T137)."""
+    if v.get("mock_location") is True:
+        return True
+    d = v.get("gps_distance_m")
+    return v.get("gps_inside") is False and (d is None or d >= FAR_M)
+
+
+def unusable(v: Visit) -> str | None:
+    """Why an accepted video cannot show this site's progress (T136), or None. Only what the
+    readings say counts: a reading that is missing was not made, and says nothing.
+        "too dark, blurred or short"   quality_ok is False
+        "no viewpoint marked"          a first visit with no viewpoint to compare later ones with
+        "viewpoints not filmed"        fewer than half the site's viewpoints found again
+        "views do not match the site"  none found again, the GPS at the site or near it (under
+                                       FAR_M: filming 200 m away is unusable, not "elsewhere")"""
+    if v.get("quality_ok") is False:
+        return "too dark, blurred or short"
+    expected, matched = v.get("viewpoints_expected"), v.get("viewpoints_matched")
+    if expected is None:
+        return None
+    if expected == 0:
+        return "no viewpoint marked"
+    if v.kind == "baseline":
+        return None
+    if v.get("views_match_site") is False:
+        return None if far_out(v) else "views do not match the site"
+    if v.get("views_match_site") is None and matched is not None and matched < expected:
+        return "viewpoints not filmed"
+    return None
+
+
+def genuine(v: Visit) -> bool:
+    """Accepted, and nothing in its readings says it is not this site's own new footage: no
+    frames seen before, no other work's place, not filmed elsewhere by both GPS and views. Only
+    such a video can show the work going on to another agent (T135: one reused video silenced
+    Time & Rules' "finished too fast")."""
+    if not accepted(v):
+        return False
+    if any(r["frames"] >= MIN_REUSED_FRAMES for r in v.get("reused_from") or []):
+        return False
+    if any(r["inliers"] >= MIN_INLIERS for r in v.get("same_place_as") or []):
+        return False
+    gps_out = v.get("mock_location") is True or v.get("gps_inside") is False
+    return not (gps_out and v.get("views_match_site") is False)

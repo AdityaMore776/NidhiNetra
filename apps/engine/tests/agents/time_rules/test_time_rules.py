@@ -111,9 +111,31 @@ def test_the_window_from_a_believable_estimate():
 
 
 def test_a_padded_estimate_buys_no_time():
-    w = win.window(_form(months=60), "ROAD_CC", date(2026, 2, 10))
     longest, _ = win.longest_usual("ROAD_CC")
+    w = win.window(_form(months=round(1.5 * longest / win.MONTH_DAYS, 1)), "ROAD_CC",
+                   date(2026, 2, 10))
     assert w.accepted_days == longest and "buys no extra time" in w.notes[0]
+
+
+def test_an_unbelievable_estimate_gets_the_typical_time():
+    # T135: 60 months for a village road (over twice what 9 in 10 roads take) bought 9 in 10's
+    w = win.window(_form(months=60), "ROAD_CC", date(2026, 2, 10))
+    typical, _ = win.typical("ROAD_CC")
+    assert w.accepted_days == typical and "not believable" in w.notes[0]
+
+
+def test_a_start_promised_years_away_buys_six_months_at_most():
+    w = win.window(_form(start="2028-06"), "ROAD_CC", date(2026, 2, 10))
+    assert w.start == date(2026, 2, 10) + timedelta(days=win.MAX_START_DELAY_DAYS)
+    assert "months after the sanction" in w.notes[0]
+
+
+def test_lost_months_are_calendar_months_and_at_most_four():
+    f = _form()
+    f["sites"][0].setdefault("site_conditions", {})["lost_months"] = [
+        f"{y}-{m:02d}" for y in (2025, 2026, 2027) for m in range(1, 11)] + ["Jul", "x", 7]
+    w = win.window(f, "ROAD_CC", date(2026, 2, 10))
+    assert w.lost_months == win.MAX_LOST_MONTHS and "at most" in " ".join(w.notes)
 
 
 def test_a_too_short_estimate_is_raised_to_the_shortest_believable_time():
@@ -158,6 +180,15 @@ def test_finished_before_the_early_line_with_no_video_is_asked_about():
     assert f.risk == 0.6 and "There are no site videos" in f.text and "was 4 months" in f.text
     assert "BUILT_RIGHT_AFTER_SANCTION" not in _codes(r)   # the window replaces R14
     assert r.evidence["window"]["early"]
+
+
+def test_complete_before_its_own_planned_start_counts_from_the_sanction():
+    # sanctioned 24 Jun, planned to start in July, recorded complete 30 Jun: 6 days, not "0"
+    w = _work(status="COMPLETED", sanction_date=date(2026, 6, 24),
+              completed_date=date(2026, 6, 30), cost_form=_form(months=4, start="2026-07"))
+    f = _f(assess(w, AS_OF), "FINISHED_TOO_FAST")
+    assert "6 days after its sanction (24 Jun 2026 to 30 Jun 2026)" in f.text
+    assert f.evidence["value"] == 6
 
 
 def test_a_fast_finish_the_videos_show_is_good_work_never_asked_about():

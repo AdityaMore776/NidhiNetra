@@ -10,20 +10,26 @@ Step A, is the estimate believable for this kind and size of work?
     longest usual time        reference/time_bands.json, the 90th percentile of days from
                               sanction to completion of finished works of the type (generous)
     shorter than the shortest -> the window uses the shortest; longer than the usual -> it uses the
-    usual, so padding the estimate buys no time. Neither is a finding.
+    usual, so padding the estimate buys no time. More than twice the usual is not believable at
+    all (T135: ten years promised for a hall bought it three) -> the window uses the TYPICAL time
+    of the type (its median), and the officer is told to ask why. None of these is a finding.
 
 Step B, the window
-    start       the later of the sanction date and the declared start month, or the first site
-                video that shows work going on, if that is earlier (never before the sanction)
+    start       the later of the sanction date and the declared start month (at most
+                MAX_START_DELAY_DAYS after the sanction: a start promised years away bought years,
+                T135), or the first site video that shows work going on, if that is earlier
+                (never before the sanction)
     early line  start + the later of the shortest believable time and a quarter of the accepted
                 estimate (construction families only)
     late line   start + the accepted estimate + grace (half the estimate, at least 2 months)
-                + the declared lost months + any extension the district recorded
+                + the declared lost months (calendar months, at most MAX_LOST_MONTHS: thirty
+                declared once bought thirty, T135) + any extension the district recorded
 """
 
 from __future__ import annotations
 
 import json
+import math
 from dataclasses import dataclass, field
 from datetime import date, timedelta
 from functools import cache
@@ -36,6 +42,10 @@ MONTH_DAYS = 30.44
 GRACE_SHARE = 0.5
 GRACE_MIN_DAYS = 61
 EARLY_SHARE = 0.25
+UNBELIEVABLE = 2.0            # an estimate this many times the usual: the typical time instead
+MAX_START_DELAY_DAYS = 183    # a declared start may wait this long after the sanction
+MAX_LOST_MONTHS = 4           # monsoon months; more is not believable for one year
+MONTHS = ("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec")
 REF = Path(reference.__file__).resolve().parent
 
 
@@ -58,13 +68,23 @@ def longest_usual(work_type: str | None) -> tuple[float, str]:
     return float(b["all"]["p90"]), f"9 in 10 of all {b['all']['works']:,} finished works"
 
 
+def typical(work_type: str | None) -> tuple[float, str]:
+    """The median of finished works of the type, or of all works for a rare type."""
+    b = bands()
+    row = (b.get("types") or {}).get(work_type or "")
+    if row and row.get("p50"):
+        return float(row["p50"]), f"half of the {row['works']:,} finished works of this type"
+    return float(b["all"]["p50"]), f"half of all {b['all']['works']:,} finished works"
+
+
 def floor_of(work_type: str | None) -> dict | None:
     fam = catalog.family_of(work_type)
     return (floors().get("families") or {}).get(fam[0]) if fam else None
 
 
 def _num(v) -> float | None:
-    return float(v) if isinstance(v, (int, float)) and not isinstance(v, bool) and v == v else None
+    return (float(v) if isinstance(v, (int, float)) and not isinstance(v, bool)
+            and math.isfinite(v) else None)
 
 
 def _month(v) -> date | None:
@@ -101,14 +121,32 @@ class Window:
                 "notes": list(self.notes)}
 
 
-def lost_months(form: dict) -> int:
-    months: set[str] = set()
+def _calendar_month(v) -> int | None:
+    """A lost month as the form gives it ("jul", "July", or a "2026-07" month) -> 7."""
+    if not isinstance(v, str):
+        return None
+    t = v.strip().lower()
+    if t[:3] in MONTHS:
+        return MONTHS.index(t[:3]) + 1
+    m = _month(t)
+    return m.month if m else None
+
+
+def declared_lost_months(form: dict) -> set[int]:
+    months: set[int] = set()
     sites = form.get("sites")
     for site in sites if isinstance(sites, list) else []:
         sc = site.get("site_conditions") if isinstance(site, dict) else None
         lm = sc.get("lost_months") if isinstance(sc, dict) else None
-        months |= {m for m in lm if isinstance(m, str)} if isinstance(lm, list) else set()
-    return len(months)
+        for x in lm if isinstance(lm, list) else []:
+            if (c := _calendar_month(x)) is not None:
+                months.add(c)
+    return months
+
+
+def lost_months(form: dict) -> int:
+    """The calendar months the form declares lost, at most MAX_LOST_MONTHS (module note)."""
+    return min(len(declared_lost_months(form)), MAX_LOST_MONTHS)
 
 
 def window(form: dict | None, work_type: str | None, sanctioned: date | None,
@@ -123,6 +161,12 @@ def window(form: dict | None, work_type: str | None, sanctioned: date | None,
     declared = _month(timing.get("start_month"))
     if sanctioned is None and declared is None:
         return None
+    notes = []
+    if sanctioned and declared and (declared - sanctioned).days > MAX_START_DELAY_DAYS:
+        notes.append(f"The form promises the start in {declared:%b %Y}, more than "
+                     f"{MAX_START_DELAY_DAYS // 30} months after the sanction; the window starts "
+                     f"{MAX_START_DELAY_DAYS // 30} months after the sanction instead.")
+        declared = sanctioned + timedelta(days=MAX_START_DELAY_DAYS)
     start = max(d for d in (sanctioned, declared) if d)
     if first_work_seen and first_work_seen < start:
         start = max(first_work_seen, sanctioned) if sanctioned else first_work_seen
@@ -130,13 +174,18 @@ def window(form: dict | None, work_type: str | None, sanctioned: date | None,
     fl = floor_of(work_type)
     shortest = float(fl["days"]) if fl else None
     longest, longest_why = longest_usual(work_type)
-    notes = []
     accepted = est
     if shortest is not None and est < shortest:
         accepted = shortest
         notes.append(f"The estimate ({months:g} months) is shorter than the shortest believable "
                      f"time for this kind of work ({shortest:g} days); the window uses the "
                      "shortest.")
+    elif est > UNBELIEVABLE * longest:
+        mid, mid_why = typical(work_type)
+        accepted = max(mid, shortest or 0.0)
+        notes.append(f"The estimate ({months:g} months) is more than twice what {longest_why} "
+                     f"took ({longest:g} days): not believable, so the window uses the typical "
+                     f"time ({mid_why} took {mid:g} days). Ask the agency why before sanction.")
     elif est > longest:
         accepted = longest
         notes.append(f"The estimate ({months:g} months) is longer than {longest_why} took "
@@ -144,6 +193,9 @@ def window(form: dict | None, work_type: str | None, sanctioned: date | None,
                      "extra time.")
     grace = max(GRACE_SHARE * accepted, GRACE_MIN_DAYS)
     lost = lost_months(form)
+    if len(declared_lost_months(form)) > MAX_LOST_MONTHS:
+        notes.append(f"The form declares {len(declared_lost_months(form))} months a year when work "
+                     f"cannot happen; at most {MAX_LOST_MONTHS} count.")
     ext = max(0.0, float(extension_days or 0))
     late = start + timedelta(days=round(accepted + grace + lost * MONTH_DAYS + ext))
     early = (start + timedelta(days=round(max(shortest, EARLY_SHARE * accepted)))

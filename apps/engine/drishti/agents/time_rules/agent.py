@@ -32,7 +32,7 @@ from __future__ import annotations
 import time
 from datetime import date
 
-from drishti import reference
+from drishti import records, reference
 from drishti.agents.compliance import agent as rules_lib
 from drishti.agents.contract import AgentResult, Finding, Status
 from drishti.agents.office_patterns.index import as_date, is_construction
@@ -104,7 +104,7 @@ def sanctioned_late(work: dict) -> Finding | None:
 
 
 def _first_work_seen(vs: list[site_visits.Visit]) -> date | None:
-    return next((v.captured for v in vs if v.shows_work), None)
+    return next((v.captured for v in vs if v.shows_work and site_visits.genuine(v)), None)
 
 
 def too_fast(work: dict, w: win.Window, vs: list[site_visits.Visit]) -> Finding | None:
@@ -113,17 +113,21 @@ def too_fast(work: dict, w: win.Window, vs: list[site_visits.Visit]) -> Finding 
             or done >= w.early or not is_construction(work)
             or float(work.get("amount") or 0) < float(win.floors().get("min_amount_rs", 0))):
         return None
-    shown = [v for v in vs if v.shows_work and v.captured <= done]
+    shown = [v for v in vs if v.shows_work and site_visits.genuine(v) and v.captured <= done]
     if shown:
         return None        # a real fast finish: the videos show the work going on
-    took = (done - w.start).days
+    # recorded complete before its own planned start month: count from the sanction instead
+    sanctioned = as_date(work.get("sanction_date"))
+    start = w.start if done >= w.start or not sanctioned or sanctioned > done else sanctioned
+    took = (done - start).days
     type_name = reference.work_type_name(work.get("work_type_code"))
     type_name = type_name[:1].lower() + type_name[1:]       # mid-sentence
     early_days = (w.early - w.start).days
     filmed = ("No site video shows the work going on" if vs else
               "There are no site videos of the work")
-    text = (f"Recorded complete {_days(max(took, 0))} after the work could start "
-            f"({w.start:%d %b %Y} to {done:%d %b %Y}). The agency's own estimate was "
+    since = "the work could start" if start == w.start else "its sanction"
+    text = (f"Recorded complete {_days(max(took, 0))} after {since} "
+            f"({start:%d %b %Y} to {done:%d %b %Y}). The agency's own estimate was "
             f"{_months(w.estimate_days)}, and "
             f"a {type_name} work of this size is not finished in under {_days(early_days)} "
             f"(the early line of its comfort window). {filmed}. Check the completion: whether "
@@ -178,6 +182,7 @@ def assess(work: dict, as_of: date, timeline=None, offices=None) -> AgentResult:
                            findings=list(findings), limitations=list(limitations),
                            evidence=evidence, duration_ms=int((time.perf_counter() - t0) * 1000))
 
+    work = records.work(work)      # dates as dates, the status in capitals, whoever calls it
     if not work.get("status"):
         return done(Status.NOT_ASSESSABLE, "Cannot be assessed: the record carries no status, "
                     "so its dates cannot be checked. This is not a clean chit.")
@@ -217,6 +222,11 @@ def assess(work: dict, as_of: date, timeline=None, offices=None) -> AgentResult:
     if work.get("status") == "COMPLETED" and not work.get("sanction_date"):
         limitations.append("The record carries no sanction date, so the time from sanction to "
                            "completion was not checked.")
+    if work.get("status") == "COMPLETED" and not as_date(work.get("completed_date")):
+        limitations.append("Recorded complete without a completion date, so how fast it was "
+                           "finished could not be checked: ask for the date.")
+    if w is not None:
+        limitations += w.notes     # an estimate or start the window did not take as written
     headline = (max(findings, key=lambda f: f.risk).text if findings else
                 "No timing problem the dates and the agency's own estimate can show.")
     return done(Status.ASSESSED, headline, findings, limitations,

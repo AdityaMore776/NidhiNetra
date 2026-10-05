@@ -206,3 +206,83 @@ def test_longest_run_counts_frames_in_order():
     a = [rd.fingerprint(rng.integers(0, 255, (64, 64), dtype=np.uint8)) for _ in range(6)]
     assert vv.longest_run(a, a) == 6
     assert vv.longest_run(a, list(reversed(a))) <= 2
+
+
+# ---- room for error (T136): an honest month done badly is "can't tell", never a trick ----------
+
+def _partial_log(log: dict, keep: set[str]) -> dict:
+    """The same video, but the person marked only some viewpoints."""
+    return dict(log, viewpoints=[v for v in log["viewpoints"] if v["id"] in keep])
+
+
+def test_a_viewpoint_missed_one_month_is_still_compared_the_next(site_a, tmp_path):
+    _d, logs, base_r, base_k = site_a
+    base = earlier_from("W1", "base", "baseline", base_k)
+    base.readings = base_r
+    # month 1 marks only v1 and v2; its kept frames are those two
+    m1_log = _partial_log(logs["m1"][1], {"v1", "v2"})
+    m1_r, m1_k = vv.read(logs["m1"][0], m1_log, SITE, [base], [], "monthly")
+    assert set(m1_k["viewpoints"]) == {"v1", "v2"}
+    m1 = earlier_from("W1", "m1", "monthly", m1_k)
+    m1.readings = m1_r
+    # month 2 is compared with all five viewpoints the site has had, not only month 1's two
+    r, _ = vv.read(logs["m2"][0], logs["m2"][1], SITE, [base, m1], [], "monthly")
+    assert r["viewpoints_expected"] == VIEWS and r["viewpoints_matched"] == VIEWS
+    assert r["views_match_site"] is True and r["change"] == "changed"
+
+
+def test_a_visit_that_did_not_match_never_becomes_the_reference(site_a):
+    _d, _logs, base_r, base_k = site_a
+    base = earlier_from("W1", "base", "baseline", base_k)
+    base.readings = base_r
+    elsewhere = earlier_from("W1", "odd", "monthly", base_k)
+    elsewhere.viewpoints = {"v9": b"not a frame"}
+    elsewhere.readings = {"views_match_site": False}
+    assert set(vv.references([base, elsewhere])) == {f"v{k + 1}" for k in range(VIEWS)}
+
+
+def test_a_dark_video_of_the_site_says_cant_tell_never_does_not_match(site_a, tmp_path):
+    _d, logs, base_r, base_k = site_a
+    base = earlier_from("W1", "base", "baseline", base_k)
+    dark = tmp_path / "dark.mp4"
+    log = film(dark, (scene(1).astype(np.float32) * 0.12).astype(np.uint8))
+    r, _ = vv.read(dark, log, SITE, [base], [], "monthly",
+                   judge=lambda claims, photos: [{"verdict": "not_shown"} for _ in claims],
+                   claim="walls up to lintel level")
+    assert r["quality_ok"] is False
+    assert r["views_match_site"] is None and r["change"] == "cant_tell"
+    assert r["claim_verdict"] in (None, "cant_tell")
+
+
+def test_weak_gps_says_cant_tell_and_good_gps_counts_its_own_accuracy(site_a):
+    _d, logs, _r, base_k = site_a
+    base = earlier_from("W1", "base", "baseline", base_k)
+    weak = dict(logs["m1"][1], gps=[dict(p, lat=25.7520, accuracy=90.0)
+                                    for p in logs["m1"][1]["gps"]])          # 230 m off, +-90 m
+    r, _ = vv.read(logs["m1"][0], weak, SITE, [base], [], "monthly")
+    assert r["gps_weak"] is True and r["gps_inside"] is None
+    # 40 m outside the 30 m site with a 35 m fix: inside, give or take the phone's own error
+    near = dict(logs["m1"][1], gps=[dict(p, lat=25.75 + 70 / 111_195, accuracy=35.0)
+                                    for p in logs["m1"][1]["gps"]])
+    r, _ = vv.read(logs["m1"][0], near, SITE, [base], [], "monthly")
+    assert r["gps_weak"] is False and r["gps_inside"] is True
+
+
+def test_a_viewpoint_skipped_with_a_reason_is_not_counted_against_the_visit(site_a):
+    _d, logs, _r, base_k = site_a
+    base = earlier_from("W1", "base", "baseline", base_k)
+    log = dict(_partial_log(logs["m1"][1], {"v1"}),
+               skipped=[{"id": v, "reason": "blocked"} for v in ("v2", "v3", "v4", "v5")])
+    r, _ = vv.read(logs["m1"][0], log, SITE, [base], [], "monthly")
+    assert r["viewpoints_skipped"] == ["v2", "v3", "v4", "v5"]
+    assert r["views_match_site"] is True
+
+
+def test_a_reader_answer_in_a_wrong_shape_does_not_crash(site_a):
+    _d, logs, _r, base_k = site_a
+    base = earlier_from("W1", "base", "baseline", base_k)
+    for answers in (None, "yes", [None], [{"verdict": "maybe"}], [{"verdict": "shown",
+                                                                   "reason": 7}]):
+        r, _ = vv.read(logs["m1"][0], logs["m1"][1], SITE, [base], [], "monthly",
+                       claim="walls", judge=lambda c, p, a=answers: a)
+        assert r["claim_verdict"] in (None, "shown")

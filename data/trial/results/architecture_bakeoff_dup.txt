@@ -1,0 +1,8 @@
+Duplicate Work, the map grid (T137): one district of n filed roads; one work's check, and the whole district's batch (n checks)
+
+  forms  check, grid  check, scan  district, grid  district, scan  same answers
+  1,000       1.1 ms       8.4 ms             1 s             8 s          True
+  3,000       2.1 ms      20.9 ms             6 s            63 s          True
+ 10,000       9.1 ms      72.6 ms            91 s           726 s          True
+
+Equivalence on random dense districts: tests/agents/dup_split/test_dup_grid.py (700 works, every at-site work, distance, overlap and nearby note the same).
