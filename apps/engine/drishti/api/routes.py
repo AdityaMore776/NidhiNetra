@@ -6,6 +6,7 @@ is scoped to that user's district when their role has one.
 
 from __future__ import annotations
 
+import json
 from dataclasses import asdict
 from datetime import date
 from functools import lru_cache
@@ -30,6 +31,7 @@ from drishti.batch import (
     with_index,
 )
 from drishti.cost_form import catalog as cost_form_catalog
+from drishti.cost_form import pswif
 from drishti.cost_form.validate import validate as validate_cost_form
 from drishti.db import connect
 from drishti.explain import explain as explain_work
@@ -400,6 +402,48 @@ def explain(ex: Example, user: Principal = Depends(viewer)) -> dict:
                 "is_outside_constituency": ex.is_outside_constituency, "signals": {}}
         ctx = with_index(Context(stats=_stats(), as_of=as_of), con, work)
     return explain_work(work, ctx)
+
+
+WORK_FORM_MAX = 400_000            # a filled form is a few KB; refuse anything absurd
+
+
+@router.post("/work-form/check")
+def work_form_check(form: dict = Body(...), user: Principal = Depends(viewer)) -> dict:
+    """The website's work intelligence form (PSWIF v1.0, T134), as an agency filled it, through
+    the four agents: what the form still lacks for them, and every step of their verdict,
+    checked against the real works of the form's district. Nothing is stored."""
+    if len(json.dumps(form, default=str)) > WORK_FORM_MAX:
+        raise HTTPException(413, "this form is too large")
+    district, state = (str(form.get(k) or "").strip() for k in ("district", "state"))
+    if not district:
+        raise HTTPException(422, "the form names no district (section C)")
+    as_of = config.snapshot_date()
+    with connect() as con:
+        rows = con.execute("SELECT district_lgd, name, state_lgd, state_name FROM districts "
+                           "WHERE lower(name) = lower(%s)", (district,)).fetchall()
+        if state and len(rows) > 1:
+            rows = [r for r in rows if r["state_name"].lower() == state.lower()] or rows
+        if not rows:
+            raise HTTPException(404, f"no district named {district!r}")
+        d = rows[0]
+        scope = user.scope_district()
+        if scope is not None and d["district_lgd"] != scope:
+            raise HTTPException(404, "no such district in your area")
+        work = pswif.to_work(form, district_lgd=d["district_lgd"], today=as_of,
+                             state_lgd=d["state_lgd"], state_name=d["state_name"],
+                             district_name=d["name"])
+        ctx = with_index(Context(stats=_stats(), as_of=as_of), con, work)
+    checked = validate_cost_form(work["cost_form"], today=as_of)
+    confirmed = set(work["cost_form"].get("confirmed") or [])
+    return {
+        "district": {"district_lgd": d["district_lgd"], "name": d["name"],
+                     "state_name": d["state_name"]},
+        "form": {"ready": checked["ready"], "work_type": work["work_type_code"],
+                 "grand_total": checked["computed"]["grand_total"],
+                 "issues": [i for i in checked["issues"]
+                            if i["level"] == "fix" or i["key"] not in confirmed]},
+        "trace": explain_work(work, ctx),
+    }
 
 
 @router.get("/presanction/options")
