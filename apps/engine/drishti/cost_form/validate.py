@@ -28,7 +28,7 @@ import math
 import re
 from datetime import date
 
-from drishti.cost_form import catalog, materials, norms
+from drishti.cost_form import catalog, materials, norms, versions
 
 FIX, CONFIRM = "fix", "confirm"
 LINE_TOLERANCE = 0.01       # an amount may differ from quantity x rate by rounding only
@@ -106,6 +106,8 @@ class _Ctx:
                            for s in sites if isinstance(s, dict)
                            for ln in (s.get("lines") if isinstance(s.get("lines"), list) else []))
         self.mp_gap: float | None = None
+        # another form's export (T134): the fields it never asks are not required when empty
+        self.not_asked = versions.not_asked(_s(form.get("form_version")) or None)
 
 
 def _applies(f: dict, values: dict, ctx: _Ctx) -> bool:
@@ -210,7 +212,7 @@ def _section(out: _Issues, fields: list[dict], values, path: str, ctx: _Ctx) -> 
             continue
         v = values.get(f["id"])
         if _empty(v):
-            if f.get("required", True):
+            if f.get("required", True) and f["id"] not in ctx.not_asked:
                 out.add(FIX, "required", f"{path}.{f['id']}", f"{f['label']}: required.")
             continue
         _check_value(out, f, v, f"{path}.{f['id']}", values)
