@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, ClipboardCheck, Construction, Gauge, ListChecks, PenLine, Play, RotateCcw, Video } from "lucide-react";
+import { ArrowRight, Check, ClipboardCheck, Construction, Gauge, ListChecks, PenLine, Play, RotateCcw, Video, X } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -10,8 +10,10 @@ import { PageHeader } from "@/components/nn/layout-bits";
 import { Button } from "@/components/ui/button";
 import type { Trace } from "@/lib/explain";
 import { agentMeta, inr } from "@/lib/format";
-import { type AgentLine, agentLines } from "@/lib/work-form-flags";
+import FORM_HTML from "@/lib/forms/pre-sanction-work-intelligence-form";
+import { type AgentLine, agentLines, markForm } from "@/lib/work-form-flags";
 import { cn } from "@/lib/utils";
+import { fillForm } from "@/lib/work-form-frame";
 
 /**
  * Five filings, end to end (T136): from the form an implementing agency fills to the risk score an
@@ -31,6 +33,54 @@ interface Yardstick {
   inside?: boolean;
   district?: { works: number; median: number } | null;
   note?: string;
+}
+
+/** The Cost agent's reading of one estimate line (T138, end_to_end_examples.cost_lines). */
+interface CostLine {
+  n: number;
+  state: "rate" | "quantity_only" | "unread" | "no_data" | "whole_item";
+  level: "high" | "watch" | "ok" | "none";
+  material?: string;
+  unit?: string;
+  extra: number;
+  fair_rate?: number;
+  pct?: number;
+  range?: { low: number; high: number; agencies: number; forms: number } | null;
+  where?: string;
+  needed?: number;
+  allowed?: number;
+  qty_ratio?: number | null;
+  over?: number;
+  share?: number;
+  forms?: number;
+  agencies?: number;
+  need?: string;
+  per?: number;
+  per_unit?: string;
+  median?: number;
+  works?: number;
+  where_text?: string;
+  limit?: number;
+  situations: { label: string; applies: boolean; note: string }[];
+}
+
+interface CostReading {
+  lines: CostLine[];
+  summary: {
+    verdict: "ASK" | "FAIR" | "CANT_CHECK" | null;
+    grand: number;
+    fair: number;
+    gap: number;
+    share: number;
+    coverage: number;
+    limit_share: number;
+    limit_rs: number;
+    qty_slack: number;
+    unread_allowed: number;
+    unexplained: Record<string, number>;
+    lines_total: number;
+    asks: boolean;
+  };
 }
 
 interface Filing {
@@ -53,6 +103,7 @@ interface Filing {
   time_plan: { start: string; early: string | null; late: string; accepted_days: number; notes: string[] } | null;
   yardstick: Yardstick | null;
   decision: string;
+  cost?: CostReading;
   trace: Trace;
 }
 
@@ -247,54 +298,36 @@ function EndToEnd() {
 }
 
 function FormStep({ ex }: { ex: Filing }) {
-  const total = ex.boq.reduce((a, r) => a + r.amount, 0);
+  const frame = useRef<HTMLIFrameElement>(null);
   const y = ex.yardstick;
+
+  // the one work intelligence form the agency fills (the same as /work-form), filled with this
+  // filing through the form's own functions, the agents' flagged fields outlined
+  function load() {
+    if (fillForm(frame.current, ex.form))
+      markForm(
+        frame.current?.contentDocument,
+        agentLines(ex.trace, ex.form).flatMap((l) => l.flags),
+      );
+  }
+
   return (
-    <div className="space-y-4">
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-        {ex.typed.map((sec) => (
-          <div key={sec.section} className="min-w-0 rounded-xl border p-3">
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{sec.section}</p>
-            <dl className="mt-1.5 space-y-1 text-[13px]">
-              {sec.fields.map(([k, v]) => (
-                <div key={k} className="flex gap-2">
-                  <dt className="w-28 shrink-0 text-muted-foreground">{k}</dt>
-                  <dd className="min-w-0 break-words font-medium">{v}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        ))}
-      </div>
-      <div className="overflow-x-auto rounded-xl border">
-        <table className="w-full min-w-[560px] text-[13px]">
-          <thead className="bg-muted/60 text-left text-[11px] uppercase tracking-wider text-muted-foreground">
-            <tr>
-              <th className="px-3 py-2 font-semibold">E. Estimate line</th>
-              <th className="px-3 py-2 text-right font-semibold">Quantity</th>
-              <th className="px-3 py-2 text-right font-semibold">Rate</th>
-              <th className="px-3 py-2 text-right font-semibold">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ex.boq.map((r) => (
-              <tr key={r.n} className="border-t">
-                <td className="px-3 py-1.5">{r.item}</td>
-                <td className="num px-3 py-1.5 text-right">
-                  {r.qty.toLocaleString("en-IN")} {r.unit}
-                </td>
-                <td className="num px-3 py-1.5 text-right">{rs(r.rate)}</td>
-                <td className="num px-3 py-1.5 text-right">{rs(r.amount)}</td>
-              </tr>
-            ))}
-            <tr className="border-t bg-muted/40 font-semibold">
-              <td className="px-3 py-1.5" colSpan={3}>
-                F. The estimate (the MP recommended {inr(ex.check.mp_amount)})
-              </td>
-              <td className="num px-3 py-1.5 text-right">{rs(total)}</td>
-            </tr>
-          </tbody>
-        </table>
+    <div className="space-y-3">
+      <p className="text-[13px] text-muted-foreground">
+        The agency&apos;s filing in the work intelligence form, every section exactly as on the{" "}
+        <Link href="/work-form" className="font-medium text-brand-700 underline-offset-2 hover:underline">
+          Work intelligence form
+        </Link>{" "}
+        page. Fields an agent asks about are outlined. Scroll inside the form to see all of it.
+      </p>
+      <div className="overflow-hidden rounded-xl border">
+        <iframe
+          ref={frame}
+          title={`Work intelligence form: ${ex.title}`}
+          srcDoc={FORM_HTML}
+          onLoad={load}
+          className="block h-[70svh] min-h-[560px] w-full border-0 bg-[#eef2f7]"
+        />
       </div>
       {y && (
         <p className="rounded-xl bg-muted/50 px-3 py-2 text-[13px]">
@@ -362,7 +395,8 @@ function AgentsStep({ ex }: { ex: Filing }) {
   const lines = agentLines(ex.trace, ex.form).filter((l) => l.id !== "site_progress");
   const tp = ex.time_plan;
   return (
-    <ul className="grid gap-2 lg:grid-cols-2">
+    <div className="space-y-4">
+      <ul className="grid gap-2 lg:grid-cols-2">
       {lines.map((l) => {
         const meta = agentMeta(l.id);
         const flagged = l.state === "flagged";
@@ -413,7 +447,227 @@ function AgentsStep({ ex }: { ex: Filing }) {
           agency&apos;s claim for the month. It will join this walk-through once its field trial on real site videos (T126) is done.
         </p>
       </li>
-    </ul>
+      </ul>
+      {ex.cost && <CostTable ex={ex} cost={ex.cost} />}
+    </div>
+  );
+}
+
+const LEVEL: Record<CostLine["level"], { fg: string; bg: string }> = {
+  high: { fg: "var(--high)", bg: "var(--high-soft)" },
+  watch: { fg: "var(--medium)", bg: "var(--medium-soft)" },
+  ok: { fg: "var(--low)", bg: "var(--low-soft)" },
+  none: { fg: "var(--muted-foreground)", bg: "var(--muted)" },
+};
+const SITUATION: Record<string, string> = {
+  "Hard-to-reach site": "Remote site",
+  "Agency's reason for this line": "Agency's reason",
+  "Official rate cited": "Official rate",
+};
+const UNIT: Record<string, string> ={ m3: "m³", m2: "m²", nos: "piece" };
+const unitOf = (u?: string) => (u ? (UNIT[u] ?? u) : "unit");
+const pctOf = (v: number) => `${Math.round(Math.abs(v) * 100)}%`;
+const lakh = (v: number) => (Math.abs(v) >= 1e5 ? `₹${(v / 1e5).toFixed(2)} lakh` : rs(v));
+
+/** The agent's reading of one line: a coloured headline and a few short facts. */
+function reading(l: CostLine, s: CostReading["summary"]): { badge: string; facts: string[] } {
+  const u = unitOf(l.unit);
+  const facts: string[] = [];
+  let badge: string;
+  if (l.state === "rate" && l.fair_rate !== undefined) {
+    const pct = l.pct ?? 0;
+    badge =
+      pct > 0.005 ? `▲ ${pctOf(pct)} above the usual rate` : pct < -0.005 ? `▼ ${pctOf(pct)} below the usual rate` : "At the usual rate";
+    facts.push(
+      `Usual: ${rs(l.fair_rate)} a ${u}${l.where === "state" ? " (state-wide, 10% leeway)" : ""}` +
+        (l.range ? ` · ${l.range.agencies} other agencies here charge ${rs(l.range.low)} to ${rs(l.range.high)}` : ""),
+    );
+  } else if (l.state === "unread") {
+    badge = l.level === "high" ? "Can't be priced, and too big a share" : "Not a standard item (small share: fine)";
+    facts.push(
+      `No price list covers this item. It is ${pctOf(l.share ?? 0)} of the lines; up to ${pctOf(s.unread_allowed)} may go unpriced`,
+    );
+    if (l.over) facts.push(`${lakh(l.over)} beyond that is counted as unexplained`);
+  } else if (l.state === "no_data") {
+    badge = "Not priced yet";
+    facts.push(`Only ${l.forms ?? 0} recent forms from ${l.agencies ?? 0} agencies here; needs ${l.need}`);
+    facts.push("Counted at the agency's own price, never guessed");
+  } else if (l.state === "whole_item" && l.per !== undefined) {
+    badge = l.level === "high" ? `▲ ${pctOf(l.pct ?? 0)} above real works` : "In line with real works";
+    facts.push(`${rs(l.per)} a ${l.per_unit}; ${l.works} real works in ${l.where_text}, median ${rs(l.median ?? 0)}`);
+    facts.push(`Asks only above ${rs(l.limit ?? 0)} a ${l.per_unit} and over 10% above the MP's amount`);
+  } else {
+    badge = "Quantity fits the size";
+  }
+  if (l.needed !== undefined && l.allowed !== undefined) {
+    const many = (l.qty_ratio ?? 0) > 1 + s.qty_slack;
+    facts.push(
+      `${many ? `▲ ${(l.qty_ratio ?? 0).toFixed(1)}× what the size needs. ` : ""}Size needs ${Math.round(l.needed).toLocaleString("en-IN")}; fine up to ${Math.round(l.allowed).toLocaleString("en-IN")} (+${pctOf(s.qty_slack)})`,
+    );
+    if (many && l.state !== "rate") badge = `▲ ${(l.qty_ratio ?? 0).toFixed(1)}× the quantity needed`;
+  }
+  if (l.extra > 0) facts.push(`Adds ${lakh(l.extra)} over the fair price`);
+  return { badge, facts };
+}
+
+/** Step 3, the Cost agent line by line (T138): which lines are above the usual price and by how much,
+ * the band it calls normal, and whether anything on the form could explain the difference. */
+function CostTable({ ex, cost }: { ex: Filing; cost: CostReading }) {
+  const color = agentMeta("cost_estimate").color;
+  const s = cost.summary;
+  const byN = new Map(cost.lines.map((l) => [l.n, l]));
+  const over = Math.max(0, s.share);
+  const scale = Math.max(s.limit_share * 2, over * 1.15, 0.01);
+  return (
+    <section className="space-y-3" aria-label="The Cost agent, line by line">
+      <h4 className="flex items-center gap-2 text-sm font-semibold">
+        <EngineMark id="cost_estimate" size={20} />
+        What the Cost agent reads, line by line
+      </h4>
+      <div className="overflow-x-auto rounded-xl border">
+        <table className="w-full min-w-[920px] text-[13px]">
+          <thead className="text-left text-[11px] uppercase tracking-wider text-muted-foreground">
+            <tr className="bg-muted/60">
+              <th className="px-3 py-2 font-semibold">E. Estimate line</th>
+              <th className="px-3 py-2 text-right font-semibold">Quantity</th>
+              <th className="px-3 py-2 text-right font-semibold">Rate</th>
+              <th className="px-3 py-2 text-right font-semibold">Amount</th>
+              <th
+                className="w-[46%] border-l-4 px-3 py-2 font-semibold"
+                style={{
+                  borderColor: color,
+                  background: `color-mix(in srgb, ${color} 12%, white)`,
+                  color,
+                }}
+              >
+                The agent&apos;s reading
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {ex.boq.map((r) => {
+              const l = byN.get(r.n);
+              if (!l) return null;
+              const lv = LEVEL[l.level];
+              const { badge, facts } = reading(l, s);
+              const asked = l.level === "high" || l.level === "watch";
+              const reason = l.situations.some((x) => x.applies && x.label !== "Official rate cited");
+              return (
+                <tr
+                  key={r.n}
+                  className="border-t align-top"
+                  style={
+                    asked
+                      ? {
+                          background: `color-mix(in srgb, ${lv.bg} 45%, white)`,
+                        }
+                      : undefined
+                  }
+                >
+                  <td className="px-3 py-2">
+                    <span className={cn(asked && "font-semibold")}>{r.item}</span>
+                    <span className="block text-[11px] text-muted-foreground">{r.source}</span>
+                  </td>
+                  <td className="num whitespace-nowrap px-3 py-2 text-right">
+                    {r.qty.toLocaleString("en-IN")} {unitOf(r.unit)}
+                  </td>
+                  <td
+                    className="num whitespace-nowrap px-3 py-2 text-right"
+                    style={asked && l.state === "rate" ? { color: lv.fg, fontWeight: 600 } : undefined}
+                  >
+                    {rs(r.rate)}
+                  </td>
+                  <td className="num whitespace-nowrap px-3 py-2 text-right">{rs(r.amount)}</td>
+                  <td
+                    className="border-l-4 px-3 py-2"
+                    style={{
+                      borderColor: color,
+                      background: `color-mix(in srgb, ${color} 5%, white)`,
+                    }}
+                  >
+                    <span
+                      className="inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold"
+                      style={{ background: lv.bg, color: lv.fg }}
+                    >
+                      {badge}
+                    </span>
+                    <ul className="mt-1.5 space-y-0.5 text-[12px] leading-snug">
+                      {facts.map((f) => (
+                        <li key={f}>{f}</li>
+                      ))}
+                    </ul>
+                    {asked && (
+                      <div className="mt-2 space-y-1 border-t pt-1.5 text-[12px] leading-snug">
+                        <div className="flex flex-wrap items-center gap-1">
+                          <span className="mr-0.5 text-[11px] font-semibold text-muted-foreground">Could it be justified?</span>
+                          {l.situations.map((x) => (
+                            <span
+                              key={x.label}
+                              title={`${x.label}: ${x.note}`}
+                              className={cn(
+                                "inline-flex items-center gap-0.5 rounded-md border px-1.5 py-px text-[11px]",
+                                x.applies ? "border-[var(--medium)] bg-[var(--medium-soft)] text-[var(--medium)]" : "text-muted-foreground",
+                              )}
+                            >
+                              {x.applies ? <Check className="size-3" /> : <X className="size-3" />}
+                              {SITUATION[x.label] ?? x.label}
+                            </span>
+                          ))}
+                        </div>
+                        {l.situations
+                          .filter((x) => x.applies && x.label !== "Official rate cited")
+                          .map((x) => (
+                            <p key={x.label} className="text-muted-foreground">
+                              {SITUATION[x.label] ?? x.label}: {x.note}
+                            </p>
+                          ))}
+                        <p className="font-semibold" style={{ color: reason ? "var(--medium)" : "var(--high)" }}>
+                          {reason ? "The form gives a reason: the officer weighs it" : "Nothing on the form explains it"}
+                        </p>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      {s.verdict && s.verdict !== "CANT_CHECK" && (
+        <div className="grid gap-3 rounded-xl border p-3 text-[13px] sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+          <div className="min-w-0 space-y-1.5">
+            <p>
+              <span className="font-semibold">Whole estimate {lakh(s.grand)}</span> against a fair {lakh(s.fair)}:{" "}
+              <span className="font-semibold" style={{ color: s.asks ? "var(--high)" : "var(--low)" }}>
+                {s.share >= 0 ? "+" : "−"}
+                {pctOf(s.share)}
+              </span>{" "}
+              on the fair price of what could be priced ({pctOf(s.coverage)} of the money).
+            </p>
+            <div className="relative h-2.5 overflow-hidden rounded-full bg-muted" aria-hidden>
+              <div
+                className="h-full rounded-full"
+                style={{
+                  width: `${Math.min(100, (over / scale) * 100)}%`,
+                  background: s.asks ? "var(--high)" : "var(--low)",
+                }}
+              />
+              <div className="absolute inset-y-0 w-0.5 bg-foreground" style={{ left: `${(s.limit_share / scale) * 100}%` }} />
+            </div>
+            <p className="text-muted-foreground">
+              Comfort limit (the black mark): the agent asks only when the whole estimate is more than {pctOf(s.limit_share)} and{" "}
+              {rs(s.limit_rs)} above its fair price. One costly line can be honest; many lines a little high is a pattern.
+            </p>
+          </div>
+          <span
+            className="justify-self-start rounded-full px-3 py-1 text-xs font-semibold sm:justify-self-end"
+            style={s.asks ? { background: "var(--high)", color: "white" } : { background: "var(--low-soft)", color: "var(--low)" }}
+          >
+            {s.asks ? "Over the limit: asks" : "Within the limit"}
+          </span>
+        </div>
+      )}
+    </section>
   );
 }
 

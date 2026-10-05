@@ -102,6 +102,14 @@ dashboard queue before / after in FINDINGS (439 → 217)
 of §9.6 planted. Only readings and blurred frames are kept; no video enters the repo.
 **Done when:** [ ] each trick caught 9 in 10 · [ ] a finding on at most 1 in 30 honest visits · [ ] FINDINGS
 
+### T138 · Form to risk score: the real form, and the Cost agent line by line  ·  S  ·  web + data
+**What:** (owner, 5 Oct 2026) `/end-to-end` step 1 shows the website's work intelligence form itself,
+filled; step 3 adds a coloured column with the Cost agent's reading of each estimate line: % above the
+usual rate, the band other agencies charge, the quantity the size needs, what on the form could justify
+it, and the whole estimate against its comfort limit.
+**Done when:** [x] the framed form filled on all five filings · [x] `cost` in examples.json, its
+headline equal to the stored trace's · [x] tsc + lint clean · [ ] checked on the live site after merge
+
 ### T137 · Other agent architectures, tested against the current ones  ·  L  ·  engine + data  ·  Depends on: T136
 **What:** (owner, 5 Oct 2026) test other designs for each agent on the same benchmarks at the same
 false-alarm rate; switch only a design proven better that keeps every loophole closed. Plan:
