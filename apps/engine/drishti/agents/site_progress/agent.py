@@ -37,6 +37,9 @@ FINDINGS (only facts that are yes or no, or the agency's own claim failing twice
                                then is forgiven, filming badly every month would dodge every check
   COMPLETE_NOT_FILMED          (T137) recorded complete FINAL_GRACE_DAYS+ ago, videos filmed, but
                                no final video showing the finished work
+  FIRST_FILMED_FINISHED        (T139) no first visit before work, and the first video accepted is
+                               the final one (or already shows the work complete or standing),
+                               for a work the form calls new: nothing shows the asset is new
 ROOM FOR ERROR (T136): a dark or short video, weak GPS, a viewpoint missed or skipped, a month
 missed, are notes; a poor video is never a proof that work is not there, nor that it was filmed
 elsewhere.
@@ -61,7 +64,7 @@ from drishti.agents.contract import AgentResult, Finding, Status
 from drishti.agents.site_progress import visits as site_visits
 
 AGENT = "site_progress"
-VERSION = "site-progress-3.2.0"
+VERSION = "site-progress-3.3.0"
 QUESTION = ("Do the monthly site videos show real, new work, at this work's site, for this "
             "work only?")
 CONFIDENCE = 0.8
@@ -81,8 +84,12 @@ RISK = {"FOOTAGE_USED_BEFORE": 0.8, "SAME_PLACE_AS_ANOTHER_WORK": 0.7,
         "NOT_FILMED_AT_THIS_SITE": 0.8, "CLAIM_NOT_SHOWN": 0.5, "COMPLETE_NOT_SHOWN": 0.6,
         "ALREADY_BUILT_AT_START": 0.6, "NO_SITE_VIDEO": NO_VIDEO_RISK,
         "SITE_NOT_AT_FORM_PIN": PIN_OFF_RISK, "SITE_VIDEOS_UNUSABLE": UNUSABLE_RISK,
-        "COMPLETE_NOT_FILMED": NO_VIDEO_RISK}
+        "COMPLETE_NOT_FILMED": NO_VIDEO_RISK, "FIRST_FILMED_FINISHED": NO_VIDEO_RISK}
 HI = {
+    "FIRST_FILMED_FINISHED": "पहला साइट वीडियो ही कार्य को पूरा दिखाता है, और कार्य शुरू होने से "
+                             "पहले कोई वीडियो नहीं फ़िल्माया गया: कुछ भी नहीं दिखाता कि परिसंपत्ति "
+                             "नई है। जाँचें कि यह स्वीकृति से पहले या किसी अन्य योजना में तो नहीं "
+                             "बनी।",
     "COMPLETE_NOT_FILMED": "कार्य पूर्ण दर्ज है, पर तब से कोई अंतिम साइट वीडियो पूरा कार्य नहीं "
                            "दिखाता। अंतिम वीडियो माँगें और बंद करने से पहले जाँच करें।",
     "SITE_VIDEOS_UNUSABLE": "हाल के अधिकांश साइट वीडियो से साइट की प्रगति नहीं देखी जा सकती (बहुत "
@@ -350,6 +357,18 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
                                "already shows the asset standing, but the form calls the work new. "
                                "Check whether the work was done before sanction.",
                                visit=base[0].visit_id))
+    elif not base and trusted and _nature(work) not in CONTINUING:
+        # 6b. first filmed already finished (T139): on Jaunpur's real dates a light is installed
+        #     and closed within the month, and with no first video "already built at the start"
+        #     could never be asked: an old asset filmed once, as the final video, passed as new
+        first = trusted[0]
+        if (first.kind == "final" or first.get("complete_shown") is True
+                or first.get("asset_at_start") is True):
+            findings.append(_f("FIRST_FILMED_FINISHED",
+                               f"The first site video ({_when(first)}) already shows the work "
+                               "finished, and none was filmed before work started, so nothing "
+                               "shows the asset is new. Check that it was not built before "
+                               "sanction or under another scheme.", visit=first.visit_id))
 
     # 7. room for error (T136): one poor video is a note; the latest two in a row are a question
     poor = [(v, site_visits.unusable(v)) for v in trusted]

@@ -100,9 +100,9 @@
         "change": null,
         "reused_from": [
           {
-            "frames": 42,
+            "frames": 43,
             "work_id": "H1",
-            "visit_id": "ebe0122e40994f87a6fdcb08c04d372f"
+            "visit_id": "50c68d9db57d4ce9baa9a9fb4e86328e"
           }
         ],
         "same_place_as": [
@@ -130,6 +130,6 @@
       "FOOTAGE_USED_BEFORE",
       "SAME_PLACE_AS_ANOTHER_WORK"
     ],
-    "headline": "The first visit of 05 Oct 2026 carries 42 frames already seen on work H1: the same footage, not new filming. A site video must be filmed fresh at this site; needs checking."
+    "headline": "The first visit of 05 Oct 2026 carries 43 frames already seen on work H1: the same footage, not new filming. A site video must be filmed fresh at this site; needs checking."
   }
 }

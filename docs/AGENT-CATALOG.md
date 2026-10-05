@@ -38,6 +38,18 @@ videos unusable" and a 300 m rule for "filmed elsewhere": honest works asked in 
 fall from 25.7% to 5.0%, and every trick is still caught. It also asks `COMPLETE_NOT_FILMED`.
 Duplicate Work looks nearby works up on a map grid: the same answers, 8–10x faster.
 
+**Real data from outside (T139, FINDINGS "T139")**: Jaunpur's real works pinned at real buildings
+(Open Buildings, post-office positions). Houses stand 8 m apart, and 1,006 of the 1,038 works are
+solar street lights at houses. The 50 m rule would have asked 37–87% of honest lights and half of
+one institution's honest purchases. Duplicate Work changed three rules:
+- a light filed the same day as another (one programme) is never a repeat of it;
+- a light is one spot (20 m), not 50 m;
+- purchases are compared by kind.
+
+Honest lights asked now: 1.5–6.4%. Repeats asked: 93–100%. Site Progress asks
+`FIRST_FILMED_FINISHED`: a new work whose first video already shows it finished, with no video
+before work.
+
 **Round 6 and room for error (T136, FINDINGS "T136")**: 81 probes end 74 PASS, 0 FAIL, 7 LIMIT;
 3,000 random damages crash none. Cost norms sand by the IS 456 mix and counts unread items beyond
 15% of a construction estimate; Duplicate Work finds the strictest split by map pins too and names a

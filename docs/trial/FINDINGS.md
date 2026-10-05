@@ -1709,6 +1709,97 @@ sensible combination ranks works the same, except for ties.
   another hall's site is still asked.
 - The dashboard's 40,935 works: identical bands, queue (217) and flags (`dashboard_t137_after`).
 
+## T139 (5 Oct 2026): the agents on real data from outside the project
+
+The owner asked for relevant data "from anywhere", to test on temporarily and iterate from. What
+this machine could reach:
+- **Reachable:** Google's Open Buildings (satellite building footprints, CC BY 4.0); India Post's
+  post-office directory with map positions (the `indiapins` package on PyPI); the team's
+  eSAKSHI dashboard tables.
+- **Blocked by the sandbox's network:** government sites (eSAKSHI, data.gov.in, the PWD rate
+  schedules), Wikipedia and the web archive. So Cost could not be tested on published rates.
+
+None of it is committed: buildings go to `data/raw/open_buildings/`, which git ignores.
+
+### Duplicate Work: three rules changed, measured on real geography
+
+`data/trial/real_geo_check.py` uses Jaunpur's 1,038 real works: their dates, amounts, MPs and
+kinds. Only the map pins are simulated. Each honest work is pinned at a real building with a
+phone's GPS error (5 m; 15 m for one pin in ten). The buildings are the 97,965 Open Buildings
+within 600 m of the district's 106 post offices. Planted repeats file a sanctioned work again 6–18
+months later at the same building. Results: `results/real_geo_check.txt`.
+
+What real data showed:
+- **Houses are close.** A house stands 8.3 m from the next (median). It has 23 others within
+  50 m. 85% of buildings of 150 m² or more have another within 50 m.
+- **Most real works are small items at houses.** 1,006 of Jaunpur's 1,038 works are solar street
+  lights, each filed as its own work at one or a few named houses, in programmes of up to 240 a
+  day. Nationally, lights are the largest group: 12,460 of 40,935.
+- **One place, several purchases.** 673 real pairs of purchases name the same place but are of
+  different kinds (computers and furniture for one school, for example).
+
+| Honest filings | T137 rule: honest asked | Now: honest asked | Repeats asked (T137 → now) |
+|---|---|---|---|
+| lights, 5 a village, one hamlet | 78.9% | 1.7% | 100 → 98 of 100 |
+| lights, 10 a village, one hamlet | 87.3% | 1.5% | 100 → 97 |
+| lights, 10 a village, anywhere in the core | 36.9% | 5.3% | 100 → 93 |
+| lights, 25 a village, anywhere in the core | 54.9% | 6.4% | 100 → 93 |
+| purchases, 2 kinds per institution | 52.5% | 2.8% | 100 → 100 |
+| buildings, 2 or 4 per village | 11.7%, 14.7% | unchanged | 100 → 100 |
+
+The three changes (each measured on its own in the results):
+1. **One programme's lights are not repeats of each other.** A street light filed on the same day
+   as another is never "already sanctioned" before it: honest asks fall to 4–15%, with every
+   repeat still asked.
+   - A hall filed twice on one day is still asked. My first version applied the exception to
+     every work, and the loop's new probe showed that opened a way past the check.
+2. **A street light is one spot, 20 m, not 50 m.**
+   - At 5–15 m, too many repeats were lost (19–97% caught), because two GPS fixes of one house
+     differ.
+   - At 20 m, 93–98% of repeats are kept, and honest asks fall to 1.5–6.4%.
+   - A neighbour's light gets no note either.
+3. **Purchases are compared by kind of purchase, not as "goods".** Computers and then furniture for
+   one school are two purchases. Computers bought again are still asked.
+
+**Buildings keep the 50 m line.** With 2–4 building works per village placed at random large
+buildings, 12–15% of honest ones were asked. This is an upper bound: Open Buildings counts house
+clusters as large buildings too. Real halls' and schools' positions will show the true figure.
+
+**Moving the pin to the next building** (an agency dodging the rule) is still caught 89–97% of the
+time for lights and 95–96% for buildings and purchases. The repeat's first video then shows the
+light or hall already standing (Site Progress).
+
+### Site Progress: one loophole closed (`FIRST_FILMED_FINISHED`)
+
+On Jaunpur's real dates, 532 of the 1,025 completed works were closed within the month of their
+sanction. An honest agency films a first video and a final one, perhaps on the same day.
+
+All 1,025 real timelines were run with honest videos (first and final, final only, both on one
+day). Site Progress asked nothing on any of them. That showed the gap: with no first video,
+`ALREADY_BUILT_AT_START` can never be asked. An old light or hall filmed once, as the "final"
+video, passed as new.
+
+The new question asks when there is no first video, and the first accepted video is the final one
+or already shows the work complete or standing, for a work the form calls new. It sits at the
+1-in-4 prior until read. Progress filmed in between, or a declared upgrade, is not asked.
+
+### Time & Rules on every real work
+
+It asks about 9,830 of the 40,935 works. 9,401 of those are `SANCTIONED_LATE`, the 75-day sanction
+clock (owner's rule). That is a fact about the office's pace at 0.05, and it never queues a work
+alone, as designed (T122). Nothing to change.
+
+### Proof
+
+- **The loop:** 93 probes, 86 PASS, 0 FAIL, 7 LIMIT, and 3,000 random damages with 0 errors. The 8
+  new probes are the neighbour's light, one programme's lights, the light filed again, furniture
+  after computers, computers again, the hall filed twice on one day, the old asset filmed only as
+  final, and the light installed in a day.
+- **The engine suite:** 810 passed.
+- **The examples:** the 12 work-form examples and five end-to-end filings raise exactly what they
+  did. The honest lights filing now reads "within 20 m".
+- **The dashboard:** the 40,935 works are identical (`dashboard_t139_after`).
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

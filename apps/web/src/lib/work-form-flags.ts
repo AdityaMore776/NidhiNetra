@@ -194,6 +194,10 @@ export function flagOf(agent: string, f: TraceFinding, form: Form): Flag {
       why = `Recorded complete ${n(x.days)} days ago, but no final site video shows the finished work.`;
       fields.push({ name: "completion_capture_required", label: "no final video" });
       break;
+    case "FIRST_FILMED_FINISHED":
+      why = `The first site video (${x.visit}) already shows the work finished, and none was filmed before work started: nothing shows the asset is new.`;
+      fields.push({ name: "baseline_video_date", label: "no video before work" });
+      break;
     case "SITE_NOT_AT_FORM_PIN":
       why = `Every site video is filmed about ${n(x.metres)} m from the form's map pin: the work is not where the form puts it.`;
       fields.push({ name: pinField(form), label: `videos ${n(x.metres)} m away` });

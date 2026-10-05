@@ -1,4 +1,4 @@
-r"""The four agents' self-improvement loop (T135-T137): every way we could think of for them to go wrong.
+r"""The four agents' self-improvement loop (T135-T139): every way we could think of for them to go wrong.
 
 The owner (5 Oct 2026): "take each agent and run them through samples, then try to find ways where
 this agent can go wrong, give a wrong answer, or can be bypassed ... keep iterating until the agents
@@ -1247,6 +1247,75 @@ def _(world):
             f"{got or 'nothing'}: the pieces still meet end to end by their pins")
 
 
+def _pinned(world, wid: str, wtype: str, north_m: float, rec: date, *, status: str = "COMPLETED",
+            nature: str = "new") -> dict:
+    """An engine-format filing at the 40th example site, north_m metres north (T139)."""
+    lat, lon = wf.pin(40)
+    done = status == "COMPLETED"
+    return {**world.place, "work_id": wid, "description": f"{wtype.lower()} work {wid}",
+            "amount": 25_000.0, "mp_name": "MP T139", "work_type_code": wtype,
+            "recommended_date": rec, "sanction_date": rec + timedelta(days=20),
+            "completed_date": rec + timedelta(days=40) if done else None, "status": status,
+            "cost_form": {"work": {"work_type": wtype, "nature": nature},
+                          "sites": [{"location": {"lat": lat + north_m * METRE, "lon": lon},
+                                     "size": {"lights_nos": 1}}]}}
+
+
+@probe("dup_split", "noise", "a neighbour's street light a year later, 30 m away (real houses 8 m)")
+def _(world):
+    d = world.as_of - timedelta(days=500)
+    old = _pinned(world, "T139-L1", "STREET_LIGHT", 0, d)
+    new = _pinned(world, "T139-L2", "STREET_LIGHT", 30, d + timedelta(days=365),
+                  status="SANCTIONED")
+    return quiet(run(world, new, extra=[old]), "dup_split",
+                 "the light next door (37-87% of Jaunpur's honest lights were asked at 50 m)")
+
+
+@probe("dup_split", "noise", "one programme's lights at neighbouring houses, filed the same day")
+def _(world):
+    d = world.as_of - timedelta(days=300)
+    ws = [_pinned(world, f"T139-P{i}", "STREET_LIGHT", 8 * i, d) for i in range(5)]
+    got = [flags(run(world, w, extra=ws), "dup_split") for w in ws]
+    return ("PASS" if not any(got) else "FAIL", f"asked: {sum(1 for g in got if g)} of 5")
+
+
+@probe("dup_split", "evasion", "a street light filed again at the same spot a year later")
+def _(world):
+    d = world.as_of - timedelta(days=500)
+    old = _pinned(world, "T139-L1", "STREET_LIGHT", 0, d)
+    new = _pinned(world, "T139-L3", "STREET_LIGHT", 6, d + timedelta(days=365),
+                  status="SANCTIONED")
+    return still(run(world, new, extra=[old]), "dup_split", "SANCTIONED_WORK_AT_THIS_SITE",
+                 "one spot, GPS 6 m apart")
+
+
+@probe("dup_split", "noise", "one school's furniture after its computers (one pin)")
+def _(world):
+    d = world.as_of - timedelta(days=400)
+    old = _pinned(world, "T139-C1", "COMPUTER", 0, d)
+    new = _pinned(world, "T139-F1", "FURNITURE", 2, d + timedelta(days=200), status="SANCTIONED")
+    return quiet(run(world, new, extra=[old]), "dup_split",
+                 "two purchases for one school (673 such real pairs on the dashboard)")
+
+
+@probe("dup_split", "evasion", "computers bought again for the same school")
+def _(world):
+    d = world.as_of - timedelta(days=400)
+    old = _pinned(world, "T139-C1", "COMPUTER", 0, d)
+    new = _pinned(world, "T139-C2", "COMPUTER", 2, d + timedelta(days=200), status="SANCTIONED")
+    return still(run(world, new, extra=[old]), "dup_split", "SANCTIONED_WORK_AT_THIS_SITE",
+                 "the same purchase again")
+
+
+@probe("dup_split", "evasion", "a hall filed twice on the same day at one pin")
+def _(world):
+    d = world.as_of - timedelta(days=300)
+    a = _pinned(world, "T139-H1", "COMMUNITY_HALL", 0, d)
+    b = _pinned(world, "T139-H2", "COMMUNITY_HALL", 10, d)
+    return still(run(world, b, extra=[a]), "dup_split", "SANCTIONED_WORK_AT_THIS_SITE",
+                 "the same-day exception is for a programme of lights only")
+
+
 @probe("time_rules", "evasion", "'complete' past the early line, checked the next day, never filmed")
 def _(world):
     w = copy.deepcopy(world.records["time_fast"])
@@ -1386,6 +1455,33 @@ def _(world):
                  "GPS faked inside, another place filmed")
 
 
+def _final(v: dict, day: date) -> dict:
+    v = copy.deepcopy(v)
+    v.update(visit_id="VF", kind="final", claim="complete", captured_at=day.isoformat())
+    v["readings"].update(complete_shown=True, claim_verdict="shown")
+    return v
+
+
+@probe("site_progress", "evasion", "an old asset filmed once, as the final video (no first video)")
+def _(world):
+    day = world.as_of - timedelta(days=20)
+    vs = [_final(_clean_visits(world)[-1], day)]
+    res = run(world, _site(world, "clean", vs, status="COMPLETED",
+                           completed_date=(day - timedelta(days=1)).isoformat()))
+    return still(res, "site_progress", "FIRST_FILMED_FINISHED",
+                 "first filmed finished (T139: ALREADY_BUILT_AT_START needs a first video)")
+
+
+@probe("site_progress", "noise", "a light installed in a day: first and final video the same day")
+def _(world):
+    day = world.as_of - timedelta(days=20)
+    first = copy.deepcopy(_clean_visits(world)[0])
+    first["captured_at"] = day.isoformat()
+    vs = [first, _final(_clean_visits(world)[-1], day)]
+    res = run(world, _site(world, "clean", vs, status="COMPLETED", completed_date=day.isoformat()))
+    return quiet(res, "site_progress", "532 of Jaunpur's 1,025 real works closed within the month")
+
+
 # ===================================================================================================
 # damage: random junk anywhere
 # ===================================================================================================
@@ -1487,7 +1583,7 @@ def main() -> None:
         print(f"{verdict:5} {pr.agent:13} {pr.kind:8} {pr.name}\n      {detail}", flush=True)
     dmg = damage_rounds(world, args.damage, args.seed) if args.damage and not args.only else None
     tally = Counter(r["verdict"] for r in rows)
-    lines = [f"Agent robustness loop (T135-T137): {len(rows)} probes on the work form's example "
+    lines = [f"Agent robustness loop (T135-T139): {len(rows)} probes on the work form's example "
              f"filings in {wf.DISTRICT} ({len(world.district):,} real works, "
              f"{len(world.background)} background filings), as of {world.as_of}",
              f"PASS {tally['PASS']}  FAIL {tally['FAIL']}  LIMIT {tally['LIMIT']}", ""]

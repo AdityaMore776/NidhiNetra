@@ -13,6 +13,10 @@ So what is ASKED comes from the cost estimate form (work["cost_form"]), and word
   at_site     a sanctioned work of the same kind of asset (the form's family of work types) whose
               own form puts a map pin within PIN_METRES of this work's pin; a linear work (road,
               drain, wall, pipeline ...) by both ends. Certain by construction: two pins, one place.
+              T139 (real geography): a street light within POINT_METRES (one spot: neighbours'
+              houses stand 8 m apart) and never one filed the same day (one programme's houses
+              are not "already sanctioned" before each other), and a purchase of the same work
+              type (computers and furniture for one school are two purchases).
   declared    the work this one continues, extends, upgrades or rebuilds, named by the agency on
               the form (work.nature, work.earlier_work_id), and its record in the district
   near        (T136) a sanctioned building or place of the same family whose pin is just past the
@@ -66,6 +70,15 @@ from drishti.cost_form import catalog
 
 PIN_METRES = 50.0                 # two pins this close are one site
 NEAR_METRES = 150.0               # a same-kind building this close, just past the line: a note
+# T139, real geography (data/trial/real_geo_check.py): in Jaunpur's village cores a house stands
+# 8 m from the next (Open Buildings), and 1,006 of its 1,038 real works are solar street lights at
+# named houses, so 50 m put honest neighbours "at this site" (37-87% of light works asked)
+POINT_FAMILIES: tuple[str, ...] = ("lights",)   # small items at a house or pole: one spot, not 50 m
+POINT_METRES = 20.0               # two such pins this close are one spot (93-98% of repeats kept)
+BY_TYPE: tuple[str, ...] = ("goods",)   # one institution's purchases share its pin: by type
+# a light filed the same day (one programme's houses) is never "earlier"; a hall filed twice on one
+# day still is (a programme of lights is many houses, two halls at one pin are one hall)
+SAME_DAY_APART: tuple[str, ...] = ("lights",)
 CELL_DEG = 0.005                  # the map grid (about 550 m) the index files pinned works in
 GRID_MARGIN_M = 200.0             # a check looks this far around its own pins (> NEAR_METRES)
 OVERLAP_METRES = 25.0             # a point of a road this close to another road's line lies on it
@@ -210,18 +223,18 @@ def size_alike(a: dict | None, b: dict | None) -> bool:
                                 for k in shared)
 
 
-def same_site(a, b, linear: bool) -> float | None:
-    """Metres between two sites when they are one site, else None. A linear work is one site
-    only when both its ends meet the other's (in either direction): sharing one end is a road
-    that starts where another ends, not the same road."""
+def same_site(a, b, linear: bool, line: float = PIN_METRES) -> float | None:
+    """Metres between two sites when they are one site (pins within `line`), else None. A linear
+    work is one site only when both its ends meet the other's (in either direction): sharing one
+    end is a road that starts where another ends, not the same road."""
     (sa, ea), (sb, eb) = a, b
     if not linear:
         d = metres(sa, sb)
-        return d if d <= PIN_METRES else None
+        return d if d <= line else None
     if ea is None or eb is None:
         return None
     d = min(max(metres(sa, sb), metres(ea, eb)), max(metres(sa, eb), metres(ea, sb)))
-    return d if d <= PIN_METRES else None
+    return d if d <= line else None
 
 
 def _apart(a: str, b: str) -> bool:
@@ -272,6 +285,13 @@ class Rec:
     def family(self) -> str | None:
         found = catalog.family_of(_work_type(self))
         return found[0] if found else None
+
+    @property
+    def kind(self) -> str | None:
+        """The kind of asset compared at one site: the family, or for purchases (BY_TYPE) the
+        work type (T139: one school's computers and its furniture share the school's pin)."""
+        fam = self.family
+        return _work_type(self) if fam in BY_TYPE else fam
 
     @property
     def linear(self) -> bool:
@@ -536,12 +556,16 @@ class RepeatIndex:
             ids |= {x.work_id for x in self._wide.get(me.district, [])}
             nearby = [x for x in earlier if x.work_id in ids]
 
+        kind, point = me.kind, fam in POINT_FAMILIES
+        line = POINT_METRES if point else PIN_METRES
+        if fam in SAME_DAY_APART:            # one programme's lights, filed the same day (T139)
+            nearby = [x for x in nearby if x.first != me.first]
         at_site, overlap = [], {}
         for x in nearby:
-            if not x.sites or not me.sites or x.family is None or x.family != fam:
+            if not x.sites or not me.sites or x.kind is None or x.kind != kind:
                 continue
             best = min((d for a in me.sites for b in x.sites
-                        if (d := same_site(a, b, me.linear)) is not None), default=None)
+                        if (d := same_site(a, b, me.linear, line)) is not None), default=None)
             if best is None and me.linear:
                 # a road filed again a little longer, or a part of it inside a longer road: most
                 # of either lies on the other's line (T135)
@@ -558,10 +582,10 @@ class RepeatIndex:
         # just past the one-site line (T136: a "new" hall pinned 60 m from a hall finished 16
         # months earlier): a same-kind building or place within NEAR_METRES, for a note
         near = []
-        if me.sites and not me.linear:
+        if me.sites and not me.linear and not point:   # a neighbour's light is not news
             seen = {x.work_id for x, _ in at_site}
             for x in nearby:
-                if x.work_id in seen or not x.sites or x.family != fam or x.linear:
+                if x.work_id in seen or not x.sites or x.kind != kind or x.linear:
                     continue
                 d = min(metres(a[0], b[0]) for a in me.sites for b in x.sites)
                 if PIN_METRES < d <= NEAR_METRES:
@@ -601,7 +625,8 @@ class RepeatIndex:
         return {"me": me, "at_site": at_site, "overlap": overlap, "declared": link,
                 "look_alike": alike[:5], "near": near[:3],
                 "answers": answers(me.form), "compared": len(others), "split": split,
-                "sanctioned_earlier": len(earlier), "place_named": bool(me.place)}
+                "sanctioned_earlier": len(earlier), "place_named": bool(me.place),
+                "line": line}
 
     def candidates(self, work: dict) -> list[Rec]:
         """The sanctioned works the form must ask the agency about: those at the same site by

@@ -147,7 +147,8 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
             hard=False, risk=SITE_RISK,
             evidence={"other": x.work_id, "metres": round(d, 1), "other_amount": x.amount,
                       "other_completed": x.done.isoformat() if x.done else None,
-                      "pin_metres": PIN_METRES, "overlap": share, "declared": bool(named),
+                      "pin_metres": found.get("line", PIN_METRES), "overlap": share,
+                      "declared": bool(named),
                       "kind": "at_site"}))
 
     # 2. what the agency declares this work continues
@@ -237,7 +238,7 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
             evidence={"other": x.work_id, "metres": round(d, 1), "other_amount": x.amount,
                       "kind": "near"}))
 
-    n, pinned = found["compared"], bool(me.sites)
+    n, pinned, line = found["compared"], bool(me.sites), found.get("line", PIN_METRES)
     limits = pin_problems(me.form, me.linear)
     if not pinned:
         limits.append("Without the cost estimate form's map pin a repeat can only be looked for "
@@ -246,7 +247,7 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
     if not found["place_named"]:
         limits.append("The description names no place, so no look-alike can be found by words.")
     evidence = {"compared": n, "sanctioned_earlier": found["sanctioned_earlier"],
-                "pinned": pinned, "pin_metres": PIN_METRES,
+                "pinned": pinned, "pin_metres": line,
                 "place_named": found["place_named"]}
     together = index.filed_together(me.work_id)
     if together:            # display only: the queue shows works filed together as one case
@@ -266,7 +267,7 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
             confidence=0.3, hard=False, headline=findings[0].text, version=VERSION,
             findings=findings, limitations=limits, evidence=evidence,
             duration_ms=int((time.perf_counter() - t0) * 1000))
-    where = (f"no sanctioned work within {PIN_METRES:.0f} m of its map pin, and none of the "
+    where = (f"no sanctioned work within {line:.0f} m of its map pin, and none of the "
              f"{n:,} other works of its district" if pinned else
              f"none of the {n:,} other works of its district")
     return AgentResult(

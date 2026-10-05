@@ -44,6 +44,17 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
+**5 Oct 2026: the agents on real data from outside the project (T139).**
+Jaunpur's real works were pinned at real buildings (Google Open Buildings, India Post positions).
+Houses stand 8 m apart, and most real works are street lights at houses. Duplicate Work would have
+asked 37–87% of honest lights. Three rule changes were made:
+- one programme's lights are never repeats of each other;
+- a light is one spot (20 m);
+- purchases are compared by kind.
+
+Honest lights asked now: 1.5–6.4%. Repeats asked: 93–100%. Site Progress closes "first filmed
+finished". The loop: 93 probes, 0 FAIL. The dashboard is identical. FINDINGS "T139".
+
 **5 Oct 2026: other agent architectures tested against the current ones (T137).**
 `data/trial/architecture_bakeoff.py` ran the alternatives on the same benchmarks at the same
 false-alarm rate. Switched only what was proven better:
