@@ -44,6 +44,12 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
+**6 Oct 2026: ranges, not single figures (T145).**
+What a line should cost or hold is now a range everywhere the officer reads it: "the work's size
+takes 1,270–1,334 bags", "others here pay ₹735–₹780", a fair price from the lowest to the highest
+rates other agencies charge. No rule or margin changed; every example and trial gives the same
+answers. FINDINGS "T145".
+
 **6 Oct 2026: the agents, more concrete (T144).**
 Cost now holds more quantities to the work's own size: a CC road's stone by its concrete mix, a
 water pipeline's main by its length, and solar panels and batteries bought by the watt or

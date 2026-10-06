@@ -524,8 +524,9 @@ def validate(form: dict, today: date | None = None, earlier=None) -> dict:
             if q["ratio"] > 1.0 + 1e-9:
                 out.add(CONFIRM, "more_than_size_needs", f"{p}.lines[{q['lines'][0]}].quantity",
                         f"The lines have {q['quantity']:,.0f} {q['unit']} of "
-                        f"{catalog.material(q['material'])['label'].lower()}; the size needs "
-                        f"{q['needed']:,.0f} ({q['why']}). Check the quantity, or confirm it.")
+                        f"{catalog.material(q['material'])['label'].lower()}; this size takes "
+                        f"{catalog.range_text(q['low'], q['needed'], q['unit'])} ({q['why']}). "
+                        "Check the quantity, or confirm it.")
         loose = norms.stone_not_itemised(ctx.work_type, size, used)
         if loose is not None:
             # T144: one stone line for slab and base hid twice the slab's stone; a road over a

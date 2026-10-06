@@ -49,6 +49,7 @@ AGGREGATE_ROOM = 1.15   # the analysis-of-rates figures (0.85-0.90 m3 of stone p
                         # against the mix's 0.84 dry) and wastage
 PIPE_ROOM = 1.10        # pipe laid with slack, bends and cut lengths
 CONNECTION_PIPE_M = 20  # a house connection's pipe from the main (honest: 6-15 m)
+CONNECTION_MIN_M = 6    # the shortest honest house connection: the low end of the range
 STONE_BASES = ("wbm", "wmm", "gsb", "other")   # bases that are themselves stone
 SERVICE_MM = 32          # a pipe this narrow or narrower is a house connection's, not the main
 _MM = re.compile(r"(?<![\d.])(\d{2,3})\s*mm\b", re.I)
@@ -86,7 +87,10 @@ def to_first_unit(material_id: str, quantity, unit, target: str | None = None) -
 
 
 def needs(work_type: str | None, size: dict) -> list[dict]:
-    """What the size needs: [{material, needed (in its first unit), why}]."""
+    """What the size needs: [{material, low, needed (in its first unit, or `unit`), why}]. T145
+    (the owner: "it should give a range"): `low` is the standard amount for the size, `needed`
+    the same with the room honest estimates carry (wastage, bulking, the analysis of rates); an
+    honest estimate falls between them. A count has no room: low = needed."""
     size = size if isinstance(size, dict) else {}
     g = {k: _num(v) for k, v in size.items()}
     out = []
@@ -104,11 +108,11 @@ def needs(work_type: str | None, size: dict) -> list[dict]:
             # bought by capacity (T144): what each light carries, times the lights
             if g.get("panel_wp"):
                 out.append({"material": "solar_panel", "unit": "wp",
-                            "needed": n * g["panel_wp"] * WASTAGE,
+                            "low": n * g["panel_wp"], "needed": n * g["panel_wp"] * WASTAGE,
                             "why": f"{n:g} lights x {g['panel_wp']:g} Wp, plus 5%"})
             if g.get("battery_wh"):
                 out.append({"material": "battery", "unit": "wh",
-                            "needed": n * g["battery_wh"] * WASTAGE,
+                            "low": n * g["battery_wh"], "needed": n * g["battery_wh"] * WASTAGE,
                             "why": f"{n:g} lights x {g['battery_wh']:g} Wh, plus 5%"})
     elif work_type == "HIGH_MAST" and g.get("masts_nos") and g.get("lamps_per_mast"):
         n = g["masts_nos"] * g["lamps_per_mast"]
@@ -116,7 +120,7 @@ def needs(work_type: str | None, size: dict) -> list[dict]:
                     "why": f"{g['masts_nos']:g} masts x {g['lamps_per_mast']:g} lamps"})
     elif work_type == "FOOTPATH" and g.get("length_m") and g.get("width_m"):
         area = g["length_m"] * g["width_m"]
-        out.append({"material": "paver_block", "needed": area * WASTAGE,
+        out.append({"material": "paver_block", "low": area, "needed": area * WASTAGE,
                     "why": f"{g['length_m']:g} m x {g['width_m']:g} m = {area:,.0f} m2, plus 5%"})
     elif work_type == "ROAD_CC":
         bags = cement_bags_per_m3(str(size.get("concrete_grade")))
@@ -125,7 +129,7 @@ def needs(work_type: str | None, size: dict) -> list[dict]:
         dims = (g.get("length_m"), g.get("width_m"), g.get("cc_thickness_mm"))
         if bags and alone and all(dims):
             vol = dims[0] * dims[1] * dims[2] / 1000
-            out.append({"material": "cement", "needed": vol * bags * WASTAGE,
+            out.append({"material": "cement", "low": vol * bags, "needed": vol * bags * WASTAGE,
                         "why": f"{vol:,.1f} m3 of {size['concrete_grade']} concrete "
                                f"({dims[0]:g} m x {dims[1]:g} m x {dims[2]:g} mm), "
                                f"{bags:.2f} bags per m3, plus 5%"})
@@ -133,7 +137,8 @@ def needs(work_type: str | None, size: dict) -> list[dict]:
             # take none (GSB, brick soling and a sand bed do)
             sand = sand_m3_per_m3(str(size.get("concrete_grade")))
             if sand and size.get("base_type") in (None, "none", "wbm", "wmm"):
-                out.append({"material": "sand", "needed": vol * sand * SAND_BULKING * WASTAGE,
+                out.append({"material": "sand", "low": vol * sand,
+                            "needed": vol * sand * SAND_BULKING * WASTAGE,
                             "why": f"{vol:,.1f} m3 of {size['concrete_grade']} concrete, "
                                    f"{sand:.2f} m3 of dry sand per m3, plus 20% for moist "
                                    "sand's bulking and 5%"})
@@ -141,24 +146,28 @@ def needs(work_type: str | None, size: dict) -> list[dict]:
             stone = aggregate_m3_per_m3(str(size.get("concrete_grade")))
             if stone and size.get("base_type") in (None, "none", "brick_soling", "sand_bed",
                                                     *STONE_BASES):
-                out.append({"material": "aggregate", "needed": vol * stone * AGGREGATE_ROOM,
+                out.append({"material": "aggregate", "low": vol * stone,
+                            "needed": vol * stone * AGGREGATE_ROOM,
                             "stone_base": size.get("base_type") in STONE_BASES,
                             "why": f"{vol:,.1f} m3 of {size['concrete_grade']} concrete, "
                                    f"{stone:.2f} m3 of dry stone per m3, plus 15%"})
     elif work_type == "WATER_SUPPLY" and g.get("length_m"):
         homes = g.get("house_connections_nos") or 0
-        out.append({"material": "pipe", "needed": (g["length_m"] + homes * CONNECTION_PIPE_M)
-                    * PIPE_ROOM,
+        out.append({"material": "pipe", "low": g["length_m"] + homes * CONNECTION_MIN_M,
+                    "needed": (g["length_m"] + homes * CONNECTION_PIPE_M) * PIPE_ROOM,
                     "why": f"{g['length_m']:,.0f} m of pipeline"
                            + (f" and {homes:g} house connections at {CONNECTION_PIPE_M} m"
                               if homes else "") + ", plus 10%",
                     # with the connections' pipes on lines of their own, the main alone
-                    "main": {"needed": g["length_m"] * PIPE_ROOM,
+                    "main": {"low": g["length_m"], "needed": g["length_m"] * PIPE_ROOM,
                              "why": f"the pipeline's {g['length_m']:,.0f} m, plus 10%; the house "
                                     "connections' own pipes are not counted"}})
     elif work_type == "WATER_TANK" and g.get("connecting_pipe_m"):
-        out.append({"material": "pipe", "needed": g["connecting_pipe_m"] * PIPE_ROOM,
+        out.append({"material": "pipe", "low": g["connecting_pipe_m"],
+                    "needed": g["connecting_pipe_m"] * PIPE_ROOM,
                     "why": f"{g['connecting_pipe_m']:,.0f} m of connecting pipe, plus 10%"})
+    for n in out:
+        n.setdefault("low", n["needed"])
     return out
 
 
@@ -219,8 +228,8 @@ def stone_not_itemised(work_type: str | None, size: dict, lines: list[tuple]) ->
                  and not for_slab(t) and not for_base(t)), None)
 
 
-def held(need: dict, lines: list[tuple]) -> tuple[list, float, str]:
-    """The lines a need holds and what it needs of them: (lines, needed, why). Lines are
+def held(need: dict, lines: list[tuple]) -> tuple[list, float, str, float]:
+    """The lines a need holds and what it needs of them: (lines, needed, why, low). Lines are
     (index, material id, quantity, unit[, item text]). Shared by the quantity check and the whole
     estimate (agents/cost_estimate/whole.py), so the two never count different lines."""
     mat = need["material"]
@@ -229,7 +238,7 @@ def held(need: dict, lines: list[tuple]) -> tuple[list, float, str]:
         return ln[4] if len(ln) > 4 else None
 
     mine = [ln for ln in lines if ln[1] == mat]
-    needed, why = need["needed"], need["why"]
+    needed, why, low = need["needed"], need["why"], need.get("low", need["needed"])
     # under a stone base with no base line of its own, its stone may be on an aggregate line:
     # only the lines written for the slab are the slab's
     if need.get("stone_base") and not any(ln[1] == "granular_base" for ln in lines):
@@ -237,8 +246,8 @@ def held(need: dict, lines: list[tuple]) -> tuple[list, float, str]:
     # the house connections' pipes on lines of their own: the main alone, held to the length
     if need.get("main") and any(for_service(text(ln)) for ln in mine):
         mine = [ln for ln in mine if not for_service(text(ln))]
-        needed, why = need["main"]["needed"], need["main"]["why"]
-    return mine, needed, why
+        needed, why, low = need["main"]["needed"], need["main"]["why"], need["main"]["low"]
+    return mine, needed, why, low
 
 
 def check(work_type: str | None, size: dict, lines: list[tuple]) -> list[dict]:
@@ -250,7 +259,7 @@ def check(work_type: str | None, size: dict, lines: list[tuple]) -> list[dict]:
     for need in needs(work_type, size):
         mat = need["material"]
         unit_to = need.get("unit") or catalog.material(mat)["units"][0]
-        mine, needed, why = held(need, lines)
+        mine, needed, why, low = held(need, lines)
         idx, total = [], 0.0
         for ln in mine:
             x = to_first_unit(mat, ln[2], ln[3], unit_to)
@@ -261,6 +270,7 @@ def check(work_type: str | None, size: dict, lines: list[tuple]) -> list[dict]:
         if not idx:
             continue
         ratio = total / needed if needed > 0 else (math.inf if total > 0 else 1.0)
-        out.append({"material": mat, "needed": round(needed, 2), "quantity": round(total, 2),
-                    "ratio": ratio, "lines": idx, "why": why, "unit": unit_to})
+        out.append({"material": mat, "low": round(low, 2), "needed": round(needed, 2),
+                    "quantity": round(total, 2), "ratio": ratio, "lines": idx, "why": why,
+                    "unit": unit_to})
     return out

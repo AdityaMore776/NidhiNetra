@@ -91,7 +91,7 @@ export interface Picture {
   // Cost (T121): the whole estimate against its fair price
   grand_total?: number;
   mp_amount?: number;
-  whole?: { verdict: string; fair_total: number; gap: number; gap_share: number; coverage: number };
+  whole?: { verdict: string; fair_total: number; fair_low?: number; fair_high?: number; gap: number; gap_share: number; coverage: number };
 }
 
 /** One site video as Site Progress read it. */

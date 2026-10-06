@@ -164,6 +164,8 @@ class Vote:
     agencies: int
     spread: float | None      # interquartile range of the agencies' medians / their median
     older: int                # forms left out for being older than RECENT_DAYS
+    low: float | None = None  # the lowest and highest of the agencies' own medians: the range
+    high: float | None = None  # a fair rate is shown with (T145, the owner: "give a range")
 
 
 def _vote(rows: list[tuple], agency: str, work_id: str, when: date | None) -> Vote:
@@ -182,7 +184,8 @@ def _vote(rows: list[tuple], agency: str, work_id: str, when: date | None) -> Vo
         q1, _, q3 = statistics.quantiles(meds, n=4, method="inclusive")
         spread = (q3 - q1) / rate
     return Vote(rate, len({x[1] for x in keep}), len(meds), spread,
-                len({x[1] for x in others}) - len({x[1] for x in keep}))
+                len({x[1] for x in others}) - len({x[1] for x in keep}),
+                meds[0] if meds else None, meds[-1] if meds else None)
 
 
 @dataclass
@@ -261,12 +264,13 @@ class RateIndex:
 
     def price(self, district, state: str | None, material_id: str, agency: str, work_id: str,
               when: date | None) -> tuple[tuple[float, str, str] | None, Gap | None]:
-        """((rate, "district" | "state", where), None), or (None, the gap)."""
+        """((rate, "district" | "state", where, low, high), None), or (None, the gap). Low and
+        high: the lowest and highest of the other agencies' own rates (T145)."""
         v = _vote(self.by_key.get((str(district), material_id), []), agency, work_id, when)
         enough = v.rate is not None and v.forms >= MIN_FORMS and v.agencies >= MIN_AGENCIES
         if enough and (v.spread is None or v.spread <= MAX_SPREAD):
             return (v.rate, "district", f"{v.forms} recent forms of {v.agencies} other agencies "
-                    "in the district"), None
+                    "in the district", v.low, v.high), None
         reason = ("too_spread" if enough else "too_old" if not v.forms and v.older
                   else "too_few" if v.forms else "none")
         gap = Gap(material_id, reason, v.forms, v.agencies, v.spread, "the district")
@@ -275,9 +279,11 @@ class RateIndex:
             if (s.rate is not None and s.forms >= STATE_MIN_FORMS
                     and s.agencies >= STATE_MIN_AGENCIES
                     and (s.spread is None or s.spread <= MAX_SPREAD)):
-                return (s.rate * (1 + STATE_ALLOWANCE), "state",
+                up = 1 + STATE_ALLOWANCE
+                return (s.rate * up, "state",
                         f"{s.forms} recent forms of {s.agencies} other agencies across the "
-                        f"state, plus {STATE_ALLOWANCE:.0%} for local prices"), gap
+                        f"state, plus {STATE_ALLOWANCE:.0%} for local prices",
+                        s.low * up, s.high * up), gap
         return None, gap
 
 
@@ -334,6 +340,12 @@ class Fair:
     rate: float
     source: str           # "sor_code" | "sor" | "district"
     where: str
+    low: float | None = None    # the range around it (T145): the lowest and highest of the other
+    high: float | None = None   # agencies' own rates; a schedule's rate is its own range
+
+    def __post_init__(self) -> None:
+        self.low = self.rate if self.low is None else min(self.low, self.rate)
+        self.high = self.rate if self.high is None else max(self.high, self.rate)
 
 
 def fair_rate(material_id: str, line: dict, sor: dict | None, index: RateIndex | None,
@@ -356,11 +368,12 @@ def price_line(material_id: str, line: dict, sor: dict | None, index: RateIndex 
     else:
         found, gap = index.price(district, state, material_id, agency, work_id, when)
     if found:
-        rate, level, where = found
+        rate, level, where, low, high = found
         if s and rate > s[0] * (1 + SOR_ALLOWANCE):
             return Fair(s[0] * (1 + SOR_ALLOWANCE), "sor",
-                        f"{s[1]} plus {SOR_ALLOWANCE:.0%} (the forms' own rate is higher)"), None
-        return Fair(rate, level, where), None if level == "district" else gap
+                        f"{s[1]} plus {SOR_ALLOWANCE:.0%} (the forms' own rate is higher)",
+                        s[0], s[0] * (1 + SOR_ALLOWANCE)), None
+        return Fair(rate, level, where, low, high), None if level == "district" else gap
     if s:
         return Fair(s[0], "sor", s[1]), None
     return None, gap

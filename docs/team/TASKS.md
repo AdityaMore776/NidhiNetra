@@ -102,6 +102,16 @@ dashboard queue before / after in FINDINGS (439 → 217)
 of §9.6 planted. Only readings and blurred frames are kept; no video enters the repo.
 **Done when:** [ ] each trick caught 9 in 10 · [ ] a finding on at most 1 in 30 honest visits · [ ] FINDINGS
 
+### T145 · What a quantity or a price should be, as a range  ·  S  ·  engine + web  ·  Depends on: T144
+**What:** (owner, 6 Oct 2026) the cost "size prediction" or "price prediction" "should give a range
+and not just 'should be quantity 1334'".
+**Done when:**
+- [x] The engine gives each need a low and a high (`norms.py`), each fair rate the lowest and highest
+  other agencies' rates (`rates.py`, `labour.py`), the whole estimate a fair range (`whole.py`), the
+  per-unit price its middle 8 in 10; findings and notes say them.
+- [x] The website shows ranges in the form's flags, the end-to-end page and the explain page.
+- [x] Examples raise the same findings; trials and the loop unchanged; `pytest -q`: 928 passed.
+
 ### T144 · The agents, more concrete: quantities held to the size for more works  ·  M  ·  engine + data  ·  Depends on: T141
 **What:** (owner, 6 Oct 2026) "work even more on the agents. I need the agents to be fully concrete,
 working and good at it". Audit the four agents for what keeps them from a definite answer, and make

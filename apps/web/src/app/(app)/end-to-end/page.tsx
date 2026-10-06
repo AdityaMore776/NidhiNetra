@@ -52,7 +52,12 @@ interface CostLine {
   range?: { low: number; high: number; agencies: number; forms: number } | null;
   where?: string;
   needed?: number;
+  needed_low?: number;
   allowed?: number;
+  fair_low?: number | null;
+  fair_high?: number | null;
+  p10?: number | null;
+  p90?: number | null;
   qty_ratio?: number | null;
   over?: number;
   share?: number;
@@ -74,6 +79,8 @@ interface CostReading {
     verdict: "ASK" | "FAIR" | "CANT_CHECK" | null;
     grand: number;
     fair: number;
+    fair_low?: number;
+    fair_high?: number;
     gap: number;
     share: number;
     coverage: number;
@@ -314,10 +321,10 @@ function filingFlags(ex: Filing): { lines: AgentLine[]; flags: Flag[] } {
       const rateField = l.rate_field ?? `boq_rate_${l.n}`;
       const qtyField = l.qty_field ?? `boq_qty_${l.n}`;
       if (l.state === "rate" && l.fair_rate !== undefined)
-        extra.push({ name: rateField, label: `+${pctOf(l.pct ?? 0)} · usual ${rs(l.fair_rate)}` });
+        extra.push({ name: rateField, label: `+${pctOf(l.pct ?? 0)} · others ${l.range ? span(l.range.low, l.range.high, rs) : rs(l.fair_rate)}` });
       if (l.state === "unread") extra.push({ name: qtyField, label: `${pctOf(l.share ?? 0)} of lines, unpriced` });
       if ((l.qty_ratio ?? 0) > 1 + ex.cost.summary.qty_slack)
-        extra.push({ name: qtyField, label: `${(l.qty_ratio ?? 0).toFixed(1)}× what the size needs` });
+        extra.push({ name: qtyField, label: `${(l.qty_ratio ?? 0).toFixed(1)}× · size takes ${span(l.needed_low, l.needed, num)}` });
     }
     const keep = cost.fields.filter((f) => !/^(boq|lab)_/.test(f.name) || !extra.some((e) => e.name === f.name));
     cost.fields = [...keep, ...extra];
@@ -524,6 +531,10 @@ const UNIT: Record<string, string> ={ m3: "m³", m2: "m²", nos: "piece" };
 const unitOf = (u?: string) => (u ? (UNIT[u] ?? u) : "unit");
 const pctOf = (v: number) => `${Math.round(Math.abs(v) * 100)}%`;
 const lakh = (v: number) => (Math.abs(v) >= 1e5 ? `₹${(v / 1e5).toFixed(2)} lakh` : rs(v));
+const num = (v: number) => Math.round(v).toLocaleString("en-IN");
+/** T145: what a quantity or price should be, as a range; one figure when its ends meet. */
+const span = (low: number | null | undefined, high: number | null | undefined, f: (v: number) => string) =>
+  low == null || high == null || f(low) === f(high) ? f(high ?? low ?? 0) : `${f(low)}–${f(high)}`;
 
 /** The agent's reading of one line: a coloured headline and a few short facts. */
 function reading(l: CostLine, s: CostReading["summary"]): { badge: string; facts: string[] } {
@@ -542,7 +553,7 @@ function reading(l: CostLine, s: CostReading["summary"]): { badge: string; facts
     // T141: a crew's day rate is asked about only at twice what others pay the trade here
     badge = "Within the trade's band";
     facts.push(
-      `Others here pay ${rs(l.fair_rate)} a day for this trade; asked only from ${rs(l.limit ?? 0)} (twice it)` +
+      `Others here pay ${span(l.fair_low ?? l.fair_rate, l.fair_high ?? l.fair_rate, rs)} a day for this trade (usual ${rs(l.fair_rate)}); asked only from ${rs(l.limit ?? 0)} (twice it)` +
         ((l.pct ?? 0) > 0.005 ? ` · this row is ${pctOf(l.pct ?? 0)} above` : ""),
     );
     facts.push("How many workers and days a work needs is the agency's call");
@@ -558,7 +569,11 @@ function reading(l: CostLine, s: CostReading["summary"]): { badge: string; facts
     facts.push("Counted at the agency's own price, never guessed");
   } else if (l.state === "whole_item" && l.per !== undefined) {
     badge = l.level === "high" ? `▲ ${pctOf(l.pct ?? 0)} above real works` : "In line with real works";
-    facts.push(`${rs(l.per)} a ${l.per_unit}; ${l.works} real works in ${l.where_text}, median ${rs(l.median ?? 0)}`);
+    facts.push(
+      `${rs(l.per)} a ${l.per_unit}; ${l.works} real works in ${l.where_text}` +
+        (l.p10 != null && l.p90 != null ? `: 8 in 10 cost ${span(l.p10, l.p90, rs)}` : "") +
+        `, median ${rs(l.median ?? 0)}`,
+    );
     facts.push(`Asks only above ${rs(l.limit ?? 0)} a ${l.per_unit} and over 10% above the MP's amount`);
   } else {
     badge = "Quantity fits the size";
@@ -566,7 +581,7 @@ function reading(l: CostLine, s: CostReading["summary"]): { badge: string; facts
   if (l.needed !== undefined && l.allowed !== undefined) {
     const many = (l.qty_ratio ?? 0) > 1 + s.qty_slack;
     facts.push(
-      `${many ? `▲ ${(l.qty_ratio ?? 0).toFixed(1)}× what the size needs. ` : ""}Size needs ${Math.round(l.needed).toLocaleString("en-IN")}; fine up to ${Math.round(l.allowed).toLocaleString("en-IN")} (+${pctOf(s.qty_slack)})`,
+      `${many ? `▲ ${(l.qty_ratio ?? 0).toFixed(1)}× what the size needs. ` : ""}Size takes ${span(l.needed_low, l.needed, num)} ${/[²³]$|^m$/.test(u) ? u : `${u}s`}; fine up to ${Math.round(l.allowed).toLocaleString("en-IN")} (+${pctOf(s.qty_slack)})`,
     );
     if (many && l.state !== "rate") badge = `▲ ${(l.qty_ratio ?? 0).toFixed(1)}× the quantity needed`;
   }
@@ -707,7 +722,11 @@ function CostTable({ ex, cost }: { ex: Filing; cost: CostReading }) {
         <div className="grid gap-3 rounded-xl border p-3 text-[13px] sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
           <div className="min-w-0 space-y-1.5">
             <p>
-              <span className="font-semibold">Whole estimate {lakh(s.grand)}</span> against a fair {lakh(s.fair)}:{" "}
+              <span className="font-semibold">Whole estimate {lakh(s.grand)}</span> against a fair {lakh(s.fair)}
+              {s.fair_low != null && s.fair_high != null && span(s.fair_low, s.fair_high, lakh) !== lakh(s.fair)
+                ? ` (${span(s.fair_low, s.fair_high, lakh)} at the lowest and highest rates other agencies charge)`
+                : ""}
+              :{" "}
               <span className="font-semibold" style={{ color: s.asks ? "var(--high)" : "var(--low)" }}>
                 {s.share >= 0 ? "+" : "−"}
                 {pctOf(s.share)}

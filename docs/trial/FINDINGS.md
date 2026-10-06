@@ -2114,6 +2114,34 @@ and "18% GST in other charges" never reached the price check. The planted agency
 MP's consent, as a padder would. Both results stand, now for the right reason: 14% padding is
 judged and quiet (under the 15% line); the GST line is judged and quiet.
 
+## T145 (6 Oct 2026): what a quantity or a price should be is a range
+
+The owner: the cost "size prediction" or "price prediction" "should give a range and not just
+'should be quantity 1334'". Every figure the Cost agent gives for what a line should be is now a
+range, from the same data as before (no rule or margin changed):
+- **a quantity** (`norms.py`): from the standard amount for the size (the mix, the area, the
+  count) to the same with the room honest estimates carry (wastage, the stone's analysis-of-rates
+  room, a pipe's house connections at 6 to 20 m each);
+- **a rate** (`rates.py`): from the lowest to the highest of the other agencies' own median rates
+  here (the fair rate stays their median); a state-wide rate carries its 10% leeway on both ends;
+  a schedule's rate is its own range;
+- **the whole estimate's fair price** (`whole.py`): every priced line at those lowest and those
+  highest rates;
+- **a labour day rate** (`labour.py`): what other agencies pay that trade, lowest to highest;
+- **a price per light or per metre**: the middle 8 in 10 of the similar works (10th to 90th
+  percentile).
+
+What the officer now reads, from the rebuilt examples (`apps/web/public/work-form/examples.json`,
+`end-to-end/examples.json`): "Cement: 2,614 bags in the estimate, but the work's size takes
+1,270–1,334 bags"; "a fair price for this work here: ₹15.13 L at the usual rates, ₹14.90 L–₹15.57 L
+from the lowest to the highest rates other agencies charge"; "Mason at ₹1,800 a day: 2.4× the ₹750
+others here pay this trade (₹735–₹780)". Jaunpur's 136 real solar lights cost ₹20,878–₹20,896 a
+light (8 in 10): one price nearly everywhere, so that range is narrow by the data, not by the code.
+
+**Unchanged:** every example raises the same findings; `quantity_trial.py`, `labour_trial.py`,
+`cost_whole_trial.py` and the robustness loop (118 probes, PASS 108, FAIL 0, LIMIT 10) print the
+same results. What is asked is still decided by the upper end and the owner's margins.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**
