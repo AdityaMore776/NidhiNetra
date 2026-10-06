@@ -1846,6 +1846,47 @@ asked.
   did. The honest filings now read "within 20 m" (lights) and "within 30 m" (roads).
 - **The dashboard:** the 40,935 works are identical (`dashboard_t139_after`).
 
+## T140 (6 Oct 2026): the T139 rules in six more districts
+
+T139 fitted Duplicate Work's one-site rules to Jaunpur's villages. Jaunpur is one kind of place:
+large villages on the Gangetic plain. `data/trial/real_geo_districts.py` (results
+`results/real_geo_districts.txt`) runs the same scenarios in six districts that look different.
+Each uses its own real works, real post offices and real buildings (Open Buildings, fetched once,
+never committed):
+
+| District | Kind of place | Houses apart (median) | Real works tested |
+|---|---|---|---|
+| Kheri | Terai plains | 7.7 m | 412 lights |
+| Bokaro | plateau hamlets | 8.8 m | 372 lights |
+| Puri | coast | 9.3 m | 281 lights |
+| Howrah | dense, peri-urban | 8.6 m | 118 lights |
+| Palakkad | dispersed homesteads | 11.2 m | 131 lights |
+| Kheda | compact villages | 8.1 m | roads only |
+
+**Each district's own flat map.** The scripts now take a district (`real_geo_check.configure`).
+Each district gets its own flat-map origin: Jaunpur's, used everywhere, would be 8% off in metres
+in Kerala. Jaunpur's results are unchanged.
+
+| Scenario (7 districts) | Before T139: honest asked | Now: honest asked | Repeats caught now |
+|---|---|---|---|
+| lights, 10 a village, one hamlet | 63–87% | 0–1.5% | 93–97% |
+| lights, 10 a village, anywhere | 1–37% | 0–5.3% | 86–94% |
+| hand pumps at houses | 63–87% | 0–1.1% | 94–98% |
+| the next street over, 25 m | 81–87% | 22–31% | 94–98% |
+| the next street over, 35 m | 64–74% | 3–7% | 93–98% |
+| programmes of random lanes | 5–20% | 4–18% | 95–99% |
+
+**No rule changes:** the T139 rules hold in every district.
+- **Lights: what the misses are.** "Anywhere in the village" is the cleanest measure of the 20 m
+  line. There, 86–94% of repeats are caught. The misses are the one phone fix in ten that wanders
+  15 m or more. In a hamlet the rate looks higher only because the neighbour's light sometimes
+  catches the repeat too.
+- **Random lanes: what the questions are.** The lanes still asked are almost all (85 of 95 in
+  Jaunpur) one lane lying along another's line, often a short lane on a much longer road. Random
+  straight lines make that by chance. On real streets, a lane laid on an existing road's line is
+  that road again or its upgrade, which is the question to ask. So this row overstates the honest
+  cost.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

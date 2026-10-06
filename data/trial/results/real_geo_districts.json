@@ -1,0 +1,1121 @@
+[
+  {
+    "district": "Jaunpur",
+    "post_offices": 106,
+    "buildings": 97965,
+    "works": 1038,
+    "light_works": 1006,
+    "spacing": {
+      "houses": 78010,
+      "nearest_median_m": 8.3,
+      "nearest_within_15m": 0.892
+    },
+    "scenarios": {
+      "lights, 10 a village, one hamlet": {
+        "before T139": {
+          "honest": [
+            878,
+            1006
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            15,
+            1006
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            97,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "lights, 10 a village, anywhere": {
+        "before T139": {
+          "honest": [
+            371,
+            1006
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            53,
+            1006
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            93,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "hand pumps at houses": {
+        "before T139": {
+          "honest": [
+            868,
+            1006
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            11,
+            1006
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            98,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: programmes of lanes": {
+        "before T139": {
+          "honest": [
+            114,
+            919
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            95,
+            919
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            99,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: the next street over, 25 m": {
+        "before T139": {
+          "honest": [
+            121,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            99,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            42,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            97,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: the next street over, 35 m": {
+        "before T139": {
+          "honest": [
+            96,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            99,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            5,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            96,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      }
+    },
+    "village_cores": 85
+  },
+  {
+    "district": "Kheri",
+    "post_offices": 321,
+    "buildings": 174303,
+    "works": 444,
+    "light_works": 412,
+    "spacing": {
+      "houses": 140850,
+      "nearest_median_m": 7.7,
+      "nearest_within_15m": 0.934
+    },
+    "scenarios": {
+      "lights, 10 a village, one hamlet": {
+        "before T139": {
+          "honest": [
+            360,
+            412
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            0,
+            412
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            97,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "lights, 10 a village, anywhere": {
+        "before T139": {
+          "honest": [
+            121,
+            412
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            11,
+            412
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            94,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "hand pumps at houses": {
+        "before T139": {
+          "honest": [
+            360,
+            412
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            0,
+            412
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            97,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: programmes of lanes": {
+        "before T139": {
+          "honest": [
+            136,
+            908
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            114,
+            908
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            96,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: the next street over, 25 m": {
+        "before T139": {
+          "honest": [
+            122,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            41,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            94,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: the next street over, 35 m": {
+        "before T139": {
+          "honest": [
+            98,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            7,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            93,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      }
+    },
+    "village_cores": 142
+  },
+  {
+    "district": "Bokaro",
+    "post_offices": 114,
+    "buildings": 60982,
+    "works": 372,
+    "light_works": 372,
+    "spacing": {
+      "houses": 51232,
+      "nearest_median_m": 8.8,
+      "nearest_within_15m": 0.863
+    },
+    "scenarios": {
+      "lights, 10 a village, one hamlet": {
+        "before T139": {
+          "honest": [
+            314,
+            372
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            1,
+            372
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            95,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "lights, 10 a village, anywhere": {
+        "before T139": {
+          "honest": [
+            91,
+            372
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            9,
+            372
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            91,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "hand pumps at houses": {
+        "before T139": {
+          "honest": [
+            314,
+            372
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            1,
+            372
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            95,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: programmes of lanes": {
+        "before T139": {
+          "honest": [
+            177,
+            891
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            162,
+            891
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            97,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: the next street over, 25 m": {
+        "before T139": {
+          "honest": [
+            124,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            47,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            97,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: the next street over, 35 m": {
+        "before T139": {
+          "honest": [
+            100,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            9,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            97,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      }
+    },
+    "village_cores": 64
+  },
+  {
+    "district": "Puri",
+    "post_offices": 280,
+    "buildings": 114491,
+    "works": 311,
+    "light_works": 281,
+    "spacing": {
+      "houses": 99808,
+      "nearest_median_m": 9.3,
+      "nearest_within_15m": 0.811
+    },
+    "scenarios": {
+      "lights, 10 a village, one hamlet": {
+        "before T139": {
+          "honest": [
+            211,
+            281
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            0,
+            281
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            94,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "lights, 10 a village, anywhere": {
+        "before T139": {
+          "honest": [
+            63,
+            281
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            2,
+            281
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            93,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "hand pumps at houses": {
+        "before T139": {
+          "honest": [
+            211,
+            281
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            0,
+            281
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            94,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: programmes of lanes": {
+        "before T139": {
+          "honest": [
+            117,
+            959
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            104,
+            959
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            95,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: the next street over, 25 m": {
+        "before T139": {
+          "honest": [
+            130,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            37,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            98,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: the next street over, 35 m": {
+        "before T139": {
+          "honest": [
+            103,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            7,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            97,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      }
+    },
+    "village_cores": 253
+  },
+  {
+    "district": "Howrah",
+    "post_offices": 245,
+    "buildings": 347618,
+    "works": 245,
+    "light_works": 118,
+    "spacing": {
+      "houses": 308691,
+      "nearest_median_m": 8.6,
+      "nearest_within_15m": 0.915
+    },
+    "scenarios": {
+      "lights, 10 a village, one hamlet": {
+        "before T139": {
+          "honest": [
+            74,
+            118
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            0,
+            118
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            93,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "lights, 10 a village, anywhere": {
+        "before T139": {
+          "honest": [
+            1,
+            118
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            0,
+            118
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            86,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "hand pumps at houses": {
+        "before T139": {
+          "honest": [
+            74,
+            118
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            0,
+            118
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            95,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: programmes of lanes": {
+        "before T139": {
+          "honest": [
+            46,
+            968
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            41,
+            968
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            98,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: the next street over, 25 m": {
+        "before T139": {
+          "honest": [
+            124,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            35,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            95,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: the next street over, 35 m": {
+        "before T139": {
+          "honest": [
+            99,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            6,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            95,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      }
+    },
+    "village_cores": 216
+  },
+  {
+    "district": "Palakkad",
+    "post_offices": 105,
+    "buildings": 92686,
+    "works": 183,
+    "light_works": 131,
+    "spacing": {
+      "houses": 83093,
+      "nearest_median_m": 11.2,
+      "nearest_within_15m": 0.699
+    },
+    "scenarios": {
+      "lights, 10 a village, one hamlet": {
+        "before T139": {
+          "honest": [
+            108,
+            131
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            0,
+            131
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            97,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "lights, 10 a village, anywhere": {
+        "before T139": {
+          "honest": [
+            22,
+            131
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            0,
+            131
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            86,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "hand pumps at houses": {
+        "before T139": {
+          "honest": [
+            98,
+            131
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            0,
+            131
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            95,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: programmes of lanes": {
+        "before T139": {
+          "honest": [
+            60,
+            923
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            51,
+            923
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            95,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: the next street over, 25 m": {
+        "before T139": {
+          "honest": [
+            125,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            33,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            95,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: the next street over, 35 m": {
+        "before T139": {
+          "honest": [
+            98,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            8,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            95,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      }
+    },
+    "village_cores": 99
+  },
+  {
+    "district": "Kheda",
+    "post_offices": 133,
+    "buildings": 99171,
+    "works": 277,
+    "light_works": 0,
+    "spacing": {
+      "houses": 85390,
+      "nearest_median_m": 8.1,
+      "nearest_within_15m": 0.897
+    },
+    "scenarios": {
+      "roads: programmes of lanes": {
+        "before T139": {
+          "honest": [
+            100,
+            869
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            79,
+            869
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            96,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: the next street over, 25 m": {
+        "before T139": {
+          "honest": [
+            129,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            42,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            98,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      },
+      "roads: the next street over, 35 m": {
+        "before T139": {
+          "honest": [
+            111,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            100,
+            100
+          ],
+          "repeats_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            10,
+            150
+          ],
+          "honest_errors": 0,
+          "repeats": [
+            98,
+            100
+          ],
+          "repeats_errors": 0
+        }
+      }
+    },
+    "village_cores": 96
+  }
+]

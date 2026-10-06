@@ -1,0 +1,57 @@
+Duplicate Work's T139 rules in other districts (round 5)
+
+Honest works asked, and planted repeats asked: before T139 -> the engine now.
+
+Jaunpur: 106 post offices, 85 village cores, 1,038 real works (1,006 lights); houses 8.3 m apart (median), 89% within 15 m of the next
+   lights, 10 a village, one hamlet   honest  87.3% ->   1.5% (of 1006)   repeats  100% ->   97%
+   lights, 10 a village, anywhere     honest  36.9% ->   5.3% (of 1006)   repeats  100% ->   93%
+   hand pumps at houses               honest  86.3% ->   1.1% (of 1006)   repeats  100% ->   98%
+   roads: programmes of lanes         honest  12.4% ->  10.3% (of  919)   repeats  100% ->   99%
+   roads: the next street over, 25 m  honest  80.7% ->  28.0% (of  150)   repeats   99% ->   97%
+   roads: the next street over, 35 m  honest  64.0% ->   3.3% (of  150)   repeats   99% ->   96%
+
+Kheri: 321 post offices, 142 village cores, 444 real works (412 lights); houses 7.7 m apart (median), 93% within 15 m of the next
+   lights, 10 a village, one hamlet   honest  87.4% ->   0.0% (of  412)   repeats  100% ->   97%
+   lights, 10 a village, anywhere     honest  29.4% ->   2.7% (of  412)   repeats  100% ->   94%
+   hand pumps at houses               honest  87.4% ->   0.0% (of  412)   repeats  100% ->   97%
+   roads: programmes of lanes         honest  15.0% ->  12.6% (of  908)   repeats  100% ->   96%
+   roads: the next street over, 25 m  honest  81.3% ->  27.3% (of  150)   repeats  100% ->   94%
+   roads: the next street over, 35 m  honest  65.3% ->   4.7% (of  150)   repeats  100% ->   93%
+
+Bokaro: 114 post offices, 64 village cores, 372 real works (372 lights); houses 8.8 m apart (median), 86% within 15 m of the next
+   lights, 10 a village, one hamlet   honest  84.4% ->   0.3% (of  372)   repeats  100% ->   95%
+   lights, 10 a village, anywhere     honest  24.5% ->   2.4% (of  372)   repeats  100% ->   91%
+   hand pumps at houses               honest  84.4% ->   0.3% (of  372)   repeats  100% ->   95%
+   roads: programmes of lanes         honest  19.9% ->  18.2% (of  891)   repeats  100% ->   97%
+   roads: the next street over, 25 m  honest  82.7% ->  31.3% (of  150)   repeats  100% ->   97%
+   roads: the next street over, 35 m  honest  66.7% ->   6.0% (of  150)   repeats  100% ->   97%
+
+Puri: 280 post offices, 253 village cores, 311 real works (281 lights); houses 9.3 m apart (median), 81% within 15 m of the next
+   lights, 10 a village, one hamlet   honest  75.1% ->   0.0% (of  281)   repeats  100% ->   94%
+   lights, 10 a village, anywhere     honest  22.4% ->   0.7% (of  281)   repeats  100% ->   93%
+   hand pumps at houses               honest  75.1% ->   0.0% (of  281)   repeats  100% ->   94%
+   roads: programmes of lanes         honest  12.2% ->  10.8% (of  959)   repeats  100% ->   95%
+   roads: the next street over, 25 m  honest  86.7% ->  24.7% (of  150)   repeats  100% ->   98%
+   roads: the next street over, 35 m  honest  68.7% ->   4.7% (of  150)   repeats  100% ->   97%
+
+Howrah: 245 post offices, 216 village cores, 245 real works (118 lights); houses 8.6 m apart (median), 92% within 15 m of the next
+   lights, 10 a village, one hamlet   honest  62.7% ->   0.0% (of  118)   repeats  100% ->   93%
+   lights, 10 a village, anywhere     honest   0.8% ->   0.0% (of  118)   repeats  100% ->   86%
+   hand pumps at houses               honest  62.7% ->   0.0% (of  118)   repeats  100% ->   95%
+   roads: programmes of lanes         honest   4.8% ->   4.2% (of  968)   repeats  100% ->   98%
+   roads: the next street over, 25 m  honest  82.7% ->  23.3% (of  150)   repeats  100% ->   95%
+   roads: the next street over, 35 m  honest  66.0% ->   4.0% (of  150)   repeats  100% ->   95%
+
+Palakkad: 105 post offices, 99 village cores, 183 real works (131 lights); houses 11.2 m apart (median), 70% within 15 m of the next
+   lights, 10 a village, one hamlet   honest  82.4% ->   0.0% (of  131)   repeats  100% ->   97%
+   lights, 10 a village, anywhere     honest  16.8% ->   0.0% (of  131)   repeats  100% ->   86%
+   hand pumps at houses               honest  74.8% ->   0.0% (of  131)   repeats  100% ->   95%
+   roads: programmes of lanes         honest   6.5% ->   5.5% (of  923)   repeats  100% ->   95%
+   roads: the next street over, 25 m  honest  83.3% ->  22.0% (of  150)   repeats  100% ->   95%
+   roads: the next street over, 35 m  honest  65.3% ->   5.3% (of  150)   repeats  100% ->   95%
+
+Kheda: 133 post offices, 96 village cores, 277 real works (0 lights); houses 8.1 m apart (median), 90% within 15 m of the next
+   roads: programmes of lanes         honest  11.5% ->   9.1% (of  869)   repeats  100% ->   96%
+   roads: the next street over, 25 m  honest  86.0% ->  28.0% (of  150)   repeats  100% ->   98%
+   roads: the next street over, 35 m  honest  74.0% ->   6.7% (of  150)   repeats  100% ->   98%
+

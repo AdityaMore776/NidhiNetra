@@ -44,6 +44,15 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
+**6 Oct 2026: the T139 rules hold in six more districts (T140).**
+Kheri, Bokaro, Puri, Howrah, Palakkad and Kheda were tested, each on its own real works and
+buildings:
+- honest lights asked: 63–87% before T139, now 0–1.5%;
+- the next street over at 35 m: 64–74%, now 3–7%;
+- repeats still caught: 86–98%.
+
+No rule changes. FINDINGS "T140".
+
 **5 Oct 2026: the agents on real data from outside the project (T139).**
 Jaunpur's real works were pinned at real buildings (Google Open Buildings, India Post positions).
 Houses stand 8 m apart, and most real works are street lights at houses. Duplicate Work would have

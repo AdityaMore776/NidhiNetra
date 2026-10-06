@@ -102,6 +102,17 @@ dashboard queue before / after in FINDINGS (439 → 217)
 of §9.6 planted. Only readings and blurred frames are kept; no video enters the repo.
 **Done when:** [ ] each trick caught 9 in 10 · [ ] a finding on at most 1 in 30 honest visits · [ ] FINDINGS
 
+### T140 · The T139 rules in six more districts  ·  S  ·  data  ·  Depends on: T139
+**What:** (owner, 6 Oct 2026: "continue") check that Duplicate Work's T139 rules hold beyond Jaunpur.
+Use districts whose villages look different, each with its own real works, post offices and
+Open Buildings.
+**Done when:**
+- [x] `data/trial/real_geo_districts.py`: Kheri, Bokaro, Puri, Howrah, Palakkad and Kheda,
+  alongside Jaunpur.
+- [x] Before → now, per district: lights 63–87% → 0–1.5% honest asked; pumps the same; the next
+  street over at 35 m 64–74% → 3–7%; repeats caught 86–98%.
+- [x] No rule changes needed; FINDINGS "T140".
+
 ### T139 · The agents on real data from outside the project  ·  M  ·  engine + data  ·  Depends on: T137
 **What:** (owner, 5 Oct 2026) find relevant real data anywhere, test the agents on it temporarily,
 and iterate from what it shows. Reachable here: Google's Open Buildings, India Post's post-office
