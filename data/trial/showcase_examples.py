@@ -187,7 +187,8 @@ def main() -> None:
         if meant is not None and meant != fired:
             bad.append(f"{key}: raises {fired}, meant {meant}")
         detail["showcase"] = {"n": n, "key": key, "title": ex["title"], "agents": agents,
-                              "shows": ex["story"], "why": why, "explain": None,
+                              # Step by step (/explain) walks through the same filings (T142)
+                              "shows": ex["story"], "why": why, "explain": key,
                               "form_example": key, "later": ex["later"],
                               "form_ready": ex["form_ready"]}
         out.append({"key": key, "row": row(detail), "detail": detail})

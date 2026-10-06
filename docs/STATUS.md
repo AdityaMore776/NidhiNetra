@@ -48,8 +48,9 @@ The sections below are the working notes the team resumes from.
 The public view no longer rates eSAKSHI recommendations from their records. Its examples are the
 13 filings of the work intelligence form, each graded by the four checks. Every example's page
 shows the form the agency filed: section by section with each asked-about field marked and its
-reason, or the form itself filled and outlined, with a link to change it in the live form. Signed-in
-staff still see the engine's data.
+reason, or the form itself filled and outlined, with a link to change it in the live form. The
+record-only pre-sanction check is retired from the site (its address opens the form), and Step by
+step walks through the same filings. Signed-in staff still see the engine's data.
 
 **6 Oct 2026: labour, trade by trade (T141).**
 The website form (PSWIF v1.1) has a labour schedule: one row per trade, with workers, days, the

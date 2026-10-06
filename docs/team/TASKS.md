@@ -119,6 +119,9 @@ works, five of them real eSAKSHI recommendations rated from their records alone.
   - a link to open it in the live form.
 - [x] Banner, dashboard, gallery and example note speak of filings; checked in Chromium on all 13
   pages.
+- [x] No record-only rating left on the public site: the pre-sanction check page opens the form,
+  Step by step walks through the same filings (with "See the form as filed"), and "your own
+  example" is "check your own form".
 
 ### T141 · Labour, trade by trade: a labour schedule, only blatant irregularities  ·  M  ·  engine + web + data  ·  Depends on: T121
 **What:** (owner, 6 Oct 2026) labour was two kinds ("skilled", "unskilled") among the estimate

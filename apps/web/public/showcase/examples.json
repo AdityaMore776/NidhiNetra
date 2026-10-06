@@ -196,7 +196,7 @@
      ],
      "shows": "A 300 m village road, priced and sized honestly.",
      "why": "Most filings look like this one. Every check reads it and none asks: the prices are the district's, the quantities fit the road's size, nothing is sanctioned at its pin, and the first site videos show the work the agency claims. A check that stays quiet here keeps the review queue short.",
-     "explain": null,
+     "explain": "clean",
      "form_example": "clean",
      "later": [
       "Sanctioned 19 Jul 2026, 35 days after the recommendation",
@@ -379,7 +379,7 @@
      ],
      "shows": "Every material is priced about 25% above what other agencies in the district charge.",
      "why": "No single line is far off. The question comes from the whole estimate, every line priced at what other agencies in the district pay for the same item. Wages within twice a trade's rate are the agency's call, so only the materials make the gap.",
-     "explain": null,
+     "explain": "cost_padded",
      "form_example": "cost_padded",
      "later": [
       "Not sanctioned yet: this is the check before sanction"
@@ -568,7 +568,7 @@
      ],
      "shows": "2,614 bags of cement for a road that needs about 1,330.",
      "why": "The rates are fair; the quantity is not. The road's own size on the form (300 m x 3.5 m x 150 mm) says how much cement it can use, so twice that is a certain question, even with a reason written on the line.",
-     "explain": null,
+     "explain": "cost_quantity",
      "form_example": "cost_quantity",
      "later": [
       "Not sanctioned yet: this is the check before sanction"
@@ -750,7 +750,7 @@
      ],
      "shows": "10 solar street lights at Rs 48,000 each; the MP recommended Rs 2.4 lakh.",
      "why": "Neither signal alone asks: an estimate above the MP's amount can have a reason, and a costly light can have a better specification. Cost asks only when the price per light is far above the district's own range and the estimate is well above the MP's amount.",
-     "explain": null,
+     "explain": "cost_lights",
      "form_example": "cost_lights",
      "later": [
       "Not sanctioned yet: this is the check before sanction"
@@ -933,7 +933,7 @@
      ],
      "shows": "Masons at Rs 1,800 a day where other agencies pay about Rs 750; the 34 workers on the road are not questioned.",
      "why": "Labour is judged trade by trade. The road's 34 workers, its helpers and its machine operators are the agency's call; only a day rate at twice what other agencies pay the same trade is a question.",
-     "explain": null,
+     "explain": "cost_labour",
      "form_example": "cost_labour",
      "later": [
       "Not sanctioned yet: this is the check before sanction"
@@ -1115,7 +1115,7 @@
      ],
      "shows": "A new road pinned 20 m from a road completed last year. The form does not mention it.",
      "why": "The words differ from the old road's, so a word match would miss it. The map pin on the agency's own form places it on top of a work the scheme already paid for.",
-     "explain": null,
+     "explain": "dup_pin",
      "form_example": "dup_pin",
      "later": [
       "Not sanctioned yet: this is the check before sanction",
@@ -1299,7 +1299,7 @@
      ],
      "shows": "The agency says this rebuilds a hall that was finished 16 months earlier.",
      "why": "The agency declares the rebuild itself. A hall should not need rebuilding 16 months after it was completed, so the first work's completion and quality need checking.",
-     "explain": null,
+     "explain": "dup_rebuild",
      "form_example": "dup_rebuild",
      "later": [
       "Not sanctioned yet: this is the check before sanction",
@@ -1485,7 +1485,7 @@
      ],
      "shows": "One lane filed as parts 1, 2 and 3, each just under the Rs 5 lakh limit.",
      "why": "Each piece is ordinary on its own; the question appears only when the pieces are read together. The agent asks only when every piece sits within 4% of a limit, the strictest test, so ordinary look-alike works never reach the queue.",
-     "explain": null,
+     "explain": "dup_split",
      "form_example": "dup_split",
      "later": [
       "Not sanctioned yet: this is the check before sanction",
@@ -1699,7 +1699,7 @@
      ],
      "shows": "Promised in 120 days; recorded complete 6 days after sanction.",
      "why": "The agency's own estimate on the form (about four months) is the yardstick, not a fixed rule. Recorded complete in 6 days with no site video at all, two checks point at the same work.",
-     "explain": null,
+     "explain": "time_fast",
      "form_example": "time_fast",
      "later": [
       "Sanctioned 24 Jun 2026",
@@ -1888,7 +1888,7 @@
      ],
      "shows": "Promised in 8 months; 16 months later it is not finished and the site is still.",
      "why": "Time & Rules judges the work by the agency's own promise plus a grace period, and the site videos say the work has stopped, not merely slowed. Site Progress itself asks nothing: the videos are genuine.",
-     "explain": null,
+     "explain": "time_late",
      "form_example": "time_late",
      "later": [
       "Sanctioned 30 May 2025",
@@ -2082,7 +2082,7 @@
      ],
      "shows": "The first site video reuses footage from another hall's video.",
      "why": "The video passes every check at the site. Only comparing it with every earlier video shows the footage was filmed for another work, at that work's place.",
-     "explain": null,
+     "explain": "site_reused",
      "form_example": "site_reused",
      "later": [
       "Sanctioned 14 Jun 2026",
@@ -2269,7 +2269,7 @@
      ],
      "shows": "\"Roof slab cast\" claimed in two monthly videos that show no slab.",
      "why": "Site Progress judges the agency's own claims against its videos: shown, not shown or can't tell. A claim not shown twice in a row is a question; once could be a bad angle.",
-     "explain": null,
+     "explain": "site_claim",
      "form_example": "site_claim",
      "later": [
       "Sanctioned 15 Apr 2026",
@@ -2456,7 +2456,7 @@
      ],
      "shows": "The third monthly video was filmed 2.4 km from the road.",
      "why": "A video counts as filmed elsewhere only when its GPS and its views both disagree with the site, so a weak GPS fix alone never asks.",
-     "explain": null,
+     "explain": "site_elsewhere",
      "form_example": "site_elsewhere",
      "later": [
       "Sanctioned 25 May 2026",

@@ -6,12 +6,12 @@ import {
   Building2,
   Camera,
   CheckCircle2,
+  ClipboardList,
   FileText,
   IndianRupee,
   Inbox,
   Layers3,
   MapPin,
-  ShieldCheck,
   Sparkles,
 } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -89,8 +89,8 @@ export default function Dashboard() {
         actions={
           <>
             <Button asChild variant="outline" className="rounded-xl">
-              <Link href="/presanction">
-                <ShieldCheck /> Pre-sanction check
+              <Link href="/work-form">
+                <ClipboardList /> Check a form
               </Link>
             </Button>
             <Button asChild className="rounded-xl bg-brand-gradient shadow-[0_10px_24px_-12px_rgb(10_102_194/0.8)] hover:opacity-95">

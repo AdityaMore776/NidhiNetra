@@ -6,7 +6,6 @@ import {
   LayoutDashboard,
   type LucideIcon,
   Route,
-  ShieldCheck,
   Workflow,
 } from "lucide-react";
 import type { Me } from "@/lib/api";
@@ -26,12 +25,12 @@ export const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
   {
     label: "Act",
     items: [
-      { href: "/presanction", label: "Pre-sanction check", icon: ShieldCheck, hint: "Check a recommendation before sanction" },
+      // T142: the check before sanction is the form (the record-only pre-sanction check is retired)
       {
         href: "/work-form",
         label: "Work intelligence form",
         icon: ClipboardList,
-        hint: "Mock pre-sanction form: try it, nothing is sent",
+        hint: "The check before sanction: fill the form, see what each check asks",
       },
     ],
   },
@@ -39,7 +38,7 @@ export const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
     label: "Understand",
     items: [
       { href: "/how-it-works", label: "How it works", icon: Workflow, hint: "The engines and the score" },
-      { href: "/explain", label: "Step by step", icon: Clapperboard, hint: "One work, animated" },
+      { href: "/explain", label: "Step by step", icon: Clapperboard, hint: "One filing, animated" },
       { href: "/end-to-end", label: "Form to risk score", icon: Route, hint: "Five filings, end to end" },
     ],
   },

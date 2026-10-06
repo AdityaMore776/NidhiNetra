@@ -67,7 +67,7 @@ const STAGES = [
     key: "Act",
     icon: ListChecks,
     title: "A short, ranked list for the officer",
-    text: "Instead of thousands of alerts, the district gets a review queue, most important first, plus a pre-sanction check that answers Green, Amber or Red before money moves. It never blocks a sanction.",
+    text: "Instead of thousands of alerts, the district gets a review queue, most important first, plus a check on the agency's form that answers Green, Amber or Red before money moves. It never blocks a sanction.",
   },
   {
     n: "04",
@@ -341,7 +341,7 @@ export default function LoginPage() {
             </Reveal>
             <Stagger className="mt-8 grid grid-cols-2 gap-3">
               {[
-                { v: 209993, f: (x: number) => Math.round(x).toLocaleString("en-IN"), l: "works on eSAKSHI, every one checked", i: Map },
+                { v: 209993, f: (x: number) => Math.round(x).toLocaleString("en-IN"), l: "works on eSAKSHI so far", i: Map },
                 { v: 5, f: (x: number) => `₹${Math.round(x)} crore`, l: "for each MP, every year", i: ShieldCheck },
                 { v: 6, f: (x: number) => `${Math.round(x)} steps`, l: "from recommendation to use, each watched", i: ListChecks },
                 { v: 1, f: () => "1 list", l: "ranked, with reasons, for the officer", i: Brain },

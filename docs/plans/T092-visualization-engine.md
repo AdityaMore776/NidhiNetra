@@ -31,6 +31,9 @@ Six steps on a track, each with Play / Replay, and Play all:
 - **Built-in examples** (no sign-in, always fast): made-up recommendations placed in real districts and run
   through the real engines on the eSAKSHI dashboard's 40,935 works (`data/trial/explain_examples.py`, saved to
   `apps/web/public/explain/examples.json`, descriptions masked). Labelled as such on the page.
+- **T142 (6 Oct 2026):** the page's examples are now the work intelligence form's filings
+  (`public/work-form/examples.json`), each with a link to its form; "your own example" became "check your own
+  form" (/work-form). The site grades forms, not bare recommendations. The engine's `POST /explain` stays.
 - **Your own example:** `POST /api/v1/explain` on the live engine, behind the same sign-in as the pre-sanction check
   (no new public access to the hosted database). Signed out, the page says to sign in with the demo account.
 
