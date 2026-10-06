@@ -189,3 +189,86 @@ def test_the_rate_index_knows_which_agency_filed_and_when():
                              date(2026, 7, 1)) is None
     # filed more than six months before: too old to count
     assert idx.district_rate("181", "cement", "zila panchayat", "WF-X", date(2027, 3, 1)) is None
+
+
+# ---- v1.1: the labour schedule (T141) -------------------------------------------------------
+
+LABOUR = {"lab_trade_1": "beldar", "lab_grade_1": "unskilled", "lab_workers_1": "8",
+          "lab_days_1": "60", "lab_rate_1": "450", "lab_task_1": "Earthwork and carrying concrete",
+          "lab_lines_1": "1-3", "lab_source_1": "Minimum wages notification",
+          "lab_trade_2": "mason", "lab_grade_2": "skilled", "lab_workers_2": "4",
+          "lab_days_2": "45", "lab_rate_2": "800", "lab_task_2": "Laying and finishing concrete",
+          "lab_lines_2": "1, 3", "lab_source_2": "District recent rates"}
+V11 = {"__meta": {"form_version": "PSWIF v1.1"}}
+
+
+def test_the_labour_schedule_becomes_one_labour_line_per_trade():
+    f = pswif.to_cost_form(road(**LABOUR, **V11, technical_estimate="1228000",
+                                mp_recommended_amount="1250000"), TODAY)
+    assert f["form_version"] == "PSWIF v1.1"
+    lab = [ln for ln in f["sites"][0]["lines"] if ln["group"] == "labour"]
+    assert [(ln["material_id"], ln["workers"], ln["days"], ln["rate"], ln["for_lines"])
+            for ln in lab] == [("labour_beldar", 8, 60, 450, [1, 2, 3]),
+                               ("labour_mason", 4, 45, 800, [1, 3])]
+    assert lab[0]["basis"] == "other" and lab[0]["basis_other"] == "Minimum wages notification"
+    v = validate(f, today=TODAY)
+    assert v["ready"], [i for i in v["issues"] if i["level"] == "fix"]
+    assert v["computed"]["grand_total"] == 868000 + 8 * 60 * 450 + 4 * 45 * 800
+
+
+def test_a_filing_shows_v11_by_its_labour_rows():
+    assert pswif.version(road(**LABOUR)) == "PSWIF v1.1"
+    assert pswif.version(road()) == "PSWIF v1.0"
+
+
+def test_a_v11_trade_not_on_the_list_needs_its_grade():
+    rows = {"lab_trade_1": "other", "lab_name_1": "Stone carver", "lab_workers_1": "2",
+            "lab_days_1": "10", "lab_rate_1": "900", "lab_task_1": "Carving the plaque stone",
+            "lab_source_1": "Approved quotation"}
+    f = pswif.to_cost_form(road(**rows, **V11, technical_estimate="886000"), TODAY)
+    assert "labour_grade_needed" in {i["code"] for i in validate(f, today=TODAY)["issues"]}
+    f = pswif.to_cost_form(road(**rows, lab_grade_1="skilled", **V11,
+                                technical_estimate="886000"), TODAY)
+    assert validate(f, today=TODAY)["ready"]
+
+
+def test_a_v11_composite_line_cannot_be_paid_again_by_a_labour_row():
+    f = pswif.to_cost_form(road(**LABOUR, **V11, boq_inclab_3=True,
+                                technical_estimate="1228000"), TODAY)
+    assert "labour_paid_twice" in {i["code"] for i in validate(f, today=TODAY)["issues"]}
+
+
+def test_v11_labour_left_among_the_boq_lines_is_asked_to_move_and_still_priced_as_its_trade():
+    f = pswif.to_cost_form(road(boq_desc_4="Mason", boq_unit_4="day", boq_qty_4="100",
+                                boq_rate_4="800", boq_source_4="District recent rates",
+                                technical_estimate="948000", **V11), TODAY)
+    ln = f["sites"][0]["lines"][3]
+    assert ln["group"] == "materials" and ln["material_id"] == "labour_mason"
+    assert "labour_outside_section" in {i["code"] for i in validate(f, today=TODAY)["issues"]}
+
+
+def test_a_machine_hired_with_its_operator_by_the_hour_is_a_machine():
+    for over in ({}, V11):
+        f = pswif.to_cost_form(road(boq_desc_4="JCB with operator", boq_unit_4="hr",
+                                    boq_qty_4="40", boq_rate_4="1200",
+                                    boq_source_4="Approved quotation",
+                                    technical_estimate="916000", **over), TODAY)
+        ln = f["sites"][0]["lines"][3]
+        assert ln["group"] == "machinery" and "material_id" not in ln
+        assert validate(f, today=TODAY)["ready"]
+
+
+def test_a_v10_export_keeps_its_labour_among_the_boq_lines():
+    f = pswif.to_cost_form(road(boq_desc_4="Mason", boq_unit_4="day", boq_qty_4="100",
+                                boq_rate_4="800", boq_source_4="District recent rates",
+                                technical_estimate="948000"), TODAY)
+    assert f["sites"][0]["lines"][3]["group"] == "labour"
+    assert validate(f, today=TODAY)["ready"]
+
+
+@pytest.mark.parametrize("text,expected", [
+    ("1, 3-5", [1, 3, 4, 5]), ("Lines 1 to 4", [1, 2, 3, 4]), ("BOQ 2 & 6", [2, 6]),
+    ("२, ३", [2, 3]), ("all", ["all"]), ("", None),
+])
+def test_the_lines_a_labour_row_works_on_are_read_as_numbers(text, expected):
+    assert pswif.line_numbers(text) == expected

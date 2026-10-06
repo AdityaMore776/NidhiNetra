@@ -43,6 +43,8 @@ def priced(factor: float = 1.0, by: dict | None = None, qty: dict | None = None,
         ln["material_id"] = m
         ln["rate"] = round(ln["rate"] * by.get(m, factor), 2)
         ln["quantity"] = round(ln["quantity"] * qty.get(m, 1.0) * scale, 3)
+        if ln["group"] == "labour":              # person-days = workers x days (T141)
+            ln["days"] = ln["quantity"] / ln["workers"]
     for ln in f["sites"][0]["lines"][6:]:
         if "amount" in ln:
             ln["amount"] = round(ln["amount"] * scale, 2)
@@ -82,9 +84,10 @@ def test_an_estimate_at_the_fair_rates_is_fair():
 
 
 def test_every_rate_a_little_high_adds_up_to_a_question():
-    r = run(priced(1.20))
+    r = run(priced(1.30))
     f = next(f for f in r.findings if f.code == "ESTIMATE_ABOVE_FAIR_PRICE")
     assert f.risk == agent.WHOLE_RISK and f.evidence["gap_share"] > whole.GAP_SHARE
+    # the labour rows cite schedule items, so they are held to them like any line (T141)
     assert "6 of the 6 priced lines are above their fair rate" in f.text
     assert "Most of the gap" in f.text and "Needs checking before sanction" in f.text
     check_plain_language(f.text)
@@ -95,9 +98,30 @@ def test_ten_percent_on_every_line_stays_within_the_fair_band():
     assert "ESTIMATE_ABOVE_FAIR_PRICE" not in codes(run(priced(1.10)))
 
 
+def _uncoded(form: dict) -> dict:
+    """The labour rows priced at the market, citing no schedule item."""
+    for ln in form["sites"][0]["lines"]:
+        if ln["group"] == "labour":
+            ln["basis"] = "market_rate"
+            ln.pop("sor_code", None)
+    return form
+
+
+def test_labour_a_little_high_adds_nothing_to_the_whole():
+    # T141, the owner: labour is asked about only when blatant (twice its trade's rate)
+    w = run(_uncoded(priced(by={"labour_unskilled": 1.5, "labour_skilled": 1.5})))
+    assert w.evidence["whole"]["gap"] == pytest.approx(0, abs=1)
+    assert w.evidence["whole"]["above_fair_rate"] == 0
+    w = run(_uncoded(priced(by={"labour_skilled": 2.2}))).evidence["whole"]
+    assert w["above_fair_rate"] == 1 and w["gap"] > 0
+    # a row citing a schedule item is held to that item's rate: a fact, not a judgement
+    w = run(priced(by={"labour_unskilled": 1.5})).evidence["whole"]
+    assert w["above_fair_rate"] == 1 and w["gap"] > 0
+
+
 def test_one_costly_line_alone_is_not_a_question():
-    # skilled labour at 1.6x is Rs 1.2 lakh extra on Rs 18.8 lakh: 6%
-    r = run(priced(by={"labour_skilled": 1.6}))
+    # sand at 1.6x is Rs 1.05 lakh extra on Rs 18.8 lakh: 6%
+    r = run(priced(by={"sand": 1.6}))
     assert "ESTIMATE_ABOVE_FAIR_PRICE" not in codes(r)
     assert r.evidence["whole"]["above_fair_rate"] == 1
 
@@ -111,8 +135,7 @@ def test_a_small_works_gap_under_rs_50000_is_never_asked():
 
 def test_extra_quantity_counts_in_the_gap():
     # cement at 1.5x what the 250 m x 3.75 m x 150 mm slab needs (plus 10% tolerance)
-    r = run(priced(by={"labour_unskilled": 1.2, "labour_skilled": 1.2},
-                   qty={"cement": 1.6}))
+    r = run(priced(by={"sand": 1.2, "aggregate": 1.2}, qty={"cement": 1.6}))
     f = next(f for f in r.findings if f.code == "ESTIMATE_ABOVE_FAIR_PRICE")
     assert "cement" in f.text and "where the size needs" in f.text
     # a confirmed quantity far beyond the size stays its own question as well
@@ -195,3 +218,20 @@ def test_damaged_lines_never_break_the_whole():
     w = whole.judge(bad, validate(form, today=TODAY)["computed"], "ROAD_CC", SOR, None,
                     "T|BETA", "a", "W1", TODAY)
     assert w.verdict in ("ASK", "FAIR", "CANT_CHECK")
+
+
+def test_a_padded_line_written_in_a_unit_that_does_not_fit_is_not_a_way_out():
+    # the robustness loop (T141): cement in "nos", left unanswered, took the estimate under the
+    # coverage it needs, and the padding on every other line went unjudged
+    form = priced(by={"cement": 1.3, "sand": 1.3, "aggregate": 1.3, "granular_base": 1.3})
+    form["sites"][0]["lines"][0]["unit"] = "nos"
+    form["sites"][0]["lines"][0].pop("material_id")
+    r = run(form)
+    assert r.evidence["held_lines"] == [(0, 0)]
+    assert "ESTIMATE_ABOVE_FAIR_PRICE" in codes(r)
+    # the held line itself is never the question: an honest unit slip stays at its own value
+    honest = priced()
+    honest["sites"][0]["lines"][0]["unit"] = "nos"
+    honest["sites"][0]["lines"][0].pop("material_id")
+    w = run(honest).evidence["whole"]
+    assert w["verdict"] == "FAIR" and not w["unexplained"]

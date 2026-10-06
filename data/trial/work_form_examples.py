@@ -1,6 +1,6 @@
 r"""Example filings of the website's work intelligence form, each caught by one agent (T134).
 
-The site's form (/work-form, the Pre-Sanction Work Intelligence Form PSWIF v1.0) is what an
+The site's form (/work-form, the Pre-Sanction Work Intelligence Form PSWIF v1.1) is what an
 implementing agency fills before sanction. Judges cannot see a real filing yet: no agency has
 filed one. So this script writes MADE-UP filings, every field as an agency would fill it, by
 made-up agencies in the real district of Jaunpur (the eSAKSHI dashboard tables, 1,038 works), and
@@ -10,9 +10,12 @@ sanction (a completion date, monthly site videos as the video job reads them), b
 Rules and Site Progress judge what happens next.
 
   clean           an honest CC road: all four agents look, nothing to ask
-  cost_padded     every rate 22% above what other agencies in the district pay
+  cost_padded     every material 25% above what other agencies in the district pay (its
+                  crews at the district's wages: within twice a trade's rate, wages are the
+                  agency's call, T141)
   cost_quantity   twice the cement the road's size needs, "justified" on the line
   cost_lights     solar lights at Rs 48,000 each, twice the MP's amount
+  cost_labour     masons at 2.4 times the district's day rate; 34 workers on the road is fine
   dup_pin         a "new" road pinned 20 m from a road sanctioned last year
   dup_rebuild     a hall declared as a rebuild of one completed 16 months earlier
   dup_split       one village road filed as three works, each just under Rs 5 lakh
@@ -43,12 +46,13 @@ sys.path.insert(0, str(ROOT / "apps" / "engine"))
 from esakshi_dashboard import load  # noqa: E402
 
 from drishti import demo  # noqa: E402
+from drishti.agents.cost_estimate import labour as labour_rules  # noqa: E402
 from drishti.agents.cost_estimate import whole  # noqa: E402
 from drishti.agents.dup_split import agent as dup_agent  # noqa: E402
 from drishti.agents.dup_split import repeat  # noqa: E402
 from drishti.agents.time_rules import window  # noqa: E402
 from drishti.batch import indexes  # noqa: E402
-from drishti.cost_form import norms, pswif  # noqa: E402
+from drishti.cost_form import catalog, norms, pswif  # noqa: E402
 from drishti.cost_form.validate import validate  # noqa: E402
 from drishti.evaluation.stats import build_store  # noqa: E402
 from drishti.explain import explain  # noqa: E402
@@ -64,7 +68,7 @@ METRE = 1 / 111_195
 
 # the district's honest rates (Rs per unit), what the background filings pay around
 RATE = {"cement": 380.0, "sand": 1800.0, "aggregate": 2100.0, "granular_base": 1450.0,
-        "labour_skilled": 750.0, "labour_unskilled": 420.0}
+        "mason": 750.0, "beldar": 420.0}
 
 
 def d(x: date) -> str:
@@ -174,10 +178,44 @@ def boq(rows: list[tuple]) -> tuple[dict, float]:
     return out, round(total, 2)
 
 
+def labour(rows: list[tuple]) -> tuple[dict, float]:
+    """Labour schedule rows (trade, workers, days each, day rate, source, what they do, BOQ
+    lines) as the form's numbered fields (PSWIF v1.1, T141): one row per trade."""
+    out, total = {}, 0.0
+    for n, (trade, workers, days, rate, source, task, lines) in enumerate(rows, start=1):
+        out.update({f"lab_trade_{n}": trade, f"lab_name_{n}": "",
+                    f"lab_grade_{n}": catalog.grade_of(f"labour_{trade}"),
+                    f"lab_workers_{n}": f"{workers:g}", f"lab_days_{n}": f"{days:g}",
+                    f"lab_rate_{n}": f"{rate:g}", f"lab_task_{n}": task,
+                    f"lab_lines_{n}": lines, f"lab_source_{n}": source})
+        total += workers * days * rate
+    return out, round(total, 2)
+
+
+def crew(person_days: float, workers: int) -> tuple[int, float]:
+    """`workers` on site for the days that give about `person_days` (to the half day)."""
+    return workers, max(0.5, round(person_days / workers * 2) / 2)
+
+
+def estimate_total(p: dict) -> float:
+    """The BOQ lines and the labour schedule, as the form adds them up."""
+    total = 0.0
+    for k in p:
+        if k.startswith("boq_qty_"):
+            n = k.removeprefix("boq_qty_")
+            total += float(p[k] or 0) * float(p.get(f"boq_rate_{n}") or 0)
+        elif k.startswith("lab_workers_"):
+            n = k.removeprefix("lab_workers_")
+            total += (float(p[k] or 0) * float(p.get(f"lab_days_{n}") or 0)
+                      * float(p.get(f"lab_rate_{n}") or 0))
+    return round(total, 2)
+
+
 def road(ref: str, agency: str, village: str, k: int, rec: date, sanction: date | None,
          length: float = 300, width: float = 3.5, rate_up: float = 1.0, cement_x: float = 1.0,
          jitter: float = 0.0, mp_x: float = 1.0, just: str = "", days: int = 120,
-         start: date | None = None, **over) -> dict:
+         start: date | None = None, labour_x: dict | None = None,
+         more_labour: tuple = (), **over) -> dict:
     """A CC road, M20, 150 mm on a 100 mm WBM base, with honest quantities for its size."""
     size = {"length_m": length, "width_m": width, "cc_thickness_mm": 150,
             "concrete_grade": "M20", "base_type": "wbm", "base_thickness_mm": 100}
@@ -186,7 +224,8 @@ def road(ref: str, agency: str, village: str, k: int, rec: date, sanction: date 
     f = (1 + jitter) * rate_up
 
     def r(m):
-        return round(RATE[m] * f)
+        # `rate_up` pads the materials; the crews keep the honest spread (T141)
+        return round(RATE[m] * (f if m not in ("mason", "beldar") else 1 + jitter))
 
     rows = [("Cement OPC 43 grade", "bag", round(need * 0.98 * cement_x), r("cement"),
              "District recent rates") + ((just,) if just else ()),
@@ -195,12 +234,17 @@ def road(ref: str, agency: str, village: str, k: int, rec: date, sanction: date 
              "District recent rates"),
             ("WBM base, graded stone", "cum", round(length * width * 0.10), r("granular_base"),
              "District recent rates"),
-            ("Mason (skilled)", "day", round(vol * 0.75), r("labour_skilled"),
-             "District recent rates"),
-            ("Labourer (unskilled)", "day", round(vol * 3.5), r("labour_unskilled"),
-             "District recent rates"),
             ("Concrete mixer and vibrator hire", "day", 30, 2500, "Approved quotation")]
     lines, total = boq(rows)
+    x = labour_x or {}
+    crews, labour_total = labour([
+        ("mason", *crew(vol * 0.75, 4), round(r("mason") * x.get("mason", 1.0)),
+         "District recent rates", "Laying, levelling and finishing the concrete", "1-3"),
+        ("beldar", *crew(vol * 3.5, 12), round(r("beldar") * x.get("beldar", 1.0)),
+         "District recent rates", "Earthwork, WBM base and carrying concrete", "1-4"),
+        *more_labour])
+    lines.update(crews)
+    total += labour_total
     lat, lon = pin(k)
     start = start or ((sanction or rec) + timedelta(days=14))
     p = common(ref, agency, village, rec, sanction, start, days, total, round(total * mp_x,
@@ -240,10 +284,15 @@ def hall(ref: str, agency: str, village: str, k: int, rec: date, sanction: date 
             ("TMT steel Fe 500", "kg", round(area * 32), 68, "State/Dept SoR"),
             ("Bricks, first class", "nos", round(area * 220), 8, "District recent rates"),
             ("Vitrified floor tiles", "sqm", round(area * 0.95), 650, "Approved quotation"),
-            ("Mason (skilled)", "day", round(area * 2.2), 750, "District recent rates"),
-            ("Labourer (unskilled)", "day", round(area * 6), 420, "District recent rates"),
             ("Doors and windows, steel frame", "nos", 12, 9500, "Approved quotation")]
     lines, total = boq(rows)
+    crews, labour_total = labour([
+        ("mason", *crew(area * 2.2, 6), 750, "District recent rates",
+         "Brickwork, concrete, plaster and tiling", "1-6"),
+        ("beldar", *crew(area * 6, 12), 420, "District recent rates",
+         "Excavation, mixing and carrying material", "1-5")])
+    lines.update(crews)
+    total += labour_total
     lat, lon = pin(k)
     start = start or ((sanction or rec) + timedelta(days=21))
     p = common(ref, agency, village, rec, sanction, start, days, total, round(total, -3))
@@ -363,10 +412,11 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
 
     # --- Cost ---
     rec = m(60)
-    p = road("WF-COST-1", AG[1], VILLAGES[1], 1, rec, None, rate_up=1.22, mp_x=1.0)
+    p = road("WF-COST-1", AG[1], VILLAGES[1], 1, rec, None, rate_up=1.25, mp_x=1.0)
     add("cost_padded", "cost_estimate", {"cost_estimate": ["ESTIMATE_ABOVE_FAIR_PRICE"]},
         "Every line a little high: the whole estimate is not",
-        "Every rate is about 22% above what other agencies in the district charge.",
+        "Every material is priced about 25% above what other agencies in the district "
+        "charge.",
         ["Not sanctioned yet: this is the check before sanction"], p)
     rec = m(55)
     p = road("WF-COST-2", AG[2], VILLAGES[2], 2, rec, None, cement_x=2.0, mp_x=1.0,
@@ -380,6 +430,19 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
     add("cost_lights", "cost_estimate", {"cost_estimate": ["ESTIMATE_ABOVE_STANDARD_AND_MP"]},
         "Solar lights at more than twice the usual price",
         "10 solar street lights at Rs 48,000 each; the MP recommended Rs 2.4 lakh.",
+        ["Not sanctioned yet: this is the check before sanction"], p)
+
+    # T141: labour judged trade by trade. 34 workers is the agency's call (never asked);
+    # masons at 2.4 times what other agencies here pay masons is a blatant rate
+    p = road("WF-COST-4", AG[2], VILLAGES[10], 19, m(48), None, labour_x={"mason": 2.4},
+             more_labour=(("helper", 16, 30, 430, "District recent rates",
+                           "Feeding the mixer and carrying concrete", "1-3"),
+                          ("operator", 2, 30, 950, "Approved quotation",
+                           "Running the concrete mixer and vibrator", "5")))
+    add("cost_labour", "cost_estimate", {"cost_estimate": ["LABOUR_RATE_FAR_ABOVE"]},
+        "Masons at more than twice the district's wage",
+        "Masons at Rs 1,800 a day where other agencies pay about Rs 750; the 34 workers on the "
+        "road are not questioned.",
         ["Not sanctioned yet: this is the check before sanction"], p)
 
     # --- Duplicate Work ---
@@ -610,6 +673,9 @@ def plain_data(examples: list[dict], records: list[dict], traces: dict) -> dict:
          + quantity["MATERIAL_QUANTITY_ABOVE_SIZE"]["why"].split(", ", 1)[1]},
         {"agent": "cost_estimate", "text": f"The whole estimate is asked about when it is "
          f"{whole.GAP_SHARE:.0%}+ and Rs {whole.GAP_MIN_RS:,}+ above the fair price"},
+        {"agent": "cost_estimate", "text": f"A trade's day rate is asked about at "
+         f"{labour_rules.RATE_MARGIN:g} times what other agencies here pay that trade; how many "
+         "workers a work needs is never judged"},
         {"agent": "dup_split", "text": f"Map pins within {repeat.PIN_METRES:.0f} m of a "
          "sanctioned work of the same kind are one site"},
         {"agent": "dup_split", "text": f"A rebuild within {dup_agent.REBUILT_WITHIN.days // 365}"

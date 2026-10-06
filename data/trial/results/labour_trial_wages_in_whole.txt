@@ -1,0 +1,55 @@
+[wages judged in the whole estimate like any line: the rule before T141's last change]
+Labour trial (T141): 150 honest filings a district, each padded one way at a time; rule: a trade's rate at 2x what other agencies pay it here (2.5x its grade's pool), Rs 10,000+ extra
+
+== low wages (x1): honest filings 150, assessed 150
+  honest asked: labour 0/150 (0.0%), any question 9/150 {'ESTIMATE_ABOVE_FAIR_PRICE': 9}
+  one trade x1.5                                       LABOUR_RATE_FAR_ABOVE 9/150 (6%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 36}
+  one trade x2                                         LABOUR_RATE_FAR_ABOVE 64/150 (43%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 55}
+  one trade x2.5                                       LABOUR_RATE_FAR_ABOVE 130/150 (87%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 67}
+  one trade x3                                         LABOUR_RATE_FAR_ABOVE 149/150 (99%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 83}
+  every rate x1.5                                      meant to be quiet; other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 113, 'LABOUR_RATE_FAR_ABOVE': 10}
+  helper as 'highly skilled' at an operator's rate     LABOUR_RATE_FAR_ABOVE 125/150 (83%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 49}
+  helper as 'highly skilled' at 1.25x an operator's rate LABOUR_RATE_FAR_ABOVE 150/150 (100%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 61}
+  Other trade, 'highly skilled', at 2.2x an operator   LABOUR_RATE_FAR_ABOVE 0/150 (0%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 9}
+  Other trade, 'highly skilled', at 3x an operator     LABOUR_RATE_FAR_ABOVE 150/150 (100%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 9}
+  a watchman on site 1.6x the work's time              LABOUR_DAYS_BEYOND_WORK 150/150 (100%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 8}
+  ten times the workers, honest rates                  meant to be quiet; other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 15}
+
+== mid wages (x1.15): honest filings 150, assessed 150
+  honest asked: labour 0/150 (0.0%), any question 3/150 {'ESTIMATE_ABOVE_FAIR_PRICE': 3}
+  one trade x1.5                                       LABOUR_RATE_FAR_ABOVE 0/150 (0%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 20}
+  one trade x2                                         LABOUR_RATE_FAR_ABOVE 43/150 (29%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 37}
+  one trade x2.5                                       LABOUR_RATE_FAR_ABOVE 129/150 (86%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 48}
+  one trade x3                                         LABOUR_RATE_FAR_ABOVE 145/150 (97%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 67}
+  every rate x1.5                                      meant to be quiet; other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 129}
+  helper as 'highly skilled' at an operator's rate     LABOUR_RATE_FAR_ABOVE 150/150 (100%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 38}
+  helper as 'highly skilled' at 1.25x an operator's rate LABOUR_RATE_FAR_ABOVE 150/150 (100%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 49}
+  Other trade, 'highly skilled', at 2.2x an operator   LABOUR_RATE_FAR_ABOVE 0/150 (0%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 3}
+  Other trade, 'highly skilled', at 3x an operator     LABOUR_RATE_FAR_ABOVE 150/150 (100%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 3}
+  a watchman on site 1.6x the work's time              LABOUR_DAYS_BEYOND_WORK 150/150 (100%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 3}
+  ten times the workers, honest rates                  meant to be quiet; other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 8}
+
+== high wages (x1.6): honest filings 150, assessed 150
+  honest asked: labour 0/150 (0.0%), any question 3/150 {'ESTIMATE_ABOVE_FAIR_PRICE': 3}
+  one trade x1.5                                       LABOUR_RATE_FAR_ABOVE 0/150 (0%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 29}
+  one trade x2                                         LABOUR_RATE_FAR_ABOVE 54/150 (36%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 55}
+  one trade x2.5                                       LABOUR_RATE_FAR_ABOVE 136/150 (91%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 80}
+  one trade x3                                         LABOUR_RATE_FAR_ABOVE 146/150 (97%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 80}
+  every rate x1.5                                      meant to be quiet; other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 127, 'LABOUR_RATE_FAR_ABOVE': 1}
+  helper as 'highly skilled' at an operator's rate     LABOUR_RATE_FAR_ABOVE 130/150 (87%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 34}
+  helper as 'highly skilled' at 1.25x an operator's rate LABOUR_RATE_FAR_ABOVE 150/150 (100%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 70}
+  Other trade, 'highly skilled', at 2.2x an operator   LABOUR_RATE_FAR_ABOVE 0/150 (0%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 3}
+  Other trade, 'highly skilled', at 3x an operator     LABOUR_RATE_FAR_ABOVE 150/150 (100%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 3}
+  a watchman on site 1.6x the work's time              LABOUR_DAYS_BEYOND_WORK 150/150 (100%); other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 3}
+  ten times the workers, honest rates                  meant to be quiet; other questions {'ESTIMATE_ABOVE_FAIR_PRICE': 10}
+
+== all districts
+  one trade x1.5                                       caught 9/450 (2%)
+  one trade x2                                         caught 161/450 (36%)
+  one trade x2.5                                       caught 395/450 (88%)
+  one trade x3                                         caught 440/450 (98%)
+  helper as 'highly skilled' at an operator's rate     caught 405/450 (90%)
+  helper as 'highly skilled' at 1.25x an operator's rate caught 450/450 (100%)
+  Other trade, 'highly skilled', at 2.2x an operator   caught 0/450 (0%)
+  Other trade, 'highly skilled', at 3x an operator     caught 450/450 (100%)
+  a watchman on site 1.6x the work's time              caught 450/450 (100%)

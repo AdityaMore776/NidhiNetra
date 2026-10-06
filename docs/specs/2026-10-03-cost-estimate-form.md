@@ -91,7 +91,14 @@ An expense line, as one row:
 Group      Item (type anything)        Recognised as    Qty    Unit  Rate (Rs)  Amount (Rs)  Rate from     SoR code
 Materials  Cement OPC 43 grade         Cement ✓ change  1,125  bag   400        4,50,000     Market rate
 Materials  Geotextile fabric           — none —         900    m2    60         54,000       Quotation
-Labour     Unskilled labour            Unskilled labour 900    day   450        4,05,000     SoR           UP-LAB-1
+```
+
+Labour is its own table (T141), one row per trade:
+
+```
+Trade      Grade        Workers  Days each  Day rate (Rs)  Person-days  Amount (Rs)  What they do                 Lines  Rate from
+Beldar     unskilled    10       90         450            900          4,05,000     earthwork, carrying concrete 1-4    SoR
+Mason      skilled      5        50         800            250          2,00,000     laying, finishing concrete   1-3    SoR
 ```
 
 "Recognised as" is suggested from what was typed. The person confirms it, picks another, or picks "none". Only a
@@ -215,12 +222,32 @@ plaque, safety signs, ramps, connections) · `quality` (testing) · `supervision
 | `spec` | specification | goods lines only, required |
 | `gem_id` | GeM product ID | goods lines; otherwise attach 3 quotations |
 | `quotations_nos` | quotations attached | goods lines |
+| `includes_labour` | this rate already includes the workers who do it | any line but labour: a composite Schedule of Rates item ("brick masonry per m3"), a machine hired with its operator |
+
+**Labour rows** (group `labour`, T141; plan [`docs/plans/T141-labour-schedule.md`](../plans/T141-labour-schedule.md)).
+A row is one trade. `material_id` is the trade (below); `quantity` is the person-days (workers × days, worked out
+when left out); `unit` is `day`; `rate` is one day's wage.
+
+| id | What | Notes |
+|---|---|---|
+| `workers` | workers of this trade | a whole number, at least 1; never judged |
+| `days` | days each is on site | never judged, unless beyond the work's own time to completion |
+| `grade` | unskilled / semi-skilled / skilled / highly skilled | filled from the trade; required for a trade not on the list. The rate is judged against the trade, never the grade declared |
+| `activity` | what they do | at least 2 words |
+| `for_lines` | the estimate lines they work on (numbers) | required when any line's rate includes its workers |
+
+**Trades** (each with its grade): unskilled: `labour_beldar` (beldar, mazdoor, labourer), `labour_helper`,
+`labour_chowkidar`; semi-skilled: `labour_mate`; skilled: `labour_mason` (mistri), `labour_carpenter` (badhai),
+`labour_bar_bender`, `labour_painter`, `labour_plumber`, `labour_electrician`, `labour_welder`, `labour_driver`; highly
+skilled: `labour_operator` (machine operator), `labour_supervisor` (foreman). The four grade words alone ("skilled
+labour") are `labour_unskilled`, `labour_semi_skilled`, `labour_skilled` and `labour_highly_skilled`, used only when no
+trade's name fits.
 
 **Materials the form suggests** (anything else can be typed). A typed item is matched by whole words, in English and
 the Hindi words used on estimates (सीमेंट, सरिया, बालू, गिट्टी, ईंट, …):
 `cement`, `steel_rebar`, `structural_steel`, `sand`, `aggregate`, `brick`, `paver_block`, `rmc` (ready-mix concrete),
 `bitumen`, `granular_base` (GSB / WBM / moorum), `earth_fill`, `pipe`, `cable`, `led_luminaire`, `solar_panel`,
-`battery`, `pole`, `tiles`, `paint`, `door_window`, `labour_skilled`, `labour_unskilled`.
+`battery`, `pole`, `tiles`, `paint`, `door_window`, and the labour trades above.
 
 ### 5.6 Charges
 
@@ -327,6 +354,14 @@ overruns and gives the measured data the agent's allowed ranges are set from (T0
 | `earlier_unanswered` | fix | a sanctioned work in `earlier_candidates` not answered |
 | `same_as_sanctioned` | fix | the agency says it is the same as a sanctioned work: it cannot be estimated again |
 | `continues_mismatch` | fix | "continues it" while the nature or the earlier work ID says otherwise |
+| `labour_arithmetic` | fix | a labour row's person-days are not workers × days |
+| `labour_workers_whole`, `labour_unit` | fix | workers not a whole number; a labour row not paid by the day |
+| `labour_grade_needed`, `labour_not_a_trade` | fix | a trade not on the list with no grade; a labour row that is not a trade |
+| `labour_paid_twice` | fix | a labour row works on a line whose rate already includes its workers |
+| `labour_lines_needed`, `labour_line_unknown`, `not_a_list` | fix | the lines a row works on are missing (when some rate includes labour), unknown, or not numbers |
+| `labour_days_beyond_work` | confirm | a worker's days on site exceed the work's time to completion by more than 10% |
+| `labour_grade_above_trade` | confirm | the grade declared is above the trade's own (a helper called skilled) |
+| `labour_outside_section` | confirm | a line paid by the day that reads as workers, outside the labour table |
 
 ## 7. The JSON the form sends
 

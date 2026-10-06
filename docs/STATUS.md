@@ -44,6 +44,16 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
+**6 Oct 2026: labour, trade by trade (T141).**
+The website form (PSWIF v1.1) has a labour schedule: one row per trade, with workers, days, the
+day rate, what they do and the BOQ lines they work on. Cost judges each trade against what other
+agencies pay that trade, and asks only when:
+- a trade's day rate is at least twice what others pay it (Rs 10,000+ extra);
+- workers stay on site longer than the work lasts.
+
+How many workers a work needs is never judged. Planted filings: honest 0/450 asked, one trade at
+2.5× caught 88%, ten times the workers 0/450. The loop: 112 probes, 0 FAIL. FINDINGS "T141".
+
 **6 Oct 2026: the T139 rules hold in six more districts (T140).**
 Kheri, Bokaro, Puri, Howrah, Palakkad and Kheda were tested, each on its own real works and
 buildings:

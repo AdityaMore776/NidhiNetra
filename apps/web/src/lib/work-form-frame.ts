@@ -9,6 +9,7 @@ export type FormWindow = Window & {
   restore?: (d: Record<string, unknown>) => void;
   serialize?: () => Record<string, unknown>;
   addBoqRow?: () => void;
+  addLabourRow?: () => void;
   addMilestoneRow?: () => void;
 };
 
@@ -23,11 +24,12 @@ export function fillForm(frame: HTMLIFrameElement | null, data: Record<string, u
   const doc = frame?.contentDocument;
   if (!w || !doc || typeof w.restore !== "function") return false;
   (doc.getElementById("nidhinetraForm") as HTMLFormElement | null)?.reset();
-  for (const id of ["boqBody", "milestoneBody"]) {
+  for (const id of ["boqBody", "labourBody", "milestoneBody"]) {
     const body = doc.getElementById(id);
     if (body) body.innerHTML = "";
   }
   for (let i = 0; i < rowsIn(data, "boq_desc"); i++) w.addBoqRow?.();
+  for (let i = 0; i < rowsIn(data, "lab_trade"); i++) w.addLabourRow?.();
   for (let i = 0; i < rowsIn(data, "milestone_name"); i++) w.addMilestoneRow?.();
   w.restore({
     ...data,

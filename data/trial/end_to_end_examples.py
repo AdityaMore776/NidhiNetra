@@ -5,7 +5,7 @@ filling, all the way to agent risk on the form, then create a placeholder for th
 agent ... put some legit values, then also put some things in other examples that will be flagged
 by the agents".
 
-Each filing is the website form (PSWIF v1.0) as an implementing agency fills it, in the real
+Each filing is the website form (PSWIF v1.1) as an implementing agency fills it, in the real
 district of Jaunpur, Uttar Pradesh. It runs through the same code as the live check
 (POST /api/v1/work-form/check): the website form to the engine's cost form
 (drishti/cost_form/pswif.py), the form's own check (validate.py), the four agents and the risk
@@ -17,7 +17,7 @@ starts with the first site video after sanction, and its field trial (T126) come
   cost_hidden   the honest road with Rs 5.5 lakh in a line nobody prices   -> Cost asks
   dup_pieces    one lane filed as three pieces laid end to end, each just under Rs 5 lakh,
                 this one described in other words                          -> Duplicate asks
-  many_flags    a "new" hall pinned 20 m from a hall finished 14 months ago, every rate 25%
+  many_flags    a "new" hall pinned 20 m from a hall finished 14 months ago, every material 40%
                 high, and still not sanctioned 100 days on                 -> three agents ask
 
 The honest values are set against what real works cost in Uttar Pradesh
@@ -46,6 +46,7 @@ sys.path.insert(0, str(ROOT / "data" / "trial"))
 sys.path.insert(0, str(ROOT / "apps" / "engine"))
 import work_form_examples as wf  # noqa: E402
 
+from drishti.agents.cost_estimate import labour as labour_rules  # noqa: E402
 from drishti.agents.cost_estimate import rates, whole  # noqa: E402
 from drishti.agents.cost_estimate.agent import assess as cost_assess  # noqa: E402
 from drishti.agents.time_rules import window as time_window  # noqa: E402
@@ -98,8 +99,7 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
         if "mixer" in str(p.get(f"boq_desc_{n}", "")).lower():
             p[f"boq_qty_{n}"] = "250"
             p[f"boq_just_{n}"] = "Mixer and vibrator on site for the whole season"
-    total = sum(float(p[f"boq_qty_{n}"]) * float(p[f"boq_rate_{n}"])
-                for n in range(1, 20) if f"boq_qty_{n}" in p)
+    total = wf.estimate_total(p)
     p.update(technical_estimate=f"{total:.2f}", mplads_share=f"{total:.0f}",
              mp_recommended_amount=f"{round(total, -3):.0f}")
     add("cost_hidden", "Rs 5.5 lakh hidden in equipment hire",
@@ -130,7 +130,8 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
         "Three pieces of one lane, end to end on the map, filed within 8 days; this one is "
         "described in other words.", {"dup_split": ["SPLIT_JUST_UNDER_LIMIT"]}, pieces[1])
 
-    # 5. a "new" hall 20 m from one finished 14 months ago, rates 25% high, waiting 100 days
+    # 5. a "new" hall 20 m from one finished 14 months ago, materials 40% high, waiting 100
+    #    days (T141: its crews' wages, a little high, are the agency's call and add nothing)
     old = wf.hall("E2E-OLD-HALL", AGENCIES[4], VILLAGES[4], 18, m(900), m(850))
     bg.append(pswif.to_work(old, today=as_of, status="COMPLETED",
                             completed_date=wf.d(m(425))))
@@ -139,13 +140,12 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
                 latitude=f"{lat + 20 * METRE:.6f}", longitude=f"{lon:.6f}")
     for n in range(1, 20):
         if f"boq_rate_{n}" in p and p.get(f"boq_source_{n}") == "District recent rates":
-            p[f"boq_rate_{n}"] = f"{round(float(p[f'boq_rate_{n}']) * 1.25):g}"
-    total = sum(float(p[f"boq_qty_{n}"]) * float(p[f"boq_rate_{n}"])
-                for n in range(1, 20) if f"boq_qty_{n}" in p)
+            p[f"boq_rate_{n}"] = f"{round(float(p[f'boq_rate_{n}']) * 1.4):g}"
+    total = wf.estimate_total(p)
     p.update(technical_estimate=f"{total:.2f}", mplads_share=f"{total:.0f}",
              mp_recommended_amount=f"{round(total, -3):.0f}")
     add("many_flags", "A \"new\" hall where a hall already stands",
-        "Pinned 20 m from a hall finished 14 months ago, every rate a quarter above the "
+        "Pinned 20 m from a hall finished 14 months ago, every material 40% above the "
         "district's, and still waiting for sanction 100 days on.",
         {"cost_estimate": ["ESTIMATE_ABOVE_FAIR_PRICE"],
          "dup_split": ["SANCTIONED_WORK_AT_THIS_SITE"], "time_rules": ["SANCTION_OVERDUE"]}, p)
@@ -189,6 +189,8 @@ def typed(p: dict) -> list[dict]:
 
 
 def boq(p: dict) -> list[dict]:
+    """The estimate lines, then the labour schedule's rows (T141), numbered in the order the
+    engine reads them; each names the form fields that hold its rate and quantity."""
     out = []
     for n in range(1, 40):
         if f"boq_desc_{n}" not in p:
@@ -196,7 +198,19 @@ def boq(p: dict) -> list[dict]:
         q, r = float(p[f"boq_qty_{n}"]), float(p[f"boq_rate_{n}"])
         out.append({"n": n, "item": p[f"boq_desc_{n}"], "unit": p[f"boq_unit_{n}"],
                     "qty": q, "rate": r, "amount": round(q * r, 2),
-                    "source": p.get(f"boq_source_{n}") or ""})
+                    "source": p.get(f"boq_source_{n}") or "",
+                    "rate_field": f"boq_rate_{n}", "qty_field": f"boq_qty_{n}"})
+    for k in range(1, 40):
+        if f"lab_trade_{k}" not in p:
+            break
+        w, days, r = (float(p[f"lab_{x}_{k}"]) for x in ("workers", "days", "rate"))
+        trade = catalog.material(f"labour_{p[f'lab_trade_{k}']}")
+        out.append({"n": len(out) + 1,
+                    "item": f"{trade['label'] if trade else p[f'lab_name_{k}']}: "
+                            f"{w:g} workers x {days:g} days ({p.get(f'lab_task_{k}', '')})",
+                    "unit": "day", "qty": w * days, "rate": r, "amount": round(w * days * r, 2),
+                    "source": p.get(f"lab_source_{k}") or "",
+                    "rate_field": f"lab_rate_{k}", "qty_field": f"lab_days_{k}"})
     return out
 
 
@@ -298,6 +312,8 @@ def cost_lines(w: dict, ctx, p: dict) -> dict:
     when = rates._form_month(form, ctx.as_of)
     idx = (ctx.data or {}).get("rates")
     judged = {(x["site"], x["line"]): x for x in wh.get("lines", [])}
+    # T141: labour within twice its trade's rate is settled (the agency's call), not in `lines`
+    settled = {(x["site"], x["line"]): x for x in wh.get("settled_lines", [])}
     gaps = {g["material"]: g for g in ev.get("data_gaps", [])}
     form_lines = (form.get("sites") or [{}])[0].get("lines") or []
     lines_total = sum(r["amount"] for r in boq(p)) or 1.0
@@ -309,8 +325,14 @@ def cost_lines(w: dict, ctx, p: dict) -> dict:
         mid = ln.get("material_id")
         mat = catalog.material(mid) if mid else None
         x = judged.get((0, j))
-        row = {"n": r["n"], "situations": _situations(p, r["n"]), "extra": 0.0}
-        if x and x.get("fair_rate") is not None:
+        row = {"n": r["n"], "situations": _situations(p, r["n"]), "extra": 0.0,
+               "rate_field": r["rate_field"], "qty_field": r["qty_field"]}
+        if (0, j) in settled:
+            sx = settled[(0, j)]
+            row.update(state="labour", fair_rate=sx["fair_rate"], unit="day", level="ok",
+                       pct=round(sx["rate"] / sx["fair_rate"] - 1, 4),
+                       limit=round(sx["fair_rate"] * labour_rules.RATE_MARGIN, 2))
+        elif x and x.get("fair_rate") is not None:
             fair = x["fair_rate"]
             key = ((str(w.get("district_lgd")), mid) if x["fair_source"] == "district"
                    else (rates._state(w), mid))

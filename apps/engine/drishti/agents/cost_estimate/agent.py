@@ -17,6 +17,10 @@ much for what is being built. Plan: docs/plans/T097-cost-agent-v3.md.
                                  guess could explain a gap alone.
 
   ESTIMATE_ABOVE_FAIR_PRICE      the whole estimate against its fair price (whole.py, T121)
+  LABOUR_RATE_FAR_ABOVE          (T141, labour.py) a trade's day rate at least twice what other
+                                 agencies pay that trade here; how many workers or days is never
+                                 judged
+  LABOUR_DAYS_BEYOND_WORK        (T141) workers on site longer than the whole work lasts
   ESTIMATE_NOT_ITEMISED          (T135) a construction estimate (its size says how much cement,
                                  sand or stone it needs) that keeps more than NOT_ITEMISED_SHARE
                                  of its money in lump sums or in items no reader recognises as a
@@ -54,12 +58,12 @@ import re
 import time
 
 from drishti.agents.contract import AgentResult, Finding, Status
-from drishti.agents.cost_estimate import rates, reference, whole
+from drishti.agents.cost_estimate import labour, rates, reference, whole
 from drishti.cost_form import catalog, materials, norms
 from drishti.cost_form.validate import validate
 
 AGENT = "cost_estimate"
-VERSION = "cost-estimate-0.2.0"
+VERSION = "cost-estimate-0.3.0"
 QUESTION = ("Is every line of the estimate fairly priced for this district, and is the whole "
             "estimate fair?")
 WHOLE_RISK = 0.6
@@ -155,7 +159,8 @@ def _not_itemised(form: dict, lines_total: float) -> dict:
             if ln.get("unit") == "ls":
                 v = ln.get("amount")
             elif not catalog.material(ln.get("material_id")) and not materials.match(
-                    ln.get("item") if isinstance(ln.get("item"), str) else None):
+                    ln.get("item") if isinstance(ln.get("item"), str) else None,
+                    labour=materials.LABOUR_BY_GROUP.get(ln.get("group"))):
                 q, r = ln.get("quantity"), ln.get("rate")
                 v = q * r if all(isinstance(x, (int, float)) and not isinstance(x, bool)
                                  for x in (q, r)) else None
@@ -222,6 +227,7 @@ def assess(work: dict, ctx) -> AgentResult:
         form = copy.deepcopy(form)
         for i, j in held:
             form["sites"][i]["lines"][j]["material_id"] = "none"
+            form["sites"][i]["lines"][j]["held"] = True     # not shown fair (whole._unread)
 
     c = checked["computed"]
     work_type = (form.get("work") or {}).get("work_type")
@@ -389,7 +395,7 @@ def assess(work: dict, ctx) -> AgentResult:
             evidence={"share": round(loose["share"], 4), "amount": round(loose["amount"], 2),
                       "items": loose["items"][:5]}))
     if w.verdict == "CANT_CHECK":
-        limits.append(f"Only {w.coverage:.0%} of the money is in lines with a fair rate or a "
+        limits.append(f"Only {w.judged:.0%} of the money is in lines with a fair rate or a "
                       f"known need (at least {whole.MIN_COVERAGE:.0%} is needed), so the whole "
                       "estimate was not judged.")
     else:
@@ -416,13 +422,41 @@ def assess(work: dict, ctx) -> AgentResult:
             notes.append(f"The whole estimate is {_rs(w.grand)} against a fair "
                          f"{_rs(w.fair_grand)} ({w.gap_share:+.1%}), pricing {w.coverage:.0%} "
                          "of the money: within the fair band.")
+    # 4. labour, trade by trade: only blatant rates and days beyond the work (T141)
+    lab = labour.judge(form, checked["issues"], done, sor, data.get("rates"),
+                       work.get("district_lgd"), rates.agency_of(work), str(work.get("work_id")),
+                       when, rates._state(work), held)
+    if lab.compared or lab.beyond:
+        compared = True
+    if lab.asked:
+        top = lab.asked[0]
+        findings.append(Finding(
+            "LABOUR_RATE_FAR_ABOVE", labour.rate_sentence(lab), hard=False, risk=labour.RATE_RISK,
+            evidence={"rows": [r.to_json() for r in lab.asked],
+                      "extra": round(sum(r.extra for r in lab.asked), 2),
+                      "message_hi": labour.HI_RATE.format(times=f"{top.times:.1f}")}))
+    elif lab.compared:
+        notes.append(f"Labour: {len(lab.compared)} trade row{'s' * (len(lab.compared) != 1)} "
+                     "compared with what others pay the same trade; none is at twice it.")
+    if lab.beyond:
+        findings.append(Finding(
+            "LABOUR_DAYS_BEYOND_WORK", labour.days_sentence(lab), hard=False,
+            risk=labour.DAYS_RISK,
+            evidence={"rows": [{**b.row.to_json(), "work_days": round(b.work_days, 1),
+                                "cost": round(b.cost, 2), "confirmed": b.confirmed}
+                               for b in lab.beyond],
+                      "message_hi": labour.HI_DAYS}))
+    if lab.grade_above:
+        notes.append("A grade above the trade's own was given for "
+                     + ", ".join(dict.fromkeys(lab.grade_above))
+                     + "; each is compared with what others pay for its trade.")
     if sor is None:
         limits.append("The state's Schedule of Rates is not loaded yet (T096): lines are compared "
                       "with other agencies' recent rates in the district where there are enough, "
                       "and quantities with what the size needs.")
     evidence = {"grand_total": grand, "mp_amount": mp, "mp_gap": c["mp_gap"],
                 "reason_differs_from_mp": reason, "sites": sites_ev, "notes": notes,
-                "whole": w.to_json(),
+                "whole": w.to_json(), "labour": lab.to_json(),
                 "data_gaps": [g.to_json() for g in w.gaps + w.fallbacks],
                 "held_lines": sorted(held),
                 "reference": {k: (ref or {}).get(k) for k in ("state", "source", "years")}}

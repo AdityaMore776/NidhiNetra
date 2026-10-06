@@ -7,9 +7,13 @@ little costly is a pattern".
     gap           = the agency's grand total - the fair estimate
 
 A line is compared when it has a fair rate, or when the size says how much of it is needed (then
-only its extra quantity counts, at the agency's own rate). The verdict:
+only its extra quantity counts, at the agency's own rate). A labour row (T141) within
+labour.RATE_MARGIN times its trade's fair rate is settled: how much a crew is paid within that is
+the agency's call, so it is neither a gap nor part of the share's base (it counts toward the
+coverage the verdict needs). A blatant one is compared like any line. The verdict:
 
-    CANT_CHECK  compared lines carry less than MIN_COVERAGE of the money (a status, not a score)
+    CANT_CHECK  compared lines (with settled labour and held lines, `judged`) carry less than
+                MIN_COVERAGE of the money (a status, not a score)
     ASK         the gap is at least GAP_SHARE of the fair price of what was priced (T135: of the
                 fair estimate, a line left unpriced counted at its own value on both sides and
                 watered the share down, so one padded line given an odd unit hid the rest) AND
@@ -25,9 +29,16 @@ stone it needs) lump sums beyond LUMP_SHARE of the lines, and "other" charges or
 beyond OTHER_SHARE / CONTINGENCY_SHARE of the lines, are not part of the fair estimate; nor (T136:
 an equipment-hire line raised from 30 days to 250 hid Rs 5.5 lakh) are items no reader recognises
 beyond UNREAD_SHARE of the lines (plant hire, earthwork, shuttering and curing of an honest CC road
-come to well under it). The officer's sentence names them. A material that could not be priced
-here records its gap (rates.Gap): the check is off for that price, never guessed, and the team
-knows what to collect.
+come to well under it). The officer's sentence names them.
+
+A line held as a likely typing mistake the agency left unanswered (agent.HOLD) stays at its own
+value, never a question (T093: a typing mistake is caught on the agency's screen), but its money
+counts toward the coverage the verdict needs (T141 loop: cement written in "nos" left the rest of
+a padded estimate unjudged): it is out of the price check by the agency's own warning, not for
+want of price data, so the rest of the estimate is judged on its own.
+
+A material that could not be priced here records its gap (rates.Gap): the check is off for that
+price, never guessed, and the team knows what to collect.
 """
 
 from __future__ import annotations
@@ -37,7 +48,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import date
 
-from drishti.agents.cost_estimate import rates
+from drishti.agents.cost_estimate import labour, rates
 from drishti.cost_form import catalog, materials, norms
 
 QTY_TOLERANCE = 1.10
@@ -50,6 +61,8 @@ OTHER_SHARE = 0.05            # "other" charges, beyond taxes the form names
 OTHER_SHARE_NO_TAX = 0.23     # ... when the form says nothing of GST (it may sit in "other")
 CONTINGENCY_SHARE = 0.05      # CPWD allows 3%; 5% is the form's own soft limit
 UNREAD_SHARE = 0.15           # items no reader recognises, in a construction estimate (T136)
+SETTLE_LABOUR = True          # T141 (module note); False judges wages like any line, as before,
+                              # for data/trial/labour_trial.py --wages-in-whole
 CIVIL = {"cement", "sand", "aggregate", "steel_rebar", "brick", "granular_base", "bitumen"}
 
 
@@ -110,6 +123,10 @@ class Whole:
     gaps: list[rates.Gap] = field(default_factory=list)        # not priced at all
     fallbacks: list[rates.Gap] = field(default_factory=list)   # priced from the state instead
     unexplained: dict = field(default_factory=dict)   # {"lump_sums", "other_charges", ...: Rs}
+    judged: float = 0.0     # the share of the money settled: priced, labour within its band,
+                            # or held by the agency's own unanswered warning (the verdict's gate)
+    settled_labour: float = 0.0   # Rs of labour within twice its trade's rate (T141)
+    settled_lines: list[dict] = field(default_factory=list)
 
     def top(self) -> list[Line]:
         return sorted((x for x in self.lines if x.extra > 0), key=lambda x: -x.extra)[:TOP_LINES]
@@ -118,6 +135,9 @@ class Whole:
         return {"verdict": self.verdict, "grand_total": round(self.grand, 2),
                 "fair_total": round(self.fair_grand, 2), "gap": round(self.gap, 2),
                 "gap_share": round(self.gap_share, 4), "coverage": round(self.coverage, 4),
+                "judged": round(self.judged, 4),
+                "settled_labour": round(self.settled_labour, 2),
+                "settled_lines": self.settled_lines,
                 "above_fair_rate": self.above_fair, "priced_lines": self.priced,
                 "sources": self.sources, "sor_mismatch": self.sor_mismatch,
                 "lines": [x.to_json() for x in self.lines],
@@ -135,10 +155,11 @@ def _num(v) -> float:
 
 def _unread(ln) -> bool:
     """A priced line (not a lump sum) whose item no known material's name fits."""
-    if not isinstance(ln, dict) or ln.get("unit") == "ls":
+    if not isinstance(ln, dict) or ln.get("unit") == "ls" or ln.get("held"):
         return False
     item = ln.get("item") if isinstance(ln.get("item"), str) else None
-    return not catalog.material(ln.get("material_id")) and not materials.match(item)
+    return not catalog.material(ln.get("material_id")) and not materials.match(
+        item, labour=materials.LABOUR_BY_GROUP.get(ln.get("group")))
 
 
 def _line_value(ln: dict) -> float:
@@ -195,10 +216,24 @@ def judge(form: dict, computed: dict, work_type: str | None, sor: dict | None,
     sources: set[str] = set()
     gaps: dict[str, rates.Gap] = {}
     fallbacks: dict[str, rates.Gap] = {}
+    settled, settled_lines = 0.0, []
     for i, j, mid, r, q, ln in confirmed:
         fair, gap = rates.price_line(mid, ln, sor, index, district, agency, work_id, when, state)
         if gap:
             (fallbacks if fair else gaps).setdefault(mid, gap)
+        if (SETTLE_LABOUR and fair and fair.source != "sor_code" and catalog.is_labour(mid)
+                and r < labour.RATE_MARGIN * fair.rate):
+            # T141, the owner: labour is asked about only when blatant (labour.py). Within that,
+            # a crew's wage is the agency's call: settled, it adds nothing to the gap, and stays
+            # out of the share's base, so it cannot water down padding elsewhere (as an unpriced
+            # line could, T135; nor can a large honest crew added to dilute it). Measured in
+            # FINDINGS "T141". A row citing a schedule item is held to that item's rate like any
+            # line (a fact, not a judgement)
+            settled += q * r
+            settled_lines.append({"site": i, "line": j, "material": mid, "rate": round(r, 2),
+                                  "fair_rate": round(fair.rate, 2), "fair_source": fair.source,
+                                  "quantity": round(q, 3)})
+            continue
         total_need = need.get((i, mid))
         needed = (total_need * q / stated[(i, mid)]) if total_need is not None else None
         fair_q = q if needed is None else min(q, needed * QTY_TOLERANCE)
@@ -218,6 +253,8 @@ def judge(form: dict, computed: dict, work_type: str | None, sor: dict | None,
 
     compared = sum(x.amount for x in out)
     coverage = compared / lines_total if lines_total > 0 else 0.0
+    held = sum(_line_value(ln) for site in sites if isinstance(site, dict)
+               for ln in site.get("lines") or [] if isinstance(ln, dict) and ln.get("held"))
     civil = any(m in CIVIL for (_i, m) in need)
     extra = unexplained(form, computed, civil)
     lump = extra.get("lump_sums", 0.0) + extra.get("unread_items", 0.0)
@@ -233,14 +270,16 @@ def judge(form: dict, computed: dict, work_type: str | None, sor: dict | None,
     share = gap / base if base > 0 else 0.0
     priced = [x for x in out if x.fair_rate is not None]
     above = sum(1 for x in priced if x.rate > x.fair_rate)
-    if coverage < MIN_COVERAGE or not out:
+    judged = (compared + settled + held) / lines_total if lines_total > 0 else 0.0
+    if judged < MIN_COVERAGE or not out:
         verdict = "CANT_CHECK"
     elif share >= GAP_SHARE and gap >= GAP_MIN_RS:
         verdict = "ASK"
     else:
         verdict = "FAIR"
     return Whole(verdict, grand, fair_grand, gap, share, coverage, out, above, len(priced),
-                 sorted(sources), mismatch, list(gaps.values()), list(fallbacks.values()), extra)
+                 sorted(sources), mismatch, list(gaps.values()), list(fallbacks.values()), extra,
+                 judged, settled, settled_lines)
 
 
 def sentence(w: Whole, label: str = "this size of work in this district") -> str:

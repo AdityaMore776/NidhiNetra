@@ -102,6 +102,25 @@ dashboard queue before / after in FINDINGS (439 → 217)
 of §9.6 planted. Only readings and blurred frames are kept; no video enters the repo.
 **Done when:** [ ] each trick caught 9 in 10 · [ ] a finding on at most 1 in 30 honest visits · [ ] FINDINGS
 
+### T141 · Labour, trade by trade: a labour schedule, only blatant irregularities  ·  M  ·  engine + web + data  ·  Depends on: T121
+**What:** (owner, 6 Oct 2026) labour was two kinds ("skilled", "unskilled") among the estimate
+lines. Give it its own detailed table (trade, grade, workers, days, day rate, what they do, the
+lines they work on), judge each trade against what others pay that trade, and ask only about
+blatant irregularities, never how many workers. Then try to break it. Plan:
+`docs/plans/T141-labour-schedule.md`.
+**Done when:**
+- [x] Engine: 14 trades in 4 grades (`cost_form.yaml`); labour fields and form checks
+  (`validate.py`); per-trade rates and a grade pool (`rates.py`); `LABOUR_RATE_FAR_ABOVE` and
+  `LABOUR_DAYS_BEYOND_WORK` (`agents/cost_estimate/labour.py`); labour within its band settled in
+  the whole estimate (`whole.py`); tests (`tests/agents/cost_estimate/test_labour.py`).
+- [x] Website form PSWIF v1.1: the labour schedule and "rate includes its workers" on each BOQ
+  line; the adapter (`pswif.py`), flags, form map and the end-to-end page read it.
+- [x] Planted trial (`data/trial/labour_trial.py`): honest filings 0/450 asked; one trade ×2.5
+  88%, ×3 98%; ten times the workers 0/450.
+- [x] The robustness loop: 112 probes, 0 FAIL, 10 LIMIT; five loopholes found and closed (FINDINGS
+  "T141").
+- [ ] Real forms (T098) set the final margins with the owner (2× a trade, 2.5× a pool).
+
 ### T140 · The T139 rules in six more districts  ·  S  ·  data  ·  Depends on: T139
 **What:** (owner, 6 Oct 2026: "continue") check that Duplicate Work's T139 rules hold beyond Jaunpur.
 Use districts whose villages look different, each with its own real works, post offices and

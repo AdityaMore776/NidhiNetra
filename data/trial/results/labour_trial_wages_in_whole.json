@@ -1,0 +1,458 @@
+{
+ "n_per_district": 150,
+ "seed": 141,
+ "rule": {
+  "rate_margin": 2.0,
+  "pool_margin": 2.5,
+  "grade_step": 1.25,
+  "min_rs": 10000
+ },
+ "districts": {
+  "low": {
+   "honest": {
+    "n": 150,
+    "status": {
+     "ASSESSED": 150
+    },
+    "asked": {
+     "any labour question": 0,
+     "any question": 9,
+     "ESTIMATE_ABOVE_FAIR_PRICE": 9
+    }
+   },
+   "padded": {
+    "one trade x1.5": {
+     "caught": 9,
+     "n": 150,
+     "share": 0.06,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 36
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "one trade x2": {
+     "caught": 64,
+     "n": 150,
+     "share": 0.4267,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 55
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "one trade x2.5": {
+     "caught": 130,
+     "n": 150,
+     "share": 0.8667,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 67
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "one trade x3": {
+     "caught": 149,
+     "n": 150,
+     "share": 0.9933,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 83
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "every rate x1.5": {
+     "caught": 0,
+     "n": 150,
+     "share": 0.0,
+     "code": null,
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 113,
+      "LABOUR_RATE_FAR_ABOVE": 10
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "helper as 'highly skilled' at an operator's rate": {
+     "caught": 125,
+     "n": 150,
+     "share": 0.8333,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 49
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "helper as 'highly skilled' at 1.25x an operator's rate": {
+     "caught": 150,
+     "n": 150,
+     "share": 1.0,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 61
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "Other trade, 'highly skilled', at 2.2x an operator": {
+     "caught": 0,
+     "n": 150,
+     "share": 0.0,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 9
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "Other trade, 'highly skilled', at 3x an operator": {
+     "caught": 150,
+     "n": 150,
+     "share": 1.0,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 9
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "a watchman on site 1.6x the work's time": {
+     "caught": 150,
+     "n": 150,
+     "share": 1.0,
+     "code": "LABOUR_DAYS_BEYOND_WORK",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 8
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "ten times the workers, honest rates": {
+     "caught": 0,
+     "n": 150,
+     "share": 0.0,
+     "code": null,
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 15
+     },
+     "status": {
+      "ASSESSED": 149,
+      "NOT_ASSESSABLE": 1
+     }
+    }
+   }
+  },
+  "mid": {
+   "honest": {
+    "n": 150,
+    "status": {
+     "ASSESSED": 150
+    },
+    "asked": {
+     "any labour question": 0,
+     "any question": 3,
+     "ESTIMATE_ABOVE_FAIR_PRICE": 3
+    }
+   },
+   "padded": {
+    "one trade x1.5": {
+     "caught": 0,
+     "n": 150,
+     "share": 0.0,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 20
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "one trade x2": {
+     "caught": 43,
+     "n": 150,
+     "share": 0.2867,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 37
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "one trade x2.5": {
+     "caught": 129,
+     "n": 150,
+     "share": 0.86,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 48
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "one trade x3": {
+     "caught": 145,
+     "n": 150,
+     "share": 0.9667,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 67
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "every rate x1.5": {
+     "caught": 0,
+     "n": 150,
+     "share": 0.0,
+     "code": null,
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 129
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "helper as 'highly skilled' at an operator's rate": {
+     "caught": 150,
+     "n": 150,
+     "share": 1.0,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 38
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "helper as 'highly skilled' at 1.25x an operator's rate": {
+     "caught": 150,
+     "n": 150,
+     "share": 1.0,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 49
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "Other trade, 'highly skilled', at 2.2x an operator": {
+     "caught": 0,
+     "n": 150,
+     "share": 0.0,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 3
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "Other trade, 'highly skilled', at 3x an operator": {
+     "caught": 150,
+     "n": 150,
+     "share": 1.0,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 3
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "a watchman on site 1.6x the work's time": {
+     "caught": 150,
+     "n": 150,
+     "share": 1.0,
+     "code": "LABOUR_DAYS_BEYOND_WORK",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 3
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "ten times the workers, honest rates": {
+     "caught": 0,
+     "n": 150,
+     "share": 0.0,
+     "code": null,
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 8
+     },
+     "status": {
+      "ASSESSED": 149,
+      "NOT_ASSESSABLE": 1
+     }
+    }
+   }
+  },
+  "high": {
+   "honest": {
+    "n": 150,
+    "status": {
+     "ASSESSED": 150
+    },
+    "asked": {
+     "any labour question": 0,
+     "any question": 3,
+     "ESTIMATE_ABOVE_FAIR_PRICE": 3
+    }
+   },
+   "padded": {
+    "one trade x1.5": {
+     "caught": 0,
+     "n": 150,
+     "share": 0.0,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 29
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "one trade x2": {
+     "caught": 54,
+     "n": 150,
+     "share": 0.36,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 55
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "one trade x2.5": {
+     "caught": 136,
+     "n": 150,
+     "share": 0.9067,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 80
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "one trade x3": {
+     "caught": 146,
+     "n": 150,
+     "share": 0.9733,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 80
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "every rate x1.5": {
+     "caught": 0,
+     "n": 150,
+     "share": 0.0,
+     "code": null,
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 127,
+      "LABOUR_RATE_FAR_ABOVE": 1
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "helper as 'highly skilled' at an operator's rate": {
+     "caught": 130,
+     "n": 150,
+     "share": 0.8667,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 34
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "helper as 'highly skilled' at 1.25x an operator's rate": {
+     "caught": 150,
+     "n": 150,
+     "share": 1.0,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 70
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "Other trade, 'highly skilled', at 2.2x an operator": {
+     "caught": 0,
+     "n": 150,
+     "share": 0.0,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 3
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "Other trade, 'highly skilled', at 3x an operator": {
+     "caught": 150,
+     "n": 150,
+     "share": 1.0,
+     "code": "LABOUR_RATE_FAR_ABOVE",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 3
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "a watchman on site 1.6x the work's time": {
+     "caught": 150,
+     "n": 150,
+     "share": 1.0,
+     "code": "LABOUR_DAYS_BEYOND_WORK",
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 3
+     },
+     "status": {
+      "ASSESSED": 150
+     }
+    },
+    "ten times the workers, honest rates": {
+     "caught": 0,
+     "n": 150,
+     "share": 0.0,
+     "code": null,
+     "other_questions": {
+      "ESTIMATE_ABOVE_FAIR_PRICE": 10
+     },
+     "status": {
+      "ASSESSED": 143,
+      "NOT_ASSESSABLE": 7
+     }
+    }
+   }
+  }
+ }
+}

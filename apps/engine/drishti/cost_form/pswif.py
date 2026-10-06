@@ -1,9 +1,10 @@
 """The website's work intelligence form, read by the four agents (T134).
 
-The Pre-Sanction Work Intelligence Form (PSWIF v1.0, apps/web/forms/) is what an implementing
-agency fills on the website. Its "Export Structured JSON" (and its saved drafts) are one flat
-object of field names: `work_type`, `road_length_m`, `latitude`, `boq_desc_3`, ... This module
-turns that object into the two things the agents read:
+The Pre-Sanction Work Intelligence Form (PSWIF v1.1, apps/web/forms/) is what an implementing
+agency fills on the website; v1.1 (T141) adds the labour schedule, one row per trade. Its
+"Export Structured JSON" (and its saved drafts) are one flat object of field names: `work_type`,
+`road_length_m`, `latitude`, `boq_desc_3`, ... This module turns that object into the two things
+the agents read:
 
   to_cost_form(p)   the engine's cost estimate form (reference/cost_form.yaml): the work, its
                     site and map pins, its size, its expense lines, timing and totals, and the
@@ -20,7 +21,10 @@ Rules of the mapping, so nothing is invented:
     counts as confirmed when that line carries a written justification, and a check on the
     whole estimate when the rate-deviation notes are filled;
   - the estimated duration already includes the days lost to weather, so no lost months are
-    added to it.
+    added to it;
+  - v1.1's labour rows become labour lines (trade, workers, days, day rate, what they do, the
+    BOQ lines they work on); a BOQ line refers to its row number (`ref`). A v1.0 export keeps
+    its labour among the BOQ lines (versions.not_asked: no labour fields required).
 """
 
 from __future__ import annotations
@@ -289,21 +293,92 @@ def _boq_rows(p: dict) -> list[dict]:
     rows = []
     for n in nums:
         row = {f: p.get(f"boq_{f}_{n}") for f in ("code", "desc", "unit", "qty", "rate",
-                                                   "source", "measure_ref", "just")}
+                                                   "source", "measure_ref", "just", "inclab")}
         if _s(row["desc"]) or _n(row["qty"]) or _n(row["rate"]):
-            rows.append(row)
+            rows.append({**row, "n": n})
     return rows
 
 
-def _lines(p: dict, goods: bool) -> list[dict]:
+def version(p: dict) -> str:
+    """PSWIF v1.1 (T141) has the labour schedule. An export says its version; a filing made by
+    a script may only show it by its labour rows."""
+    meta = p.get("__meta") if isinstance(p.get("__meta"), dict) else {}
+    if _s(meta.get("form_version")) == versions.PSWIF_V11 or any(
+            re.fullmatch(r"(?:lab_trade|boq_inclab)_\d+", k) for k in p if isinstance(k, str)):
+        return versions.PSWIF_V11
+    return versions.PSWIF
+
+
+# the labour schedule's trades (the form's values) and how its rates are sourced
+_TRADES = ("beldar", "helper", "chowkidar", "mate", "mason", "carpenter", "bar_bender", "painter",
+           "plumber", "electrician", "welder", "driver", "operator", "supervisor")
+_LAB_BASIS = {**_BASIS, "Minimum wages notification": "other"}
+_RANGE = re.compile(r"(\d+)\s*(?:-|–|to)\s*(\d+)")
+_LINE_WORDS = re.compile(r"\b(?:boq|lines?|items?|nos?|sl|s\.?\s?no)\b\.?|#")
+
+
+def line_numbers(text) -> list | None:
+    """'1, 3-5' -> [1, 3, 4, 5]. A word that is no number is kept as written, so the form asks
+    for numbers instead of guessing."""
+    t = _LINE_WORDS.sub(" ", _s(text).translate(_DIGITS).lower())
+    out: list = []
+    for part in re.split(r"[,;&/]+|\band\b", t):
+        part = part.strip()
+        m = _RANGE.fullmatch(part)
+        if m:
+            a, b = sorted((int(m[1]), int(m[2])))
+            out += list(range(a, min(b, a + 199) + 1))
+        else:
+            out += [int(w) if w.isdigit() else w for w in part.split()]
+    return out[:500] or None
+
+
+def _labour(p: dict) -> list[dict]:
+    """The labour schedule's rows (lab_trade_1, lab_workers_1, ...), one line per trade."""
+    nums = sorted({int(m.group(1)) for k in p if isinstance(k, str)
+                   and (m := re.fullmatch(r"lab_(?:trade|name|workers|days|rate)_(\d+)", k))})
+    lines = []
+    for n in nums:
+        def get(f, n=n):
+            return p.get(f"lab_{f}_{n}")
+        trade, name = _s(get("trade")), _s(get("name"))
+        if not (trade or name or _n(get("workers")) or _n(get("days")) or _n(get("rate"))):
+            continue
+        mid = f"labour_{trade}" if trade in _TRADES else "none" if trade == "other" else None
+        label = (catalog.material(mid) or {}).get("label") if mid and mid != "none" else None
+        ln: dict = {"group": "labour", "item": label or name or "Other trade", "unit": "day",
+                    "lab_ref": n}
+        _put(ln, "material_id", mid)
+        _put(ln, "grade", _s(get("grade")))
+        _put(ln, "workers", _n(get("workers")))
+        _put(ln, "days", _n(get("days")))
+        _put(ln, "rate", _n(get("rate")))
+        _put(ln, "activity", _s(get("task")))
+        _put(ln, "for_lines", line_numbers(get("lines")))
+        basis = _LAB_BASIS.get(_s(get("source")))
+        _put(ln, "basis", basis)
+        if basis == "other":
+            ln["basis_other"] = _s(get("source"))
+        lines.append(ln)
+    return lines
+
+
+def _lines(p: dict, goods: bool, schedule: bool = False) -> list[dict]:
+    """The BOQ rows as estimate lines. `schedule` (v1.1, T141): the form has a labour schedule,
+    so a BOQ row that reads as workers stays an estimate line (validate.py asks the agency to
+    move it) and is still priced as its trade."""
     lines = []
     for row in _boq_rows(p):
         item = _s(row["desc"])
         mid = materials.match(item)
         unit = _UNITS.get(_s(row["unit"]).lower().rstrip("."), _s(row["unit"]).lower() or None)
-        group = ("labour" if mid and mid.startswith("labour") else
+        machine = catalog.is_labour(mid) and unit not in ("day", None)
+        if machine:
+            mid = None                      # "JCB with operator" by the hour: a machine hired
+        group = ("machinery" if machine else
+                 "labour" if catalog.is_labour(mid) and not schedule else
                  "goods" if goods and not mid else "materials")
-        ln: dict = {"group": group, "item": item}
+        ln: dict = {"group": group, "item": item, "ref": row["n"]}
         _put(ln, "material_id", mid)
         _put(ln, "unit", unit)
         _put(ln, "quantity", _n(row["qty"]))
@@ -317,7 +392,11 @@ def _lines(p: dict, goods: bool) -> list[dict]:
         if group == "goods":
             _put(ln, "spec", _s(p.get("equipment_spec")))
         _put(ln, "justification", _s(row["just"]))
+        if schedule and row["inclab"] in (True, "true", "on"):
+            ln["includes_labour"] = True
         lines.append(ln)
+    if schedule:
+        lines += _labour(p)
     lump = _n(p.get("lumpsum_components"))
     if lump:
         lines.append({"group": "other", "item": "Lump-sum components (as on the estimate)",
@@ -441,11 +520,13 @@ def to_cost_form(p: dict, today: date | None = None) -> dict:
         "decl_actuals": bool(p.get("consent_agent_verification")),
     }
 
-    site = {"location": _location(p, linear), "size": _size(p, code), "lines": _lines(p, goods)}
+    v = version(p)
+    site = {"location": _location(p, linear), "size": _size(p, code),
+            "lines": _lines(p, goods, schedule=v == versions.PSWIF_V11)}
     if conditions:
         site["site_conditions"] = conditions
     filed = _date(p.get("ida_received_date")) or _date(p.get("mp_recommendation_date"))
-    form = {"form_version": versions.PSWIF, "filed_on": filed,
+    form = {"form_version": v, "filed_on": filed,
             "recommendation": rec, "work": work, "sites": [site],
             "charges": charges, "timing": timing, "totals": totals, "prepared": prepared,
             "declarations": declarations, "earlier_works": _earlier(p)}

@@ -52,7 +52,7 @@ import work_form_examples as wf  # noqa: E402
 
 from drishti.agents.contract import Status  # noqa: E402
 from drishti.batch import indexes  # noqa: E402
-from drishti.cost_form import pswif  # noqa: E402
+from drishti.cost_form import catalog, pswif  # noqa: E402
 from drishti.evaluation.stats import build_store  # noqa: E402
 from drishti.pipeline.orchestrator import Context, assess_work  # noqa: E402
 
@@ -147,8 +147,9 @@ def set_boq(p: dict, rows: list[dict]) -> dict:
 
 
 def retotal(p: dict) -> dict:
-    """The estimate's total as the agency's document would carry it (lines + lump sum + other)."""
-    total = sum(float(r["qty"] or 0) * float(r["rate"] or 0) for r in boq(p))
+    """The estimate's total as the agency's document would carry it (lines, labour schedule,
+    lump sum, other)."""
+    total = wf.estimate_total(p)
     total += float(p.get("lumpsum_components") or 0) + float(p.get("other_charges") or 0)
     p["technical_estimate"] = f"{total:.2f}"
     p["mplads_share"] = f"{total:.0f}"
@@ -158,8 +159,8 @@ def retotal(p: dict) -> dict:
 def honest_rate(desc: str) -> float | None:
     d = desc.lower()
     for word, m in (("cement", "cement"), ("sand", "sand"), ("aggregate", "aggregate"),
-                    ("wbm", "granular_base"), ("mason", "labour_skilled"),
-                    ("labourer", "labour_unskilled")):
+                    ("wbm", "granular_base"), ("mason", "mason"), ("labourer", "beldar"),
+                    ("beldar", "beldar")):
         if word in d:
             return wf.RATE[m]
     return None
@@ -262,8 +263,7 @@ def _(world):
 def _(world):
     words = {"Cement OPC 43 grade": ("Portland cement (OPC-43), 50 kg bags", "Bags"),
              "Coarse sand": ("River sand, coarse", "Cu.m"),
-             "Stone aggregate 20 mm": ("20mm stone grit / aggregate", "CUM"),
-             "Labourer (unskilled)": ("Unskilled labour (beldar)", "Mandays")}
+             "Stone aggregate 20 mm": ("20mm stone grit / aggregate", "CUM")}
     bad = []
     for key in ("clean", "cost_padded"):
         p = form_of(world, key)
@@ -926,6 +926,21 @@ def _(world):
     return still(res, "cost_estimate", "ESTIMATE_ABOVE_FAIR_PRICE", "cement in nos")
 
 
+@probe("cost_estimate", "evasion", "padded items in units that do not fit them, with a reason given")
+def _(world):
+    p = form_of(world, "cost_padded")
+    rows = boq(p)
+    rows[0]["unit"] = "nos"                         # cement in "numbers", "explained"
+    rows[0]["just"] = "As per the site requirement"
+    res = run(world, work_of(set_boq(p, rows), record_of(world, "cost_padded"), world.place,
+                             world.as_of))
+    got = flags(res, "cost_estimate")
+    return ("PASS" if got else "LIMIT",
+            f"{got or 'nothing'}: a line the agency answered for in another unit looks like an "
+            "honest schedule item (brick masonry per m3) until the state's Schedule of Rates is "
+            "loaded with its item codes (T096); the coverage note says what was not priced")
+
+
 def _elsewhere(world, key: str, factor: float | None = None) -> dict:
     """The filing moved to another district of the state, where no form was ever filed (a late
     filing: only forms filed before it count)."""
@@ -1172,16 +1187,256 @@ def _(world):
                  "MATERIAL_QUANTITY_ABOVE_SIZE", "twice the sand")
 
 
-@probe("cost_estimate", "evasion", "labour days multiplied by 2.5")
+@probe("cost_estimate", "evasion", "every crew's days x2.5, still within the work's time")
 def _(world):
     def edit(rows):
         for r in rows:
-            if "mason" in r["desc"].lower() or "labourer" in r["desc"].lower():
-                r["qty"] = f"{float(r['qty']) * 2.5:g}"
-    got = flags(run(world, _honest(world, "clean", edit)), "cost_estimate")
+            r["days"] = f"{float(r['days']) * 2.5:g}"
+    got = flags(run(world, _labour(world, "clean", edit)), "cost_estimate")
     return ("PASS" if got else "LIMIT",
-            f"{got or 'nothing'}: labour days per m3 are not normed yet (CPWD's Analysis of "
-            "Rates gives them, T096); the site videos show the pace of work")
+            f"{got or 'nothing'}: how many workers and days a work needs is never judged (the "
+            "owner, T141); days beyond the work's own time are asked (below), and the site "
+            "videos show the pace of work")
+
+
+# ---- labour, trade by trade (T141) -----------------------------------------------------------
+
+LAB = ("trade", "name", "grade", "workers", "days", "rate", "task", "lines", "source")
+
+
+def lab(p: dict) -> list[dict]:
+    rows, n = [], 1
+    while f"lab_trade_{n}" in p:
+        rows.append({k: p.get(f"lab_{k}_{n}", "") for k in LAB})
+        n += 1
+    return rows
+
+
+def set_lab(p: dict, rows: list[dict]) -> dict:
+    for k in [k for k in p if k.startswith("lab_")]:
+        del p[k]
+    for n, r in enumerate(rows, start=1):
+        for k in LAB:
+            p[f"lab_{k}_{n}"] = r.get(k, "")
+    return retotal(p)
+
+
+def crew_row(trade: str, workers: float, days: float, rate: float, task: str, lines: str = "1-4",
+             grade: str | None = None, name: str = "",
+             source: str = "District recent rates") -> dict:
+    return {"trade": trade, "name": name,
+            "grade": grade or (catalog.grade_of(f"labour_{trade}") or ""),
+            "workers": f"{workers:g}", "days": f"{days:g}", "rate": f"{rate:g}", "task": task,
+            "lines": lines, "source": source}
+
+
+def _labour(world, key: str, edit, **over) -> dict:
+    """The example's form with `edit(rows)` applied to its labour schedule, the MP's figure moved
+    with it."""
+    p = form_of(world, key)
+    rows = lab(p)
+    edit(rows)
+    set_lab(p, rows)
+    p.update(over)
+    p["mp_recommended_amount"] = f"{float(p['technical_estimate']):.0f}"
+    return work_of(p, record_of(world, key), world.place, world.as_of)
+
+
+def _scale(rows: list[dict], trade: str, by: float) -> None:
+    for r in rows:
+        if r["trade"] == trade:
+            r["rate"] = f"{round(float(r['rate']) * by)}"
+
+
+@probe("cost_estimate", "noise", "a crew of 34 (16 helpers, 2 machine operators added) at honest rates")
+def _(world):
+    def edit(rows):
+        rows += [crew_row("helper", 16, 30, 430, "Feeding the mixer and carrying concrete"),
+                 crew_row("operator", 2, 30, 950, "Running the mixer and vibrator", "5")]
+    return quiet(run(world, _labour(world, "clean", edit)), "cost_estimate",
+                 "how many workers is the agency's call")
+
+
+@probe("cost_estimate", "evasion", "masons at 2.2 times what other agencies here pay masons")
+def _(world):
+    return still(run(world, _labour(world, "clean", lambda rows: _scale(rows, "mason", 2.2))),
+                 "cost_estimate", "LABOUR_RATE_FAR_ABOVE", "masons at 2.2x")
+
+
+@probe("cost_estimate", "evasion", "masons at 1.8 times: under the 2x line")
+def _(world):
+    got = flags(run(world, _labour(world, "clean", lambda rows: _scale(rows, "mason", 1.8))),
+                "cost_estimate")
+    return ("PASS" if got else "LIMIT",
+            f"{got or 'nothing'}: a trade's rate is a question only at twice what others pay "
+            "it (the owner: blatant only); the whole estimate counts it with every other line")
+
+
+@probe("cost_estimate", "evasion", "a helper called 'highly skilled', paid more than an operator")
+def _(world):
+    def edit(rows):
+        rows.append(crew_row("helper", 10, 40, 1100, "Carrying bricks and mortar",
+                             grade="highly_skilled"))
+    res = run(world, _labour(world, "clean", edit))
+    out = still(res, "cost_estimate", "LABOUR_RATE_FAR_ABOVE", "judged as a helper")
+    ev = (res["cost_estimate"].evidence or {}).get("labour") or {}
+    helper = next((r for r in ev.get("rows", []) if r["trade"] == "labour_helper"), {})
+    return out[0], f"{out[1]}; compared with {helper.get('pool') or helper.get('trade')}"
+
+
+@probe("cost_estimate", "evasion", "an invented trade ('Other', highly skilled) at 4x a mason")
+def _(world):
+    def edit(rows):
+        rows.append(crew_row("other", 2, 40, 3000, "Special finishing of the road surface",
+                             grade="highly_skilled", name="Surface finisher"))
+    return still(run(world, _labour(world, "clean", edit)), "cost_estimate",
+                 "LABOUR_RATE_FAR_ABOVE", "an Other trade at its nearest grade with forms")
+
+
+@probe("cost_estimate", "evasion", "the masons split into two rows, one at 3x")
+def _(world):
+    def edit(rows):
+        m = next(r for r in rows if r["trade"] == "mason")
+        twin = dict(m, workers="2", rate=f"{round(float(m['rate']) * 3)}",
+                    task="Finishing the edges and the joints")
+        m["workers"] = "2"
+        rows.append(twin)
+    return still(run(world, _labour(world, "clean", edit)), "cost_estimate",
+                 "LABOUR_RATE_FAR_ABOVE", "each row judged")
+
+
+@probe("cost_estimate", "evasion", "masons at 2.2x moved back among the BOQ lines")
+def _(world):
+    p = form_of(world, "clean")
+    rows = lab(p)
+    m = next(r for r in rows if r["trade"] == "mason")
+    set_lab(p, [r for r in rows if r is not m])
+    b = boq(p)
+    b.append({"code": "", "desc": "Mason", "unit": "day",
+              "qty": f"{float(m['workers']) * float(m['days']):g}",
+              "rate": f"{round(float(m['rate']) * 2.2)}", "source": "District recent rates",
+              "measure_ref": "", "just": "Masons for the concrete"})
+    set_boq(p, b)
+    p["mp_recommended_amount"] = f"{float(p['technical_estimate']):.0f}"
+    res = run(world, work_of(p, record_of(world, "clean"), world.place, world.as_of))
+    return still(res, "cost_estimate", "LABOUR_RATE_FAR_ABOVE", "still judged as masons")
+
+
+@probe("cost_estimate", "evasion", "a labour row on a BOQ line whose rate already pays its workers")
+def _(world):
+    w = _labour(world, "clean", lambda rows: None, boq_inclab_1=True)
+    res = run(world, w)
+    from drishti.cost_form.validate import validate
+    codes = {i["code"] for i in validate(w["cost_form"], today=world.as_of)["issues"]}
+    ok = "labour_paid_twice" in codes and res["cost_estimate"].status == Status.NOT_ASSESSABLE
+    return ("PASS" if ok else "FAIL",
+            f"the form refuses it ({'labour_paid_twice' in codes}); "
+            f"{res['cost_estimate'].status.value}, never a clean chit")
+
+
+@probe("cost_estimate", "evasion", "a composite line (labour inside) declared 'no labour'")
+def _(world):
+    def edit(rows):
+        rows.append(crew_row("mason", 4, 20, 750, "Brick masonry of the side walls", "6"))
+    p = form_of(world, "clean")
+    b = boq(p)
+    b.append({"code": "UP-PWD 6.1", "desc": "Brick masonry in cement mortar 1:6", "unit": "cum",
+              "qty": "20", "rate": "7200", "source": "State/Dept SoR", "measure_ref": "",
+              "just": ""})
+    set_boq(p, b)
+    rows = lab(p)
+    edit(rows)
+    set_lab(p, rows)
+    p["mp_recommended_amount"] = f"{float(p['technical_estimate']):.0f}"
+    got = flags(run(world, work_of(p, record_of(world, "clean"), world.place, world.as_of)),
+                "cost_estimate")
+    return ("PASS" if got else "LIMIT",
+            f"{got or 'nothing'}: whether a schedule item's rate includes labour is the "
+            "agency's own declaration until the state's Schedule of Rates is loaded with its "
+            "item codes (T096)")
+
+
+@probe("cost_estimate", "evasion", "a watchman on site twice the work's own time")
+def _(world):
+    def edit(rows):
+        rows.append(crew_row("chowkidar", 2, 240, 420, "Guarding the material and the site",
+                             "1-5"))
+    return still(run(world, _labour(world, "clean", edit)), "cost_estimate",
+                 "LABOUR_DAYS_BEYOND_WORK", "120-day work, 240 days on site")
+
+
+@probe("cost_estimate", "evasion", "labour rows with the trade left blank")
+def _(world):
+    def edit(rows):
+        for r in rows:
+            r["trade"], r["grade"] = "", ""
+            r["rate"] = f"{round(float(r['rate']) * 2.5)}"
+    res = run(world, _labour(world, "clean", edit))
+    st = res["cost_estimate"].status
+    return ("PASS" if st == Status.NOT_ASSESSABLE or flags(res, "cost_estimate") else "FAIL",
+            f"{flags(res, 'cost_estimate') or 'nothing'} ({st.value}): never a clean chit")
+
+
+@probe("cost_estimate", "noise", "a high-wage district: every agency pays 1.6x, and so does the filing")
+def _(world):
+    bg = copy.deepcopy(world.background)
+    others = copy.deepcopy([w for k, w in world.records.items()])
+    for w in bg + others:
+        for site in (w.get("cost_form") or {}).get("sites") or []:
+            for ln in site.get("lines") or []:
+                if ln.get("group") == "labour" and isinstance(ln.get("rate"), (int, float)):
+                    ln["rate"] = round(ln["rate"] * 1.6)
+    work = _labour(world, "clean", lambda rows: [_scale(rows, t, 1.6) for t in ("mason", "beldar")])
+    keep = {w["work_id"] for w in others}
+    res = run(world, work, background=bg, drop=tuple(keep), extra=others)
+    got = [c for c in flags(res, "cost_estimate") if c.startswith("LABOUR")]
+    return ("PASS" if not got else "FAIL", f"{got or 'nothing'} on labour")
+
+
+@probe("cost_estimate", "scarce", "masons filed by only 2 other agencies: honest not asked, 2.4x is")
+def _(world):
+    bg = copy.deepcopy(world.background)
+    agencies = sorted({w["agency_name"] for w in bg})
+    keep = set(agencies[:2])
+    for w in bg:
+        if w["agency_name"] in keep:
+            continue
+        for site in (w.get("cost_form") or {}).get("sites") or []:
+            site["lines"] = [ln for ln in site.get("lines") or []
+                             if ln.get("material_id") != "labour_mason"]
+    honest = run(world, _labour(world, "clean", lambda rows: None), background=bg)
+    padded = run(world, _labour(world, "clean", lambda rows: _scale(rows, "mason", 2.4)),
+                 background=bg)
+    h = [c for c in flags(honest, "cost_estimate") if c.startswith("LABOUR")]
+    pd = [c for c in flags(padded, "cost_estimate") if c.startswith("LABOUR")]
+    ev = (padded["cost_estimate"].evidence or {}).get("labour") or {}
+    m = next((r for r in ev.get("rows", []) if r["trade"] == "labour_mason"), {})
+    return ("PASS" if not h and pd else "FAIL",
+            f"honest {h or 'nothing'}; at 2.4x {pd or 'nothing'} (compared with "
+            f"{m.get('pool') or m.get('level')} at {m.get('margin')}x)")
+
+
+@probe("cost_estimate", "noise", "an old v1.0 export, labour among its BOQ lines in Hindi")
+def _(world):
+    out = []
+    for by in (1.0, 2.4):
+        p = form_of(world, "clean")
+        rows = lab(p)
+        set_lab(p, [])
+        b = boq(p)
+        hindi = {"mason": "राजमिस्त्री", "beldar": "मजदूर"}
+        for r in rows:
+            rate = float(r["rate"]) * (by if r["trade"] == "mason" else 1.0)
+            b.append({"code": "", "desc": hindi[r["trade"]], "unit": "Mandays",
+                      "qty": f"{float(r['workers']) * float(r['days']):g}",
+                      "rate": f"{round(rate)}", "source": "District recent rates",
+                      "measure_ref": "", "just": ""})
+        set_boq(p, b)
+        p["mp_recommended_amount"] = f"{float(p['technical_estimate']):.0f}"
+        res = run(world, work_of(p, record_of(world, "clean"), world.place, world.as_of))
+        out.append(flags(res, "cost_estimate"))
+    ok = not out[0] and "LABOUR_RATE_FAR_ABOVE" in out[1]
+    return ("PASS" if ok else "FAIL", f"honest {out[0] or 'nothing'}; masons at 2.4x {out[1]}")
 
 
 @probe("cost_estimate", "noise", "rates written 'Rs 464/-' and quantities with spaces")

@@ -1,5 +1,5 @@
-Agent robustness loop (T135-T139): 97 probes on the work form's example filings in Jaunpur (1,038 real works, 11 background filings), as of 2026-10-02
-PASS 90  FAIL 0  LIMIT 7
+Agent robustness loop (T135-T139): 112 probes on the work form's example filings in Jaunpur (1,038 real works, 11 background filings), as of 2026-10-02
+PASS 102  FAIL 0  LIMIT 10
 
 == cost_estimate
   PASS  noise    honest rates a few % apart (seeded): no question
@@ -15,9 +15,9 @@ PASS 90  FAIL 0  LIMIT 7
   PASS  evasion  padded items given names no reader knows
         ['ESTIMATE_NOT_ITEMISED'] (ASSESSED); says what it could not price: True
   PASS  evasion  the padding moved into a lump-sum line
-        Rs 303,139 as a lump sum: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
+        Rs 264,100 as a lump sum: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
   PASS  evasion  the padding moved into 'other charges'
-        Rs 303,139 as other charges: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
+        Rs 264,100 as other charges: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
   PASS  evasion  padded items priced in units nobody converts (brass, quintal)
         sand in brass, cement in quintal: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
   PASS  evasion  one agency files under name variants to lift the district price
@@ -44,8 +44,10 @@ PASS 90  FAIL 0  LIMIT 7
         no question; says a line was held as a likely typing mistake: True
   PASS  evasion  padded items given units that do not fit them
         cement in nos: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
+  LIMIT evasion  padded items in units that do not fit them, with a reason given
+        nothing: a line the agency answered for in another unit looks like an honest schedule item (brick masonry per m3) until the state's Schedule of Rates is loaded with its item codes (T096); the coverage note says what was not priced
   PASS  scarce   a district with no forms: the state's forms stand in
-        honest: nothing; +50%: ['ESTIMATE_ABOVE_FAIR_PRICE']; priced from: 12 recent forms of 8 other agencies across the state, plus 10% for local prices 15 recent 
+        honest: nothing; +50%: ['ESTIMATE_ABOVE_FAIR_PRICE']; priced from: 13 recent forms of 8 other agencies across the state, plus 10% for local prices 16 recent 
   LIMIT evasion  22% padding where only the state's forms can price it
         nothing: a state-wide rate carries 10% for local prices, so padding is asked from about 27% there; the district's own forms (or the SoR, T096) ask from 15%
   LIMIT evasion  every agency in the district pads 22% together
@@ -62,8 +64,36 @@ PASS 90  FAIL 0  LIMIT 7
         earthwork, shuttering and curing lines: nothing (ASSESSED)
   PASS  evasion  sand and aggregate quantities doubled
         twice the sand: MATERIAL_QUANTITY_ABOVE_SIZE (ASSESSED)
-  LIMIT evasion  labour days multiplied by 2.5
-        nothing: labour days per m3 are not normed yet (CPWD's Analysis of Rates gives them, T096); the site videos show the pace of work
+  LIMIT evasion  every crew's days x2.5, still within the work's time
+        nothing: how many workers and days a work needs is never judged (the owner, T141); days beyond the work's own time are asked (below), and the site videos show the pace of work
+  PASS  noise    a crew of 34 (16 helpers, 2 machine operators added) at honest rates
+        how many workers is the agency's call: nothing (ASSESSED)
+  PASS  evasion  masons at 2.2 times what other agencies here pay masons
+        masons at 2.2x: LABOUR_RATE_FAR_ABOVE (ASSESSED)
+  LIMIT evasion  masons at 1.8 times: under the 2x line
+        nothing: a trade's rate is a question only at twice what others pay it (the owner: blatant only); the whole estimate counts it with every other line
+  PASS  evasion  a helper called 'highly skilled', paid more than an operator
+        judged as a helper: LABOUR_RATE_FAR_ABOVE (ASSESSED); compared with unskilled
+  PASS  evasion  an invented trade ('Other', highly skilled) at 4x a mason
+        an Other trade at its nearest grade with forms: LABOUR_RATE_FAR_ABOVE (ASSESSED)
+  PASS  evasion  the masons split into two rows, one at 3x
+        each row judged: LABOUR_RATE_FAR_ABOVE (ASSESSED)
+  PASS  evasion  masons at 2.2x moved back among the BOQ lines
+        still judged as masons: LABOUR_RATE_FAR_ABOVE (ASSESSED)
+  PASS  evasion  a labour row on a BOQ line whose rate already pays its workers
+        the form refuses it (True); NOT_ASSESSABLE, never a clean chit
+  LIMIT evasion  a composite line (labour inside) declared 'no labour'
+        nothing: whether a schedule item's rate includes labour is the agency's own declaration until the state's Schedule of Rates is loaded with its item codes (T096)
+  PASS  evasion  a watchman on site twice the work's own time
+        120-day work, 240 days on site: LABOUR_DAYS_BEYOND_WORK (ASSESSED)
+  PASS  evasion  labour rows with the trade left blank
+        nothing (NOT_ASSESSABLE): never a clean chit
+  PASS  noise    a high-wage district: every agency pays 1.6x, and so does the filing
+        nothing on labour
+  PASS  scarce   masons filed by only 2 other agencies: honest not asked, 2.4x is
+        honest nothing; at 2.4x ['LABOUR_RATE_FAR_ABOVE'] (compared with unskilled at 3.90625x)
+  PASS  noise    an old v1.0 export, labour among its BOQ lines in Hindi
+        honest nothing; masons at 2.4x ['LABOUR_RATE_FAR_ABOVE']
   PASS  noise    rates written 'Rs 464/-' and quantities with spaces
         ['ESTIMATE_ABOVE_FAIR_PRICE'] (ASSESSED)
   PASS  evasion  rates written as words ('see attached'): never a clean chit
@@ -106,7 +136,7 @@ PASS 90  FAIL 0  LIMIT 7
   PASS  noise    pins rounded to 4 decimals (about 11 m): same answers
         changed: none
   PASS  scale    3,000 filed roads in one district: one check stays under 2 s
-        0.02 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']
+        0.03 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']
   PASS  evasion  a 'new' hall pinned 60 m from the old (just past the 50 m line)
         note: True; a pin past 50 m is another site by rule, so it is named in a note and the first site video (the hall already standing) settles it
   PASS  evasion  split with the checked piece called a paver road / 'Other'
@@ -200,6 +230,6 @@ PASS 90  FAIL 0  LIMIT 7
   PASS  noise    a light installed in a day: first and final video the same day
         532 of Jaunpur's 1,025 real works closed within the month: nothing (ASSESSED)
 
-Random damage: 3000 runs (seed 7), half through the website form, half inside the engine's own form, visits and record
+Random damage: 400 runs (seed 2026), half through the website form, half inside the engine's own form, visits and record
   agent errors: 0 {}
   contract broken: 0; a different answer the second time: 0

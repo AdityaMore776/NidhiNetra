@@ -102,7 +102,7 @@ td input,td select{min-height:32px;padding:5px 6px;border-color:#c7d0dc}
         <p>Structured evidence form for MPLADS work scrutiny, technical estimation and agent-ready anomaly screening</p>
       </div>
       <div class="meta">
-        <div><b>Form Version</b><span>PSWIF v1.0</span></div>
+        <div><b>Form Version</b><span>PSWIF v1.1</span></div>
         <div><b>Status</b><span id="headerStatus">DRAFT</span></div>
         <div><b>Work ID</b><span id="workIdDisplay">Auto on save</span></div>
         <div><b>Data Lock</b><span id="lockStatus">Not locked</span></div>
@@ -380,11 +380,19 @@ td input,td select{min-height:32px;padding:5px 6px;border-color:#c7d0dc}
         <div class="field w3"><label>Estimate Prepared / Checked By</label><input name="estimate_engineer"></div>
         <div class="tablewrap">
           <table id="boqTable">
-            <thead><tr><th>#</th><th>SoR / Benchmark Code</th><th>Item Description & Specification</th><th>Unit</th><th>Qty</th><th>Rate ₹</th><th>Amount ₹</th><th>Rate Source</th><th>Quantity Derivation / Measurement Ref</th><th>Deviation / Site-condition Justification</th><th class="row-actions">Action</th></tr></thead>
+            <thead><tr><th>#</th><th>SoR / Benchmark Code</th><th>Item Description & Specification</th><th>Unit</th><th>Qty</th><th>Rate ₹</th><th>Amount ₹</th><th>Rate Source</th><th>Quantity Derivation / Measurement Ref</th><th>Deviation / Site-condition Justification</th><th title="A composite SoR item (e.g. brick masonry per m³) or a machine hired with its operator">Rate includes its workers?</th><th class="row-actions">Action</th></tr></thead>
             <tbody id="boqBody"></tbody>
           </table>
         </div>
         <div class="totalbar"><button class="smallbtn no-print" type="button" onclick="addBoqRow()">+ Add BOQ Line</button><span>Calculated BOQ Total</span><strong id="boqTotal">₹0.00</strong></div>
+        <div class="subhead">Labour schedule — one row per trade (workers are listed here, not among the BOQ lines). Only a day rate far above what others pay the same trade, or days beyond the work's own time, are questioned; how many workers a work needs is never judged.</div>
+        <div class="tablewrap">
+          <table id="labourTable" style="min-width:1400px">
+            <thead><tr><th>#</th><th>Trade</th><th>Trade name (if Other)</th><th>Grade</th><th>Workers</th><th>Days each on site</th><th>Day rate ₹</th><th>Person-days</th><th>Amount ₹</th><th>What they do</th><th>BOQ lines they work on (e.g. 1, 3-5)</th><th>Rate Source</th><th class="row-actions">Action</th></tr></thead>
+            <tbody id="labourBody"></tbody>
+          </table>
+        </div>
+        <div class="totalbar"><button class="smallbtn no-print" type="button" onclick="addLabourRow()">+ Add Labour Row</button><span>Calculated Labour Total</span><strong id="labourTotal">₹0.00</strong></div>
         <div class="field w4"><label>Non-BOQ / Lump-sum Components (₹)</label><input type="number" step="0.01" name="lumpsum_components" oninput="recalcTotals()"></div>
         <div class="field w4"><label>Permissible Charges / Contingencies / Testing (₹)</label><input type="number" step="0.01" name="other_charges" oninput="recalcTotals()"></div>
         <div class="field w4"><label>Taxes / GST Treatment</label><select name="tax_treatment"><option>Included in rates</option><option>Added separately</option><option>Not applicable / exempt</option><option>To be confirmed</option></select></div>
@@ -486,7 +494,7 @@ td input,td select{min-height:32px;padding:5px 6px;border-color:#c7d0dc}
       <div class="sectionhead"><h2>J. Agent Data Readiness — Pre-Sanction Gate</h2><small>Completeness only; this is not a fraud score</small></div>
       <div class="sectionbody">
         <div class="readiness">
-          <div class="readycard"><b>Cost Agent</b><span>Needs measurable scope, BOQ line items, quantities, official/benchmark rate basis, project geometry and site-condition facts.</span></div>
+          <div class="readycard"><b>Cost Agent</b><span>Needs measurable scope, BOQ line items, quantities, official/benchmark rate basis, labour by trade (workers, days, day rate), project geometry and site-condition facts.</span></div>
           <div class="readycard"><b>Duplicate Agent</b><span>Needs reliable geometry, new/continuation/rebuild status, prior/related work IDs and whole-project/package relationships.</span></div>
           <div class="readycard"><b>Time & Rules Agent</b><span>Needs recommendation/receipt/sanction dates, project kind & size, realistic duration, milestone plan, eligibility facts and clearances.</span></div>
           <div class="readycard"><b>Site Progress Agent</b><span>Needs baseline capture plan, fixed viewpoints/zones, measurable completion definition, site geometry and later monthly evidence.</span></div>
@@ -546,29 +554,44 @@ function captureGeo(which){
   },err=>showAlert('Location capture failed: '+err.message+' — browsers normally require HTTPS or localhost and location permission.', false),{enableHighAccuracy:true,timeout:15000,maximumAge:0});
 }
 
+// rows keep their number (BOQ lines are referred to by it from the labour schedule): a new row
+// takes the next number after the highest in the table
+function nextRow(tbody){return Math.max(0,...[...tbody.children].map(tr=>Number(tr.dataset.n)||0))+1}
+const SOURCES=['State/Dept SoR','CPWD/standard schedule','District recent rates','GeM / rate contract','Approved quotation','Other benchmark'];
+const TRADES=[['beldar','Beldar / mazdoor','unskilled'],['helper','Helper','unskilled'],['chowkidar','Chowkidar / watchman','unskilled'],['mate','Mate (gang leader)','semi_skilled'],['mason','Mason / mistri','skilled'],['carpenter','Carpenter','skilled'],['bar_bender','Bar bender','skilled'],['painter','Painter','skilled'],['plumber','Plumber','skilled'],['electrician','Electrician','skilled'],['welder','Welder / fabricator','skilled'],['driver','Driver','skilled'],['operator','Machine operator','highly_skilled'],['supervisor','Supervisor / foreman','highly_skilled'],['other','Other (write its name and grade)','']];
+const GRADES=[['unskilled','Unskilled'],['semi_skilled','Semi-skilled'],['skilled','Skilled'],['highly_skilled','Highly skilled']];
 function addBoqRow(data={}){
-  const tbody=document.getElementById('boqBody'); const n=tbody.children.length+1; const tr=document.createElement('tr');
-  tr.innerHTML=`<td class="rownum">${n}</td><td><input name="boq_code_${n}" value="${esc(data.code||'')}"></td><td><input name="boq_desc_${n}" value="${esc(data.desc||'')}"></td><td><input name="boq_unit_${n}" value="${esc(data.unit||'')}"></td><td><input type="number" step="0.0001" name="boq_qty_${n}" value="${esc(data.qty||'')}" oninput="recalcTotals()"></td><td><input type="number" step="0.01" name="boq_rate_${n}" value="${esc(data.rate||'')}" oninput="recalcTotals()"></td><td class="money amount">₹0.00</td><td><select name="boq_source_${n}"><option>State/Dept SoR</option><option>CPWD/standard schedule</option><option>District recent rates</option><option>GeM / rate contract</option><option>Approved quotation</option><option>Other benchmark</option></select></td><td><input name="boq_measure_ref_${n}" value="${esc(data.measure||'')}"></td><td><input name="boq_just_${n}" value="${esc(data.just||'')}"></td><td class="row-actions"><button type="button" class="smallbtn danger" onclick="removeRow(this)">Remove</button></td>`;
+  const tbody=document.getElementById('boqBody'); const n=nextRow(tbody); const tr=document.createElement('tr'); tr.dataset.n=n;
+  tr.innerHTML=`<td class="rownum">${n}</td><td><input name="boq_code_${n}" value="${esc(data.code||'')}"></td><td><input name="boq_desc_${n}" value="${esc(data.desc||'')}"></td><td><input name="boq_unit_${n}" value="${esc(data.unit||'')}"></td><td><input type="number" step="0.0001" name="boq_qty_${n}" value="${esc(data.qty||'')}" oninput="recalcTotals()"></td><td><input type="number" step="0.01" name="boq_rate_${n}" value="${esc(data.rate||'')}" oninput="recalcTotals()"></td><td class="money amount">₹0.00</td><td><select name="boq_source_${n}"><option>State/Dept SoR</option><option>CPWD/standard schedule</option><option>District recent rates</option><option>GeM / rate contract</option><option>Approved quotation</option><option>Other benchmark</option></select></td><td><input name="boq_measure_ref_${n}" value="${esc(data.measure||'')}"></td><td><input name="boq_just_${n}" value="${esc(data.just||'')}"></td><td style="text-align:center"><input type="checkbox" name="boq_inclab_${n}"></td><td class="row-actions"><button type="button" class="smallbtn danger" onclick="removeRow(this)">Remove</button></td>`;
   tbody.appendChild(tr); recalcTotals();
 }
+function addLabourRow(){
+  const tbody=document.getElementById('labourBody'); const n=nextRow(tbody); const tr=document.createElement('tr'); tr.dataset.n=n;
+  tr.innerHTML=`<td class="rownum">${n}</td><td><select name="lab_trade_${n}" onchange="tradeGrade(this,${n})"><option value="">— choose —</option>${TRADES.map(t=>`<option value="${t[0]}">${t[1]}</option>`).join('')}</select></td><td><input name="lab_name_${n}"></td><td><select name="lab_grade_${n}"><option value="">—</option>${GRADES.map(g=>`<option value="${g[0]}">${g[1]}</option>`).join('')}</select></td><td><input type="number" min="1" step="1" name="lab_workers_${n}" oninput="recalcTotals()"></td><td><input type="number" min="0.5" step="0.5" name="lab_days_${n}" oninput="recalcTotals()"></td><td><input type="number" step="0.01" name="lab_rate_${n}" oninput="recalcTotals()"></td><td class="money pdays">0</td><td class="money amount">₹0.00</td><td><input name="lab_task_${n}" placeholder="e.g. brick and plaster work"></td><td><input name="lab_lines_${n}"></td><td><select name="lab_source_${n}">${SOURCES.concat(['Minimum wages notification']).map(o=>`<option>${o}</option>`).join('')}</select></td><td class="row-actions"><button type="button" class="smallbtn danger" onclick="removeRow(this)">Remove</button></td>`;
+  tbody.appendChild(tr); recalcTotals();
+}
+// a listed trade fills its own grade; "Other" asks for it
+function tradeGrade(sel,n){const t=TRADES.find(x=>x[0]===sel.value); if(t&&t[2]) q('lab_grade_'+n).value=t[2]}
 function addMilestoneRow(){
   const tbody=document.getElementById('milestoneBody'); const n=tbody.children.length+1; const tr=document.createElement('tr');
   tr.innerHTML=`<td class="rownum">${n}</td><td><input name="milestone_name_${n}"></td><td><input type="date" name="milestone_date_${n}"></td><td><input type="number" min="0" max="100" name="milestone_pct_${n}"></td><td><input name="milestone_evidence_${n}"></td><td class="row-actions"><button type="button" class="smallbtn danger" onclick="removeRow(this)">Remove</button></td>`;
   tbody.appendChild(tr);
 }
 function removeRow(btn){btn.closest('tr').remove(); renumberTables(); recalcTotals()}
-function renumberTables(){['boqBody','milestoneBody'].forEach(id=>[...document.getElementById(id).children].forEach((tr,i)=>tr.querySelector('.rownum').textContent=i+1))}
+function renumberTables(){['milestoneBody'].forEach(id=>[...document.getElementById(id).children].forEach((tr,i)=>tr.querySelector('.rownum').textContent=i+1))}
 function recalcTotals(){
   let total=0; [...document.querySelectorAll('#boqBody tr')].forEach(tr=>{const nums=tr.querySelectorAll('input[type=number]'); const qty=parseFloat(nums[0]?.value||0), rate=parseFloat(nums[1]?.value||0); const amt=qty*rate; tr.querySelector('.amount').textContent='₹'+amt.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2}); total+=amt;});
   document.getElementById('boqTotal').textContent='₹'+total.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
-  const lump=parseFloat(q('lumpsum_components')?.value||0), other=parseFloat(q('other_charges')?.value||0); if(q('technical_estimate')) q('technical_estimate').value=(total+lump+other).toFixed(2);
+  let labour=0; [...document.querySelectorAll('#labourBody tr')].forEach(tr=>{const nums=tr.querySelectorAll('input[type=number]'); const pd=parseFloat(nums[0]?.value||0)*parseFloat(nums[1]?.value||0), amt=pd*parseFloat(nums[2]?.value||0); tr.querySelector('.pdays').textContent=pd.toLocaleString('en-IN'); tr.querySelector('.amount').textContent='₹'+amt.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2}); labour+=amt;});
+  document.getElementById('labourTotal').textContent='₹'+labour.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const lump=parseFloat(q('lumpsum_components')?.value||0), other=parseFloat(q('other_charges')?.value||0); if(q('technical_estimate')) q('technical_estimate').value=(total+labour+lump+other).toFixed(2);
 }
 function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
 
 function serialize(){
   const fd=new FormData(form); const out={}; for(const [k,v] of fd.entries()){if(out[k]!==undefined){if(!Array.isArray(out[k])) out[k]=[out[k]];out[k].push(v)}else out[k]=v}
   [...form.querySelectorAll('input[type=checkbox]')].forEach(cb=>out[cb.name]=cb.checked);
-  out.__meta={form_version:'PSWIF v1.0',work_id:document.getElementById('workIdDisplay').textContent,exported_at:new Date().toISOString(),boq_calculated_total:document.getElementById('boqTotal').textContent};
+  out.__meta={form_version:'PSWIF v1.1',work_id:document.getElementById('workIdDisplay').textContent,exported_at:new Date().toISOString(),boq_calculated_total:document.getElementById('boqTotal').textContent,labour_calculated_total:document.getElementById('labourTotal').textContent};
   return out;
 }
 function restore(data){
@@ -581,14 +604,17 @@ function saveDraft(){
   localStorage.setItem('nidhinetra_pswif_draft',JSON.stringify(serialize())); document.getElementById('headerStatus').textContent='DRAFT SAVED'; showAlert('Draft saved in this browser.',true)
 }
 function loadDraft(){const raw=localStorage.getItem('nidhinetra_pswif_draft'); if(!raw){showAlert('No saved draft found in this browser.',false);return} restore(JSON.parse(raw)); showAlert('Saved draft loaded.',true)}
-function clearDraft(){if(!confirm('Clear this form and saved draft?'))return; localStorage.removeItem('nidhinetra_pswif_draft'); form.reset(); document.getElementById('workIdDisplay').textContent='Auto on save'; document.getElementById('headerStatus').textContent='DRAFT'; document.getElementById('boqBody').innerHTML='';document.getElementById('milestoneBody').innerHTML=''; addBoqRow();addBoqRow();addBoqRow();addMilestoneRow();addMilestoneRow();addMilestoneRow();showDynamicType();toggleTrustFields();toggleLargerProject();recalcTotals();}
+function clearDraft(){if(!confirm('Clear this form and saved draft?'))return; localStorage.removeItem('nidhinetra_pswif_draft'); form.reset(); document.getElementById('workIdDisplay').textContent='Auto on save'; document.getElementById('headerStatus').textContent='DRAFT'; document.getElementById('boqBody').innerHTML='';document.getElementById('labourBody').innerHTML='';document.getElementById('milestoneBody').innerHTML=''; addBoqRow();addBoqRow();addBoqRow();addLabourRow();addLabourRow();addMilestoneRow();addMilestoneRow();addMilestoneRow();showDynamicType();toggleTrustFields();toggleLargerProject();recalcTotals();}
 function validateForm(){
   const missing=[...form.querySelectorAll('[required]')].filter(el=>!String(el.value).trim());
   // dynamic checks
   const wt=document.getElementById('workType').value;
   if(['road','water','drainage'].includes(wt)){['startLat','startLon','endLat','endLon'].forEach(id=>{const e=document.getElementById(id); if(!e.value) missing.push(e)})}
   const boqHas=[...document.querySelectorAll('#boqBody tr')].some(tr=>{const ins=tr.querySelectorAll('input');return (ins[1]?.value||'').trim() && parseFloat(ins[3]?.value||0)>0 && parseFloat(ins[4]?.value||0)>0});
+  // a labour row is a trade with its workers, days, day rate and what they do; "Other" names itself and its grade
+  const labourGaps=[...document.querySelectorAll('#labourBody tr')].filter(tr=>{const n=tr.dataset.n, v=k=>String(q(k+'_'+n)?.value||'').trim(); const used=['lab_trade','lab_workers','lab_days','lab_rate','lab_task'].some(k=>v(k)); return used && (!v('lab_trade')||!(parseFloat(v('lab_workers'))>=1)||!(parseFloat(v('lab_days'))>0)||!(parseFloat(v('lab_rate'))>0)||v('lab_task').split(/\s+/).length<2||(v('lab_trade')==='other'&&(!v('lab_name')||!v('lab_grade'))))}).map(tr=>tr.dataset.n);
   if(!boqHas){showAlert('Required-data check: add at least one valid BOQ line with description, quantity and rate.',false)}
+  else if(labourGaps.length){showAlert(`Labour row ${labourGaps.join(', ')}: give the trade, workers, days each, day rate and what they do (Other: its name and grade).`,false)}
   else if(missing.length){missing.forEach(e=>e.style.borderColor='#b42318'); showAlert(`Required-data check: ${missing.length} required field(s) are still incomplete.`,false)}
   else{[...form.querySelectorAll('[required]')].forEach(e=>e.style.borderColor=''); document.getElementById('statusDot').style.background='#16a34a'; document.getElementById('readinessText').textContent='Core mandatory fields complete — ready for agent pre-check'; showAlert('Core required-data check passed. Agent-specific rules can now run on structured data.',true)}
 }
@@ -598,7 +624,7 @@ function downloadJSON(){
 }
 function showAlert(msg,ok){const b=document.getElementById('alertBox');b.className='alert show'+(ok?' ok':'');b.textContent=msg;setTimeout(()=>b.classList.remove('show'),7000)}
 
-addBoqRow();addBoqRow();addBoqRow();addMilestoneRow();addMilestoneRow();addMilestoneRow();
+addBoqRow();addBoqRow();addBoqRow();addLabourRow();addLabourRow();addMilestoneRow();addMilestoneRow();addMilestoneRow();
 </script>
 </body>
 </html>

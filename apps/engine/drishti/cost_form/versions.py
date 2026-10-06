@@ -3,9 +3,9 @@
 The engine's own cost estimate form (reference/cost_form.yaml) asks for everything the agents
 can use. The website's Pre-Sanction Work Intelligence Form (PSWIF v1.0, apps/web/forms/) asks
 for less: no soil or groundwater, no contingency percentage, no drawings, only the size fields a
-work type is priced by. A field that form never asks cannot be "missing" on it, so validate.py
-does not require it when it is empty; when the adapter (pswif.py) does fill it, it is checked as
-usual. Nothing here is ever a flag.
+work type is priced by; v1.0 has no labour schedule either (T141: v1.1 adds it). A field that
+form never asks cannot be "missing" on it, so validate.py does not require it when it is empty;
+when the adapter (pswif.py) does fill it, it is checked as usual. Nothing here is ever a flag.
 """
 
 from __future__ import annotations
@@ -15,6 +15,10 @@ from functools import cache
 from drishti.cost_form import catalog
 
 PSWIF = "PSWIF v1.0"
+PSWIF_V11 = "PSWIF v1.1"        # T141: adds the labour schedule (one row per trade)
+PSWIF_VERSIONS = (PSWIF, PSWIF_V11)
+# the labour schedule's fields (T141), which PSWIF v1.0 never asks: its labour is estimate lines
+LABOUR = frozenset({"workers", "days", "grade", "activity", "for_lines", "includes_labour"})
 
 
 def _pricing_fields(family: dict) -> set[str]:
@@ -29,13 +33,14 @@ def _pricing_fields(family: dict) -> set[str]:
 @cache
 def not_asked(version: str | None) -> frozenset[str]:
     """Engine field ids a form version never asks (empty = not required)."""
-    if version != PSWIF:
+    if version not in PSWIF_VERSIONS:
         return frozenset()
     size = set()
     for fam in catalog.load()["families"].values():
         priced = _pricing_fields(fam)
         size |= {f["id"] for f in fam.get("fields") or [] if f["id"] not in priced}
-    return frozenset(size | {
+    labour = LABOUR if version == PSWIF else frozenset()
+    return frozenset(size | labour | {
         # where: the district comes from the record, not a typed code
         "district_lgd", "block", "pin", "area_type",
         # the work: asked differently or not at all
