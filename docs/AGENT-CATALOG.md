@@ -46,7 +46,13 @@ one institution's honest purchases. Duplicate Work changed three rules:
 - a light is one spot (20 m), not 50 m;
 - purchases are compared by kind.
 
-Honest lights asked now: 1.5–6.4%. Repeats asked: 93–100%. Site Progress asks
+Honest lights asked now: 1.5–6.4%. Repeats asked: 93–100%. Round 4 (6 Oct):
+- **Hand pumps** take the same light rules: honest asked fall from 86% to 1%.
+- **Roads** are the same road only when both ends lie within 30 m and it lies on the other's line.
+  Real lanes run house to house and are short (median 121 m), so the next street over, 25–35 m
+  away, was asked 64–81% of the time; now 3–28%. 94–99% of repeats are still asked.
+
+Site Progress asks
 `FIRST_FILMED_FINISHED`: a new work whose first video already shows it finished, with no video
 before work.
 

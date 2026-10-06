@@ -1316,6 +1316,56 @@ def _(world):
                  "the same-day exception is for a programme of lights only")
 
 
+def _street(world, wid: str, north_m: float, east0: float, east1: float, rec: date, *,
+            status: str = "COMPLETED") -> dict:
+    """An engine-format CC road along a street north_m metres north of the 41st example site."""
+    lat, lon = wf.pin(41)
+    east = 1 / (111_320 * math.cos(math.radians(lat)))
+    w = _pinned(world, wid, "ROAD_CC", north_m, rec, status=status)
+    w["amount"] = 4.0e5
+    w["cost_form"]["sites"] = [{"location": {
+        "lat": lat + north_m * METRE, "lon": lon + east0 * east,
+        "end_lat": lat + north_m * METRE, "end_lon": lon + east1 * east},
+        "size": {"length_m": abs(east1 - east0)}}]
+    return w
+
+
+@probe("dup_split", "noise", "the next street over, 30 m away, a year later (real lanes 121 m)")
+def _(world):
+    d = world.as_of - timedelta(days=600)
+    old = _street(world, "T139-S1", 0, 0, 120, d)
+    new = _street(world, "T139-S2", 30, 5, 125, d + timedelta(days=365), status="SANCTIONED")
+    return quiet(run(world, new, extra=[old]), "dup_split",
+                 "a row of houses apart (81% of such lanes 25 m apart were asked at 50 m)")
+
+
+@probe("dup_split", "evasion", "a lane filed again, its ends re-pinned 8 m off")
+def _(world):
+    d = world.as_of - timedelta(days=600)
+    old = _street(world, "T139-S1", 0, 0, 120, d)
+    new = _street(world, "T139-S3", 6, -8, 112, d + timedelta(days=365), status="SANCTIONED")
+    return still(run(world, new, extra=[old]), "dup_split", "SANCTIONED_WORK_AT_THIS_SITE",
+                 "the same lane, both ends near and on its line")
+
+
+@probe("dup_split", "noise", "a neighbour's hand pump, 35 m away, months later")
+def _(world):
+    d = world.as_of - timedelta(days=400)
+    old = _pinned(world, "T139-P1", "BOREWELL", 0, d)
+    new = _pinned(world, "T139-P2", "BOREWELL", 35, d + timedelta(days=200), status="SANCTIONED")
+    return quiet(run(world, new, extra=[old]), "dup_split",
+                 "pumps at houses (86% of honest ones were asked at 50 m)")
+
+
+@probe("dup_split", "evasion", "a hand pump filed again at the same spot")
+def _(world):
+    d = world.as_of - timedelta(days=400)
+    old = _pinned(world, "T139-P1", "BOREWELL", 0, d)
+    new = _pinned(world, "T139-P3", "BOREWELL", 6, d + timedelta(days=200), status="SANCTIONED")
+    return still(run(world, new, extra=[old]), "dup_split", "SANCTIONED_WORK_AT_THIS_SITE",
+                 "one spot, GPS 6 m apart")
+
+
 @probe("time_rules", "evasion", "'complete' past the early line, checked the next day, never filmed")
 def _(world):
     w = copy.deepcopy(world.records["time_fast"])

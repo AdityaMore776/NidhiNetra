@@ -93,3 +93,48 @@ def test_buildings_keep_the_50_m_line_and_the_family():
     works = [_work("H1", "COMMUNITY_HALL", 0, D),
              _work("H2", "LIBRARY", PIN_METRES - 10, later, status="SANCTIONED")]
     assert _asked(works, "H2")                          # a hall filed again as a library
+
+
+# --- round 4: village lanes and hand pumps (data/trial/real_geo_roads.py) -----------------------
+
+E = 1 / (111_320 * 0.9010)          # degrees of longitude in a metre at this latitude
+
+
+def _road(wid: str, north_m: float, east0: float, east1: float, rec: date, *,
+          status: str = "COMPLETED", north_end: float | None = None) -> dict:
+    """A CC road along a street north_m metres north, from east0 to east1 metres east."""
+    w = _work(wid, "ROAD_CC", north_m, rec, status=status, size={"length_m": abs(east1 - east0)})
+    loc = w["cost_form"]["sites"][0]["location"]
+    loc.update(lon=LON + east0 * E, end_lat=LAT + (north_m if north_end is None else north_end) * M,
+               end_lon=LON + east1 * E)
+    return w
+
+
+def test_the_next_street_over_is_not_the_same_road():
+    # two honest lanes 120 m long, a row of houses (30 m) apart: both ends within 50 m
+    later = D + timedelta(days=365)
+    works = [_road("R1", 0, 0, 120, D), _road("R2", 30, 5, 125, later, status="SANCTIONED")]
+    assert not _asked(works, "R2")
+
+
+def test_a_lane_filed_again_with_its_ends_re_pinned_is_asked():
+    later = D + timedelta(days=365)
+    works = [_road("R1", 0, 0, 120, D), _road("R2", 6, -8, 112, later, status="SANCTIONED")]
+    assert _asked(works, "R2")
+
+
+def test_a_lane_filed_again_longer_is_still_asked():
+    later = D + timedelta(days=365)
+    works = [_road("R1", 0, 0, 120, D), _road("R2", 4, 0, 170, later, status="SANCTIONED")]
+    assert _asked(works, "R2")
+
+
+def test_hand_pumps_at_neighbouring_houses_are_not_asked():
+    later = D + timedelta(days=200)
+    same_day = [_work("P1", "BOREWELL", 0, D), _work("P2", "BOREWELL", 12, D)]
+    assert not _asked(same_day, "P2")                       # one programme's pumps
+    works = [_work("P1", "BOREWELL", 0, D),
+             _work("P3", "BOREWELL", 35, later, status="SANCTIONED")]
+    assert not _asked(works, "P3")                          # a neighbour's pump, later
+    works[1] = _work("P4", "BOREWELL", 6, later, status="SANCTIONED")
+    assert _asked(works, "P4")                              # the same house's pump again

@@ -53,7 +53,14 @@ asked 37–87% of honest lights. Three rule changes were made:
 - purchases are compared by kind.
 
 Honest lights asked now: 1.5–6.4%. Repeats asked: 93–100%. Site Progress closes "first filmed
-finished". The loop: 93 probes, 0 FAIL. The dashboard is identical. FINDINGS "T139".
+finished".
+
+Round 4 (6 Oct):
+- Hand pumps take the light rules (86% → 1% honest asked).
+- A road is the same road only when both ends are near AND it lies on the other's line. The next
+  street over, 25–35 m away, was asked 64–81% of the time; now 3–28%.
+
+The loop: 97 probes, 0 FAIL. The dashboard is identical. FINDINGS "T139".
 
 **5 Oct 2026: other agent architectures tested against the current ones (T137).**
 `data/trial/architecture_bakeoff.py` ran the alternatives on the same benchmarks at the same

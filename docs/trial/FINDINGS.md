@@ -1789,15 +1789,61 @@ It asks about 9,830 of the 40,935 works. 9,401 of those are `SANCTIONED_LATE`, t
 clock (owner's rule). That is a fact about the office's pace at 0.05, and it never queues a work
 alone, as designed (T122). Nothing to change.
 
+### Round 4 (6 Oct): village lanes and hand pumps
+
+The real descriptions say where these works sit:
+- **Lanes run from house to house.** 39% of the dashboard's roads and 45% of its paths name houses
+  ("from X's house to Y's house").
+- **Lanes are short.** Of the 1,364 real lengths stated, the median is 121 m and 40% are 100 m or
+  less.
+- **Roads come in same-day programmes**, often 2 to 8 lanes by one MP in a day.
+- **A third of borewells are hand pumps "near X's house"**, at about Rs 70,000 each, filed in
+  batches.
+
+`data/trial/real_geo_roads.py` (results `results/real_geo_roads.txt`) runs each lane between two
+real houses at a real stated length. The two layouts are random lanes, and the next street over at
+a set gap a year later. Repeats re-file a lane 6–18 months later: re-pinned, 30–60 m longer, or
+its inner 70%.
+
+**Roads.** A road was "the same road" when both ends lay within 50 m of another's, or 80% of it lay
+within 25 m of the other's line. Real lanes are short, so the next street over, one row of houses
+away, has both ends within 50 m. The rule is now: both ends within 30 m AND on its line (80%
+within 20 m). A road filed longer or as a part, whose ends are not both near, is still matched by
+its line within 25 m.
+
+| Honest filings | T139 rule: honest asked | Now: honest asked |
+|---|---|---|
+| the next street over, 25 m away | 81% | 28% |
+| the next street over, 35 m away | 64% | 3% |
+| the next street over, 50 m away | 11% | 1% |
+| programmes of random lanes | 12% | 10% |
+
+Repeats caught (re-pinned, longer, a part):
+- the T139 rule: 100%, 97%, 100%;
+- now: 99%, 94%, 98%.
+
+Other trials:
+- The tighter "on its line within 15 m" catches only 84–90% of repeats.
+- At 15 m apart, the GPS cannot tell two streets from one (76% are still asked). Phone pins wander
+  about that much.
+
+**Hand pumps** take the street lights' rules: one spot (20 m), and one programme's pumps are never
+repeats of each other. Honest pumps asked fall from 86% to 1%, and 98 of 100 repeats are still
+asked.
+
 ### Proof
 
-- **The loop:** 93 probes, 86 PASS, 0 FAIL, 7 LIMIT, and 3,000 random damages with 0 errors. The 8
-  new probes are the neighbour's light, one programme's lights, the light filed again, furniture
-  after computers, computers again, the hall filed twice on one day, the old asset filmed only as
-  final, and the light installed in a day.
-- **The engine suite:** 810 passed.
+- **The loop:** 97 probes, 90 PASS, 0 FAIL, 7 LIMIT, and 3,000 random damages with 0 errors.
+  - The 8 probes of the first rounds: the neighbour's light, one programme's lights, the light
+    filed again, furniture after computers, computers again, the hall filed twice on one day, the
+    old asset filmed only as final, and the light installed in a day.
+  - Round 4's 4 probes: the next street over, a lane filed again re-pinned, a neighbour's hand
+    pump, and a pump filed again.
+  - Every earlier road probe still passes: a road re-filed longer, ends swapped, a real extension
+    beside the old road, and splits by pin.
+- **The engine suite:** 814 passed.
 - **The examples:** the 12 work-form examples and five end-to-end filings raise exactly what they
-  did. The honest lights filing now reads "within 20 m".
+  did. The honest filings now read "within 20 m" (lights) and "within 30 m" (roads).
 - **The dashboard:** the 40,935 works are identical (`dashboard_t139_after`).
 
 ## Bugs and data problems found along the way

@@ -1,5 +1,5 @@
-Agent robustness loop (T135-T139): 93 probes on the work form's example filings in Jaunpur (1,038 real works, 11 background filings), as of 2026-10-02
-PASS 86  FAIL 0  LIMIT 7
+Agent robustness loop (T135-T139): 97 probes on the work form's example filings in Jaunpur (1,038 real works, 11 background filings), as of 2026-10-02
+PASS 90  FAIL 0  LIMIT 7
 
 == cost_estimate
   PASS  noise    honest rates a few % apart (seeded): no question
@@ -106,7 +106,7 @@ PASS 86  FAIL 0  LIMIT 7
   PASS  noise    pins rounded to 4 decimals (about 11 m): same answers
         changed: none
   PASS  scale    3,000 filed roads in one district: one check stays under 2 s
-        0.03 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']
+        0.02 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']
   PASS  evasion  a 'new' hall pinned 60 m from the old (just past the 50 m line)
         note: True; a pin past 50 m is another site by rule, so it is named in a note and the first site video (the hall already standing) settles it
   PASS  evasion  split with the checked piece called a paver road / 'Other'
@@ -125,6 +125,14 @@ PASS 86  FAIL 0  LIMIT 7
         the same purchase again: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
   PASS  evasion  a hall filed twice on the same day at one pin
         the same-day exception is for a programme of lights only: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
+  PASS  noise    the next street over, 30 m away, a year later (real lanes 121 m)
+        a row of houses apart (81% of such lanes 25 m apart were asked at 50 m): nothing (ASSESSED)
+  PASS  evasion  a lane filed again, its ends re-pinned 8 m off
+        the same lane, both ends near and on its line: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
+  PASS  noise    a neighbour's hand pump, 35 m away, months later
+        pumps at houses (86% of honest ones were asked at 50 m): nothing (ASSESSED)
+  PASS  evasion  a hand pump filed again at the same spot
+        one spot, GPS 6 m apart: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
 == time_rules
   PASS  evasion  the late hall: start month declared two years after sanction
         start promised 2 years after sanction: PAST_PROMISED_TIME (ASSESSED)

@@ -116,7 +116,12 @@ are no published rate schedules for Cost. Nothing fetched is committed.
     and 93–100% of repeats are still asked.
 - [x] Site Progress on the 1,025 real completion timelines: the loophole "first filmed finished"
   closed (`FIRST_FILMED_FINISHED`).
-- [x] The loop: 93 probes, 0 FAIL. The dashboard identical.
+- [x] Round 4 (`data/trial/real_geo_roads.py`):
+  - hand pumps take the light rules (honest asked 86% → 1%);
+  - a road is the same road only when both ends lie within 30 m and it lies on the other's line;
+  - the next street over, 25–35 m away, is asked 3–28% of the time (was 64–81%);
+  - 94–99% of repeated lanes are still asked.
+- [x] The loop: 97 probes, 0 FAIL. The dashboard identical.
 - [ ] Real public-building positions (halls, schools) to settle the buildings' 50 m line.
 - [ ] Published rate schedules for Cost (needs a network that reaches government sites).
 

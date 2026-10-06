@@ -425,7 +425,7 @@
    "kind": "scale",
    "probe": "3,000 filed roads in one district: one check stays under 2 s",
    "verdict": "PASS",
-   "detail": "0.03 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']"
+   "detail": "0.02 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']"
   },
   {
    "agent": "cost_estimate",
@@ -559,6 +559,34 @@
    "probe": "a hall filed twice on the same day at one pin",
    "verdict": "PASS",
    "detail": "the same-day exception is for a programme of lights only: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "noise",
+   "probe": "the next street over, 30 m away, a year later (real lanes 121 m)",
+   "verdict": "PASS",
+   "detail": "a row of houses apart (81% of such lanes 25 m apart were asked at 50 m): nothing (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "a lane filed again, its ends re-pinned 8 m off",
+   "verdict": "PASS",
+   "detail": "the same lane, both ends near and on its line: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "noise",
+   "probe": "a neighbour's hand pump, 35 m away, months later",
+   "verdict": "PASS",
+   "detail": "pumps at houses (86% of honest ones were asked at 50 m): nothing (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "a hand pump filed again at the same spot",
+   "verdict": "PASS",
+   "detail": "one spot, GPS 6 m apart: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)"
   },
   {
    "agent": "time_rules",
