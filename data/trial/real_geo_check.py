@@ -67,34 +67,70 @@ OB_URL = ("https://storage.googleapis.com/open-buildings-data/v3/"
           "points_s2_level_6_gzip_no_header/{}_buildings.csv.gz")
 OB_DIR = ROOT / "data" / "raw" / "open_buildings"
 OB_FILE = OB_DIR / "jaunpur_cores.csv"
+ORIGIN = (25.75, 82.6)                             # the local flat map's origin (lat, lon)
+DISTRICT_LGD = "UTTAR PRADESH|JAUNPUR"
 CORE_M = 600.0                                     # a village core around its post office
 MIN_CONF = 0.70
 OUT = ROOT / "data" / "trial" / "results" / "real_geo_check"
 AS_OF = date(2026, 10, 2)
 
 
-# ---------------------------------------------------------------- real data
+def configure(district: str, post_name: str | None = None) -> None:
+    """Point the checks at another district (T139 round 5): its post offices (positions more
+    than 0.6 degrees from their median are typos), the box and Open Buildings cells around them,
+    its own flat map origin and building file. Jaunpur keeps the values above."""
+    global DISTRICT, BOX, CELLS, OB_FILE, ORIGIN, DISTRICT_LGD
+    if district == "Jaunpur":
+        return
+    import s2sphere
+    DISTRICT = district
+    pts = _po_positions((post_name or district).upper())
+    mla, mlo = float(np.median([p[0] for p in pts])), float(np.median([p[1] for p in pts]))
+    pts = [p for p in pts if abs(p[0] - mla) < 0.6 and abs(p[1] - mlo) < 0.6]
+    BOX = (min(p[0] for p in pts) - 0.02, max(p[0] for p in pts) + 0.02,
+           min(p[1] for p in pts) - 0.02, max(p[1] for p in pts) + 0.02)
+    CELLS = tuple(sorted({s2sphere.CellId.from_lat_lng(s2sphere.LatLng.from_degrees(*p))
+                          .parent(6).to_token() for p in pts}))
+    OB_FILE = OB_DIR / f"{re.sub(r'[^a-z0-9]+', '_', district.lower())}_cores.csv"
+    ORIGIN = (mla, mlo)
+    works, _ = load()
+    DISTRICT_LGD = next(w["district_lgd"] for w in works if w.get("district_name") == district)
+    global _POST_NAME
+    _POST_NAME = (post_name or district).upper()
 
-def post_offices() -> list[tuple[float, float]]:
-    """Jaunpur's post offices with a map position inside the district's box."""
+
+_POST_NAME = DISTRICT.upper()
+
+
+def _po_positions(name: str) -> list[tuple[float, float]]:
     import indiapins
     path = os.path.join(os.path.dirname(indiapins.__file__), "pins.json.bz2")
     out = set()
     for line in bz2.open(path).read().decode().splitlines():
         r = json.loads(line)
         lat, lon = r.get("Latitude"), r.get("Longitude")
-        if (r.get("District") == DISTRICT.upper() and isinstance(lat, float)
-                and isinstance(lon, float) and BOX[0] <= lat <= BOX[1] and BOX[2] <= lon <= BOX[3]):
+        if r.get("District") == name and isinstance(lat, float) and isinstance(lon, float):
             out.add((round(lat, 6), round(lon, 6)))
     return sorted(out)
 
 
-def _xy(lat, lon, lat0: float = 25.75, lon0: float = 82.6):
+# ---------------------------------------------------------------- real data
+
+def post_offices() -> list[tuple[float, float]]:
+    """The district's post offices with a map position inside the district's box."""
+    return [p for p in _po_positions(_POST_NAME)
+            if BOX[0] <= p[0] <= BOX[1] and BOX[2] <= p[1] <= BOX[3]]
+
+
+def _xy(lat, lon, lat0: float | None = None, lon0: float | None = None):
+    lat0, lon0 = ORIGIN[0] if lat0 is None else lat0, ORIGIN[1] if lon0 is None else lon0
     return np.c_[(np.asarray(lon) - lon0) * 111_320 * math.cos(math.radians(lat0)),
                  (np.asarray(lat) - lat0) * 110_574]
 
 
-def _latlon(x: float, y: float, lat0: float = 25.75, lon0: float = 82.6) -> tuple[float, float]:
+def _latlon(x: float, y: float, lat0: float | None = None,
+            lon0: float | None = None) -> tuple[float, float]:
+    lat0, lon0 = ORIGIN[0] if lat0 is None else lat0, ORIGIN[1] if lon0 is None else lon0
     return lat0 + y / 110_574, lon0 + x / (111_320 * math.cos(math.radians(lat0)))
 
 
@@ -244,8 +280,8 @@ def honest_buildings(places: Places, n_villages: int, per_village: int, start: i
             d = date(2023, 4, 1) + timedelta(days=rnd.randrange(0, 900))
             wt = rnd.choice(types)
             out.append({
-                "work_id": f"SIM/B/{start + len(out):05d}", "district_lgd": "UTTAR PRADESH|JAUNPUR",
-                "district_name": DISTRICT, "state_name": "Uttar Pradesh", "mp_name": "SIM",
+                "work_id": f"SIM/B/{start + len(out):05d}", "district_lgd": DISTRICT_LGD,
+                "district_name": DISTRICT, "mp_name": "SIM",
                 "work_type_code": wt, "description": f"Construction of building {v}-{k}",
                 "amount": float(rnd.randrange(5, 25)) * 1e5, "recommended_date": d,
                 "sanction_date": d + timedelta(days=40), "status": "SANCTIONED",
@@ -267,8 +303,8 @@ def honest_purchases(places: Places, n_places: int, start: int) -> list[dict]:
         d = date(2023, 4, 1) + timedelta(days=rnd.randrange(0, 600))
         for wt in rnd.sample(types, 2):
             out.append({
-                "work_id": f"SIM/G/{start + len(out):05d}", "district_lgd": "UTTAR PRADESH|JAUNPUR",
-                "district_name": DISTRICT, "state_name": "Uttar Pradesh", "mp_name": "SIM",
+                "work_id": f"SIM/G/{start + len(out):05d}", "district_lgd": DISTRICT_LGD,
+                "district_name": DISTRICT, "mp_name": "SIM",
                 "work_type_code": wt, "description": f"Supply of {wt.lower()} to institution {v}",
                 "amount": float(rnd.randrange(2, 9)) * 1e5, "recommended_date": d,
                 "sanction_date": d + timedelta(days=30), "status": "SANCTIONED",

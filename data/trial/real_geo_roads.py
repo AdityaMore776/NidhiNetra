@@ -51,7 +51,6 @@ from drishti.agents.dup_split import repeat  # noqa: E402
 from drishti.cost_form import catalog  # noqa: E402
 
 OUT = ROOT / "data" / "trial" / "results" / "real_geo_roads"
-DISTRICT = "UTTAR PRADESH|JAUNPUR"
 KM = re.compile(r"(\d+(?:\.\d+)?)\s*(?:km|kms|kilomet)", re.IGNORECASE)
 METRES = re.compile(r"(\d[\d,]*(?:\.\d+)?)\s*(?:rm|r\.m\.?|rmt|mtrs?|meters?|metres?|mt|m)\b"
                     r"(?!\s*(?:x|\*|wide|width|chaura))", re.IGNORECASE)
@@ -107,8 +106,8 @@ def _lane(wid: str, a: tuple, b: tuple, rec: date, places: geo.Places, *,
     """A CC road filed from point a to point b (metres east and north), its ends GPS-pinned."""
     (la, lo), (eb, eo) = _pin(places, *a), _pin(places, *b)
     length = math.dist(a, b)
-    return {"work_id": wid, "district_lgd": DISTRICT, "district_name": "Jaunpur",
-            "state_name": "Uttar Pradesh", "mp_name": "SIM", "work_type_code": "ROAD_CC",
+    return {"work_id": wid, "district_lgd": geo.DISTRICT_LGD, "district_name": geo.DISTRICT,
+            "mp_name": "SIM", "work_type_code": "ROAD_CC",
             "description": f"CC road {wid}", "amount": round(length * 3500, -2),
             "recommended_date": rec,
             "sanction_date": rec + timedelta(days=30) if status != "RECOMMENDED" else None,
