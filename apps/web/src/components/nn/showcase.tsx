@@ -4,7 +4,7 @@ import { ArrowRight, Clapperboard, ClipboardList, FlaskConical, Lightbulb, LogIn
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BandBadge, EngineMark, SourceBadge } from "@/components/nn/badges";
-import { count, inr, workType } from "@/lib/format";
+import { inr, workType } from "@/lib/format";
 import { type ShowcaseFile, type ShowcaseMeta, showcaseFile } from "@/lib/showcase";
 import { cn } from "@/lib/utils";
 
@@ -27,18 +27,15 @@ export function useShowcase(on = true): ShowcaseFile | null {
 /** One line above every page of the public view: what the visitor is looking at. */
 export function ShowcaseBanner() {
   const f = useShowcase();
-  const real = f?.examples.filter((e) => e.row.source === "REAL").length;
   return (
     <div className="border-b bg-brand-50/70">
       <div className="mx-auto flex w-full max-w-[1440px] flex-wrap items-center gap-x-3 gap-y-1 px-4 py-2 text-[12.5px] sm:px-6 lg:px-8">
         <FlaskConical className="size-3.5 shrink-0 text-brand-700" />
         <span className="text-brand-950">
-          <b className="font-semibold">Prototype view:</b> {f ? f.examples.length : 10} worked examples of the four checks
-          {f && real != null ? ` (${real} real eSAKSHI works, ${f.examples.length - real} made-up)` : ""}.
+          <b className="font-semibold">Prototype view:</b> {f ? f.examples.length : 13} example filings of the work intelligence form, each graded by the
+          four checks.
         </span>
-        <span className="text-muted-foreground">
-          The engine has assessed all {f ? count(f.scale.works) : "2,09,993"} real works; staff see them after signing in.
-        </span>
+        <span className="text-muted-foreground">Made-up agencies, compared with a real district&apos;s eSAKSHI works.</span>
         <Link href="/login" className="ml-auto inline-flex items-center gap-1 font-medium text-brand-700 hover:underline">
           <LogIn className="size-3.5" /> Staff sign in
         </Link>
@@ -47,7 +44,7 @@ export function ShowcaseBanner() {
   );
 }
 
-/** The ten examples as cards: what each one shows, and a way into its full page. */
+/** The example filings as cards: what each one shows, and a way into its form and full page. */
 export function ExampleGallery({ file }: { file: ShowcaseFile | null }) {
   if (!file)
     return (
@@ -86,7 +83,8 @@ export function ExampleGallery({ file }: { file: ShowcaseFile | null }) {
                   <EngineMark key={a} id={a} size={24} />
                 ))}
                 <span className="ml-auto inline-flex items-center gap-1 text-xs font-medium text-brand-700">
-                  See every check <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+                  {m.form_example ? "See the form and every check" : "See every check"}{" "}
+                  <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
                 </span>
               </div>
             </Link>
@@ -97,7 +95,7 @@ export function ExampleGallery({ file }: { file: ShowcaseFile | null }) {
   );
 }
 
-/** Under the gallery: the example filings of the work intelligence form (T134). */
+/** Under the gallery: fill the work intelligence form yourself (T134). */
 export function FormExamplesCard() {
   return (
     <Link
@@ -106,9 +104,9 @@ export function FormExamplesCard() {
     >
       <ClipboardList className="size-5 shrink-0 text-brand-600" />
       <div className="min-w-0 flex-1">
-        <h3 className="text-[15px] font-semibold text-brand-950">Twelve example filings of the work intelligence form</h3>
+        <h3 className="text-[15px] font-semibold text-brand-950">Fill the work intelligence form yourself</h3>
         <p className="mt-0.5 text-[13px] text-muted-foreground">
-          Made-up agencies fill the form. See what each agent flags in it, and why.
+          Start from any example, change a field (a rate, a quantity, the map pin) and see what the four checks ask now.
         </p>
       </div>
       <span className="inline-flex items-center gap-1 text-xs font-medium text-brand-700">
@@ -119,13 +117,16 @@ export function FormExamplesCard() {
 }
 
 /** On a work's page: why this work is one of the examples. */
-export function ExampleNote({ meta, source, district }: { meta: ShowcaseMeta; source: string; district: string | null }) {
+export function ExampleNote({ meta, source, district, total }: { meta: ShowcaseMeta; source: string; district: string | null; total?: number }) {
   const madeUp = source === "SCENARIO";
   return (
     <section className={cn("panel relative overflow-hidden border-brand-200 p-5 sm:p-6")}>
       <div className="pointer-events-none absolute -left-16 -top-16 size-48 rounded-full bg-brand-gradient opacity-[0.08] blur-3xl" />
       <div className="flex flex-wrap items-center gap-2">
-        <span className="eyebrow">Prototype example {meta.n} of 10</span>
+        <span className="eyebrow">
+          {meta.form_example ? "Example filing" : "Prototype example"} {meta.n}
+          {total ? ` of ${total}` : ""}
+        </span>
         <span className="flex gap-1.5">
           {meta.agents.map((a) => (
             <EngineMark key={a} id={a} size={22} />
@@ -147,8 +148,18 @@ export function ExampleNote({ meta, source, district }: { meta: ShowcaseMeta; so
       </div>
       {madeUp && (
         <p className="mt-4 text-[12.5px] leading-relaxed text-muted-foreground">
-          A made-up work{district ? <> placed in a real district ({district})</> : null}, with the cost estimate form or site videos that no real
-          work has yet. It went through the same engines as every real work.
+          {meta.form_example ? (
+            <>
+              A filing of the work intelligence form by a made-up agency{district ? <> in a real district ({district})</> : null}, graded by the same
+              four checks as the live form check: its prices against what other agencies in the district pay, its map pin against the district&apos;s
+              sanctioned works, its dates against its own promise, and its site videos.
+            </>
+          ) : (
+            <>
+              A made-up work{district ? <> placed in a real district ({district})</> : null}, with the cost estimate form or site videos that no real
+              work has yet. It went through the same engines as every real work.
+            </>
+          )}
         </p>
       )}
       {meta.explain && (

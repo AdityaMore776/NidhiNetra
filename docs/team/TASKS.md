@@ -102,6 +102,24 @@ dashboard queue before / after in FINDINGS (439 → 217)
 of §9.6 planted. Only readings and blurred frames are kept; no video enters the repo.
 **Done when:** [ ] each trick caught 9 in 10 · [ ] a finding on at most 1 in 30 honest visits · [ ] FINDINGS
 
+### T142 · The public examples are graded forms, each with its form  ·  S  ·  web + data  ·  Depends on: T134, T141
+**What:** (owner, 6 Oct 2026) "add the Example Form to each mentioned project, remove the current
+normal recommendation rating system because we are currently grading forms, so each of the risk
+examples should now contain the form details and demonstrations". The public view showed ten
+works, five of them real eSAKSHI recommendations rated from their records alone.
+**Done when:**
+- [x] `data/trial/showcase_examples.py` builds the public examples from the work-form filings
+  (`work_form_examples.py`): 13 filings, each graded by the four checks and still raising what it
+  says; no record-only ratings, no live-engine count of every work.
+- [x] Every example's page shows its form (`components/nn/example-form.tsx`):
+  - the form's own check, and each agent's verdict with "Show in form";
+  - what happened after filing;
+  - the form section by section, every asked-about field marked with its reason, or the form
+    itself filled and outlined;
+  - a link to open it in the live form.
+- [x] Banner, dashboard, gallery and example note speak of filings; checked in Chromium on all 13
+  pages.
+
 ### T141 · Labour, trade by trade: a labour schedule, only blatant irregularities  ·  M  ·  engine + web + data  ·  Depends on: T121
 **What:** (owner, 6 Oct 2026) labour was two kinds ("skilled", "unskilled") among the estimate
 lines. Give it its own detailed table (trade, grade, workers, days, day rate, what they do, the

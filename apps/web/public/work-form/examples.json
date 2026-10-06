@@ -6,6 +6,7 @@
    "id": "clean",
    "agent": null,
    "title": "An honest CC road: every agent looks, none asks",
+   "codes": {},
    "story": "A 300 m village road, priced and sized honestly.",
    "later": [
     "Sanctioned 19 Jul 2026, 35 days after the recommendation",
@@ -506,7 +507,12 @@
   {
    "id": "cost_padded",
    "agent": "cost_estimate",
-   "title": "Every line a little high: the whole estimate is not",
+   "title": "Every material a little high: the whole estimate is not",
+   "codes": {
+    "cost_estimate": [
+     "ESTIMATE_ABOVE_FAIR_PRICE"
+    ]
+   },
    "story": "Every material is priced about 25% above what other agencies in the district charge.",
    "later": [
     "Not sanctioned yet: this is the check before sanction"
@@ -1053,6 +1059,12 @@
    "id": "cost_quantity",
    "agent": "cost_estimate",
    "title": "Twice the cement the road can use",
+   "codes": {
+    "cost_estimate": [
+     "ESTIMATE_ABOVE_FAIR_PRICE",
+     "MATERIAL_QUANTITY_ABOVE_SIZE"
+    ]
+   },
    "story": "2,614 bags of cement for a road that needs about 1,330.",
    "later": [
     "Not sanctioned yet: this is the check before sanction"
@@ -1607,6 +1619,11 @@
    "id": "cost_lights",
    "agent": "cost_estimate",
    "title": "Solar lights at more than twice the usual price",
+   "codes": {
+    "cost_estimate": [
+     "ESTIMATE_ABOVE_STANDARD_AND_MP"
+    ]
+   },
    "story": "10 solar street lights at Rs 48,000 each; the MP recommended Rs 2.4 lakh.",
    "later": [
     "Not sanctioned yet: this is the check before sanction"
@@ -2068,6 +2085,11 @@
    "id": "cost_labour",
    "agent": "cost_estimate",
    "title": "Masons at more than twice the district's wage",
+   "codes": {
+    "cost_estimate": [
+     "LABOUR_RATE_FAR_ABOVE"
+    ]
+   },
    "story": "Masons at Rs 1,800 a day where other agencies pay about Rs 750; the 34 workers on the road are not questioned.",
    "later": [
     "Not sanctioned yet: this is the check before sanction"
@@ -2615,6 +2637,11 @@
    "id": "dup_pin",
    "agent": "dup_split",
    "title": "A \"new\" road on top of one the scheme already paid for",
+   "codes": {
+    "dup_split": [
+     "SANCTIONED_WORK_AT_THIS_SITE"
+    ]
+   },
    "story": "A new road pinned 20 m from a road completed last year. The form does not mention it.",
    "later": [
     "Not sanctioned yet: this is the check before sanction",
@@ -3126,6 +3153,11 @@
    "id": "dup_rebuild",
    "agent": "dup_split",
    "title": "Rebuilding a hall finished 16 months earlier",
+   "codes": {
+    "dup_split": [
+     "REBUILT_SOON_AFTER_COMPLETION"
+    ]
+   },
    "story": "The agency says this rebuilds a hall that was finished 16 months earlier.",
    "later": [
     "Not sanctioned yet: this is the check before sanction",
@@ -3641,6 +3673,11 @@
    "id": "dup_split",
    "agent": "dup_split",
    "title": "One lane filed as three works, each just under Rs 5 lakh",
+   "codes": {
+    "dup_split": [
+     "SPLIT_JUST_UNDER_LIMIT"
+    ]
+   },
    "story": "One lane filed as parts 1, 2 and 3, each just under the Rs 5 lakh limit.",
    "later": [
     "Not sanctioned yet: this is the check before sanction",
@@ -4169,6 +4206,14 @@
    "id": "time_fast",
    "agent": "time_rules",
    "title": "A 350 m road \"complete\" 6 days after sanction",
+   "codes": {
+    "time_rules": [
+     "FINISHED_TOO_FAST"
+    ],
+    "site_progress": [
+     "NO_SITE_VIDEO"
+    ]
+   },
    "story": "Promised in 120 days; recorded complete 6 days after sanction.",
    "later": [
     "Sanctioned 24 Jun 2026",
@@ -4725,6 +4770,11 @@
    "id": "time_late",
    "agent": "time_rules",
    "title": "Eight months promised, sixteen months on, and stopped",
+   "codes": {
+    "time_rules": [
+     "PAST_PROMISED_TIME"
+    ]
+   },
    "story": "Promised in 8 months; 16 months later it is not finished and the site is still.",
    "later": [
     "Sanctioned 30 May 2025",
@@ -5402,6 +5452,12 @@
    "id": "site_reused",
    "agent": "site_progress",
    "title": "The first site video was filmed for another work",
+   "codes": {
+    "site_progress": [
+     "FOOTAGE_USED_BEFORE",
+     "SAME_PLACE_AS_ANOTHER_WORK"
+    ]
+   },
    "story": "The first site video reuses footage from another hall's video.",
    "later": [
     "Sanctioned 14 Jun 2026",
@@ -5963,6 +6019,11 @@
    "id": "site_claim",
    "agent": "site_progress",
    "title": "\"Roof slab cast\", twice, and the videos don't show it",
+   "codes": {
+    "site_progress": [
+     "CLAIM_NOT_SHOWN"
+    ]
+   },
    "story": "\"Roof slab cast\" claimed in two monthly videos that show no slab.",
    "later": [
     "Sanctioned 15 Apr 2026",
@@ -6524,6 +6585,11 @@
    "id": "site_elsewhere",
    "agent": "site_progress",
    "title": "A monthly video filmed 2.4 km away",
+   "codes": {
+    "site_progress": [
+     "NOT_FILMED_AT_THIS_SITE"
+    ]
+   },
    "story": "The third monthly video was filmed 2.4 km from the road.",
    "later": [
     "Sanctioned 25 May 2026",

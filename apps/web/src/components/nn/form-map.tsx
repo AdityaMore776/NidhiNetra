@@ -353,6 +353,8 @@ function FieldBox({ field, value, marks }: { field: Field; value: string; marks?
 }
 
 const NUMBER_COLS = ["qty", "rate", "pct", "workers", "days"];
+// the labour schedule's choices are stored as ids ("bar_bender", "highly_skilled"): shown as words
+const WORD_COLS = ["lab_trade", "lab_grade"];
 
 function RowsTable({ table, form, marks }: { table: Table; form: Record<string, unknown>; marks: Map<string, Mark[]> }) {
   const nums = rowNums(form, table.row);
@@ -395,7 +397,7 @@ function RowsTable({ table, form, marks }: { table: Table; form: Record<string, 
                       style={color ? { boxShadow: `inset 0 0 0 2px ${color}`, background: `color-mix(in srgb, ${color} 12%, white)` } : undefined}
                     >
                       <span className={cn(color && "font-semibold")} style={color ? { color } : undefined}>
-                        {show(v, kind) || "—"}
+                        {(WORD_COLS.includes(`${table.id}_${c.key}`) ? show(v, kind).replace(/_/g, " ") : show(v, kind)) || "—"}
                       </span>
                       {m && (
                         <span

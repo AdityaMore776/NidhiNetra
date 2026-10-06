@@ -414,7 +414,7 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
     rec = m(60)
     p = road("WF-COST-1", AG[1], VILLAGES[1], 1, rec, None, rate_up=1.25, mp_x=1.0)
     add("cost_padded", "cost_estimate", {"cost_estimate": ["ESTIMATE_ABOVE_FAIR_PRICE"]},
-        "Every line a little high: the whole estimate is not",
+        "Every material a little high: the whole estimate is not",
         "Every material is priced about 25% above what other agencies in the district "
         "charge.",
         ["Not sanctioned yet: this is the check before sanction"], p)
@@ -752,6 +752,8 @@ def main() -> None:
                      f"form ready {checked['ready']!s:5} {fired} {statuses}")
         print(lines[-1])
         out.append({"id": e["key"], "agent": e["agent"], "title": e["title"],
+                    # the questions it is meant to raise (the public examples check them, T142)
+                    "codes": e["codes"],
                     "story": e["story"], "later": e["later"], "form": e["form"],
                     "form_ready": checked["ready"],
                     "form_issues": [i["message"] for i in checked["issues"]
