@@ -1,6 +1,8 @@
 "use client";
 
 import * as maplibregl from "maplibre-gl";
+// the map's own stylesheet loads with the map, not on every page (T143)
+import "maplibre-gl/dist/maplibre-gl.css";
 import { Box, Globe2, LocateFixed, Square } from "lucide-react";
 import { motion } from "motion/react";
 import { useRouter } from "next/navigation";

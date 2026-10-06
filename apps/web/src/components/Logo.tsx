@@ -24,7 +24,7 @@ export function Logo({
           <span className="text-[1.05rem] font-semibold tracking-[-0.03em] text-brand-900">
             Nidhi<span className="text-brand-gradient">Netra</span>
           </span>
-          {!compact && <span className="font-devanagari text-[11px] font-medium text-muted-foreground">निधिनेत्र</span>}
+          {!compact && <span className="font-deva-label text-[11px] font-medium text-muted-foreground">निधिनेत्र</span>}
         </div>
         {!compact && tagline && <div className="mt-1 text-[11px] text-muted-foreground">{tagline}</div>}
       </div>

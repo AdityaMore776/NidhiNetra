@@ -123,7 +123,7 @@ export function AppSidebar({ me, review, onSignOut }: { me: Me; review: number |
                 <DropdownMenuSeparator />
                 {me.role === "PUBLIC" ? (
                   <DropdownMenuItem asChild>
-                    <Link href="/login">
+                    <Link href="/login" prefetch={false}>
                       <LogIn /> Staff sign in
                     </Link>
                   </DropdownMenuItem>

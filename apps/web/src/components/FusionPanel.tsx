@@ -81,7 +81,7 @@ export function FusionPanel({ a }: { a: WorkDetail["assessment"] }) {
                 className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-lg border bg-white px-2.5 py-1.5 text-xs font-medium text-brand-900 transition-colors hover:border-brand-200 hover:bg-brand-50"
               >
                 <Languages className="size-3.5" />
-                <span className={hindi ? "" : "font-devanagari"}>{hindi ? "English" : "हिंदी"}</span>
+                <span className={hindi ? "" : "font-deva-label"}>{hindi ? "English" : "हिंदी"}</span>
               </button>
             )}
           </div>

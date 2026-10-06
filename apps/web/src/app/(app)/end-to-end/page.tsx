@@ -14,7 +14,7 @@ import FORM_HTML from "@/lib/forms/pre-sanction-work-intelligence-form";
 import { FormMap } from "@/components/nn/form-map";
 import { type AgentLine, agentLines, type Flag, markForm } from "@/lib/work-form-flags";
 import { cn } from "@/lib/utils";
-import { fillForm } from "@/lib/work-form-frame";
+import { fillForm, fitFrame } from "@/lib/work-form-frame";
 
 /**
  * Five filings, end to end (T136): from the form an implementing agency fills to the risk score an
@@ -328,6 +328,8 @@ function filingFlags(ex: Filing): { lines: AgentLine[]; flags: Flag[] } {
 function FormStep({ ex }: { ex: Filing }) {
   const frame = useRef<HTMLIFrameElement>(null);
   const [mode, setMode] = useState<"sections" | "form">("sections");
+  const unfit = useRef<() => void>(() => {});
+  useEffect(() => () => unfit.current(), []);
   const y = ex.yardstick;
   const { lines, flags } = filingFlags(ex);
 
@@ -335,12 +337,15 @@ function FormStep({ ex }: { ex: Filing }) {
   // filing through the form's own functions, the agents' flagged fields outlined
   function load() {
     if (fillForm(frame.current, ex.form)) markForm(frame.current?.contentDocument, flags);
+    // below lg the form takes its full height, so a phone scrolls one page (T143)
+    unfit.current();
+    unfit.current = fitFrame(frame.current, "(min-width: 1024px)");
   }
 
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-2">
-        <p className="min-w-0 flex-1 text-[13px] text-muted-foreground">
+        <p className="min-w-0 flex-[1_1_16rem] text-[13px] text-muted-foreground">
           The agency&apos;s filing in the{" "}
           <Link href="/work-form" className="font-medium text-brand-700 underline-offset-2 hover:underline">
             work intelligence form
@@ -583,9 +588,10 @@ function CostTable({ ex, cost }: { ex: Filing; cost: CostReading }) {
         <EngineMark id="cost_estimate" size={20} />
         What the Cost agent reads, line by line
       </h4>
+      {/* T143: on a phone each line is a block: the item, its three numbers, then the agent's reading */}
       <div className="overflow-x-auto rounded-xl border">
-        <table className="w-full min-w-[920px] text-[13px]">
-          <thead className="text-left text-[11px] uppercase tracking-wider text-muted-foreground">
+        <table className="w-full text-[13px] max-sm:block sm:min-w-[920px]">
+          <thead className="text-left text-[11px] uppercase tracking-wider text-muted-foreground max-sm:hidden">
             <tr className="bg-muted/60">
               <th className="px-3 py-2 font-semibold">E. Estimate line</th>
               <th className="px-3 py-2 text-right font-semibold">Quantity</th>
@@ -603,7 +609,7 @@ function CostTable({ ex, cost }: { ex: Filing; cost: CostReading }) {
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="max-sm:block">
             {ex.boq.map((r) => {
               const l = byN.get(r.n);
               if (!l) return null;
@@ -614,7 +620,7 @@ function CostTable({ ex, cost }: { ex: Filing; cost: CostReading }) {
               return (
                 <tr
                   key={r.n}
-                  className="border-t align-top"
+                  className="border-t align-top max-sm:grid max-sm:grid-cols-3 max-sm:first:border-t-0"
                   style={
                     asked
                       ? {
@@ -623,22 +629,27 @@ function CostTable({ ex, cost }: { ex: Filing; cost: CostReading }) {
                       : undefined
                   }
                 >
-                  <td className="px-3 py-2">
+                  <td className="px-3 py-2 max-sm:col-span-3 max-sm:pb-0">
                     <span className={cn(asked && "font-semibold")}>{r.item}</span>
                     <span className="block text-[11px] text-muted-foreground">{r.source}</span>
                   </td>
-                  <td className="num whitespace-nowrap px-3 py-2 text-right">
+                  <td className="num whitespace-nowrap px-3 py-2 text-right max-sm:text-left">
+                    <span className="block text-[10px] text-muted-foreground sm:hidden">Quantity</span>
                     {r.qty.toLocaleString("en-IN")} {unitOf(r.unit)}
                   </td>
                   <td
-                    className="num whitespace-nowrap px-3 py-2 text-right"
+                    className="num whitespace-nowrap px-3 py-2 text-right max-sm:text-left"
                     style={asked && l.state === "rate" ? { color: lv.fg, fontWeight: 600 } : undefined}
                   >
+                    <span className="block text-[10px] font-normal text-muted-foreground sm:hidden">Rate</span>
                     {rs(r.rate)}
                   </td>
-                  <td className="num whitespace-nowrap px-3 py-2 text-right">{rs(r.amount)}</td>
+                  <td className="num whitespace-nowrap px-3 py-2 text-right max-sm:text-left">
+                    <span className="block text-[10px] text-muted-foreground sm:hidden">Amount</span>
+                    {rs(r.amount)}
+                  </td>
                   <td
-                    className="border-l-4 px-3 py-2"
+                    className="border-l-4 px-3 py-2 max-sm:col-span-3"
                     style={{
                       borderColor: color,
                       background: `color-mix(in srgb, ${color} 5%, white)`,

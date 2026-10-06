@@ -32,13 +32,14 @@ import { FloatingPaths } from "@/components/kokonutui/background-paths";
 import DynamicText from "@/components/kokonutui/dynamic-text";
 import ParticleButton from "@/components/kokonutui/particle-button";
 import ShimmerText from "@/components/kokonutui/shimmer-text";
-import { Logo } from "@/components/Logo";
+import { Emblem, Logo } from "@/components/Logo";
+import { WhenVisible } from "@/components/motion/when-visible";
 import { CountUp, Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { useLenis } from "@/components/motion/SmoothScroll";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AGENT_ORDER, agentMeta } from "@/lib/format";
-import { supabase } from "@/lib/supabase";
+import { supabase, SUPABASE_ON } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -96,7 +97,7 @@ export default function LoginPage() {
   const [show, setShow] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const sb = supabase();
+  const sb = SUPABASE_ON;
 
   // the emblem turns as the page scrolls (GSAP ScrollTrigger, read every frame by the 3D scene)
   const scroll = useRef(0);
@@ -128,7 +129,14 @@ export default function LoginPage() {
     }
     setBusy(true);
     setError(null);
-    const { error } = await sb.auth.signInWithPassword({ email, password });
+    // the sign-in code loads here, on the first sign-in (T143)
+    const client = await supabase().catch(() => null);
+    if (!client) {
+      setBusy(false);
+      setError("Sign-in could not load. Check the connection and try again.");
+      return;
+    }
+    const { error } = await client.auth.signInWithPassword({ email, password });
     setBusy(false);
     if (error) setError("That email and password did not match an account.");
     else router.push("/");
@@ -164,9 +172,18 @@ export default function LoginPage() {
             <div className="absolute inset-0 grid-bg opacity-70" />
           </div>
           <div className="absolute left-1/2 top-1/2 size-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgb(31_134_214/0.16),transparent_65%)] blur-2xl" />
-          <div className="absolute inset-0 pt-16">
+          {/* T143: the 3D scene (about 260 KB compressed) loads once the page is idle; the emblem picture holds its place */}
+          <WhenVisible
+            idle
+            className="absolute inset-0 pt-16"
+            fallback={
+              <div className="grid size-full place-items-center">
+                <Emblem size={200} priority />
+              </div>
+            }
+          >
             <EmblemScene scroll={scroll} />
-          </div>
+          </WhenVisible>
         </div>
 
         {/* ------------------------------------------------------------------ the story */}
