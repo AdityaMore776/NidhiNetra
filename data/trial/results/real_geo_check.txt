@@ -1,0 +1,81 @@
+The Duplicate Work agent on real geography: Jaunpur (T139)
+
+Real works 1,038 (1,006 solar street lights); 106 post offices; 97,965 Open Buildings in the village cores
+
+How close real buildings stand:
+  houses_20_250m2   78,010  nearest 8.3 m (median); nearest within 15 m 89%, within 50 m 99%; same kind within 50 m: 23 (median)
+  large_150m2        9,115  nearest 23.0 m (median); nearest within 15 m 22%, within 50 m 85%; same kind within 50 m: 3 (median)
+
+Each scenario: honest filings at real buildings; 100 planted repeats (the same
+building 6-18 months later); the same repeats with the pin moved to the next building.
+
+lights, 5 a village, one hamlet
+   T137: 50 m, same family      honest asked  794/1006   78.9%   repeats asked 100/100  pin moved next door 100/100  notes  258  errors 0
+   + lights: same day apart     honest asked   56/1006    5.6%   repeats asked 100/100  pin moved next door 100/100  notes  142  errors 0
+   + purchases by type          honest asked   56/1006    5.6%   repeats asked 100/100  pin moved next door 100/100  notes  142  errors 0
+   + lights one spot, 5 m       honest asked    0/1006    0.0%   repeats asked  38/100  pin moved next door  39/100  notes    0  errors 0
+   + lights one spot, 10 m      honest asked    0/1006    0.0%   repeats asked  77/100  pin moved next door  76/100  notes    0  errors 0
+   + lights one spot, 15 m      honest asked    9/1006    0.9%   repeats asked  97/100  pin moved next door  92/100  notes    0  errors 0
+   + lights one spot, 20 m      honest asked   17/1006    1.7%   repeats asked  98/100  pin moved next door  97/100  notes    0  errors 0
+   engine now                   honest asked   17/1006    1.7%   repeats asked  98/100  pin moved next door  97/100  notes    0  errors 0
+
+lights, 10 a village, one hamlet
+   T137: 50 m, same family      honest asked  878/1006   87.3%   repeats asked 100/100  pin moved next door 100/100  notes  411  errors 0
+   + lights: same day apart     honest asked   42/1006    4.2%   repeats asked 100/100  pin moved next door 100/100  notes  108  errors 0
+   + purchases by type          honest asked   42/1006    4.2%   repeats asked 100/100  pin moved next door 100/100  notes  108  errors 0
+   + lights one spot, 5 m       honest asked    0/1006    0.0%   repeats asked  40/100  pin moved next door  31/100  notes    0  errors 0
+   + lights one spot, 10 m      honest asked    4/1006    0.4%   repeats asked  83/100  pin moved next door  74/100  notes    0  errors 0
+   + lights one spot, 15 m      honest asked   10/1006    1.0%   repeats asked  95/100  pin moved next door  90/100  notes    0  errors 0
+   + lights one spot, 20 m      honest asked   15/1006    1.5%   repeats asked  97/100  pin moved next door  96/100  notes    0  errors 0
+   engine now                   honest asked   15/1006    1.5%   repeats asked  97/100  pin moved next door  96/100  notes    0  errors 0
+
+lights, 10 a village, anywhere in the core
+   T137: 50 m, same family      honest asked  371/1006   36.9%   repeats asked 100/100  pin moved next door  99/100  notes  651  errors 0
+   + lights: same day apart     honest asked  147/1006   14.6%   repeats asked 100/100  pin moved next door  99/100  notes  306  errors 0
+   + purchases by type          honest asked  147/1006   14.6%   repeats asked 100/100  pin moved next door  99/100  notes  306  errors 0
+   + lights one spot, 5 m       honest asked    3/1006    0.3%   repeats asked  28/100  pin moved next door  16/100  notes    0  errors 0
+   + lights one spot, 10 m      honest asked   21/1006    2.1%   repeats asked  72/100  pin moved next door  49/100  notes    0  errors 0
+   + lights one spot, 15 m      honest asked   33/1006    3.3%   repeats asked  90/100  pin moved next door  71/100  notes    0  errors 0
+   + lights one spot, 20 m      honest asked   53/1006    5.3%   repeats asked  93/100  pin moved next door  89/100  notes    0  errors 0
+   engine now                   honest asked   53/1006    5.3%   repeats asked  93/100  pin moved next door  89/100  notes    0  errors 0
+
+lights, 25 a village, anywhere in the core
+   T137: 50 m, same family      honest asked  552/1006   54.9%   repeats asked 100/100  pin moved next door 100/100  notes  743  errors 0
+   + lights: same day apart     honest asked  140/1006   13.9%   repeats asked 100/100  pin moved next door 100/100  notes  184  errors 0
+   + purchases by type          honest asked  140/1006   13.9%   repeats asked 100/100  pin moved next door 100/100  notes  184  errors 0
+   + lights one spot, 5 m       honest asked    8/1006    0.8%   repeats asked  19/100  pin moved next door  21/100  notes    0  errors 0
+   + lights one spot, 10 m      honest asked   32/1006    3.2%   repeats asked  63/100  pin moved next door  49/100  notes    0  errors 0
+   + lights one spot, 15 m      honest asked   46/1006    4.6%   repeats asked  84/100  pin moved next door  72/100  notes    0  errors 0
+   + lights one spot, 20 m      honest asked   64/1006    6.4%   repeats asked  93/100  pin moved next door  90/100  notes    0  errors 0
+   engine now                   honest asked   64/1006    6.4%   repeats asked  93/100  pin moved next door  90/100  notes    0  errors 0
+
+buildings, 2 a village
+   T137: 50 m, same family      honest asked   28/240    11.7%   repeats asked 100/100  pin moved next door  96/100  notes   50  errors 0
+   + lights: same day apart     honest asked   28/240    11.7%   repeats asked 100/100  pin moved next door  96/100  notes   50  errors 0
+   + purchases by type          honest asked   28/240    11.7%   repeats asked 100/100  pin moved next door  96/100  notes   50  errors 0
+   + lights one spot, 5 m       honest asked   28/240    11.7%   repeats asked 100/100  pin moved next door  96/100  notes   50  errors 0
+   + lights one spot, 10 m      honest asked   28/240    11.7%   repeats asked 100/100  pin moved next door  96/100  notes   50  errors 0
+   + lights one spot, 15 m      honest asked   28/240    11.7%   repeats asked 100/100  pin moved next door  96/100  notes   50  errors 0
+   + lights one spot, 20 m      honest asked   28/240    11.7%   repeats asked 100/100  pin moved next door  96/100  notes   50  errors 0
+   engine now                   honest asked   28/240    11.7%   repeats asked 100/100  pin moved next door  96/100  notes   50  errors 0
+
+buildings, 4 a village
+   T137: 50 m, same family      honest asked   69/470    14.7%   repeats asked 100/100  pin moved next door  96/100  notes  165  errors 0
+   + lights: same day apart     honest asked   69/470    14.7%   repeats asked 100/100  pin moved next door  96/100  notes  165  errors 0
+   + purchases by type          honest asked   69/470    14.7%   repeats asked 100/100  pin moved next door  96/100  notes  165  errors 0
+   + lights one spot, 5 m       honest asked   69/470    14.7%   repeats asked 100/100  pin moved next door  96/100  notes  165  errors 0
+   + lights one spot, 10 m      honest asked   69/470    14.7%   repeats asked 100/100  pin moved next door  96/100  notes  165  errors 0
+   + lights one spot, 15 m      honest asked   69/470    14.7%   repeats asked 100/100  pin moved next door  96/100  notes  165  errors 0
+   + lights one spot, 20 m      honest asked   69/470    14.7%   repeats asked 100/100  pin moved next door  96/100  notes  165  errors 0
+   engine now                   honest asked   69/470    14.7%   repeats asked 100/100  pin moved next door  96/100  notes  165  errors 0
+
+purchases, 2 kinds an institution
+   T137: 50 m, same family      honest asked  210/400    52.5%   repeats asked 100/100  pin moved next door  97/100  notes   97  errors 0
+   + lights: same day apart     honest asked  210/400    52.5%   repeats asked 100/100  pin moved next door  97/100  notes   97  errors 0
+   + purchases by type          honest asked   11/400     2.8%   repeats asked 100/100  pin moved next door  95/100  notes   44  errors 0
+   + lights one spot, 5 m       honest asked   11/400     2.8%   repeats asked 100/100  pin moved next door  95/100  notes   44  errors 0
+   + lights one spot, 10 m      honest asked   11/400     2.8%   repeats asked 100/100  pin moved next door  95/100  notes   44  errors 0
+   + lights one spot, 15 m      honest asked   11/400     2.8%   repeats asked 100/100  pin moved next door  95/100  notes   44  errors 0
+   + lights one spot, 20 m      honest asked   11/400     2.8%   repeats asked 100/100  pin moved next door  95/100  notes   44  errors 0
+   engine now                   honest asked   11/400     2.8%   repeats asked 100/100  pin moved next door  95/100  notes   44  errors 0
+

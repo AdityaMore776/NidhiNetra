@@ -1,0 +1,738 @@
+{
+  "post_offices": 106,
+  "buildings": 97965,
+  "works": 1038,
+  "light_works": 1006,
+  "geometry": {
+    "houses_20_250m2": {
+      "n": 78010,
+      "nearest_median_m": 8.3,
+      "share_nearest_within_15m": 0.892,
+      "share_nearest_within_50m": 0.992,
+      "same_kind_within_50m_median": 23.0
+    },
+    "large_150m2": {
+      "n": 9115,
+      "nearest_median_m": 23.0,
+      "share_nearest_within_15m": 0.221,
+      "share_nearest_within_50m": 0.851,
+      "same_kind_within_50m_median": 3.0
+    }
+  },
+  "scenarios": [
+    {
+      "label": "lights, 5 a village, one hamlet",
+      "villages": 85,
+      "rules": {
+        "T137: 50 m, same family": {
+          "honest": 1006,
+          "honest_asked": 794,
+          "honest_errors": 0,
+          "honest_notes": 258,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 100,
+          "moved_errors": 0
+        },
+        "+ lights: same day apart": {
+          "honest": 1006,
+          "honest_asked": 56,
+          "honest_errors": 0,
+          "honest_notes": 142,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 100,
+          "moved_errors": 0
+        },
+        "+ purchases by type": {
+          "honest": 1006,
+          "honest_asked": 56,
+          "honest_errors": 0,
+          "honest_notes": 142,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 100,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 5 m": {
+          "honest": 1006,
+          "honest_asked": 0,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 38,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 39,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 10 m": {
+          "honest": 1006,
+          "honest_asked": 0,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 77,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 76,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 15 m": {
+          "honest": 1006,
+          "honest_asked": 9,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 97,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 92,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 20 m": {
+          "honest": 1006,
+          "honest_asked": 17,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 98,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 97,
+          "moved_errors": 0
+        },
+        "engine now": {
+          "honest": 1006,
+          "honest_asked": 17,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 98,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 97,
+          "moved_errors": 0
+        }
+      }
+    },
+    {
+      "label": "lights, 10 a village, one hamlet",
+      "villages": 85,
+      "rules": {
+        "T137: 50 m, same family": {
+          "honest": 1006,
+          "honest_asked": 878,
+          "honest_errors": 0,
+          "honest_notes": 411,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 100,
+          "moved_errors": 0
+        },
+        "+ lights: same day apart": {
+          "honest": 1006,
+          "honest_asked": 42,
+          "honest_errors": 0,
+          "honest_notes": 108,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 100,
+          "moved_errors": 0
+        },
+        "+ purchases by type": {
+          "honest": 1006,
+          "honest_asked": 42,
+          "honest_errors": 0,
+          "honest_notes": 108,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 100,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 5 m": {
+          "honest": 1006,
+          "honest_asked": 0,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 40,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 31,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 10 m": {
+          "honest": 1006,
+          "honest_asked": 4,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 83,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 74,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 15 m": {
+          "honest": 1006,
+          "honest_asked": 10,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 95,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 90,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 20 m": {
+          "honest": 1006,
+          "honest_asked": 15,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 97,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        },
+        "engine now": {
+          "honest": 1006,
+          "honest_asked": 15,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 97,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        }
+      }
+    },
+    {
+      "label": "lights, 10 a village, anywhere in the core",
+      "villages": 85,
+      "rules": {
+        "T137: 50 m, same family": {
+          "honest": 1006,
+          "honest_asked": 371,
+          "honest_errors": 0,
+          "honest_notes": 651,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 99,
+          "moved_errors": 0
+        },
+        "+ lights: same day apart": {
+          "honest": 1006,
+          "honest_asked": 147,
+          "honest_errors": 0,
+          "honest_notes": 306,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 99,
+          "moved_errors": 0
+        },
+        "+ purchases by type": {
+          "honest": 1006,
+          "honest_asked": 147,
+          "honest_errors": 0,
+          "honest_notes": 306,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 99,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 5 m": {
+          "honest": 1006,
+          "honest_asked": 3,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 28,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 16,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 10 m": {
+          "honest": 1006,
+          "honest_asked": 21,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 72,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 49,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 15 m": {
+          "honest": 1006,
+          "honest_asked": 33,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 90,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 71,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 20 m": {
+          "honest": 1006,
+          "honest_asked": 53,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 93,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 89,
+          "moved_errors": 0
+        },
+        "engine now": {
+          "honest": 1006,
+          "honest_asked": 53,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 93,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 89,
+          "moved_errors": 0
+        }
+      }
+    },
+    {
+      "label": "lights, 25 a village, anywhere in the core",
+      "villages": 85,
+      "rules": {
+        "T137: 50 m, same family": {
+          "honest": 1006,
+          "honest_asked": 552,
+          "honest_errors": 0,
+          "honest_notes": 743,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 100,
+          "moved_errors": 0
+        },
+        "+ lights: same day apart": {
+          "honest": 1006,
+          "honest_asked": 140,
+          "honest_errors": 0,
+          "honest_notes": 184,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 100,
+          "moved_errors": 0
+        },
+        "+ purchases by type": {
+          "honest": 1006,
+          "honest_asked": 140,
+          "honest_errors": 0,
+          "honest_notes": 184,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 100,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 5 m": {
+          "honest": 1006,
+          "honest_asked": 8,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 19,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 21,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 10 m": {
+          "honest": 1006,
+          "honest_asked": 32,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 63,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 49,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 15 m": {
+          "honest": 1006,
+          "honest_asked": 46,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 84,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 72,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 20 m": {
+          "honest": 1006,
+          "honest_asked": 64,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 93,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 90,
+          "moved_errors": 0
+        },
+        "engine now": {
+          "honest": 1006,
+          "honest_asked": 64,
+          "honest_errors": 0,
+          "honest_notes": 0,
+          "repeats": 100,
+          "repeats_asked": 93,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 90,
+          "moved_errors": 0
+        }
+      }
+    },
+    {
+      "label": "buildings, 2 a village",
+      "villages": 85,
+      "rules": {
+        "T137: 50 m, same family": {
+          "honest": 240,
+          "honest_asked": 28,
+          "honest_errors": 0,
+          "honest_notes": 50,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        },
+        "+ lights: same day apart": {
+          "honest": 240,
+          "honest_asked": 28,
+          "honest_errors": 0,
+          "honest_notes": 50,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        },
+        "+ purchases by type": {
+          "honest": 240,
+          "honest_asked": 28,
+          "honest_errors": 0,
+          "honest_notes": 50,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 5 m": {
+          "honest": 240,
+          "honest_asked": 28,
+          "honest_errors": 0,
+          "honest_notes": 50,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 10 m": {
+          "honest": 240,
+          "honest_asked": 28,
+          "honest_errors": 0,
+          "honest_notes": 50,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 15 m": {
+          "honest": 240,
+          "honest_asked": 28,
+          "honest_errors": 0,
+          "honest_notes": 50,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 20 m": {
+          "honest": 240,
+          "honest_asked": 28,
+          "honest_errors": 0,
+          "honest_notes": 50,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        },
+        "engine now": {
+          "honest": 240,
+          "honest_asked": 28,
+          "honest_errors": 0,
+          "honest_notes": 50,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        }
+      }
+    },
+    {
+      "label": "buildings, 4 a village",
+      "villages": 85,
+      "rules": {
+        "T137: 50 m, same family": {
+          "honest": 470,
+          "honest_asked": 69,
+          "honest_errors": 0,
+          "honest_notes": 165,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        },
+        "+ lights: same day apart": {
+          "honest": 470,
+          "honest_asked": 69,
+          "honest_errors": 0,
+          "honest_notes": 165,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        },
+        "+ purchases by type": {
+          "honest": 470,
+          "honest_asked": 69,
+          "honest_errors": 0,
+          "honest_notes": 165,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 5 m": {
+          "honest": 470,
+          "honest_asked": 69,
+          "honest_errors": 0,
+          "honest_notes": 165,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 10 m": {
+          "honest": 470,
+          "honest_asked": 69,
+          "honest_errors": 0,
+          "honest_notes": 165,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 15 m": {
+          "honest": 470,
+          "honest_asked": 69,
+          "honest_errors": 0,
+          "honest_notes": 165,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 20 m": {
+          "honest": 470,
+          "honest_asked": 69,
+          "honest_errors": 0,
+          "honest_notes": 165,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        },
+        "engine now": {
+          "honest": 470,
+          "honest_asked": 69,
+          "honest_errors": 0,
+          "honest_notes": 165,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 96,
+          "moved_errors": 0
+        }
+      }
+    },
+    {
+      "label": "purchases, 2 kinds an institution",
+      "villages": 85,
+      "rules": {
+        "T137: 50 m, same family": {
+          "honest": 400,
+          "honest_asked": 210,
+          "honest_errors": 0,
+          "honest_notes": 97,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 97,
+          "moved_errors": 0
+        },
+        "+ lights: same day apart": {
+          "honest": 400,
+          "honest_asked": 210,
+          "honest_errors": 0,
+          "honest_notes": 97,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 97,
+          "moved_errors": 0
+        },
+        "+ purchases by type": {
+          "honest": 400,
+          "honest_asked": 11,
+          "honest_errors": 0,
+          "honest_notes": 44,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 95,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 5 m": {
+          "honest": 400,
+          "honest_asked": 11,
+          "honest_errors": 0,
+          "honest_notes": 44,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 95,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 10 m": {
+          "honest": 400,
+          "honest_asked": 11,
+          "honest_errors": 0,
+          "honest_notes": 44,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 95,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 15 m": {
+          "honest": 400,
+          "honest_asked": 11,
+          "honest_errors": 0,
+          "honest_notes": 44,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 95,
+          "moved_errors": 0
+        },
+        "+ lights one spot, 20 m": {
+          "honest": 400,
+          "honest_asked": 11,
+          "honest_errors": 0,
+          "honest_notes": 44,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 95,
+          "moved_errors": 0
+        },
+        "engine now": {
+          "honest": 400,
+          "honest_asked": 11,
+          "honest_errors": 0,
+          "honest_notes": 44,
+          "repeats": 100,
+          "repeats_asked": 100,
+          "repeats_errors": 0,
+          "moved": 100,
+          "moved_asked": 95,
+          "moved_errors": 0
+        }
+      }
+    }
+  ]
+}

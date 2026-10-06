@@ -15,6 +15,8 @@ Where DRISHTI's data comes from, how it is processed, what we keep out of git, a
 | **India Post PIN ↔ district file** | PIN code → district | PIN check on photo stamps |
 | **MPLADS Guidelines 2016 / 2023** | clauses, limits, prohibited works (Annexure-II) | `apps/engine/drishti/reference/*.yaml`; every flag cites its clause |
 | **CAG Report 31 of 2010-11** (MPLADS performance audit) | what auditors actually found, with scale | which problems the agents target; figures on the deck |
+| **Google Open Buildings v3** (storage.googleapis.com/open-buildings-data, CC BY 4.0) | every building's centre, area and confidence, from satellite images | T139: real house and building spacing for Duplicate Work's map-pin rule (`data/trial/real_geo_check.py --fetch`; kept in `data/raw/open_buildings/`, never committed) |
+| **India Post directory with positions** (`indiapins` on PyPI) | each post office's district and map position | T139: real village centres in a district |
 
 ## 2. The real evidence
 

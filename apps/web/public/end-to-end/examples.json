@@ -490,7 +490,7 @@
       "status": "ASSESSED",
       "verdict": "NOT_SANCTIONED_BEFORE",
       "risk": 0.0,
-      "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 50 m of its map pin, and none of the 1,064 other works of its district names this place in the same words.",
+      "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 1,064 other works of its district names this place in the same words.",
       "limitations": [
        "The description names no place, so no look-alike can be found by words."
       ],
@@ -1291,7 +1291,7 @@
       "status": "ASSESSED",
       "verdict": "NOT_SANCTIONED_BEFORE",
       "risk": 0.0,
-      "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 50 m of its map pin, and none of the 1,064 other works of its district names this place in the same words.",
+      "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 20 m of its map pin, and none of the 1,064 other works of its district names this place in the same words.",
       "limitations": [],
       "findings": [],
       "picture": {
@@ -2012,7 +2012,7 @@
       "status": "ASSESSED",
       "verdict": "NOT_SANCTIONED_BEFORE",
       "risk": 0.0,
-      "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 50 m of its map pin, and none of the 1,064 other works of its district names this place in the same words.",
+      "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 1,064 other works of its district names this place in the same words.",
       "limitations": [
        "The description names no place, so no look-alike can be found by words."
       ],

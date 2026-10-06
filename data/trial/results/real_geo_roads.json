@@ -1,0 +1,758 @@
+{
+  "lengths": {
+    "n": 1364,
+    "deciles": [
+      52,
+      76,
+      100,
+      102,
+      121,
+      149,
+      162,
+      200,
+      267
+    ],
+    "share_100m_or_less": 0.397
+  },
+  "scenarios": [
+    {
+      "label": "roads: programmes of lanes between real houses",
+      "rules": {
+        "T139: ends 50 m, on the line 25 m": {
+          "honest": [
+            114,
+            919
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            100,
+            100
+          ],
+          "repeat re-pinned_errors": 0,
+          "repeat longer": [
+            97,
+            100
+          ],
+          "repeat longer_errors": 0,
+          "repeat part": [
+            100,
+            100
+          ],
+          "repeat part_errors": 0
+        },
+        "ends 30 m": {
+          "honest": [
+            99,
+            919
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            99,
+            100
+          ],
+          "repeat re-pinned_errors": 0,
+          "repeat longer": [
+            94,
+            100
+          ],
+          "repeat longer_errors": 0,
+          "repeat part": [
+            98,
+            100
+          ],
+          "repeat part_errors": 0
+        },
+        "ends 30 m, on the line 15 m": {
+          "honest": [
+            55,
+            919
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            96,
+            100
+          ],
+          "repeat re-pinned_errors": 0,
+          "repeat longer": [
+            88,
+            100
+          ],
+          "repeat longer_errors": 0,
+          "repeat part": [
+            90,
+            100
+          ],
+          "repeat part_errors": 0
+        },
+        "ends 50 AND line 20; else line 20": {
+          "honest": [
+            71,
+            919
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            97,
+            100
+          ],
+          "repeat re-pinned_errors": 0,
+          "repeat longer": [
+            91,
+            100
+          ],
+          "repeat longer_errors": 0,
+          "repeat part": [
+            94,
+            100
+          ],
+          "repeat part_errors": 0
+        },
+        "ends 50 AND line 20; else line 25": {
+          "honest": [
+            92,
+            919
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            97,
+            100
+          ],
+          "repeat re-pinned_errors": 0,
+          "repeat longer": [
+            91,
+            100
+          ],
+          "repeat longer_errors": 0,
+          "repeat part": [
+            95,
+            100
+          ],
+          "repeat part_errors": 0
+        },
+        "ends 50 AND line 15; else line 25": {
+          "honest": [
+            82,
+            919
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            90,
+            100
+          ],
+          "repeat re-pinned_errors": 0,
+          "repeat longer": [
+            90,
+            100
+          ],
+          "repeat longer_errors": 0,
+          "repeat part": [
+            87,
+            100
+          ],
+          "repeat part_errors": 0
+        },
+        "ends 30 AND line 20; else line 25": {
+          "honest": [
+            95,
+            919
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            99,
+            100
+          ],
+          "repeat re-pinned_errors": 0,
+          "repeat longer": [
+            94,
+            100
+          ],
+          "repeat longer_errors": 0,
+          "repeat part": [
+            98,
+            100
+          ],
+          "repeat part_errors": 0
+        },
+        "ends 40 AND line 20; else line 25": {
+          "honest": [
+            92,
+            919
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            97,
+            100
+          ],
+          "repeat re-pinned_errors": 0,
+          "repeat longer": [
+            91,
+            100
+          ],
+          "repeat longer_errors": 0,
+          "repeat part": [
+            96,
+            100
+          ],
+          "repeat part_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            95,
+            919
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            99,
+            100
+          ],
+          "repeat re-pinned_errors": 0,
+          "repeat longer": [
+            94,
+            100
+          ],
+          "repeat longer_errors": 0,
+          "repeat part": [
+            98,
+            100
+          ],
+          "repeat part_errors": 0
+        }
+      },
+      "why_asked_now": {
+        "same_day": 28,
+        "by_ends": 10,
+        "on_the_line": 85,
+        "short_lane_<=100m": 25
+      }
+    },
+    {
+      "label": "roads: the next street over, 15 m away",
+      "rules": {
+        "T139: ends 50 m, on the line 25 m": {
+          "honest": [
+            139,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            100,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 30 m": {
+          "honest": [
+            128,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            98,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 30 m, on the line 15 m": {
+          "honest": [
+            90,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            91,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 50 AND line 20; else line 20": {
+          "honest": [
+            99,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            96,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 50 AND line 20; else line 25": {
+          "honest": [
+            105,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            96,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 50 AND line 15; else line 25": {
+          "honest": [
+            64,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            89,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 30 AND line 20; else line 25": {
+          "honest": [
+            114,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            98,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 40 AND line 20; else line 25": {
+          "honest": [
+            107,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            96,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            114,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            98,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        }
+      },
+      "why_asked_now": {
+        "same_day": 0,
+        "by_ends": 55,
+        "on_the_line": 59,
+        "short_lane_<=100m": 38
+      }
+    },
+    {
+      "label": "roads: the next street over, 25 m away",
+      "rules": {
+        "T139: ends 50 m, on the line 25 m": {
+          "honest": [
+            121,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            99,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 30 m": {
+          "honest": [
+            62,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            98,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 30 m, on the line 15 m": {
+          "honest": [
+            29,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            90,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 50 AND line 20; else line 20": {
+          "honest": [
+            18,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            95,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 50 AND line 20; else line 25": {
+          "honest": [
+            22,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            95,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 50 AND line 15; else line 25": {
+          "honest": [
+            8,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            87,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 30 AND line 20; else line 25": {
+          "honest": [
+            42,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            97,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 40 AND line 20; else line 25": {
+          "honest": [
+            28,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            95,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            42,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            97,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        }
+      },
+      "why_asked_now": {
+        "same_day": 0,
+        "by_ends": 8,
+        "on_the_line": 34,
+        "short_lane_<=100m": 13
+      }
+    },
+    {
+      "label": "roads: the next street over, 35 m away",
+      "rules": {
+        "T139: ends 50 m, on the line 25 m": {
+          "honest": [
+            96,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            99,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 30 m": {
+          "honest": [
+            6,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            97,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 30 m, on the line 15 m": {
+          "honest": [
+            2,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            90,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 50 AND line 20; else line 20": {
+          "honest": [
+            3,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            94,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 50 AND line 20; else line 25": {
+          "honest": [
+            5,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            94,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 50 AND line 15; else line 25": {
+          "honest": [
+            3,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            87,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 30 AND line 20; else line 25": {
+          "honest": [
+            5,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            96,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 40 AND line 20; else line 25": {
+          "honest": [
+            5,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            94,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            5,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            96,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        }
+      },
+      "why_asked_now": {
+        "same_day": 0,
+        "by_ends": 1,
+        "on_the_line": 4,
+        "short_lane_<=100m": 1
+      }
+    },
+    {
+      "label": "roads: the next street over, 50 m away",
+      "rules": {
+        "T139: ends 50 m, on the line 25 m": {
+          "honest": [
+            17,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            99,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 30 m": {
+          "honest": [
+            1,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            97,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 30 m, on the line 15 m": {
+          "honest": [
+            0,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            90,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 50 AND line 20; else line 20": {
+          "honest": [
+            2,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            94,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 50 AND line 20; else line 25": {
+          "honest": [
+            2,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            94,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 50 AND line 15; else line 25": {
+          "honest": [
+            1,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            87,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 30 AND line 20; else line 25": {
+          "honest": [
+            1,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            96,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "ends 40 AND line 20; else line 25": {
+          "honest": [
+            1,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            94,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            1,
+            150
+          ],
+          "honest_errors": 0,
+          "repeat re-pinned": [
+            96,
+            100
+          ],
+          "repeat re-pinned_errors": 0
+        }
+      },
+      "why_asked_now": {
+        "same_day": 0,
+        "by_ends": 0,
+        "on_the_line": 1,
+        "short_lane_<=100m": 0
+      }
+    },
+    {
+      "label": "hand pumps at houses (Jaunpur's programme days)",
+      "rules": {
+        "T139: 50 m, same day counts": {
+          "honest": [
+            868,
+            1006
+          ],
+          "honest_errors": 0,
+          "repeat at the same house": [
+            100,
+            100
+          ],
+          "repeat at the same house_errors": 0
+        },
+        "+ pumps: same day apart": {
+          "honest": [
+            41,
+            1006
+          ],
+          "honest_errors": 0,
+          "repeat at the same house": [
+            100,
+            100
+          ],
+          "repeat at the same house_errors": 0
+        },
+        "+ pumps one spot (20 m)": {
+          "honest": [
+            11,
+            1006
+          ],
+          "honest_errors": 0,
+          "repeat at the same house": [
+            98,
+            100
+          ],
+          "repeat at the same house_errors": 0
+        },
+        "engine now": {
+          "honest": [
+            11,
+            1006
+          ],
+          "honest_errors": 0,
+          "repeat at the same house": [
+            98,
+            100
+          ],
+          "repeat at the same house_errors": 0
+        }
+      },
+      "why_asked_now": null
+    }
+  ]
+}

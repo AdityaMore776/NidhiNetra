@@ -102,6 +102,29 @@ dashboard queue before / after in FINDINGS (439 → 217)
 of §9.6 planted. Only readings and blurred frames are kept; no video enters the repo.
 **Done when:** [ ] each trick caught 9 in 10 · [ ] a finding on at most 1 in 30 honest visits · [ ] FINDINGS
 
+### T139 · The agents on real data from outside the project  ·  M  ·  engine + data  ·  Depends on: T137
+**What:** (owner, 5 Oct 2026) find relevant real data anywhere, test the agents on it temporarily,
+and iterate from what it shows. Reachable here: Google's Open Buildings, India Post's post-office
+positions (`indiapins`), and the eSAKSHI dashboard tables. Government sites are blocked, so there
+are no published rate schedules for Cost. Nothing fetched is committed.
+**Done when:**
+- [x] Duplicate Work on Jaunpur's real works pinned at real buildings (`data/trial/real_geo_check.py`):
+  - one programme's lights are not asked about each other;
+  - a light is one spot (20 m);
+  - purchases are compared by kind;
+  - honest light works asked fall from 37–87% to 1.5–6.4%, honest purchases from 52.5% to 2.8%,
+    and 93–100% of repeats are still asked.
+- [x] Site Progress on the 1,025 real completion timelines: the loophole "first filmed finished"
+  closed (`FIRST_FILMED_FINISHED`).
+- [x] Round 4 (`data/trial/real_geo_roads.py`):
+  - hand pumps take the light rules (honest asked 86% → 1%);
+  - a road is the same road only when both ends lie within 30 m and it lies on the other's line;
+  - the next street over, 25–35 m away, is asked 3–28% of the time (was 64–81%);
+  - 94–99% of repeated lanes are still asked.
+- [x] The loop: 97 probes, 0 FAIL. The dashboard identical.
+- [ ] Real public-building positions (halls, schools) to settle the buildings' 50 m line.
+- [ ] Published rate schedules for Cost (needs a network that reaches government sites).
+
 ### T138 · Form to risk score: the real form, and the Cost agent line by line  ·  S  ·  web + data
 **What:** (owner, 5 Oct 2026) `/end-to-end` step 1 shows the website's work intelligence form itself,
 filled; step 3 adds a coloured column with the Cost agent's reading of each estimate line: % above the

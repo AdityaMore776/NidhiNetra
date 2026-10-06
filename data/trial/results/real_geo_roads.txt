@@ -1,0 +1,65 @@
+Duplicate Work on real geography, round 4: village lanes and hand pumps (T139)
+
+Lengths stated in real road and path descriptions: 1,364; deciles [52, 76, 100, 102, 121, 149, 162, 200, 267] m; 40% are 100 m or less.
+
+roads: programmes of lanes between real houses   (honest asked now, by what: {'same_day': 28, 'by_ends': 10, 'on_the_line': 85, 'short_lane_<=100m': 25})
+   T139: ends 50 m, on the line 25 m    honest 114/919 (12%)  repeat re-pinned 100/100 (100%)  repeat longer 97/100 (97%)  repeat part 100/100 (100%)  errors 0
+   ends 30 m                            honest 99/919 (11%)  repeat re-pinned 99/100 (99%)  repeat longer 94/100 (94%)  repeat part 98/100 (98%)  errors 0
+   ends 30 m, on the line 15 m          honest 55/919 (6%)  repeat re-pinned 96/100 (96%)  repeat longer 88/100 (88%)  repeat part 90/100 (90%)  errors 0
+   ends 50 AND line 20; else line 20    honest 71/919 (8%)  repeat re-pinned 97/100 (97%)  repeat longer 91/100 (91%)  repeat part 94/100 (94%)  errors 0
+   ends 50 AND line 20; else line 25    honest 92/919 (10%)  repeat re-pinned 97/100 (97%)  repeat longer 91/100 (91%)  repeat part 95/100 (95%)  errors 0
+   ends 50 AND line 15; else line 25    honest 82/919 (9%)  repeat re-pinned 90/100 (90%)  repeat longer 90/100 (90%)  repeat part 87/100 (87%)  errors 0
+   ends 30 AND line 20; else line 25    honest 95/919 (10%)  repeat re-pinned 99/100 (99%)  repeat longer 94/100 (94%)  repeat part 98/100 (98%)  errors 0
+   ends 40 AND line 20; else line 25    honest 92/919 (10%)  repeat re-pinned 97/100 (97%)  repeat longer 91/100 (91%)  repeat part 96/100 (96%)  errors 0
+   engine now                           honest 95/919 (10%)  repeat re-pinned 99/100 (99%)  repeat longer 94/100 (94%)  repeat part 98/100 (98%)  errors 0
+
+roads: the next street over, 15 m away   (honest asked now, by what: {'same_day': 0, 'by_ends': 55, 'on_the_line': 59, 'short_lane_<=100m': 38})
+   T139: ends 50 m, on the line 25 m    honest 139/150 (93%)  repeat re-pinned 100/100 (100%)  errors 0
+   ends 30 m                            honest 128/150 (85%)  repeat re-pinned 98/100 (98%)  errors 0
+   ends 30 m, on the line 15 m          honest 90/150 (60%)  repeat re-pinned 91/100 (91%)  errors 0
+   ends 50 AND line 20; else line 20    honest 99/150 (66%)  repeat re-pinned 96/100 (96%)  errors 0
+   ends 50 AND line 20; else line 25    honest 105/150 (70%)  repeat re-pinned 96/100 (96%)  errors 0
+   ends 50 AND line 15; else line 25    honest 64/150 (43%)  repeat re-pinned 89/100 (89%)  errors 0
+   ends 30 AND line 20; else line 25    honest 114/150 (76%)  repeat re-pinned 98/100 (98%)  errors 0
+   ends 40 AND line 20; else line 25    honest 107/150 (71%)  repeat re-pinned 96/100 (96%)  errors 0
+   engine now                           honest 114/150 (76%)  repeat re-pinned 98/100 (98%)  errors 0
+
+roads: the next street over, 25 m away   (honest asked now, by what: {'same_day': 0, 'by_ends': 8, 'on_the_line': 34, 'short_lane_<=100m': 13})
+   T139: ends 50 m, on the line 25 m    honest 121/150 (81%)  repeat re-pinned 99/100 (99%)  errors 0
+   ends 30 m                            honest 62/150 (41%)  repeat re-pinned 98/100 (98%)  errors 0
+   ends 30 m, on the line 15 m          honest 29/150 (19%)  repeat re-pinned 90/100 (90%)  errors 0
+   ends 50 AND line 20; else line 20    honest 18/150 (12%)  repeat re-pinned 95/100 (95%)  errors 0
+   ends 50 AND line 20; else line 25    honest 22/150 (15%)  repeat re-pinned 95/100 (95%)  errors 0
+   ends 50 AND line 15; else line 25    honest 8/150 (5%)  repeat re-pinned 87/100 (87%)  errors 0
+   ends 30 AND line 20; else line 25    honest 42/150 (28%)  repeat re-pinned 97/100 (97%)  errors 0
+   ends 40 AND line 20; else line 25    honest 28/150 (19%)  repeat re-pinned 95/100 (95%)  errors 0
+   engine now                           honest 42/150 (28%)  repeat re-pinned 97/100 (97%)  errors 0
+
+roads: the next street over, 35 m away   (honest asked now, by what: {'same_day': 0, 'by_ends': 1, 'on_the_line': 4, 'short_lane_<=100m': 1})
+   T139: ends 50 m, on the line 25 m    honest 96/150 (64%)  repeat re-pinned 99/100 (99%)  errors 0
+   ends 30 m                            honest 6/150 (4%)  repeat re-pinned 97/100 (97%)  errors 0
+   ends 30 m, on the line 15 m          honest 2/150 (1%)  repeat re-pinned 90/100 (90%)  errors 0
+   ends 50 AND line 20; else line 20    honest 3/150 (2%)  repeat re-pinned 94/100 (94%)  errors 0
+   ends 50 AND line 20; else line 25    honest 5/150 (3%)  repeat re-pinned 94/100 (94%)  errors 0
+   ends 50 AND line 15; else line 25    honest 3/150 (2%)  repeat re-pinned 87/100 (87%)  errors 0
+   ends 30 AND line 20; else line 25    honest 5/150 (3%)  repeat re-pinned 96/100 (96%)  errors 0
+   ends 40 AND line 20; else line 25    honest 5/150 (3%)  repeat re-pinned 94/100 (94%)  errors 0
+   engine now                           honest 5/150 (3%)  repeat re-pinned 96/100 (96%)  errors 0
+
+roads: the next street over, 50 m away   (honest asked now, by what: {'same_day': 0, 'by_ends': 0, 'on_the_line': 1, 'short_lane_<=100m': 0})
+   T139: ends 50 m, on the line 25 m    honest 17/150 (11%)  repeat re-pinned 99/100 (99%)  errors 0
+   ends 30 m                            honest 1/150 (1%)  repeat re-pinned 97/100 (97%)  errors 0
+   ends 30 m, on the line 15 m          honest 0/150 (0%)  repeat re-pinned 90/100 (90%)  errors 0
+   ends 50 AND line 20; else line 20    honest 2/150 (1%)  repeat re-pinned 94/100 (94%)  errors 0
+   ends 50 AND line 20; else line 25    honest 2/150 (1%)  repeat re-pinned 94/100 (94%)  errors 0
+   ends 50 AND line 15; else line 25    honest 1/150 (1%)  repeat re-pinned 87/100 (87%)  errors 0
+   ends 30 AND line 20; else line 25    honest 1/150 (1%)  repeat re-pinned 96/100 (96%)  errors 0
+   ends 40 AND line 20; else line 25    honest 1/150 (1%)  repeat re-pinned 94/100 (94%)  errors 0
+   engine now                           honest 1/150 (1%)  repeat re-pinned 96/100 (96%)  errors 0
+
+hand pumps at houses (Jaunpur's programme days)
+   T139: 50 m, same day counts          honest 868/1006 (86%)  repeat at the same house 100/100 (100%)  errors 0
+   + pumps: same day apart              honest 41/1006 (4%)  repeat at the same house 100/100 (100%)  errors 0
+   + pumps one spot (20 m)              honest 11/1006 (1%)  repeat at the same house 98/100 (98%)  errors 0
+   engine now                           honest 11/1006 (1%)  repeat at the same house 98/100 (98%)  errors 0
+

@@ -1,5 +1,5 @@
-Agent robustness loop (T135, T136): 85 probes on the work form's example filings in Jaunpur (1,038 real works, 11 background filings), as of 2026-10-02
-PASS 78  FAIL 0  LIMIT 7
+Agent robustness loop (T135-T139): 97 probes on the work form's example filings in Jaunpur (1,038 real works, 11 background filings), as of 2026-10-02
+PASS 90  FAIL 0  LIMIT 7
 
 == cost_estimate
   PASS  noise    honest rates a few % apart (seeded): no question
@@ -113,6 +113,26 @@ PASS 78  FAIL 0  LIMIT 7
         missed: none (pieces end to end by pin)
   PASS  evasion  split with each piece described in other words
         ['SPLIT_JUST_UNDER_LIMIT']: the pieces still meet end to end by their pins
+  PASS  noise    a neighbour's street light a year later, 30 m away (real houses 8 m)
+        the light next door (37-87% of Jaunpur's honest lights were asked at 50 m): nothing (ASSESSED)
+  PASS  noise    one programme's lights at neighbouring houses, filed the same day
+        asked: 0 of 5
+  PASS  evasion  a street light filed again at the same spot a year later
+        one spot, GPS 6 m apart: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
+  PASS  noise    one school's furniture after its computers (one pin)
+        two purchases for one school (673 such real pairs on the dashboard): nothing (ASSESSED)
+  PASS  evasion  computers bought again for the same school
+        the same purchase again: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
+  PASS  evasion  a hall filed twice on the same day at one pin
+        the same-day exception is for a programme of lights only: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
+  PASS  noise    the next street over, 30 m away, a year later (real lanes 121 m)
+        a row of houses apart (81% of such lanes 25 m apart were asked at 50 m): nothing (ASSESSED)
+  PASS  evasion  a lane filed again, its ends re-pinned 8 m off
+        the same lane, both ends near and on its line: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
+  PASS  noise    a neighbour's hand pump, 35 m away, months later
+        pumps at houses (86% of honest ones were asked at 50 m): nothing (ASSESSED)
+  PASS  evasion  a hand pump filed again at the same spot
+        one spot, GPS 6 m apart: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
 == time_rules
   PASS  evasion  the late hall: start month declared two years after sanction
         start promised 2 years after sanction: PAST_PROMISED_TIME (ASSESSED)
@@ -175,6 +195,10 @@ PASS 78  FAIL 0  LIMIT 7
         a dark video slipped between the two: CLAIM_NOT_SHOWN (ASSESSED)
   PASS  evasion  views never match while the GPS says 'at the site'
         GPS faked inside, another place filmed: SITE_VIDEOS_UNUSABLE (ASSESSED)
+  PASS  evasion  an old asset filmed once, as the final video (no first video)
+        first filmed finished (T139: ALREADY_BUILT_AT_START needs a first video): FIRST_FILMED_FINISHED (ASSESSED)
+  PASS  noise    a light installed in a day: first and final video the same day
+        532 of Jaunpur's 1,025 real works closed within the month: nothing (ASSESSED)
 
 Random damage: 3000 runs (seed 7), half through the website form, half inside the engine's own form, visits and record
   agent errors: 0 {}

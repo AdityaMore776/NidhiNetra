@@ -519,6 +519,76 @@
    "detail": "['SPLIT_JUST_UNDER_LIMIT']: the pieces still meet end to end by their pins"
   },
   {
+   "agent": "dup_split",
+   "kind": "noise",
+   "probe": "a neighbour's street light a year later, 30 m away (real houses 8 m)",
+   "verdict": "PASS",
+   "detail": "the light next door (37-87% of Jaunpur's honest lights were asked at 50 m): nothing (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "noise",
+   "probe": "one programme's lights at neighbouring houses, filed the same day",
+   "verdict": "PASS",
+   "detail": "asked: 0 of 5"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "a street light filed again at the same spot a year later",
+   "verdict": "PASS",
+   "detail": "one spot, GPS 6 m apart: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "noise",
+   "probe": "one school's furniture after its computers (one pin)",
+   "verdict": "PASS",
+   "detail": "two purchases for one school (673 such real pairs on the dashboard): nothing (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "computers bought again for the same school",
+   "verdict": "PASS",
+   "detail": "the same purchase again: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "a hall filed twice on the same day at one pin",
+   "verdict": "PASS",
+   "detail": "the same-day exception is for a programme of lights only: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "noise",
+   "probe": "the next street over, 30 m away, a year later (real lanes 121 m)",
+   "verdict": "PASS",
+   "detail": "a row of houses apart (81% of such lanes 25 m apart were asked at 50 m): nothing (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "a lane filed again, its ends re-pinned 8 m off",
+   "verdict": "PASS",
+   "detail": "the same lane, both ends near and on its line: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "noise",
+   "probe": "a neighbour's hand pump, 35 m away, months later",
+   "verdict": "PASS",
+   "detail": "pumps at houses (86% of honest ones were asked at 50 m): nothing (ASSESSED)"
+  },
+  {
+   "agent": "dup_split",
+   "kind": "evasion",
+   "probe": "a hand pump filed again at the same spot",
+   "verdict": "PASS",
+   "detail": "one spot, GPS 6 m apart: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)"
+  },
+  {
    "agent": "time_rules",
    "kind": "evasion",
    "probe": "'complete' past the early line, checked the next day, never filmed",
@@ -594,6 +664,20 @@
    "probe": "views never match while the GPS says 'at the site'",
    "verdict": "PASS",
    "detail": "GPS faked inside, another place filmed: SITE_VIDEOS_UNUSABLE (ASSESSED)"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "evasion",
+   "probe": "an old asset filmed once, as the final video (no first video)",
+   "verdict": "PASS",
+   "detail": "first filmed finished (T139: ALREADY_BUILT_AT_START needs a first video): FIRST_FILMED_FINISHED (ASSESSED)"
+  },
+  {
+   "agent": "site_progress",
+   "kind": "noise",
+   "probe": "a light installed in a day: first and final video the same day",
+   "verdict": "PASS",
+   "detail": "532 of Jaunpur's 1,025 real works closed within the month: nothing (ASSESSED)"
   }
  ],
  "damage": {
