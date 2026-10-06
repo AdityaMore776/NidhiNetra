@@ -102,6 +102,36 @@ dashboard queue before / after in FINDINGS (439 → 217)
 of §9.6 planted. Only readings and blurred frames are kept; no video enters the repo.
 **Done when:** [ ] each trick caught 9 in 10 · [ ] a finding on at most 1 in 30 honest visits · [ ] FINDINGS
 
+### T144 · The agents, more concrete: quantities held to the size for more works  ·  M  ·  engine + data  ·  Depends on: T141
+**What:** (owner, 6 Oct 2026) "work even more on the agents. I need the agents to be fully concrete,
+working and good at it". Audit the four agents for what keeps them from a definite answer, and make
+concrete what the data here allows.
+**Done when:**
+- [x] Audit: the loop's LIMITs sorted into the owner's margins, the labour ruling and data still to
+  come (SoR T096, real forms T098, real site videos T126); FINDINGS "T144".
+- [x] Cost holds more quantities to the work's own size (`cost_form/norms.py`): a CC road's stone by
+  its mix, a water pipeline's main by its length (its house connections apart), solar panels and
+  batteries bought by Wp or Wh by what each light carries; stone named for a base course is the
+  base; a road over a stone base itemises its stone.
+- [x] `data/trial/quantity_trial.py`: honest 0 asked in every cell; ×1.5 and ×2 asked 100% (pipes
+  on one line: 34.5% and 79%).
+- [x] The loop: 118 probes, 0 FAIL; its harness no longer lets the form's missing-reason check
+  stop a padded filing before the price check.
+- [x] `ruff check drishti tests && pytest -q`: 921 passed; the examples still raise what they say.
+
+### T143 · The website on a phone, and faster to load  ·  M  ·  web
+**What:** (owner, 6 Oct 2026) "make the website usable on phones as well, and also make them
+faster to load if you can while keeping all the functionality".
+**Done when:**
+- [x] `scripts/dev/phone_audit.mjs` measures every page as a phone with mobile throttling; results
+  for main and the branch saved (`results/phone_audit_before.txt`, `_after.txt`).
+- [x] No page or form frame scrolls sideways or cuts text at 390 or 360 px; works lists, the form
+  map, estimate and labour rows and the form's own tables read as cards on a phone.
+- [x] The same features, loaded when used: sign-in code only with a sign-in cookie, charts / 3D /
+  map when near the screen, no Hindi font preload, smooth scrolling only with a mouse.
+- [x] Median page 843 → 582 KB, LCP 5.33 → 4.20 s; desktop layouts unchanged (checked in
+  Chromium); `npx tsc --noEmit && npm run lint && npm run build` clean.
+
 ### T142 · The public examples are graded forms, each with its form  ·  S  ·  web + data  ·  Depends on: T134, T141
 **What:** (owner, 6 Oct 2026) "add the Example Form to each mentioned project, remove the current
 normal recommendation rating system because we are currently grading forms, so each of the risk

@@ -44,6 +44,21 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
+**6 Oct 2026: the agents, more concrete (T144).**
+Cost now holds more quantities to the work's own size: a CC road's stone by its concrete mix, a
+water pipeline's main by its length, and solar panels and batteries bought by the watt or
+watt-hour by what each light carries. Stone named for a base course is read as the base, and a
+road over a stone base must itemise its stone. Planted filings: honest 0 asked; ×1.5 and ×2
+padding asked 100% (pipes all on one line: 34.5% and 79%). The loop: 118 probes, 0 FAIL. What
+the agents still need is data: the SoR checked by eye (T096), real forms (T098), real site videos
+(T126). FINDINGS "T144".
+
+**6 Oct 2026: the website on a phone, and faster to load (T143).**
+Every page fits a phone: works as cards, the form's tables as labelled cards, a one-line top bar.
+The same features load when used (sign-in code, charts, 3D, the map), so the median page
+downloads 582 KB instead of 843 and its largest element paints in 4.2 s instead of 5.3 under
+phone throttling. FINDINGS "T143".
+
 **6 Oct 2026: the public examples are graded forms (T142).**
 The public view no longer rates eSAKSHI recommendations from their records. Its examples are the
 13 filings of the work intelligence form, each graded by the four checks. Every example's page

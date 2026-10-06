@@ -194,14 +194,15 @@ def _result(status: Status, headline: str, t0: float, verdict: str | None = None
                        duration_ms=int((time.perf_counter() - t0) * 1000))
 
 
-def _confirmed(lines: list) -> list[tuple[int, str | None, object, object]]:
-    """Only materials the agency chose themselves ("Recognised as" confirmed)."""
+def _confirmed(lines: list) -> list[tuple[int, str | None, object, object, object]]:
+    """Only materials the agency chose themselves ("Recognised as" confirmed), with the line's
+    words (an aggregate line written for the slab, norms.for_slab)."""
     out = []
     for j, ln in enumerate(lines):
         if isinstance(ln, dict):
             mid = ln.get("material_id")
             mid = mid if isinstance(mid, str) and mid not in ("", "none") else None
-            out.append((j, mid, ln.get("quantity"), ln.get("unit")))
+            out.append((j, mid, ln.get("quantity"), ln.get("unit"), ln.get("item")))
     return out
 
 

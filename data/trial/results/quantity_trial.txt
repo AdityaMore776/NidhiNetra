@@ -1,0 +1,37 @@
+T144 quantity trial: 200 planted filings a cell, seed 144
+(asked = the Cost agent's MATERIAL_QUANTITY_ABOVE_SIZE; the form asked the agency to confirm = it was shown the need first; not judged = a form fix left)
+
+CC roads: the slab's stone
+  honest, base: wbm line                                     asked    0/200 (0.0%)   form asked to confirm    0   not judged 0
+  honest, base: aggregate for WBM                            asked    0/200 (0.0%)   form asked to confirm    0   not judged 0
+  honest, base: plain 63 mm                                  asked    0/200 (0.0%)   form asked to confirm    0   not judged 0
+  honest, base: no stone base                                asked    0/200 (0.0%)   form asked to confirm    0   not judged 0
+  honest, base: one unsized line                             asked    0/200 (0.0%)   form asked to confirm    0   not judged 200
+  stone x1.25, base: wbm line                                asked    0/200 (0.0%)   form asked to confirm  200   not judged 0
+  stone x1.25, base: plain 63 mm                             asked    0/200 (0.0%)   form asked to confirm  200   not judged 0
+  stone x1.5, base: wbm line                                 asked  200/200 (100.0%)   form asked to confirm  200   not judged 0
+  stone x1.5, base: plain 63 mm                              asked  200/200 (100.0%)   form asked to confirm  200   not judged 0
+  stone x2.0, base: wbm line                                 asked  200/200 (100.0%)   form asked to confirm  200   not judged 0
+  stone x2.0, base: plain 63 mm                              asked  200/200 (100.0%)   form asked to confirm  200   not judged 0
+
+Water pipelines: pipes against the length and house connections
+  honest, main and connections itemised                      asked    0/200 (0.0%)   form asked to confirm    0   not judged 0
+  pipes x1.25, main and connections itemised                 asked    0/200 (0.0%)   form asked to confirm  200   not judged 0
+  pipes x1.5, main and connections itemised                  asked  200/200 (100.0%)   form asked to confirm  200   not judged 0
+  pipes x2.0, main and connections itemised                  asked  200/200 (100.0%)   form asked to confirm  200   not judged 0
+  honest, all pipe on one line                               asked    0/200 (0.0%)   form asked to confirm    0   not judged 0
+  pipes x1.25, all pipe on one line                          asked    0/200 (0.0%)   form asked to confirm   76   not judged 0
+  pipes x1.5, all pipe on one line                           asked   67/200 (33.5%)   form asked to confirm  154   not judged 0
+  pipes x2.0, all pipe on one line                           asked  159/200 (79.5%)   form asked to confirm  200   not judged 0
+
+Solar street lights bought by capacity
+  honest, WP lines                                           asked    0/200 (0.0%)   form asked to confirm    0   not judged 0
+  WP x1.25                                                   asked    0/200 (0.0%)   form asked to confirm  200   not judged 0
+  WP x1.5                                                    asked  200/200 (100.0%)   form asked to confirm  200   not judged 0
+  WP x2.0                                                    asked  200/200 (100.0%)   form asked to confirm  200   not judged 0
+  honest, WH lines                                           asked    0/200 (0.0%)   form asked to confirm    0   not judged 0
+  WH x1.25                                                   asked    0/200 (0.0%)   form asked to confirm  200   not judged 0
+  WH x1.5                                                    asked  200/200 (100.0%)   form asked to confirm  200   not judged 0
+  WH x2.0                                                    asked  200/200 (100.0%)   form asked to confirm  200   not judged 0
+
+Constants: AGGREGATE_ROOM 1.15, PIPE_ROOM 1.1, CONNECTION_PIPE_M 20, WASTAGE 1.05, the agent's margin 1.25

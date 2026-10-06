@@ -32,13 +32,17 @@ const day = (iso: unknown) =>
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const list = (v: unknown) => (Array.isArray(v) ? v : []) as Record<string, unknown>[];
 
+// units written as they are spoken of; a count needs none (T144: pipe in metres, panels in Wp)
+const UNIT_WORD: Record<string, string> = { m3: "m³", m2: "m²", nos: "", m: "m", rm: "m", wp: "Wp", wh: "Wh", kwh: "kWh", kg: "kg", l: "litres" };
+
 function unitWord(unit: unknown, q: number): string {
   const u = String(unit ?? "");
-  if (u === "m3") return "m³";
-  if (u === "m2") return "m²";
-  if (u === "nos") return "";
+  if (u in UNIT_WORD) return UNIT_WORD[u];
   return q === 1 ? u : `${u}s`;
 }
+
+// a material id as a word for the officer ("solar_panel" -> "Solar panels")
+const MATERIAL_WORD: Record<string, string> = { solar_panel: "Solar panels", led_luminaire: "Light fittings", paver_block: "Paver blocks", aggregate: "Stone aggregate", pipe: "Pipes" };
 
 function rows(form: Form): Row[] {
   const out: Row[] = [];
@@ -102,9 +106,9 @@ export function flagOf(agent: string, f: TraceFinding, form: Form): Flag {
   const fields: FieldMark[] = [];
   switch (f.code) {
     case "MATERIAL_QUANTITY_ABOVE_SIZE": {
-      const word = String(x.material ?? "").split("_")[0];
+      const word = MATERIAL_WORD[String(x.material)] ?? cap(String(x.material ?? "").split("_")[0]);
       const q = num(x.quantity);
-      why = `${cap(word)}: ${n(q)} ${unitWord(x.unit, q)} in the estimate, but the work's size needs only ${n(x.needed)}.`;
+      why = `${word}: ${n(q)} ${unitWord(x.unit, q)} in the estimate, but the work's size needs only ${n(x.needed)}.`.replace(/ {2,}/g, " ");
       const row = rowOf(boq, { material: x.material, quantity: x.quantity });
       if (row) fields.push({ name: `boq_qty_${row.n}`, label: `needs ${n(x.needed)}` });
       break;

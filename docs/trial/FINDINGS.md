@@ -2001,6 +2001,119 @@ a day where 8 other agencies pay Rs 750; its 34 workers are not questioned), ask
 district's wages); the end-to-end hall pads its materials 40%. Every other example raises what it
 did before, with the same score.
 
+## T143 (6 Oct 2026): the website on a phone, and faster to load
+
+The owner: "make the website usable on phones as well, and also make them faster to load if you
+can while keeping all the functionality". Measured with `scripts/dev/phone_audit.mjs`: each page
+in Chromium as a phone (390 px, touch) with Lighthouse's mobile throttling (150 ms round trip,
+1.6 Mbps down, CPU 4× slower), the median of three loads, on a production build. Before = main
+(`results/phone_audit_before.txt`), after = this branch (`results/phone_audit_after.txt`).
+
+| Page | Downloaded, KB | Largest paint (LCP), s | Boxes scrolling sideways (in the form) |
+|---|---|---|---|
+| Dashboard `/` | 828 → 482 | 5.87 → 4.00 | 0 → 0 |
+| Review queue | 767 → 506 | 4.81 → 3.73 | 1 → 0 |
+| All works | 723 → 478 | 5.35 → 4.46 | 1 → 0 |
+| An example's page | 878 → 719 | 5.09 → 4.17 | 3 → 0 |
+| Work intelligence form | 843 → 566 | 5.24 → 4.20 | 0 (4, and 4 texts cut off) → 0 (0) |
+| Step by step | 901 → 667 | 1.20 → 1.09 | 0 → 0 |
+| How it works | 784 → 506 | 5.21 → 4.46 | 0 → 0 |
+| Form to risk score | 864 → 586 | 5.37 → 4.35 | 2 → 0 |
+| Sign-in / landing | 791 → 720 | 5.61 → 1.35 | 0 → 0 |
+| **Median of the pages** | **843 → 582** | **5.33 → 4.20** | |
+
+**What made it lighter** (the same features, loaded when used):
+- the sign-in code (Supabase) loads only when a sign-in cookie exists, or on signing in; a
+  visitor never downloads it;
+- the Hindi font is no longer preloaded on every page; one-word Hindi labels use the device's
+  own Devanagari font;
+- the charts (recharts), the 3D scenes (three.js) and the staff map load when their panel nears
+  the screen, the 3D after the page is idle (the landing page shows the emblem
+  picture meanwhile);
+- smooth scrolling (Lenis, GSAP) loads only for a mouse; a phone scrolls natively;
+- "Staff sign in" no longer prefetches the sign-in page.
+
+**What made it fit:** works lists as cards on a phone (agents named, no hover needed); the form
+map's sections as a compact list; estimate and labour rows as cards; the form's own tables as
+labelled cards below 560 px; a one-line top bar and banner; section headers that wrap; the form
+frame at its full height below the wide layout (one page scrolls, "Show in form" still lands on
+the field); a dropdown for the 13 example filings.
+
+**Still slow, and why:** every app page is drawn in the browser (the server sends a loading
+screen), so its text waits for the scripts. Rendering pages on the server is the next step, a
+bigger change. The example and Step-by-step pages show 217 KB of fonts in this audit only because
+the test machine has no Devanagari font of its own; a phone uses its own.
+
+## T144 (6 Oct 2026): the agents, more concrete: quantities held to the size for more works
+
+The owner: "work even more on the agents. I need the agents to be fully concrete, working and
+good at it".
+
+**The audit.** The robustness loop's 10 LIMITs (112 probes) are of three kinds, none closable from
+here without changing the owner's rules or adding data:
+- margins the owner set: padding 14% under the 15% line; masons at 1.8× under 2×; split pieces at
+  95% under the 96% rule;
+- the owner's labour ruling: crews' days ×2.5 within the work's time (how many workers is never
+  judged);
+- data still to come: the state's Schedule of Rates (T096) for district-wide padding, composite
+  items and units; real filed forms (T098); real site videos (T126). The rate book on branch
+  `adityamore776/T096-up-sor` waits on a check by eye, per-circle rates and GST.
+
+What could be made concrete now: the Cost agent held quantities to the work's size for only four
+kinds of work (CC roads' cement and sand, solar lights by count, high masts, footpaths).
+
+**What changed** (`cost_form/norms.py`, `materials.py`, `validate.py`; whole estimate `whole.py`):
+- **A CC road's stone** by its concrete mix (IS 456 nominal mix: 0.84 m³ of dry stone per m³ of
+  M20), with 15% room for the analysis-of-rates figures (0.85–0.90) and wastage.
+- **A water pipeline's pipes:** with the house connections' pipes on lines of their own (32 mm or
+  less, or named for connections), the main alone is held to the pipeline's length + 10%; with
+  every pipe on one line, the length + 20 m a connection + 10%. A tank's connecting pipe + 10%.
+- **Solar lights bought by the watt or watt-hour:** panels at each light's Wp × the lights,
+  batteries at each light's Wh, + 5%. Count lines are still held to the count.
+- **Stone named for a base course is the base:** "40 mm aggregate for WBM", "Aggregate for GSB",
+  "ballast for base course" were read as concrete's aggregate (and priced as it).
+- **A road over a new stone base must itemise its stone:** with no base line and a stone line
+  sized for neither the slab (6–20 mm, "concrete", "PCC") nor the base (40 mm and up), the form
+  asks for the base on a line of its own before the estimate is judged. The loop found the reason:
+  one unsized stone line hid twice the slab's stone.
+- The whole estimate counts the same lines as the quantity check (one function, `norms.held`).
+
+**Planted filings** (`data/trial/quantity_trial.py`, `results/quantity_trial.txt`): 200 a cell,
+through the website form, the adapter, the form check and the Cost agent, the agency confirming
+whatever the form asks (the worst case for a false question):
+
+| Filing | Asked by the Cost agent |
+|---|---|
+| honest roads (base on a WBM line, as "aggregate for WBM", as "63 mm", none) | 0/800 |
+| honest roads, all stone on one unsized line | 0/200 (the form asks to itemise: not judged) |
+| road stone ×1.25 | 0/400 (the form asks the agency to confirm, 400/400) |
+| road stone ×1.5, ×2 | 400/400, 400/400 |
+| honest pipelines (itemised; one line) | 0/200, 0/200 |
+| pipes ×1.5, ×2, itemised | 200/200, 200/200 |
+| pipes ×1.5, ×2, all on one line | 69/200 (34.5%), 158/200 (79.0%) |
+| honest solar lights by Wp, by Wh | 0/200, 0/200 |
+| panels or batteries ×1.5, ×2 by capacity | 200/200 each |
+
+The honest ranges are assumptions (0.84–0.92 m³ of stone per m³; 6–15 m a house connection);
+real filings (T098) will show the real spread.
+
+**Effects elsewhere:** two example filings (a road "complete" 6 days after sanction; a road filmed
+2.4 km away) had their whole estimate "not judged" (43% of the money priced); their stone now has
+a known need, so they are judged fair (62–63% priced). Labour and whole-estimate trials:
+unchanged.
+
+**The robustness loop** (`results/agent_robustness.txt`): 118 probes, PASS 108, FAIL 0, LIMIT 10;
+400 random damages, 0 errors. New probes: the road's stone alone doubled (asked), the base's stone
+written "Stone aggregate 63 mm for WBM" (quiet), all stone on one line (the form asks to
+itemise), the slab's stone doubled inside one unsized line (the form refuses it until itemised),
+solar panels by the watt at the lights' own Wp (quiet) and at twice (asked).
+
+**A harness flaw, fixed:** when padding took the estimate more than 10% over the MP's amount, the
+form refused the planted filing for its missing reason, so "padding 14%: just under the 15% line"
+and "18% GST in other charges" never reached the price check. The planted agency now cites the
+MP's consent, as a padder would. Both results stand, now for the right reason: 14% padding is
+judged and quiet (under the 15% line); the GST line is judged and quiet.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

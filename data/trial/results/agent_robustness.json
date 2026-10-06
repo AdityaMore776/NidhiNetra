@@ -334,7 +334,7 @@
    "kind": "noise",
    "probe": "GST 'added separately', 18% in other charges: honest, not asked",
    "verdict": "PASS",
-   "detail": "18% GST in other charges: nothing (NOT_ASSESSABLE)"
+   "detail": "18% GST in other charges: nothing (ASSESSED)"
   },
   {
    "agent": "cost_estimate",
@@ -432,7 +432,7 @@
    "kind": "scale",
    "probe": "3,000 filed roads in one district: one check stays under 2 s",
    "verdict": "PASS",
-   "detail": "0.03 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']"
+   "detail": "0.04 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']"
   },
   {
    "agent": "cost_estimate",
@@ -481,7 +481,49 @@
    "kind": "evasion",
    "probe": "sand and aggregate quantities doubled",
    "verdict": "PASS",
-   "detail": "twice the sand: MATERIAL_QUANTITY_ABOVE_SIZE (ASSESSED)"
+   "detail": "twice the sand and the stone: ESTIMATE_ABOVE_FAIR_PRICE, MATERIAL_QUANTITY_ABOVE_SIZE, MATERIAL_QUANTITY_ABOVE_SIZE (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "the road's stone alone doubled (the slab needs half)",
+   "verdict": "PASS",
+   "detail": "twice the stone: ['aggregate'] (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "noise",
+   "probe": "the base's stone written 'Stone aggregate 63 mm for WBM'",
+   "verdict": "PASS",
+   "detail": "read as the base, not the slab's stone: nothing (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "noise",
+   "probe": "all the stone on one line ('Stone aggregate'), no base line",
+   "verdict": "PASS",
+   "detail": "the slab's and the base's stone together: the form asks to itemise them (NOT_ASSESSABLE), no question"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "the slab's stone doubled inside one unsized stone line",
+   "verdict": "PASS",
+   "detail": "nothing (NOT_ASSESSABLE): the form asks for the base's stone on a line of its own before the estimate is judged; itemised, twice the slab's stone is asked"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "noise",
+   "probe": "solar panels bought by the watt, at the lights' own Wp",
+   "verdict": "PASS",
+   "detail": "10 lights x 40 Wp: nothing (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "solar panels bought by the watt, twice the lights' Wp",
+   "verdict": "PASS",
+   "detail": "800 Wp for 10 lights of 40 Wp: ['solar_panel'] (ASSESSED)"
   },
   {
    "agent": "cost_estimate",

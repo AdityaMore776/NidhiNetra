@@ -525,6 +525,9 @@
       "where": "district",
       "unit": "m3",
       "level": "ok",
+      "needed": 152.1,
+      "allowed": 167.4,
+      "qty_ratio": 0.887,
       "material": "Stone aggregate"
      },
      {
@@ -2047,6 +2050,9 @@
       "where": "district",
       "unit": "m3",
       "level": "ok",
+      "needed": 152.1,
+      "allowed": 167.4,
+      "qty_ratio": 0.887,
       "material": "Stone aggregate"
      },
      {
@@ -3023,6 +3029,9 @@
       "where": "district",
       "unit": "m3",
       "level": "ok",
+      "needed": 48.2,
+      "allowed": 53.0,
+      "qty_ratio": 0.893,
       "material": "Stone aggregate"
      },
      {

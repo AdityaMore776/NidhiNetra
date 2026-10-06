@@ -201,15 +201,28 @@ def judge(form: dict, computed: dict, work_type: str | None, sor: dict | None,
     sites = form.get("sites") if isinstance(form.get("sites"), list) else []
     confirmed = list(rates.confirmed_lines(form))
 
-    # what each site's size needs, shared over the lines of that material in proportion
-    stated: dict[tuple[int, str], float] = defaultdict(float)
-    for i, _j, mid, _r, q, _ln in confirmed:
-        stated[(i, mid)] += q
+    # what each site's size needs, shared over the lines it holds (norms.held: the same lines the
+    # quantity check counts, T144) in proportion
     need: dict[tuple[int, str], float] = {}
+    holds: set[tuple[int, int]] = set()     # (site, line) held to its material's need
     for i, site in enumerate(sites):
         size = site.get("size") if isinstance(site, dict) else None
+        lines_i = [(j, mid, q, None, ln.get("item")) for si, j, mid, _r, q, ln in confirmed
+                   if si == i]
         for n in norms.needs(work_type, size if isinstance(size, dict) else {}):
-            need[(i, n["material"])] = float(n["needed"])
+            if n.get("unit"):
+                continue            # a capacity need (Wp, Wh): these lines are priced by count
+            mine, needed, _why = norms.held(n, lines_i)
+            need[(i, n["material"])] = float(needed)
+            holds.update((i, ln[0]) for ln in mine)
+
+    def held_to_need(i: int, j: int) -> bool:
+        return (i, j) in holds
+
+    stated: dict[tuple[int, str], float] = defaultdict(float)
+    for i, j, mid, _r, q, _ln in confirmed:
+        if held_to_need(i, j):
+            stated[(i, mid)] += q
 
     out: list[Line] = []
     mismatch: list[dict] = []
@@ -234,7 +247,7 @@ def judge(form: dict, computed: dict, work_type: str | None, sor: dict | None,
                                   "fair_rate": round(fair.rate, 2), "fair_source": fair.source,
                                   "quantity": round(q, 3)})
             continue
-        total_need = need.get((i, mid))
+        total_need = need.get((i, mid)) if held_to_need(i, j) else None
         needed = (total_need * q / stated[(i, mid)]) if total_need is not None else None
         fair_q = q if needed is None else min(q, needed * QTY_TOLERANCE)
         if fair is None and needed is None:

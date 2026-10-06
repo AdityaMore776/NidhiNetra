@@ -4479,11 +4479,10 @@
       "status": "ASSESSED",
       "verdict": "ESTIMATE_FITS_SIZE",
       "risk": 0.0,
-      "headline": "The quantities fit the size of the work.",
+      "headline": "The whole estimate is Rs 16.82 lakh against a fair Rs 16.82 lakh (+0.0%), pricing 63% of the money: within the fair band.",
       "limitations": [
        "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
        "Not priced here, for want of reliable price data (recorded, so it can be collected): cement (4 recent forms from 4 other agencies; 5 from 3 needed); sand (4 recent forms from 4 other agencies; 5 from 3 needed); stone aggregate (4 recent forms from 4 other agencies; 5 from 3 needed); gsb / wbm / moorum (2 recent forms from 2 other agencies; 5 from 3 needed); mason (4 recent forms from 4 other agencies; 5 from 3 needed); beldar / mazdoor (4 recent forms from 4 other agencies; 5 from 3 needed).",
-       "Only 43% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged.",
        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
       ],
       "findings": [],
@@ -4499,11 +4498,11 @@
        "mp_amount": 1682000.0,
        "mp_gap": 0.0001,
        "whole": {
-        "verdict": "CANT_CHECK",
+        "verdict": "FAIR",
         "fair_total": 1682140.0,
         "gap": 0.0,
         "gap_share": 0.0,
-        "coverage": 0.4312
+        "coverage": 0.6284
        }
       }
      },
@@ -6854,11 +6853,10 @@
       "status": "ASSESSED",
       "verdict": "ESTIMATE_FITS_SIZE",
       "risk": 0.0,
-      "headline": "The quantities fit the size of the work.",
+      "headline": "The whole estimate is Rs 14.52 lakh against a fair Rs 14.52 lakh (+0.0%), pricing 62% of the money: within the fair band.",
       "limitations": [
        "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
        "Not priced here, for want of reliable price data (recorded, so it can be collected): cement (4 recent forms from 4 other agencies; 5 from 3 needed); sand (4 recent forms from 4 other agencies; 5 from 3 needed); stone aggregate (4 recent forms from 4 other agencies; 5 from 3 needed); gsb / wbm / moorum (2 recent forms from 2 other agencies; 5 from 3 needed); mason (4 recent forms from 4 other agencies; 5 from 3 needed); beldar / mazdoor (4 recent forms from 4 other agencies; 5 from 3 needed).",
-       "Only 43% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged.",
        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
       ],
       "findings": [],
@@ -6874,11 +6872,11 @@
        "mp_amount": 1452000.0,
        "mp_gap": -0.0,
        "whole": {
-        "verdict": "CANT_CHECK",
+        "verdict": "FAIR",
         "fair_total": 1451950.0,
         "gap": 0.0,
         "gap_share": 0.0,
-        "coverage": 0.4276
+        "coverage": 0.6229
        }
       }
      },
