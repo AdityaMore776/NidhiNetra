@@ -47,14 +47,14 @@
    "kind": "evasion",
    "probe": "the padding moved into a lump-sum line",
    "verdict": "PASS",
-   "detail": "Rs 303,139 as a lump sum: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)"
+   "detail": "Rs 264,100 as a lump sum: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)"
   },
   {
    "agent": "cost_estimate",
    "kind": "evasion",
    "probe": "the padding moved into 'other charges'",
    "verdict": "PASS",
-   "detail": "Rs 303,139 as other charges: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)"
+   "detail": "Rs 264,100 as other charges: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)"
   },
   {
    "agent": "cost_estimate",
@@ -359,10 +359,17 @@
   },
   {
    "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "padded items in units that do not fit them, with a reason given",
+   "verdict": "LIMIT",
+   "detail": "nothing: a line the agency answered for in another unit looks like an honest schedule item (brick masonry per m3) until the state's Schedule of Rates is loaded with its item codes (T096); the coverage note says what was not priced"
+  },
+  {
+   "agent": "cost_estimate",
    "kind": "scarce",
    "probe": "a district with no forms: the state's forms stand in",
    "verdict": "PASS",
-   "detail": "honest: nothing; +50%: ['ESTIMATE_ABOVE_FAIR_PRICE']; priced from: 12 recent forms of 8 other agencies across the state, plus 10% for local prices 15 recent "
+   "detail": "honest: nothing; +50%: ['ESTIMATE_ABOVE_FAIR_PRICE']; priced from: 13 recent forms of 8 other agencies across the state, plus 10% for local prices 16 recent "
   },
   {
    "agent": "cost_estimate",
@@ -425,7 +432,7 @@
    "kind": "scale",
    "probe": "3,000 filed roads in one district: one check stays under 2 s",
    "verdict": "PASS",
-   "detail": "0.02 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']"
+   "detail": "0.03 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']"
   },
   {
    "agent": "cost_estimate",
@@ -479,9 +486,107 @@
   {
    "agent": "cost_estimate",
    "kind": "evasion",
-   "probe": "labour days multiplied by 2.5",
+   "probe": "every crew's days x2.5, still within the work's time",
    "verdict": "LIMIT",
-   "detail": "nothing: labour days per m3 are not normed yet (CPWD's Analysis of Rates gives them, T096); the site videos show the pace of work"
+   "detail": "nothing: how many workers and days a work needs is never judged (the owner, T141); days beyond the work's own time are asked (below), and the site videos show the pace of work"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "noise",
+   "probe": "a crew of 34 (16 helpers, 2 machine operators added) at honest rates",
+   "verdict": "PASS",
+   "detail": "how many workers is the agency's call: nothing (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "masons at 2.2 times what other agencies here pay masons",
+   "verdict": "PASS",
+   "detail": "masons at 2.2x: LABOUR_RATE_FAR_ABOVE (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "masons at 1.8 times: under the 2x line",
+   "verdict": "LIMIT",
+   "detail": "nothing: a trade's rate is a question only at twice what others pay it (the owner: blatant only); the whole estimate counts it with every other line"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "a helper called 'highly skilled', paid more than an operator",
+   "verdict": "PASS",
+   "detail": "judged as a helper: LABOUR_RATE_FAR_ABOVE (ASSESSED); compared with unskilled"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "an invented trade ('Other', highly skilled) at 4x a mason",
+   "verdict": "PASS",
+   "detail": "an Other trade at its nearest grade with forms: LABOUR_RATE_FAR_ABOVE (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "the masons split into two rows, one at 3x",
+   "verdict": "PASS",
+   "detail": "each row judged: LABOUR_RATE_FAR_ABOVE (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "masons at 2.2x moved back among the BOQ lines",
+   "verdict": "PASS",
+   "detail": "still judged as masons: LABOUR_RATE_FAR_ABOVE (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "a labour row on a BOQ line whose rate already pays its workers",
+   "verdict": "PASS",
+   "detail": "the form refuses it (True); NOT_ASSESSABLE, never a clean chit"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "a composite line (labour inside) declared 'no labour'",
+   "verdict": "LIMIT",
+   "detail": "nothing: whether a schedule item's rate includes labour is the agency's own declaration until the state's Schedule of Rates is loaded with its item codes (T096)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "a watchman on site twice the work's own time",
+   "verdict": "PASS",
+   "detail": "120-day work, 240 days on site: LABOUR_DAYS_BEYOND_WORK (ASSESSED)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "evasion",
+   "probe": "labour rows with the trade left blank",
+   "verdict": "PASS",
+   "detail": "nothing (NOT_ASSESSABLE): never a clean chit"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "noise",
+   "probe": "a high-wage district: every agency pays 1.6x, and so does the filing",
+   "verdict": "PASS",
+   "detail": "nothing on labour"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "scarce",
+   "probe": "masons filed by only 2 other agencies: honest not asked, 2.4x is",
+   "verdict": "PASS",
+   "detail": "honest nothing; at 2.4x ['LABOUR_RATE_FAR_ABOVE'] (compared with unskilled at 3.90625x)"
+  },
+  {
+   "agent": "cost_estimate",
+   "kind": "noise",
+   "probe": "an old v1.0 export, labour among its BOQ lines in Hindi",
+   "verdict": "PASS",
+   "detail": "honest nothing; masons at 2.4x ['LABOUR_RATE_FAR_ABOVE']"
   },
   {
    "agent": "cost_estimate",
@@ -681,7 +786,7 @@
   }
  ],
  "damage": {
-  "runs": 3000,
+  "runs": 400,
   "errors": {},
   "contract": [],
   "different_twice": [],

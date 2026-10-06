@@ -1846,6 +1846,161 @@ asked.
   did. The honest filings now read "within 20 m" (lights) and "within 30 m" (roads).
 - **The dashboard:** the 40,935 works are identical (`dashboard_t139_after`).
 
+## T140 (6 Oct 2026): the T139 rules in six more districts
+
+T139 fitted Duplicate Work's one-site rules to Jaunpur's villages. Jaunpur is one kind of place:
+large villages on the Gangetic plain. `data/trial/real_geo_districts.py` (results
+`results/real_geo_districts.txt`) runs the same scenarios in six districts that look different.
+Each uses its own real works, real post offices and real buildings (Open Buildings, fetched once,
+never committed):
+
+| District | Kind of place | Houses apart (median) | Real works tested |
+|---|---|---|---|
+| Kheri | Terai plains | 7.7 m | 412 lights |
+| Bokaro | plateau hamlets | 8.8 m | 372 lights |
+| Puri | coast | 9.3 m | 281 lights |
+| Howrah | dense, peri-urban | 8.6 m | 118 lights |
+| Palakkad | dispersed homesteads | 11.2 m | 131 lights |
+| Kheda | compact villages | 8.1 m | roads only |
+
+**Each district's own flat map.** The scripts now take a district (`real_geo_check.configure`).
+Each district gets its own flat-map origin: Jaunpur's, used everywhere, would be 8% off in metres
+in Kerala. Jaunpur's results are unchanged.
+
+| Scenario (7 districts) | Before T139: honest asked | Now: honest asked | Repeats caught now |
+|---|---|---|---|
+| lights, 10 a village, one hamlet | 63–87% | 0–1.5% | 93–97% |
+| lights, 10 a village, anywhere | 1–37% | 0–5.3% | 86–94% |
+| hand pumps at houses | 63–87% | 0–1.1% | 94–98% |
+| the next street over, 25 m | 81–87% | 22–31% | 94–98% |
+| the next street over, 35 m | 64–74% | 3–7% | 93–98% |
+| programmes of random lanes | 5–20% | 4–18% | 95–99% |
+
+**No rule changes:** the T139 rules hold in every district.
+- **Lights: what the misses are.** "Anywhere in the village" is the cleanest measure of the 20 m
+  line. There, 86–94% of repeats are caught. The misses are the one phone fix in ten that wanders
+  15 m or more. In a hamlet the rate looks higher only because the neighbour's light sometimes
+  catches the repeat too.
+- **Random lanes: what the questions are.** The lanes still asked are almost all (85 of 95 in
+  Jaunpur) one lane lying along another's line, often a short lane on a much longer road. Random
+  straight lines make that by chance. On real streets, a lane laid on an existing road's line is
+  that road again or its upgrade, which is the question to ask. So this row overstates the honest
+  cost.
+
+## T141 (6 Oct 2026): labour, trade by trade, only blatant irregularities
+
+The owner: labour "depends on what the workers are and what they are doing"; give it its own
+detailed field, then detect only blatant irregularities, never "it could be done with fewer
+workers". Plan: [`docs/plans/T141-labour-schedule.md`](../plans/T141-labour-schedule.md).
+
+**What changed:**
+- **A labour schedule on the website form (PSWIF v1.1):** one row per trade (from a list, or Other
+  with its grade), workers, days each, day rate, what they do, which BOQ lines they work on, and
+  where the rate comes from. Each BOQ line says whether its rate already includes its workers.
+- **Trades, not two kinds:** 14 trades in 4 grades (beldar, helper, chowkidar; mate; mason,
+  carpenter, bar bender, painter, plumber, electrician, welder, driver; machine operator,
+  supervisor), with Hindi names. A row is judged as its trade, never the grade it declares.
+- **Two questions only:**
+  - `LABOUR_RATE_FAR_ABOVE`: a trade's day rate is at least 2× what other agencies pay that
+    trade in the district (2.5× its grade's pool when the trade has too few forms; the nearest
+    grade with forms, with 1.25× room a grade step, when its own grade has none), and Rs 10,000+
+    extra over the work;
+  - `LABOUR_DAYS_BEYOND_WORK`: workers on site more than 10% beyond the work's own time.
+- **Refused on the form:** person-days that are not workers × days, a labour row on a line whose
+  rate already pays its workers (paid twice), a trade not on the list with no grade, a row with no
+  trade. Never judged: how many workers, days within the work's time, labour's share.
+- **The whole estimate:** a labour row within twice its trade's rate is settled (the agency's
+  call). It adds nothing to the gap and stays out of the share's base. A blatant one is priced
+  like any line.
+
+**Planted filings** (`data/trial/labour_trial.py`, `results/labour_trial.txt`): three districts at
+three wage levels; 8 agencies × 6 roads each give the district's rates; 150 honest filings a
+district by new agencies (agency factor log-normal, sd 10%; 1 in 20 at +30%), each then padded one
+way:
+
+| Filing | Low wages | Mid (+15%) | High (+60%) | All |
+|---|---|---|---|---|
+| honest: any question | 0/150 | 0/150 | 0/150 | 0/450 |
+| ten times the workers, honest rates: any question | 0/150 | 0/150 | 0/150 | 0/450 |
+| one trade ×1.5 asked | 9/150 | 0/150 | 0/150 | 9/450 (2%) |
+| one trade ×2 asked | 64/150 | 43/150 | 54/150 | 161/450 (36%) |
+| one trade ×2.5 asked | 130/150 | 129/150 | 136/150 | 395/450 (88%) |
+| one trade ×3 asked | 149/150 | 145/150 | 146/150 | 440/450 (98%) |
+| helper declared "highly skilled" at an operator's rate | 125/150 | 150/150 | 130/150 | 405/450 (90%) |
+| … at 1.25× an operator's rate | 150/150 | 150/150 | 150/150 | 450/450 |
+| Other trade, "highly skilled", 2.2× an operator | 0/150 | 0/150 | 0/150 | 0/450 (a limit) |
+| Other trade, "highly skilled", 3× an operator | 150/150 | 150/150 | 150/150 | 450/450 |
+| a watchman on site 1.6× the work's time | 150/150 | 150/150 | 150/150 | 450/450 |
+
+The 9 at ×1.5 (low district) are the 1-in-20 agencies already 30% above the market: ×1.5 takes
+them past twice the district's rate.
+
+**Why labour is settled in the whole estimate** (`--wages-in-whole`, the whole estimate judging
+every wage like any line; `results/labour_trial_wages_in_whole.txt`): honest filings drew the
+whole-estimate question 9, 3 and 3 times in 150, and ten times the workers at honest rates 15, 8
+and 10 times. That is the "doesn't need this many" the owner ruled out: a large crew turns an
+honest wage premium into most of the estimate. Settled: 0 and 0.
+
+**The effect on the whole-estimate rule** (`data/trial/cost_whole_trial.py`, its synthetic CC
+roads carry an unskilled and a skilled labour line; before = main's saved results):
+
+| Fair rate from, honest spread | Honest asked before → now | Every line +20% asked before → now | +30% before → now |
+|---|---|---|---|
+| SoR, 5% | 0.0% → 0.0% | 97.1% → 94.0% | 100% → 100% |
+| SoR, 10% | 0.2% → 1.2% | 86.5% → 80.2% | 99.4% → 98.2% |
+| SoR, 15% | 2.8% → 6.0% | 74.6% → 70.3% | 97.1% → 93.1% |
+| district, 5% | 0.0% → 0.0% | 95.9% → 91.1% | 100% → 100% |
+| district, 10% | 0.1% → 1.2% | 94.2% → 87.0% | 100% → 99.3% |
+| district, 15% | 3.6% → 8.0% | 82.2% → 74.3% | 98.9% → 96.3% |
+
+The share is now of the materials' fair price alone, so the honest spread of fewer lines shows
+more: honest asked stays within the 2% target at a 5–10% spread and rises at 15% (already over
+the target before). The other choice, keeping settled labour in the base, would let an agency
+dilute padded materials by adding a large honest crew, which is never judged. A confirmed cement
+quantity ×1.5 alone now moves the whole as well (9.0–44.9% → 57.0–72.9%; with its own quantity
+question it was and is asked 100%). The margins are the owner's to set on real forms (T098).
+
+**The robustness loop** (`results/agent_robustness.txt`): 112 probes, PASS 102, FAIL 0, LIMIT 10
+(was 97: 90 / 0 / 7); 400 random damages, 0 errors. New labour probes: a crew of 34 at honest rates
+(quiet), masons at 2.2× (asked), a helper called highly skilled (judged as a helper), an invented
+trade at 4× a mason (asked at the nearest grade with forms), the masons split into two rows with
+one at 3× (asked), masons at 2.2× moved back among the BOQ lines (still judged as masons), a
+labour row on a line that already pays its workers (refused), a watchman on site twice the work's
+time (asked), trades left blank (never a clean chit), a district where every agency pays 1.6×
+(quiet), masons filed by only 2 other agencies (honest quiet, 2.4× asked), an old v1.0 export with
+labour among its BOQ lines in Hindi (judged by trade).
+
+**Loopholes the loop found, and what closed them:**
+1. A labour row giving workers and days but no person-days never reached the rate index or the
+   whole estimate (the examples showed it): person-days are now worked out everywhere.
+2. An "Other" trade declared at a grade nobody in the district files escaped every comparison: the
+   nearest grade with forms stands in.
+3. At 1.5× room a grade step, masons at 2.4× went unasked where only labourers had forms: now
+   1.25× a step (honest skilled pay is about 1.75× unskilled; the trial's honest filings stay
+   quiet).
+4. A padded material written in a unit that does not fit it ("cement in nos"), its warning left
+   unanswered, took the estimate under the coverage it needs, so the padding on every other line
+   went unjudged. A held line now counts toward the coverage (it is out of the price check by the
+   agency's own warning, not for want of data) while staying at its own value. Counting it as
+   unreadable money instead turned an honest typo (cement at Rs 3,800 a bag) into a question, so
+   that was not kept.
+5. Labour wages counted in the whole estimate: see above.
+
+**Limits (stated, not hidden):**
+- a trade's rate up to twice what others pay it, and how many workers and days, are never asked
+  (the owner);
+- a trade not on the list is judged at its declared grade's pool (2.5×): Other "highly skilled"
+  at 2.2× an operator is not asked;
+- a composite schedule item declared "no labour", and a recognised material written in another
+  unit with a reason given, look like honest schedule items until the state's Schedule of Rates is
+  loaded with its item codes (T096).
+
+**The demo filings:** a new one, "Masons at more than twice the district's wage" (masons Rs 1,800
+a day where 8 other agencies pay Rs 750; its 34 workers are not questioned), asks
+`LABOUR_RATE_FAR_ABOVE` only. The padded road now pads its materials 25% (its crews at the
+district's wages); the end-to-end hall pads its materials 40%. Every other example raises what it
+did before, with the same score.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

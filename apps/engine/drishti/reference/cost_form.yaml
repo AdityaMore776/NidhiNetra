@@ -473,6 +473,19 @@ line_fields:
   - {id: spec, label: "Specification", kind: text, goods_only: true}
   - {id: gem_id, label: "GeM product ID", kind: text, required: false, goods_only: true}
   - {id: quotations_nos, label: "Quotations attached", kind: number, unit: nos, hard: [0, 20], required: false, goods_only: true}
+  # T141, the labour schedule: a labour line is one trade. Its quantity is workers x days (person-
+  # days), its rate a day's wage; the trade is the line's material_id (a labour_* entry). How many
+  # workers and how many days are never judged (the owner): only arithmetic, days beyond the work's
+  # own time, and a rate far above what others pay the same trade.
+  - {id: workers, label: "Workers of this trade", kind: number, unit: nos, hard: [1, 100000], labour_only: true}
+  - {id: days, label: "Days each is on site", kind: number, unit: day, hard: [0.5, 3650], labour_only: true}
+  - {id: grade, label: "Grade", kind: choice, choices: [unskilled, semi_skilled, skilled, highly_skilled], required: false, labour_only: true}
+  - {id: activity, label: "What they do", kind: text, min_words: 2, labour_only: true}
+  - {id: for_lines, label: "Estimate lines they work on (numbers)", kind: list, required: false, labour_only: true}
+  # on any other line: its rate already pays the workers who do it (a composite schedule-of-rates
+  # item such as "brick masonry per m3", or a machine hired with its operator). A labour row that
+  # works on such a line pays them twice: the form refuses it.
+  - {id: includes_labour, label: "This rate already includes the workers who do it", kind: bool, required: false, not_labour: true}
 
 # taxes, margin and escalation: percentages with their amounts
 charges:
@@ -542,5 +555,26 @@ materials:
   - {id: tiles, label: "Tiles", names: [tile, tiles, vitrified, ceramic tile, kota stone, granite], units: [m2, sqft], guard: [20, 20000]}
   - {id: paint, label: "Paint", names: [paint, distemper, emulsion paint, primer, enamel], units: [l], guard: [20, 5000]}
   - {id: door_window, label: "Doors / windows", names: [door, doors, window, windows, shutter, chaukhat], units: [nos, m2], guard: null}
-  - {id: labour_skilled, label: "Skilled labour", names: [skilled, mason, mistri, mistry, raj mistri, carpenter, plumber, electrician, welder], units: [day], guard: [100, 10000]}
-  - {id: labour_unskilled, label: "Unskilled labour", names: [unskilled, labour, labourer, mazdoor, majdoor, beldar, helper, coolie], units: [day], guard: [50, 5000]}
+  # Labour (T141): one entry per trade, each with its own grade, so a welder is compared with
+  # welders, not with "skilled" (mostly masons). A labour-section row is judged against its TRADE
+  # (never the grade the agency declares). The four grade entries are `generic`: used only when
+  # no trade's name fits ("skilled mason" is a mason). Grades, low to high: unskilled,
+  # semi_skilled, skilled, highly_skilled. Guards are typing-mistake guards only.
+  - {id: labour_beldar, label: "Beldar / mazdoor", trade: true, grade: unskilled, names: [beldar, mazdoor, majdoor, mazdur, coolie, labourer, labourers, general labour, unskilled labourer, "मजदूर", "बेलदार"], units: [day], guard: [50, 5000]}
+  - {id: labour_helper, label: "Helper", trade: true, grade: unskilled, names: [helper, helpers, khalasi, mason helper, "हेल्पर"], units: [day], guard: [50, 5000]}
+  - {id: labour_chowkidar, label: "Chowkidar / watchman", trade: true, grade: unskilled, names: [chowkidar, chaukidar, watchman, night watchman, "चौकीदार"], units: [day], guard: [50, 5000]}
+  - {id: labour_mate, label: "Mate (gang leader)", trade: true, grade: semi_skilled, names: [mate, gang leader, gangman leader, munshi, "मेट", "मुंशी"], units: [day], guard: [50, 6000]}
+  - {id: labour_mason, label: "Mason", trade: true, grade: skilled, names: [mason, masons, mistri, mistry, mistree, raj mistri, rajmistri, tile mason, "राजमिस्त्री", "मिस्त्री"], units: [day], guard: [100, 10000]}
+  - {id: labour_carpenter, label: "Carpenter", trade: true, grade: skilled, names: [carpenter, carpenters, badhai, shuttering carpenter, "बढ़ई"], units: [day], guard: [100, 10000]}
+  - {id: labour_bar_bender, label: "Bar bender", trade: true, grade: skilled, names: [bar bender, bar benders, bar binder, steel fixer, rebar fixer], units: [day], guard: [100, 10000]}
+  - {id: labour_painter, label: "Painter", trade: true, grade: skilled, names: [painter, painters, "पेंटर"], units: [day], guard: [100, 10000]}
+  - {id: labour_plumber, label: "Plumber", trade: true, grade: skilled, names: [plumber, plumbers, pipe fitter, "प्लंबर"], units: [day], guard: [100, 10000]}
+  - {id: labour_electrician, label: "Electrician", trade: true, grade: skilled, names: [electrician, electricians, wireman, lineman, bijli mistri, "बिजली मिस्त्री", "इलेक्ट्रीशियन"], units: [day], guard: [100, 10000]}
+  - {id: labour_welder, label: "Welder / fabricator", trade: true, grade: skilled, names: [welder, welders, fabricator, "वेल्डर"], units: [day], guard: [100, 10000]}
+  - {id: labour_driver, label: "Driver", trade: true, grade: skilled, names: [driver, drivers, tractor driver, truck driver, chalak, "चालक", "ड्राइवर"], units: [day], guard: [100, 10000]}
+  - {id: labour_operator, label: "Machine operator", trade: true, grade: highly_skilled, names: [operator, operators, machine operator, jcb operator, roller operator, mixer operator, excavator operator, crane operator, paver operator, "ऑपरेटर"], units: [day], guard: [100, 15000]}
+  - {id: labour_supervisor, label: "Supervisor / foreman", trade: true, grade: highly_skilled, names: [supervisor, supervisors, foreman, site supervisor, "सुपरवाइजर"], units: [day], guard: [100, 15000]}
+  - {id: labour_unskilled, label: "Unskilled labour", generic: true, grade: unskilled, names: [unskilled, unskilled labour, labour, akushal, "अकुशल"], units: [day], guard: [50, 5000]}
+  - {id: labour_semi_skilled, label: "Semi-skilled labour", generic: true, grade: semi_skilled, names: [semi skilled, semiskilled, semi skilled labour, ardh kushal, "अर्धकुशल"], units: [day], guard: [50, 6000]}
+  - {id: labour_skilled, label: "Skilled labour", generic: true, grade: skilled, names: [skilled, skilled labour, kushal, "कुशल"], units: [day], guard: [100, 10000]}
+  - {id: labour_highly_skilled, label: "Highly skilled labour", generic: true, grade: highly_skilled, names: [highly skilled, highly skilled labour, ati kushal, "अतिकुशल"], units: [day], guard: [100, 15000]}

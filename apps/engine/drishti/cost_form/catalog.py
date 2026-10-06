@@ -59,6 +59,38 @@ def material(material_id: str | None) -> dict | None:
     return next((m for m in materials() if m["id"] == material_id), None)
 
 
+# T141: labour by trade, each trade with its grade (reference/cost_form.yaml, materials)
+GRADES = ("unskilled", "semi_skilled", "skilled", "highly_skilled")
+GRADE_WORDS = {"unskilled": "unskilled", "semi_skilled": "semi-skilled", "skilled": "skilled",
+               "highly_skilled": "highly skilled"}
+
+
+def is_labour(material_id: str | None) -> bool:
+    m = material(material_id)
+    return bool(m and m.get("grade") in GRADES)
+
+
+def grade_of(material_id: str | None) -> str | None:
+    """The grade of a labour trade (or of a generic grade entry); None for anything else."""
+    m = material(material_id)
+    return m.get("grade") if m and m.get("grade") in GRADES else None
+
+
+def person_days(line: dict) -> float | None:
+    """A labour line's workers x days each (T141): its quantity when it gives none."""
+    w, d = line.get("workers"), line.get("days")
+    if all(isinstance(x, (int, float)) and not isinstance(x, bool) and x > 0 and x < 1e9
+           for x in (w, d)):
+        return float(w) * float(d)
+    return None
+
+
+def grade_entry(grade: str | None) -> str | None:
+    """The generic labour entry of a grade (labour_skilled ...), or None."""
+    return next((m["id"] for m in materials() if m.get("generic") and m.get("grade") == grade),
+                None)
+
+
 def for_type(work_type: str | None) -> dict:
     """What the web form shows for one work type: every section, the size fields of its family,
     the line groups, the materials it suggests and the units."""

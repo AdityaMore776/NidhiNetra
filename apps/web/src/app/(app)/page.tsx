@@ -6,12 +6,12 @@ import {
   Building2,
   Camera,
   CheckCircle2,
+  ClipboardList,
   FileText,
   IndianRupee,
   Inbox,
   Layers3,
   MapPin,
-  ShieldCheck,
   Sparkles,
 } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -61,11 +61,10 @@ export default function Dashboard() {
 
   const review = s ? (s.bands.CRITICAL ?? 0) + s.bands.HIGH : 0;
   const scope = me?.role === "MINISTRY" || me?.role === "PUBLIC" ? "All of India" : me?.role === "DISTRICT" ? "Your district" : "Your area";
-  // T132: the public view shows the ten prototype examples instead of the engine's data
+  // T132, T142: the public view shows the example form filings, graded, instead of the engine's data
   const show = isShowcase(me);
   const file = useShowcase(show);
-  const total = file?.examples.length ?? 10;
-  const real = file?.examples.filter((e) => e.row.source === "REAL").length ?? 0;
+  const total = file?.examples.length ?? 13;
 
   return (
     <div className="space-y-8">
@@ -76,9 +75,9 @@ export default function Dashboard() {
         lead={
           show ? (
             <>
-              Ten worked examples of how the four checks read a work: {real} real works from the eSAKSHI public export and {total - real} made-up works
-              for the checks that need a cost estimate form or a site video. Open any one to see what each check said and why. It flags; it never
-              accuses.
+              {total} example filings of the work intelligence form, each graded by the four checks: the form a made-up agency filed before sanction,
+              compared with a real district&apos;s eSAKSHI works. Open any one to see the form, the fields each check asked about and why. It flags; it
+              never accuses.
             </>
           ) : (
             <>
@@ -90,8 +89,8 @@ export default function Dashboard() {
         actions={
           <>
             <Button asChild variant="outline" className="rounded-xl">
-              <Link href="/presanction">
-                <ShieldCheck /> Pre-sanction check
+              <Link href="/work-form">
+                <ClipboardList /> Check a form
               </Link>
             </Button>
             <Button asChild className="rounded-xl bg-brand-gradient shadow-[0_10px_24px_-12px_rgb(10_102_194/0.8)] hover:opacity-95">
@@ -108,20 +107,20 @@ export default function Dashboard() {
         <Stagger className="grid grid-cols-2 gap-4 lg:col-span-5">
           <StaggerItem>
             <StatTile
-              label={show ? "Prototype examples" : "Works monitored"}
+              label={show ? "Example filings" : "Works monitored"}
               value={s?.works ?? 0}
               icon={<Layers3 className="size-4" />}
-              note={show ? (file ? `${real} real eSAKSHI works · ${total - real} made-up` : null) : "every work on the export, assessed"}
+              note={show ? "forms filed by made-up agencies, graded" : "every work on the export, assessed"}
             />
           </StaggerItem>
           <StaggerItem>
             <StatTile
-              label={show ? "Money in the examples" : "Money recommended"}
+              label={show ? "Money in the filings" : "Money recommended"}
               value={s?.amount ?? 0}
               format={(v) => inr(v)}
               icon={<IndianRupee className="size-4" />}
               tone="var(--teal)"
-              note={show ? "what the ten works ask for" : "across those works"}
+              note={show ? "what the filings ask for" : "across those works"}
             />
           </StaggerItem>
           <StaggerItem>
@@ -185,12 +184,12 @@ export default function Dashboard() {
 
       {show ? (
         <>
-          {/* ---------------------------------------------------------------- the ten examples (T132) */}
+          {/* ---------------------------------------------------------------- the example filings (T132, T142) */}
           <section className="space-y-4">
             <SectionHeader
-              eyebrow="Prototype examples"
-              title="Ten works, and what each check made of them"
-              description="Each one is a textbook case: a check asking for a look where it should, two checks agreeing, or the checks staying quiet on an ordinary work. Open one to see the score, the reasons and all four checks."
+              eyebrow="Example filings"
+              title={`${total} forms, and what each check made of them`}
+              description="Each one is a textbook case: a check asking for a look where it should, two checks agreeing, or the checks staying quiet on an honest filing. Open one to see the form as filed, the fields each check asked about, the score and all four checks."
             />
             <ExampleGallery file={file} />
             <FormExamplesCard />

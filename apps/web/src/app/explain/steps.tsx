@@ -61,7 +61,7 @@ export function InputStep({ t }: { t: Trace }) {
   return (
     <div className="grid items-center gap-6 md:grid-cols-[1fr_240px]">
       <div className="rounded-xl border border-line bg-surface p-4 shadow-sm">
-        <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">One work record</div>
+        <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">One filed form</div>
         <dl className="space-y-2">
           {rows.map(([k, v], n) => (
             <div
@@ -91,7 +91,7 @@ export function InputStep({ t }: { t: Trace }) {
           </g>
         </svg>
         <p className="x-in text-xs text-muted-foreground" style={at(3600)}>
-          into NidhiNetra. All 2,09,993 works on the live site go through these same steps.
+          into NidhiNetra. Every form filed on the live site goes through these same steps.
         </p>
       </div>
     </div>
@@ -945,7 +945,7 @@ export function ResultStep({ t }: { t: Trace }) {
         {r.colour && (
           <div className="x-in flex flex-wrap items-center gap-2 text-sm" style={at(1000)}>
             <span className="rounded-full px-3 py-1 font-semibold text-white" style={{ background: COLOUR[r.colour].color }}>
-              Pre-sanction check: {COLOUR[r.colour].label}
+              Before sanction: {COLOUR[r.colour].label}
             </span>
             <span className="text-muted-foreground">{r.advice}</span>
           </div>
@@ -983,7 +983,7 @@ export function ResultStep({ t }: { t: Trace }) {
           </p>
         </div>
         <p className="x-in text-xs text-muted-foreground" style={at(2400)}>
-          On the live site, 1,459 of 2,09,993 works (0.69%) are in the review queue (re-assessed 2 Oct 2026).
+          Only High and Critical filings go to the officers&apos; review queue; every other one keeps its reasons on record.
         </p>
       </div>
     </div>

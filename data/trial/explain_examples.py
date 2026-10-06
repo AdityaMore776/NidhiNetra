@@ -1,5 +1,10 @@
 r"""The Visualization Engine's built-in examples (T092), run through the real engines.
 
+T142 (6 Oct 2026): the page no longer reads these. Its examples are the work intelligence form's
+filings (apps/web/public/work-form/examples.json, data/trial/work_form_examples.py), the same as
+the dashboard's: the site grades forms, not bare recommendations. This script stays because it
+reproduces FINDINGS "T092".
+
 Each example is a made-up work placed in a real district of the eSAKSHI dashboard tables (40,935
 works, data/esakshi_dashboard.py), so the price bands, the district's other works and the rules
 it meets are the real ones. The page (apps/web/src/app/explain) shows them to anyone, signed in

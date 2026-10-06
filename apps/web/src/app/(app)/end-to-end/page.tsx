@@ -39,7 +39,10 @@ interface Yardstick {
 /** The Cost agent's reading of one estimate line (T138, end_to_end_examples.cost_lines). */
 interface CostLine {
   n: number;
-  state: "rate" | "quantity_only" | "unread" | "no_data" | "whole_item";
+  // the form fields holding the line's rate and quantity (a BOQ line, or a labour row: T141)
+  rate_field?: string;
+  qty_field?: string;
+  state: "rate" | "quantity_only" | "unread" | "no_data" | "whole_item" | "labour";
   level: "high" | "watch" | "ok" | "none";
   material?: string;
   unit?: string;
@@ -91,7 +94,7 @@ interface Filing {
   flagged: boolean;
   form: Record<string, unknown>;
   typed: { section: string; fields: [string, string][] }[];
-  boq: { n: number; item: string; unit: string; qty: number; rate: number; amount: number; source: string }[];
+  boq: { n: number; item: string; unit: string; qty: number; rate: number; amount: number; source: string; rate_field?: string; qty_field?: string }[];
   check: {
     ready: boolean;
     fix: string[];
@@ -308,13 +311,15 @@ function filingFlags(ex: Filing): { lines: AgentLine[]; flags: Flag[] } {
     const extra: Flag["fields"] = [];
     for (const l of ex.cost.lines) {
       if (l.level !== "high") continue;
+      const rateField = l.rate_field ?? `boq_rate_${l.n}`;
+      const qtyField = l.qty_field ?? `boq_qty_${l.n}`;
       if (l.state === "rate" && l.fair_rate !== undefined)
-        extra.push({ name: `boq_rate_${l.n}`, label: `+${pctOf(l.pct ?? 0)} · usual ${rs(l.fair_rate)}` });
-      if (l.state === "unread") extra.push({ name: `boq_qty_${l.n}`, label: `${pctOf(l.share ?? 0)} of lines, unpriced` });
+        extra.push({ name: rateField, label: `+${pctOf(l.pct ?? 0)} · usual ${rs(l.fair_rate)}` });
+      if (l.state === "unread") extra.push({ name: qtyField, label: `${pctOf(l.share ?? 0)} of lines, unpriced` });
       if ((l.qty_ratio ?? 0) > 1 + ex.cost.summary.qty_slack)
-        extra.push({ name: `boq_qty_${l.n}`, label: `${(l.qty_ratio ?? 0).toFixed(1)}× what the size needs` });
+        extra.push({ name: qtyField, label: `${(l.qty_ratio ?? 0).toFixed(1)}× what the size needs` });
     }
-    const keep = cost.fields.filter((f) => !f.name.startsWith("boq_") || !extra.some((e) => e.name === f.name));
+    const keep = cost.fields.filter((f) => !/^(boq|lab)_/.test(f.name) || !extra.some((e) => e.name === f.name));
     cost.fields = [...keep, ...extra];
   }
   return { lines, flags };
@@ -528,6 +533,14 @@ function reading(l: CostLine, s: CostReading["summary"]): { badge: string; facts
       `Usual: ${rs(l.fair_rate)} a ${u}${l.where === "state" ? " (state-wide, 10% leeway)" : ""}` +
         (l.range ? ` · ${l.range.agencies} other agencies here charge ${rs(l.range.low)} to ${rs(l.range.high)}` : ""),
     );
+  } else if (l.state === "labour" && l.fair_rate !== undefined) {
+    // T141: a crew's day rate is asked about only at twice what others pay the trade here
+    badge = "Within the trade's band";
+    facts.push(
+      `Others here pay ${rs(l.fair_rate)} a day for this trade; asked only from ${rs(l.limit ?? 0)} (twice it)` +
+        ((l.pct ?? 0) > 0.005 ? ` · this row is ${pctOf(l.pct ?? 0)} above` : ""),
+    );
+    facts.push("How many workers and days a work needs is the agency's call");
   } else if (l.state === "unread") {
     badge = l.level === "high" ? "Can't be priced, and too big a share" : "Not a standard item (small share: fine)";
     facts.push(

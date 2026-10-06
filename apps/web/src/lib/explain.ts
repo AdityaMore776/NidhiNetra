@@ -197,6 +197,8 @@ export interface Example {
   title: string;
   story: string;
   trace: Trace;
+  /** T142: the work intelligence form the example is a filing of */
+  form?: Record<string, unknown>;
 }
 
 export interface ExamplesFile {

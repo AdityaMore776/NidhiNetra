@@ -61,6 +61,29 @@ function rowOf(boq: Row[], t: Facts): Row | undefined {
   );
 }
 
+type LabRow = { n: number; workers: number; days: number; rate: number };
+
+/** The labour schedule's rows (T141: lab_trade_N, lab_workers_N, lab_days_N, lab_rate_N). */
+function labourRows(form: Form): LabRow[] {
+  const out: LabRow[] = [];
+  for (const k of Object.keys(form)) {
+    const m = /^lab_trade_(\d+)$/.exec(k);
+    if (m)
+      out.push({ n: Number(m[1]), workers: num(form[`lab_workers_${m[1]}`]), days: num(form[`lab_days_${m[1]}`]), rate: num(form[`lab_rate_${m[1]}`]) });
+  }
+  return out.sort((a, b) => a.n - b.n);
+}
+
+/** The form's field of a labour row the engine names: its labour-schedule row (the same workers,
+ *  days and day rate), else the estimate line with the same person-days and rate. */
+function labourField(lab: LabRow[], boq: Row[], t: Facts, col: "rate" | "days"): string | undefined {
+  const same = (a: number, b: unknown) => Math.abs(a - num(b)) < 0.005;
+  const row = lab.find((r) => same(r.workers * r.days, t.person_days) && same(r.rate, t.rate));
+  if (row) return `lab_${col}_${row.n}`;
+  const line = rowOf(boq, { quantity: t.person_days, rate: t.rate });
+  return line ? `boq_${col === "rate" ? "rate" : "qty"}_${line.n}` : undefined;
+}
+
 /** The site's pin: a linear work's start, else its point. */
 function pinField(form: Form): string {
   return String(form.start_lat ?? "").trim() ? "start_lat" : "latitude";
@@ -112,6 +135,32 @@ export function flagOf(agent: string, f: TraceFinding, form: Form): Flag {
       const loose = (x.unexplained ?? {}) as Record<string, number>;
       if (loose.lump_sums) fields.push({ name: "lumpsum_components", label: `${inr(loose.lump_sums)} not itemised` });
       if (loose.other_charges) fields.push({ name: "other_charges", label: `${inr(loose.other_charges)} not explained` });
+      break;
+    }
+    case "LABOUR_RATE_FAR_ABOVE": {
+      // T141: only the day rate is judged, never how many workers or days
+      const asked = list(x.rows);
+      const t = asked[0] ?? {};
+      const whose = t.level === "grade" ? "others here pay any trade of its grade" : "others here pay this trade";
+      why = `${cap(String(t.label ?? "a trade").toLowerCase())} at ${rs(t.rate)} a day: ${num(t.times).toFixed(1)}× the ${rs(t.fair_rate)} ${whose}.`;
+      if (asked.length > 1) why += ` ${asked.length - 1} more trade${asked.length > 2 ? "s" : ""} too.`;
+      const lab = labourRows(form);
+      for (const r of asked) {
+        const name = labourField(lab, boq, r, "rate");
+        if (name) fields.push({ name, label: `usual ${rs(r.fair_rate)}` });
+      }
+      break;
+    }
+    case "LABOUR_DAYS_BEYOND_WORK": {
+      const rows0 = list(x.rows);
+      const t = rows0[0] ?? {};
+      why = `${n(t.workers)} ${String(t.label ?? "workers").toLowerCase()} on site ${n(t.days)} days each, but the whole work takes about ${n(t.work_days)} days.`;
+      const lab = labourRows(form);
+      for (const r of rows0) {
+        const name = labourField(lab, boq, r, "days");
+        if (name) fields.push({ name, label: `work lasts ${n(r.work_days)} days` });
+      }
+      fields.push({ name: "estimated_duration_days", label: "the work's own time" });
       break;
     }
     case "SIZE_NOT_AS_DESCRIBED": {

@@ -31,10 +31,14 @@ def road_form() -> dict:
          "unit": "m3", "rate": 3000, "basis": "sor", "sor_code": "UP-PWD 5.3"},
         {"group": "materials", "item": "GSB", "quantity": 94, "unit": "m3", "rate": 1500,
          "basis": "sor", "sor_code": "UP-PWD 4.1"},
-        {"group": "labour", "item": "Unskilled labour", "quantity": 900, "unit": "day",
-         "rate": 450, "basis": "sor", "sor_code": "UP-LAB-1"},
-        {"group": "labour", "item": "Skilled labour (mason)", "quantity": 250, "unit": "day",
-         "rate": 800, "basis": "sor", "sor_code": "UP-LAB-2"},
+        {"group": "labour", "item": "Unskilled labour", "material_id": "labour_beldar",
+         "quantity": 900, "unit": "day", "rate": 450, "basis": "sor", "sor_code": "UP-LAB-1",
+         "workers": 10, "days": 90,
+         "activity": "Earthwork, mixing and carrying the concrete", "for_lines": [1, 2, 3, 4]},
+        {"group": "labour", "item": "Skilled labour (mason)", "material_id": "labour_mason",
+         "quantity": 250, "unit": "day", "rate": 800, "basis": "sor", "sor_code": "UP-LAB-2",
+         "workers": 5, "days": 50,
+         "activity": "Laying, levelling and finishing the concrete"},
         {"group": "machinery", "item": "Concrete mixer and vibrator hire", "quantity": 30,
          "unit": "day", "rate": 2500, "basis": "quotation"},
         {"group": "finishing", "item": "MPLADS plaque", "unit": "ls", "amount": 15000,
@@ -119,7 +123,7 @@ def test_the_field_list_is_consistent():
         assert len(ids) == len(set(ids)), ids
         for f in fields:
             assert f["kind"] in {"number", "choice", "multi", "bool", "text", "date", "month",
-                                 "gps", "file"}, f
+                                 "gps", "file", "list"}, f
             if f.get("unit"):
                 assert f["unit"] in units, f
             if f.get("hard") and f.get("soft"):
@@ -158,7 +162,7 @@ def test_the_size_a_work_is_priced_by():
     ("Cement OPC 43 grade", "cement"), ("सीमेंट", "cement"), ("sariya 12mm", "steel_rebar"),
     ("TMT bars Fe500", "steel_rebar"), ("Coarse sand (balu)", "sand"), ("बालू", "sand"),
     ("Morang", "sand"), ("Gitti 20 mm", "aggregate"), ("First class bricks", "brick"),
-    ("Skilled labour (mason)", "labour_skilled"), ("Unskilled labour", "labour_unskilled"),
+    ("Skilled labour (mason)", "labour_mason"), ("Unskilled labour", "labour_unskilled"),
     ("Interlocking paver block 80mm", "paver_block"), ("Geotextile fabric", None), ("", None),
     ("Internal plaster", None), ("Electrical distribution panel", None),
 ])

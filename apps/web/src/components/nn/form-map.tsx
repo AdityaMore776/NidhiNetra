@@ -16,16 +16,18 @@ import { cn } from "@/lib/utils";
  */
 
 type Field = { name: string; label: string; kind: "text" | "check" | "date" | "number"; group: string | null };
-type Table = { id: string; title: string; cols: { key: string; label: string }[] };
-type Section = { key: string; letter: string; title: string; agents: string[]; fields: Field[]; table: Table | null };
+type Table = { id: string; title: string; row: string; cols: { key: string; label: string }[] };
+type Section = { key: string; letter: string; title: string; agents: string[]; fields: Field[]; tables: Table[] };
 
 const CHIP_AGENT: Record<string, string> = { cost: "cost_estimate", dup: "dup_split", time: "time_rules", site: "site_progress" };
 
-// the two tables the form builds row by row (addBoqRow / addMilestoneRow in the form's script)
+// the tables the form builds row by row (addBoqRow / addLabourRow / addMilestoneRow in its script);
+// `row` names the field that numbers a table's rows
 const TABLES: Record<string, Table> = {
   boqBody: {
     id: "boq",
     title: "Estimate lines (BOQ)",
+    row: "boq_desc",
     cols: [
       { key: "code", label: "SoR code" },
       { key: "desc", label: "Item" },
@@ -35,11 +37,29 @@ const TABLES: Record<string, Table> = {
       { key: "source", label: "Rate source" },
       { key: "measure_ref", label: "Measurement ref" },
       { key: "just", label: "Justification" },
+      { key: "inclab", label: "Rate incl. workers" },
+    ],
+  },
+  labourBody: {
+    id: "lab",
+    title: "Labour schedule (one row per trade)",
+    row: "lab_trade",
+    cols: [
+      { key: "trade", label: "Trade" },
+      { key: "name", label: "Name (if other)" },
+      { key: "grade", label: "Grade" },
+      { key: "workers", label: "Workers" },
+      { key: "days", label: "Days each" },
+      { key: "rate", label: "Day rate ₹" },
+      { key: "task", label: "What they do" },
+      { key: "lines", label: "BOQ lines" },
+      { key: "source", label: "Rate source" },
     ],
   },
   milestoneBody: {
     id: "milestone",
     title: "Milestones",
+    row: "milestone_name",
     cols: [
       { key: "name", label: "Milestone" },
       { key: "date", label: "Date" },
@@ -77,8 +97,8 @@ function parse(html: string): Section[] {
         group: el.closest(".dynamic")?.id ?? null,
       });
     }
-    const body = sec.querySelector("tbody[id]");
-    return { key: `s${i}`, letter, title: title.replace(/^[A-Z]\.\s*/, ""), agents, fields, table: body ? (TABLES[body.id] ?? null) : null };
+    const tables = [...sec.querySelectorAll("tbody[id]")].map((b) => TABLES[b.id]).filter((t): t is Table => Boolean(t));
+    return { key: `s${i}`, letter, title: title.replace(/^[A-Z]\.\s*/, ""), agents, fields, tables };
   });
 }
 
@@ -122,9 +142,7 @@ export function FormMap({ form, flags, agents }: { form: Record<string, unknown>
       const groups = new Set(s.fields.filter((f) => f.group && show(form[f.name], f.kind)).map((f) => f.group));
       const fields = s.fields.filter((f) => !f.group || groups.has(f.group) || marks.has(f.name));
       const answered = fields.filter((f) => show(form[f.name], f.kind));
-      const tableNames = s.table
-        ? rowNums(form, s.table.id === "boq" ? "boq_desc" : "milestone_name").flatMap((n) => s.table!.cols.map((c) => `${s.table!.id}_${c.key}_${n}`))
-        : [];
+      const tableNames = s.tables.flatMap((t) => rowNums(form, t.row).flatMap((n) => t.cols.map((c) => `${t.id}_${c.key}_${n}`)));
       const names = new Set([...fields.map((f) => f.name), ...tableNames]);
       const sectionFlags = flags.filter((f) => f.fields.some((x) => names.has(x.name)));
       return { ...s, fields, answered, sectionFlags };
@@ -170,7 +188,7 @@ export function FormMap({ form, flags, agents }: { form: Record<string, unknown>
                   <span className={cn(s.sectionFlags.length > 0 && "font-semibold")}>{s.title}</span>
                 </td>
                 <td className="num px-2 py-1.5 text-right text-muted-foreground">
-                  {s.fields.length ? `${s.answered.length}/${s.fields.length}` : s.table ? "table" : "—"}
+                  {s.fields.length ? `${s.answered.length}/${s.fields.length}` : s.tables.length ? "table" : "—"}
                 </td>
                 {AGENT_ORDER.map((id) => {
                   const asked = s.sectionFlags.filter((f) => f.agent === id);
@@ -287,13 +305,15 @@ export function FormMap({ form, flags, agents }: { form: Record<string, unknown>
                       ))}
                     </dl>
                   )}
-                  {s.table && <RowsTable table={s.table} form={form} marks={marks} />}
+                  {s.tables.map((t) => (
+                    <RowsTable key={t.id} table={t} form={form} marks={marks} />
+                  ))}
                   {!all && blank > 0 && (
                     <p className="text-xs text-muted-foreground">
                       {blank} field{blank === 1 ? "" : "s"} left blank (optional for this work).
                     </p>
                   )}
-                  {s.fields.length === 0 && !s.table && (
+                  {s.fields.length === 0 && !s.tables.length && (
                     <p className="text-xs text-muted-foreground">A guide for the agency: what each agent needs. Nothing to fill.</p>
                   )}
                 </div>
@@ -332,8 +352,12 @@ function FieldBox({ field, value, marks }: { field: Field; value: string; marks?
   );
 }
 
+const NUMBER_COLS = ["qty", "rate", "pct", "workers", "days"];
+// the labour schedule's choices are stored as ids ("bar_bender", "highly_skilled"): shown as words
+const WORD_COLS = ["lab_trade", "lab_grade"];
+
 function RowsTable({ table, form, marks }: { table: Table; form: Record<string, unknown>; marks: Map<string, Mark[]> }) {
-  const nums = rowNums(form, table.id === "boq" ? "boq_desc" : "milestone_name");
+  const nums = rowNums(form, table.row);
   if (!nums.length) return null;
   return (
     <div className="overflow-x-auto rounded-lg border">
@@ -365,15 +389,15 @@ function RowsTable({ table, form, marks }: { table: Table; form: Record<string, 
                   const m = marks.get(name)?.[0];
                   const color = m ? agentMeta(m.agent).color : null;
                   const v = form[name];
-                  const kind = c.key === "date" ? "date" : ["qty", "rate", "pct"].includes(c.key) ? "number" : "text";
+                  const kind = c.key === "date" ? "date" : c.key === "inclab" ? "check" : NUMBER_COLS.includes(c.key) ? "number" : "text";
                   return (
                     <td
                       key={c.key}
-                      className={cn("px-2 py-1", ["qty", "rate", "pct"].includes(c.key) && "num text-right")}
+                      className={cn("px-2 py-1", NUMBER_COLS.includes(c.key) && "num text-right")}
                       style={color ? { boxShadow: `inset 0 0 0 2px ${color}`, background: `color-mix(in srgb, ${color} 12%, white)` } : undefined}
                     >
                       <span className={cn(color && "font-semibold")} style={color ? { color } : undefined}>
-                        {show(v, kind) || "—"}
+                        {(WORD_COLS.includes(`${table.id}_${c.key}`) ? show(v, kind).replace(/_/g, " ") : show(v, kind)) || "—"}
                       </span>
                       {m && (
                         <span

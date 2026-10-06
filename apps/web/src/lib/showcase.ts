@@ -1,11 +1,13 @@
 import type { Band, DistrictRow, Me, Page, Summary, WorkDetail, WorkRow } from "./api";
 
 /**
- * Prototype examples (T132). The public view (no sign-in) shows ten hand-picked works instead of all
- * 2,09,993: five real eSAKSHI works as the live engine assessed them and five made-up works for the
- * checks that need a cost form or site video. They are a static file
- * (public/showcase/examples.json, built by data/trial/showcase_examples.py), so the pages open
- * without waiting for the engine. Signed-in staff still get every work from the engine.
+ * Prototype examples (T132, T142). The public view (no sign-in) shows example filings of the work
+ * intelligence form instead of the engine's data: each one a form a made-up agency filed in a real
+ * district, graded by the four checks (T142, the owner: "we are currently grading forms"; the
+ * recommendations rated from their records alone are no longer shown). They are a static file
+ * (public/showcase/examples.json, built by data/trial/showcase_examples.py from the form page's
+ * filings), so the pages open without waiting for the engine. Each example's page shows its form
+ * (components/nn/example-form). Signed-in staff still get every work from the engine.
  * NEXT_PUBLIC_SHOWCASE=0 turns it off.
  */
 export const SHOWCASE_ON = process.env.NEXT_PUBLIC_SHOWCASE !== "0";
@@ -20,6 +22,11 @@ export interface ShowcaseMeta {
   why: string;
   /** the Step by step page's example of the same made-up work */
   explain: string | null;
+  /** T142: the work form filing it is (public/work-form/examples.json `id`) */
+  form_example?: string;
+  /** what happened after the form was filed (sanction, site videos) */
+  later?: string[];
+  form_ready?: boolean;
 }
 
 export type ShowcaseDetail = WorkDetail & { showcase?: ShowcaseMeta };
@@ -32,8 +39,8 @@ export interface ShowcaseExample {
 
 export interface ShowcaseFile {
   summary: Summary;
-  /** the live engine's figures for every real work, said once on the page */
-  scale: { works: number; amount: number; bands: Record<Band, number>; snapshot_date: string };
+  /** the live engine's figures for every real work (T132 only; T142 shows filings, not records) */
+  scale?: { works: number; amount: number; bands: Record<Band, number>; snapshot_date: string };
   examples: ShowcaseExample[];
 }
 

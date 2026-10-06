@@ -51,6 +51,7 @@ RECENT_DAYS = 183
 MAX_SPREAD = 0.30             # interquartile range of the agencies' medians / their median
 STATE_MIN_FORMS, STATE_MIN_AGENCIES = 8, 4
 STATE_ALLOWANCE = 0.10        # a state-wide rate is this much more lenient than a district's
+POOL = "labour_grade:"        # T141: every trade of one grade together (labour.py, blatant only)
 # words that name a branch of an agency, not another agency
 _BRANCH = {"the", "of", "and", "office", "offices", "division", "div", "dvn", "divn", "dept",
            "deptt", "department", "circle", "sub", "subdivision", "unit", "zone", "branch", "no",
@@ -148,6 +149,8 @@ def confirmed_lines(form: dict):
             if r is None:
                 continue
             q = to_first_unit(mid, ln.get("quantity"), ln.get("unit"))
+            if q is None and catalog.is_labour(mid) and ln.get("quantity") in (None, ""):
+                q = catalog.person_days(ln)      # a labour row gives workers x days (T141)
             if q is None or q <= 0:
                 continue
             yield i, j, mid, r, q, ln
@@ -236,9 +239,14 @@ class RateIndex:
             st = _state(w)
             for _i, _j, mid, r, _q, _ln in confirmed_lines(form):
                 row = (agency, str(w.get("work_id")), r, month)
-                out[(str(d), mid)].append(row)
-                if st:
-                    state[(st, mid)].append(row)
+                keys = [mid]
+                if (catalog.material(mid) or {}).get("trade"):
+                    # its trade's grade, never the grade a row declares (T141)
+                    keys.append(pool_key(catalog.grade_of(mid)))
+                for k in keys:
+                    out[(str(d), k)].append(row)
+                    if st:
+                        state[(st, k)].append(row)
         return cls(dict(out), dict(state))
 
     def district_rate(self, district, material_id: str, agency: str, work_id: str,
@@ -273,9 +281,14 @@ class RateIndex:
         return None, gap
 
 
+def pool_key(grade: str | None) -> str:
+    """The rate index's key for every trade of one grade (T141)."""
+    return f"{POOL}{grade}"
+
+
 # the materials every construction district needs prices for, listed even before any form
 CORE = ("cement", "sand", "aggregate", "steel_rebar", "brick", "granular_base",
-        "labour_skilled", "labour_unskilled")
+        "labour_beldar", "labour_mason")
 
 
 def coverage(index: RateIndex | None, district, state: str | None, when: date | None,

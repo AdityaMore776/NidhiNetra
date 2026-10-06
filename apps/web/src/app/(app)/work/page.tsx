@@ -25,7 +25,8 @@ import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { EngineMark, SourceBadge } from "@/components/nn/badges";
 import { SectionHeader } from "@/components/nn/layout-bits";
 import { Button } from "@/components/ui/button";
-import { ExampleNote } from "@/components/nn/showcase";
+import { ExampleForm } from "@/components/nn/example-form";
+import { ExampleNote, useShowcase } from "@/components/nn/showcase";
 import { api, ApiError } from "@/lib/api";
 import { AGENT_ORDER, agentMeta, inr, workType } from "@/lib/format";
 import { isShowcase, type ShowcaseDetail } from "@/lib/showcase";
@@ -43,6 +44,7 @@ function Work() {
   const id = useSearchParams().get("id") ?? "";
   const router = useRouter();
   const me = useMe();
+  const examples = useShowcase(isShowcase(me));
   const [d, setD] = useState<{ id: string; detail: ShowcaseDetail } | null>(null);
   const [error, setError] = useState<{ id: string; text: string } | null>(null);
 
@@ -74,7 +76,7 @@ function Work() {
         </Button>
         {isShowcase(me) && (
           <Button asChild variant="ghost" className="mt-2 rounded-xl text-brand-700">
-            <Link href="/">See the ten examples</Link>
+            <Link href="/">See the example filings</Link>
           </Button>
         )}
       </div>
@@ -94,7 +96,9 @@ function Work() {
         <ArrowLeft className="size-4" /> Back
       </button>
 
-      {d.detail.showcase && <ExampleNote meta={d.detail.showcase} source={w.source} district={w.district_name} />}
+      {d.detail.showcase && (
+        <ExampleNote meta={d.detail.showcase} source={w.source} district={w.district_name} total={examples?.examples.length} />
+      )}
 
       {/* ------------------------------------------------------------------ the work */}
       <motion.section
@@ -142,6 +146,13 @@ function Work() {
           </Button>
         )}
       </motion.section>
+
+      {/* ------------------------------------------------------------------ the form it was graded on (T142) */}
+      {d.detail.showcase?.form_example && (
+        <Reveal>
+          <ExampleForm id={d.detail.showcase.form_example} later={d.detail.showcase.later} />
+        </Reveal>
+      )}
 
       {/* ------------------------------------------------------------------ the score */}
       <Reveal>

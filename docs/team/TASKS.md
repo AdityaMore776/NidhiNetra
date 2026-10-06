@@ -102,6 +102,57 @@ dashboard queue before / after in FINDINGS (439 → 217)
 of §9.6 planted. Only readings and blurred frames are kept; no video enters the repo.
 **Done when:** [ ] each trick caught 9 in 10 · [ ] a finding on at most 1 in 30 honest visits · [ ] FINDINGS
 
+### T142 · The public examples are graded forms, each with its form  ·  S  ·  web + data  ·  Depends on: T134, T141
+**What:** (owner, 6 Oct 2026) "add the Example Form to each mentioned project, remove the current
+normal recommendation rating system because we are currently grading forms, so each of the risk
+examples should now contain the form details and demonstrations". The public view showed ten
+works, five of them real eSAKSHI recommendations rated from their records alone.
+**Done when:**
+- [x] `data/trial/showcase_examples.py` builds the public examples from the work-form filings
+  (`work_form_examples.py`): 13 filings, each graded by the four checks and still raising what it
+  says; no record-only ratings, no live-engine count of every work.
+- [x] Every example's page shows its form (`components/nn/example-form.tsx`):
+  - the form's own check, and each agent's verdict with "Show in form";
+  - what happened after filing;
+  - the form section by section, every asked-about field marked with its reason, or the form
+    itself filled and outlined;
+  - a link to open it in the live form.
+- [x] Banner, dashboard, gallery and example note speak of filings; checked in Chromium on all 13
+  pages.
+- [x] No record-only rating left on the public site: the pre-sanction check page opens the form,
+  Step by step walks through the same filings (with "See the form as filed"), and "your own
+  example" is "check your own form".
+
+### T141 · Labour, trade by trade: a labour schedule, only blatant irregularities  ·  M  ·  engine + web + data  ·  Depends on: T121
+**What:** (owner, 6 Oct 2026) labour was two kinds ("skilled", "unskilled") among the estimate
+lines. Give it its own detailed table (trade, grade, workers, days, day rate, what they do, the
+lines they work on), judge each trade against what others pay that trade, and ask only about
+blatant irregularities, never how many workers. Then try to break it. Plan:
+`docs/plans/T141-labour-schedule.md`.
+**Done when:**
+- [x] Engine: 14 trades in 4 grades (`cost_form.yaml`); labour fields and form checks
+  (`validate.py`); per-trade rates and a grade pool (`rates.py`); `LABOUR_RATE_FAR_ABOVE` and
+  `LABOUR_DAYS_BEYOND_WORK` (`agents/cost_estimate/labour.py`); labour within its band settled in
+  the whole estimate (`whole.py`); tests (`tests/agents/cost_estimate/test_labour.py`).
+- [x] Website form PSWIF v1.1: the labour schedule and "rate includes its workers" on each BOQ
+  line; the adapter (`pswif.py`), flags, form map and the end-to-end page read it.
+- [x] Planted trial (`data/trial/labour_trial.py`): honest filings 0/450 asked; one trade ×2.5
+  88%, ×3 98%; ten times the workers 0/450.
+- [x] The robustness loop: 112 probes, 0 FAIL, 10 LIMIT; five loopholes found and closed (FINDINGS
+  "T141").
+- [ ] Real forms (T098) set the final margins with the owner (2× a trade, 2.5× a pool).
+
+### T140 · The T139 rules in six more districts  ·  S  ·  data  ·  Depends on: T139
+**What:** (owner, 6 Oct 2026: "continue") check that Duplicate Work's T139 rules hold beyond Jaunpur.
+Use districts whose villages look different, each with its own real works, post offices and
+Open Buildings.
+**Done when:**
+- [x] `data/trial/real_geo_districts.py`: Kheri, Bokaro, Puri, Howrah, Palakkad and Kheda,
+  alongside Jaunpur.
+- [x] Before → now, per district: lights 63–87% → 0–1.5% honest asked; pumps the same; the next
+  street over at 35 m 64–74% → 3–7%; repeats caught 86–98%.
+- [x] No rule changes needed; FINDINGS "T140".
+
 ### T139 · The agents on real data from outside the project  ·  M  ·  engine + data  ·  Depends on: T137
 **What:** (owner, 5 Oct 2026) find relevant real data anywhere, test the agents on it temporarily,
 and iterate from what it shows. Reachable here: Google's Open Buildings, India Post's post-office

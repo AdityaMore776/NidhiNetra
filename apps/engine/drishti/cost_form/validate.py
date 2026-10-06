@@ -38,6 +38,8 @@ OTHER_SHARE = 0.10          # above this share in "anything else", ask for a bre
 GST_RATES = {0, 5, 12, 18, 28, 40}
 GST_TOLERANCE = 0.02
 STALE_MONTHS = 18
+DAYS_A_MONTH = 30.44
+DAYS_TOLERANCE = 1.10       # a labour row's days on site beyond the work's own time (T141)
 INDIA = {"lat": (6.0, 37.7), "lon": (68.0, 97.5)}
 # words that may mean a cost MPLADS does not pay for: asked, never blocked (a false match must
 # not stop a form)
@@ -80,6 +82,12 @@ def _number(v) -> float | None:
     return None
 
 
+def _whole(v) -> int | None:
+    """A line number: a whole number of at least 1 (or its digits as text), else None."""
+    x = _number(v)
+    return int(x) if x is not None and x >= 1 and x == int(x) and x < 1e9 else None
+
+
 def _month(v) -> tuple[int, int] | None:
     m = _MONTH.match(v) if isinstance(v, str) else None
     if not m or not 1 <= int(m.group(2)) <= 12:
@@ -108,6 +116,9 @@ class _Ctx:
         self.mp_gap: float | None = None
         # another form's export (T134): the fields it never asks are not required when empty
         self.not_asked = versions.not_asked(_s(form.get("form_version")) or None)
+        # T141: the form has a labour schedule (one row per trade, with workers and days)
+        self.labour_section = "workers" not in self.not_asked
+        self.duration_days: float | None = None
 
 
 def _applies(f: dict, values: dict, ctx: _Ctx) -> bool:
@@ -118,6 +129,10 @@ def _applies(f: dict, values: dict, ctx: _Ctx) -> bool:
     if f.get("linear_only") and not ctx.linear:
         return False
     if f.get("goods_only") and ctx.group != "goods":
+        return False
+    if f.get("labour_only") and ctx.group != "labour":
+        return False
+    if f.get("not_labour") and ctx.group == "labour":
         return False
     if f.get("when_any_line_basis") and not ctx.any_sor:
         return False
@@ -203,6 +218,9 @@ def _check_value(out: _Issues, f: dict, v, path: str, values: dict) -> None:
     elif kind == "file":
         if not isinstance(v, str):
             out.add(FIX, "no_file", path, f"{label}: attach the file.")
+    elif kind == "list":
+        if not isinstance(v, list) or len(v) > 500 or any(_whole(x) is None for x in v):
+            out.add(FIX, "not_a_list", path, f"{label}: give the line numbers (1, 2, 3 ...).")
 
 
 def _section(out: _Issues, fields: list[dict], values, path: str, ctx: _Ctx) -> None:
@@ -226,6 +244,98 @@ def _metres_between(a_lat, a_lon, b_lat, b_lon) -> float:
     return 2 * r * math.asin(math.sqrt(h))
 
 
+def _labour_days(out: _Issues, ln: dict, path: str, ctx: _Ctx, item: str, q, unit: str):
+    """A labour row's person-days: its workers x its days (T141). The quantity may be left out;
+    given, it must agree. How many workers, and how many days, are never judged here."""
+    w, d = _number(ln.get("workers")), _number(ln.get("days"))
+    name = item or "This row"
+    if w is not None and w != int(w):
+        out.add(FIX, "labour_workers_whole", f"{path}.workers",
+                f"{name}: workers are counted in whole numbers ({w:g}).")
+    if ctx.labour_section and unit and unit != "day":
+        out.add(FIX, "labour_unit", f"{path}.unit",
+                f"{name}: a labour row is paid by the day. Give one day's wage as the rate (a "
+                "month's wage divided by its working days).")
+    if w is None or d is None or w <= 0 or d <= 0:
+        return q
+    days = w * d
+    if q is None:
+        return days
+    if abs(q - days) > max(0.5, LINE_TOLERANCE * days):
+        out.add(FIX, "labour_arithmetic", f"{path}.quantity",
+                f"{name}: {w:g} workers x {d:g} days = {days:,.1f} person-days, but the quantity "
+                f"says {q:,.1f}. Correct the workers, the days or the quantity.")
+    return q
+
+
+def _trade(out: _Issues, ln: dict, path: str, item: str, chosen: str,
+           suggested: str | None) -> None:
+    """A labour row is one trade chosen from the list, or Other ("none") with its grade (T141).
+    Its rate is judged against its trade, whatever grade it declares."""
+    declared = _s(ln.get("grade")) or None
+    name = item or "This row"
+    mat = catalog.material(chosen) if chosen and chosen != "none" else None
+    if not chosen:
+        hint = catalog.material(suggested)
+        out.add(FIX, "labour_trade_needed", f"{path}.material_id",
+                f"{name}: choose the trade from the list"
+                + (f" (it reads as {hint['label'].lower()})" if hint else "")
+                + ", or Other with its grade.")
+        return
+    if chosen != "none" and not (mat and catalog.is_labour(chosen)):
+        out.add(FIX, "labour_not_a_trade", f"{path}.material_id",
+                f"{name}: a labour row is one trade. Choose the trade from the list.")
+        return
+    if not mat:
+        if declared not in catalog.GRADES:
+            out.add(FIX, "labour_grade_needed", f"{path}.grade",
+                    f"{name}: this trade is not on the list. Give its grade (unskilled, "
+                    "semi-skilled, skilled or highly skilled).")
+        return
+    own = catalog.grade_of(chosen)
+    if declared in catalog.GRADES and catalog.GRADES.index(declared) > catalog.GRADES.index(own):
+        out.add(CONFIRM, "labour_grade_above_trade", f"{path}.grade",
+                f"{mat['label']} is {catalog.GRADE_WORDS[own]} work, but the row says "
+                f"{catalog.GRADE_WORDS[declared]}. Its rate is compared with what others pay for "
+                f"{mat['label'].lower()} either way. Correct the grade, or confirm.")
+
+
+def _labour_links(out: _Issues, lines: list, p: str, ctx: _Ctx) -> None:
+    """Each labour row's lines and days (T141): it cannot work on a line whose rate already pays
+    its workers (a composite schedule item, a machine hired with its operator: paid twice), and
+    no worker stays on site longer than the whole work lasts (asked, not refused)."""
+    refs = {str(_whole(ln.get("ref"))): k for k, ln in enumerate(lines)
+            if isinstance(ln, dict) and _whole(ln.get("ref")) is not None}
+    composite = any(isinstance(ln, dict) and ln.get("group") != "labour"
+                    and ln.get("includes_labour") is True for ln in lines)
+    for j, ln in enumerate(lines):
+        if not isinstance(ln, dict) or ln.get("group") != "labour":
+            continue
+        name, path = _s(ln.get("item")) or "This row", f"{p}.lines[{j}]"
+        targets = ln.get("for_lines")
+        if isinstance(targets, list) and targets and all(_whole(x) for x in targets):
+            for n in dict.fromkeys(_whole(x) for x in targets):
+                k = refs.get(str(n)) if refs else n - 1
+                other = lines[k] if k is not None and 0 <= k < len(lines) else None
+                if not isinstance(other, dict) or other.get("group") == "labour":
+                    out.add(FIX, "labour_line_unknown", f"{path}.for_lines",
+                            f"{name}: there is no estimate line {n} to work on.")
+                elif other.get("includes_labour") is True:
+                    out.add(FIX, "labour_paid_twice", f"{path}.for_lines",
+                            f"{name}: line {n} ({_s(other.get('item')) or 'that line'}) already "
+                            "pays the workers who do it. Take it off this row, or say that "
+                            "line's rate does not include labour.")
+        elif composite and ctx.labour_section and _empty(targets):
+            out.add(FIX, "labour_lines_needed", f"{path}.for_lines",
+                    f"{name}: some lines' rates already include their workers, so say which "
+                    "lines this row works on.")
+        d = _number(ln.get("days"))
+        if d is not None and ctx.duration_days and d > ctx.duration_days * DAYS_TOLERANCE:
+            out.add(CONFIRM, "labour_days_beyond_work", f"{path}.days",
+                    f"{name}: {d:g} days on site each, but the whole work takes about "
+                    f"{ctx.duration_days:,.0f} days. Correct the days, or confirm.")
+
+
 def _line(out: _Issues, ln: dict, path: str, ctx: _Ctx) -> dict:
     """Checks one expense line; returns its worked-out amount and material."""
     data = catalog.load()
@@ -236,6 +346,8 @@ def _line(out: _Issues, ln: dict, path: str, ctx: _Ctx) -> dict:
     _section(out, data["line_fields"], ln, path, ctx)
     q, r, a = _number(ln.get("quantity")), _number(ln.get("rate")), _number(ln.get("amount"))
     unit = _s(ln.get("unit"))
+    if ctx.group == "labour":
+        q = _labour_days(out, ln, path, ctx, item, q, unit)
     amount = None
     if unit == "ls":
         amount = a
@@ -256,10 +368,19 @@ def _line(out: _Issues, ln: dict, path: str, ctx: _Ctx) -> dict:
         out.add(FIX, "line_incomplete", f"{path}.{'rate' if q is not None else 'quantity'}",
                 f"{item or 'This line'}: give the quantity and the rate in numbers (or make it "
                 "a lump sum).")
-    suggested = materials.match(item)
+    # T141: a labour row reads as a trade ("painter for distemper" is a painter); a machine hired
+    # "with operator" is a machine
+    suggested = materials.match(item, labour=materials.LABOUR_BY_GROUP.get(ctx.group))
     chosen = _s(ln.get("material_id"))
     mat_id = chosen or suggested
     mat = catalog.material(mat_id) if mat_id != "none" else None
+    if ctx.group == "labour" and ctx.labour_section:
+        _trade(out, ln, path, item, chosen, suggested)
+    elif (ctx.labour_section and ctx.group not in ("machinery", None) and unit == "day"
+          and mat and catalog.is_labour(mat["id"])):
+        out.add(CONFIRM, "labour_outside_section", f"{path}.group",
+                f"{item or 'This line'} looks like workers paid by the day: put it in the labour "
+                "section with its trade, workers and days, or confirm it is not labour.")
     if mat and unit and unit != "ls" and unit in catalog.units():
         if unit not in mat["units"]:
             out.add(CONFIRM, "unit_for_material", f"{path}.unit",
@@ -342,6 +463,10 @@ def validate(form: dict, today: date | None = None, earlier=None) -> dict:
         out.add(FIX, "land_not_free", "work.land_free",
                 "MPLADS cannot pay for land: the work must be on land that costs nothing.")
 
+    timing = form.get("timing") if isinstance(form.get("timing"), dict) else {}
+    dur = _number(timing.get("duration_months"))
+    ctx.duration_days = dur * DAYS_A_MONTH if dur is not None and dur > 0 else None
+
     sites = form.get("sites")
     if not isinstance(sites, list) or not sites:
         out.add(FIX, "no_site", "sites", "Add the site (one per place the work is done).")
@@ -384,11 +509,15 @@ def validate(form: dict, today: date | None = None, earlier=None) -> dict:
                 ls_total += amt
             if res["group"] == "other":
                 other_total += amt
-            key = (" ".join(materials.tokens(_s(ln.get("item")))), _s(ln.get("unit")), res["group"])
+            key = (" ".join(materials.tokens(_s(ln.get("item")))), _s(ln.get("unit")), res["group"],
+                   # one trade on two jobs is two rows (T141)
+                   " ".join(materials.tokens(_s(ln.get("activity"))))
+                   if res["group"] == "labour" else "")
             if key[0] and key in seen:
                 out.add(CONFIRM, "duplicate_line", f"{p}.lines[{j}].item",
                         f"{ln.get('item')} appears twice. Remove one, or confirm both are needed.")
             seen.add(key)
+        _labour_links(out, lines, p, ctx)
         used = [(j, r["material_id"], lines[j].get("quantity"), lines[j].get("unit"))
                 for j, r in enumerate(done) if isinstance(lines[j], dict)]
         for q in norms.check(ctx.work_type, size, used):
@@ -425,7 +554,6 @@ def validate(form: dict, today: date | None = None, earlier=None) -> dict:
                                                        "royalty_amount", "other_fees_amount"))
     grand = lines_total + cont + esc + fees
 
-    timing = form.get("timing") if isinstance(form.get("timing"), dict) else {}
     _section(out, data["timing"], timing, "timing", ctx)
     est, start = _month(timing.get("estimate_month")), _month(timing.get("start_month"))
     now = (today.year, today.month)
@@ -438,7 +566,6 @@ def validate(form: dict, today: date | None = None, earlier=None) -> dict:
     if est and start and start < est:
         out.add(CONFIRM, "start_before_estimate", "timing.start_month",
                 "The work starts before the month its prices are from. Check, or confirm.")
-    dur = _number(timing.get("duration_months"))
     if esc > 0 and (dur is None or dur <= 12):
         out.add(FIX, "escalation_short_work", "charges.escalation_percent",
                 "A price rise reserve is only for works longer than 12 months.")
