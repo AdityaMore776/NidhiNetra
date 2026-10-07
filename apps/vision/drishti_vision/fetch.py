@@ -129,8 +129,15 @@ def _yt_dlp(v: Video, dest: Path) -> Path:
     if shutil.which("yt-dlp") is None:
         raise RuntimeError("yt-dlp is not installed")
     template = str(dest / f"{v.id}.%(ext)s")
-    subprocess.run(["yt-dlp", "-f", "mp4[height<=720]/best[height<=720]", "-o", template,
-                    "--no-playlist", "--sleep-requests", str(POLITE_S), v.url], check=True)
+    # video only (no audio, so no merging tool is needed), at most 720 lines
+    cmd = ["yt-dlp", "-f", "bv*[height<=720][ext=mp4]/bv*[height<=720]/b[height<=720]",
+           "-o", template, "--no-playlist", "--sleep-requests", str(POLITE_S), "--no-progress"]
+    if shutil.which("node"):
+        cmd += ["--js-runtimes", "node"]             # yt-dlp needs a JavaScript runtime for YouTube
+    try:
+        subprocess.run(cmd + [v.url], check=True)
+    except subprocess.CalledProcessError as e:      # a removed or blocked video: skip it, go on
+        raise RuntimeError(f"yt-dlp failed ({e.returncode})") from e
     out = next(dest.glob(f"{v.id}.*"))
     digest = sha256_of(out)
     if v.sha256 and v.sha256 != digest:

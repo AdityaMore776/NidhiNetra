@@ -136,6 +136,137 @@ def cmd_build(a) -> int:
     return 0
 
 
+def cmd_mgnrega(a) -> int:
+    from drishti_vision import geomgnrega as mg
+    names = a.places.split(",") if a.places else list(mg.PLACES)
+    boxes = []
+    for n in names:
+        lat, lon = mg.PLACES[n]
+        boxes += mg.boxes_around(n, lat, lon, half=a.half, grid=a.grid)
+    cats = a.categories.split(",") if a.categories else list(mg.CATEGORIES)
+    out = Path(a.out)
+    stats = mg.harvest(boxes, cats, out / "photos", out / "assets.jsonl", per_box=a.per_box,
+                       max_assets=a.max, log=lambda s: print(s, flush=True))
+    print(json.dumps(stats))
+    return 0
+
+
+def cmd_ytcollect(a) -> int:
+    """CC BY candidates from many queries -> manifest rows (licence read from each watch page)."""
+    from drishti_vision import youtube as yt
+    out = Path(a.out)
+    have = {v.id for v in manifest.load(out)} if out.exists() else set()
+    seen, new = set(have), 0
+    with open(out, "a", encoding="utf-8") as f:        # one row written as soon as it is found
+        for q in (a.queries.split("|") if a.queries else yt.QUERIES):
+            try:
+                cands = [c for c in yt.search(q, a.per_query) if yt.plausible(c)]
+            except Exception as e:  # noqa: BLE001 (a failed search must not stop the others)
+                print(f"{q!a}: search failed ({e})", flush=True)
+                continue
+            kept = 0
+            for c in cands:
+                vid = f"yt-{c['id']}"
+                if vid in seen or len(have) + new >= a.max:
+                    continue
+                seen.add(vid)
+                try:
+                    m = yt.meta(c["id"])
+                except Exception as e:  # noqa: BLE001
+                    print(f"{vid}: no metadata ({e})", flush=True)
+                    continue
+                if m["license"] != yt.CC_BY or yt.NOT_REAL.search(m["title"]):
+                    continue
+                f.write(json.dumps(yt.manifest_row(c, m), ensure_ascii=False) + "\n")
+                f.flush()
+                kept += 1
+                new += 1
+            print(f"{q!a}: {len(cands)} plausible, {kept} CC BY kept", flush=True)
+    print(f"{new} new rows -> {out}")
+    return 0
+
+
+def cmd_vlmbuild(a) -> int:
+    """GeoMGNREGA assets -> certainty scores -> cut-outs (training districts only) -> claim-ladder
+    items -> dataset card (vlmdata.py, change.py, cutouts.py)."""
+    from drishti_vision import change, cutouts, vlmdata
+    root, out = Path(a.root), Path(a.out)
+    out.mkdir(parents=True, exist_ok=True)
+    assets = [json.loads(line) for line in Path(a.assets).read_text(encoding="utf-8").splitlines()
+              if line.strip()]
+    cache_p = out / "change.jsonl"
+    cache = {}
+    if cache_p.exists():
+        for line in cache_p.read_text(encoding="utf-8").splitlines():
+            r = json.loads(line)
+            cache[r["id"]] = r["change"]
+    emb = None
+    with open(cache_p, "a", encoding="utf-8") as f:
+        for x in assets:
+            if x["id"] not in cache:
+                emb = emb or change.Embedder(a.device)
+                try:
+                    cache[x["id"]] = change.asset_change(x, root / a.photo_rel, emb)
+                except FileNotFoundError:
+                    continue
+                f.write(json.dumps({"id": x["id"], "change": cache[x["id"]]}) + "\n")
+            x["change"] = cache.get(x["id"])
+    scored = out / "assets.jsonl"
+    with open(scored, "w", encoding="utf-8") as f:
+        for x in assets:
+            if x.get("change"):
+                f.write(json.dumps(x, ensure_ascii=False) + "\n")
+    lib = out / "cutouts"
+    if a.synthetic and not any(lib.glob("*.png")):
+        photos = [root / a.photo_rel / p["file"] for x in assets
+                  if vlmdata.split_of(x["district_code"]) == "train"
+                  for p in x["photos"] if p.get("file") and p["stage"] == 2]
+        print(f"cut-outs from {len(photos)} training 'during' photos", flush=True)
+        cutouts.build_library(photos, lib, a.device, limit=a.cutouts)
+    cut = cutouts.load_library(lib) if a.synthetic else []
+    made_rel = str((out / "made").relative_to(root)).replace("\\", "/")
+    items = vlmdata.build_mgnrega(scored, root, a.photo_rel, made_rel, cut, seed=a.seed,
+                                  synthetic=a.synthetic)
+    vlmdata.write_items(items, out / "items.jsonl")
+    (out / "card.md").write_text(vlmdata.card(items), encoding="utf-8")
+    print(vlmdata.card(items))
+    return 0
+
+
+def cmd_vlmtrain(a) -> int:
+    from drishti_vision import vlm
+    cfg = vlm.TrainConfig(base=a.base, items=a.items, root=a.root, out=a.out, quant4=a.quant4,
+                          rank=a.rank, alpha=2 * a.rank, lr=a.lr, epochs=a.epochs,
+                          accum=a.accum, max_items=a.max_items, seed=a.seed,
+                          edited_share=a.edited_share, real_only=a.real_only,
+                          eval_every=a.save_every)
+    info = vlm.fit(cfg, log=lambda s: print(s, flush=True))
+    print(json.dumps({k: info[k] for k in ("items", "steps", "minutes", "peak_gpu_gb",
+                                           "trainable_m")}))
+    return 0
+
+
+def cmd_vlmeval(a) -> int:
+    from drishti_vision import vlm, vlmeval
+    from drishti_vision.vlmdata import read_items
+    items = [i for i in read_items(a.items) if i.split == a.split]
+    if a.real_only:
+        items = [i for i in items if i.real]
+    if a.limit:
+        items = items[: a.limit]
+    L = vlm.load(a.base, quant4=a.quant4, adapter=a.adapter or None)
+    out = Path(a.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    rows = vlmeval.predict(L, items, Path(a.root), out,
+                           log=lambda s: print(s, flush=True))
+    res = vlmeval.score(rows)
+    res["model"] = L.name
+    res["split"] = a.split
+    Path(str(out).replace(".jsonl", "_score.json")).write_text(json.dumps(res, indent=1))
+    print(json.dumps(res["headline_real_only"], indent=1))
+    return 0
+
+
 def cmd_synth(a) -> int:
     r = synthset.make(a.out, seeds=tuple(range(a.seeds)), n_frames=a.frames)
     print(json.dumps({k: round(v, 4) for k, v in synthset.teacher_scores(r["built"]).items()}))
@@ -197,6 +328,54 @@ def main(argv=None) -> int:
     s.add_argument("--width", type=int, default=448)
     s.add_argument("--pairs", type=int, default=60, help="pairs a shot")
     s.add_argument("--seed", type=int, default=0)
+    s = sub.add_parser("mgnrega", help="GeoMGNREGA before/during/after photos (geomgnrega.py)")
+    s.add_argument("--out", required=True, help="folder on D: (photos/ and assets.jsonl)")
+    s.add_argument("--places", default="", help="comma list of geomgnrega.PLACES names")
+    s.add_argument("--categories", default="", help="comma list of MGNREGA category ids")
+    s.add_argument("--max", type=int, default=50)
+    s.add_argument("--per-box", type=int, default=8)
+    s.add_argument("--half", type=float, default=0.04)
+    s.add_argument("--grid", type=int, default=2)
+    s = sub.add_parser("ytcollect", help="YouTube CC BY candidates as manifest rows (youtube.py)")
+    s.add_argument("--out", required=True, help="manifest.jsonl to append to")
+    s.add_argument("--queries", default="", help="'|'-separated; default youtube.QUERIES")
+    s.add_argument("--per-query", type=int, default=40)
+    s.add_argument("--max", type=int, default=250)
+    s = sub.add_parser("vlmbuild", help="claim-ladder items for the VLM (vlmdata.py)")
+    s.add_argument("--assets", required=True, help="GeoMGNREGA assets.jsonl")
+    s.add_argument("--root", required=True, help="the data folder every image path is under")
+    s.add_argument("--photo-rel", required=True, help="the photos folder, relative to --root")
+    s.add_argument("--out", required=True)
+    s.add_argument("--no-synthetic", dest="synthetic", action="store_false",
+                   help="real, unedited photos only (no pasted people, light, dark, blocked)")
+    s.add_argument("--cutouts", type=int, default=800)
+    s.add_argument("--device", default="cuda")
+    s.add_argument("--seed", type=int, default=0)
+    s = sub.add_parser("vlmtrain", help="LoRA fine-tuning of the claim judge (vlm.py)")
+    s.add_argument("--base", default="Qwen/Qwen3-VL-4B-Instruct")
+    s.add_argument("--items", required=True)
+    s.add_argument("--root", required=True)
+    s.add_argument("--out", required=True)
+    s.add_argument("--quant4", action="store_true")
+    s.add_argument("--rank", type=int, default=16)
+    s.add_argument("--lr", type=float, default=1e-4)
+    s.add_argument("--epochs", type=float, default=2.0)
+    s.add_argument("--accum", type=int, default=8)
+    s.add_argument("--max-items", type=int, default=0)
+    s.add_argument("--edited-share", type=float, default=0.2)
+    s.add_argument("--real-only", action="store_true", help="the ablation: no edited items")
+    s.add_argument("--save-every", type=int, default=500)
+    s.add_argument("--seed", type=int, default=0)
+    s = sub.add_parser("vlmeval", help="SiteClaim-Bench scoring (vlmeval.py)")
+    s.add_argument("--base", default="Qwen/Qwen3-VL-4B-Instruct")
+    s.add_argument("--adapter", default="")
+    s.add_argument("--quant4", action="store_true")
+    s.add_argument("--items", required=True)
+    s.add_argument("--root", required=True)
+    s.add_argument("--split", default="test")
+    s.add_argument("--real-only", action="store_true")
+    s.add_argument("--limit", type=int, default=0)
+    s.add_argument("--out", required=True, help="predictions .jsonl (resumable)")
     s = sub.add_parser("synth")
     s.add_argument("--out", required=True)
     s.add_argument("--seeds", type=int, default=4)
@@ -222,4 +401,7 @@ def main(argv=None) -> int:
     s.add_argument("--device", default="cpu")
     a = p.parse_args(argv)
     return {"check": cmd_check, "search": cmd_search, "fetch": cmd_fetch, "build": cmd_build,
-            "synth": cmd_synth, "train": cmd_train, "measure": cmd_measure}[a.cmd](a)
+            "mgnrega": cmd_mgnrega, "ytcollect": cmd_ytcollect, "vlmbuild": cmd_vlmbuild,
+            "vlmtrain": cmd_vlmtrain, "vlmeval": cmd_vlmeval, "synth": cmd_synth,
+            "train": cmd_train,
+            "measure": cmd_measure}[a.cmd](a)

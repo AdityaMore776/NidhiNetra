@@ -38,11 +38,16 @@ def main() -> None:
     store = capture.LocalStore(args.store) if args.store else capture.SupabaseStore()
     judge = None
     try:
-        from drishti.agents.site_progress.readers import GeminiReader
-        judge = GeminiReader(daily_cap=args.cap,
-                             ledger=ROOT / "data" / "build" / "gemini_ledger.json").judge
+        # the fine-tuned claim judge (T156) when DRISHTI_VLM_ADAPTER names one, else Gemini
+        from drishti.agents.site_progress.readers import GeminiReader, VLMReader
+        try:
+            judge = VLMReader().judge
+        except ValueError:
+            judge = GeminiReader(daily_cap=args.cap,
+                                 ledger=ROOT / "data" / "build" / "gemini_ledger.json").judge
     except ValueError:
-        print("no GEMINI_API_KEY: claims stay 'not judged'; every other reading is made")
+        print("no DRISHTI_VLM_ADAPTER or GEMINI_API_KEY: claims stay 'not judged'; every other "
+              "reading is made")
     url = config.database_url()
     with psycopg.connect(url, row_factory=dict_row, prepare_threshold=None) as con:
         done = job.process(con, store, judge, args.limit)
