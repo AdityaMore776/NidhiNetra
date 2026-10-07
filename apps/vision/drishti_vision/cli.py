@@ -233,7 +233,8 @@ def cmd_vlmbuild(a) -> int:
                                   synthetic=a.synthetic)
     for tl in a.timelapse:              # T146 builds made with --keep-raw (real frames)
         frames_rel = str((out / "frames" / Path(tl).name).relative_to(root)).replace("\\", "/")
-        got = vlmdata.timelapse_items(tl, root, frames_rel, random.Random(a.seed))
+        got = vlmdata.timelapse_items(tl, root, frames_rel, random.Random(a.seed),
+                                      per_shot=a.tl_per_shot)
         print(f"{tl}: {len(got)} timelapse items", flush=True)
         items += got
     vlmdata.write_items(items, out / "items.jsonl")
@@ -370,6 +371,7 @@ def main(argv=None) -> int:
     s.add_argument("--cutouts", type=int, default=800)
     s.add_argument("--timelapse", action="append", default=[],
                    help="a `build --keep-raw` output folder; real timelapse pairs are added")
+    s.add_argument("--tl-per-shot", type=int, default=2, help="timelapse pairs kept a shot")
     s.add_argument("--device", default="cuda")
     s.add_argument("--seed", type=int, default=0)
     s = sub.add_parser("vlmtrain", help="LoRA fine-tuning of the claim judge (vlm.py)")

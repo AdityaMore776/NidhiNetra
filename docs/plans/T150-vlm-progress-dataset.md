@@ -50,6 +50,9 @@ These are enforced in code and tested (`apps/vision/tests/test_vlm_data.py`).
 
 ## Status (8 Oct 2026)
 
+**RESUME HERE:** `docs/team/log/2026-10-08-0124-adityamore776-T153.md` ("START HERE": background jobs, the next
+commands, where the data is, traps).
+
 | Task | State |
 |---|---|
 | T151 source probes | **Done.** See the list below. |
