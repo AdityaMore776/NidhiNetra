@@ -1,0 +1,294 @@
+{
+ "args": {
+  "seeds": 6,
+  "frames": 60,
+  "pairs": 60,
+  "epochs": 10,
+  "size": "96x128",
+  "no_student": false
+ },
+ "teacher": {
+  "all": {
+   "patch_precision": 0.913,
+   "patch_recall": 0.9565,
+   "patch_iou": 0.8766,
+   "pairs_labelled": 0.9613,
+   "pair_accuracy": 0.9748,
+   "buried_patches_called_progress": 0.1691,
+   "pairs": 1860
+  },
+  "by_kind": {
+   "masonry": {
+    "patch_precision": 0.8901,
+    "patch_recall": 0.9775,
+    "patch_iou": 0.8722,
+    "pairs_labelled": 0.9571,
+    "pair_accuracy": 0.9726,
+    "buried_patches_called_progress": 0.171,
+    "pairs": 420
+   },
+   "concrete_frame": {
+    "patch_precision": 0.9274,
+    "patch_recall": 0.9645,
+    "patch_iou": 0.8968,
+    "pairs_labelled": 0.9583,
+    "pair_accuracy": 0.9768,
+    "buried_patches_called_progress": 0.1217,
+    "pairs": 360
+   },
+   "wood": {
+    "patch_precision": 0.9147,
+    "patch_recall": 0.9752,
+    "patch_iou": 0.8939,
+    "pairs_labelled": 0.9639,
+    "pair_accuracy": 0.9625,
+    "buried_patches_called_progress": 0.161,
+    "pairs": 360
+   },
+   "steel": {
+    "patch_precision": 0.9062,
+    "patch_recall": 0.9809,
+    "patch_iou": 0.8905,
+    "pairs_labelled": 0.9694,
+    "pair_accuracy": 0.9628,
+    "buried_patches_called_progress": 0.2392,
+    "pairs": 360
+   },
+   "road": {
+    "patch_precision": 0.9112,
+    "patch_recall": 0.8405,
+    "patch_iou": 0.7769,
+    "pairs_labelled": 0.9583,
+    "pair_accuracy": 0.9826,
+    "buried_patches_called_progress": 0.0,
+    "pairs": 360
+   }
+  },
+  "thresholds": {
+   "lo_range": [
+    0.127,
+    0.282
+   ]
+  },
+  "fixed lo=0.10": {
+   "patch_precision": 0.8188,
+   "patch_recall": 0.9899,
+   "patch_iou": 0.812,
+   "pairs_labelled": 0.907,
+   "pair_accuracy": 0.9301,
+   "buried_patches_called_progress": 0.3216,
+   "pairs": 1860
+  },
+  "fixed lo=0.15": {
+   "patch_precision": 0.8983,
+   "patch_recall": 0.9765,
+   "patch_iou": 0.8794,
+   "pairs_labelled": 0.9269,
+   "pair_accuracy": 0.9478,
+   "buried_patches_called_progress": 0.1976,
+   "pairs": 1860
+  },
+  "fixed lo=0.20": {
+   "patch_precision": 0.9397,
+   "patch_recall": 0.9524,
+   "patch_iou": 0.8975,
+   "pairs_labelled": 0.9296,
+   "pair_accuracy": 0.9433,
+   "buried_patches_called_progress": 0.0829,
+   "pairs": 1860
+  },
+  "fixed lo=0.25": {
+   "patch_precision": 0.962,
+   "patch_recall": 0.9105,
+   "patch_iou": 0.879,
+   "pairs_labelled": 0.9226,
+   "pair_accuracy": 0.9272,
+   "buried_patches_called_progress": 0.0199,
+   "pairs": 1860
+  },
+  "auto, no stage marks": {
+   "patch_precision": 0.913,
+   "patch_recall": 0.9565,
+   "patch_iou": 0.8766,
+   "pairs_labelled": 0.9231,
+   "pair_accuracy": 0.9394,
+   "buried_patches_called_progress": 0.1691,
+   "pairs": 1860
+  }
+ },
+ "masks": {
+  "overlay_iou_mean": 0.7855,
+  "overlay_iou_min": 0.6331,
+  "people_patches_masked": 0.9743,
+  "other_patches_masked": 0.1227,
+  "frames_aligned": 1.0,
+  "reupload_joined": true,
+  "leaks": [],
+  "shots": 31,
+  "sites": 30
+ },
+ "student": {
+  "in-type": {
+   "train_sites": 15,
+   "test_sites": 10,
+   "train_pairs": 1130,
+   "trainable_weights": 440571,
+   "test": {
+    "auroc": 0.9597,
+    "accuracy_answered": 0.9143,
+    "answered": 0.9071,
+    "ece": 0.0605,
+    "patch_precision": 0.4731,
+    "patch_recall": 0.9181,
+    "patch_iou": 0.454,
+    "pairs": 592,
+    "false_progress_short": 0.0056,
+    "false_progress_staged": 0.0704,
+    "both_ways": 0.0032,
+    "build_up_tau": 0.3121
+   },
+   "train_auroc": 0.9774,
+   "gap": 0.0177,
+   "minutes": 5.6
+  },
+  "in-type, no augmentation": {
+   "train_sites": 15,
+   "test_sites": 10,
+   "train_pairs": 1130,
+   "trainable_weights": 440571,
+   "test": {
+    "auroc": 0.9678,
+    "accuracy_answered": 0.907,
+    "answered": 0.9628,
+    "ece": 0.0682,
+    "patch_precision": 0.5758,
+    "patch_recall": 0.8684,
+    "patch_iou": 0.5296,
+    "pairs": 592,
+    "false_progress_short": 0.1011,
+    "false_progress_staged": 0.2183,
+    "both_ways": 0.0747,
+    "build_up_tau": 0.3424
+   },
+   "train_auroc": 0.9851,
+   "gap": 0.0173,
+   "minutes": 3.0
+  },
+  "LOTO masonry": {
+   "train_sites": 20,
+   "test_sites": 6,
+   "train_pairs": 1428,
+   "trainable_weights": 440571,
+   "test": {
+    "auroc": 0.9756,
+    "accuracy_answered": 0.8995,
+    "answered": 0.9356,
+    "ece": 0.0937,
+    "patch_precision": 0.5567,
+    "patch_recall": 0.9221,
+    "patch_iou": 0.5317,
+    "pairs": 404,
+    "false_progress_short": 0.0074,
+    "false_progress_staged": 0.0193,
+    "both_ways": 0.0051,
+    "build_up_tau": 0.1602
+   },
+   "train_auroc": 0.9688,
+   "gap": -0.0068,
+   "minutes": 6.8
+  },
+  "LOTO concrete_frame": {
+   "train_sites": 20,
+   "test_sites": 6,
+   "train_pairs": 1485,
+   "trainable_weights": 440571,
+   "test": {
+    "auroc": 0.9649,
+    "accuracy_answered": 0.8838,
+    "answered": 0.9185,
+    "ece": 0.1032,
+    "patch_precision": 0.5688,
+    "patch_recall": 0.8636,
+    "patch_iou": 0.5219,
+    "pairs": 356,
+    "false_progress_short": 0.0339,
+    "false_progress_staged": 0.0778,
+    "both_ways": 0.0057,
+    "build_up_tau": 0.1465
+   },
+   "train_auroc": 0.9735,
+   "gap": 0.0086,
+   "minutes": 7.1
+  },
+  "LOTO wood": {
+   "train_sites": 20,
+   "test_sites": 6,
+   "train_pairs": 1480,
+   "trainable_weights": 440571,
+   "test": {
+    "auroc": 0.9467,
+    "accuracy_answered": 0.8358,
+    "answered": 0.9472,
+    "ece": 0.1657,
+    "patch_precision": 0.5298,
+    "patch_recall": 0.8865,
+    "patch_iou": 0.4962,
+    "pairs": 360,
+    "false_progress_short": 0.0,
+    "false_progress_staged": 0.0,
+    "both_ways": 0.0,
+    "build_up_tau": 0.2273
+   },
+   "train_auroc": 0.9701,
+   "gap": 0.0234,
+   "minutes": 7.3
+  },
+  "LOTO steel": {
+   "train_sites": 20,
+   "test_sites": 6,
+   "train_pairs": 1487,
+   "trainable_weights": 440571,
+   "test": {
+    "auroc": 0.9394,
+    "accuracy_answered": 0.9108,
+    "answered": 0.9181,
+    "ece": 0.0587,
+    "patch_precision": 0.5396,
+    "patch_recall": 0.846,
+    "patch_iou": 0.4913,
+    "pairs": 354,
+    "false_progress_short": 0.0325,
+    "false_progress_staged": 0.0851,
+    "both_ways": 0.0361,
+    "build_up_tau": 0.3131
+   },
+   "train_auroc": 0.9745,
+   "gap": 0.0351,
+   "minutes": 7.1
+  },
+  "LOTO road": {
+   "train_sites": 20,
+   "test_sites": 6,
+   "train_pairs": 1480,
+   "trainable_weights": 440571,
+   "test": {
+    "auroc": 0.918,
+    "accuracy_answered": 0.7645,
+    "answered": 0.8908,
+    "ece": 0.2209,
+    "patch_precision": 0.3234,
+    "patch_recall": 0.4153,
+    "patch_iou": 0.2222,
+    "pairs": 348,
+    "false_progress_short": 0.0118,
+    "false_progress_staged": 0.0979,
+    "both_ways": 0.0146,
+    "build_up_tau": 0.0202
+   },
+   "train_auroc": 0.9797,
+   "gap": 0.0617,
+   "minutes": 7.1
+  }
+ },
+ "minutes": 47.4
+}

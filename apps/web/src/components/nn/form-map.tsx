@@ -164,8 +164,40 @@ export function FormMap({ form, flags, agents }: { form: Record<string, unknown>
 
   return (
     <div className="space-y-4">
+      {/* the map on a phone (T143): each section with the four agents as small marks */}
+      <div className="overflow-hidden rounded-xl border sm:hidden">
+        <div className="flex items-center gap-2 bg-muted/60 px-3 py-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+          <span className="flex-1">Form section</span>
+          {AGENT_ORDER.map((id) => (
+            <span key={id} className="grid w-7 place-items-center">
+              <EngineMark id={id} size={16} />
+            </span>
+          ))}
+        </div>
+        <ul>
+          {view.map((s) => (
+            <li key={s.key} className="border-t">
+              <button type="button" onClick={() => jump(s.key)} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] active:bg-muted/40">
+                <span className="min-w-0 flex-1">
+                  <span className="mr-1 font-semibold text-muted-foreground">{s.letter}.</span>
+                  <span className={cn(s.sectionFlags.length > 0 && "font-semibold")}>{s.title}</span>
+                  <span className="num ml-1.5 text-[11px] text-muted-foreground">
+                    {s.fields.length ? `${s.answered.length}/${s.fields.length}` : s.tables.length ? "table" : ""}
+                  </span>
+                </span>
+                {AGENT_ORDER.map((id) => (
+                  <span key={id} className="grid w-7 place-items-center">
+                    <AgentCell id={id} section={s} state={state.get(id)} compact />
+                  </span>
+                ))}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
       {/* the map: every section against the four agents */}
-      <div className="overflow-x-auto rounded-xl border">
+      <div className="hidden overflow-x-auto rounded-xl border sm:block">
         <table className="w-full min-w-[640px] text-[13px]">
           <thead>
             <tr className="bg-muted/60 text-[11px] uppercase tracking-wider text-muted-foreground">
@@ -190,31 +222,11 @@ export function FormMap({ form, flags, agents }: { form: Record<string, unknown>
                 <td className="num px-2 py-1.5 text-right text-muted-foreground">
                   {s.fields.length ? `${s.answered.length}/${s.fields.length}` : s.tables.length ? "table" : "—"}
                 </td>
-                {AGENT_ORDER.map((id) => {
-                  const asked = s.sectionFlags.filter((f) => f.agent === id);
-                  const reads = s.agents.includes(id) || asked.length > 0;
-                  const st = state.get(id);
-                  const color = agentMeta(id).color;
-                  return (
-                    <td key={id} className="px-2 py-1.5 text-center">
-                      {!reads ? (
-                        <Minus className="mx-auto size-3.5 text-muted-foreground/40" aria-label="not read" />
-                      ) : asked.length ? (
-                        <span className="inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold text-white" style={{ background: color }}>
-                          Asks{asked.length > 1 ? ` ×${asked.length}` : ""}
-                        </span>
-                      ) : st === "later" ? (
-                        <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
-                          <Clock className="size-3" /> later
-                        </span>
-                      ) : st === "clear" || st === "flagged" ? (
-                        <Check className="mx-auto size-4 text-[var(--low)]" aria-label="read, nothing to ask" />
-                      ) : (
-                        <span className="text-[11px] text-muted-foreground">not checked</span>
-                      )}
-                    </td>
-                  );
-                })}
+                {AGENT_ORDER.map((id) => (
+                  <td key={id} className="px-2 py-1.5 text-center">
+                    <AgentCell id={id} section={s} state={state.get(id)} />
+                  </td>
+                ))}
               </tr>
             ))}
           </tbody>
@@ -326,6 +338,42 @@ export function FormMap({ form, flags, agents }: { form: Record<string, unknown>
   );
 }
 
+type SectionView = Section & { sectionFlags: Flag[] };
+
+/** What one agent made of one section: asks, read and clear, reads it after sanction, or does not use it. */
+function AgentCell({ id, section, state, compact = false }: { id: string; section: SectionView; state?: string; compact?: boolean }) {
+  const asked = section.sectionFlags.filter((f) => f.agent === id);
+  const reads = section.agents.includes(id) || asked.length > 0;
+  const color = agentMeta(id).color;
+  if (!reads) return <Minus className="mx-auto size-3.5 text-muted-foreground/40" aria-label="not read" />;
+  if (asked.length)
+    return compact ? (
+      <span className="grid h-5 min-w-5 place-items-center rounded-full px-1 text-[10px] font-bold text-white" style={{ background: color }} aria-label="asks">
+        {asked.length > 1 ? asked.length : "!"}
+      </span>
+    ) : (
+      <span className="inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold text-white" style={{ background: color }}>
+        Asks{asked.length > 1 ? ` ×${asked.length}` : ""}
+      </span>
+    );
+  if (state === "later")
+    return compact ? (
+      <Clock className="mx-auto size-3.5 text-muted-foreground" aria-label="reads it after sanction" />
+    ) : (
+      <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
+        <Clock className="size-3" /> later
+      </span>
+    );
+  if (state === "clear" || state === "flagged") return <Check className="mx-auto size-4 text-[var(--low)]" aria-label="read, nothing to ask" />;
+  return compact ? (
+    <span className="text-[10px] text-muted-foreground" aria-label="not checked">
+      ?
+    </span>
+  ) : (
+    <span className="text-[11px] text-muted-foreground">not checked</span>
+  );
+}
+
 function FieldBox({ field, value, marks }: { field: Field; value: string; marks?: Mark[] }) {
   const m = marks?.[0];
   const color = m ? agentMeta(m.agent).color : null;
@@ -356,11 +404,69 @@ const NUMBER_COLS = ["qty", "rate", "pct", "workers", "days"];
 // the labour schedule's choices are stored as ids ("bar_bender", "highly_skilled"): shown as words
 const WORD_COLS = ["lab_trade", "lab_grade"];
 
+function cellText(table: Table, key: string, v: unknown): string {
+  const kind = key === "date" ? "date" : key === "inclab" ? "check" : NUMBER_COLS.includes(key) ? "number" : "text";
+  const out = show(v, kind);
+  return WORD_COLS.includes(`${table.id}_${key}`) ? out.replace(/_/g, " ") : out;
+}
+
 function RowsTable({ table, form, marks }: { table: Table; form: Record<string, unknown>; marks: Map<string, Mark[]> }) {
   const nums = rowNums(form, table.row);
   if (!nums.length) return null;
   return (
-    <div className="overflow-x-auto rounded-lg border">
+    <>
+      {/* T143: on a phone each row is a card of its answered columns, the asked-about ones outlined */}
+      <div className="overflow-hidden rounded-lg border sm:hidden">
+        <p className="bg-muted/60 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{table.title}</p>
+        <ol>
+          {nums.map((n) => {
+            const rowMarks = table.cols.flatMap((c) => marks.get(`${table.id}_${c.key}_${n}`) ?? []);
+            const rowColor = rowMarks[0] ? agentMeta(rowMarks[0].agent).color : null;
+            const [head, ...rest] = table.cols.filter((c) => c.key !== "code");
+            const code = cellText(table, "code", form[`${table.id}_code_${n}`]);
+            return (
+              <li
+                key={n}
+                className="border-t px-3 py-2"
+                style={rowColor ? { background: `color-mix(in srgb, ${rowColor} 6%, white)` } : undefined}
+              >
+                <div className="text-[13px] font-semibold">
+                  <span className="mr-1.5 font-normal text-muted-foreground">{n}.</span>
+                  {cellText(table, head.key, form[`${table.id}_${head.key}_${n}`]) || "—"}
+                  {code && <span className="ml-1.5 font-mono text-[11px] font-normal text-muted-foreground">{code}</span>}
+                </div>
+                <dl className="mt-1 grid grid-cols-2 gap-x-3 gap-y-1">
+                  {rest.map((c) => {
+                    const name = `${table.id}_${c.key}_${n}`;
+                    const text = cellText(table, c.key, form[name]);
+                    const m = marks.get(name)?.[0];
+                    if (!text && !m) return null;
+                    const color = m ? agentMeta(m.agent).color : null;
+                    return (
+                      <div
+                        key={c.key}
+                        className={cn("min-w-0 rounded-md", color && "col-span-2 px-2 py-1")}
+                        style={color ? { boxShadow: `inset 0 0 0 2px ${color}`, background: `color-mix(in srgb, ${color} 10%, white)` } : undefined}
+                      >
+                        <dt className="text-[10.5px] text-muted-foreground">{c.label}</dt>
+                        <dd className={cn("break-words text-[12.5px]", color && "font-semibold")} style={color ? { color } : undefined}>
+                          {text || "—"}
+                        </dd>
+                        {m && (
+                          <span className="mt-0.5 inline-block rounded-full px-1.5 py-px text-[10px] font-semibold text-white" style={{ background: color ?? undefined }}>
+                            {m.label}
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </dl>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+      <div className="hidden overflow-x-auto rounded-lg border sm:block">
       <p className="bg-muted/60 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{table.title}</p>
       <table className="w-full min-w-[720px] text-[12px]">
         <thead className="text-left text-[11px] text-muted-foreground">
@@ -388,8 +494,6 @@ function RowsTable({ table, form, marks }: { table: Table; form: Record<string, 
                   const name = `${table.id}_${c.key}_${n}`;
                   const m = marks.get(name)?.[0];
                   const color = m ? agentMeta(m.agent).color : null;
-                  const v = form[name];
-                  const kind = c.key === "date" ? "date" : c.key === "inclab" ? "check" : NUMBER_COLS.includes(c.key) ? "number" : "text";
                   return (
                     <td
                       key={c.key}
@@ -397,7 +501,7 @@ function RowsTable({ table, form, marks }: { table: Table; form: Record<string, 
                       style={color ? { boxShadow: `inset 0 0 0 2px ${color}`, background: `color-mix(in srgb, ${color} 12%, white)` } : undefined}
                     >
                       <span className={cn(color && "font-semibold")} style={color ? { color } : undefined}>
-                        {(WORD_COLS.includes(`${table.id}_${c.key}`) ? show(v, kind).replace(/_/g, " ") : show(v, kind)) || "—"}
+                        {cellText(table, c.key, form[name]) || "—"}
                       </span>
                       {m && (
                         <span
@@ -416,6 +520,7 @@ function RowsTable({ table, form, marks }: { table: Table; form: Record<string, 
           })}
         </tbody>
       </table>
-    </div>
+      </div>
+    </>
   );
 }

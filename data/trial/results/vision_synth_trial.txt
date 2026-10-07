@@ -1,0 +1,48 @@
+T146: the construction-progress pipeline on synthetic sites (truth known)
+
+Sites: 30 (31 shots, one a re-upload), 60 frames each, kinds masonry, concrete_frame, wood, steel, road.
+
+1. The hindsight teacher against the truth (random forward pairs):
+
+  patch precision 0.913, recall 0.957, IoU 0.877
+  pairs labelled 96.1%, of which right 97.5%
+  buried patches called progress 16.9% (no picture can show them; stage marks set those pairs)
+  thresholds from each shot's own noise: lo 0.127 to 0.282
+
+  by kind:
+    masonry         precision 0.890 recall 0.978 pairs right 97.3%
+    concrete_frame  precision 0.927 recall 0.965 pairs right 97.7%
+    wood            precision 0.915 recall 0.975 pairs right 96.2%
+    steel           precision 0.906 recall 0.981 pairs right 96.3%
+    road            precision 0.911 recall 0.841 pairs right 98.3%
+
+  the auto thresholds against fixed ones (no stage marks unless auto):
+    fixed lo=0.10          precision 0.819 recall 0.990 IoU 0.812 pairs labelled 90.7% right 93.0%
+    fixed lo=0.15          precision 0.898 recall 0.977 IoU 0.879 pairs labelled 92.7% right 94.8%
+    fixed lo=0.20          precision 0.940 recall 0.952 IoU 0.897 pairs labelled 93.0% right 94.3%
+    fixed lo=0.25          precision 0.962 recall 0.910 IoU 0.879 pairs labelled 92.3% right 92.7%
+    auto, no stage marks   precision 0.913 recall 0.957 IoU 0.877 pairs labelled 92.3% right 93.9%
+
+2. Masks and splits:
+
+  date stamp and logo found: IoU mean 0.785, lowest 0.633
+  patches with people or passing trucks masked: 97.4%; other patches masked 12.3%
+  frames aligned: 100.0%
+  the re-upload joined its original's site: True; leaks between splits: 0
+
+3. The student against the truth, on sites it never saw (frozen hand-made features + trained head, CPU):
+
+  fold                       AUROC  gap   patchIoU  light  staged  bothways  build-up tau
+  in-type                    0.960  +0.018  0.454     0.006  0.070   0.003     0.312
+  in-type, no augmentation   0.968  +0.017  0.530     0.101  0.218   0.075     0.342
+  LOTO masonry               0.976  -0.007  0.532     0.007  0.019   0.005     0.160
+  LOTO concrete_frame        0.965  +0.009  0.522     0.034  0.078   0.006     0.146
+  LOTO wood                  0.947  +0.023  0.496     0.000  0.000   0.000     0.227
+  LOTO steel                 0.939  +0.035  0.491     0.033  0.085   0.036     0.313
+  LOTO road                  0.918  +0.062  0.222     0.012  0.098   0.015     0.020
+
+  gap: train AUROC minus test AUROC (memorising shows as a large gap).
+  light: short-gap pairs with no work called progress. staged: no-work pairs with people, machines, scaffolds and stacks pasted in, called progress.
+  bothways: progress pairs also called progress when swapped.
+
+Synthetic pictures only: these numbers check the pipeline and its measures, not accuracy on real sites (T148).

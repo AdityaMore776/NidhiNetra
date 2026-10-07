@@ -102,6 +102,80 @@ dashboard queue before / after in FINDINGS (439 → 217)
 of §9.6 planted. Only readings and blurred frames are kept; no video enters the repo.
 **Done when:** [ ] each trick caught 9 in 10 · [ ] a finding on at most 1 in 30 honest visits · [ ] FINDINGS
 
+### T146 · A vision model for real construction progress: the dataset pipeline and the model  ·  L  ·  ml + data  ·  Depends on: T124
+**What:** (owner, 7 Oct 2026) "Create a data ingestion pipeline of construction site videos, and create a tuned set of
+data ... and then finally fine tuning an existing vision model architecture, such that this architecture gets very good
+at identifying actual construction progress." The owner's notes judged and the design in
+`docs/plans/T146-site-progress-vision.md`; the code in `apps/vision/`.
+**Done when:**
+- [x] Plan: each note judged (kept, changed or rejected, with the reason); the hindsight teacher (progress = change that
+  never goes back), ordering pretraining, synthetic pairs, splits by site and channel, leave-one-type-out, the frozen
+  backbone + small head, and every measure and audit.
+- [x] Pipeline: manifest with a licence allow-list, polite fetching with checksums, shots, alignment, date-stamp and
+  moving-thing masks, the teacher, pairs, splits, augmentation, the dataset writer and its card; `python -m drishti_vision`.
+- [x] Model and training (PyTorch): DINOv2 backbone (frozen, LoRA optional), joint-attention head, progress map, yes/no,
+  build-up score, stage; every §8 measure; a Kaggle runner for the three sizes and the leave-one-type-out folds.
+- [x] Measured on synthetic sites with exact truth (`data/trial/vision_synth_trial.py`); FINDINGS "T146".
+- [x] Tests: `cd apps/vision && pytest -q`; CI job `vision`.
+
+### T147 · Collect site videos for T146  ·  M  ·  data  ·  **human-task**  ·  **needs-owner**  ·  Depends on: T146
+**What:** about 300 still-camera shots from about 150 sites, 5+ work types, at least 30 Indian public works (teammates
+filming local works monthly with permission, CC-licensed timelapses, university and webcam archives). The owner decides
+whether YouTube downloads (CC BY) are allowed (plan §4.1). Stage marks for the calibration and test sites. Best run on
+a teammate's PC, not a cloud session: `docs/plans/T147-run-on-your-pc.md`.
+**Done when:** [ ] `manifest.jsonl` checked clean · [ ] `build` run, its `card.md` in the PR · [ ] stage marks on the
+test sites · [ ] 50 pairs a type checked by eye, the agreement recorded
+
+### T148 · Train and measure on Kaggle's free GPU  ·  M  ·  ml  ·  Depends on: T147
+**What:** `apps/vision/kaggle/train_on_kaggle.py`: the three sizes (probe, head, head + LoRA), the chosen one per
+leave-one-type-out fold; every plan §8 number with its train-vs-test gap.
+**Done when:** [ ] `results.json` in `data/trial/results/` · [ ] FINDINGS "T148" with the §8.1 table against its targets
+
+### T149 · Site Progress reads the model (behind a switch)  ·  M  ·  engine  ·  Depends on: T148
+**What:** check 5's change becomes "permanent work added, and where"; check 6 gets a local stage reading. Off until
+T126's real visits meet plan §8.3 (each trick caught 9 in 10, at most 1 in 30 honest visits flagged).
+**Done when:** [ ] readings stored as notes · [ ] T126 measured with the model on and off · [ ] the owner's go-ahead
+
+### T145 · What a quantity or a price should be, as a range  ·  S  ·  engine + web  ·  Depends on: T144
+**What:** (owner, 6 Oct 2026) the cost "size prediction" or "price prediction" "should give a range
+and not just 'should be quantity 1334'".
+**Done when:**
+- [x] The engine gives each need a low and a high (`norms.py`), each fair rate the lowest and highest
+  other agencies' rates (`rates.py`, `labour.py`), the whole estimate a fair range (`whole.py`), the
+  per-unit price its middle 8 in 10; findings and notes say them.
+- [x] The website shows ranges in the form's flags, the end-to-end page and the explain page.
+- [x] Examples raise the same findings; trials and the loop unchanged; `pytest -q`: 928 passed.
+
+### T144 · The agents, more concrete: quantities held to the size for more works  ·  M  ·  engine + data  ·  Depends on: T141
+**What:** (owner, 6 Oct 2026) "work even more on the agents. I need the agents to be fully concrete,
+working and good at it". Audit the four agents for what keeps them from a definite answer, and make
+concrete what the data here allows.
+**Done when:**
+- [x] Audit: the loop's LIMITs sorted into the owner's margins, the labour ruling and data still to
+  come (SoR T096, real forms T098, real site videos T126); FINDINGS "T144".
+- [x] Cost holds more quantities to the work's own size (`cost_form/norms.py`): a CC road's stone by
+  its mix, a water pipeline's main by its length (its house connections apart), solar panels and
+  batteries bought by Wp or Wh by what each light carries; stone named for a base course is the
+  base; a road over a stone base itemises its stone.
+- [x] `data/trial/quantity_trial.py`: honest 0 asked in every cell; ×1.5 and ×2 asked 100% (pipes
+  on one line: 34.5% and 79%).
+- [x] The loop: 118 probes, 0 FAIL; its harness no longer lets the form's missing-reason check
+  stop a padded filing before the price check.
+- [x] `ruff check drishti tests && pytest -q`: 921 passed; the examples still raise what they say.
+
+### T143 · The website on a phone, and faster to load  ·  M  ·  web
+**What:** (owner, 6 Oct 2026) "make the website usable on phones as well, and also make them
+faster to load if you can while keeping all the functionality".
+**Done when:**
+- [x] `scripts/dev/phone_audit.mjs` measures every page as a phone with mobile throttling; results
+  for main and the branch saved (`results/phone_audit_before.txt`, `_after.txt`).
+- [x] No page or form frame scrolls sideways or cuts text at 390 or 360 px; works lists, the form
+  map, estimate and labour rows and the form's own tables read as cards on a phone.
+- [x] The same features, loaded when used: sign-in code only with a sign-in cookie, charts / 3D /
+  map when near the screen, no Hindi font preload, smooth scrolling only with a mouse.
+- [x] Median page 843 → 582 KB, LCP 5.33 → 4.20 s; desktop layouts unchanged (checked in
+  Chromium); `npx tsc --noEmit && npm run lint && npm run build` clean.
+
 ### T142 · The public examples are graded forms, each with its form  ·  S  ·  web + data  ·  Depends on: T134, T141
 **What:** (owner, 6 Oct 2026) "add the Example Form to each mentioned project, remove the current
 normal recommendation rating system because we are currently grading forms, so each of the risk

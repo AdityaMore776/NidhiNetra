@@ -202,7 +202,10 @@ FACT_KEYS = frozenset({
     "unexplained", "overlap", "declared", "same_ground", "share", "amount", "items", "filmed",
     "form_size", "scope_size",
     # T141: the labour rows asked about (trade, day rate, its trade's rate, person-days)
-    "rows", "extra"})
+    "rows", "extra",
+    # T145: ranges, not one figure (the need's low end, other agencies' lowest and highest rate,
+    # the fair total at those rates, the middle 8 in 10 of similar works)
+    "low", "fair_low", "fair_high", "p10", "p90"})
 
 
 def _plain(v, depth: int = 0) -> bool:

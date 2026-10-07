@@ -51,3 +51,9 @@ data/trial/results/*.png
 data/trial/cache/
 # trial run logs
 data/trial/*.log
+
+# T146 vision: videos, frames and built datasets never enter git (the repo is public)
+apps/vision/.venv/
+apps/vision/data/
+apps/vision/videos/
+apps/vision/runs/

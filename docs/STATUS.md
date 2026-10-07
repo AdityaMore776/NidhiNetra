@@ -44,6 +44,41 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
+**7 Oct 2026: a vision model for real construction progress (T146).**
+`apps/vision/` is a full pipeline from site videos to a trained model:
+- the steps: manifest and licences, shots, alignment, date-stamp and people masks, a hindsight teacher (progress is
+  change that never goes back), pairs, splits by site and channel, augmentation;
+- the model: a frozen DINOv2 with a small two-frame head, and every measure and shortcut audit.
+
+On synthetic sites with exact truth:
+- the teacher's pair labels are right 97.5% of the time;
+- the student scores AUROC 0.96 on unseen sites and 0.92–0.98 on a construction type it never saw;
+- augmentation cuts "light called progress" from 10% to 0.6%.
+
+Real videos (T147, the owner decides the sources), Kaggle's free GPU (T148), and only then Site Progress (T149). Plan
+`docs/plans/T146-site-progress-vision.md`; FINDINGS "T146".
+
+**6 Oct 2026: ranges, not single figures (T145).**
+What a line should cost or hold is now a range everywhere the officer reads it: "the work's size
+takes 1,270–1,334 bags", "others here pay ₹735–₹780", a fair price from the lowest to the highest
+rates other agencies charge. No rule or margin changed; every example and trial gives the same
+answers. FINDINGS "T145".
+
+**6 Oct 2026: the agents, more concrete (T144).**
+Cost now holds more quantities to the work's own size: a CC road's stone by its concrete mix, a
+water pipeline's main by its length, and solar panels and batteries bought by the watt or
+watt-hour by what each light carries. Stone named for a base course is read as the base, and a
+road over a stone base must itemise its stone. Planted filings: honest 0 asked; ×1.5 and ×2
+padding asked 100% (pipes all on one line: 34.5% and 79%). The loop: 118 probes, 0 FAIL. What
+the agents still need is data: the SoR checked by eye (T096), real forms (T098), real site videos
+(T126). FINDINGS "T144".
+
+**6 Oct 2026: the website on a phone, and faster to load (T143).**
+Every page fits a phone: works as cards, the form's tables as labelled cards, a one-line top bar.
+The same features load when used (sign-in code, charts, 3D, the map), so the median page
+downloads 582 KB instead of 843 and its largest element paints in 4.2 s instead of 5.3 under
+phone throttling. FINDINGS "T143".
+
 **6 Oct 2026: the public examples are graded forms (T142).**
 The public view no longer rates eSAKSHI recommendations from their records. Its examples are the
 13 filings of the work intelligence form, each graded by the four checks. Every example's page

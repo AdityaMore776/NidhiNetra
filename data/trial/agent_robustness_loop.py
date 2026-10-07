@@ -148,11 +148,17 @@ def set_boq(p: dict, rows: list[dict]) -> dict:
 
 def retotal(p: dict) -> dict:
     """The estimate's total as the agency's document would carry it (lines, labour schedule,
-    lump sum, other)."""
+    lump sum, other). Above the MP's amount by more than the form allows without a reason, the
+    agency cites the MP's consent, as a padder would (T144: before, the form stopped such a
+    filing for the missing reason, and the probe never reached the price check)."""
     total = wf.estimate_total(p)
     total += float(p.get("lumpsum_components") or 0) + float(p.get("other_charges") or 0)
     p["technical_estimate"] = f"{total:.2f}"
     p["mplads_share"] = f"{total:.0f}"
+    mp = float(p.get("mp_recommended_amount") or 0)
+    if mp and total > mp * 1.10 and not (p.get("rate_deviation_notes")
+                                         or p.get("mp_additional_consent_ref")):
+        p["mp_additional_consent_ref"] = "MP's letter agreeing to the revised amount"
     return p
 
 
@@ -303,7 +309,7 @@ def _(world):
     new = {"Cement OPC 43 grade": "Binding material, grey, 43",
            "Coarse sand": "Fine filler material",
            "Stone aggregate 20 mm": "Kapchi 20",
-           "WBM base, graded stone": "Base course material"}
+           "WBM base, graded stone": "Lower layer material"}
     for r in rows:
         r["desc"] = new.get(r["desc"], r["desc"])
     res = run(world, work_of(set_boq(p, rows), record_of(world, "cost_padded"), world.place,
@@ -1184,7 +1190,108 @@ def _(world):
             if "sand" in r["desc"].lower() or "aggregate" in r["desc"].lower():
                 r["qty"] = f"{float(r['qty']) * 2:g}"
     return still(run(world, _honest(world, "clean", edit)), "cost_estimate",
-                 "MATERIAL_QUANTITY_ABOVE_SIZE", "twice the sand")
+                 "MATERIAL_QUANTITY_ABOVE_SIZE", "twice the sand and the stone")
+
+
+# ---- more of what is built held to its size (T144) ------------------------------------------------
+
+def _rows_named(rows: list[dict], word: str) -> list[dict]:
+    return [r for r in rows if word in r["desc"].lower()]
+
+
+@probe("cost_estimate", "evasion", "the road's stone alone doubled (the slab needs half)")
+def _(world):
+    def edit(rows):
+        for r in _rows_named(rows, "aggregate"):
+            r["qty"] = f"{float(r['qty']) * 2:g}"
+    res = run(world, _honest(world, "clean", edit))
+    q = [f.evidence for f in res["cost_estimate"].findings
+         if f.code == "MATERIAL_QUANTITY_ABOVE_SIZE"]
+    ok = any(e["material"] == "aggregate" for e in q)
+    return ("PASS" if ok else "FAIL",
+            f"twice the stone: {[e['material'] for e in q] or 'nothing'} "
+            f"({res['cost_estimate'].status.value})")
+
+
+@probe("cost_estimate", "noise", "the base's stone written 'Stone aggregate 63 mm for WBM'")
+def _(world):
+    def edit(rows):
+        for r in _rows_named(rows, "wbm"):
+            r["desc"] = "Stone aggregate 63 mm for WBM"
+    return quiet(run(world, _honest(world, "clean", edit)), "cost_estimate",
+                 "read as the base, not the slab's stone")
+
+
+@probe("cost_estimate", "noise", "all the stone on one line ('Stone aggregate'), no base line")
+def _(world):
+    def edit(rows):
+        stone = _rows_named(rows, "aggregate")[0]
+        base = _rows_named(rows, "wbm")[0]
+        stone["desc"] = "Stone aggregate"
+        stone["qty"] = f"{float(stone['qty']) + float(base['qty']):g}"
+        rows.remove(base)
+    res = run(world, _honest(world, "clean", edit))
+    c = res["cost_estimate"]
+    # T144: the form asks for the base on its own line first; nothing goes to the officer
+    ok = not flags(res, "cost_estimate") and c.status.value == "NOT_ASSESSABLE"
+    return ("PASS" if ok else "FAIL",
+            f"the slab's and the base's stone together: the form asks to itemise them "
+            f"({c.status.value}), {', '.join(flags(res, 'cost_estimate')) or 'no question'}")
+
+
+@probe("cost_estimate", "evasion", "the slab's stone doubled inside one unsized stone line")
+def _(world):
+    def edit(rows):
+        stone = _rows_named(rows, "aggregate")[0]
+        base = _rows_named(rows, "wbm")[0]
+        stone["desc"] = "Stone aggregate"
+        stone["qty"] = f"{float(stone['qty']) * 2 + float(base['qty']):g}"
+        rows.remove(base)
+    res = run(world, _honest(world, "clean", edit))
+    got = flags(res, "cost_estimate")
+    stopped = res["cost_estimate"].status.value == "NOT_ASSESSABLE"
+    # T144: the form will not take one unsized stone line over a stone base; itemised (20 mm and
+    # WBM), the slab's stone is held to its need (the probe above)
+    return ("PASS" if got or stopped else "LIMIT",
+            f"{got or 'nothing'} ({res['cost_estimate'].status.value}): the form asks for the "
+            "base's stone on a line of its own before the estimate is judged; itemised, twice "
+            "the slab's stone is asked")
+
+
+def _solar_by_capacity(world, panels_x: float) -> dict:
+    """The lights filing itemised: panels bought by the watt at `panels_x` the lights' Wp."""
+    def edit(rows):
+        rows.clear()
+        rows += [{"desc": "LED luminaire 12 W, IP65", "unit": "nos", "qty": "10", "rate": "3200",
+                  "source": "Approved quotation", "code": "", "measure_ref": "", "just": ""},
+                 {"desc": "GI pole 6 m with bracket", "unit": "nos", "qty": "10", "rate": "9500",
+                  "source": "Approved quotation", "code": "", "measure_ref": "", "just": ""},
+                 {"desc": "Solar PV module 40 Wp", "unit": "Wp", "qty": f"{400 * panels_x:g}",
+                  "rate": "38", "source": "Approved quotation", "code": "", "measure_ref": "",
+                  "just": ""},
+                 {"desc": "LiFePO4 battery 12.8 V 30 Ah", "unit": "nos", "qty": "10",
+                  "rate": "9000", "source": "Approved quotation", "code": "", "measure_ref": "",
+                  "just": ""}]
+    return _honest(world, "cost_lights", edit)
+
+
+@probe("cost_estimate", "noise", "solar panels bought by the watt, at the lights' own Wp")
+def _(world):
+    res = run(world, _solar_by_capacity(world, 1.0))
+    got = [f.evidence["material"] for f in res["cost_estimate"].findings
+           if f.code == "MATERIAL_QUANTITY_ABOVE_SIZE"]
+    return ("PASS" if not got else "FAIL", f"10 lights x 40 Wp: {got or 'nothing'} "
+            f"({res['cost_estimate'].status.value})")
+
+
+@probe("cost_estimate", "evasion", "solar panels bought by the watt, twice the lights' Wp")
+def _(world):
+    res = run(world, _solar_by_capacity(world, 2.0))
+    got = [f.evidence["material"] for f in res["cost_estimate"].findings
+           if f.code == "MATERIAL_QUANTITY_ABOVE_SIZE"]
+    return ("PASS" if "solar_panel" in got else "FAIL",
+            f"800 Wp for 10 lights of 40 Wp: {got or 'nothing'} "
+            f"({res['cost_estimate'].status.value})")
 
 
 @probe("cost_estimate", "evasion", "every crew's days x2.5, still within the work's time")

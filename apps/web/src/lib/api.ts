@@ -1,5 +1,5 @@
 import { NOT_FOUND, SHOWCASE_ON, showcaseAnswer } from "./showcase";
-import { devRole, supabase } from "./supabase";
+import { devRole, mayHaveSession, supabase, SUPABASE_ON } from "./supabase";
 
 export class ApiError extends Error {
   constructor(
@@ -10,23 +10,32 @@ export class ApiError extends Error {
   }
 }
 
-/** Call the engine at /api/v1 with the signed-in user's session token. */
-export async function api<T>(path: string, params?: Record<string, string | number | undefined>): Promise<T> {
-  const url = new URL(`/api/v1${path}`, window.location.origin);
-  for (const [k, v] of Object.entries(params ?? {})) {
-    if (v !== undefined && v !== "") url.searchParams.set(k, String(v));
-  }
+/**
+ * The signed-in user's session token, or the dev role locally. With no sign-in cookie there is no
+ * session, so the visitor is answered without loading the sign-in code (T143).
+ */
+async function signInHeaders(): Promise<Record<string, string>> {
   const headers: Record<string, string> = {};
-  const sb = supabase();
-  if (sb) {
-    const { data } = await sb.auth.getSession();
-    if (data.session) headers.Authorization = `Bearer ${data.session.access_token}`;
+  if (SUPABASE_ON) {
+    const sb = mayHaveSession() ? await supabase() : null;
+    const session = sb ? (await sb.auth.getSession()).data.session : null;
+    if (session) headers.Authorization = `Bearer ${session.access_token}`;
   } else {
     const role = devRole();
     if (role) headers["X-Dev-Role"] = role;
     const district = process.env.NEXT_PUBLIC_DEV_DISTRICT;
     if (district) headers["X-Dev-District"] = district;
   }
+  return headers;
+}
+
+/** Call the engine at /api/v1 with the signed-in user's session token. */
+export async function api<T>(path: string, params?: Record<string, string | number | undefined>): Promise<T> {
+  const url = new URL(`/api/v1${path}`, window.location.origin);
+  for (const [k, v] of Object.entries(params ?? {})) {
+    if (v !== undefined && v !== "") url.searchParams.set(k, String(v));
+  }
+  const headers = await signInHeaders();
   // T132: a visitor without a sign-in gets the prototype examples from a static file
   if (SHOWCASE_ON && !headers.Authorization && !headers["X-Dev-Role"]) {
     const answer = await showcaseAnswer(path, params);
@@ -250,17 +259,7 @@ export interface Me {
 
 /** POST JSON to the engine at /api/v1 with the same sign-in headers as api() (T064). */
 export async function apiPost<T>(path: string, body: unknown): Promise<T> {
-  const headers: Record<string, string> = { "Content-Type": "application/json" };
-  const sb = supabase();
-  if (sb) {
-    const { data } = await sb.auth.getSession();
-    if (data.session) headers.Authorization = `Bearer ${data.session.access_token}`;
-  } else {
-    const role = devRole();
-    if (role) headers["X-Dev-Role"] = role;
-    const district = process.env.NEXT_PUBLIC_DEV_DISTRICT;
-    if (district) headers["X-Dev-District"] = district;
-  }
+  const headers = { "Content-Type": "application/json", ...(await signInHeaders()) };
   const res = await fetch(new URL(`/api/v1${path}`, window.location.origin), {
     method: "POST",
     headers,

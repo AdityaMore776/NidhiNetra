@@ -67,6 +67,10 @@ def _rs(v: float) -> str:
     return f"Rs {v / 1e5:,.2f} lakh" if abs(v) >= 1e5 else f"Rs {v:,.0f}"
 
 
+def _rs_range(low: float, high: float) -> str:
+    return f"{_rs(low)} to {_rs(high)}"
+
+
 @dataclass
 class Row:
     """One labour row (or a labour line among the estimate lines), per day."""
@@ -84,6 +88,8 @@ class Row:
     level: str | None = None   # "trade" | "grade" (its grade's pool) | "other_grade"
     where: str | None = None
     pool: str | None = None    # the grade whose pool gave the fair rate
+    fair_low: float | None = None    # T145: the lowest and highest day rates other agencies
+    fair_high: float | None = None   # here pay (the trade, or its grade's pool)
 
     @property
     def times(self) -> float | None:
@@ -102,6 +108,8 @@ class Row:
                 "times": None if self.times is None else round(self.times, 3),
                 "margin": self.margin, "level": self.level, "where": self.where,
                 "pool": self.pool,
+                "fair_low": None if self.fair_low is None else round(self.fair_low, 2),
+                "fair_high": None if self.fair_high is None else round(self.fair_high, 2),
                 "extra": round(self.extra, 2)}
 
 
@@ -179,6 +187,7 @@ def _price(row: Row, ln: dict, sor, index, district, agency, work_id, when, stat
                                       when, state)
         if fair:
             row.fair, row.margin, row.level, row.where = fair.rate, RATE_MARGIN, "trade", fair.where
+            row.fair_low, row.fair_high = fair.low, fair.high
             return
     if index is None:
         return
@@ -190,6 +199,7 @@ def _price(row: Row, ln: dict, sor, index, district, agency, work_id, when, stat
         if found:
             below = max(0, own - catalog.GRADES.index(g))
             row.fair, row.where, row.pool = found[0], found[2], g
+            row.fair_low, row.fair_high = min(found[3], found[0]), max(found[4], found[0])
             row.margin = POOL_MARGIN * GRADE_STEP ** below
             row.level = "grade" if g == row.grade else "other_grade"
             return
@@ -231,8 +241,10 @@ def rate_sentence(lab: Labour) -> str:
     for r in lab.asked[:TOP]:
         whose = (f"the rate for {r.label.lower()} on {r.where}" if r.level == "trade" else
                  f"the rate for any {catalog.GRADE_WORDS[r.pool]} trade on {r.where}")
+        others = (f"; other agencies pay {_rs_range(r.fair_low, r.fair_high)} a day"
+                  if r.fair_low is not None and round(r.fair_low) != round(r.fair_high) else "")
         parts.append(f"{r.label.lower()} at {_rs(r.rate)} a day, {r.times:.1f} times "
-                     f"{_rs(r.fair)} ({whose}): {_rs(r.extra)} more over "
+                     f"{_rs(r.fair)} ({whose}{others}): {_rs(r.extra)} more over "
                      f"{r.person_days:,.0f} person-days")
     more = len(lab.asked) - TOP
     return ("Labour: " + "; ".join(parts) + (f"; and {more} more" if more > 0 else "")

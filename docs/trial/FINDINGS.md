@@ -2001,6 +2001,225 @@ a day where 8 other agencies pay Rs 750; its 34 workers are not questioned), ask
 district's wages); the end-to-end hall pads its materials 40%. Every other example raises what it
 did before, with the same score.
 
+## T143 (6 Oct 2026): the website on a phone, and faster to load
+
+The owner: "make the website usable on phones as well, and also make them faster to load if you
+can while keeping all the functionality". Measured with `scripts/dev/phone_audit.mjs`: each page
+in Chromium as a phone (390 px, touch) with Lighthouse's mobile throttling (150 ms round trip,
+1.6 Mbps down, CPU 4× slower), the median of three loads, on a production build. Before = main
+(`results/phone_audit_before.txt`), after = this branch (`results/phone_audit_after.txt`).
+
+| Page | Downloaded, KB | Largest paint (LCP), s | Boxes scrolling sideways (in the form) |
+|---|---|---|---|
+| Dashboard `/` | 828 → 482 | 5.87 → 4.00 | 0 → 0 |
+| Review queue | 767 → 506 | 4.81 → 3.73 | 1 → 0 |
+| All works | 723 → 478 | 5.35 → 4.46 | 1 → 0 |
+| An example's page | 878 → 719 | 5.09 → 4.17 | 3 → 0 |
+| Work intelligence form | 843 → 566 | 5.24 → 4.20 | 0 (4, and 4 texts cut off) → 0 (0) |
+| Step by step | 901 → 667 | 1.20 → 1.09 | 0 → 0 |
+| How it works | 784 → 506 | 5.21 → 4.46 | 0 → 0 |
+| Form to risk score | 864 → 586 | 5.37 → 4.35 | 2 → 0 |
+| Sign-in / landing | 791 → 720 | 5.61 → 1.35 | 0 → 0 |
+| **Median of the pages** | **843 → 582** | **5.33 → 4.20** | |
+
+**What made it lighter** (the same features, loaded when used):
+- the sign-in code (Supabase) loads only when a sign-in cookie exists, or on signing in; a
+  visitor never downloads it;
+- the Hindi font is no longer preloaded on every page; one-word Hindi labels use the device's
+  own Devanagari font;
+- the charts (recharts), the 3D scenes (three.js) and the staff map load when their panel nears
+  the screen, the 3D after the page is idle (the landing page shows the emblem
+  picture meanwhile);
+- smooth scrolling (Lenis, GSAP) loads only for a mouse; a phone scrolls natively;
+- "Staff sign in" no longer prefetches the sign-in page.
+
+**What made it fit:** works lists as cards on a phone (agents named, no hover needed); the form
+map's sections as a compact list; estimate and labour rows as cards; the form's own tables as
+labelled cards below 560 px; a one-line top bar and banner; section headers that wrap; the form
+frame at its full height below the wide layout (one page scrolls, "Show in form" still lands on
+the field); a dropdown for the 13 example filings.
+
+**Still slow, and why:** every app page is drawn in the browser (the server sends a loading
+screen), so its text waits for the scripts. Rendering pages on the server is the next step, a
+bigger change. The example and Step-by-step pages show 217 KB of fonts in this audit only because
+the test machine has no Devanagari font of its own; a phone uses its own.
+
+## T144 (6 Oct 2026): the agents, more concrete: quantities held to the size for more works
+
+The owner: "work even more on the agents. I need the agents to be fully concrete, working and
+good at it".
+
+**The audit.** The robustness loop's 10 LIMITs (112 probes) are of three kinds, none closable from
+here without changing the owner's rules or adding data:
+- margins the owner set: padding 14% under the 15% line; masons at 1.8× under 2×; split pieces at
+  95% under the 96% rule;
+- the owner's labour ruling: crews' days ×2.5 within the work's time (how many workers is never
+  judged);
+- data still to come: the state's Schedule of Rates (T096) for district-wide padding, composite
+  items and units; real filed forms (T098); real site videos (T126). The rate book on branch
+  `adityamore776/T096-up-sor` waits on a check by eye, per-circle rates and GST.
+
+What could be made concrete now: the Cost agent held quantities to the work's size for only four
+kinds of work (CC roads' cement and sand, solar lights by count, high masts, footpaths).
+
+**What changed** (`cost_form/norms.py`, `materials.py`, `validate.py`; whole estimate `whole.py`):
+- **A CC road's stone** by its concrete mix (IS 456 nominal mix: 0.84 m³ of dry stone per m³ of
+  M20), with 15% room for the analysis-of-rates figures (0.85–0.90) and wastage.
+- **A water pipeline's pipes:** with the house connections' pipes on lines of their own (32 mm or
+  less, or named for connections), the main alone is held to the pipeline's length + 10%; with
+  every pipe on one line, the length + 20 m a connection + 10%. A tank's connecting pipe + 10%.
+- **Solar lights bought by the watt or watt-hour:** panels at each light's Wp × the lights,
+  batteries at each light's Wh, + 5%. Count lines are still held to the count.
+- **Stone named for a base course is the base:** "40 mm aggregate for WBM", "Aggregate for GSB",
+  "ballast for base course" were read as concrete's aggregate (and priced as it).
+- **A road over a new stone base must itemise its stone:** with no base line and a stone line
+  sized for neither the slab (6–20 mm, "concrete", "PCC") nor the base (40 mm and up), the form
+  asks for the base on a line of its own before the estimate is judged. The loop found the reason:
+  one unsized stone line hid twice the slab's stone.
+- The whole estimate counts the same lines as the quantity check (one function, `norms.held`).
+
+**Planted filings** (`data/trial/quantity_trial.py`, `results/quantity_trial.txt`): 200 a cell,
+through the website form, the adapter, the form check and the Cost agent, the agency confirming
+whatever the form asks (the worst case for a false question):
+
+| Filing | Asked by the Cost agent |
+|---|---|
+| honest roads (base on a WBM line, as "aggregate for WBM", as "63 mm", none) | 0/800 |
+| honest roads, all stone on one unsized line | 0/200 (the form asks to itemise: not judged) |
+| road stone ×1.25 | 0/400 (the form asks the agency to confirm, 400/400) |
+| road stone ×1.5, ×2 | 400/400, 400/400 |
+| honest pipelines (itemised; one line) | 0/200, 0/200 |
+| pipes ×1.5, ×2, itemised | 200/200, 200/200 |
+| pipes ×1.5, ×2, all on one line | 69/200 (34.5%), 158/200 (79.0%) |
+| honest solar lights by Wp, by Wh | 0/200, 0/200 |
+| panels or batteries ×1.5, ×2 by capacity | 200/200 each |
+
+The honest ranges are assumptions (0.84–0.92 m³ of stone per m³; 6–15 m a house connection);
+real filings (T098) will show the real spread.
+
+**Effects elsewhere:** two example filings (a road "complete" 6 days after sanction; a road filmed
+2.4 km away) had their whole estimate "not judged" (43% of the money priced); their stone now has
+a known need, so they are judged fair (62–63% priced). Labour and whole-estimate trials:
+unchanged.
+
+**The robustness loop** (`results/agent_robustness.txt`): 118 probes, PASS 108, FAIL 0, LIMIT 10;
+400 random damages, 0 errors. New probes: the road's stone alone doubled (asked), the base's stone
+written "Stone aggregate 63 mm for WBM" (quiet), all stone on one line (the form asks to
+itemise), the slab's stone doubled inside one unsized line (the form refuses it until itemised),
+solar panels by the watt at the lights' own Wp (quiet) and at twice (asked).
+
+**A harness flaw, fixed:** when padding took the estimate more than 10% over the MP's amount, the
+form refused the planted filing for its missing reason, so "padding 14%: just under the 15% line"
+and "18% GST in other charges" never reached the price check. The planted agency now cites the
+MP's consent, as a padder would. Both results stand, now for the right reason: 14% padding is
+judged and quiet (under the 15% line); the GST line is judged and quiet.
+
+## T145 (6 Oct 2026): what a quantity or a price should be is a range
+
+The owner: the cost "size prediction" or "price prediction" "should give a range and not just
+'should be quantity 1334'". Every figure the Cost agent gives for what a line should be is now a
+range, from the same data as before (no rule or margin changed):
+- **a quantity** (`norms.py`): from the standard amount for the size (the mix, the area, the
+  count) to the same with the room honest estimates carry (wastage, the stone's analysis-of-rates
+  room, a pipe's house connections at 6 to 20 m each);
+- **a rate** (`rates.py`): from the lowest to the highest of the other agencies' own median rates
+  here (the fair rate stays their median); a state-wide rate carries its 10% leeway on both ends;
+  a schedule's rate is its own range;
+- **the whole estimate's fair price** (`whole.py`): every priced line at those lowest and those
+  highest rates;
+- **a labour day rate** (`labour.py`): what other agencies pay that trade, lowest to highest;
+- **a price per light or per metre**: the middle 8 in 10 of the similar works (10th to 90th
+  percentile).
+
+What the officer now reads, from the rebuilt examples (`apps/web/public/work-form/examples.json`,
+`end-to-end/examples.json`): "Cement: 2,614 bags in the estimate, but the work's size takes
+1,270–1,334 bags"; "a fair price for this work here: ₹15.13 L at the usual rates, ₹14.90 L–₹15.57 L
+from the lowest to the highest rates other agencies charge"; "Mason at ₹1,800 a day: 2.4× the ₹750
+others here pay this trade (₹735–₹780)". Jaunpur's 136 real solar lights cost ₹20,878–₹20,896 a
+light (8 in 10): one price nearly everywhere, so that range is narrow by the data, not by the code.
+
+**Unchanged:** every example raises the same findings; `quantity_trial.py`, `labour_trial.py`,
+`cost_whole_trial.py` and the robustness loop (118 probes, PASS 108, FAIL 0, LIMIT 10) print the
+same results. What is asked is still decided by the upper end and the owner's margins.
+
+## T146 (7 Oct 2026): a vision model for real construction progress, measured on synthetic sites
+
+The owner asked for a pipeline of construction site videos, a tuned dataset with augmentation, and an existing vision
+model fine-tuned to see actual progress. The plan, with each of the owner's notes judged, is
+`docs/plans/T146-site-progress-vision.md`; the code is `apps/vision/`. No real video could be fetched here: this
+machine's network refuses YouTube, Wikimedia, Hugging Face and Kaggle, and it has no GPU. So everything was measured on
+**synthetic timelapses whose truth is exact** (`data/trial/vision_synth_trial.py`,
+`results/vision_synth_trial.txt`):
+- 30 sites, 60 frames each, five kinds (masonry, concrete frame, wood, steel, road);
+- people, trucks, scaffolding, stacks, machines, a sweeping shadow, changing light, camera shake, a date stamp;
+- covered work (plaster over brick) and buried work (earth over footings).
+
+These numbers check the pipeline and its measures. **They say nothing about accuracy on real sites** (T147, T148).
+
+**The hindsight teacher against the truth** (progress = change that never goes back; 1,860 random pairs):
+
+| | precision | recall | IoU | pairs labelled | pairs right |
+|---|---|---|---|---|---|
+| auto thresholds + stage marks | 0.913 | 0.957 | 0.877 | 96.1% | 97.5% |
+| auto thresholds, no marks | 0.913 | 0.957 | 0.877 | 92.3% | 93.9% |
+| fixed lo = 0.10 / 0.15 / 0.20 / 0.25 | 0.819 / 0.898 / 0.940 / 0.962 | 0.990 / 0.977 / 0.952 / 0.910 | 0.812 / 0.879 / 0.897 / 0.879 | 90.7–93.0% | 92.7–94.8% |
+
+- By kind, pairs right: 96.2% (wood) to 98.3% (road); road's patch recall is the lowest (0.841).
+- The thresholds from each shot's own noise (lo 0.127 to 0.282) come within 0.02 IoU of the best fixed value.
+- **Buried work:** 16.9% of buried patches are called progress; the rest read "nothing changed", as no picture can
+  show a footing under earth. With stage marks those pairs are labelled right; this is why the marks exist.
+
+**Masks and splits:**
+- date stamps and logos found with IoU 0.785 on average (lowest 0.633);
+- 97.4% of patches with people or passing trucks masked, and 12.3% of other patches (around new work);
+- 100% of frames aligned;
+- a re-upload of a site (filmed at other moments) joined its original's site; no site or channel in two splits.
+
+**The student** (frozen hand-made features + the trained head, on CPU; DINOv2 needs the GPU), against the truth, on
+sites it never saw:
+
+| Fold | AUROC | train − test | patch IoU | light | staged | both ways | build-up τ |
+|---|---|---|---|---|---|---|---|
+| in-type | 0.960 | +0.018 | 0.454 | 0.006 | 0.070 | 0.003 | 0.312 |
+| in-type, no augmentation | 0.968 | +0.017 | 0.530 | 0.101 | 0.218 | 0.075 | 0.342 |
+| held out: masonry | 0.976 | −0.007 | 0.532 | 0.007 | 0.019 | 0.005 | 0.160 |
+| held out: concrete frame | 0.965 | +0.009 | 0.522 | 0.034 | 0.078 | 0.006 | 0.146 |
+| held out: wood | 0.947 | +0.023 | 0.496 | 0.000 | 0.000 | 0.000 | 0.227 |
+| held out: steel | 0.939 | +0.035 | 0.491 | 0.033 | 0.085 | 0.036 | 0.313 |
+| held out: road | 0.918 | +0.062 | 0.222 | 0.012 | 0.098 | 0.015 | 0.020 |
+
+Column meanings:
+- **light:** pairs only minutes apart with no work, called progress;
+- **staged:** no-work pairs with people, machines, scaffolds and stacks pasted in, called progress;
+- **both ways:** progress pairs also called progress when the frames are swapped.
+
+What this shows:
+- **Augmentation buys robustness, not score.** Without it AUROC is about the same (0.968 against 0.960). But light is
+  called progress 10.1% of the time (0.6% with it), a dressed-up site 21.8% (7.0%), and swapped pairs 7.5% (0.3%).
+  The model without augmentation had learned "different", not "added".
+- **The "wooden houses only" worry, measured.** Trained without a kind, the model still scores 0.92–0.98 on it. The
+  most different kind, roads, is the hardest: AUROC 0.918, the largest train-test gap (+0.062), a weak map (IoU 0.222).
+  Real data needs enough roads and drains of its own.
+- **Not memorising:** the train-test gaps are −0.007 to +0.062.
+- **Targets missed, said plainly:**
+  - the build-up score orders frames poorly (τ 0.02–0.34, target 0.8);
+  - the dressed-up audit is 7.0% in-type (target 2%).
+  Both are for the GPU run on DINOv2 features to answer (T148), with more ordering epochs.
+
+**Fixed along the way:**
+- **Alignment:** keypoints bunched on the changing brickwork, so 20–60% of frames of some sites aligned. Spreading
+  them over a grid and fitting a shift, rotation and zoom aligned 100%, with errors under 1 px.
+- **Overlay mask:** it took the shadow's flicker at the foot of the building for a date stamp (twice the true area). A
+  flickering box must now hug the frame's edge.
+- **Moving-things mask:** it flagged a whole sweeping shadow (26% of pixels). It now compares fine detail and colour,
+  which a shadow does not change, and drops huge blobs.
+- **Training:** the hand-made features of all patches pointed almost the same way (differences about 1% of their
+  length), so the head learned nothing (AUROC 0.48). The fixes:
+  - centre each image's features;
+  - give B's patches their difference from A's;
+  - lean the yes / no on the map;
+  - weigh rare progress patches up to 10 times.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

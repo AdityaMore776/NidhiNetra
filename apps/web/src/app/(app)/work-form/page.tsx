@@ -14,7 +14,7 @@ import { agentMeta, AGENT_ORDER, inr } from "@/lib/format";
 import FORM_HTML from "@/lib/forms/pre-sanction-work-intelligence-form";
 import { type AgentLine, type AgentState, agentLines, clearMarks, markForm, showField } from "@/lib/work-form-flags";
 import { cn } from "@/lib/utils";
-import { type FormWindow, fillForm as fill } from "@/lib/work-form-frame";
+import { type FormWindow, fillForm as fill, fitFrame } from "@/lib/work-form-frame";
 
 /**
  * The Pre-Sanction Work Intelligence Form (forms/pre-sanction-work-intelligence-form.html), open to
@@ -107,6 +107,8 @@ function WorkForm() {
   useEffect(() => {
     if (ready && linked && shown === null && fill(frame.current, linked.form)) mark(frame.current, linked.trace, linked.form);
   }, [ready, linked, shown]);
+  // below xl the form is under the verdict: it takes its full height, so the page scrolls as one (T143)
+  useEffect(() => (ready ? fitFrame(frame.current, "(min-width: 1280px)") : undefined), [ready]);
 
   async function checkOwn() {
     const w = frame.current?.contentWindow as FormWindow | null | undefined;
@@ -160,8 +162,39 @@ function WorkForm() {
           <p className="text-xs text-muted-foreground">Pick one: the form fills in, and the flagged fields are outlined.</p>
         </div>
         {!file && <p className="text-sm text-muted-foreground">Loading the examples…</p>}
+        {/* T143: on a phone the 13 filings are one list to pick from */}
         {file && (
-          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+          <label className="block md:hidden">
+            <span className="sr-only">Example filing</span>
+            <select
+              className="h-11 w-full rounded-xl border bg-white px-3 text-sm disabled:opacity-50"
+              value={view?.kind === "example" ? view.ex.id : ""}
+              disabled={!ready}
+              onChange={(e) => {
+                const ex = file.examples.find((x) => x.id === e.target.value);
+                if (ex) pick(ex);
+              }}
+            >
+              <option value="" disabled>
+                Pick an example filing…
+              </option>
+              {GROUPS.map((g) => {
+                const items = file.examples.filter((e) => e.agent === g.agent);
+                return items.length ? (
+                  <optgroup key={g.label} label={g.label}>
+                    {items.map((ex) => (
+                      <option key={ex.id} value={ex.id}>
+                        {ex.title}
+                      </option>
+                    ))}
+                  </optgroup>
+                ) : null;
+              })}
+            </select>
+          </label>
+        )}
+        {file && (
+          <div className="hidden gap-3 md:grid md:grid-cols-2 xl:grid-cols-5">
             {GROUPS.map((g) => {
               const items = file.examples.filter((e) => e.agent === g.agent);
               if (!items.length) return null;

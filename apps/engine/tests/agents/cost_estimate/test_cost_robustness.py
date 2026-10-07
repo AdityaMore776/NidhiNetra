@@ -134,7 +134,9 @@ def test_a_small_lump_sum_and_gst_in_other_charges_are_honest():
 def test_items_no_reader_knows_in_a_construction_estimate_are_asked_about():
     f = priced()
     for ln in f["sites"][0]["lines"][:4]:
-        ln["item"], ln["material_id"] = "Base course material", None
+        # an item no reader knows (T144: "Base course material", used before, now reads as the
+        # road's base)
+        ln["item"], ln["material_id"] = "Site works as per drawing", None
     f["confirmed"] = [i["key"] for i in validate(f, today=TODAY)["issues"]
                       if i["level"] == "confirm"]
     r = run(f)

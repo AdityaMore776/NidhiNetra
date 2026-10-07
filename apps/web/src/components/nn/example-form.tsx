@@ -11,7 +11,7 @@ import type { Trace } from "@/lib/explain";
 import { agentMeta } from "@/lib/format";
 import FORM_HTML from "@/lib/forms/pre-sanction-work-intelligence-form";
 import { type AgentLine, type AgentState, agentLines, markForm, showField } from "@/lib/work-form-flags";
-import { fillForm } from "@/lib/work-form-frame";
+import { fillForm, fitFrame } from "@/lib/work-form-frame";
 import { cn } from "@/lib/utils";
 
 /**
@@ -54,6 +54,8 @@ export function ExampleForm({ id, later }: { id: string; later?: string[] }) {
   const [ex, setEx] = useState<Filing | null | undefined>(undefined);
   const [mode, setMode] = useState<"sections" | "form">("sections");
   const frame = useRef<HTMLIFrameElement>(null);
+  const unfit = useRef<() => void>(() => {});
+  useEffect(() => () => unfit.current(), []);
 
   useEffect(() => {
     let live = true;
@@ -74,6 +76,9 @@ export function ExampleForm({ id, later }: { id: string; later?: string[] }) {
 
   function load() {
     if (ex && fillForm(frame.current, ex.form)) markForm(frame.current?.contentDocument, flags);
+    // below lg the form takes its full height, so a phone scrolls one page (T143)
+    unfit.current();
+    unfit.current = fitFrame(frame.current, "(min-width: 1024px)");
   }
   function show(field: string) {
     setMode("form");

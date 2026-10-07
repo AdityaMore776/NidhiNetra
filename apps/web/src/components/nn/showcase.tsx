@@ -29,15 +29,22 @@ export function ShowcaseBanner() {
   const f = useShowcase();
   return (
     <div className="border-b bg-brand-50/70">
-      <div className="mx-auto flex w-full max-w-[1440px] flex-wrap items-center gap-x-3 gap-y-1 px-4 py-2 text-[12.5px] sm:px-6 lg:px-8">
-        <FlaskConical className="size-3.5 shrink-0 text-brand-700" />
-        <span className="text-brand-950">
-          <b className="font-semibold">Prototype view:</b> {f ? f.examples.length : 13} example filings of the work intelligence form, each graded by the
-          four checks.
+      {/* T143: on a phone one or two short lines, not a third of the screen */}
+      <div className="mx-auto flex w-full max-w-[1440px] items-start gap-x-3 px-4 py-2 text-[12px] leading-snug sm:items-center sm:px-6 sm:text-[12.5px] lg:px-8">
+        <FlaskConical className="mt-0.5 size-3.5 shrink-0 text-brand-700 sm:mt-0" />
+        <span className="min-w-0 flex-1 text-brand-950">
+          <b className="font-semibold">Prototype view:</b> {f ? f.examples.length : 13} example filings
+          <span className="hidden sm:inline"> of the work intelligence form</span>, each graded by the four checks.
+          <span className="hidden text-muted-foreground sm:inline"> Made-up agencies, compared with a real district&apos;s eSAKSHI works.</span>
         </span>
-        <span className="text-muted-foreground">Made-up agencies, compared with a real district&apos;s eSAKSHI works.</span>
-        <Link href="/login" className="ml-auto inline-flex items-center gap-1 font-medium text-brand-700 hover:underline">
-          <LogIn className="size-3.5" /> Staff sign in
+        {/* prefetch off: few visitors sign in, and prefetching the sign-in page cost every phone ~50 KB (T143) */}
+        <Link
+          href="/login"
+          prefetch={false}
+          className="-my-1 ml-auto inline-flex shrink-0 items-center gap-1 py-1 font-medium text-brand-700 hover:underline"
+        >
+          <LogIn className="size-3.5" /> <span className="sm:hidden">Sign in</span>
+          <span className="hidden sm:inline">Staff sign in</span>
         </Link>
       </div>
     </div>
@@ -103,7 +110,7 @@ export function FormExamplesCard() {
       className="panel group flex flex-wrap items-center gap-3 p-5 transition-all hover:border-brand-200 hover:shadow-lift"
     >
       <ClipboardList className="size-5 shrink-0 text-brand-600" />
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-[1_1_14rem]">
         <h3 className="text-[15px] font-semibold text-brand-950">Fill the work intelligence form yourself</h3>
         <p className="mt-0.5 text-[13px] text-muted-foreground">
           Start from any example, change a field (a rate, a quantity, the map pin) and see what the four checks ask now.

@@ -56,6 +56,10 @@ def match(item: str | None, labour: bool | None = None) -> str | None:
     # "skilled mason" is a mason and "semi skilled helper" a helper (T141)
     specific = {k: v for k, v in best.items() if not (catalog.material(k) or {}).get("generic")}
     best = specific or best
+    # stone named for a road's base course is the base, not concrete's aggregate (T144):
+    # "40 mm aggregate for WBM", "ballast for base course"; priced and sized as the base
+    if "aggregate" in best and "granular_base" in best:
+        return "granular_base"
     top = max(best.values())
     winners = [k for k, v in best.items() if v == top]
     return winners[0] if len(winners) == 1 else None

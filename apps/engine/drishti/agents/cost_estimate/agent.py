@@ -143,8 +143,8 @@ def _size_against_scope(work_type, size: dict, confirmed: list, text: str) -> di
     return {"form": " and ".join(form_bits), "scope": " and ".join(scope_bits),
             "material": worst["material"],
             "label": catalog.material(worst["material"])["label"].lower(),
-            "quantity": worst["quantity"], "needed": worst["needed"], "unit": worst["unit"],
-            "ratio": worst["ratio"]}
+            "quantity": worst["quantity"], "low": worst["low"], "needed": worst["needed"],
+            "unit": worst["unit"], "ratio": worst["ratio"]}
 
 
 def _not_itemised(form: dict, lines_total: float) -> dict:
@@ -179,6 +179,10 @@ def _top(x: whole.Line) -> dict:
     return {"line": x.index, "material": x.material, "label": x.label, "unit": x.unit,
             "quantity": round(x.quantity, 3), "rate": round(x.rate, 2),
             "fair_rate": None if x.fair_rate is None else round(x.fair_rate, 2),
+            "fair_low": None if x.fair_low is None else round(x.fair_low, 2),
+            "fair_high": None if x.fair_high is None else round(x.fair_high, 2),
+            "needed": None if x.needed is None else round(x.needed, 3),
+            "needed_low": None if x.needed_low is None else round(x.needed_low, 3),
             "fair_quantity": round(x.fair_quantity, 3), "extra": round(x.extra, 2)}
 
 
@@ -194,14 +198,15 @@ def _result(status: Status, headline: str, t0: float, verdict: str | None = None
                        duration_ms=int((time.perf_counter() - t0) * 1000))
 
 
-def _confirmed(lines: list) -> list[tuple[int, str | None, object, object]]:
-    """Only materials the agency chose themselves ("Recognised as" confirmed)."""
+def _confirmed(lines: list) -> list[tuple[int, str | None, object, object, object]]:
+    """Only materials the agency chose themselves ("Recognised as" confirmed), with the line's
+    words (an aggregate line written for the slab, norms.for_slab)."""
     out = []
     for j, ln in enumerate(lines):
         if isinstance(ln, dict):
             mid = ln.get("material_id")
             mid = mid if isinstance(mid, str) and mid not in ("", "none") else None
-            out.append((j, mid, ln.get("quantity"), ln.get("unit")))
+            out.append((j, mid, ln.get("quantity"), ln.get("unit"), ln.get("item")))
     return out
 
 
@@ -269,14 +274,15 @@ def assess(work: dict, ctx) -> AgentResult:
                 findings.append(Finding(
                     "MATERIAL_QUANTITY_ABOVE_SIZE",
                     f"{label.capitalize()}: {name}, "
-                    f"{catalog.quantity_text(q['quantity'], q['unit'])} in the estimate, but the "
-                    f"size needs {q['needed']:,.0f} ({q['why']}); "
+                    f"{catalog.quantity_text(q['quantity'], q['unit'])} in the estimate, but "
+                    f"this size takes {catalog.range_text(q['low'], q['needed'], q['unit'])} "
+                    f"({q['why']}); "
                     + ("the agency confirmed the quantity when filling the form"
                        if said else "the form asked the agency to confirm the quantity, and it "
                        "has not") + ". Please check the estimate.",
                     hard=False, risk=QUANTITY_RISK,
-                    evidence={"site": i, **{k: q[k] for k in ("material", "quantity", "needed",
-                                                              "unit", "why")},
+                    evidence={"site": i, **{k: q[k] for k in ("material", "quantity", "low",
+                                                              "needed", "unit", "why")},
                               "ratio": round(q["ratio"], 3), "lines": q["lines"]}))
 
         # 1b. a size the form's own scope contradicts, that the quantities rest on (T135: a
@@ -292,12 +298,14 @@ def assess(work: dict, ctx) -> AgentResult:
                     f"The form gives the size as {sized['form']}, but its own scope of work says "
                     f"{sized['scope']}. At the scope's size the estimate's "
                     f"{sized['label']} ({catalog.quantity_text(sized['quantity'], sized['unit'])}"
-                    f") is {sized['ratio']:.1f} times what is needed ({sized['needed']:,.0f}): "
+                    f") is {sized['ratio']:.1f} times what that size takes "
+                    f"({catalog.range_text(sized['low'], sized['needed'], sized['unit'])}): "
                     "check which size is right before sanction.",
                     hard=False, risk=SIZE_RISK,
                     evidence={"site": i, "form_size": sized["form"],
                               "scope_size": sized["scope"], "material": sized["material"],
-                              "quantity": sized["quantity"], "needed": sized["needed"],
+                              "quantity": sized["quantity"], "low": sized["low"],
+                              "needed": sized["needed"],
                               "unit": sized["unit"], "ratio": round(sized["ratio"], 3)}))
 
         # 2. price per unit of size against the standard item here
@@ -328,8 +336,10 @@ def assess(work: dict, ctx) -> AgentResult:
         ev.update(price_per_unit=round(price, 2), unit=unit, units=units, where=where,
                   reference={k: st[k] for k in ("n", "p10", "median", "p90", "p98")},
                   question_above=round(line, 2))
-        standard = (f"98 in 100 of the {st['n']} similar works in {where} cost at most "
-                    f"{_rs(st['p98'])} per {unit} (median {_rs(st['median'])})")
+        # T145: the range most similar works fall in, not one figure
+        standard = (f"8 in 10 of the {st['n']} similar works in {where} cost "
+                    f"{_rs(st['p10'])} to {_rs(st['p90'])} per {unit} (median "
+                    f"{_rs(st['median'])}); 98 in 100 cost at most {_rs(st['p98'])}")
         if price > line and above_mp:
             spec = ", ".join(SPEC_WORDS[k].format(v) for k, v in size.items()
                              if k in SPEC_WORDS and isinstance(v, (int, float))
@@ -344,6 +354,7 @@ def assess(work: dict, ctx) -> AgentResult:
                 hard=False, risk=PRICE_RISK,
                 evidence={"site": i, "price_per_unit": round(price, 2), "unit": unit,
                           "where": where, "p98": st["p98"], "median": st["median"],
+                          "p10": st["p10"], "p90": st["p90"],
                           "n": st["n"], "mp_amount": mp, "mp_gap": c["mp_gap"]}))
         elif price > line:
             notes.append(f"{label.capitalize()}: {_rs(price)} per {unit} is above the usual "
@@ -411,6 +422,8 @@ def assess(work: dict, ctx) -> AgentResult:
                                                               in w.unexplained.items()},
                                               "gap_share": round(w.gap_share, 4),
                                               "fair_total": round(w.fair_grand, 2),
+                                              "fair_low": round(w.fair_low, 2),
+                                              "fair_high": round(w.fair_high, 2),
                                               "coverage": round(w.coverage, 4),
                                               "grand_total": round(w.grand, 2),
                                               "above_fair_rate": w.above_fair,
@@ -419,9 +432,13 @@ def assess(work: dict, ctx) -> AgentResult:
                                               "message_hi": HI_WHOLE.format(
                                                   share=f"{w.gap_share:.0%}")}))
         else:
+            span = whole.rs_range(w.fair_low, w.fair_high)
             notes.append(f"The whole estimate is {_rs(w.grand)} against a fair "
-                         f"{_rs(w.fair_grand)} ({w.gap_share:+.1%}), pricing {w.coverage:.0%} "
-                         "of the money: within the fair band.")
+                         f"{_rs(w.fair_grand)}"
+                         + (f" ({span} at the lowest and highest rates other agencies here "
+                            "charge)" if span != _rs(w.fair_grand) else "")
+                         + f", {w.gap_share:+.1%}, pricing {w.coverage:.0%} of the money: within "
+                         "the fair band.")
     # 4. labour, trade by trade: only blatant rates and days beyond the work (T141)
     lab = labour.judge(form, checked["issues"], done, sor, data.get("rates"),
                        work.get("district_lgd"), rates.agency_of(work), str(work.get("work_id")),
