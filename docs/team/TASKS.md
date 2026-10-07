@@ -121,7 +121,8 @@ at identifying actual construction progress." The owner's notes judged and the d
 ### T147 · Collect site videos for T146  ·  M  ·  data  ·  **human-task**  ·  **needs-owner**  ·  Depends on: T146
 **What:** about 300 still-camera shots from about 150 sites, 5+ work types, at least 30 Indian public works (teammates
 filming local works monthly with permission, CC-licensed timelapses, university and webcam archives). The owner decides
-whether YouTube downloads (CC BY) are allowed (plan §4.1). Stage marks for the calibration and test sites.
+whether YouTube downloads (CC BY) are allowed (plan §4.1). Stage marks for the calibration and test sites. Best run on
+a teammate's PC, not a cloud session: `docs/plans/T147-run-on-your-pc.md`.
 **Done when:** [ ] `manifest.jsonl` checked clean · [ ] `build` run, its `card.md` in the PR · [ ] stage marks on the
 test sites · [ ] 50 pairs a type checked by eye, the agreement recorded
 
