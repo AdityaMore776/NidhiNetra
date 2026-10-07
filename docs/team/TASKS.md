@@ -234,6 +234,16 @@ raising exactly its questions through the real engines (`data/trial/work_form_ex
 (`data/trial/work_form_e2e.py`) · [x] the live demo check raises exactly the worked flags on 12 of 12, and a fixed
 field clears its flag · [x] FINDINGS "T134" · [ ] seen on the live site after merge
 
+### T150 · A small vision-language model for Site Progress claims: research, data plan, building blocks  ·  S  ·  docs + ml
+**What:** (owner, 7 Oct 2026) read the site-progress fine-tuning work (T146) and the research (ProgressLM, LLaVA,
+Qwen and similar), then plan the data ingestion, list every augmentation and labelling technique as mix-and-match
+building blocks, and give an optimised recipe for a small, rich dataset to fine-tune an open model for check 6
+("does it show the claim?"). Plan: [`docs/plans/T150-vlm-progress-dataset.md`](../plans/T150-vlm-progress-dataset.md).
+Owner's decisions: Track A "not fooled + near-free" first, Track B "same accuracy at 1/100 the cost" next; free compute
+only; sources: government stage photos, YouTube CC BY, open datasets, Wikimedia, Kaggle, GitHub (NC/ND still refused).
+**Done when:** [x] plan written (research, sources, building-block menu, recipe, benchmark with success and stop rules)
+· [x] private picker page for the building blocks · [ ] owner's go-ahead on the follow-ups T151–T156 (plan §12)
+
 ---
 
 ## M0 — Foundations
