@@ -52,6 +52,22 @@ jobs:
       - run: ruff check drishti tests
       - run: pytest -q
 
+  # T146: the construction-progress pipeline (numpy + OpenCV) and its model (PyTorch, CPU wheel)
+  vision:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/vision
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: pip install -e ".[dev]"
+      - run: ruff check drishti_vision tests ../../data/trial/vision_synth_trial.py
+      - run: pytest -q
+
   web:
     runs-on: ubuntu-latest
     defaults:

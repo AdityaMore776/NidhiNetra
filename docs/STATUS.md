@@ -44,6 +44,20 @@ The sections below are the working notes the team resumes from.
 
 ## >>> RESUME HERE <<<
 
+**7 Oct 2026: a vision model for real construction progress (T146).**
+`apps/vision/` is a full pipeline from site videos to a trained model:
+- the steps: manifest and licences, shots, alignment, date-stamp and people masks, a hindsight teacher (progress is
+  change that never goes back), pairs, splits by site and channel, augmentation;
+- the model: a frozen DINOv2 with a small two-frame head, and every measure and shortcut audit.
+
+On synthetic sites with exact truth:
+- the teacher's pair labels are right 97.5% of the time;
+- the student scores AUROC 0.96 on unseen sites and 0.92–0.98 on a construction type it never saw;
+- augmentation cuts "light called progress" from 10% to 0.6%.
+
+Real videos (T147, the owner decides the sources), Kaggle's free GPU (T148), and only then Site Progress (T149). Plan
+`docs/plans/T146-site-progress-vision.md`; FINDINGS "T146".
+
 **6 Oct 2026: ranges, not single figures (T145).**
 What a line should cost or hold is now a range everywhere the officer reads it: "the work's size
 takes 1,270–1,334 bags", "others here pay ₹735–₹780", a fair price from the lowest to the highest

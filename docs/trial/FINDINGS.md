@@ -2142,6 +2142,84 @@ light (8 in 10): one price nearly everywhere, so that range is narrow by the dat
 `cost_whole_trial.py` and the robustness loop (118 probes, PASS 108, FAIL 0, LIMIT 10) print the
 same results. What is asked is still decided by the upper end and the owner's margins.
 
+## T146 (7 Oct 2026): a vision model for real construction progress, measured on synthetic sites
+
+The owner asked for a pipeline of construction site videos, a tuned dataset with augmentation, and an existing vision
+model fine-tuned to see actual progress. The plan, with each of the owner's notes judged, is
+`docs/plans/T146-site-progress-vision.md`; the code is `apps/vision/`. No real video could be fetched here: this
+machine's network refuses YouTube, Wikimedia, Hugging Face and Kaggle, and it has no GPU. So everything was measured on
+**synthetic timelapses whose truth is exact** (`data/trial/vision_synth_trial.py`,
+`results/vision_synth_trial.txt`):
+- 30 sites, 60 frames each, five kinds (masonry, concrete frame, wood, steel, road);
+- people, trucks, scaffolding, stacks, machines, a sweeping shadow, changing light, camera shake, a date stamp;
+- covered work (plaster over brick) and buried work (earth over footings).
+
+These numbers check the pipeline and its measures. **They say nothing about accuracy on real sites** (T147, T148).
+
+**The hindsight teacher against the truth** (progress = change that never goes back; 1,860 random pairs):
+
+| | precision | recall | IoU | pairs labelled | pairs right |
+|---|---|---|---|---|---|
+| auto thresholds + stage marks | 0.913 | 0.957 | 0.877 | 96.1% | 97.5% |
+| auto thresholds, no marks | 0.913 | 0.957 | 0.877 | 92.3% | 93.9% |
+| fixed lo = 0.10 / 0.15 / 0.20 / 0.25 | 0.819 / 0.898 / 0.940 / 0.962 | 0.990 / 0.977 / 0.952 / 0.910 | 0.812 / 0.879 / 0.897 / 0.879 | 90.7–93.0% | 92.7–94.8% |
+
+- By kind, pairs right: 96.2% (wood) to 98.3% (road); road's patch recall is the lowest (0.841).
+- The thresholds from each shot's own noise (lo 0.127 to 0.282) come within 0.02 IoU of the best fixed value.
+- **Buried work:** 16.9% of buried patches are called progress; the rest read "nothing changed", as no picture can
+  show a footing under earth. With stage marks those pairs are labelled right; this is why the marks exist.
+
+**Masks and splits:**
+- date stamps and logos found with IoU 0.785 on average (lowest 0.633);
+- 97.4% of patches with people or passing trucks masked, and 12.3% of other patches (around new work);
+- 100% of frames aligned;
+- a re-upload of a site (filmed at other moments) joined its original's site; no site or channel in two splits.
+
+**The student** (frozen hand-made features + the trained head, on CPU; DINOv2 needs the GPU), against the truth, on
+sites it never saw:
+
+| Fold | AUROC | train − test | patch IoU | light | staged | both ways | build-up τ |
+|---|---|---|---|---|---|---|---|
+| in-type | 0.960 | +0.018 | 0.454 | 0.006 | 0.070 | 0.003 | 0.312 |
+| in-type, no augmentation | 0.968 | +0.017 | 0.530 | 0.101 | 0.218 | 0.075 | 0.342 |
+| held out: masonry | 0.976 | −0.007 | 0.532 | 0.007 | 0.019 | 0.005 | 0.160 |
+| held out: concrete frame | 0.965 | +0.009 | 0.522 | 0.034 | 0.078 | 0.006 | 0.146 |
+| held out: wood | 0.947 | +0.023 | 0.496 | 0.000 | 0.000 | 0.000 | 0.227 |
+| held out: steel | 0.939 | +0.035 | 0.491 | 0.033 | 0.085 | 0.036 | 0.313 |
+| held out: road | 0.918 | +0.062 | 0.222 | 0.012 | 0.098 | 0.015 | 0.020 |
+
+Column meanings:
+- **light:** pairs only minutes apart with no work, called progress;
+- **staged:** no-work pairs with people, machines, scaffolds and stacks pasted in, called progress;
+- **both ways:** progress pairs also called progress when the frames are swapped.
+
+What this shows:
+- **Augmentation buys robustness, not score.** Without it AUROC is about the same (0.968 against 0.960). But light is
+  called progress 10.1% of the time (0.6% with it), a dressed-up site 21.8% (7.0%), and swapped pairs 7.5% (0.3%).
+  The model without augmentation had learned "different", not "added".
+- **The "wooden houses only" worry, measured.** Trained without a kind, the model still scores 0.92–0.98 on it. The
+  most different kind, roads, is the hardest: AUROC 0.918, the largest train-test gap (+0.062), a weak map (IoU 0.222).
+  Real data needs enough roads and drains of its own.
+- **Not memorising:** the train-test gaps are −0.007 to +0.062.
+- **Targets missed, said plainly:**
+  - the build-up score orders frames poorly (τ 0.02–0.34, target 0.8);
+  - the dressed-up audit is 7.0% in-type (target 2%).
+  Both are for the GPU run on DINOv2 features to answer (T148), with more ordering epochs.
+
+**Fixed along the way:**
+- **Alignment:** keypoints bunched on the changing brickwork, so 20–60% of frames of some sites aligned. Spreading
+  them over a grid and fitting a shift, rotation and zoom aligned 100%, with errors under 1 px.
+- **Overlay mask:** it took the shadow's flicker at the foot of the building for a date stamp (twice the true area). A
+  flickering box must now hug the frame's edge.
+- **Moving-things mask:** it flagged a whole sweeping shadow (26% of pixels). It now compares fine detail and colour,
+  which a shadow does not change, and drops huge blobs.
+- **Training:** the hand-made features of all patches pointed almost the same way (differences about 1% of their
+  length), so the head learned nothing (AUROC 0.48). The fixes:
+  - centre each image's features;
+  - give B's patches their difference from A's;
+  - lean the yes / no on the map;
+  - weigh rare progress patches up to 10 times.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

@@ -102,6 +102,39 @@ dashboard queue before / after in FINDINGS (439 → 217)
 of §9.6 planted. Only readings and blurred frames are kept; no video enters the repo.
 **Done when:** [ ] each trick caught 9 in 10 · [ ] a finding on at most 1 in 30 honest visits · [ ] FINDINGS
 
+### T146 · A vision model for real construction progress: the dataset pipeline and the model  ·  L  ·  ml + data  ·  Depends on: T124
+**What:** (owner, 7 Oct 2026) "Create a data ingestion pipeline of construction site videos, and create a tuned set of
+data ... and then finally fine tuning an existing vision model architecture, such that this architecture gets very good
+at identifying actual construction progress." The owner's notes judged and the design in
+`docs/plans/T146-site-progress-vision.md`; the code in `apps/vision/`.
+**Done when:**
+- [x] Plan: each note judged (kept, changed or rejected, with the reason); the hindsight teacher (progress = change that
+  never goes back), ordering pretraining, synthetic pairs, splits by site and channel, leave-one-type-out, the frozen
+  backbone + small head, and every measure and audit.
+- [x] Pipeline: manifest with a licence allow-list, polite fetching with checksums, shots, alignment, date-stamp and
+  moving-thing masks, the teacher, pairs, splits, augmentation, the dataset writer and its card; `python -m drishti_vision`.
+- [x] Model and training (PyTorch): DINOv2 backbone (frozen, LoRA optional), joint-attention head, progress map, yes/no,
+  build-up score, stage; every §8 measure; a Kaggle runner for the three sizes and the leave-one-type-out folds.
+- [x] Measured on synthetic sites with exact truth (`data/trial/vision_synth_trial.py`); FINDINGS "T146".
+- [x] Tests: `cd apps/vision && pytest -q`; CI job `vision`.
+
+### T147 · Collect site videos for T146  ·  M  ·  data  ·  **human-task**  ·  **needs-owner**  ·  Depends on: T146
+**What:** about 300 still-camera shots from about 150 sites, 5+ work types, at least 30 Indian public works (teammates
+filming local works monthly with permission, CC-licensed timelapses, university and webcam archives). The owner decides
+whether YouTube downloads (CC BY) are allowed (plan §4.1). Stage marks for the calibration and test sites.
+**Done when:** [ ] `manifest.jsonl` checked clean · [ ] `build` run, its `card.md` in the PR · [ ] stage marks on the
+test sites · [ ] 50 pairs a type checked by eye, the agreement recorded
+
+### T148 · Train and measure on Kaggle's free GPU  ·  M  ·  ml  ·  Depends on: T147
+**What:** `apps/vision/kaggle/train_on_kaggle.py`: the three sizes (probe, head, head + LoRA), the chosen one per
+leave-one-type-out fold; every plan §8 number with its train-vs-test gap.
+**Done when:** [ ] `results.json` in `data/trial/results/` · [ ] FINDINGS "T148" with the §8.1 table against its targets
+
+### T149 · Site Progress reads the model (behind a switch)  ·  M  ·  engine  ·  Depends on: T148
+**What:** check 5's change becomes "permanent work added, and where"; check 6 gets a local stage reading. Off until
+T126's real visits meet plan §8.3 (each trick caught 9 in 10, at most 1 in 30 honest visits flagged).
+**Done when:** [ ] readings stored as notes · [ ] T126 measured with the model on and off · [ ] the owner's go-ahead
+
 ### T145 · What a quantity or a price should be, as a range  ·  S  ·  engine + web  ·  Depends on: T144
 **What:** (owner, 6 Oct 2026) the cost "size prediction" or "price prediction" "should give a range
 and not just 'should be quantity 1334'".

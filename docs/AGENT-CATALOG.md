@@ -56,6 +56,13 @@ Site Progress asks
 `FIRST_FILMED_FINISHED`: a new work whose first video already shows it finished, with no video
 before work.
 
+**A vision model for Site Progress's check 5 (T146, FINDINGS "T146"; not switched on)**: today
+check 5 counts changed pixels, so a worker, a truck or a shadow counts like a new wall. `apps/vision/`
+builds the dataset and model that replace it with "permanent work added, and where": a hindsight
+teacher labels timelapses (progress is change that never goes back), and a two-frame student on a
+frozen DINOv2 learns from it. Measured only on synthetic sites so far; real videos (T147), a GPU run
+(T148) and T126's real visits decide whether Site Progress reads it (T149).
+
 **More of what is built, held to its size (T144, FINDINGS "T144")**: the loop now has 118 probes,
 108 PASS, 0 FAIL, 10 LIMIT (400 random damages, 0 errors). Its 10 LIMITs are the owner's margins,
 the labour ruling, or wait on data still to come (the SoR, T096; real forms, T098; real site

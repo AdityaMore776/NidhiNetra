@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "drishti-vision"
+version = "0.1.0"
+description = "DRISHTI T146: construction-progress dataset pipeline and model (site videos)"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.26",
+    # OpenCV 4.x, as the engine's video job (data/requirements-video.txt)
+    "opencv-python-headless>=4.9,<5",
+]
+
+[project.optional-dependencies]
+# the model and its training (Kaggle has these already)
+train = ["torch>=2.2"]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[tool.setuptools]
+packages = ["drishti_vision"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
