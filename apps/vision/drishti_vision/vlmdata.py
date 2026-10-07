@@ -84,7 +84,7 @@ CLAIM_STARTED = ("{thing}: work started and under way", "{thing} ka karya chalu 
 CLAIM_DONE_PERIOD = ("{thing} completed since the last visit",
                      "pichhli visit ke baad {thing} poora",
                      "पिछली विज़िट के बाद {thing} पूर्ण")
-CLAIM_STARTED_PERIOD = ("work on {thing} started since the last visit",
+CLAIM_STARTED_PERIOD = ("work started on {thing} since the last visit",
                         "pichhli visit ke baad {thing} ka kaam shuru",
                         "पिछली विज़िट के बाद {thing} का कार्य शुरू")
 THING: dict[str, tuple[str, str, str]] = {
@@ -92,13 +92,18 @@ THING: dict[str, tuple[str, str, str]] = {
     "building": ("Building", "bhawan", "भवन"),
     "drain": ("Drain", "naali", "नाली"),
     "boundary_wall": ("Boundary wall", "chaardiwari", "चारदीवारी"),
-    "other": ("The work", "kaam", "कार्य"),
+    "other": ("Site work", "kaam", "कार्य"),
 }
 THING_EN = {  # a more specific English name from the MGNREGA sub-category
+    # first match wins: specific names first ("cmpond wall" must not read as a "pond")
+    "cmpond wall": "School compound wall", "compound wall": "Compound wall",
     "interlocking": "Interlocking tile road", "murram": "Murram road", "cc ": "CC road",
-    "kharanja": "Brick (kharanja) road", "sanitary complex": "Community sanitary complex",
-    "anganwadi": "Anganwadi building", "gp ": "Panchayat building", "play": "Playground",
-    "pond": "Pond", "water harvesting": "Water harvesting structure", "drain": "Drain",
+    "cement concrete": "CC road", "kharanja": "Brick (kharanja) road",
+    "sanitary complex": "Community sanitary complex", "toilet": "School toilet block",
+    "anganwadi": "Anganwadi building", "gp ": "Panchayat building", "workshed": "Workshed",
+    "play": "Playground", "water harvesting": "Water harvesting structure", "pond": "Pond",
+    "drain": "Drain", "trench": "Water absorption trench", "bund": "Earthen bund",
+    "check dam": "Check dam", "sand filter": "Borewell recharge filter",
 }
 
 
@@ -120,6 +125,8 @@ class Item:
     real: bool = True                               # both photos real and unedited
     edits: list = field(default_factory=list)       # paste | relight | darken | occlude
     label_check: str = "auto"                       # auto | eye (checked by looking) | human
+    ab_distance: float | None = None    # how different A and B look (DINOv2): scores are also
+                                        # split by it, so "identical photos" cannot hide a shortcut
 
     def prompt(self) -> str:
         return user_prompt(self.work_type, self.claim, self.claim_kind)
@@ -158,7 +165,10 @@ def thing_of(work_type: str, subcategory: str, lang: str) -> str:
 
 def claim_text(template: tuple[str, str, str], work_type: str, subcategory: str, lang: str) -> str:
     li = ("en", "hinglish", "hi").index(lang)
-    t = template[li].format(thing=thing_of(work_type, subcategory, lang))
+    thing = thing_of(work_type, subcategory, lang)
+    if lang == "en" and not template[li].startswith("{thing}"):
+        thing = "the " + thing[0].lower() + thing[1:]        # "work started on the CC road ..."
+    t = template[li].format(thing=thing)
     return t[0].upper() + t[1:] if lang != "hi" else t
 
 
@@ -276,15 +286,35 @@ def paste(img: np.ndarray, cutouts: list[np.ndarray], rng: random.Random, n: int
 
 # ---- items from GeoMGNREGA assets ---------------------------------------------------------------
 
-# sub-categories whose finished work barely shows on camera: never used for "progress" items
-WEAK_VISUAL = ("play", "land development", "levelling", "leveling", "plantation", "afforest",
-               "nursery", "desilting", "jungle", "bund")
+# "Progress" items only for works whose finished state is an UNMISTAKABLE built structure (owner's
+# certainty rule). Found by eye on real assets (8 Oct 2026): a grove's "after" photo differs from
+# its "before" by season alone; earth (murram) and gravel roads, ponds, bunds and trenches can
+# look much the same before and after; repairs change little. They stay in the data for the real
+# "no progress" and "can't tell" items, never as progress.
+STRUCTURE = ("anganwadi", "gp for", "gp bhawan", "panchayat", "workshed", "sanitary complex",
+             "toilet", "cmpond wall", "compound wall", "boundary wall", "interlocking",
+             "cement concrete", "cc road", "kharanja", "drain", "kitchen", "school")
+NOT_STRUCTURE = ("repair", "maint", "renov", "play", "murram", "gravel", "earthen", "pond", "bund",
+                 "trench", "plantation", "levelling", "desilting")
+
+
+SAME_VIEW = 0.10   # two photos of one moment closer than this show the same scene (set by eye)
+
+
+def asset_work_type(asset: dict) -> str:
+    """The work type from today's word list (records harvested earlier keep an older guess)."""
+    from drishti_vision.geomgnrega import work_type_of
+    sub = asset.get("subcategory") or ""
+    return work_type_of(str(asset.get("category_id", "")), sub) if sub else asset["work_type"]
 
 
 def structural(asset: dict) -> bool:
-    """A work that adds visible structure (roads, buildings, drains, walls, dug ponds)."""
+    """A work that adds an unmistakable built structure (see STRUCTURE)."""
+    import re
     s = (asset.get("subcategory") or "").lower()
-    return not any(w in s for w in WEAK_VISUAL)
+    # whole-word starts: the portal's "CmpOnd wall" must not read as a "pond"
+    return (any(re.search(r"\b" + re.escape(w), s) for w in STRUCTURE)
+            and not any(re.search(r"\b" + re.escape(w), s) for w in NOT_STRUCTURE))
 
 
 def _photo(asset: dict, stage: int, n: int) -> str | None:
@@ -301,7 +331,8 @@ def mgnrega_items(asset: dict, root: Path, photo_rel: str, made_rel: str, rng: r
     under the owner's rules in the module docstring. `asset["change"]` holds change.asset_change's
     verdicts. Image paths are relative to `root` (the data folder on D:): photos under `photo_rel`,
     edited images written under `made_rel`."""
-    wt, sub, dist = asset["work_type"], asset.get("subcategory", ""), asset["district_code"]
+    sub, dist = asset.get("subcategory", ""), asset["district_code"]
+    wt = asset_work_type(asset)
     site, split = asset["id"], split_of(dist)
     ch = asset.get("change") or {}
     certain_13 = structural(asset) and bool(ch.get("ok_13"))
@@ -344,16 +375,27 @@ def mgnrega_items(asset: dict, root: Path, photo_rel: str, made_rel: str, rng: r
         add(a1, rel(rng.choice(s2)), CLAIM_STARTED_PERIOD, "period", "none",
             target("yes", 0, None, "yes", "shown",
                    "Photo A shows " + LOOKS[wt][0] + "; photo B shows work done since then."))
+    def same_scene(stage: int) -> bool:
+        """The two photos of one moment show the same scene, so "nothing was added between
+        them" can be read from the photos (a far-apart pair of views cannot say it)."""
+        v = ch.get(f"d{stage}{stage}")
+        return v is not None and v <= SAME_VIEW
+
     # REAL, no progress: the two photos of one moment, before the work
     if len(s1) == 2:
         a, b = rel(s1[0]), rel(s1[1])
-        add(a, b, CLAIM_STARTED_PERIOD, "period", "view",
-            target("yes", 0, 0, "no", "not_shown", reason(wt, 0, 0, "view", "not_shown", "period")))
-        add(a, b, CLAIM_DONE, "reached", "view",
-            target("yes", 0, 0, "no", "not_shown",
-                   reason(wt, 0, 0, "none", "not_shown", "reached")))
+        if same_scene(1):
+            add(a, b, CLAIM_STARTED_PERIOD, "period", "view",
+                target("yes", 0, 0, "no", "not_shown",
+                       reason(wt, 0, 0, "view", "not_shown", "period")))
+        if structural(asset):
+            # "is it finished?" is decidable from a before photo only for a structure that
+            # would be unmistakable once built (a grove's trench may look the same either way)
+            add(a, b, CLAIM_DONE, "reached", "view",
+                target("yes", 0, 0, "no", "not_shown",
+                       reason(wt, 0, 0, "none", "not_shown", "reached")))
     # REAL, no progress, often a busy site: the two photos of one moment during the work
-    if len(s2) == 2:
+    if len(s2) == 2 and same_scene(2):
         add(rel(s2[0]), rel(s2[1]), CLAIM_DONE_PERIOD, "period", "busy",
             target("yes", None, None, "no", "not_shown",
                    "Both photos were taken at the same time during the work; nothing was added "
@@ -361,9 +403,10 @@ def mgnrega_items(asset: dict, root: Path, photo_rel: str, made_rel: str, rng: r
     # REAL: already complete in A, so "done this period" is the same work claimed twice
     if len(s3) == 2:
         a, b = rel(s3[0]), rel(s3[1])
-        add(a, b, CLAIM_DONE_PERIOD, "period", "double_claim",
-            target("yes", 2, 2, "no", "not_shown",
-                   reason(wt, 2, 2, "double_claim", "not_shown", "period")))
+        if same_scene(3):
+            add(a, b, CLAIM_DONE_PERIOD, "period", "double_claim",
+                target("yes", 2, 2, "no", "not_shown",
+                       reason(wt, 2, 2, "double_claim", "not_shown", "period")))
         if certain_13:      # the after photo shows finished work only where the change was certain
             add(a, b, CLAIM_DONE, "reached", "none",
                 target("yes", 2, 2, "no", "shown", f"Photo B shows {LOOKS[wt][2]}, as claimed."))
@@ -373,7 +416,10 @@ def mgnrega_items(asset: dict, root: Path, photo_rel: str, made_rel: str, rng: r
             target("yes", 2, 0, "no", "not_shown",
                    reason(wt, 2, 0, "swapped", "not_shown", "period")))
     # REAL: B is a clearly different place (an asset of ANOTHER work type, same split)
-    other = [o for o in others if o["work_type"] != wt and o["id"] != site
+    # B must be unmistakably another place: a finished structure of another work type (a green
+    # plot next to a green grove could pass for one place; found by eye, 8 Oct 2026)
+    other = [o for o in others if asset_work_type(o) != wt and o["id"] != site and structural(o)
+             and (o.get("change") or {}).get("ok_13")
              and split_of(o["district_code"]) == split]
     if other:
         o = rng.choice(other)
@@ -382,6 +428,12 @@ def mgnrega_items(asset: dict, root: Path, photo_rel: str, made_rel: str, rng: r
             add(a1, rel(ob), CLAIM_DONE_PERIOD, "period", "other_site",
                 target("no", 0, None, "cant_tell", "cant_tell",
                        reason(wt, None, None, "other_site", "cant_tell", "period")))
+    for it in out:      # how different the two real photos look (scores are split by it)
+        key = {"view": "d11", "busy": "d22", "double_claim": "d33", "swapped": "d13"}.get(it.trick)
+        if it.trick == "none":
+            key = "d13" if it.claim_kind == "period" or "/s1_" in it.image_a else "d33"
+            key = "d12" if "/s2_" in it.image_b else key
+        it.ab_distance = ch.get(key) if key else None
     if not allow_edits:
         return out
     # EDITED (training only); every edit also goes into a real progress pair labelled shown
@@ -430,6 +482,76 @@ def build_mgnrega(assets_jsonl: str | Path, root: str | Path, photo_rel: str, ma
         except FileNotFoundError:
             continue
     return items
+
+
+# ---- items from still-camera timelapses (T146's build with --keep-raw) --------------------------
+
+TL_PROGRESS_SHARE = 0.15    # a certain progress pair: at least this share of the known view is
+                            # permanent work by the hindsight teacher (its own floor is 0.02)
+TL_MIN_GAP = 0.25           # ... and the frames at least this share of the shot apart
+TL_BUSY = 0.03              # a no-progress pair whose B has this share of moving things: "busy"
+TL_CLAIM = ("New construction work done since the last visit",
+            "pichhli visit ke baad naya nirmaan kaam hua",
+            "पिछली विज़िट के बाद नया निर्माण कार्य हुआ")
+
+
+def timelapse_items(data: str | Path, root: str | Path, frames_rel: str, rng: random.Random,
+                    per_shot: int = 12) -> list[Item]:
+    """Real timelapse pairs, as filmed (the build's `raw` frames), under the owner's certainty
+    rule: "shown" only where the hindsight teacher found lasting work over a large share of the
+    view and a long gap; "not_shown" only where it found NO lasting change at all (busy when
+    people or machines move in B, light otherwise); swapped progress pairs are not shown."""
+    data, root = Path(data), Path(root)
+    out: list[Item] = []
+    shots = [json.loads(line) for line in (data / "shots.jsonl").read_text(
+        encoding="utf-8").splitlines() if line.strip()]
+    for s in shots:
+        sid = s["shot_id"]
+        lab_p, shot_p = data / "labels" / f"{sid}.npz", data / "shots" / f"{sid}.npz"
+        if not lab_p.exists() or not shot_p.exists():
+            continue
+        shot = np.load(shot_p)
+        if "raw" not in shot:
+            continue
+        raw, act = shot["raw"], shot["activity"].astype(np.float32)
+        lab = np.load(lab_p)
+        T = len(raw)
+        wt = s.get("work_type", "other")
+        wt = wt if wt in LOOKS else "other"
+        chosen: list[tuple[int, int, str, str]] = []
+        for a, b, y, k, pt in zip(lab["a"], lab["b"], lab["label"], lab["kind"],
+                                  lab["patches"], strict=True):
+            kind = ("forward", "short", "swapped")[int(k)]
+            known = pt != -1
+            share = float((pt == 1).sum() / known.sum()) if known.any() else 0.0
+            if kind == "forward" and y == 1 and share >= TL_PROGRESS_SHARE \
+                    and (b - a) >= TL_MIN_GAP * T:
+                chosen.append((int(a), int(b), "none", "shown"))
+                chosen.append((int(b), int(a), "swapped", "not_shown"))
+            elif kind in ("forward", "short") and y == 0 and not (pt == 1).any():
+                busy = float(act[int(b)].mean()) >= TL_BUSY
+                chosen.append((int(a), int(b), "busy" if busy else "light", "not_shown"))
+        rng.shuffle(chosen)
+        for a, b, trick, verdict in chosen[:per_shot]:
+            paths = []
+            for t in (a, b):
+                p = root / frames_rel / sid / f"f{t:03d}.jpg"
+                if not p.exists():
+                    p.parent.mkdir(parents=True, exist_ok=True)
+                    cv2.imwrite(str(p), raw[t], [cv2.IMWRITE_JPEG_QUALITY, 92])
+                paths.append(f"{frames_rel}/{sid}/f{t:03d}.jpg")
+            lang = rng.choices(("en", "hinglish", "hi"), (0.6, 0.25, 0.15))[0]
+            claim = TL_CLAIM[("en", "hinglish", "hi").index(lang)]
+            change = "yes" if verdict == "shown" else "no"
+            why = {"none": "Photo B shows permanent structure that was not there in photo A.",
+                   "swapped": "Photo B is less built than photo A; this is not progress.",
+                   "busy": "People or machines moved, but no permanent structure was added.",
+                   "light": "Only the light differs; the structure is unchanged."}[trick]
+            iid = hashlib.sha1(f"{sid}|{a}|{b}|{claim}".encode()).hexdigest()[:16]
+            out.append(Item(iid, s.get("split", "train"), "timelapse", s.get("site_id", sid),
+                            s.get("channel", ""), wt, paths[0], paths[1], claim, "period", lang,
+                            trick, target("yes", None, None, change, verdict, why)))
+    return out
 
 
 def write_items(items: list[Item], path: str | Path) -> None:

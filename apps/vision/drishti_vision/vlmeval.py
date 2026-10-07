@@ -121,6 +121,18 @@ def score(rows: list[dict]) -> dict:
                        "rupees_per_1000_checks_local": round(1000 * s * GPU_WATTS / 3.6e6
                                                              * RUPEES_PER_KWH, 2)}
     out["unreadable_answers"] = sum(r["pred"] == "unreadable" for r in rows)
+    # the shortcut check: no-progress pairs whose photos look nearly the same vs clearly different
+    nop = [r for r in real if r["trick"] in NO_PROGRESS_TRICKS and r.get("ab_distance") is not None]
+    if nop:
+        cut = float(np.median([r["ab_distance"] for r in nop]))
+        near = [r for r in nop if r["ab_distance"] <= cut]
+        far = [r for r in nop if r["ab_distance"] > cut]
+        out["fooled_by_photo_difference"] = {
+            "split_at_distance": round(cut, 4),
+            "near_identical": {"n": len(near), "fooled_rate": float(np.mean(
+                [r["pred"] == "shown" for r in near])) if near else None},
+            "clearly_different": {"n": len(far), "fooled_rate": float(np.mean(
+                [r["pred"] == "shown" for r in far])) if far else None}}
     return out
 
 
@@ -142,6 +154,7 @@ def predict(L, items: list, root: Path, out_path: Path, log=print) -> list[dict]
             pred = a["verdict"] if a else "unreadable"
             conf = (o["probs"] or {}).get(pred) if a else None
             r = {"id": it.id, "site": it.site, "trick": it.trick, "real": it.real,
+                 "ab_distance": it.ab_distance,
                  "truth": it.target["verdict"], "pred": pred, "conf": conf, "probs": o["probs"],
                  "seconds": o["seconds"], "text": o["text"][:400]}
             f.write(json.dumps(r, ensure_ascii=False) + "\n")

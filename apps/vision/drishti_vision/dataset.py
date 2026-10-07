@@ -91,7 +91,8 @@ def label(prep: Prepared, stages: np.ndarray | None = None, **kw) -> Hindsight:
 
 def write(out: str | Path, shots: list[dict], prepared: dict[str, Prepared],
           pairs: dict[str, list[Pair]], stages: dict[str, np.ndarray] | None = None,
-          title: str = "DRISHTI construction progress pairs") -> Path:
+          title: str = "DRISHTI construction progress pairs",
+          raw: dict[str, np.ndarray] | None = None) -> Path:
     """shots: one dict a shot with shot_id, video_id, site_id, split, material, work_type,
     licence, lo, hi (the teacher's thresholds)."""
     out = Path(out)
@@ -104,11 +105,12 @@ def write(out: str | Path, shots: list[dict], prepared: dict[str, Prepared],
             sid = s["shot_id"]
             prep, ps = prepared[sid], pairs.get(sid, [])
             st = stages.get(sid)
+            extra_raw = {"raw": raw[sid]} if raw and sid in raw else {}
             np.savez_compressed(
                 out / "shots" / f"{sid}.npz", frames=prep.frames, valid=prep.valid,
                 overlay=prep.overlay, activity=prep.activity, index=prep.index,
                 stage=(st[prep.index] if st is not None
-                       else np.full(len(prep.index), -1, np.int16)))
+                       else np.full(len(prep.index), -1, np.int16)), **extra_raw)
             if ps:
                 extra = {}
                 if all(p.truth is not None for p in ps):

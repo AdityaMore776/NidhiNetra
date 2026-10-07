@@ -30,6 +30,47 @@ README, app) follows rule 8 as before: the comparison appears only on the deck's
 
 Nothing here is a DRISHTI result yet.
 
+**The owner's data rules (7 Oct 2026, after approving this plan; these override anything below):**
+1. **The test set is real, unedited photos only**, from districts never used in training. No synthetic, pasted,
+   relit, darkened or blocked image ever counts in a headline number; edited items are scored apart.
+2. **"Progress" only where progress is certain.** The work must add visible structure (roads, buildings, drains,
+   walls, dug ponds; never playgrounds, levelling or plantation). The before → after photos must also differ more than
+   the asset's own two same-moment photos do, and by at least a fixed floor (`apps/vision/drishti_vision/change.py`;
+   margins set by eye on real assets).
+3. **Hard examples on purpose:** real "busy site, no progress" pairs (the two photos of one moment during the work,
+   often with workers), the same work claimed twice, photos in reverse order, and a clearly different place.
+4. **Synthetic edits only in training, and kept honest:**
+   - at most 20% of training items;
+   - every edit goes into both answers (pasted people and new light also go into real progress pairs labelled
+     "shown"), so an edit can never give the answer away;
+   - no drawn or rendered 2D/3D scenes (T146's `synth.py`) at all;
+   - an edit block stays only if switching it off makes the model worse on the real test set (ablation, T154).
+
+These are enforced in code and tested (`apps/vision/tests/test_vlm_data.py`).
+
+## Status (8 Oct 2026)
+
+| Task | State |
+|---|---|
+| T151 source probes | **Done.** See the list below. |
+| T152 collect | **Running:** MGNREGA, polite pace (~50 assets an hour); 250 timelapses downloading |
+| T153 label and curate | Built: `vlmdata.py` (claim ladder, certainty, planted tricks), `change.py`, `cutouts.py`. Pilot card: 154 items from 12 assets. |
+| T154 train | Built and smoke-tested on the RTX 3070 Ti: `vlm.py` (LoRA fine-tuning: 2B in bf16 at 5.7 GB, 4B in 4-bit at 6.3 GB), `vlmrl.py` (GRPO), `modal/train_modal.py` (the owner's Modal credit, hard timeouts) |
+| T155 benchmark | Built: `vlmeval.py`. Headline on real photos only, with bootstrap intervals by asset. |
+| T156 reader | Built: `VLMReader` in `site_progress/readers.py`, behind `DRISHTI_VLM_ADAPTER`, 8 engine tests |
+
+**What T151 found:**
+- **S1 GeoMGNREGA works.** The public map (Bhuvan BHUGRAM) answers WMS GetFeatureInfo with asset records. The asset
+  page (`get_details.php`) lists two photos for each stage: 1 before, 2 during, 3 after. In the 12-asset pilot (Jaunpur),
+  12 of 12 had all three stages.
+- **Bulk export is switched off** (WFS disabled), and the compressed photo copies answer 403. So only the clicks the
+  public page makes are used: about one asset a minute.
+- **Stage labels need the certainty check.** One "before" photo already showed a (different) building, and the
+  during photos often look finished.
+- **S3 PMGSY** (`omms.nic.in`) does not answer from the owner's PC.
+- **S5 YouTube:** 250 CC BY timelapses found with 20 queries, each licence read from its own watch page. AI-made,
+  miniature and game titles are dropped.
+
 ---
 
 ## 0. In plain words

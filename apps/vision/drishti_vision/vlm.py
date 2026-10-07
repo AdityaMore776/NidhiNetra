@@ -39,6 +39,27 @@ def load_image(path: Path, max_side: int = MAX_SIDE):
     return im
 
 
+def jitter(im, rng: random.Random, p: float = 0.7):
+    """Training only, every answer alike (plan T150 D1, D3): each photo on its own gets a random
+    crop (70-100% of the side), a small rotation and a JPEG quality, as a hand-held phone would.
+    Two photos of one moment are then never pixel-identical, so "identical photos" cannot stand in
+    for "nothing was built"; the label never changes, as nothing is added or removed."""
+    import io
+
+    from PIL import Image
+    if rng.random() > p:
+        return im
+    w, h = im.size
+    s = rng.uniform(0.7, 1.0)
+    cw, ch = int(w * s), int(h * s)
+    x0, y0 = rng.randint(0, w - cw), rng.randint(0, h - ch)
+    im = im.crop((x0, y0, x0 + cw, y0 + ch)).rotate(rng.uniform(-4, 4), resample=Image.BICUBIC,
+                                                    expand=False)
+    buf = io.BytesIO()
+    im.save(buf, "JPEG", quality=rng.randint(55, 95))
+    return Image.open(io.BytesIO(buf.getvalue())).convert("RGB")
+
+
 def messages(item: Item | dict, answer: dict | None = None) -> list[dict]:
     it = item if isinstance(item, dict) else item.__dict__
     user = [{"type": "text", "text": "Photo A (last visit):"}, {"type": "image"},
@@ -216,6 +237,7 @@ class TrainConfig:
     max_items: int = 0
     seed: int = 0
     edited_share: float = 0.2       # at most this share of training items may be edited (owner)
+    jitter: bool = True             # each photo cropped / turned / re-saved on its own (jitter())
     real_only: bool = False
     eval_every: int = 200
 
@@ -243,6 +265,7 @@ def fit(cfg: TrainConfig, log=print) -> dict:
     from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
     torch.manual_seed(cfg.seed)
     random.seed(cfg.seed)
+    jit_rng = random.Random(cfg.seed + 1)
     L = load(cfg.base, quant4=cfg.quant4)
     model = L.model
     if cfg.quant4:
@@ -279,6 +302,8 @@ def fit(cfg: TrainConfig, log=print) -> dict:
     order = order[: steps * cfg.accum]
     for i, r in enumerate(order):
         imgs = [load_image(root / r["image_a"]), load_image(root / r["image_b"])]
+        if cfg.jitter:
+            imgs = [jitter(im, jit_rng) for im in imgs]
         prompt_text = L.processor.apply_chat_template(messages(r), tokenize=False,
                                                       add_generation_prompt=True)
         full_text = L.processor.apply_chat_template(messages(r, answer_of(r)), tokenize=False,

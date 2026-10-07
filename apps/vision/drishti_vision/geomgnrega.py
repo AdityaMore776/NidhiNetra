@@ -185,12 +185,12 @@ def find_assets(bbox, categories: list[str], size: int = 512, max_points: int = 
 
 
 # the sub-category's words decide the work type when they are clearer than the category
-_TYPE_WORDS = (
+_TYPE_WORDS = (       # first match wins: a school's compound wall is a wall, not a building
+    ("boundary_wall", ("boundary wall", "compound wall", "cmpond wall")),
     ("building", ("sanitary complex", "anganwadi", "gp ", "gp bhawan", "panchayat", "bhawan",
                   "building", "kendra", "school", "kitchen", "godown", "shed", "toilet")),
     ("drain", ("drain", "nali", "naala", "nala")),
     ("road", ("road", "kharanja", "interlocking", "murram", "path", "culvert", "causeway")),
-    ("boundary_wall", ("boundary wall", "compound wall")),
 )
 
 

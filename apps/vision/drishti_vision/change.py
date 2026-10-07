@@ -63,7 +63,10 @@ def asset_change(asset: dict, root: Path, emb: Embedder) -> dict:
         return float(np.mean(ds)) if ds else None
 
     noise = [x for x in (d(1, 1), d(3, 3)) if x is not None]
-    out = {"d13": d(1, 3), "d12": d(1, 2), "d23": d(2, 3), "noise": max(noise) if noise else None}
+    out = {"d13": d(1, 3), "d12": d(1, 2), "d23": d(2, 3), "noise": max(noise) if noise else None,
+           # the two photos of one moment: a "nothing was added between them" item is decidable
+           # from the photos only when they show the same scene (vlmdata.SAME_VIEW)
+           "d11": d(1, 1), "d22": d(2, 2), "d33": d(3, 3)}
     for key in ("d13", "d12"):
         v = out[key]
         out[f"ok_{key[1:]}"] = bool(v is not None and out["noise"] is not None

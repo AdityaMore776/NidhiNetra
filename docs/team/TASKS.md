@@ -316,7 +316,35 @@ building blocks, and give an optimised recipe for a small, rich dataset to fine-
 Owner's decisions: Track A "not fooled + near-free" first, Track B "same accuracy at 1/100 the cost" next; free compute
 only; sources: government stage photos, YouTube CC BY, open datasets, Wikimedia, Kaggle, GitHub (NC/ND still refused).
 **Done when:** [x] plan written (research, sources, building-block menu, recipe, benchmark with success and stop rules)
-· [x] private picker page for the building blocks · [ ] owner's go-ahead on the follow-ups T151–T156 (plan §12)
+· [x] private picker page for the building blocks · [x] owner's go-ahead on the follow-ups T151–T156 (8 Oct 2026),
+with the owner's data rules (plan "The owner's data rules")
+
+### T151 · Probe the claim judge's sources  ·  S  ·  data  ·  Depends on: T150
+**What:** plan T150 §4.3. **Done when:** [x] GeoMGNREGA photos reachable through the public map's own requests (12/12
+pilot assets with all three stages) · [x] YouTube CC BY candidates with licences read per video · [x] FINDINGS "T151"
+
+### T152 · Collect: MGNREGA stage photos and CC BY timelapses  ·  M  ·  data  ·  Depends on: T151
+**What:** `python -m drishti_vision mgnrega` (36 districts, one request every 1.5 s) and `fetch --allow-youtube`, all on
+`D:\nidhinetra-data` (never in git). **Done when:** [ ] at least 400 assets from at least 30 districts · [ ] the
+timelapses fetched and built with `--keep-raw` · [ ] counts in FINDINGS
+
+### T153 · The claim-ladder dataset under the owner's rules  ·  M  ·  data + ml  ·  Depends on: T152
+**What:** `vlmbuild` (certainty check, cut-outs from training districts, claim ladder) plus timelapse items.
+**Done when:** [x] the rules enforced and tested (`tests/test_vlm_data.py`) · [ ] the dataset card · [ ] every test
+item's label checked by eye (agent first; a person later)
+
+### T154 · Train the claim judge  ·  M  ·  ml  ·  Depends on: T153
+**What:** LoRA fine-tuning (`vlmtrain`), then GRPO (`vlmrl`), on the RTX 3070 Ti or Modal (`modal/train_modal.py`).
+**Done when:** [ ] 2B and 4B trained · [ ] the ablation without edited items · [ ] scores in FINDINGS
+
+### T155 · SiteClaim-Bench against flagship models  ·  M  ·  eval  ·  Depends on: T154  ·  **needs-owner** (API keys)
+**What:** `vlmeval` on the real test split for the base and tuned models; flagship models need the owner's keys.
+**Done when:** [ ] base vs tuned on real test photos · [ ] flagships (when keys exist) · [ ] FINDINGS + paper table
+
+### T156 · Site Progress reads the claim judge (behind a switch)  ·  S  ·  engine  ·  Depends on: T154
+**What:** `VLMReader` (`site_progress/readers.py`), used by `build_site_visits.py` when `DRISHTI_VLM_ADAPTER` is set.
+**Done when:** [x] reader + 8 tests (one confident view is enough for shown, every view for not shown, else can't tell)
+· [ ] run on real T126 visits; readings stay notes until T120 §14 passes
 
 ---
 

@@ -85,7 +85,7 @@ def _asset(tmp_path, sid, district, wt="road", sub="Constr of Interlocking block
             photos.append({"stage": s, "n": n, "file": f})
     return {"id": f"mg-{sid}", "sid": sid, "work_type": wt, "subcategory": sub,
             "district_code": district, "photos": photos,
-            "change": {"ok_13": ok, "ok_12": ok}}
+            "change": {"ok_13": ok, "ok_12": ok, "d11": 0.02, "d22": 0.02, "d33": 0.02}}
 
 
 def _district(split: str, start: int = 0) -> str:
@@ -240,3 +240,61 @@ def test_rewards_punish_being_fooled_most():
     half = reward('{"verdict": "shown", "stage_A": "not started", "stage_B": "work under way"}',
                   prog)
     assert full["total"] > half["total"] > 0
+
+
+@pytest.mark.parametrize("sub,ok", [
+    ("Constr of Interlocking block/tiles Roads for Comm", True),
+    ("Constr of Anganwadi for community", True),
+    ("Constr of GP for community", True),
+    ("Constr of CmpOnd wall for gov schools for Comm", True),
+    ("Constr of Kharanja (brick/stone) Roads for Comm", True),
+    ("Construction of Mitti Murram Roads for Community", False),     # earth can look the same
+    ("Renovtion of Community Ponds for Comm", False),
+    ("Repair-maint Interlocking block/tiles roads-Comm", False),
+    ("Construction of Play field for Community", False),
+    ("Constr of Water Absorption Trench Trench for Comm", False),
+])
+def test_progress_only_for_unmistakable_structures(sub, ok):
+    assert vlmdata.structural({"subcategory": sub}) is ok
+
+
+def test_a_schools_compound_wall_is_a_wall():
+    assert geomgnrega.work_type_of("17", "Constr of CmpOnd wall for gov schools for Comm") \
+        == "boundary_wall"
+
+
+def test_finished_claims_only_where_a_photo_can_decide(tmp_path):
+    d = _district("train")
+    grove = _asset(tmp_path, 13, d, wt="other", sub="Constr of Water Absorption Trench",
+                   ok=True)
+    items = _items(tmp_path, [grove], synthetic=False)
+    assert items
+    assert not [i for i in items if i.claim_kind == "reached"]
+    assert {i.trick for i in items} <= {"view", "busy", "double_claim", "other_site"}
+
+
+def test_claims_read_naturally():
+    assert vlmdata.claim_text(vlmdata.CLAIM_STARTED_PERIOD, "road",
+                              "Constr of Interlocking block/tiles Roads", "en") \
+        == "Work started on the interlocking tile road since the last visit"
+    assert vlmdata.claim_text(vlmdata.CLAIM_DONE, "other", "", "en") == "Site work completed"
+
+
+def test_same_moment_items_need_the_same_scene(tmp_path):
+    a = _asset(tmp_path, 14, _district("train"))
+    a["change"].update({"d11": 0.4, "d22": 0.4, "d33": 0.4})      # far-apart views
+    items = _items(tmp_path, [a], synthetic=False)
+    assert not [i for i in items if i.trick in ("view", "busy", "double_claim")
+                and i.claim_kind == "period"]
+
+
+def test_jitter_makes_twin_photos_differ_but_keeps_the_scene():
+    from PIL import Image
+
+    from drishti_vision.vlm import jitter
+    rng = random.Random(0)
+    base = Image.fromarray(np.tile(np.linspace(0, 255, 200, dtype=np.uint8), (150, 1))[..., None]
+                           .repeat(3, 2))
+    a, b = jitter(base, rng, p=1.0), jitter(base, rng, p=1.0)
+    assert a.size != b.size or np.abs(np.asarray(a, int) - np.asarray(b, int)).mean() > 1
+    assert min(a.size) >= 0.7 * min(base.size) - 1

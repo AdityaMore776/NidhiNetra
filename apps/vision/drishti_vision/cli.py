@@ -83,6 +83,7 @@ def cmd_build(a) -> int:
     ex = _extractor(a.backbone, a.device)
     rng = np.random.default_rng(a.seed)
     prepared, pair_sets, infos, shot_rows, stage_of = {}, {}, [], [], {}
+    raw_of = {}        # the kept frames as filmed (resized only): what the claim judge is shown
     for v in rows:
         files = sorted(Path(a.videos).glob(f"{v.id}.*"))
         if not files:
@@ -108,6 +109,8 @@ def cmd_build(a) -> int:
                 stage_of[sid] = st
             teacher = dataset.label(prep, stages=st)
             prepared[sid] = prep
+            if a.keep_raw:
+                raw_of[sid] = frames[prep.index]
             pair_sets[sid] = pairs.sample(sid, teacher, a.pairs, rng)
             infos.append(splits.ShotInfo(sid, v.id, v.channel, v.material,
                                          splits.signature(prep.feats)))
@@ -129,7 +132,7 @@ def cmd_build(a) -> int:
     if leaks:
         print("leaks: " + "; ".join(leaks), file=sys.stderr)
         return 1
-    out = dataset.write(a.out, shot_rows, prepared, pair_sets, stage_of)
+    out = dataset.write(a.out, shot_rows, prepared, pair_sets, stage_of, raw=raw_of)
     (Path(out) / "folds.json").write_text(json.dumps(
         {"leave_one_type_out": splits.leave_one_type_out(infos, site_of)}, indent=1))
     print(f"wrote {out}")
@@ -327,6 +330,8 @@ def main(argv=None) -> int:
     s.add_argument("--frames", type=int, default=200, help="at most this many a shot")
     s.add_argument("--width", type=int, default=448)
     s.add_argument("--pairs", type=int, default=60, help="pairs a shot")
+    s.add_argument("--keep-raw", action="store_true",
+                   help="also keep the frames as filmed (for the claim judge, T153)")
     s.add_argument("--seed", type=int, default=0)
     s = sub.add_parser("mgnrega", help="GeoMGNREGA before/during/after photos (geomgnrega.py)")
     s.add_argument("--out", required=True, help="folder on D: (photos/ and assets.jsonl)")

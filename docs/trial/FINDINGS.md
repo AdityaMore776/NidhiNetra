@@ -2220,6 +2220,65 @@ What this shows:
   - lean the yes / no on the map;
   - weigh rare progress patches up to 10 times.
 
+## T151–T153 (8 Oct 2026): real Indian stage photos for the claim judge, and what the eye found
+
+Plan: `docs/plans/T150-vlm-progress-dataset.md`. Code: `apps/vision/drishti_vision/` (`geomgnrega.py`, `change.py`,
+`vlmdata.py`, `eyecheck.py`). Counts: `data/trial/vlm_trial.py` → `results/vlm_trial.txt`. Photos and records stay on
+the owner's D: drive, never in git.
+
+**The source (T151).**
+- GeoMGNREGA photographs every MGNREGA asset at three stages: 1 before, 2 during, 3 after, two photos each. It is
+  public on ISRO's Bhuvan map. Bulk export is off (WFS disabled; compressed photo copies answer 403), so only the
+  requests a person's click makes are used, at one every 1.5 s: about 50 assets an hour.
+- 130 assets read so far: all 130 have all three stages.
+- The work types are MPLADS-like: interlocking, brick, CC and earth roads; Anganwadi and Panchayat buildings;
+  sanitary complexes; school toilet blocks; compound walls; ponds and trenches.
+
+**What looking at the photos changed (T153), each now a rule in code and a test:**
+
+| Found by eye | Rule now |
+|---|---|
+| A grove's "after" photo differed from its "before" only by season (dry leaves vs green growth), yet passed a "the photos changed a lot" check | "Progress" items only for unmistakable built structures (an allowlist of sub-categories); no ponds, earth or gravel roads, bunds, trenches, playfields or repairs |
+| One "before" photo already showed a (different, older) building | Progress also needs the before → after change to beat the asset's own same-moment noise, and to pass a floor (DINOv2 distance 0.25; the margins were set by eye on 12 pilot assets) |
+| A pond's two "before" photos were taken from very different spots (a dry pit close-up vs a wide view with water): "nothing was added between them" could not be read from the photos | Same-moment pairs count only when the two photos show the same scene (distance ≤ 0.10; 78–85% of pairs) |
+| "Is it finished?" on a grove's before photo cannot be decided from pixels (a finished trench may look the same) | Such claims only for structures that would be unmistakable once built |
+| A green plot next to a green grove could pass for one place | The "different place" photo is always a finished structure of another work type |
+| The portal writes "CmpOnd wall"; "pond" matched inside it | Word-start matching; a compound wall is a wall |
+
+**The items (`vlm_trial.txt`):**
+- 130 assets, of which 86 pass the progress certainty rule.
+- **Train:** 1,063 items (633 real and unedited) from 5 districts.
+- **Test:** 55 items, **all real and unedited**, from 1 district never used in training.
+- Edited items (people pasted in, light, dark, blocked) are training-only. They are capped at 20% when training, and
+  every edit also goes into a real progress pair labelled "shown".
+
+**Every test label was looked at** (contact sheets, `eyecheck.py`; by the agent, a person to follow). The rules
+above came from that look; after them, no label on the 6 test sheets was wrong.
+
+**The untrained Qwen3-VL-4B (4-bit) on the 55 real test items:**
+
+| | Result |
+|---|---|
+| Accuracy | 76% |
+| Macro-F1 | 0.54 |
+| Fooled | 2 of 38 no-progress pairs |
+| Missed | 1 of 8 progress pairs |
+| Time | 3.6 s a check, about ₹2 per 1,000 checks on the owner's PC |
+
+Two things it shows:
+- **It never says "can't tell" for a different place:** 0 of 9; it says "not shown".
+- **It is fooled only when the two photos look clearly different:** 2 of 19 such pairs, against 0 of 19 nearly
+  identical pairs.
+
+The second is the shortcut the owner warned of: "different photos" standing in for "progress". It is why:
+- training crops, turns and re-saves each photo on its own;
+- the scores are split by how different the photos look;
+- the timelapses' busy and light pairs (real photos, taken at different times, with nothing built between them) are
+  being added.
+
+These are early numbers on one test district; the final ones come with the full harvest (T152) and the trained
+models (T154).
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**
