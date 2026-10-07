@@ -120,6 +120,11 @@ def score(rows: list[dict]) -> dict:
         out["cost"] = {"seconds_per_check": round(s, 3),
                        "rupees_per_1000_checks_local": round(1000 * s * GPU_WATTS / 3.6e6
                                                              * RUPEES_PER_KWH, 2)}
+        bills = [r["cost_usd"] for r in rows if r.get("cost_usd") is not None]
+        if bills:                       # an API model: its own token bills, not electricity
+            out["cost"]["usd_per_1000_checks_api"] = round(1000 * float(np.mean(bills)), 3)
+            del out["cost"]["rupees_per_1000_checks_local"]
+    out["refused"] = sum(bool(r.get("refused")) for r in rows)
     out["unreadable_answers"] = sum(r["pred"] == "unreadable" for r in rows)
     # the shortcut check: no-progress pairs whose photos look nearly the same vs clearly different
     nop = [r for r in real if r["trick"] in NO_PROGRESS_TRICKS and r.get("ab_distance") is not None]
@@ -137,7 +142,9 @@ def score(rows: list[dict]) -> dict:
 
 
 def predict(L, items: list, root: Path, out_path: Path, log=print) -> list[dict]:
-    """Runs the model over `items`, resumable (one JSON line an item in `out_path`)."""
+    """Runs a judge over `items`, resumable (one JSON line an item in `out_path`). `L` is a loaded
+    local model (vlm.load) or any callable judge(item, root) -> {text, answer, probs, seconds, ...}
+    (flagship_claude.ClaudeJudge, flagship_other.GeminiJudge / OpenAIJudge)."""
     from drishti_vision import vlm
     done = {}
     if out_path.exists():
@@ -149,14 +156,20 @@ def predict(L, items: list, root: Path, out_path: Path, log=print) -> list[dict]
         for k, it in enumerate(items):
             if it.id in done:
                 continue
-            o = vlm.judge(L, it, root)
+            try:
+                o = L(it, root) if callable(L) else vlm.judge(L, it, root)
+            except Exception as e:  # noqa: BLE001 (an API error is recorded, the run goes on)
+                log(f"{it.id}: {type(e).__name__}: {str(e)[:120]}")
+                continue
             a = o["answer"]
             pred = a["verdict"] if a else "unreadable"
             conf = (o["probs"] or {}).get(pred) if a else None
             r = {"id": it.id, "site": it.site, "trick": it.trick, "real": it.real,
                  "ab_distance": it.ab_distance,
                  "truth": it.target["verdict"], "pred": pred, "conf": conf, "probs": o["probs"],
-                 "seconds": o["seconds"], "text": o["text"][:400]}
+                 "seconds": o["seconds"], "text": o["text"][:400],
+                 "served_by": o.get("served_by"), "cost_usd": o.get("cost_usd"),
+                 "refused": bool(o.get("refused"))}
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
             f.flush()
             done[it.id] = r

@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import random
 import sys
 from pathlib import Path
 
@@ -230,6 +231,11 @@ def cmd_vlmbuild(a) -> int:
     made_rel = str((out / "made").relative_to(root)).replace("\\", "/")
     items = vlmdata.build_mgnrega(scored, root, a.photo_rel, made_rel, cut, seed=a.seed,
                                   synthetic=a.synthetic)
+    for tl in a.timelapse:              # T146 builds made with --keep-raw (real frames)
+        frames_rel = str((out / "frames" / Path(tl).name).relative_to(root)).replace("\\", "/")
+        got = vlmdata.timelapse_items(tl, root, frames_rel, random.Random(a.seed))
+        print(f"{tl}: {len(got)} timelapse items", flush=True)
+        items += got
     vlmdata.write_items(items, out / "items.jsonl")
     (out / "card.md").write_text(vlmdata.card(items), encoding="utf-8")
     print(vlmdata.card(items))
@@ -257,7 +263,15 @@ def cmd_vlmeval(a) -> int:
         items = [i for i in items if i.real]
     if a.limit:
         items = items[: a.limit]
-    L = vlm.load(a.base, quant4=a.quant4, adapter=a.adapter or None)
+    if a.provider == "claude":
+        from drishti_vision.flagship_claude import ClaudeJudge
+        L = ClaudeJudge(a.model or "claude-opus-5-5", a.effort)
+    elif a.provider in ("gemini", "openai"):
+        from drishti_vision import flagship_other as fo
+        cls = fo.GeminiJudge if a.provider == "gemini" else fo.OpenAIJudge
+        L = cls(a.model, a.price_in, a.price_out)
+    else:
+        L = vlm.load(a.base, quant4=a.quant4, adapter=a.adapter or None)
     out = Path(a.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     rows = vlmeval.predict(L, items, Path(a.root), out,
@@ -354,6 +368,8 @@ def main(argv=None) -> int:
     s.add_argument("--no-synthetic", dest="synthetic", action="store_false",
                    help="real, unedited photos only (no pasted people, light, dark, blocked)")
     s.add_argument("--cutouts", type=int, default=800)
+    s.add_argument("--timelapse", action="append", default=[],
+                   help="a `build --keep-raw` output folder; real timelapse pairs are added")
     s.add_argument("--device", default="cuda")
     s.add_argument("--seed", type=int, default=0)
     s = sub.add_parser("vlmtrain", help="LoRA fine-tuning of the claim judge (vlm.py)")
@@ -381,6 +397,12 @@ def main(argv=None) -> int:
     s.add_argument("--real-only", action="store_true")
     s.add_argument("--limit", type=int, default=0)
     s.add_argument("--out", required=True, help="predictions .jsonl (resumable)")
+    s.add_argument("--provider", default="local", choices=("local", "claude", "gemini", "openai"),
+                   help="a flagship model through its API (keys from the environment)")
+    s.add_argument("--model", default="", help="the provider's model name")
+    s.add_argument("--effort", default="high", help="Claude's effort setting")
+    s.add_argument("--price-in", type=float, default=None, help="USD per million input tokens")
+    s.add_argument("--price-out", type=float, default=None, help="USD per million output tokens")
     s = sub.add_parser("synth")
     s.add_argument("--out", required=True)
     s.add_argument("--seeds", type=int, default=4)
