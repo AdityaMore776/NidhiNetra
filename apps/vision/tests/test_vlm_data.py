@@ -293,6 +293,61 @@ def test_claims_read_naturally():
     assert vlmdata.claim_text(vlmdata.CLAIM_DONE, "other", "", "en") == "Site work completed"
 
 
+def test_training_has_other_places_of_the_same_type(tmp_path):
+    """The 4B tuned without these called a photo of ANOTHER finished road 'shown' 38 times in 44
+    (8 Oct 2026): it had only ever seen other places of another work type."""
+    d = _district("train")
+    x, y = _asset(tmp_path, 41, d), _asset(tmp_path, 42, d)
+    y["block_code"] = "elsewhere"
+    near = _asset(tmp_path, 43, d)                         # same block as x: never used
+    t1, t2 = _asset(tmp_path, 44, _district("test")), _asset(tmp_path, 45, _district("test"))
+    t2["block_code"] = "elsewhere"
+    items = _items(tmp_path, [x, y, near, t1, t2])
+    same = [i for i in items if i.trick == "other_site_same"]
+    assert {(i.site, i.image_b.split("/")[-2]) for i in same if i.site == x["id"]} \
+        == {(x["id"], y["id"])}
+    assert all(i.split == "train" and i.real and i.target["verdict"] == "cant_tell"
+               and i.target["same_place"] == "no" for i in same)
+
+
+def test_a_bigger_harvest_leaves_earlier_items_as_they_were(tmp_path):
+    from drishti_vision import eyecheck
+    d = _district("test")
+    first = [_asset(tmp_path, 51 + k, d) for k in range(4)]
+    for k, a in enumerate(first):
+        a["block_code"] = f"b{k}"
+    more = first + [_asset(tmp_path, 61 + k, _district("train")) for k in range(3)]
+    p1, p2 = tmp_path / "a1.jsonl", tmp_path / "a2.jsonl"
+    p1.write_text("\n".join(json.dumps(a) for a in first))
+    p2.write_text("\n".join(json.dumps(a) for a in more))
+    k1 = {eyecheck.key(i) for i in vlmdata.build_mgnrega(p1, tmp_path, "photos", "made", [],
+                                                         synthetic=False)}
+    k2 = {eyecheck.key(i) for i in vlmdata.build_mgnrega(p2, tmp_path, "photos", "made", [],
+                                                         synthetic=False)}
+    assert k1 <= k2
+
+
+def test_same_type_other_site_probe(tmp_path):
+    d = _district("test")
+    x = _asset(tmp_path, 31, d)                        # a road, not yet certain to be finished
+    x["change"]["ok_13"] = False
+    y = _asset(tmp_path, 32, d)                        # a finished road elsewhere in the district
+    y["block_code"] = "elsewhere"
+    near = _asset(tmp_path, 33, d)                     # a finished road in the same block
+    b = _asset(tmp_path, 34, d, wt="building", sub="Construction of Anganwadi Centre")
+    t = _asset(tmp_path, 35, _district("train"))       # training photos never reach a probe
+    t["block_code"] = "far"
+    items = vlmdata.same_type_other_site([x, y, near, b, t], "gov/mgnrega/photos",
+                                         ("test",), random.Random(0), per_asset=3)
+    pairs = {(i.site, i.image_b.split("/")[-2]) for i in items}
+    # B: a finished road (certain), another block, same split; never the unfinished x, the
+    # building, or a training photo
+    assert pairs == {(x["id"], y["id"]), (y["id"], near["id"]), (near["id"], y["id"])}
+    assert all(i.split == "probe" and i.trick == "other_site_same" and i.real
+               and i.target["verdict"] == "cant_tell" and "/s1_" in i.image_a
+               and "/s3_" in i.image_b for i in items)
+
+
 def test_same_moment_items_need_the_same_scene(tmp_path):
     a = _asset(tmp_path, 14, _district("train"))
     a["change"].update({"d11": 0.4, "d22": 0.4, "d33": 0.4})      # far-apart views

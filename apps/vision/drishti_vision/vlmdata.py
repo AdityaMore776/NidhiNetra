@@ -55,8 +55,8 @@ import numpy as np
 LADDER = ("not started", "work under way", "complete")
 STAGE_OF_PHOTO = {1: 0, 2: 1, 3: 2}          # portal stage -> ladder rung (2 = at least under way)
 VERDICTS = ("shown", "not_shown", "cant_tell")
-TRICKS = ("none", "view", "busy", "double_claim", "swapped", "other_site", "staged", "light",
-          "dark", "occluded")
+TRICKS = ("none", "view", "busy", "double_claim", "swapped", "other_site", "other_site_same",
+          "staged", "light", "dark", "occluded")
 NO_PROGRESS_TRICKS = ("view", "busy", "double_claim", "swapped", "staged", "light")
 EDIT_TRICKS = ("staged", "light", "dark", "occluded")         # made by editing pixels
 
@@ -428,6 +428,22 @@ def mgnrega_items(asset: dict, root: Path, photo_rel: str, made_rel: str, rng: r
             add(a1, rel(ob), CLAIM_DONE_PERIOD, "period", "other_site",
                 target("no", 0, None, "cant_tell", "cant_tell",
                        reason(wt, None, None, "other_site", "cant_tell", "period")))
+    # REAL, training only: B is a finished work of the SAME type at another place (another
+    # block). Without these the tuned 4B called another finished road "shown" 38 times in 44: it
+    # had learnt "different place = different work type" (8 Oct 2026). Test districts get these
+    # only as the eye-checked probe (same_type_other_site).
+    if split == "train":
+        same = [o for o in others if asset_work_type(o) == wt and o["id"] != site
+                and structural(o) and (o.get("change") or {}).get("ok_13")
+                and o.get("block_code") != asset.get("block_code")
+                and split_of(o["district_code"]) == split
+                and (_photo(o, 3, 1) or _photo(o, 3, 2))]
+        if same:
+            o = rng.choice(same)
+            add(a1, rel(_photo(o, 3, 1) or _photo(o, 3, 2)), CLAIM_DONE_PERIOD, "period",
+                "other_site_same", target("no", 0, None, "cant_tell", "cant_tell",
+                                          reason(wt, None, None, "other_site", "cant_tell",
+                                                 "period")))
     for it in out:      # how different the two real photos look (scores are split by it)
         key = {"view": "d11", "busy": "d22", "double_claim": "d33", "swapped": "d13"}.get(it.trick)
         if it.trick == "none":
@@ -467,16 +483,55 @@ def mgnrega_items(asset: dict, root: Path, photo_rel: str, made_rel: str, rng: r
     return out
 
 
+def same_type_other_site(assets: list[dict], photo_rel: str, splits: tuple[str, ...],
+                         rng: random.Random, per_asset: int = 2) -> list[Item]:
+    """A PROBE, never training data: photo A is an asset's before photo, photo B the after photo
+    of ANOTHER finished work of the SAME type (another block, same held-out split). This is the
+    claim an agency could back with a photo of some other finished road. The answer is
+    "cant_tell" (a different place), and it is decidable only where the two scenes visibly
+    differ, so every item must be checked by eye before it is scored. In the main set the
+    different-place photo is always another work TYPE, which a model can spot without reading
+    the scene."""
+    out: list[Item] = []
+    for x in assets:
+        sp = split_of(x["district_code"])
+        if sp not in splits:
+            continue
+        wt = asset_work_type(x)
+        a = _photo(x, 1, 1) or _photo(x, 1, 2)
+        if not a:
+            continue
+        ys = [y for y in assets if y["id"] != x["id"] and asset_work_type(y) == wt
+              and split_of(y["district_code"]) == sp and structural(y)
+              and (y.get("change") or {}).get("ok_13")
+              and y.get("block_code") != x.get("block_code")
+              and (_photo(y, 3, 1) or _photo(y, 3, 2))]
+        rng.shuffle(ys)
+        for y in ys[:per_asset]:
+            b = _photo(y, 3, 1) or _photo(y, 3, 2)
+            lang = rng.choices(("en", "hinglish", "hi"), (0.6, 0.25, 0.15))[0]
+            claim = claim_text(CLAIM_DONE_PERIOD, wt, x.get("subcategory", ""), lang)
+            iid = hashlib.sha1(f"probe|{x['id']}|{y['id']}|{claim}".encode()).hexdigest()[:16]
+            out.append(Item(iid, "probe", "geomgnrega", x["id"], x["district_code"], wt,
+                            f"{photo_rel}/{a}", f"{photo_rel}/{b}", claim, "period", lang,
+                            "other_site_same",
+                            target("no", 0, None, "cant_tell", "cant_tell",
+                                   reason(wt, None, None, "other_site", "cant_tell", "period"))))
+    return out
+
+
 def build_mgnrega(assets_jsonl: str | Path, root: str | Path, photo_rel: str, made_rel: str,
                   cutouts: list[np.ndarray], seed: int = 0, synthetic: bool = True) -> list[Item]:
     """Items for every asset in `assets_jsonl` (each with its "change" scores, change.py); paths
     relative to `root` (see mgnrega_items)."""
     root = Path(root)
-    rng = random.Random(seed)
     assets = [json.loads(line) for line in
               Path(assets_jsonl).read_text(encoding="utf-8").splitlines() if line.strip()]
     items: list[Item] = []
     for a in assets:
+        # each asset draws from its own sequence, so a bigger harvest leaves the items of the
+        # assets already there (and the eye checks of them) as they were
+        rng = random.Random(f"{seed}|{a['id']}")
         try:
             items += mgnrega_items(a, root, photo_rel, made_rel, rng, assets, cutouts, synthetic)
         except FileNotFoundError:
