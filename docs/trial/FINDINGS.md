@@ -2586,3 +2586,17 @@ and the same confidence on all 48 items compared.
    ends.
 8. **AI key (paid, capped)** for Hindi and handwritten papers, site progress and plaques. This
    is the one switch that is the user's decision.
+
+### T155 (9 Oct 2026): fresh held-out sites, never re-checked against any model
+
+The harvest's 166 new sites in the held-out test districts were each checked by eye on asset cards (888 items; 103
+wrong labels dropped, flags in `D:\nidhinetra-data\vlm\v7\eye_cards\flags.json`). This set was cleaned before any
+model saw it, so no disagreement-driven cleaning can favour either side. Of the 785 items left: 132 progress,
+487 no progress, 166 different place.
+
+| Judge | Macro-F1 [95% CI] | Fooled (of 487) | Missed (of 132) |
+|---|---|---|---|
+| NidhiLens-FineTuned-Qwen4B | 0.915 [0.890, 0.939] | 9 (1.8%) | 26 (19.7%) |
+| NidhiLens-FineTuned-Qwen2B | 0.941 [0.921, 0.958] | 12 (2.5%) | 12 (9.1%) |
+
+Gemini 3.1 Pro (best prompt) is being run on this set with the rest of the owner's Rs 800 credit.
