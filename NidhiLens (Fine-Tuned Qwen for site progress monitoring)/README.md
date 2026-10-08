@@ -17,43 +17,34 @@ visit". The model looks at the site photo from the last visit (A) and the one fr
 | `cant_tell` | The photos cannot decide (another place, too dark, view blocked) |
 
 It is a 4-billion-parameter open model (Qwen3-VL-4B-Instruct) with a small trained add-on (LoRA, 33 M weights). It runs
-on one mid-range GPU.
+on one mid-range GPU. **It was trained in 59 minutes on one NVIDIA A100 40 GB GPU, rented by the second from
+[Modal](https://modal.com) (a serverless GPU cloud), for about US$2** (§5.4).
 
 ---
 
 ## 1. The benchmark against Gemini 3.1 Pro
 
-![Accuracy and cost, same 223 checks](figures/headline.svg)
+![Accuracy and cost, same 883 checks](figures/headline.svg)
 
-### 1.1 Gemini at its best (223 real checks)
+### 1.1 Gemini at its best: the whole clean test (883 real checks)
 
-These are the 223 checks Gemini answered with its best prompt: our prompt plus the task's rules, written out for it.
+Gemini 3.1 Pro answered all 883 clean test checks with its best prompt: our prompt plus the task's rules, written out
+for it.
 
-| Judge | Macro-F1 [95% CI] | Accuracy | Work called "shown" though nothing was built (of 137) | Real finished work missed (of 32) | US$ per 1,000 checks |
+| Judge | Macro-F1 [95% CI] | Accuracy | Work called "shown" though nothing was built (of 576) | Real finished work missed (of 121) | US$ per 1,000 checks |
 |---|---|---|---|---|---|
-| **NidhiLens-FineTuned-Qwen4B** | **0.934** [0.905, 0.964] | **96.0%** | 1 | 6 | **0.18** |
-| NidhiLens-FineTuned-Qwen2B | 0.939 [0.905, 0.969] | 96.0% | 3 | 4 | 0.12 |
-| Gemini 3.1 Pro, its best prompt | 0.863 [0.803, 0.924] | 90.6% | **0** | 10 | 5.33 |
-| Gemini 3.1 Pro, the same prompt as ours | 0.738 [0.662, 0.819] | 85.7% | 0 | 22 | 5.12 |
-
-On the same 223 checks, our 4B is right on 16 that Gemini (best prompt) gets wrong, and wrong on 4 that Gemini gets
-right. McNemar p = 0.012: the difference is not chance.
-
-### 1.2 The whole test (883 real checks)
-
-Here Gemini had our prompt. Its best-prompt run was stopped by Google's monthly spending cap after 223 checks.
-
-| Judge | Macro-F1 [95% CI] | Accuracy | Fooled (of 576) | Missed (of 121) | US$ per 1,000 checks |
-|---|---|---|---|---|---|
-| **NidhiLens-FineTuned-Qwen4B** | **0.935** [0.921, 0.951] | **96.0%** | 4 | 21 | **0.17** |
+| **NidhiLens-FineTuned-Qwen4B** | **0.935** [0.920, 0.951] | **96.0%** | 4 | 21 | **0.17** |
 | NidhiLens-FineTuned-Qwen2B | 0.927 [0.907, 0.946] | 95.1% | 15 | 14 | 0.12 |
-| Gemini 3.1 Pro (our prompt) | 0.711 [0.667, 0.760] | 84.6% | **2** | 87 | 5.15 |
+| Gemini 3.1 Pro, its best prompt | 0.876 [0.843, 0.909] | 91.3% | **2** | 31 | 5.27 |
+| Gemini 3.1 Pro, the same prompt as ours | 0.711 [0.667, 0.760] | 84.6% | 2 | 87 | 5.15 |
 | Qwen3-VL-4B, before our training | 0.493 [0.452, 0.534] | 45.0% | 7 | 61 | 0.83 |
 | Qwen3-VL-2B, before our training | 0.467 [0.431, 0.502] | 67.0% | 56 | 40 | 1.03 |
 
-McNemar against Gemini:
-- **our 4B:** right on 106 checks Gemini gets wrong, wrong on 5 (p = 1×10⁻²⁵);
-- **our 2B:** 109 against 16 (p = 3×10⁻¹⁸).
+McNemar against Gemini at its best (same 883 checks):
+- **our 4B:** right on 57 checks Gemini gets wrong, wrong on 15 (p = 7×10⁻⁷);
+- **our 2B:** 55 against 21 (p = 1×10⁻⁴).
+
+The difference is not chance.
 
 ### 1.3 The hardest trick: another finished work of the same kind (93 checks)
 
@@ -87,12 +78,12 @@ How each cost was measured:
 ### 1.5 What this shows, honestly
 
 - **More accurate than Google's top model on this task, at a thirtieth of the bulk price.**
-  - It holds on Gemini's best prompt (0.934 against 0.863) and on the whole test (0.935 against 0.711).
-  - The gap is in confirming real work. Gemini misses a third to three-quarters of real, finished works, mostly
+  - It holds on Gemini's best prompt (0.935 against 0.876, all 883 checks) and on fresh sites (§1.2).
+  - The gap is in confirming real work. Gemini misses a quarter (best prompt) to three-quarters of real, finished works, mostly
     answering "can't tell" because the two photos were taken from different spots. As a checker, that would send
     most honest agencies to an inspection.
 - **Gemini is fooled less often.**
-  - Fooled: 0–2 times against our 1–4.
+  - Fooled: 2 of 576 against our 4 (4B).
   - Probe: it passes 93 of 93 with our prompt, but that setting misses 69–72% of real work. With its best prompt it
     passes 82, below ours.
   - No Gemini setting we tried does both.
@@ -319,11 +310,32 @@ claim ─────> text tokens ───────────────
 
 ---
 
+### 5.4 Training compute: NVIDIA A100 on Modal
+
+All training and scoring ran on [Modal](https://modal.com), a serverless GPU cloud: a GPU is rented by the second
+while a job runs, then released. It was paid from the team's Modal credit. The team's own PC (an NVIDIA RTX 3070 Ti,
+8 GB) built the data: DINOv2 change features, person and vehicle cut-outs, and the photo harvest.
+
+| Job | GPU (on Modal) | Time | Peak GPU memory | Cost |
+|---|---|---|---|---|
+| **Fine-tuning NidhiLens-FineTuned-Qwen4B** (2 passes over 2,924 real checks, 731 optimiser steps) | **NVIDIA A100 40 GB** | **58.6 minutes** | 15.7 GB | **about US$2.05** |
+| Fine-tuning NidhiLens-FineTuned-Qwen2B (2 passes over 3,655 checks, 914 steps) | NVIDIA A100 40 GB | 37.5 minutes | 8.5 GB | about US$1.31 |
+| Scoring a model on the test (883 checks, 8 at a time) | NVIDIA L4 24 GB | about 11 minutes | 10.5 GB | about US$0.15 |
+| Calling Gemini (Batch API), with the key held in a Modal Secret | CPU only | n/a | n/a | Google's bill (§1.4) |
+
+How the costs were worked out:
+- training time and memory are from each run's own log (`train_info.json`);
+- each cost is the time × Modal's published price ($0.000583 a second for an A100 40 GB, $0.000222 for an L4).
+
+**The whole project used US$23.32 of Modal time** (Modal's billing report, 8 October 2026). That figure includes:
+- every experiment that was rejected (the first dataset versions, both reinforcement-learning runs, the edited-photo
+  ablation);
+- the slow first scoring runs, before answers were batched.
+
 ## 6. Limitations
 
-- **The government photos in the test come from only 5 districts** (203 works), plus 33 timelapse checks. More held-out
-  districts are the next step. Gemini's best-prompt run covers 223 of the 883 checks, from 4 of those districts:
-  Google's monthly spending cap stopped the rest. The full-test comparison used our prompt.
+- **The government photos in the main test come from 5 districts** (203 works), plus 33 timelapse checks. More held-out
+  districts are the next step.
 - **The labels were checked by an AI agent's eye.** Checking by people is the next step.
 - **Being fooled is rare but not zero:** 4 of 576 for the 4B. Example 6 shows a case, where the model also
   misdescribed photo A.
@@ -334,7 +346,9 @@ claim ─────> text tokens ───────────────
 
 ## 7. Reproduce
 
-The code is in `apps/vision/` of this repository (the vision package and `modal/train_modal.py`).
+The code is in `apps/vision/` (the vision package and `modal/train_modal.py`). Until pull requests #120 and #121
+are merged it lives on the branch
+[`adityamore776/T150-vlm-progress-dataset`](https://github.com/AdityaMore776/NidhiNetra/tree/adityamore776/T150-vlm-progress-dataset/apps/vision).
 
 | Step | Command |
 |---|---|

@@ -1,0 +1,266 @@
+{
+ "ours4b": {
+  "n": 871,
+  "macro_f1": 0.9345565171258995,
+  "macro_f1_ci95": [
+   0.9201521194462579,
+   0.9511420183139148
+  ],
+  "fooled_rate": 0.0070921985815602835,
+  "fooled_ci95": [
+   0.0016778523489932886,
+   0.014365254317075781
+  ],
+  "missed_rate": 0.17355371900826447,
+  "accuracy": 0.9598163030998852,
+  "unreadable": 0,
+  "per_trick": {
+   "busy": {
+    "n": 162,
+    "accuracy": 1.0
+   },
+   "double_claim": {
+    "n": 141,
+    "accuracy": 1.0
+   },
+   "light": {
+    "n": 10,
+    "accuracy": 1.0
+   },
+   "none": {
+    "n": 121,
+    "accuracy": 0.8264462809917356
+   },
+   "other_site": {
+    "n": 186,
+    "accuracy": 1.0
+   },
+   "swapped": {
+    "n": 41,
+    "accuracy": 0.7560975609756098
+   },
+   "view": {
+    "n": 210,
+    "accuracy": 0.9809523809523809
+   }
+  },
+  "usd_per_1000_checks": 0.173,
+  "cost_basis": "L4 GPU time",
+  "mcnemar_vs_ref": {
+   "n": 871,
+   "only_a_right": 15,
+   "only_b_right": 57,
+   "p": 6.539968221733264e-07
+  }
+ },
+ "ours4b @1024px": {
+  "n": 871,
+  "macro_f1": 0.9350013380290281,
+  "macro_f1_ci95": [
+   0.9171262912780721,
+   0.9532434597183542
+  ],
+  "fooled_rate": 0.008865248226950355,
+  "fooled_ci95": [
+   0.0017420845326465686,
+   0.01782770781822015
+  ],
+  "missed_rate": 0.17355371900826447,
+  "accuracy": 0.9598163030998852,
+  "unreadable": 0,
+  "per_trick": {
+   "busy": {
+    "n": 162,
+    "accuracy": 1.0
+   },
+   "double_claim": {
+    "n": 141,
+    "accuracy": 1.0
+   },
+   "light": {
+    "n": 10,
+    "accuracy": 1.0
+   },
+   "none": {
+    "n": 121,
+    "accuracy": 0.8264462809917356
+   },
+   "other_site": {
+    "n": 186,
+    "accuracy": 1.0
+   },
+   "swapped": {
+    "n": 41,
+    "accuracy": 0.7560975609756098
+   },
+   "view": {
+    "n": 210,
+    "accuracy": 0.9809523809523809
+   }
+  },
+  "usd_per_1000_checks": 0.387,
+  "cost_basis": "L4 GPU time",
+  "mcnemar_vs_ref": {
+   "n": 871,
+   "only_a_right": 14,
+   "only_b_right": 56,
+   "p": 4.3028401315359276e-07
+  }
+ },
+ "ours2b": {
+  "n": 871,
+  "macro_f1": 0.9269661710838181,
+  "macro_f1_ci95": [
+   0.906848943593332,
+   0.9456100099928306
+  ],
+  "fooled_rate": 0.026595744680851064,
+  "fooled_ci95": [
+   0.014566073212292144,
+   0.03978480357470451
+  ],
+  "missed_rate": 0.11570247933884298,
+  "accuracy": 0.9506314580941446,
+  "unreadable": 0,
+  "per_trick": {
+   "busy": {
+    "n": 162,
+    "accuracy": 1.0
+   },
+   "double_claim": {
+    "n": 141,
+    "accuracy": 1.0
+   },
+   "light": {
+    "n": 10,
+    "accuracy": 1.0
+   },
+   "none": {
+    "n": 121,
+    "accuracy": 0.8842975206611571
+   },
+   "other_site": {
+    "n": 186,
+    "accuracy": 0.9838709677419355
+   },
+   "swapped": {
+    "n": 41,
+    "accuracy": 0.7317073170731707
+   },
+   "view": {
+    "n": 210,
+    "accuracy": 0.9285714285714286
+   }
+  },
+  "usd_per_1000_checks": 0.116,
+  "cost_basis": "L4 GPU time",
+  "mcnemar_vs_ref": {
+   "n": 871,
+   "only_a_right": 21,
+   "only_b_right": 55,
+   "p": 0.00012062911599790318
+  }
+ },
+ "gem_pro31_rules": {
+  "n": 871,
+  "macro_f1": 0.8759439712342735,
+  "macro_f1_ci95": [
+   0.8448521323337769,
+   0.9070697549900837
+  ],
+  "fooled_rate": 0.0035460992907801418,
+  "fooled_ci95": [
+   0.0,
+   0.00894779048664162
+  ],
+  "missed_rate": 0.256198347107438,
+  "accuracy": 0.9115958668197475,
+  "unreadable": 0,
+  "per_trick": {
+   "busy": {
+    "n": 162,
+    "accuracy": 1.0
+   },
+   "double_claim": {
+    "n": 141,
+    "accuracy": 0.9929078014184397
+   },
+   "light": {
+    "n": 10,
+    "accuracy": 1.0
+   },
+   "none": {
+    "n": 121,
+    "accuracy": 0.743801652892562
+   },
+   "other_site": {
+    "n": 186,
+    "accuracy": 0.946236559139785
+   },
+   "swapped": {
+    "n": 41,
+    "accuracy": 0.24390243902439024
+   },
+   "view": {
+    "n": 210,
+    "accuracy": 0.9809523809523809
+   }
+  },
+  "usd_per_1000_checks": 5.267,
+  "cost_basis": "gemini-3.1-pro-preview billed tokens, Batch API price"
+ },
+ "gem_pro31_batch": {
+  "n": 871,
+  "macro_f1": 0.7104235815236798,
+  "macro_f1_ci95": [
+   0.6693806951678111,
+   0.7597402700017001
+  ],
+  "fooled_rate": 0.0035460992907801418,
+  "fooled_ci95": [
+   0.0,
+   0.009042411791154009
+  ],
+  "missed_rate": 0.71900826446281,
+  "accuracy": 0.8438576349024111,
+  "unreadable": 0,
+  "per_trick": {
+   "busy": {
+    "n": 162,
+    "accuracy": 1.0
+   },
+   "double_claim": {
+    "n": 141,
+    "accuracy": 0.9858156028368794
+   },
+   "light": {
+    "n": 10,
+    "accuracy": 1.0
+   },
+   "none": {
+    "n": 121,
+    "accuracy": 0.2809917355371901
+   },
+   "other_site": {
+    "n": 186,
+    "accuracy": 0.967741935483871
+   },
+   "swapped": {
+    "n": 41,
+    "accuracy": 0.1951219512195122
+   },
+   "view": {
+    "n": 210,
+    "accuracy": 0.9619047619047619
+   }
+  },
+  "usd_per_1000_checks": 5.147,
+  "cost_basis": "gemini-3.1-pro-preview billed tokens, Batch API price",
+  "mcnemar_vs_ref": {
+   "n": 871,
+   "only_a_right": 70,
+   "only_b_right": 11,
+   "p": 1.1828221854912696e-11
+  }
+ }
+}
