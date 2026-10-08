@@ -21,20 +21,14 @@
    }
   },
   "usd_per_1000_checks": 1.727,
-  "cost_basis": "L4 GPU time",
-  "mcnemar_vs_ref": {
-   "n": 93,
-   "only_a_right": 7,
-   "only_b_right": 0,
-   "p": 0.015625
-  }
+  "cost_basis": "L4 GPU time"
  },
- "ours2b": {
+ "rl4b_bal": {
   "n": 93,
-  "macro_f1": 0.2954091816367265,
+  "macro_f1": 0.22695035460992907,
   "macro_f1_ci95": [
-   0.27672955974842767,
-   0.45930232558139533
+   0.196969696969697,
+   0.25333333333333335
   ],
   "fooled_rate": null,
   "fooled_ci95": [
@@ -42,105 +36,21 @@
    NaN
   ],
   "missed_rate": null,
-  "accuracy": 0.7956989247311828,
+  "accuracy": 0.5161290322580645,
   "unreadable": 0,
   "per_trick": {
    "other_site_same": {
     "n": 93,
-    "accuracy": 0.7956989247311828
+    "accuracy": 0.5161290322580645
    }
   },
-  "usd_per_1000_checks": 1.342,
+  "usd_per_1000_checks": 0.183,
   "cost_basis": "L4 GPU time",
   "mcnemar_vs_ref": {
    "n": 93,
-   "only_a_right": 19,
+   "only_a_right": 38,
    "only_b_right": 0,
-   "p": 3.814697265625e-06
-  }
- },
- "rl4b": {
-  "n": 93,
-  "macro_f1": 0.06472491909385113,
-  "macro_f1_ci95": [
-   0.034013605442176874,
-   0.09785932721712538
-  ],
-  "fooled_rate": null,
-  "fooled_ci95": [
-   NaN,
-   NaN
-  ],
-  "missed_rate": null,
-  "accuracy": 0.10752688172043011,
-  "unreadable": 0,
-  "per_trick": {
-   "other_site_same": {
-    "n": 93,
-    "accuracy": 0.10752688172043011
-   }
-  },
-  "usd_per_1000_checks": 0.179,
-  "cost_basis": "L4 GPU time",
-  "mcnemar_vs_ref": {
-   "n": 93,
-   "only_a_right": 83,
-   "only_b_right": 0,
-   "p": 2.0679515313825692e-25
-  }
- },
- "gem_pro31_batch": {
-  "n": 93,
-  "macro_f1": 1.0,
-  "macro_f1_ci95": [
-   1.0,
-   1.0
-  ],
-  "fooled_rate": null,
-  "fooled_ci95": [
-   NaN,
-   NaN
-  ],
-  "missed_rate": null,
-  "accuracy": 1.0,
-  "unreadable": 0,
-  "per_trick": {
-   "other_site_same": {
-    "n": 93,
-    "accuracy": 1.0
-   }
-  },
-  "usd_per_1000_checks": 5.178,
-  "cost_basis": "gemini-3.1-pro-preview billed tokens, Batch API price"
- },
- "base4b_v6": {
-  "n": 93,
-  "macro_f1": 0.26666666666666666,
-  "macro_f1_ci95": [
-   0.24200913242009134,
-   0.2886178861788618
-  ],
-  "fooled_rate": null,
-  "fooled_ci95": [
-   NaN,
-   NaN
-  ],
-  "missed_rate": null,
-  "accuracy": 0.6666666666666666,
-  "unreadable": 0,
-  "per_trick": {
-   "other_site_same": {
-    "n": 93,
-    "accuracy": 0.6666666666666666
-   }
-  },
-  "usd_per_1000_checks": 0.856,
-  "cost_basis": "L4 GPU time",
-  "mcnemar_vs_ref": {
-   "n": 93,
-   "only_a_right": 31,
-   "only_b_right": 0,
-   "p": 9.313225746154785e-10
+   "p": 7.275957614183426e-12
   }
  }
 }

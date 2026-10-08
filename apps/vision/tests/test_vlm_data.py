@@ -293,6 +293,21 @@ def test_batch_requests_ask_exactly_what_the_live_judge_asks(tmp_path):
     assert req["generationConfig"]["temperature"] == 0
 
 
+def test_rules_prompt_adds_only_the_task_rules_and_caps_output(tmp_path):
+    from drishti_vision import flagship_batch, flagship_other
+    a = _asset(tmp_path, 83, _district("test"))
+    it = _items(tmp_path, [a], synthetic=False)[0]
+    plain = json.loads(flagship_batch.request_line(it, tmp_path))["request"]
+    rules = json.loads(flagship_batch.request_line(it, tmp_path, prompt="rules",
+                                                   max_output=3000))["request"]
+    assert rules["contents"] == plain["contents"]                         # same photos, question
+    sys_text = rules["system_instruction"]["parts"][0]["text"]
+    assert sys_text.startswith(vlmdata.SYSTEM) and flagship_other.RULES in sys_text
+    assert it.claim not in flagship_other.RULES                         # rules, no item content
+    assert rules["generationConfig"]["maxOutputTokens"] == 3000
+    assert "maxOutputTokens" not in plain["generationConfig"]
+
+
 def test_batch_answers_become_the_same_rows_as_live_answers(tmp_path):
     from drishti_vision import flagship_batch
     a = _asset(tmp_path, 82, _district("test"))

@@ -29,6 +29,27 @@ from pathlib import Path
 from drishti_vision import vlm
 from drishti_vision.vlmdata import SYSTEM, user_prompt
 
+# The task's own rules, as the tuned judge learnt them from its training labels (8 Oct 2026: on
+# the plain prompt the flagship mistook "B shows the finished road" claims for "built since A",
+# and refused most real progress because before/after photos were taken from different spots).
+# Rules only: no example, no answer, nothing from the test.
+RULES = (
+    "How to decide:\n"
+    "- There are two kinds of claim. 'What B shows now' (for example 'CC road completed'): judge "
+    "only whether photo B shows that stage; photo A is context, and two similar photos of the "
+    "finished work support a 'completed' claim. 'Work done between A and B' (for example "
+    "'completed since the last visit'): shown only if B has permanent structure that A does "
+    "not.\n"
+    "- shown: the photos support the claim. not_shown: the photos go against it (nothing "
+    "permanent added; B less built than A; B at an earlier stage than claimed; finished work "
+    "already in A claimed again as new). cant_tell: the photos cannot decide (B is clearly "
+    "another place, too dark, or the view is blocked).\n"
+    "- A work's site photos are taken on different days, often from different spots and "
+    "angles; that alone does not make them different places. Call it another place only when "
+    "what is visible cannot be the same site (a different kind of structure, surroundings that "
+    "cannot match).\n"
+    "- People, vehicles, stacked materials, light, shadows and season are never progress.")
+
 FULL_SIDE = 3072     # the photos' own resolution, only very large files shrunk (request size)
 
 

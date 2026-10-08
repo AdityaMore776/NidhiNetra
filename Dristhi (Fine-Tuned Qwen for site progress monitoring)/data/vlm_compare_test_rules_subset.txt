@@ -1,0 +1,16 @@
+T155: judges on the same 223 test items (real photos; labels checked by eye)
+
+ours4b: n 223, macro-F1 0.934 [0.905, 0.964], accuracy 0.960, fooled 0.007 of 137, missed 0.188 of 32, unreadable 0
+    cost: $0.178 per 1,000 checks (L4 GPU time)
+    against gem_pro31_rules: only gem_pro31_rules right 4, only this right 16, McNemar p 0.0118
+ours4b @1024px: n 223, macro-F1 0.947 [0.915, 0.976], accuracy 0.969, fooled 0.007 of 137, missed 0.156 of 32, unreadable 0
+    cost: $0.400 per 1,000 checks (L4 GPU time)
+    against gem_pro31_rules: only gem_pro31_rules right 2, only this right 16, McNemar p 0.00131
+ours2b: n 223, macro-F1 0.939 [0.905, 0.969], accuracy 0.960, fooled 0.022 of 137, missed 0.125 of 32, unreadable 0
+    cost: $0.120 per 1,000 checks (L4 GPU time)
+    against gem_pro31_rules: only gem_pro31_rules right 4, only this right 16, McNemar p 0.0118
+gem_pro31_batch: n 223, macro-F1 0.738 [0.662, 0.819], accuracy 0.857, fooled 0.000 of 137, missed 0.688 of 32, unreadable 0
+    cost: $5.115 per 1,000 checks (gemini-3.1-pro-preview billed tokens, Batch API price)
+    against gem_pro31_rules: only gem_pro31_rules right 16, only this right 5, McNemar p 0.0266
+gem_pro31_rules: n 223, macro-F1 0.863 [0.803, 0.924], accuracy 0.906, fooled 0.000 of 137, missed 0.312 of 32, unreadable 0
+    cost: $5.331 per 1,000 checks (gemini-3.1-pro-preview billed tokens, Batch API price)

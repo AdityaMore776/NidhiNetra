@@ -1,374 +1,246 @@
 {
  "ours4b": {
-  "n": 915,
-  "macro_f1": 0.9180483022075627,
+  "n": 223,
+  "macro_f1": 0.9337734347536345,
   "macro_f1_ci95": [
-   0.8961607438215907,
-   0.9389090423339514
+   0.9045307535108108,
+   0.9640939439088753
   ],
-  "fooled_rate": 0.008620689655172414,
+  "fooled_rate": 0.0072992700729927005,
   "fooled_ci95": [
-   0.0017240637426553505,
-   0.01663872350043501
+   0.0,
+   0.0243952419032387
   ],
-  "missed_rate": 0.2206896551724138,
-  "accuracy": 0.9475409836065574,
+  "missed_rate": 0.1875,
+  "accuracy": 0.9596412556053812,
   "unreadable": 0,
   "per_trick": {
    "busy": {
-    "n": 166,
+    "n": 40,
     "accuracy": 1.0
    },
    "double_claim": {
-    "n": 141,
-    "accuracy": 1.0
-   },
-   "light": {
-    "n": 18,
+    "n": 37,
     "accuracy": 1.0
    },
    "none": {
-    "n": 145,
-    "accuracy": 0.7793103448275862
+    "n": 32,
+    "accuracy": 0.8125
    },
    "other_site": {
-    "n": 190,
+    "n": 54,
     "accuracy": 1.0
    },
    "swapped": {
-    "n": 43,
-    "accuracy": 0.7441860465116279
+    "n": 8,
+    "accuracy": 0.75
    },
    "view": {
-    "n": 212,
-    "accuracy": 0.9764150943396226
+    "n": 52,
+    "accuracy": 0.9807692307692307
    }
   },
-  "usd_per_1000_checks": 0.173,
+  "usd_per_1000_checks": 0.178,
   "cost_basis": "L4 GPU time",
   "mcnemar_vs_ref": {
-   "n": 915,
-   "only_a_right": 6,
-   "only_b_right": 117,
-   "p": 8.41628443011684e-28
+   "n": 223,
+   "only_a_right": 4,
+   "only_b_right": 16,
+   "p": 0.01181793212890625
   }
  },
  "ours4b @1024px": {
-  "n": 915,
-  "macro_f1": 0.9168881667755749,
+  "n": 223,
+  "macro_f1": 0.946671826625387,
   "macro_f1_ci95": [
-   0.8905020512207592,
-   0.9405311998642303
+   0.9151997186905478,
+   0.9760919261457243
   ],
-  "fooled_rate": 0.010344827586206896,
+  "fooled_rate": 0.0072992700729927005,
   "fooled_ci95": [
-   0.0033825488641921176,
-   0.01971503442407364
+   0.0,
+   0.0243952419032387
   ],
-  "missed_rate": 0.22758620689655173,
-  "accuracy": 0.946448087431694,
+  "missed_rate": 0.15625,
+  "accuracy": 0.968609865470852,
   "unreadable": 0,
   "per_trick": {
    "busy": {
-    "n": 166,
+    "n": 40,
     "accuracy": 1.0
    },
    "double_claim": {
-    "n": 141,
-    "accuracy": 1.0
-   },
-   "light": {
-    "n": 18,
+    "n": 37,
     "accuracy": 1.0
    },
    "none": {
-    "n": 145,
-    "accuracy": 0.7724137931034483
+    "n": 32,
+    "accuracy": 0.84375
    },
    "other_site": {
-    "n": 190,
+    "n": 54,
     "accuracy": 1.0
    },
    "swapped": {
-    "n": 43,
-    "accuracy": 0.7441860465116279
+    "n": 8,
+    "accuracy": 0.875
    },
    "view": {
-    "n": 212,
-    "accuracy": 0.9764150943396226
+    "n": 52,
+    "accuracy": 0.9807692307692307
    }
   },
-  "usd_per_1000_checks": 0.384,
+  "usd_per_1000_checks": 0.4,
   "cost_basis": "L4 GPU time",
   "mcnemar_vs_ref": {
-   "n": 915,
-   "only_a_right": 5,
-   "only_b_right": 115,
-   "p": 2.9954333738275177e-28
+   "n": 223,
+   "only_a_right": 2,
+   "only_b_right": 16,
+   "p": 0.001312255859375
   }
  },
  "ours2b": {
-  "n": 915,
-  "macro_f1": 0.9123486986623144,
+  "n": 223,
+  "macro_f1": 0.9392233164489082,
   "macro_f1_ci95": [
-   0.8887044024911999,
-   0.9341200651042078
+   0.9047806510255858,
+   0.9687736012722947
   ],
-  "fooled_rate": 0.02586206896551724,
+  "fooled_rate": 0.021897810218978103,
   "fooled_ci95": [
-   0.01412693948916087,
-   0.038931595111593095
+   0.0,
+   0.047638248847926244
   ],
-  "missed_rate": 0.15862068965517243,
-  "accuracy": 0.9387978142076503,
+  "missed_rate": 0.125,
+  "accuracy": 0.9596412556053812,
   "unreadable": 0,
   "per_trick": {
    "busy": {
-    "n": 166,
+    "n": 40,
     "accuracy": 1.0
    },
    "double_claim": {
-    "n": 141,
-    "accuracy": 1.0
-   },
-   "light": {
-    "n": 18,
+    "n": 37,
     "accuracy": 1.0
    },
    "none": {
-    "n": 145,
-    "accuracy": 0.8413793103448276
+    "n": 32,
+    "accuracy": 0.875
    },
    "other_site": {
-    "n": 190,
-    "accuracy": 0.968421052631579
+    "n": 54,
+    "accuracy": 1.0
    },
    "swapped": {
-    "n": 43,
-    "accuracy": 0.7209302325581395
+    "n": 8,
+    "accuracy": 0.75
    },
    "view": {
-    "n": 212,
-    "accuracy": 0.9292452830188679
+    "n": 52,
+    "accuracy": 0.9423076923076923
    }
   },
-  "usd_per_1000_checks": 0.117,
+  "usd_per_1000_checks": 0.12,
   "cost_basis": "L4 GPU time",
   "mcnemar_vs_ref": {
-   "n": 915,
-   "only_a_right": 19,
-   "only_b_right": 122,
-   "p": 1.3381936476810788e-19
-  }
- },
- "rl4b": {
-  "n": 915,
-  "macro_f1": 0.8636186617723581,
-  "macro_f1_ci95": [
-   0.8424208998031126,
-   0.8815377949843031
-  ],
-  "fooled_rate": 0.08275862068965517,
-  "fooled_ci95": [
-   0.06296005339905524,
-   0.10328292820802713
-  ],
-  "missed_rate": 0.027586206896551724,
-  "accuracy": 0.8961748633879781,
-  "unreadable": 0,
-  "per_trick": {
-   "busy": {
-    "n": 166,
-    "accuracy": 1.0
-   },
-   "double_claim": {
-    "n": 141,
-    "accuracy": 1.0
-   },
-   "light": {
-    "n": 18,
-    "accuracy": 1.0
-   },
-   "none": {
-    "n": 145,
-    "accuracy": 0.9724137931034482
-   },
-   "other_site": {
-    "n": 190,
-    "accuracy": 0.7736842105263158
-   },
-   "swapped": {
-    "n": 43,
-    "accuracy": 0.9767441860465116
-   },
-   "view": {
-    "n": 212,
-    "accuracy": 0.7783018867924528
-   }
-  },
-  "usd_per_1000_checks": 0.174,
-  "cost_basis": "L4 GPU time",
-  "mcnemar_vs_ref": {
-   "n": 915,
-   "only_a_right": 82,
-   "only_b_right": 146,
-   "p": 2.6926376424760556e-05
+   "n": 223,
+   "only_a_right": 4,
+   "only_b_right": 16,
+   "p": 0.01181793212890625
   }
  },
  "gem_pro31_batch": {
-  "n": 915,
-  "macro_f1": 0.6891441739802396,
+  "n": 223,
+  "macro_f1": 0.7383795170054711,
   "macro_f1_ci95": [
-   0.6466546590381939,
-   0.7348387563871112
+   0.6624150745221473,
+   0.8188598449602879
   ],
-  "fooled_rate": 0.0034482758620689655,
+  "fooled_rate": 0.0,
   "fooled_ci95": [
    0.0,
-   0.009061724317399308
+   0.0
   ],
-  "missed_rate": 0.7517241379310344,
-  "accuracy": 0.8262295081967214,
+  "missed_rate": 0.6875,
+  "accuracy": 0.8565022421524664,
   "unreadable": 0,
   "per_trick": {
    "busy": {
-    "n": 166,
+    "n": 40,
     "accuracy": 1.0
    },
    "double_claim": {
-    "n": 141,
-    "accuracy": 0.9858156028368794
-   },
-   "light": {
-    "n": 18,
+    "n": 37,
     "accuracy": 1.0
    },
    "none": {
-    "n": 145,
-    "accuracy": 0.2482758620689655
+    "n": 32,
+    "accuracy": 0.3125
    },
    "other_site": {
-    "n": 190,
-    "accuracy": 0.968421052631579
+    "n": 54,
+    "accuracy": 0.9629629629629629
    },
    "swapped": {
-    "n": 43,
-    "accuracy": 0.20930232558139536
+    "n": 8,
+    "accuracy": 0.25
    },
    "view": {
-    "n": 212,
-    "accuracy": 0.9622641509433962
+    "n": 52,
+    "accuracy": 0.9615384615384616
    }
   },
-  "usd_per_1000_checks": 5.18,
+  "usd_per_1000_checks": 5.115,
+  "cost_basis": "gemini-3.1-pro-preview billed tokens, Batch API price",
+  "mcnemar_vs_ref": {
+   "n": 223,
+   "only_a_right": 16,
+   "only_b_right": 5,
+   "p": 0.02660369873046875
+  }
+ },
+ "gem_pro31_rules": {
+  "n": 223,
+  "macro_f1": 0.8631364146515662,
+  "macro_f1_ci95": [
+   0.8027155081783384,
+   0.9237299383733478
+  ],
+  "fooled_rate": 0.0,
+  "fooled_ci95": [
+   0.0,
+   0.0
+  ],
+  "missed_rate": 0.3125,
+  "accuracy": 0.905829596412556,
+  "unreadable": 0,
+  "per_trick": {
+   "busy": {
+    "n": 40,
+    "accuracy": 1.0
+   },
+   "double_claim": {
+    "n": 37,
+    "accuracy": 1.0
+   },
+   "none": {
+    "n": 32,
+    "accuracy": 0.6875
+   },
+   "other_site": {
+    "n": 54,
+    "accuracy": 0.9259259259259259
+   },
+   "swapped": {
+    "n": 8,
+    "accuracy": 0.25
+   },
+   "view": {
+    "n": 52,
+    "accuracy": 0.9807692307692307
+   }
+  },
+  "usd_per_1000_checks": 5.331,
   "cost_basis": "gemini-3.1-pro-preview billed tokens, Batch API price"
- },
- "base4b_v6": {
-  "n": 915,
-  "macro_f1": 0.47097195387920704,
-  "macro_f1_ci95": [
-   0.4276344376637292,
-   0.512222131731179
-  ],
-  "fooled_rate": 0.01206896551724138,
-  "fooled_ci95": [
-   0.004982566362948587,
-   0.020726285027878873
-  ],
-  "missed_rate": 0.5793103448275863,
-  "accuracy": 0.4426229508196721,
-  "unreadable": 0,
-  "per_trick": {
-   "busy": {
-    "n": 166,
-    "accuracy": 0.43373493975903615
-   },
-   "double_claim": {
-    "n": 141,
-    "accuracy": 0.41843971631205673
-   },
-   "light": {
-    "n": 18,
-    "accuracy": 0.0
-   },
-   "none": {
-    "n": 145,
-    "accuracy": 0.4206896551724138
-   },
-   "other_site": {
-    "n": 190,
-    "accuracy": 0.868421052631579
-   },
-   "swapped": {
-    "n": 43,
-    "accuracy": 0.09302325581395349
-   },
-   "view": {
-    "n": 212,
-    "accuracy": 0.20754716981132076
-   }
-  },
-  "usd_per_1000_checks": 0.828,
-  "cost_basis": "L4 GPU time",
-  "mcnemar_vs_ref": {
-   "n": 915,
-   "only_a_right": 397,
-   "only_b_right": 46,
-   "p": 8.721780192363273e-71
-  }
- },
- "base2b_v6": {
-  "n": 915,
-  "macro_f1": 0.46442133630674604,
-  "macro_f1_ci95": [
-   0.4276072087486542,
-   0.5001810926084852
-  ],
-  "fooled_rate": 0.09655172413793103,
-  "fooled_ci95": [
-   0.0699752414778066,
-   0.1234996502715112
-  ],
-  "missed_rate": 0.3793103448275862,
-  "accuracy": 0.6601092896174864,
-  "unreadable": 19,
-  "per_trick": {
-   "busy": {
-    "n": 166,
-    "accuracy": 0.8614457831325302
-   },
-   "double_claim": {
-    "n": 141,
-    "accuracy": 0.8226950354609929
-   },
-   "light": {
-    "n": 18,
-    "accuracy": 1.0
-   },
-   "none": {
-    "n": 145,
-    "accuracy": 0.6206896551724138
-   },
-   "other_site": {
-    "n": 190,
-    "accuracy": 0.06315789473684211
-   },
-   "swapped": {
-    "n": 43,
-    "accuracy": 0.7674418604651163
-   },
-   "view": {
-    "n": 212,
-    "accuracy": 0.9056603773584906
-   }
-  },
-  "usd_per_1000_checks": 1.026,
-  "cost_basis": "L4 GPU time",
-  "mcnemar_vs_ref": {
-   "n": 915,
-   "only_a_right": 252,
-   "only_b_right": 100,
-   "p": 2.8679655113731415e-16
-  }
  }
 }

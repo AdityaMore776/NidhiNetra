@@ -245,6 +245,160 @@ def flagship_batch(action: str = "submit", model: str = "gemini-3.1-pro-preview"
 LEDGER = "/data/budget/gemini_inr.json"     # the owner's Rs 800 Gemini credit (8 Oct 2026)
 
 
+def _pending_usd() -> float:
+    """Worst cases of submitted rounds not yet collected and billed: counted as spent."""
+    import json
+    return sum(json.loads(p.read_text()).get("reserved_usd", 0.0)
+               for p in Path("/data/runs").glob("*/round_*.json")
+               if not json.loads(p.read_text()).get("billed"))
+
+
+@app.function(volumes={"/data": vol}, timeout=3 * 3600, memory=8192,
+              secrets=[modal.Secret.from_name("gemini")])
+def flagship_round(action: str = "submit", model: str = "gemini-3.1-pro-preview",
+                   items: str = "/data/vlm/v6/items_eye2.jsonl", split: str = "test",
+                   out_dir: str = "/data/runs/gem_pro31_rules", prompt: str = "rules",
+                   max_output: int = 3000, est_in: int = 3500, start: int = 0, count: int = 0,
+                   tag: int = 0, chunk: int = 300):
+    """One spending-controlled round of flagship questions through the Batch API (owner: Rs 800
+    ceiling, not a rupee more). `submit`: of the split's items[start:start+count], takes only as
+    many as fit under the ledger's stop line at their WORST case (est_in input tokens and the
+    max_output cap, thinking included, at the batch price; rounds submitted but not yet billed
+    count as spent), then uploads and starts them. `collect`: when finished, downloads the
+    answers (free), records their real billed cost in the ledger once, and writes
+    <split>_s<tag>.jsonl."""
+    import json
+    import sys
+    sys.path.insert(0, "/root")
+    from drishti_vision import flagship_batch as fb
+    from drishti_vision import spend, vlmeval
+    from drishti_vision.vlmdata import read_items
+    led = spend.Ledger(LEDGER, limit_inr=800)
+    od = Path(out_dir)
+    od.mkdir(parents=True, exist_ok=True)
+    rec_p = od / f"round_{split}_s{tag}.json"
+    its = [i for i in read_items(items) if i.split == split]
+    if action == "submit":
+        if rec_p.exists():
+            raise RuntimeError(f"{rec_p} exists: a round is never submitted twice")
+        per = spend.usd(model, est_in, max_output, batch=True)
+        pending = _pending_usd()
+        room = (led.stop - led.spent_inr) / led.fx - pending
+        sel = its[start:start + count] if count else its[start:]
+        n = min(len(sel), int(room / per))
+        if n <= 0:
+            print(f"no room: spent Rs {led.spent_inr:.2f}, pending ${pending:.3f}", flush=True)
+            return None
+        sel = sel[:n]
+        worst = n * per
+        led.check(worst + pending, f"round {split} s{tag}")
+        jobs = []
+        for k in range(0, n, chunk):
+            p = Path(f"/tmp/req_{split}_{tag}_{k}.jsonl")
+            with open(p, "w", encoding="utf-8") as f:
+                for it in sel[k:k + chunk]:
+                    f.write(fb.request_line(it, Path("/data"), prompt=prompt,
+                                            max_output=max_output) + "\n")
+            name = f"nidhinetra-{prompt}-{split}-{tag}-{k}"
+            jobs.append({"batch": fb.create(model, fb.upload(p, name), name),
+                         "n": len(sel[k:k + chunk])})
+        rec_p.write_text(json.dumps({"model": model, "split": split, "prompt": prompt,
+                                     "max_output": max_output, "ids": [i.id for i in sel],
+                                     "jobs": jobs, "reserved_usd": worst, "billed": False},
+                                    indent=1))
+        vol.commit()
+        print(f"submitted {n} items ({start}..{start + n - 1}); worst case Rs "
+              f"{worst * led.fx:.2f}; ledger Rs {led.spent_inr:.2f}; next start {start + n}",
+              flush=True)
+        return {"n": n, "next_start": start + n, "worst_inr": worst * led.fx}
+    rec = json.loads(rec_p.read_text())
+    states, lines = [], []
+    for j in rec["jobs"]:
+        st = fb.status(j["batch"])
+        state = st.get("metadata", {}).get("state") or st.get("state")
+        states.append(state)
+        resp = (st.get("response") or {}).get("responsesFile") or \
+            (st.get("metadata", {}).get("output") or {}).get("responsesFile")
+        if state == "BATCH_STATE_SUCCEEDED" and resp:
+            lines += fb.download(resp)
+    print(split, f"s{tag}", states, flush=True)
+    if not all(s in ("BATCH_STATE_SUCCEEDED", "BATCH_STATE_FAILED", "BATCH_STATE_CANCELLED",
+                     "BATCH_STATE_EXPIRED") for s in states):
+        return {"states": states}
+    ids = set(rec["ids"])
+    rows = fb.rows_from_results(lines, [i for i in its if i.id in ids])
+    actual = fb.batch_cost_usd(rows, rec["model"])
+    if not rec["billed"]:
+        total = led.add(actual, f"round {split} s{tag}: {len(rows)} answers")
+        rec.update(billed=True, actual_usd=actual)
+        rec_p.write_text(json.dumps(rec, indent=1))
+    else:
+        total = led.spent_inr
+    (od / f"{split}_s{tag}.jsonl").write_text(
+        "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows), encoding="utf-8")
+    vol.commit()
+    res = vlmeval.score(rows) if rows else {"headline_real_only": {}}
+    print(f"collected {len(rows)} of {len(ids)}; cost Rs {actual * led.fx:.2f}; ledger Rs "
+          f"{total:.2f} of 800", flush=True)
+    return {"answered": len(rows), "inr": actual * led.fx, "ledger_inr": total,
+            "macro_f1": res["headline_real_only"].get("macro_f1")}
+
+
+@app.function(volumes={"/data": vol}, timeout=900, secrets=[modal.Secret.from_name("gemini")])
+def gemini_batches(cancel_running: bool = False):
+    """Every batch job on the key (a free read), with its state and counts; with
+    `cancel_running`, cancels any that are still pending or running."""
+    import json
+    import sys
+    sys.path.insert(0, "/root")
+    from drishti_vision import flagship_batch as fb
+    body = json.loads(fb._req(f"{fb.API}/v1beta/batches?pageSize=100"))
+    for b in body.get("operations", body.get("batches", [])):
+        md = b.get("metadata", b)
+        state = md.get("state")
+        print(b.get("name"), md.get("displayName"), state, md.get("createTime"),
+              json.dumps(md.get("batchStats", {})), flush=True)
+        if cancel_running and state in ("BATCH_STATE_PENDING", "BATCH_STATE_RUNNING"):
+            fb.cancel(b["name"])
+            print("  cancelled", flush=True)
+
+
+@app.function(volumes={"/data": vol}, timeout=900, secrets=[modal.Secret.from_name("gemini")])
+def gemini_capcheck(model: str = "gemini-3.1-pro-preview", cap: int = 64):
+    """Does maxOutputTokens bound the thinking too? One small Pro call that invites thinking,
+    with a tiny cap; reserved at the model's full uncapped worst case (65,536 output tokens)."""
+    import json
+    import os
+    import sys
+    import urllib.request
+    sys.path.insert(0, "/root")
+    from drishti_vision import spend
+    led = spend.Ledger(LEDGER, limit_inr=800)
+    led.check(spend.usd(model, 200, 65536), "capcheck")
+    body = {"contents": [{"role": "user", "parts": [{"text": (
+        "Think step by step: how many prime numbers are there between 1 and 200? "
+        "Reply with the number only.")}]}],
+        "generationConfig": {"maxOutputTokens": cap, "temperature": 0}}
+    req = urllib.request.Request(
+        f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+        data=json.dumps(body).encode(), method="POST",
+        headers={"Content-Type": "application/json",
+                 "x-goog-api-key": os.environ["GEMINI_API_KEY"]})
+    with urllib.request.urlopen(req, timeout=300) as r:      # noqa: S310
+        out = json.loads(r.read().decode())
+    u = out.get("usageMetadata", {})
+    t_in, cand, th = (u.get("promptTokenCount", 0), u.get("candidatesTokenCount", 0),
+                      u.get("thoughtsTokenCount", 0))
+    cost = spend.usd(model, t_in, cand + th)
+    total = led.add(cost, f"capcheck {model} cap {cap}: in {t_in} out {cand} thoughts {th}")
+    vol.commit()
+    fin = (out.get("candidates") or [{}])[0].get("finishReason")
+    print(f"cap {cap}: answer tokens {cand} + thinking {th} = {cand + th} (finish {fin}); "
+          f"{'BOUNDED' if cand + th <= cap else 'NOT BOUNDED'}; cost Rs "
+          f"{cost * spend.INR_PER_USD:.4f}; ledger Rs {total:.4f}", flush=True)
+    return {"bounded": cand + th <= cap, "thinking": th, "answer": cand}
+
+
 @app.function(volumes={"/data": vol}, timeout=900, secrets=[modal.Secret.from_name("gemini")])
 def gemini_check(ping: bool = True):
     """Free first: the state of every recorded batch job (status reads are not billed). Then, if

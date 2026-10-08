@@ -1,0 +1,10 @@
+T155: judges on the same 124 calib items (real photos; labels checked by eye)
+
+sft4b_v6_real: n 124, macro-F1 0.870 [0.811, 0.952], accuracy 0.919, fooled 0.011 of 87, missed 0.308 of 13, unreadable 0
+    cost: $0.172 per 1,000 checks (L4 GPU time)
+sft4b_v6_real @1024px: n 124, macro-F1 0.863 [0.807, 0.968], accuracy 0.927, fooled 0.011 of 87, missed 0.385 of 13, unreadable 0
+    cost: $0.352 per 1,000 checks (L4 GPU time)
+    against sft4b_v6_real: only sft4b_v6_real right 1, only this right 2, McNemar p 1
+rl4b_bal: n 124, macro-F1 0.893 [0.846, 0.944], accuracy 0.927, fooled 0.069 of 87, missed 0.077 of 13, unreadable 0
+    cost: $0.178 per 1,000 checks (L4 GPU time)
+    against sft4b_v6_real: only sft4b_v6_real right 5, only this right 6, McNemar p 1

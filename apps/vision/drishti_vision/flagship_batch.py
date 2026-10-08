@@ -16,18 +16,33 @@ import os
 from pathlib import Path
 
 from drishti_vision import vlm
-from drishti_vision.flagship_other import FULL_SIDE, _gemini_turn
+from drishti_vision.flagship_other import FULL_SIDE, RULES, _gemini_turn
 from drishti_vision.vlmdata import SYSTEM
 
 API = "https://generativelanguage.googleapis.com"
 
 
-def request_line(item, root: Path, max_side: int = FULL_SIDE) -> str:
+def request_line(item, root: Path, max_side: int = FULL_SIDE, prompt: str = "plain",
+                 max_output: int = 0) -> str:
+    """`prompt`: "plain" (the tuned judge's own system text) or "rules" (plus the task's rules,
+    RULES). `max_output` caps the answer, thinking included, so a request's worst-case price is
+    known before it is sent (spend.py)."""
     it = item if isinstance(item, dict) else item.__dict__
-    req = {"system_instruction": {"parts": [{"text": SYSTEM}]},
+    system = SYSTEM if prompt == "plain" else SYSTEM + "\n\n" + RULES
+    cfg = {"response_mime_type": "application/json", "temperature": 0}
+    if max_output:
+        cfg["maxOutputTokens"] = max_output
+    req = {"system_instruction": {"parts": [{"text": system}]},
            "contents": [{"role": "user", "parts": _gemini_turn(it, root, max_side)}],
-           "generationConfig": {"response_mime_type": "application/json", "temperature": 0}}
+           "generationConfig": cfg}
     return json.dumps({"key": it["id"], "request": req})
+
+
+def batch_cost_usd(rows: list[dict], model: str) -> float:
+    """What a collected batch was billed: its answers' tokens at the batch price."""
+    from drishti_vision import spend
+    return sum(spend.usd(model, r["usage"]["in"], r["usage"]["out"], batch=True)
+               for r in rows if r.get("usage"))
 
 
 def rows_from_results(lines: list[str], items: list) -> list[dict]:
