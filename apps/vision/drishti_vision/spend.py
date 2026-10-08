@@ -24,7 +24,8 @@ USD_PER_M = {        # published Gemini API prices, (input, output incl. thinkin
     "gemini-3.8-flash": (0.75, 3.75),
 }
 BATCH_SHARE = 0.5    # Batch API: "50% of the standard cost"
-INR_PER_USD = 95.0   # deliberately above the market rate: the ledger over-counts
+INR_PER_USD = 96.0   # measured: the owner's AI Studio spend rose Rs 228 for $2.384 billed (Rs 95.6
+                     # per $, 8 Oct 2026); rounded up so the ledger over-counts
 
 
 class OverBudget(RuntimeError):

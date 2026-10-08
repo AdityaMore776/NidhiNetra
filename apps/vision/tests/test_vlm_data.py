@@ -331,12 +331,13 @@ def test_spend_ledger_refuses_a_call_that_could_pass_the_ceiling(tmp_path):
     led = spend.Ledger(tmp_path / "gemini.json", limit_inr=800)        # stops at Rs 700
     one = spend.usd("gemini-3.1-pro-preview", 2400, 1024)               # worst case of a call
     led.check(one, "first")                                              # fine
-    led.add(7.0, "most of it")                                           # Rs 665 at Rs 95/$
+    fx = spend.INR_PER_USD
+    led.add(650 / fx, "most of it")                                      # Rs 650
     with pytest.raises(spend.OverBudget):
-        led.check(1.0, "next")                                           # Rs 95 more: refused
-    led.check(0.3, "small")                                              # Rs 28.5: still fine
+        led.check(60 / fx, "next")                                       # Rs 60 more: refused
+    led.check(40 / fx, "small")                                          # Rs 40: still fine
     again = spend.Ledger(tmp_path / "gemini.json", limit_inr=800)       # shared across runs
-    assert again.spent_inr == pytest.approx(665.0)
+    assert again.spent_inr == pytest.approx(650.0)
     with pytest.raises(spend.OverBudget):
         spend.usd("some-unpriced-model", 10, 10)
     assert spend.usd("gemini-3.8-flash", 1_000_000, 0, batch=True) == pytest.approx(0.375)

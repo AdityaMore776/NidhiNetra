@@ -259,7 +259,7 @@ def flagship_round(action: str = "submit", model: str = "gemini-3.1-pro-preview"
                    items: str = "/data/vlm/v6/items_eye2.jsonl", split: str = "test",
                    out_dir: str = "/data/runs/gem_pro31_rules", prompt: str = "rules",
                    max_output: int = 3000, est_in: int = 3500, start: int = 0, count: int = 0,
-                   tag: int = 0, chunk: int = 300):
+                   tag: int = 0, chunk: int = 300, stop_inr: float = 790.0):
     """One spending-controlled round of flagship questions through the Batch API (owner: Rs 800
     ceiling, not a rupee more). `submit`: of the split's items[start:start+count], takes only as
     many as fit under the ledger's stop line at their WORST case (est_in input tokens and the
@@ -273,7 +273,7 @@ def flagship_round(action: str = "submit", model: str = "gemini-3.1-pro-preview"
     from drishti_vision import flagship_batch as fb
     from drishti_vision import spend, vlmeval
     from drishti_vision.vlmdata import read_items
-    led = spend.Ledger(LEDGER, limit_inr=800)
+    led = spend.Ledger(LEDGER, limit_inr=800, stop_share=stop_inr / 800)
     od = Path(out_dir)
     od.mkdir(parents=True, exist_ok=True)
     rec_p = od / f"round_{split}_s{tag}.json"
