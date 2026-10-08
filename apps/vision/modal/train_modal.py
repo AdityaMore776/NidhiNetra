@@ -205,6 +205,19 @@ def flagship_batch(action: str = "submit", model: str = "gemini-3.1-pro-preview"
         vol.commit()
         return jobs
     rec = json.loads(rec_p.read_text())
+    if action == "cancel":                     # stop the jobs (owner, 8 Oct 2026: billing issue)
+        for j in rec["jobs"]:
+            try:
+                fb.cancel(j["batch"])
+            except Exception as e:  # noqa: BLE001 (a finished job cannot be cancelled)
+                print(j["batch"], "cancel:", str(e)[:120], flush=True)
+            try:
+                st = fb.status(j["batch"])
+                print(j["batch"], st.get("metadata", {}).get("state") or st.get("state"),
+                      flush=True)
+            except Exception as e:  # noqa: BLE001
+                print(j["batch"], "status:", str(e)[:600], flush=True)
+        return None
     states, lines = [], []
     for j in rec["jobs"]:
         st = fb.status(j["batch"])

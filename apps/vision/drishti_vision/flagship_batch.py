@@ -59,11 +59,15 @@ def rows_from_results(lines: list[str], items: list) -> list[dict]:
 
 def _req(url: str, method: str = "GET", data: bytes | None = None, headers: dict | None = None,
          want_headers: bool = False):
+    import urllib.error
     h = {"x-goog-api-key": os.environ["GEMINI_API_KEY"], **(headers or {})}
     req = urllib.request.Request(url, data=data, method=method, headers=h)
-    with urllib.request.urlopen(req, timeout=600) as r:      # noqa: S310 (fixed https host)
-        body = r.read()
-        return (body, dict(r.headers)) if want_headers else body
+    try:
+        with urllib.request.urlopen(req, timeout=600) as r:      # noqa: S310 (fixed https host)
+            body = r.read()
+            return (body, dict(r.headers)) if want_headers else body
+    except urllib.error.HTTPError as e:      # Google's own reason, readable (and picklable)
+        raise RuntimeError(f"HTTP {e.code}: {e.read().decode(errors='replace')[:600]}") from None
 
 
 def upload(path: Path, display_name: str) -> str:
@@ -92,6 +96,10 @@ def create(model: str, file_name: str, display_name: str) -> str:
 
 def status(batch_name: str) -> dict:
     return json.loads(_req(f"{API}/v1beta/{batch_name}"))
+
+
+def cancel(batch_name: str) -> None:
+    _req(f"{API}/v1beta/{batch_name}:cancel", "POST", b"", {"Content-Type": "application/json"})
 
 
 def download(responses_file: str) -> list[str]:
