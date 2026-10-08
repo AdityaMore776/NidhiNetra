@@ -24,6 +24,7 @@ API_USD_PER_M = {        # (input, output incl. thinking) per million tokens, pr
     "gemini-3.1-pro-preview": (2.00, 12.00),     # ai.google.dev/gemini-api/docs/pricing
     "gemini-3.8-flash": (0.75, 3.75),            # same page; rises to 1.50 / 7.50 on 1 Jan 2027
 }
+BATCH_DISCOUNT = 0.5        # ai.google.dev/gemini-api/docs/batch-mode
 GPU_USD_PER_S = {"L4": 0.000222, "A100-40GB": 0.000583}    # modal.com/pricing
 
 
@@ -55,8 +56,11 @@ def usd_per_check(rows: list[dict], gpu: str) -> tuple[float | None, str]:
         if model is None:
             return None, "unknown API price"
         pin, pout = API_USD_PER_M[model]
+        batch = "(batch)" in str(api[0].get("served_by", ""))
         c = sum(r["usage"]["in"] * pin + r["usage"]["out"] * pout for r in api) / 1e6 / len(api)
-        return c, f"{model} billed tokens"
+        if batch:                       # Batch API: "50% of the standard cost" (same page)
+            c *= BATCH_DISCOUNT
+        return c, f"{model} billed tokens{', Batch API price' if batch else ''}"
     secs = [r["seconds"] for r in rows if r.get("seconds")]
     if not secs:
         return None, "no timing"

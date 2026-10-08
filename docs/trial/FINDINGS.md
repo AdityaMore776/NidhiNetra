@@ -2393,6 +2393,52 @@ What follows:
   - real progress answered "can't tell" (17–23 of 145);
   - photos in reverse order (72–81% right).
 
+### T155 (8 Oct 2026): against the flagship, at each model's best (owner's rules)
+
+**The owner's rules for the comparison** (8 Oct 2026):
+- **Real data only.** Every compared item is a real construction-site photo pair: GeoMGNREGA stage photos of
+  MGNREGA works, plus real site timelapse frames. Nothing is edited or rendered, and every label was checked by eye
+  (test 915, calibration 124 after the eye check).
+- **The same question and the same photos for both models.** No model has seen the test before: 0 test districts,
+  0 sites and 0 identical photo files are shared with training (checked by file hash over all 1,008 test and probe
+  items).
+- **Each model at its maximum, never weakened to match the other:**
+  - Gemini gets full-resolution photos, its own thinking, temperature 0, and the choice of 4 worked examples (from
+    training districts only);
+  - ours may also run at 1,024 px.
+  - Each model's setting is chosen on the calibration split, not the test.
+- **Cost counts as much as accuracy:** a ton of checks will be run. Each judge's cost a check is measured:
+  - Gemini: its billed tokens, thinking included, × Google's published price (ai.google.dev/gemini-api/docs/pricing,
+    read 8 Oct 2026: 3.1 Pro $2 / $12 per million tokens in / out; 3.8 Flash $0.75 / $3.75), and the Batch API at
+    half price for bulk;
+  - ours: measured GPU seconds × Modal's published L4 price ($0.000222 a second).
+
+**The key** is a Modal Secret, which the owner typed into Modal's website. Code reads it only inside Modal
+containers; it never touches the PC or the repo.
+
+**Calibration (92 items shared by all judges, labels checked by eye; only 11 progress pairs, so it only picks
+settings):**
+
+| Judge | Macro-F1 | Fooled (of 60) | Missed (of 11) | $ per 1,000 checks |
+|---|---|---|---|---|
+| Our 4B, 512 px | 0.84 | 1 | 4 | 0.18 |
+| **Our 4B, 1,024 px** (chosen) | 0.86 | 1 | 4 | 0.39 |
+| **Our 2B, 512 px** (chosen) | 0.87 | 1 | 3 | 0.12 |
+| **Gemini 3.1 Pro** (chosen) | 0.73 | 0 | 8 | 9.56 |
+| Gemini 3.1 Pro + 4 worked examples | 0.68 | 0 | 9 | 28.62 |
+| Gemini 3.8 Flash | 0.66 | 0 | 10 | 2.80 |
+
+Gemini is never fooled here, but it rarely confirms real work: it calls most real progress "not shown" or "can't
+tell". The worked examples made it worse and cost 3× more.
+
+**Daily cap:** Gemini 3.1 Pro stopped after 250 requests in a day on the owner's tier (Google: "You exceeded your
+current quota"). The 915-item test therefore goes through the Batch API: the same requests, as one file, at half
+price, with no daily request cap.
+
+The eye check of calibration also found wrong labels:
+- 6 sites (a before photo already showing the building; after photos showing only an earth track, grass or a wall);
+- 14 of 33 timelapse pairs (a talking head, title cards, a theatre stage, garden fence work).
+
 **Speed:** scoring answered one pair at a time with the adapter kept separate: 7.5 s a check on an L4, the GPU about 39%
 busy. Folding the adapter into the weights and answering 8 pairs at once gives 0.84 s a check, with the same verdict
 and the same confidence on all 48 items compared.
