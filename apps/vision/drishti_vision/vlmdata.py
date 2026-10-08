@@ -295,7 +295,10 @@ STRUCTURE = ("anganwadi", "gp for", "gp bhawan", "panchayat", "workshed", "sanit
              "toilet", "cmpond wall", "compound wall", "boundary wall", "interlocking",
              "cement concrete", "cc road", "kharanja", "drain", "kitchen", "school")
 NOT_STRUCTURE = ("repair", "maint", "renov", "play", "murram", "gravel", "earthen", "pond", "bund",
-                 "trench", "plantation", "levelling", "desilting")
+                 "trench", "plantation", "levelling", "desilting",
+                 # a rooftop rainwater pit beside a government building: the before photo
+                 # already shows the building (7 of 7 test assets, by eye, 8 Oct 2026)
+                 "rain wat", "rainwater", "roof top", "rooftop")
 
 
 SAME_VIEW = 0.10   # two photos of one moment closer than this show the same scene (set by eye)

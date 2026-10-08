@@ -10,6 +10,7 @@ wrong in eye_checks.jsonl; vlmdata items then carry label_check "eye" (checked) 
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import cv2
@@ -58,10 +59,18 @@ def sheets(items: list[Item], root: Path, out_dir: Path, per_sheet: int = 10) ->
     return paths
 
 
+_VERSION = re.compile(r"(^|\|)vlm/v\d+/")
+
+
+def _norm(k: str) -> str:
+    """The same frame under another dataset version (vlm/v4/frames/... = vlm/v5/frames/...)."""
+    return _VERSION.sub(r"\1vlm/", k)
+
+
 def key(it: Item) -> str:
     """What a look at a sheet judged: these two photos, this kind of claim, this answer. Unlike
     an item's number it survives a rebuild (new assets shift the numbers and the claim wording)."""
-    return f"{it.image_a}|{it.image_b}|{it.claim_kind}|{it.trick}|{it.target['verdict']}"
+    return _norm(f"{it.image_a}|{it.image_b}|{it.claim_kind}|{it.trick}|{it.target['verdict']}")
 
 
 def apply(items: list[Item], checks_path: Path) -> tuple[list[Item], dict]:
@@ -74,8 +83,8 @@ def apply(items: list[Item], checks_path: Path) -> tuple[list[Item], dict]:
             r = json.loads(line)
             checked |= set(r.get("checked", []))
             wrong |= set(r.get("wrong", []))
-            checked_k |= set(r.get("checked_keys", []))
-            wrong_k |= set(r.get("wrong_keys", []))
+            checked_k |= {_norm(k) for k in r.get("checked_keys", [])}
+            wrong_k |= {_norm(k) for k in r.get("wrong_keys", [])}
     kept, n_wrong = [], 0
     for n, it in enumerate(items):
         k = key(it)

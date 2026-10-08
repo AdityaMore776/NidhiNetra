@@ -58,6 +58,7 @@ def test_details_page_parsed_into_stage_photos():
     ("Construction of pucca drain", "04", "drain"),
     ("Construction of Play field", "17", "building"),          # by category; never progress
     ("Renovation of pond", "01", "other"),
+    ("Roof top rain wat. har. str. in gov/panchayat bldg", "01", "other"),   # not a building
 ])
 def test_work_type_from_sub_category(sub, cat, want):
     assert geomgnrega.work_type_of(cat, sub) == want
@@ -266,6 +267,8 @@ def test_rewards_punish_being_fooled_most():
     ("Repair-maint Interlocking block/tiles roads-Comm", False),
     ("Construction of Play field for Community", False),
     ("Constr of Water Absorption Trench Trench for Comm", False),
+    # a pit beside a building that was already there (7 of 7 such test assets, by eye, 8 Oct)
+    ("Roof top rain wat. har. str. in gov/panchayat bldg", False),
 ])
 def test_progress_only_for_unmistakable_structures(sub, ok):
     assert vlmdata.structural({"subcategory": sub}) is ok
@@ -415,6 +418,11 @@ def test_eye_checks_follow_the_pair_not_the_position(tmp_path):
     assert bad.id not in {i.id for i in kept} and len(kept) == 2
     assert {i.id: i.label_check for i in kept}[good.id] == "eye"
     assert info["wrong"] == 1
+    old = good.__class__(**{**good.__dict__, "image_a": "vlm/v4/frames/x/f001.jpg",
+                            "image_b": "vlm/v4/frames/x/f002.jpg"})
+    new = good.__class__(**{**good.__dict__, "image_a": "vlm/v5/frames/x/f001.jpg",
+                            "image_b": "vlm/v5/frames/x/f002.jpg"})
+    assert eyecheck.key(old) == eyecheck.key(new)              # same frames, another version
 
 
 def test_timelapse_pairs_are_not_repeated(tmp_path):
