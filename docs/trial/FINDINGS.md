@@ -2548,6 +2548,34 @@ example 1 (shown, 0.9998).
 busy. Folding the adapter into the weights and answering 8 pairs at once gives 0.84 s a check, with the same verdict
 and the same confidence on all 48 items compared.
 
+### T158 (8 Oct 2026): the same spot every month (docs/plans/T158-same-spot-filming.md)
+
+Not a measurement of accuracy on real sites (that is the owner's walk test, then T126); checks that
+the guidance and the readings behave as the plan says.
+
+**Replay** (`data/trial/t158_replay.py` → `results/t158_replay.txt`; the drawn T124 scenes, 5 viewpoints):
+
+| Scenario | Engine reading | Site Progress says |
+|---|---|---|
+| Same spots, whole pan | offsets 0 m, coverage 1.0 at all 5 | nothing |
+| v2 filmed 25 m off | v2 offset 25.0 m | a note (never a finding) |
+| v3 half panned | v3 coverage 0.625 | a note |
+| No compass | no coverage reading | nothing (was "0% panned" at every spot until fixed) |
+| One-part claim, not shown at all 5 spots, 8 needed | | not shown |
+| The same, 12 needed (5 filmed < half) | | can't tell |
+| Whole-work claim, not shown at 1 of 5 | | not shown |
+| 189 m road walked halfway | stretches s1, s2 judged | s3, s4 missed (a note) |
+
+The phone's maths (`apps/web/src/lib/capture.ts`, run in Node) gives the engine's answers on all 54
+cases (arc coverage 28, stretch 16, distance 6, in the box 4).
+
+**Real browser** (`data/trial/capture_e2e.py` → `results/capture_e2e.txt`; headless Chromium, a fake
+camera, a compass sent as orientation events): on the monthly visit the page said "You are in the box
+for spot vN" and "Facing the right way" at all 5 viewpoints, and the engine read 0 m and coverage 1.0
+at each; at ±90 m GPS it said "GPS is too weak to guide you" instead of a direction. Two bugs this run
+found, both fixed: a phone standing still sends no new fix (only v1 got a box), and the facing hung on
+the GPS.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

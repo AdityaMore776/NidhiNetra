@@ -1,5 +1,19 @@
 # T158: film from the same spot every month, and more spots for big works
 
+> **Status (8 Oct 2026): built, PR #124.** Engine, API, phone page and work page done; 1,019 engine
+> tests, web build green; the replay (`data/trial/t158_replay.py`) and the real-browser run with a
+> compass (`data/trial/capture_e2e.py`) behave as below. **Next: the owner's walk test on a real phone.**
+> Changes from the first draft, each found while building (all below are the built version):
+> - §D combining: a spot that does not face the part a claim names answers "not shown" too, so only a
+>   claim about the WHOLE work is "not shown" on one spot's contradiction; a one-part claim needs every
+>   filmed spot to agree and half the needed spots filmed (`spots.combine`).
+> - §A spot: GPS fixes during the viewpoint ±0.5 s (not ±2 s: the walk up to it is not the spot); with
+>   none, the last good fix up to 60 s before stands (a phone standing still sends no new fix; found by
+>   the browser run).
+> - §B the facing is kept even when the GPS is unusable (it no longer hangs on the box; browser run).
+> - No compass gives "can't tell", never "0% panned" (found by the replay).
+> - `MAX_JUDGED_SPOTS` is 12, not 8: a long road asks 8 stretches, plus the viewpoints.
+
 Owner's request (8 Oct 2026): mark where the person stood to film the work; next time, tell them to
 stand in that box and show the same areas again; when the work is too big to show from one spot (by
 the size the form gives), ask for more spots, and judge by what was actually shown. Design agreed

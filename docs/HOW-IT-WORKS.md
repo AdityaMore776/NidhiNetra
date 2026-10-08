@@ -84,6 +84,15 @@ problem, never a small mistake, and says "couldn't check" when it has nothing to
   site is another work's, when both the GPS and the views say it was not filmed here, or when the agency's claim is not
   shown two months in a row. A blurry or dark video is simply filmed again. (Built and tested on made-up scenes; the
   trial on real sites comes next.)
+  **The same spot every month (T158):** the first visit saves where the person stood at each spot (GPS) and which
+  way they faced and panned (the phone's compass). Next month the app shows a radar to each spot's box (about 12 m
+  across), an arrow to turn the right way, and a band to pan across, with last month's three pictures. A work too
+  big for one spot asks for more, from its size on the form: a pair of spots at opposite corners for every 40 m (a
+  60×40 m hall needs 4); a road is filmed stretch by stretch, and over 1 km the app picks 6 stretches at random when
+  filming starts. The claim is judged spot by spot, on last month's and this month's pictures of the same spot. A
+  claim about the whole work must hold at every spot; a claim about one part needs one spot to show it, and "not
+  shown" only when every filmed spot agrees and at least half the needed spots were filmed. The guidance never
+  stops anyone filming: being off the box is only noted, and the pictures decide.
 
   Whether the footage *shows the agency's claim* ("walls up to lintel level") is read by **NidhiLens**, the team's
   own fine-tuned vision model. On 883 real site-photo checks it scored macro-F1 0.935, against 0.876 for Gemini 3.1
