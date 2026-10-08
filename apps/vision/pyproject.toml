@@ -11,6 +11,8 @@ dependencies = [
     "numpy>=1.26",
     # OpenCV 4.x, as the engine's video job (data/requirements-video.txt)
     "opencv-python-headless>=4.9,<5",
+    # photos for the claim judge (vlm.py, flagship_*.py, eyecheck.py)
+    "pillow>=10",
 ]
 
 [project.optional-dependencies]
