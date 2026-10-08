@@ -490,6 +490,14 @@ TL_PROGRESS_SHARE = 0.15    # a certain progress pair: at least this share of th
                             # permanent work by the hindsight teacher (its own floor is 0.02)
 TL_MIN_GAP = 0.25           # ... and the frames at least this share of the shot apart
 TL_BUSY = 0.03              # a no-progress pair whose B has this share of moving things: "busy"
+TL_KNOWN = 0.8              # a no-progress pair: the teacher judged at least this share of the view
+                            # (pavers laid under moving workers sat in the unjudged rest; by eye,
+                            # 8 Oct 2026)
+TL_MAX_NOISE = 0.4          # a shot whose frames 3-5 apart already differ this much (its `lo`,
+                            # hindsight.calibrate) is hand-held, cut or dissolving: its teacher
+                            # calls nearly everything unchanged and found no progress in any such
+                            # test shot, so it gives no items (by eye, 8 Oct 2026: every shot
+                            # below it read right)
 TL_CLAIM = ("New construction work done since the last visit",
             "pichhli visit ke baad naya nirmaan kaam hua",
             "पिछली विज़िट के बाद नया निर्माण कार्य हुआ")
@@ -499,14 +507,20 @@ def timelapse_items(data: str | Path, root: str | Path, frames_rel: str, rng: ra
                     per_shot: int = 12) -> list[Item]:
     """Real timelapse pairs, as filmed (the build's `raw` frames), under the owner's certainty
     rule: "shown" only where the hindsight teacher found lasting work over a large share of the
-    view and a long gap; "not_shown" only where it found NO lasting change at all (busy when
-    people or machines move in B, light otherwise); swapped progress pairs are not shown."""
+    view and a long gap; "not_shown" only where it found NO lasting change at all, judged over
+    most of the view (TL_KNOWN), and the pair does not span any stretch of the shot where the
+    teacher found work (busy when people or machines move in B, light otherwise); swapped
+    progress pairs are not shown. Shots from a shaky or cut camera (TL_MAX_NOISE) give no items.
+    Each pair of frames is used once. Frames are saved in their
+    own colours (the build keeps them RGB; OpenCV writes BGR)."""
     data, root = Path(data), Path(root)
     out: list[Item] = []
     shots = [json.loads(line) for line in (data / "shots.jsonl").read_text(
         encoding="utf-8").splitlines() if line.strip()]
     for s in shots:
         sid = s["shot_id"]
+        if s.get("lo", 0.0) > TL_MAX_NOISE:
+            continue
         lab_p, shot_p = data / "labels" / f"{sid}.npz", data / "shots" / f"{sid}.npz"
         if not lab_p.exists() or not shot_p.exists():
             continue
@@ -518,19 +532,29 @@ def timelapse_items(data: str | Path, root: str | Path, frames_rel: str, rng: ra
         T = len(raw)
         wt = s.get("work_type", "other")
         wt = wt if wt in LOOKS else "other"
+        rows = list(zip(lab["a"], lab["b"], lab["label"], lab["kind"], lab["patches"],
+                        strict=True))
+        work = [(int(a), int(b)) for a, b, y, k, pt in rows      # stretches with lasting work
+                if int(k) != 2 and (y == 1 or (pt == 1).any())]
         chosen: list[tuple[int, int, str, str]] = []
-        for a, b, y, k, pt in zip(lab["a"], lab["b"], lab["label"], lab["kind"],
-                                  lab["patches"], strict=True):
+        seen: set[tuple[int, int]] = set()
+        for a, b, y, k, pt in rows:
+            a, b = int(a), int(b)
+            if (a, b) in seen:
+                continue
+            seen.add((a, b))
             kind = ("forward", "short", "swapped")[int(k)]
             known = pt != -1
             share = float((pt == 1).sum() / known.sum()) if known.any() else 0.0
             if kind == "forward" and y == 1 and share >= TL_PROGRESS_SHARE \
                     and (b - a) >= TL_MIN_GAP * T:
-                chosen.append((int(a), int(b), "none", "shown"))
-                chosen.append((int(b), int(a), "swapped", "not_shown"))
-            elif kind in ("forward", "short") and y == 0 and not (pt == 1).any():
-                busy = float(act[int(b)].mean()) >= TL_BUSY
-                chosen.append((int(a), int(b), "busy" if busy else "light", "not_shown"))
+                chosen.append((a, b, "none", "shown"))
+                chosen.append((b, a, "swapped", "not_shown"))
+            elif kind in ("forward", "short") and y == 0 and not (pt == 1).any() \
+                    and float(known.mean()) >= TL_KNOWN \
+                    and not any(a <= wa and wb <= b for wa, wb in work):
+                busy = float(act[b].mean()) >= TL_BUSY
+                chosen.append((a, b, "busy" if busy else "light", "not_shown"))
         rng.shuffle(chosen)
         for a, b, trick, verdict in chosen[:per_shot]:
             paths = []
@@ -538,7 +562,8 @@ def timelapse_items(data: str | Path, root: str | Path, frames_rel: str, rng: ra
                 p = root / frames_rel / sid / f"f{t:03d}.jpg"
                 if not p.exists():
                     p.parent.mkdir(parents=True, exist_ok=True)
-                    cv2.imwrite(str(p), raw[t], [cv2.IMWRITE_JPEG_QUALITY, 92])
+                    cv2.imwrite(str(p), np.ascontiguousarray(raw[t][..., ::-1]),
+                                [cv2.IMWRITE_JPEG_QUALITY, 92])
                 paths.append(f"{frames_rel}/{sid}/f{t:03d}.jpg")
             lang = rng.choices(("en", "hinglish", "hi"), (0.6, 0.25, 0.15))[0]
             claim = TL_CLAIM[("en", "hinglish", "hi").index(lang)]

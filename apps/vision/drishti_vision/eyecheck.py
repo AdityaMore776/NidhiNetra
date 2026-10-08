@@ -58,20 +58,32 @@ def sheets(items: list[Item], root: Path, out_dir: Path, per_sheet: int = 10) ->
     return paths
 
 
+def key(it: Item) -> str:
+    """What a look at a sheet judged: these two photos, this kind of claim, this answer. Unlike
+    an item's number it survives a rebuild (new assets shift the numbers and the claim wording)."""
+    return f"{it.image_a}|{it.image_b}|{it.claim_kind}|{it.trick}|{it.target['verdict']}"
+
+
 def apply(items: list[Item], checks_path: Path) -> tuple[list[Item], dict]:
     """Marks checked items `eye`; drops the ones recorded wrong. checks: one JSON line a sheet
-    review, {"split": ..., "checked": [item numbers], "wrong": [item numbers], "note": ...}."""
-    checked, wrong = set(), set()
+    review, {"checked_keys": [key()], "wrong_keys": [key()], "note": ...}; the older form
+    {"checked": [item numbers], "wrong": [item numbers]} counts positions in `items`."""
+    checked, wrong, checked_k, wrong_k = set(), set(), set(), set()
     for line in checks_path.read_text(encoding="utf-8").splitlines():
         if line.strip():
             r = json.loads(line)
             checked |= set(r.get("checked", []))
             wrong |= set(r.get("wrong", []))
-    kept = []
+            checked_k |= set(r.get("checked_keys", []))
+            wrong_k |= set(r.get("wrong_keys", []))
+    kept, n_wrong = [], 0
     for n, it in enumerate(items):
-        if n in wrong:
+        k = key(it)
+        if n in wrong or k in wrong_k:
+            n_wrong += 1
             continue
-        if n in checked:
+        if n in checked or k in checked_k:
             it.label_check = "eye"
         kept.append(it)
-    return kept, {"checked": len(checked), "wrong": len(wrong), "kept": len(kept)}
+    return kept, {"checked": sum(i.label_check == "eye" for i in kept) + n_wrong,
+                  "wrong": n_wrong, "kept": len(kept)}

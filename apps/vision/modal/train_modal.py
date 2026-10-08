@@ -50,13 +50,15 @@ GPU = "A100-40GB"
 @app.function(gpu=GPU, volumes={"/data": vol}, timeout=3 * 3600)
 def sft(items: str = "/data/vlm/v1/items.jsonl", out: str = "/data/runs/sft4b",
         base: str = "Qwen/Qwen3-VL-4B-Instruct", epochs: float = 2.0, rank: int = 16,
-        lr: float = 1e-4, accum: int = 8, real_only: bool = False, edited_share: float = 0.2):
+        lr: float = 1e-4, accum: int = 8, real_only: bool = False, edited_share: float = 0.2,
+        max_items: int = 0, seed: int = 0):
     import sys
     sys.path.insert(0, "/root")
     from drishti_vision import vlm
     cfg = vlm.TrainConfig(base=base, items=items, root="/data", out=out, quant4=False,
                           rank=rank, alpha=2 * rank, lr=lr, epochs=epochs, accum=accum,
-                          real_only=real_only, edited_share=edited_share, eval_every=10**9)
+                          real_only=real_only, edited_share=edited_share, eval_every=10**9,
+                          max_items=max_items, seed=seed)
     info = vlm.fit(cfg, log=lambda s: print(s, flush=True))
     vol.commit()
     return {k: info[k] for k in ("items", "steps", "minutes", "peak_gpu_gb")}
@@ -85,13 +87,14 @@ def rl(adapter: str = "/data/runs/sft4b/final", out: str = "/data/runs/rl4b",
 @app.function(gpu=GPU, volumes={"/data": vol}, timeout=3600)
 def score(adapter: str = "", out: str = "/data/runs/base/test.jsonl",
           items: str = "/data/vlm/v1/items.jsonl", split: str = "test",
-          base: str = "Qwen/Qwen3-VL-4B-Instruct"):
+          base: str = "Qwen/Qwen3-VL-4B-Instruct", limit: int = 0):
     import json
     import sys
     sys.path.insert(0, "/root")
     from drishti_vision import vlm, vlmeval
     from drishti_vision.vlmdata import read_items
     its = [i for i in read_items(items) if i.split == split]
+    its = its[:limit] if limit else its
     L = vlm.load(base, quant4=False, adapter=adapter or None)
     Path(out).parent.mkdir(parents=True, exist_ok=True)
     rows = vlmeval.predict(L, its, Path("/data"), Path(out), log=lambda s: print(s, flush=True))

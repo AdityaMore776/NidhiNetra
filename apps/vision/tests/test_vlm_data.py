@@ -288,6 +288,72 @@ def test_same_moment_items_need_the_same_scene(tmp_path):
                 and i.claim_kind == "period"]
 
 
+def _timelapse(tmp_path, pairs, T=20, unknown=0.0, rgb=(200, 40, 10), lo=0.1):
+    """A made-up `build --keep-raw` folder: one shot of T plain frames and the hindsight
+    teacher's pairs [(a, b, label, kind, progress share)]; `unknown` of every pair's patches
+    could not be judged; `lo` is the shot's own noise level (hindsight.calibrate)."""
+    d = tmp_path / "built"
+    (d / "labels").mkdir(parents=True)
+    (d / "shots").mkdir()
+    (d / "shots.jsonl").write_text(json.dumps({"shot_id": "s0", "split": "test", "lo": lo,
+                                               "work_type": "building"}) + "\n")
+    raw = np.zeros((T, 24, 32, 3), np.uint8)
+    raw[...] = rgb                                       # RGB, as frames.read_video gives
+    np.savez(d / "shots" / "s0.npz", raw=raw, activity=np.zeros((T, 4, 4), np.float16))
+    n = 100
+    pts = []
+    for _, _, _, _, share in pairs:
+        p = np.zeros(n, np.int8)
+        p[: round(unknown * n)] = -1
+        p[round(unknown * n): round(unknown * n) + round(share * n)] = 1
+        pts.append(p.reshape(10, 10))
+    np.savez(d / "labels" / "s0.npz", a=np.array([p[0] for p in pairs]),
+             b=np.array([p[1] for p in pairs]), label=np.array([p[2] for p in pairs]),
+             kind=np.array([p[3] for p in pairs]), patches=np.stack(pts))
+    return vlmdata.timelapse_items(d, tmp_path, "frames", random.Random(0), per_shot=50)
+
+
+def test_timelapse_frames_keep_their_colours(tmp_path):
+    items = _timelapse(tmp_path, [(0, 2, 0, 0, 0.0)])
+    img = cv2.imread(str(tmp_path / items[0].image_a))        # BGR
+    assert img[..., 2].mean() > 150 and img[..., 0].mean() < 60   # red stays red
+
+
+def test_timelapse_no_progress_needs_most_of_the_view_judged(tmp_path):
+    assert _timelapse(tmp_path / "a", [(0, 2, 0, 0, 0.0)], unknown=0.1)
+    assert not _timelapse(tmp_path / "b", [(0, 2, 0, 0, 0.0)], unknown=0.4)
+
+
+def test_timelapse_no_progress_never_spans_real_work(tmp_path):
+    items = _timelapse(tmp_path, [(4, 12, 1, 0, 0.3), (0, 15, 0, 0, 0.0), (16, 18, 0, 0, 0.0)])
+    nop = {(i.image_a[-8:-4], i.image_b[-8:-4]) for i in items
+           if i.target["verdict"] == "not_shown" and i.trick != "swapped"}
+    assert nop == {("f016", "f018")}
+
+
+def test_timelapse_shots_from_a_shaky_camera_give_no_items(tmp_path):
+    items = _timelapse(tmp_path, [(0, 2, 0, 0, 0.0)], lo=0.6)
+    assert not items
+
+
+def test_eye_checks_follow_the_pair_not_the_position(tmp_path):
+    from drishti_vision import eyecheck
+    items = _timelapse(tmp_path, [(0, 2, 0, 0, 0.0), (4, 6, 0, 0, 0.0), (8, 10, 0, 0, 0.0)])
+    bad, good = items[0], items[1]
+    p = tmp_path / "checks.jsonl"
+    p.write_text(json.dumps({"checked_keys": [eyecheck.key(good), eyecheck.key(bad)],
+                             "wrong_keys": [eyecheck.key(bad)]}) + "\n")
+    kept, info = eyecheck.apply(list(reversed(items)), p)      # order no longer matters
+    assert bad.id not in {i.id for i in kept} and len(kept) == 2
+    assert {i.id: i.label_check for i in kept}[good.id] == "eye"
+    assert info["wrong"] == 1
+
+
+def test_timelapse_pairs_are_not_repeated(tmp_path):
+    items = _timelapse(tmp_path, [(0, 2, 0, 0, 0.0), (0, 2, 0, 1, 0.0)])
+    assert len(items) == 1
+
+
 def test_jitter_makes_twin_photos_differ_but_keeps_the_scene():
     from PIL import Image
 
