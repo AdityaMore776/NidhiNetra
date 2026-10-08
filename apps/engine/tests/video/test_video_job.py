@@ -90,3 +90,26 @@ def test_a_visit_whose_video_never_arrived_is_rejected(db, tmp_path):
     db.commit()
     done = job.process(db, store)
     assert done[0]["status"] == "rejected" and "film the visit again" in done[0]["note"]
+
+
+def test_each_spot_is_kept_with_its_place_facing_and_pictures(db, tmp_path):
+    # T158: the job stores where each viewpoint was filmed from and its 3 pan pictures, and the
+    # next visit is read against them
+    from tests.video.test_video_visit import with_compass
+    store = capture.LocalStore(tmp_path / "store")
+    vids = tmp_path / "v"
+    vids.mkdir()
+    base_log = with_compass(film(vids / "base.mp4", scene(1)))
+    _upload(db, store, "H1", "b1", "baseline", vids / "base.mp4", base_log, date(2026, 2, 1))
+    job.process(db, store)
+    row = db.execute("SELECT * FROM site_visits WHERE visit_id = 'b1'").fetchone()
+    v1 = row["kept"]["viewpoints"]["v1"]
+    assert v1["spot"]["lat"] == pytest.approx(25.75, abs=2e-4) and v1["facing"]["width"] == 40
+    assert len(v1["pans"]) == 3 and all((tmp_path / "store" / p).exists() for p in v1["pans"])
+    assert row["readings"]["spots_needed"] == 2           # a 400 m² hall: one pair of spots
+    month_log = with_compass(film(vids / "m1.mp4", scene(1, wall=True)))
+    _upload(db, store, "H1", "m1", "monthly", vids / "m1.mp4", month_log, date(2026, 3, 1))
+    job.process(db, store)
+    m1 = db.execute("SELECT readings FROM site_visits WHERE visit_id = 'm1'").fetchone()
+    assert m1["readings"]["spot_offsets_m"]["v1"] < 8
+    assert m1["readings"]["spot_coverage"]["v1"] == pytest.approx(1.0)

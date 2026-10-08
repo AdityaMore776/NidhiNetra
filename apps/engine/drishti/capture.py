@@ -67,6 +67,12 @@ def issue(visit_id: str, work_id: str, kind: str, user_id: str, now: int | None 
     return f"{_b64(body)}.{_b64(sig)}"
 
 
+def seed(visit_id: str) -> bytes:
+    """A per-visit random seed only the server can compute (T158: the stretches of a long road a
+    visit is asked to film are drawn from it when filming starts)."""
+    return hmac.new(_secret(), b"stretches|" + visit_id.encode("utf-8"), hashlib.sha256).digest()
+
+
 def check(token: str, now: int | None = None) -> Claims | None:
     """The token's claims when it is ours and not expired, else None."""
     try:

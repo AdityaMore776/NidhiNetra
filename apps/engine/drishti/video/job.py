@@ -20,7 +20,7 @@ from pathlib import Path
 
 from psycopg.types.json import Jsonb
 
-from drishti import reference
+from drishti import capture, reference
 from drishti.agents.site_progress import sitemap
 from drishti.video import visit as vv
 
@@ -35,17 +35,35 @@ def _form(con, work_id: str) -> dict | None:
     return r["form"] if r else None
 
 
+def _frames(store, part: dict) -> dict[str, bytes]:
+    out = {}
+    for vid, v in (part or {}).items():
+        try:
+            out[vid] = store.get(v["path"])
+        except Exception:              # a missing frame only makes that viewpoint unmatched
+            continue
+    return out
+
+
 def _earlier(row: dict, store, with_frames: bool) -> vv.Earlier:
     kept = row.get("kept") or {}
-    frames = {}
-    if with_frames:
-        for vid, v in (kept.get("viewpoints") or {}).items():
-            try:
-                frames[vid] = store.get(v["path"])
-            except Exception:          # a missing frame only makes that viewpoint unmatched
-                continue
-    return vv.Earlier(row["work_id"], row["visit_id"], row["kind"], frames,
-                      list(kept.get("hashes") or []), row.get("readings") or {})
+    views = kept.get("viewpoints") or {}
+    spots = {vid: {"spot": v.get("spot"), "facing": v.get("facing")} for vid, v in views.items()
+             if isinstance(v, dict)}
+    return vv.Earlier(row["work_id"], row["visit_id"], row["kind"],
+                      _frames(store, views) if with_frames else {},
+                      list(kept.get("hashes") or []), row.get("readings") or {}, spots,
+                      _frames(store, kept.get("stretches")) if with_frames else {})
+
+
+def _asked(site, visit_id: str) -> list[str] | None:
+    """The stretches of a linear work this visit was asked to film (T158)."""
+    if site is None or site.kind != "linear":
+        return None
+    try:
+        return sitemap.stretches_asked(site, capture.seed(visit_id))
+    except capture.NotSetUp:
+        return None
 
 
 def process(con, store, judge: Callable | None = None, limit: int | None = None) -> list[dict]:
@@ -56,7 +74,8 @@ def process(con, store, judge: Callable | None = None, limit: int | None = None)
     for row in rows:
         work = con.execute("SELECT work_id, work_type_code, district_lgd FROM works "
                            "WHERE work_id = %s", (row["work_id"],)).fetchone()
-        site = sitemap.site_of(_form(con, row["work_id"]), work["work_type_code"])
+        form = _form(con, row["work_id"])
+        site = sitemap.site_of(form, work["work_type_code"])
         try:
             data = store.get(row["video_path"]) if row["video_path"] else None
         except Exception:
@@ -85,13 +104,25 @@ def process(con, store, judge: Callable | None = None, limit: int | None = None)
             path = Path(tmp) / "visit.video"
             path.write_bytes(data)
             readings, kept = vv.read(path, row["log"] or {}, site, earlier, others, row["kind"],
-                                     claim=row["claim"], asset=asset, judge=judge)
-        stored = {"viewpoints": {}, "hashes": kept["hashes"]}
+                                     claim=row["claim"], asset=asset, judge=judge,
+                                     spots_needed=sitemap.spots_needed(site, form),
+                                     stretches_asked=_asked(site, row["visit_id"]))
+        stored = {"viewpoints": {}, "stretches": {}, "hashes": kept["hashes"]}
         for vid, v in kept["viewpoints"].items():
             p = f"frames/{row['visit_id']}/{vid}.jpg"
             store.put(p, v["jpeg"], "image/jpeg")
+            pans = []
+            for i, jpg in enumerate(v.get("pans") or []):
+                pans.append(f"frames/{row['visit_id']}/{vid}-pan{i + 1}.jpg")
+                store.put(pans[-1], jpg, "image/jpeg")
             stored["viewpoints"][vid] = {"path": p, "hash": v["hash"], "t": v["t"],
-                                         "faces": v["faces"]}
+                                         "faces": v["faces"], "spot": v.get("spot"),
+                                         "facing": v.get("facing"), "pans": pans}
+        for sid, v in kept["stretches"].items():
+            p = f"frames/{row['visit_id']}/{sid}.jpg"
+            store.put(p, v["jpeg"], "image/jpeg")
+            stored["stretches"][sid] = {"path": p, "hash": v["hash"], "t": v["t"],
+                                        "faces": v["faces"]}
         con.execute("UPDATE site_visits SET status = 'read', readings = %s, kept = %s, "
                     "read_at = now(), video_path = NULL WHERE visit_id = %s",
                     (Jsonb(readings), Jsonb(stored), row["visit_id"]))

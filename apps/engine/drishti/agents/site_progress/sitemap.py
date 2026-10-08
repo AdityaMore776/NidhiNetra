@@ -12,11 +12,19 @@ From the cost estimate form's map pins (site 1):
 
 GPS_MARGIN_M is added to "inside the site" for GPS error: phone GPS is about 4.9 m under open sky
 (GPS.gov) and worse near buildings and trees, so a point is "outside" only well beyond that.
+
+How many spots a work is filmed from (T158, docs/plans/T158-same-spot-filming.md §C): a phone
+video shows building detail (brick courses, plaster, a slab edge) out to about VIEW_REACH_M, and a
+building's back cannot be seen from its front, so a compact work needs a pair of spots at opposite
+corners for every VIEW_REACH_M of its longest side. A linear work is filmed stretch by stretch:
+every stretch up to LONG_LINEAR_M, beyond that SAMPLE_STRETCHES drawn when filming starts (from a
+seed only the server knows) plus both ends.
 """
 
 from __future__ import annotations
 
 import math
+import random
 from dataclasses import dataclass
 
 from drishti.cost_form import catalog
@@ -25,6 +33,11 @@ EARTH_M = 6_371_000.0
 MIN_RADIUS_M = 25.0
 STRETCH_M = 50.0
 GPS_MARGIN_M = 20.0
+VIEW_REACH_M = 40.0
+MIN_SPOTS = 2
+MAX_SPOTS = 8
+LONG_LINEAR_M = 1000.0
+SAMPLE_STRETCHES = 6
 
 
 def _num(v) -> float | None:
@@ -96,12 +109,69 @@ class Site:
                 "gps_margin_m": GPS_MARGIN_M, "stretch_m": STRETCH_M}
 
 
+def _first_site(form: dict | None) -> dict:
+    sites = form.get("sites") if isinstance(form, dict) else None
+    return sites[0] if isinstance(sites, list) and sites and isinstance(sites[0], dict) else {}
+
+
+def _size(form: dict | None) -> dict:
+    size = _first_site(form).get("size")
+    return size if isinstance(size, dict) else {}
+
+
+def footprint_m2(size: dict) -> float | None:
+    """The ground the work stands on: a building's area over its floors, a ground's area, a
+    pond's water area."""
+    built = _num(size.get("built_up_area_m2"))
+    if built and built > 0:
+        floors = _num(size.get("floors_nos"))
+        return built / floors if floors and floors >= 1 else built
+    for k in ("area_m2", "water_area_m2"):
+        v = _num(size.get(k))
+        if v and v > 0:
+            return v
+    return None
+
+
+def side_m(size: dict) -> float | None:
+    """The work's longest side: the form's length, or a 2:1 rectangle of its footprint (the usual
+    shape of a school block or a hall)."""
+    length = _num(size.get("length_m"))
+    if length and length > 0:
+        return length
+    area = footprint_m2(size)
+    return math.sqrt(2 * area) if area else None
+
+
+def spots_needed(site: Site | None, form: dict | None) -> int:
+    """How many spots (viewpoints, or stretches of a linear work) one visit should film."""
+    if site is not None and site.kind == "linear":
+        n = len(site.stretches())
+        return n if site.length_m <= LONG_LINEAR_M else min(n, SAMPLE_STRETCHES + 2)
+    side = side_m(_size(form))
+    if side is None:
+        return MIN_SPOTS
+    return min(MAX_SPOTS, max(MIN_SPOTS, 2 * math.ceil(side / VIEW_REACH_M)))
+
+
+def stretches_asked(site: Site | None, seed: bytes) -> list[str]:
+    """The stretches of a linear work one visit is asked to film, in order along the line: all of
+    them up to LONG_LINEAR_M, else both ends and SAMPLE_STRETCHES drawn from the visit's seed
+    (capture.seed: only the server can know it before filming starts)."""
+    if site is None or site.kind != "linear":
+        return []
+    all_ = site.stretches()
+    if site.length_m <= LONG_LINEAR_M or len(all_) <= SAMPLE_STRETCHES + 2:
+        return all_
+    middle = random.Random(seed).sample(all_[1:-1], SAMPLE_STRETCHES)
+    return [s for s in all_ if s in {all_[0], all_[-1], *middle}]
+
+
 def site_of(form: dict | None, work_type: str | None = None) -> Site | None:
     """The site from the form's first site, or None when it has no usable map pin."""
     if not isinstance(form, dict):
         return None
-    sites = form.get("sites")
-    site = sites[0] if isinstance(sites, list) and sites and isinstance(sites[0], dict) else {}
+    site = _first_site(form)
     loc = site.get("location") if isinstance(site.get("location"), dict) else {}
     lat, lon = _num(loc.get("lat")), _num(loc.get("lon"))
     if lat is None or lon is None or not (-90 <= lat <= 90 and -180 <= lon <= 180):
@@ -112,7 +182,6 @@ def site_of(form: dict | None, work_type: str | None = None) -> Site | None:
     # an OTHER work the form gives two ends for is an alignment too (T136: a gravel road)
     if (catalog.is_linear(wt) or wt in (None, "OTHER")) and elat is not None and elon is not None:
         return Site("linear", lat, lon, MIN_RADIUS_M / 2, elat, elon)
-    size = site.get("size") if isinstance(site.get("size"), dict) else {}
-    area = _num(size.get("built_up_area_m2")) or _num(size.get("area_m2"))
-    radius = max(MIN_RADIUS_M, math.sqrt(area)) if area and area > 0 else MIN_RADIUS_M
+    area = footprint_m2(_size(form))
+    radius = max(MIN_RADIUS_M, math.sqrt(area)) if area else MIN_RADIUS_M
     return Site("compact", lat, lon, radius)

@@ -79,9 +79,13 @@ def film(path, img: np.ndarray, still_phone: bool = False):
             "motion": motion}
 
 
-def earlier_from(work_id, visit_id, kind, kept) -> vv.Earlier:
+def earlier_from(work_id, visit_id, kind, kept, readings=None) -> vv.Earlier:
     return vv.Earlier(work_id, visit_id, kind,
-                      {k: v["jpeg"] for k, v in kept["viewpoints"].items()}, kept["hashes"])
+                      {k: v["jpeg"] for k, v in kept["viewpoints"].items()}, kept["hashes"],
+                      readings or {},
+                      {k: {"spot": v.get("spot"), "facing": v.get("facing")}
+                       for k, v in kept["viewpoints"].items()},
+                      {k: v["jpeg"] for k, v in (kept.get("stretches") or {}).items()})
 
 
 @pytest.fixture(scope="module")
@@ -286,3 +290,129 @@ def test_a_reader_answer_in_a_wrong_shape_does_not_crash(site_a):
         r, _ = vv.read(logs["m1"][0], logs["m1"][1], SITE, [base], [], "monthly",
                        claim="walls", judge=lambda c, p, a=answers: a)
         assert r["claim_verdict"] in (None, "shown")
+
+
+# ---- T158: the same spot every month, and the claim judged spot by spot ----
+
+def with_compass(log: dict, width: float = 40.0, only: dict | None = None) -> dict:
+    """The log with compass headings: at viewpoint k the phone pans from 60·k° across `width`°
+    (or the (start, width) `only` gives for that viewpoint)."""
+    heading = []
+    for k, vp in enumerate(log["viewpoints"]):
+        start, w = (only or {}).get(vp["id"], (60.0 * k, width))
+        n = max(2, int((vp["t1"] - vp["t0"]) / 0.2))
+        for i in range(n + 1):
+            heading.append({"t": round(vp["t0"] + (vp["t1"] - vp["t0"]) * i / n, 2),
+                            "h": round((start + w * i / n) % 360, 1), "p": -5.0})
+    return dict(log, heading=heading)
+
+
+def moved(log: dict, vid: str, dlat: float) -> dict:
+    """The log with the GPS shifted north by `dlat` while at viewpoint `vid`."""
+    vp = next(v for v in log["viewpoints"] if v["id"] == vid)
+    gps = [dict(g, lat=g["lat"] + dlat) if vp["t0"] - 0.5 <= g["t"] <= vp["t1"] + 0.5 else g
+           for g in log["gps"]]
+    return dict(log, gps=gps)
+
+
+@pytest.fixture(scope="module")
+def compass_base(site_a):
+    _d, logs, _r, _k = site_a
+    log = with_compass(logs["base"][1])
+    r, kept = vv.read(logs["base"][0], log, SITE, [], [], "baseline")
+    return log, r, kept
+
+
+def test_each_viewpoint_keeps_its_spot_facing_and_three_pictures(compass_base):
+    _log, _r, kept = compass_base
+    v2 = kept["viewpoints"]["v2"]
+    assert v2["spot"]["lat"] == pytest.approx(25.75, abs=2e-4) and v2["spot"]["acc"] == 6
+    assert v2["facing"]["from"] == pytest.approx(60) and v2["facing"]["width"] == pytest.approx(40)
+    assert len(v2["pans"]) == 3 and all(j[:2] == b"\xff\xd8" for j in v2["pans"])  # JPEGs
+
+
+def test_without_a_compass_there_is_no_facing_but_still_three_pictures(site_a):
+    _d, _logs, _r, kept = site_a
+    v1 = kept["viewpoints"]["v1"]
+    assert v1["facing"] is None and len(v1["pans"]) == 3
+
+
+def test_metres_from_the_box_and_the_share_of_last_times_view_panned(site_a, compass_base):
+    _d, logs, _r, _k = site_a
+    _log, base_r, base_k = compass_base
+    prev = earlier_from("W1", "base", "baseline", base_k, base_r)
+    log = moved(with_compass(logs["m1"][1], only={"v3": (120.0, 20.0)}), "v2", 0.0002)
+    r, _ = vv.read(logs["m1"][0], log, SITE, [prev], [], "monthly")
+    assert r["spot_offsets_m"]["v2"] == pytest.approx(22.2, abs=1.0)
+    assert r["spot_offsets_m"]["v1"] < 8
+    assert 0.5 <= r["spot_coverage"]["v3"] < 0.7          # half panned: under COVER_GOOD, warned
+    assert r["spot_coverage"]["v1"] == pytest.approx(1.0)
+
+
+def _judge_by_spot(verdicts: dict, asked: list):
+    def judge(claims, photos):
+        names = [n for n, _ in photos]
+        asked.append(names)
+        vid = names[-1].split("-", 1)[1]
+        return [{"verdict": verdicts.get(vid, "shown"), "reason": f"at {vid}"} for _ in claims]
+    return judge
+
+
+def test_the_claim_is_judged_spot_by_spot_on_last_and_this_visits_pictures(site_a):
+    _d, logs, _r, base_k = site_a
+    prev = earlier_from("W1", "base", "baseline", base_k)
+    asked = []
+    r, _ = vv.read(logs["m1"][0], logs["m1"][1], SITE, [prev], [], "monthly",
+                   claim="toilet block roof cast", judge=_judge_by_spot({"v2": "not_shown"}, asked))
+    assert all(len(a) == 2 and a[0] == "before-" + a[1][4:] for a in asked)
+    assert r["spot_verdicts"]["v2"] == "not_shown" and r["spot_verdicts"]["v1"] == "shown"
+    assert r["claim_verdict"] == "shown"               # one part, shown at another spot
+    assert r["spots_filmed"] == VIEWS
+
+
+def test_a_whole_work_claim_contradicted_at_one_spot_is_not_shown(site_a):
+    _d, logs, _r, base_k = site_a
+    prev = earlier_from("W1", "base", "baseline", base_k)
+    r, _ = vv.read(logs["m1"][0], logs["m1"][1], SITE, [prev], [], "monthly",
+                   claim="walls up to lintel level in all rooms",
+                   judge=_judge_by_spot({"v2": "not_shown"}, []))
+    assert r["claim_verdict"] == "not_shown" and r["claim_spots_not_shown"] == ["v2"]
+    assert r["claim_reason"] == "at v2"
+
+
+def test_too_few_spots_for_a_big_work_cannot_say_not_shown(site_a):
+    _d, logs, _r, base_k = site_a
+    prev = earlier_from("W1", "base", "baseline", base_k)
+    no = {f"v{k}": "not_shown" for k in range(1, VIEWS + 1)}
+    r, _ = vv.read(logs["m1"][0], logs["m1"][1], SITE, [prev], [], "monthly",
+                   claim="roof cast", judge=_judge_by_spot(no, []), spots_needed=12)
+    assert r["spots_needed"] == 12 and r["claim_verdict"] == "cant_tell"
+    r, _ = vv.read(logs["m1"][0], logs["m1"][1], SITE, [prev], [], "monthly",
+                   claim="roof cast", judge=_judge_by_spot(no, []), spots_needed=8)
+    assert r["claim_verdict"] == "not_shown"
+
+
+LINE = sitemap.Site("linear", 25.75, 82.69, 12.5, 25.7517, 82.69)      # about 190 m: 4 stretches
+
+
+def walked(log: dict) -> dict:
+    """The log with the GPS walking the line from one end to the other."""
+    n = len(log["gps"])
+    return dict(log, gps=[dict(g, lat=25.75 + 0.0017 * i / (n - 1), lon=82.69)
+                          for i, g in enumerate(log["gps"])])
+
+
+def test_a_linear_work_keeps_a_picture_of_each_stretch_and_judges_them(site_a):
+    _d, logs, _r, _k = site_a
+    base_r, base_k = vv.read(logs["base"][0], walked(logs["base"][1]), LINE, [], [], "baseline")
+    assert sorted(base_k["stretches"]) == ["s1", "s2", "s3", "s4"]
+    assert base_r["spots_filmed"] == VIEWS + 4
+    prev = earlier_from("W1", "base", "baseline", base_k, base_r)
+    asked = []
+    half = dict(walked(logs["m1"][1]))
+    half["gps"] = [g for g in half["gps"] if g["lat"] < 25.7509]           # only s1 and s2
+    r, _ = vv.read(logs["m1"][0], half, LINE, [prev], [], "monthly", claim="road surfaced",
+                   judge=_judge_by_spot({}, asked), stretches_asked=["s1", "s4"])
+    judged = {a[1][4:] for a in asked}
+    assert {"s1", "s2"} <= judged and "s4" not in judged
+    assert r["stretches_missed"] == ["s4"]

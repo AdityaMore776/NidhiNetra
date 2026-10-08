@@ -150,3 +150,12 @@ def test_capture_tokens_need_a_long_secret(monkeypatch):
         pass
     else:
         raise AssertionError("a short secret must not issue tokens")
+
+
+def test_the_stretch_seed_is_fixed_per_visit_and_needs_the_secret(monkeypatch):
+    # T158: which stretches of a long road a visit films is drawn from this seed
+    monkeypatch.setenv("DRISHTI_CAPTURE_SECRET", "test-secret-of-sixteen-plus")
+    a = capture.seed("visit-1")
+    assert len(a) == 32 and capture.seed("visit-1") == a and capture.seed("visit-2") != a
+    monkeypatch.setenv("DRISHTI_CAPTURE_SECRET", "another-secret-sixteen-plus")
+    assert capture.seed("visit-1") != a
