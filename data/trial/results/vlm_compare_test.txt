@@ -1,0 +1,16 @@
+T155: judges on the same 915 test items (real photos; labels checked by eye)
+
+ours4b: n 915, macro-F1 0.918 [0.896, 0.939], accuracy 0.948, fooled 0.009 of 580, missed 0.221 of 145, unreadable 0
+    cost: $0.173 per 1,000 checks (L4 GPU time)
+ours4b @1024px: n 915, macro-F1 0.917 [0.891, 0.941], accuracy 0.946, fooled 0.010 of 580, missed 0.228 of 145, unreadable 0
+    cost: $0.384 per 1,000 checks (L4 GPU time)
+    against ours4b: only ours4b right 7, only this right 6, McNemar p 1
+ours2b: n 915, macro-F1 0.912 [0.889, 0.934], accuracy 0.939, fooled 0.026 of 580, missed 0.159 of 145, unreadable 0
+    cost: $0.117 per 1,000 checks (L4 GPU time)
+    against ours4b: only ours4b right 23, only this right 15, McNemar p 0.256
+base4b_v6: n 915, macro-F1 0.471 [0.428, 0.512], accuracy 0.443, fooled 0.012 of 580, missed 0.579 of 145, unreadable 0
+    cost: $0.828 per 1,000 checks (L4 GPU time)
+    against ours4b: only ours4b right 470, only this right 8, McNemar p 1.66e-127
+base2b_v6: n 915, macro-F1 0.464 [0.428, 0.500], accuracy 0.660, fooled 0.097 of 580, missed 0.379 of 145, unreadable 19
+    cost: $1.026 per 1,000 checks (L4 GPU time)
+    against ours4b: only ours4b right 296, only this right 33, McNemar p 5.26e-54

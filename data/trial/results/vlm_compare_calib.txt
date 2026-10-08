@@ -1,0 +1,22 @@
+T155: judges on the same 92 calib items (real photos; labels checked by eye)
+
+sft4b_v6_real: n 92, macro-F1 0.842 [0.771, 0.951], accuracy 0.891, fooled 0.017 of 60, missed 0.364 of 11, unreadable 0
+    cost: $0.179 per 1,000 checks (L4 GPU time)
+sft4b_v6_real @1024px: n 92, macro-F1 0.859 [0.793, 0.960], accuracy 0.913, fooled 0.017 of 60, missed 0.364 of 11, unreadable 0
+    cost: $0.389 per 1,000 checks (L4 GPU time)
+    against sft4b_v6_real: only sft4b_v6_real right 0, only this right 2, McNemar p 0.5
+sft2b_v6: n 92, macro-F1 0.866 [0.790, 0.970], accuracy 0.902, fooled 0.017 of 60, missed 0.273 of 11, unreadable 0
+    cost: $0.120 per 1,000 checks (L4 GPU time)
+    against sft4b_v6_real: only sft4b_v6_real right 1, only this right 2, McNemar p 1
+sft2b_v6 @1024px: n 92, macro-F1 0.863 [0.794, 0.966], accuracy 0.913, fooled 0.017 of 60, missed 0.364 of 11, unreadable 0
+    cost: $0.213 per 1,000 checks (L4 GPU time)
+    against sft4b_v6_real: only sft4b_v6_real right 0, only this right 2, McNemar p 0.5
+gem_pro31: n 92, macro-F1 0.725 [0.591, 0.886], accuracy 0.859, fooled 0.000 of 60, missed 0.727 of 11, unreadable 0
+    cost: $9.556 per 1,000 checks (gemini-3.1-pro-preview billed tokens)
+    against sft4b_v6_real: only sft4b_v6_real right 5, only this right 2, McNemar p 0.453
+gem_pro31_4shot: n 92, macro-F1 0.680 [0.555, 0.864], accuracy 0.848, fooled 0.000 of 60, missed 0.818 of 11, unreadable 0
+    cost: $28.620 per 1,000 checks (gemini-3.1-pro-preview billed tokens)
+    against sft4b_v6_real: only sft4b_v6_real right 6, only this right 2, McNemar p 0.289
+gem_flash38: n 92, macro-F1 0.658 [0.560, 0.813], accuracy 0.870, fooled 0.000 of 60, missed 0.909 of 11, unreadable 0
+    cost: $2.795 per 1,000 checks (gemini-3.8-flash billed tokens)
+    against sft4b_v6_real: only sft4b_v6_real right 6, only this right 4, McNemar p 0.754
