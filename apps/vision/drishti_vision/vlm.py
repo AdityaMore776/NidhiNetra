@@ -108,7 +108,9 @@ class Loaded:
 
 
 def load(name: str, quant4: bool = False, adapter: str | None = None,
-         device: str = "cuda") -> Loaded:
+         device: str = "cuda", merge: bool = False) -> Loaded:
+    """`merge`: fold the LoRA adapter into the weights (scoring only; same answers, about half the
+    time a check, as the adapter's extra layers no longer run separately). Not for 4-bit."""
     import torch
     from transformers import AutoModelForImageTextToText, AutoProcessor
     kw = {"dtype": torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16}
@@ -126,6 +128,8 @@ def load(name: str, quant4: bool = False, adapter: str | None = None,
     if adapter:
         from peft import PeftModel
         model = PeftModel.from_pretrained(model, adapter)
+        if merge and not quant4:
+            model = model.merge_and_unload()
     model.eval()
     return Loaded(model, proc, name + (f"+{Path(adapter).name}" if adapter else ""), device)
 
@@ -173,6 +177,45 @@ def judge(L: Loaded, item, root: Path | None, max_new_tokens: int = 220, imgs=No
     probs = verdict_probs(L, enc, text) if ans is not None else None
     return {"text": text, "answer": ans, "probs": probs, "seconds": round(secs, 3),
             "new_tokens": int(gen.shape[0])}
+
+
+def judge_batch(L: Loaded, items: list, root: Path, max_new_tokens: int = 220) -> list[dict]:
+    """judge() for several items at once (left-padded, one generate call), so the GPU is not left
+    waiting between the words of one answer. Greedy, as judge(); `seconds` is the batch's time
+    shared out evenly. The verdict's probabilities come from each item's own prompt, as in
+    judge()."""
+    import torch
+    tok = L.processor.tokenizer
+    side = tok.padding_side
+    imgs, texts = [], []
+    for it in items:
+        d = it if isinstance(it, dict) else it.__dict__
+        imgs.append([load_image(root / d["image_a"]), load_image(root / d["image_b"])])
+        texts.append(L.processor.apply_chat_template(messages(it), tokenize=False,
+                                                     add_generation_prompt=True))
+    tok.padding_side = "left"
+    try:
+        enc = L.processor(text=texts, images=imgs, return_tensors="pt", padding=True)
+    finally:
+        tok.padding_side = side
+    enc = enc.to(L.model.device)
+    t0 = time.perf_counter()
+    with torch.no_grad():
+        out = L.model.generate(**enc, max_new_tokens=max_new_tokens, do_sample=False)
+    secs = (time.perf_counter() - t0) / len(items)
+    n0 = enc["input_ids"].shape[1]
+    res = []
+    for k, it in enumerate(items):
+        gen = out[k, n0:]
+        text = L.processor.decode(gen, skip_special_tokens=True)
+        ans = parse(text)
+        probs = None
+        if ans is not None:
+            one, _ = _inputs(L, it, root, imgs=imgs[k])
+            probs = verdict_probs(L, one.to(L.model.device), text)
+        res.append({"text": text, "answer": ans, "probs": probs, "seconds": round(secs, 3),
+                    "new_tokens": int((gen != tok.pad_token_id).sum())})
+    return res
 
 
 def _first_tokens(L: Loaded) -> dict[str, int]:

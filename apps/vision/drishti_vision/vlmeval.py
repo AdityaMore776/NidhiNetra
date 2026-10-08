@@ -156,10 +156,24 @@ def mcnemar(rows_a: list[dict], rows_b: list[dict]) -> dict:
     return {"n": len(pairs), "only_a_right": only_a, "only_b_right": only_b, "p": p}
 
 
-def predict(L, items: list, root: Path, out_path: Path, log=print) -> list[dict]:
+def row(it, o: dict) -> dict:
+    """One prediction line: the item's facts and the judge's answer."""
+    a = o["answer"]
+    pred = a["verdict"] if a else "unreadable"
+    conf = (o["probs"] or {}).get(pred) if a else None
+    return {"id": it.id, "site": it.site, "trick": it.trick, "real": it.real,
+            "ab_distance": it.ab_distance,
+            "truth": it.target["verdict"], "pred": pred, "conf": conf, "probs": o["probs"],
+            "seconds": o["seconds"], "text": o["text"][:400],
+            "served_by": o.get("served_by"), "cost_usd": o.get("cost_usd"),
+            "refused": bool(o.get("refused"))}
+
+
+def predict(L, items: list, root: Path, out_path: Path, log=print, batch: int = 1) -> list[dict]:
     """Runs a judge over `items`, resumable (one JSON line an item in `out_path`). `L` is a loaded
     local model (vlm.load) or any callable judge(item, root) -> {text, answer, probs, seconds, ...}
-    (flagship_claude.ClaudeJudge, flagship_other.GeminiJudge / OpenAIJudge)."""
+    (flagship_claude.ClaudeJudge, flagship_other.GeminiJudge / OpenAIJudge). `batch` > 1 answers
+    that many items in one go (local models only; vlm.judge_batch)."""
     from drishti_vision import vlm
     done = {}
     if out_path.exists():
@@ -167,27 +181,25 @@ def predict(L, items: list, root: Path, out_path: Path, log=print) -> list[dict]
             if line.strip():
                 r = json.loads(line)
                 done[r["id"]] = r
+    todo = [it for it in items if it.id not in done]
+    step = batch if batch > 1 and not callable(L) else 1
     with open(out_path, "a", encoding="utf-8") as f:
-        for k, it in enumerate(items):
-            if it.id in done:
-                continue
+        for k in range(0, len(todo), step):
+            chunk = todo[k:k + step]
             try:
-                o = L(it, root) if callable(L) else vlm.judge(L, it, root)
+                if step > 1:
+                    outs = vlm.judge_batch(L, chunk, root)
+                else:
+                    outs = [L(chunk[0], root) if callable(L) else vlm.judge(L, chunk[0], root)]
             except Exception as e:  # noqa: BLE001 (an API error is recorded, the run goes on)
-                log(f"{it.id}: {type(e).__name__}: {str(e)[:120]}")
+                log(f"{chunk[0].id}: {type(e).__name__}: {str(e)[:120]}")
                 continue
-            a = o["answer"]
-            pred = a["verdict"] if a else "unreadable"
-            conf = (o["probs"] or {}).get(pred) if a else None
-            r = {"id": it.id, "site": it.site, "trick": it.trick, "real": it.real,
-                 "ab_distance": it.ab_distance,
-                 "truth": it.target["verdict"], "pred": pred, "conf": conf, "probs": o["probs"],
-                 "seconds": o["seconds"], "text": o["text"][:400],
-                 "served_by": o.get("served_by"), "cost_usd": o.get("cost_usd"),
-                 "refused": bool(o.get("refused"))}
-            f.write(json.dumps(r, ensure_ascii=False) + "\n")
+            for it, o in zip(chunk, outs, strict=True):
+                r = row(it, o)
+                f.write(json.dumps(r, ensure_ascii=False) + "\n")
+                done[it.id] = r
             f.flush()
-            done[it.id] = r
-            if (k + 1) % 25 == 0:
-                log(f"{k + 1}/{len(items)}")
+            n = len(done)
+            if n // 25 != (n - len(chunk)) // 25:
+                log(f"{n}/{len(items)}")
     return [done[it.id] for it in items if it.id in done]

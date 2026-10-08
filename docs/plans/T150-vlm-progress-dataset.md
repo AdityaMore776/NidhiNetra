@@ -56,10 +56,10 @@ commands, where the data is, traps).
 | Task | State |
 |---|---|
 | T151 source probes | **Done.** See the list below. |
-| T152 collect | **Running:** MGNREGA, polite pace (~50 assets an hour); 250 timelapses downloading |
-| T153 label and curate | Built: `vlmdata.py` (claim ladder, certainty, planted tricks), `change.py`, `cutouts.py`. Pilot card: 154 items from 12 assets. |
-| T154 train | Built and smoke-tested on the RTX 3070 Ti: `vlm.py` (LoRA fine-tuning: 2B in bf16 at 5.7 GB, 4B in 4-bit at 6.3 GB), `vlmrl.py` (GRPO), `modal/train_modal.py` (the owner's Modal credit, hard timeouts) |
-| T155 benchmark | Built: `vlmeval.py`. Headline on real photos only, with bootstrap intervals by asset. |
+| T152 collect | **Running:** MGNREGA 738 assets from 36 districts (test districts visited first; v6 used 717); 180 timelapses built |
+| T153 label and curate | **v6 built and checked by eye:** train 4,663 items; **test 915 real items, every label checked by eye**; a 93-pair same-type probe. Eye checks found and fixed: swapped timelapse colours, shaky-camera shots, rooftop rainwater pits counted as buildings (FINDINGS "T153–T154") |
+| T154 train | **First tuned 4B (v4) on Modal:** macro-F1 0.99, fooled 1 of 141, **but fooled 38 of 44 times by another finished road** (a shortcut). Fixed in v6 (`other_site_same` training pairs); v6 4B and 2B training on Modal. GRPO not run yet |
+| T155 benchmark | `vlmeval.py` + `mcnemar`; same-type probe. Flagship baselines wait for keys (owner) |
 | T156 reader | Built: `VLMReader` in `site_progress/readers.py`, behind `DRISHTI_VLM_ADAPTER`, 8 engine tests |
 
 **What T151 found:**
