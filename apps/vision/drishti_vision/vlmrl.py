@@ -112,36 +112,15 @@ def rl_fit(cfg: RLConfig, prompts: list[dict] | None = None, log=print) -> dict:
         texts = [L.processor.decode(g[n0:], skip_special_tokens=True) for g in gen]
         rs = [reward(t, item) for t in texts]
         r = np.array([x["total"] for x in rs])
-        if r.std() < 1e-6:
-            skipped += 1
-            continue
-        adv = (r - r.mean()) / (r.std() + 1e-4)
-        model.train()
-        opt.zero_grad(set_to_none=True)
-        for g, a in zip(gen, adv, strict=True):
-            comp = g[n0:]
-            comp = comp[comp != L.processor.tokenizer.pad_token_id]
-            if comp.numel() == 0:
-                continue
-            ids = torch.cat([enc["input_ids"][0], comp])[None]
-            kw = {}
-            for kk, v in enc.items():
-                if kk in ("input_ids", "attention_mask"):
-                    continue
-                if torch.is_tensor(v) and v.dim() == 2 and v.shape[1] == n0:
-                    v = torch.cat([v, torch.zeros((1, comp.numel()), dtype=v.dtype,
-                                                  device=v.device)], 1)
-                kw[kk] = v
-            with torch.autocast("cuda", dtype=dtype):
-                logits = model(input_ids=ids, attention_mask=torch.ones_like(ids), **kw).logits
-            lp = torch.log_softmax(logits[0, n0 - 1:-1].float(), -1)
-            tok_lp = lp.gather(1, comp[:, None]).squeeze(1)
-            loss = -(float(a) * tok_lp.mean()) / cfg.group
-            loss.backward()
-        torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-        opt.step()
-        hist.append({"prompt": k, "mean_reward": float(r.mean()),
+        flat = r.std() < 1e-6
+        hist.append({"prompt": k, "mean_reward": float(r.mean()), "flat": bool(flat),
                      "verdict_right": float(np.mean([x["verdict"] > 0 for x in rs]))})
+        if flat:                    # every try scored the same: nothing to learn from this one
+            skipped += 1
+        else:
+            _update(model, L, enc, gen, n0, r, cfg, opt, dtype)
+        # progress and checkpoints on schedule, whether or not this prompt was skipped (a
+        # well-tuned model skips most prompts; logging only after updates left a run silent)
         if (k + 1) % 25 == 0:
             last = hist[-25:]
             log(f"{k + 1}/{len(prompts)} reward {np.mean([h['mean_reward'] for h in last]):.3f} "
@@ -156,6 +135,36 @@ def rl_fit(cfg: RLConfig, prompts: list[dict] | None = None, log=print) -> dict:
             "peak_gpu_gb": round(torch.cuda.max_memory_allocated() / 2**30, 2)}
     (out / "rl_info.json").write_text(json.dumps(info, indent=1))
     return info
+
+
+def _update(model, L, enc, gen, n0, r, cfg, opt, dtype) -> None:
+    """One GRPO step on a group: each try's log-probability pushed by its advantage."""
+    import torch
+    adv = (r - r.mean()) / (r.std() + 1e-4)
+    model.train()
+    opt.zero_grad(set_to_none=True)
+    for g, a in zip(gen, adv, strict=True):
+        comp = g[n0:]
+        comp = comp[comp != L.processor.tokenizer.pad_token_id]
+        if comp.numel() == 0:
+            continue
+        ids = torch.cat([enc["input_ids"][0], comp])[None]
+        kw = {}
+        for kk, v in enc.items():
+            if kk in ("input_ids", "attention_mask"):
+                continue
+            if torch.is_tensor(v) and v.dim() == 2 and v.shape[1] == n0:
+                v = torch.cat([v, torch.zeros((1, comp.numel()), dtype=v.dtype,
+                                              device=v.device)], 1)
+            kw[kk] = v
+        with torch.autocast("cuda", dtype=dtype):
+            logits = model(input_ids=ids, attention_mask=torch.ones_like(ids), **kw).logits
+        lp = torch.log_softmax(logits[0, n0 - 1:-1].float(), -1)
+        tok_lp = lp.gather(1, comp[:, None]).squeeze(1)
+        loss = -(float(a) * tok_lp.mean()) / cfg.group
+        loss.backward()
+    torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+    opt.step()
 
 
 def focus_prompts(items: list[dict], tricks: tuple[str, ...], keep_other: float = 0.3,
