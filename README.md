@@ -88,7 +88,9 @@ NidhiLens is benchmarked and published as a report. It is not yet switched on in
 | NidhiLens-FineTuned-Qwen2B | 0.927 | 14 of 121 | 15 of 576 | 0.12 |
 | Gemini 3.1 Pro, its best prompt | 0.876 | 31 of 121 | 2 of 576 | 5.27 |
 
-Gemini is fooled slightly less often. The report shows that, and the cases where each model fails.
+Gemini is fooled slightly less often on that test. On 314 fresh checks, labelled by eye before any model saw them,
+NidhiLens scores 0.914 (4B) and 0.938 (2B) against Gemini's 0.830, and Gemini is fooled as often as ours. The
+report shows the cases where each model fails.
 
 ---
 
