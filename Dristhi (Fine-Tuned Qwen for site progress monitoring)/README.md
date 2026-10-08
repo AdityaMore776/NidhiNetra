@@ -2,7 +2,8 @@
 
 **Progress report, 8 October 2026.** Team NeuralNexus, NidhiNetra / DRISHTI (SIH 2026, problem SIH26102, MoSPI).
 
-> **The model itself is in a private repository** (`AdityaMore776/NidhiLens-FineTuned-Qwen4B`). We do not want others to
+> **The model itself is in a private repository**
+> ([AdityaMore776/NidhiLens-FineTuned-Qwen4B](https://github.com/AdityaMore776/NidhiLens-FineTuned-Qwen4B), weights in its release `v1.0`). We do not want others to
 > have access to the trained weights. This report, the test data and every model output are shared here so the results
 > can be checked. The weights are not.
 
@@ -129,7 +130,9 @@ The checks found and fixed whole kinds of wrong labels:
 They also removed individual wrong ones. 32 were dropped in the last round, and **a fix to one photo is applied to
 every check that uses it, not only to the disputed ones**, so the cleaning cannot favour either side.
 
-**Download:** the GitHub release **`siteclaim-test-v1`** of this repository holds `siteclaim_test_v1.zip` (352 MB):
+**Download:** the GitHub release [**`siteclaim-test-v1`**](https://github.com/AdityaMore776/NidhiNetra/releases/tag/siteclaim-test-v1)
+of this repository holds `siteclaim_test_v1.zip` (364 MB). Or run
+`gh release download siteclaim-test-v1 --repo AdityaMore776/NidhiNetra`. Inside:
 
 | Path | What |
 |---|---|
