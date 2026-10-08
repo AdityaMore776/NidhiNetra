@@ -1,6 +1,6 @@
 # NidhiLens-FineTuned-Qwen4B: checking construction-progress claims from site photos
 
-**Progress report, 8 October 2026.** Team NeuralNexus, NidhiNetra / DRISHTI (SIH 2026, problem SIH26102, MoSPI).
+**Progress report, 8 October 2026.** Team NeuralNexus, NidhiNetra (SIH 2026, problem SIH26102, MoSPI).
 
 > **The model itself is in a private repository**
 > ([AdityaMore776/NidhiLens-FineTuned-Qwen4B](https://github.com/AdityaMore776/NidhiLens-FineTuned-Qwen4B), weights in its release `v1.0`). We do not want others to
@@ -334,11 +334,11 @@ claim ─────> text tokens ───────────────
 
 ## 7. Reproduce
 
-The code is in `apps/vision/` of this repository: `drishti_vision/` and `modal/train_modal.py`.
+The code is in `apps/vision/` of this repository (the vision package and `modal/train_modal.py`).
 
 | Step | Command |
 |---|---|
-| Data | `python -m drishti_vision vlmbuild ...` |
+| Data | the `vlmbuild` command of the vision package (`apps/vision`) |
 | Train | `modal run modal/train_modal.py::sft --items ... --real-only` |
 | Score | `modal run modal/train_modal.py::score_l4 --adapter ...` |
 | Gemini | `modal run modal/train_modal.py::flagship_round ...`: a hard spending ledger prices every call before it is sent |

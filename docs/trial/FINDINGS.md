@@ -2498,7 +2498,7 @@ answers. A balanced run is judged on calibration and the probe before the test i
 
 ### T155 final (8 Oct 2026, evening): the clean test, Gemini at its best, the report
 
-**The report:** `Dristhi (Fine-Tuned Qwen for site progress monitoring)/README.md`. The model is named
+**The report:** `NidhiLens (Fine-Tuned Qwen for site progress monitoring)/README.md`. The model is named
 **NidhiLens-FineTuned-Qwen4B** (and -Qwen2B). The weights are in the private repo `AdityaMore776/NidhiLens-FineTuned-Qwen4B`
 (release v1.0). The test data is the `siteclaim-test-v1` release of this repo.
 
