@@ -2496,6 +2496,54 @@ answers. A balanced run is judged on calibration and the probe before the test i
   is sent).
 - Of the Gemini 3.8 Flash test batch, 600 of 915 requests failed (unbilled) after the block. Flash is not re-run.
 
+### T155 final (8 Oct 2026, evening): the clean test, Gemini at its best, the report
+
+**The report:** `Dristhi (Fine-Tuned Qwen for site progress monitoring)/README.md`. The model is named
+**NidhiLens-FineTuned-Qwen4B** (and -Qwen2B). The weights are in the private repo `AdityaMore776/NidhiLens-FineTuned-Qwen4B`
+(release v1.0). The test data is the `siteclaim-test-v1` release of this repo.
+
+**The test was cleaned once more.**
+- Every site where any judge disagreed with the label (61 sites) was re-checked on large cards.
+- 32 labels were dropped: 24 shown, 4 can't tell, 4 not shown. A fix to a photo applies to every item using it.
+- Test now: 883 items (850 GeoMGNREGA from 5 districts, 33 timelapse).
+
+**Gemini, with its best prompt, is much better.** That prompt is ours plus the task's rules, with no examples and
+nothing from the test, written after reading its failures. On the 223 checks it answered with it:
+
+| Judge | Macro-F1 | Missed progress |
+|---|---|---|
+| **Our 4B** | **0.934** | 6 of 32 |
+| Gemini, best prompt | 0.863 | 10 of 32 |
+| Gemini, our prompt | 0.738 | 22 of 32 |
+
+- McNemar, our 4B against Gemini's best: 16 against 4, p = 0.012.
+- Same-type probe:
+  - Gemini, best prompt: 82 of 93;
+  - our 4B: 86 of 93 (p = 0.45);
+  - Gemini, our prompt: 93 of 93.
+
+Google's monthly spending cap stopped the remaining 660 checks. Prepaid usage counts toward the cap, at a ledger of
+₹226.50.
+
+**The whole clean test (Gemini with our prompt):**
+
+| Judge | Macro-F1 | Fooled (of 576) | Missed (of 121) | $ per 1,000 checks |
+|---|---|---|---|---|
+| Our 4B | 0.935 | 4 | 21 | 0.17 |
+| Our 2B | 0.927 | 15 | 14 | 0.12 |
+| Gemini 3.1 Pro | 0.711 | 2 | 87 | 5.15 batch (about 10.3 live) |
+
+**Balanced GRPO** (100 prompts per answer, lr 2.5e-6) was **rejected**, judged on calibration and the probe without
+touching the test:
+- calibration macro-F1 0.893 against 0.870;
+- but fooled 6 of 87 against 1;
+- probe 48 of 93 against 86.
+
+**`judge.py` was tested from the private release:** it ran on the owner's RTX 3070 Ti and returned the right answer on
+example 1 (shown, 0.9998).
+
+**Modal:** $22.82 spent on 8 Oct.
+
 **Speed:** scoring answered one pair at a time with the adapter kept separate: 7.5 s a check on an L4, the GPU about 39%
 busy. Folding the adapter into the weights and answering 8 pairs at once gives 0.84 s a check, with the same verdict
 and the same confidence on all 48 items compared.
