@@ -67,19 +67,28 @@ def sft(items: str = "/data/vlm/v1/items.jsonl", out: str = "/data/runs/sft4b",
 @app.function(gpu=GPU, volumes={"/data": vol}, timeout=4 * 3600)
 def rl(adapter: str = "/data/runs/sft4b/final", out: str = "/data/runs/rl4b",
        items: str = "/data/vlm/v1/items.jsonl", base: str = "Qwen/Qwen3-VL-4B-Instruct",
-       prompts: int = 1500, group: int = 6, lr: float = 5e-6, hard: str = ""):
+       prompts: int = 1500, group: int = 6, lr: float = 5e-6, hard: str = "",
+       focus: str = "", real_only: bool = False):
+    """`focus`: comma-separated tricks to practise (vlmrl.focus_prompts); `real_only`: no edited
+    items, as in sft --real-only."""
     import json
     import sys
     sys.path.insert(0, "/root")
     from drishti_vision import vlm, vlmrl
     cfg = vlmrl.RLConfig(base=base, adapter=adapter, items=items, root="/data", out=out,
-                         quant4=False, group=group, lr=lr, prompts=prompts, save_every=250)
-    chosen = None
+                         quant4=False, group=group, lr=lr, prompts=prompts, save_every=100)
+    tc = vlm.TrainConfig(base=base, items=items, root="/data", out=out, real_only=real_only)
+    chosen = vlm.training_items(items, tc)
     if hard:                                   # predictions on the training split (H3)
         rows = [json.loads(x) for x in Path(hard).read_text(encoding="utf-8").splitlines() if x]
-        tc = vlm.TrainConfig(base=base, items=items, root="/data", out=out)
-        chosen = vlmrl.hard_prompts(rows, vlm.training_items(items, tc))
-    info = vlmrl.rl_fit(cfg, prompts=chosen, log=lambda s: print(s, flush=True))
+        chosen = vlmrl.hard_prompts(rows, chosen)
+    elif focus:
+        chosen = vlmrl.focus_prompts(chosen, tuple(focus.split(",")))
+
+    def log(s):                                # every 25 prompts: print and save to the volume
+        print(s, flush=True)
+        vol.commit()
+    info = vlmrl.rl_fit(cfg, prompts=chosen, log=log)
     vol.commit()
     return {k: info[k] for k in ("prompts", "skipped_flat_groups", "minutes", "peak_gpu_gb")}
 

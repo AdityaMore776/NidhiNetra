@@ -158,6 +158,20 @@ def rl_fit(cfg: RLConfig, prompts: list[dict] | None = None, log=print) -> dict:
     return info
 
 
+def focus_prompts(items: list[dict], tricks: tuple[str, ...], keep_other: float = 0.3,
+                  seed: int = 0) -> list[dict]:
+    """Training items of the tricks the test showed to be weak (all of them), plus `keep_other`
+    as many of the rest so the model does not forget them; shuffled. A cheap stand-in for
+    hard_prompts when scoring the whole training split is not worth its cost."""
+    rng = random.Random(seed)
+    focus = [r for r in items if r["trick"] in tricks]
+    rest = [r for r in items if r["trick"] not in tricks]
+    rng.shuffle(rest)
+    out = focus + rest[: math.ceil(keep_other * len(focus))]
+    rng.shuffle(out)
+    return out
+
+
 def hard_prompts(pred_rows: list[dict], items: list[dict], keep_easy: float = 0.2,
                  seed: int = 0) -> list[dict]:
     """H3: the training items the fine-tuned model got wrong or was unsure of (conf < 0.8), plus a

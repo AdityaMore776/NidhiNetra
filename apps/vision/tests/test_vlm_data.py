@@ -239,6 +239,17 @@ def test_mcnemar_compares_two_judges_on_the_same_items():
     assert vlmeval.mcnemar(a, rows([False] * 3))["n"] == 3     # shared items only
 
 
+def test_rl_practice_aims_at_the_weak_tricks():
+    from drishti_vision import vlmrl
+    items = ([{"id": f"s{k}", "trick": "swapped", "split": "train"} for k in range(10)]
+             + [{"id": f"b{k}", "trick": "busy", "split": "train"} for k in range(100)])
+    got = vlmrl.focus_prompts(items, ("swapped",), keep_other=0.5, seed=0)
+    ids = [r["id"] for r in got]
+    assert sum(i.startswith("s") for i in ids) == 10          # every focused item
+    assert sum(i.startswith("b") for i in ids) == 5            # plus half as many others
+    assert len(set(ids)) == len(ids)
+
+
 def test_rewards_punish_being_fooled_most():
     from drishti_vision.vlmrl import reward
     item = {"trick": "busy", "target": {"verdict": "not_shown", "stage_A": "unknown",

@@ -1,0 +1,94 @@
+T151-T155: the claim judge's data and scores (sanitised counts)
+
+1. GeoMGNREGA assets (photos at stage 1 before, 2 during, 3 after)
+
+  assets 717: calib 24 (2 districts), test 193 (5 districts), train 500 (29 districts)
+  work types: other 271, road 260, building 148, drain 33, boundary_wall 5
+  stages present: 1-2-3: 717
+  progress certain (change beats own noise, structural): 172 of 717
+
+2. Claim-ladder items
+
+  train: 4663 items, 2924 real and unedited, 1 labels checked by eye
+    verdicts: cant_tell 1299, not_shown 2649, shown 715
+    tricks: busy 405, dark (edited) 243, double_claim 358, light 154, light (edited) 499, none 473, none (edited) 242, occluded (edited) 256, other_site 499, other_site_same 301, staged (edited) 499, swapped 169, view 565
+    sources: geomgnrega 4432, timelapse 231
+  calib: 155 items, 155 real and unedited, 0 labels checked by eye
+    verdicts: cant_tell 24, not_shown 105, shown 26
+    tricks: busy 22, double_claim 20, light 23, none 26, other_site 24, swapped 13, view 27
+    sources: geomgnrega 122, timelapse 33
+  test: 915 items, 915 real and unedited, 915 labels checked by eye
+    verdicts: cant_tell 190, not_shown 580, shown 145
+    tricks: busy 166, double_claim 141, light 18, none 145, other_site 190, swapped 43, view 212
+    sources: geomgnrega 882, timelapse 33
+
+3. Scores (headline: real, unedited test photos only)
+
+  base2b_v6/test_score.json: n 915, macro-F1 0.464, accuracy 0.660, fooled 0.097 [0.070, 0.123] of 580 no-progress pairs, missed 0.379 of 145 progress pairs, answers 0.980, ECE 0.198
+    4.621 s a check, Rs 2.98 per 1,000 checks
+    per trick: busy 0.86 (n 166), double_claim 0.82 (n 141), light 1.00 (n 18), none 0.62 (n 145), other_site 0.06 (n 190), swapped 0.77 (n 43), view 0.91 (n 212)
+    fooled when the photos look nearly the same 0.069 (n 274), clearly different 0.136 (n 273)
+    against base4b_v6/test.jsonl: on 915 items only the baseline right 195, only this right 394, McNemar p 1.76e-16
+  base4b_v4/probe_score.json: n 44, macro-F1 0.313, accuracy 0.886, fooled n/a [nan, nan] of 0 no-progress pairs, missed n/a of 0 progress pairs, answers 0.114, ECE 0.104
+    3.864 s a check, Rs 2.49 per 1,000 checks
+    per trick: other_site_same 0.89 (n 44)
+    against base4b_v6/test.jsonl: on 0 items only the baseline right 0, only this right 0, McNemar p 1
+  base4b_v4/test_score.json: n 205, macro-F1 0.441, accuracy 0.366, fooled 0.014 [0.000, 0.035] of 141 no-progress pairs, missed 0.312 of 16 progress pairs, answers 0.361, ECE 0.511
+    3.733 s a check, Rs 2.41 per 1,000 checks
+    per trick: busy 0.35 (n 46), double_claim 0.48 (n 31), light 0.00 (n 18), none 0.69 (n 16), other_site 0.56 (n 48), swapped 0.17 (n 6), view 0.12 (n 40)
+    fooled when the photos look nearly the same 0.000 (n 54), clearly different 0.037 (n 54)
+    against base4b_v6/test.jsonl: on 89 items only the baseline right 0, only this right 2, McNemar p 0.5
+  base4b_v6/probe_score.json: n 93, macro-F1 0.267, accuracy 0.667, fooled n/a [nan, nan] of 0 no-progress pairs, missed n/a of 0 progress pairs, answers 0.333, ECE 0.282
+    3.858 s a check, Rs 2.49 per 1,000 checks
+    per trick: other_site_same 0.67 (n 93)
+    against base4b_v6/test.jsonl: on 0 items only the baseline right 0, only this right 0, McNemar p 1
+  base4b_v6/test_score.json: n 915, macro-F1 0.471, accuracy 0.443, fooled 0.012 [0.005, 0.021] of 580 no-progress pairs, missed 0.579 of 145 progress pairs, answers 0.339, ECE 0.438
+    3.731 s a check, Rs 2.4 per 1,000 checks
+    per trick: busy 0.43 (n 166), double_claim 0.42 (n 141), light 0.00 (n 18), none 0.42 (n 145), other_site 0.87 (n 190), swapped 0.09 (n 43), view 0.21 (n 212)
+    fooled when the photos look nearly the same 0.000 (n 274), clearly different 0.026 (n 273)
+  sft2b_v6/probe_score.json: n 93, macro-F1 0.295, accuracy 0.796, fooled n/a [nan, nan] of 0 no-progress pairs, missed n/a of 0 progress pairs, answers 0.204, ECE 0.204
+    6.047 s a check, Rs 3.9 per 1,000 checks
+    per trick: other_site_same 0.80 (n 93)
+    against base4b_v6/test.jsonl: on 0 items only the baseline right 0, only this right 0, McNemar p 1
+  sft2b_v6/test_score.json: n 915, macro-F1 0.920, accuracy 0.943, fooled 0.026 [0.014, 0.039] of 580 no-progress pairs, missed 0.152 of 145 progress pairs, answers 0.765, ECE 0.029
+    3.978 s a check, Rs 2.56 per 1,000 checks
+    per trick: busy 1.00 (n 166), double_claim 1.00 (n 141), light 1.00 (n 18), none 0.85 (n 145), other_site 0.98 (n 190), swapped 0.72 (n 43), view 0.93 (n 212)
+    fooled when the photos look nearly the same 0.018 (n 274), clearly different 0.037 (n 273)
+    against base4b_v6/test.jsonl: on 915 items only the baseline right 13, only this right 471, McNemar p 4.49e-121
+  sft4b_v4/probe_score.json: n 44, macro-F1 0.029, accuracy 0.045, fooled n/a [nan, nan] of 0 no-progress pairs, missed n/a of 0 progress pairs, answers 0.955, ECE 0.068
+    5.113 s a check, Rs 3.3 per 1,000 checks
+    per trick: other_site_same 0.05 (n 44)
+    against base4b_v6/test.jsonl: on 0 items only the baseline right 0, only this right 0, McNemar p 1
+  sft4b_v4/test_score.json: n 205, macro-F1 0.989, accuracy 0.995, fooled 0.007 [0.000, 0.025] of 141 no-progress pairs, missed 0.000 of 16 progress pairs, answers 0.766, ECE 0.005
+    4.768 s a check, Rs 3.07 per 1,000 checks
+    per trick: busy 1.00 (n 46), double_claim 1.00 (n 31), light 1.00 (n 18), none 1.00 (n 16), other_site 1.00 (n 48), swapped 1.00 (n 6), view 0.97 (n 40)
+    fooled when the photos look nearly the same 0.000 (n 54), clearly different 0.019 (n 54)
+    against base4b_v6/test.jsonl: on 89 items only the baseline right 0, only this right 70, McNemar p 1.69e-21
+  sft4b_v4_real/probe_score.json: n 44, macro-F1 0.143, accuracy 0.273, fooled n/a [nan, nan] of 0 no-progress pairs, missed n/a of 0 progress pairs, answers 0.727, ECE 0.045
+    8.279 s a check, Rs 5.34 per 1,000 checks
+    per trick: other_site_same 0.27 (n 44)
+    against base4b_v6/test.jsonl: on 0 items only the baseline right 0, only this right 0, McNemar p 1
+  sft4b_v4_real/test_score.json: n 205, macro-F1 0.975, accuracy 0.990, fooled 0.007 [0.000, 0.025] of 141 no-progress pairs, missed 0.062 of 16 progress pairs, answers 0.761, ECE 0.010
+    4.901 s a check, Rs 3.16 per 1,000 checks
+    per trick: busy 1.00 (n 46), double_claim 1.00 (n 31), light 1.00 (n 18), none 0.94 (n 16), other_site 1.00 (n 48), swapped 1.00 (n 6), view 0.97 (n 40)
+    fooled when the photos look nearly the same 0.000 (n 54), clearly different 0.019 (n 54)
+    against base4b_v6/test.jsonl: on 89 items only the baseline right 0, only this right 70, McNemar p 1.69e-21
+  sft4b_v6/probe_score.json: n 93, macro-F1 0.472, accuracy 0.892, fooled n/a [nan, nan] of 0 no-progress pairs, missed n/a of 0 progress pairs, answers 0.108, ECE 0.000
+    7.68 s a check, Rs 4.95 per 1,000 checks
+    per trick: other_site_same 0.89 (n 93)
+    against base4b_v6/test.jsonl: on 0 items only the baseline right 0, only this right 0, McNemar p 1
+  sft4b_v6/test_score.json: n 915, macro-F1 0.925, accuracy 0.951, fooled 0.019 [0.008, 0.031] of 580 no-progress pairs, missed 0.179 of 145 progress pairs, answers 0.769, ECE 0.019
+    7.415 s a check, Rs 4.78 per 1,000 checks
+    per trick: busy 1.00 (n 166), double_claim 1.00 (n 141), light 1.00 (n 18), none 0.82 (n 145), other_site 0.99 (n 190), swapped 0.81 (n 43), view 0.96 (n 212)
+    fooled when the photos look nearly the same 0.004 (n 274), clearly different 0.037 (n 273)
+    against base4b_v6/test.jsonl: on 915 items only the baseline right 8, only this right 473, McNemar p 2.18e-128
+  sft4b_v6_real/probe_score.json: n 93, macro-F1 0.320, accuracy 0.925, fooled n/a [nan, nan] of 0 no-progress pairs, missed n/a of 0 progress pairs, answers 0.075, ECE 0.011
+    7.779 s a check, Rs 5.01 per 1,000 checks
+    per trick: other_site_same 0.92 (n 93)
+    against base4b_v6/test.jsonl: on 0 items only the baseline right 0, only this right 0, McNemar p 1
+  sft4b_v6_real/test_score.json: n 915, macro-F1 0.920, accuracy 0.949, fooled 0.009 [0.002, 0.017] of 580 no-progress pairs, missed 0.221 of 145 progress pairs, answers 0.756, ECE 0.040
+    4.464 s a check, Rs 2.88 per 1,000 checks
+    per trick: busy 1.00 (n 166), double_claim 1.00 (n 141), light 1.00 (n 18), none 0.78 (n 145), other_site 1.00 (n 190), swapped 0.77 (n 43), view 0.98 (n 212)
+    fooled when the photos look nearly the same 0.004 (n 274), clearly different 0.015 (n 273)
+    against base4b_v6/test.jsonl: on 915 items only the baseline right 8, only this right 471, McNemar p 8.45e-128
+

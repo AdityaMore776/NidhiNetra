@@ -2365,6 +2365,38 @@ cards** (all 6 stage photos and the other-place photo in one row), 967 labels in
   580 no progress, 190 different place.
 - **Probe:** 93 same-type other-place pairs, checked by eye.
 
+### T154 (8 Oct 2026, later): v6 results (915 real test items, every label checked by eye)
+
+LoRA rank 16, 2 passes, on Modal (A100 for training, L4 for scoring). Output: `data/trial/results/vlm_trial.txt`.
+
+| Judge | Macro-F1 [95% CI] | Fooled (of 580 no-progress) | Missed progress (of 145) | Same-type probe right (of 93) |
+|---|---|---|---|---|
+| Qwen3-VL-2B untrained | 0.46 [0.43, 0.50] | 56 (9.7%) | 55 (38%) | not run |
+| Qwen3-VL-4B untrained | 0.47 [0.43, 0.51] | 7 (1.2%), answers only 34% of the time | 84 (58%) | 62 (67%) |
+| 2B tuned | 0.92 [0.90, 0.94] | 15 (2.6%) | 22 (15%) | 74 (80%) |
+| 4B tuned (with edited photos) | 0.925 [0.91, 0.95] | 11 (1.9%) [0.8, 3.1] | 26 (18%) | 83 (89%) |
+| **4B tuned, real photos only** | **0.92 [0.90, 0.94]** | **5 (0.9%) [0.2, 1.7]** | 32 (22%) | **86 (92%)** |
+
+McNemar tests:
+- every tuned model against its untrained base: p < 10⁻⁵⁰;
+- with edits against real only: 13 against 11 items, p = 0.84 on the test, and p = 0.55 on the probe;
+- 2B tuned against 4B tuned: p = 0.32.
+
+What follows:
+- **The edited photos are dropped (the owner's rule).** The real-only model is not worse: it ties overall, is fooled
+  less, and passes the probe more often.
+- **The same-type shortcut is mostly fixed** (89–92% on the probe, from 5% before). The pairs left are all "an empty
+  plot, then a close-up of a finished building elsewhere". Real progress pairs for buildings look exactly like that, so
+  photos alone cannot separate them: the photo's GPS tag, or a landmark seen in both, must.
+- **Track B is in reach:** on the test, the tuned 2B is level with the tuned 4B. It is weaker on the probe (80%).
+- **Weak spots left (the reinforcement stage's targets):**
+  - real progress answered "can't tell" (17–23 of 145);
+  - photos in reverse order (72–81% right).
+
+**Speed:** scoring answered one pair at a time with the adapter kept separate: 7.5 s a check on an L4, the GPU about 39%
+busy. Folding the adapter into the weights and answering 8 pairs at once gives 0.84 s a check, with the same verdict
+and the same confidence on all 48 items compared.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**
