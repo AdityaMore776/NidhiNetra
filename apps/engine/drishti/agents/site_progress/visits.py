@@ -72,6 +72,17 @@ def _ids(v) -> list[str]:
         if isinstance(v, list) else []
 
 
+def _floats(v) -> dict[str, float]:
+    """{id: number} of a spot reading (T158); anything else is left out."""
+    return ({str(k): float(n) for k, n in v.items() if isinstance(k, str) and _finite(n)}
+            if isinstance(v, dict) else {})
+
+
+def _verdicts(v) -> dict[str, str]:
+    return ({k: x for k, x in v.items() if isinstance(k, str)
+             and x in ("shown", "not_shown", "cant_tell")} if isinstance(v, dict) else {})
+
+
 def _refs(v, key: str) -> list[dict]:
     out = []
     for x in v if isinstance(v, list) else []:
@@ -126,12 +137,19 @@ def of(work: dict) -> list[Visit]:
                                                   "asset_at_start", "complete_shown",
                                                   "quality_ok", "motion_consistent",
                                                   "gps_weak")}
-        for k in ("gps_distance_m", "viewpoints_expected", "viewpoints_matched"):
+        for k in ("gps_distance_m", "viewpoints_expected", "viewpoints_matched",
+                  "spots_needed", "spots_filmed"):
             n = r.get(k)
             readings[k] = float(n) if _finite(n) else None
         readings["zones_shown"] = _ids(r.get("zones_shown"))
         readings["zones_new"] = _ids(r.get("zones_new"))
         readings["viewpoints_skipped"] = _ids(r.get("viewpoints_skipped"))
+        # T158: the same spot every month
+        readings["spot_offsets_m"] = _floats(r.get("spot_offsets_m"))
+        readings["spot_coverage"] = _floats(r.get("spot_coverage"))
+        readings["spot_verdicts"] = _verdicts(r.get("spot_verdicts"))
+        readings["claim_spots_not_shown"] = _ids(r.get("claim_spots_not_shown"))
+        readings["stretches_missed"] = _ids(r.get("stretches_missed"))
         for k in ("change", "claim_verdict"):
             readings[k] = r.get(k) if isinstance(r.get(k), str) else None
         reason = r.get("claim_reason")

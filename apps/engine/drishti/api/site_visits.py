@@ -2,9 +2,12 @@
 
     GET  /api/v1/site-visits/{work_id}          the site map, the visits so far, the viewpoints of
                                                 the last read visit (with their frames, for the
-                                                capture page's faint overlay)
+                                                capture page's faint overlay), each with its
+                                                anchor, facing and 3 pan pictures (T158), and how
+                                                many spots the work needs
     POST /api/v1/site-visits/start              {work_id, kind} -> a visit id and a capture token,
-                                                issued when filming starts
+                                                issued when filming starts, and the stretches of
+                                                a long linear work this visit is asked to film
     POST /api/v1/site-visits/{visit_id}/upload  {token} -> a one-time storage URL for the video
     POST /api/v1/site-visits/{visit_id}/done    {token, sha256, captured_at, claim, log} -> the
                                                 visit waits for the video job
@@ -24,14 +27,15 @@ from psycopg.types.json import Jsonb
 from pydantic import BaseModel, Field
 
 from drishti import capture
-from drishti.agents.site_progress import sitemap
+from drishti.agents.site_progress import sitemap, spots
 from drishti.api.routes import _work_in_area
 from drishti.auth import Principal, current_user
 from drishti.db import connect
 
 router = APIRouter(prefix="/api/v1")
 KINDS = ("baseline", "monthly", "check", "final")
-LOG_MAX_BYTES = 400_000          # a capture log is points and marks, never pictures
+LOG_MAX_BYTES = 1_000_000        # a capture log is points and marks, never pictures (T158: the
+                                 # compass at 4 a second over a long road walk)
 
 
 class Start(BaseModel):
@@ -75,22 +79,33 @@ def _frame_url(path: str | None) -> str | None:
 
 
 def _viewpoints(con, work_id: str) -> list[dict]:
-    """Every viewpoint the site has had, each with its newest frame from a visit that matched
-    the site (T136: a viewpoint missed one month is still asked for the next)."""
+    """Every viewpoint the site has had, each with its newest frame and pan pictures from a visit
+    that matched the site (T136: a viewpoint missed one month is still asked for the next), and
+    its anchor: where to stand and which way to face (T158, spots.anchors)."""
     rows = con.execute("SELECT visit_id, kept, readings FROM site_visits WHERE work_id = %s AND "
                        "status = 'read' AND kept IS NOT NULL ORDER BY captured_at DESC",
                        (work_id,)).fetchall()
     newest: dict[str, dict] = {}
+    history = []
     for row in rows:
         r = row.get("readings") or {}
+        views = {vid: v for vid, v in ((row.get("kept") or {}).get("viewpoints") or {}).items()
+                 if isinstance(v, dict)}
+        history.append({"readings": r, "spots": views})
         if r.get("views_match_site") is False or r.get("gps_inside") is False \
                 or r.get("mock_location") is True:
             continue
-        for vid, v in ((row.get("kept") or {}).get("viewpoints") or {}).items():
-            if isinstance(v, dict):
-                newest.setdefault(vid, v)
-    return [{"id": vid, "frame_url": _frame_url(v.get("path"))}
-            for vid, v in sorted(newest.items())]
+        for vid, v in views.items():
+            newest.setdefault(vid, v)
+    anchors = spots.anchors(list(reversed(history)))          # oldest first
+    out = []
+    for vid, v in sorted(newest.items()):
+        a = anchors.get(vid)
+        out.append({"id": vid, "frame_url": _frame_url(v.get("path")),
+                    "pan_urls": [u for u in (_frame_url(p) for p in v.get("pans") or []) if u],
+                    "anchor": {k: a[k] for k in ("lat", "lon", "acc", "box_m")} if a else None,
+                    "facing": a.get("facing") if a else None})
+    return out
 
 
 def _token(token: str, visit_id: str, user: Principal) -> capture.Claims:
@@ -108,7 +123,8 @@ def site_visits_read(work_id: str, user: Principal = Depends(current_user)) -> d
     with connect() as con:
         _ready(con)
         w = _work_in_area(con, work_id, user)
-        site = sitemap.site_of(_form(con, work_id), w.get("work_type_code"))
+        form = _form(con, work_id)
+        site = sitemap.site_of(form, w.get("work_type_code"))
         rows = con.execute("SELECT visit_id, kind, status, claim, captured_at, readings, note "
                            "FROM site_visits WHERE work_id = %s ORDER BY captured_at NULLS LAST, "
                            "started_at", (work_id,)).fetchall()
@@ -116,7 +132,7 @@ def site_visits_read(work_id: str, user: Principal = Depends(current_user)) -> d
     return {"work_id": work_id, "site": site.to_json() if site else None,
             "next_kind": "baseline" if not any(r["kind"] == "baseline" and r["status"] != "rejected"
                                                for r in rows) else "monthly",
-            "viewpoints": viewpoints,
+            "viewpoints": viewpoints, "spots_needed": sitemap.spots_needed(site, form),
             "visits": [{"visit_id": r["visit_id"], "kind": r["kind"], "status": r["status"],
                         "claim": r["claim"], "note": r["note"],
                         "captured_at": r["captured_at"].isoformat() if r["captured_at"] else None,
@@ -138,10 +154,14 @@ def site_visit_start(body: Start, user: Principal = Depends(current_user)) -> di
         con.execute("INSERT INTO site_visits (visit_id, work_id, kind, saved_by) "
                     "VALUES (%s, %s, %s, %s)", (visit_id, body.work_id, body.kind, user.user_id))
         con.commit()
-        site = sitemap.site_of(_form(con, body.work_id), w.get("work_type_code"))
+        form = _form(con, body.work_id)
+        site = sitemap.site_of(form, w.get("work_type_code"))
         viewpoints = _viewpoints(con, body.work_id)
     return {"visit_id": visit_id, "token": token, "kind": body.kind,
-            "site": site.to_json() if site else None, "viewpoints": viewpoints}
+            "site": site.to_json() if site else None, "viewpoints": viewpoints,
+            "spots_needed": sitemap.spots_needed(site, form),
+            # drawn now, from a seed only the server knows: nobody can prepare just these
+            "stretches_asked": sitemap.stretches_asked(site, capture.seed(visit_id))}
 
 
 def _visit(con, visit_id: str) -> dict:

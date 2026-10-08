@@ -246,3 +246,73 @@ def test_the_three_pictures_are_taken_facing_the_start_middle_and_end_of_the_arc
     facing = spots.arc([60, 150])
     assert spots.pan_times(log, 2.0, 5.0, facing) == [2.0, 5.0, 4.0]      # the middle is 105°
     assert spots.pan_times({}, 0.0, 6.0, None) == pytest.approx([1.0, 3.0, 5.0])
+
+
+# ---- what Site Progress says about the spots (plan §D) ----
+
+from datetime import date  # noqa: E402
+
+from drishti.agents.contract import Status  # noqa: E402
+from drishti.agents.site_progress.agent import assess  # noqa: E402
+from tests.agents.site_progress.test_site_progress_v3 import (  # noqa: E402
+    AS_OF,
+    base,
+    codes,
+    months,
+    work,
+)
+
+
+def test_claim_not_shown_names_the_spots():
+    vs = months(3)
+    for v in vs[1:]:
+        v["readings"].update(claim_verdict="not_shown", claim_spots_not_shown=["v2"],
+                             spot_verdicts={"v1": "cant_tell", "v2": "not_shown"})
+    f = next(f for f in assess(work(base(), *vs), AS_OF).findings if f.code == "CLAIM_NOT_SHOWN")
+    assert "at spot v2" in f.text
+
+
+def test_too_few_spots_filmed_is_a_note_never_a_finding():
+    vs = months(2, spots_needed=4, spots_filmed=2)
+    r = assess(work(base(), *vs), AS_OF)
+    assert not r.findings
+    assert any("2 of the 4 spots" in n for n in r.evidence["notes"])
+
+
+def test_far_from_the_spot_or_a_short_pan_is_a_note_never_a_finding():
+    vs = months(2, spot_offsets_m={"v1": 3.0, "v2": 24.6}, spot_coverage={"v1": 1.0, "v3": 0.45})
+    r = assess(work(base(), *vs), AS_OF)
+    assert not r.findings
+    notes = " ".join(r.evidence["notes"])
+    assert "viewpoint v2 was filmed about 25 m" in notes and "viewpoint v1 was" not in notes
+    assert "at viewpoint v3" in notes and "45%" in notes
+
+
+def test_stretches_asked_but_not_filmed_are_a_note():
+    vs = months(2, stretches_missed=["s4", "s9"])
+    r = assess(work(base(), *vs), AS_OF)
+    assert not r.findings and any("s4, s9" in n for n in r.evidence["notes"])
+
+
+def test_the_work_page_gets_each_visits_spots():
+    vs = months(1, spots_needed=4, spots_filmed=3,
+                spot_verdicts={"v1": "shown", "v2": "not_shown", "v3": "cant_tell"})
+    r = assess(work(base(), *vs), AS_OF)
+    s = r.evidence["visits"][-1]["spots"]
+    assert s == {"needed": 4, "filmed": 3,
+                 "verdicts": {"v1": "shown", "v2": "not_shown", "v3": "cant_tell"}}
+
+
+def test_spot_readings_in_a_wrong_shape_never_break_it():
+    vs = months(2, spots_needed="four", spot_offsets_m=["x"], spot_coverage={"v1": "all"},
+                spot_verdicts={"v1": "maybe", "v2": 3}, claim_spots_not_shown="v2",
+                stretches_missed=7)
+    r = assess(work(base(), *vs), AS_OF)
+    assert r.status == Status.ASSESSED and not r.findings
+
+
+def test_visits_with_spots_but_not_read_yet_are_not_assessable():
+    w = work({"visit_id": "x", "kind": "monthly", "captured_at": date(2026, 9, 1).isoformat(),
+              "claim": "roof cast", "readings": {}})
+    assert assess(w, AS_OF).status == Status.NOT_ASSESSABLE
+    assert codes(assess(w, AS_OF)) == []
