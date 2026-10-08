@@ -88,6 +88,19 @@ def rl(adapter: str = "/data/runs/sft4b/final", out: str = "/data/runs/rl4b",
 def score(adapter: str = "", out: str = "/data/runs/base/test.jsonl",
           items: str = "/data/vlm/v1/items.jsonl", split: str = "test",
           base: str = "Qwen/Qwen3-VL-4B-Instruct", limit: int = 0):
+    return _score(adapter, out, items, split, base, limit)
+
+
+@app.function(gpu="L4", volumes={"/data": vol}, timeout=3 * 3600)
+def score_l4(adapter: str = "", out: str = "/data/runs/base/test.jsonl",
+             items: str = "/data/vlm/v1/items.jsonl", split: str = "test",
+             base: str = "Qwen/Qwen3-VL-4B-Instruct", limit: int = 0):
+    """The same scoring on an L4 (24 GB, about a third of the A100's price an hour): scoring is
+    one answer at a time, so the big card mostly waits. Resumable, like score."""
+    return _score(adapter, out, items, split, base, limit)
+
+
+def _score(adapter, out, items, split, base, limit):
     import json
     import sys
     sys.path.insert(0, "/root")
@@ -97,7 +110,11 @@ def score(adapter: str = "", out: str = "/data/runs/base/test.jsonl",
     its = its[:limit] if limit else its
     L = vlm.load(base, quant4=False, adapter=adapter or None)
     Path(out).parent.mkdir(parents=True, exist_ok=True)
-    rows = vlmeval.predict(L, its, Path("/data"), Path(out), log=lambda s: print(s, flush=True))
+
+    def log(s):                     # every 25 answers: print and save to the volume, so a timeout
+        print(s, flush=True)        # or a stop keeps what was done (predict resumes from it)
+        vol.commit()
+    rows = vlmeval.predict(L, its, Path("/data"), Path(out), log=log)
     res = vlmeval.score(rows)
     Path(out.replace(".jsonl", "_score.json")).write_text(json.dumps(res, indent=1))
     vol.commit()

@@ -2316,6 +2316,55 @@ where the same teal house appears in both photos.
 Counts: `data/trial/results/vlm_trial.txt`. Checks: `D:\nidhinetra-data\vlm\eye_checks.jsonl`, one line a review,
 keyed by photo pair (`eyecheck.key`), so they survive rebuilds.
 
+### T154 (8 Oct 2026): first fine-tuned judge, and the shortcut it learnt
+
+Trained on Modal (A100-40GB, the owner's credit): LoRA rank 16, 2 passes, 2,051 training items (410 edited), about
+32 minutes and about $1.2 a run. Scored on the 205 eye-checked real test items (v4):
+
+| Judge | Macro-F1 [95% CI] | Fooled (no-progress called "shown") | Missed progress | Accuracy |
+|---|---|---|---|---|
+| Qwen3-VL-2B, untrained (owner's PC) | 0.39 | 19 of 141 (13.5%) | 3 of 16 | 64% |
+| Qwen3-VL-4B, untrained | 0.44 [0.31, 0.51] | 2 of 141 (1.4%) | 5 of 16 | 37% |
+| **4B fine-tuned** | **0.99** [0.93, 1.00] | **1 of 141 (0.7%)** | **0 of 16** | **99.5%** |
+| 4B fine-tuned, real photos only (no edited items) | 0.98 | 1 of 141 | 1 of 16 | 99.0% |
+
+The untrained 4B is rarely fooled because it rarely commits: it answered "can't tell" to 102 of the 141 no-progress
+pairs. The tuned 4B's one miss is an honest hard case: a CC road's two before photos taken from two spots, one
+showing an older paved stretch.
+
+**The near-perfect score hid a shortcut.** In v4 the "different place" photo was always a finished work of
+**another type** (the owner's rule, so that "different" was unmistakable). So a probe was built: photo B is a
+finished work of the **same** type somewhere else in the same held-out district (another block), checked by eye
+(44 of 58 pairs kept):
+
+| Judge | Correct "can't tell" on 44 same-type other places |
+|---|---|
+| 4B untrained | **39 (89%)** |
+| 4B fine-tuned | **2 (5%)**: it called another finished road "shown" 38 times |
+| 4B fine-tuned on real photos only | 12 (27%) |
+
+The tuning had taught "different place = different kind of work". An agency could pass the tuned judge by
+photographing someone else's finished road. **Fix (now in `vlmdata.py`, with tests):** every training asset also
+gets a same-type, other-block pair labelled "can't tell" (`other_site_same`). The probe stays as its own report.
+The edited items made the shortcut worse (5% against 27%), which is the first hint for the owner's keep-or-drop
+rule on edits.
+
+**More test labels by eye (v5/v6).** The harvest reached 717 assets. The 193 new test assets were checked as **asset
+cards** (all 6 stage photos and the other-place photo in one row), 967 labels in all:
+- **82 wrong.** The worst group: 7 of 7 "Roof top rain water harvesting structure in gov/panchayat building"
+  assets. "Panchayat" made them buildings, and their before photo always shows the building the pit sits beside.
+  Now a rule (type "other", never progress), with a test.
+- The rest were dropped by eye:
+  - a before photo already showing an older paved road, or a toilet block standing;
+  - after photos showing a field, a gate or a different spot;
+  - 3 other-place pairs where the two could be one place.
+
+**v6 (`items_eye.jsonl`), the set being trained now:**
+- **Train:** 4,663 items, 563 assets, 53 districts (2,924 real).
+- **Test:** 915 items from 203 assets in 15 held-out districts, **every label checked by eye**: 145 progress,
+  580 no progress, 190 different place.
+- **Probe:** 93 same-type other-place pairs, checked by eye.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**
