@@ -225,6 +225,19 @@ def test_headline_counts_real_photos_only():
     assert vlmeval.macro_f1(["shown", "not_shown"], ["shown", "not_shown"]) == 1.0
 
 
+def test_mcnemar_compares_two_judges_on_the_same_items():
+    def rows(right):
+        return [{"id": str(k), "truth": "shown", "pred": "shown" if r else "not_shown"}
+                for k, r in enumerate(right)]
+    a = rows([True] * 20 + [False] * 20)
+    b = rows([True] * 20 + [True] * 12 + [False] * 8)          # b fixes 12, breaks none
+    m = vlmeval.mcnemar(a, b)
+    assert (m["n"], m["only_a_right"], m["only_b_right"]) == (40, 0, 12)
+    assert m["p"] < 0.001
+    assert vlmeval.mcnemar(a, a)["p"] == 1.0
+    assert vlmeval.mcnemar(a, rows([False] * 3))["n"] == 3     # shared items only
+
+
 def test_rewards_punish_being_fooled_most():
     from drishti_vision.vlmrl import reward
     item = {"trick": "busy", "target": {"verdict": "not_shown", "stage_A": "unknown",

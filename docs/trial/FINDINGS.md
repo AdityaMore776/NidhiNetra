@@ -2279,6 +2279,43 @@ The second is the shortcut the owner warned of: "different photos" standing in f
 These are early numbers on one test district; the final ones come with the full harvest (T152) and the trained
 models (T154).
 
+### T153–T154 (8 Oct 2026, later): the timelapse labels, checked by eye
+
+The v3 build added 488 items from 180 CC BY timelapses. Every test label was looked at, larger than on the sheets
+(two 640 px frames side by side). What the eye found:
+
+| Found by eye | Count | Rule now (each with a test) |
+|---|---|---|
+| Every timelapse photo had red and blue swapped (orange skies): frames are kept RGB, OpenCV writes BGR | all 488 | Frames flipped before saving |
+| **Wrong labels on the first look: 20 of 63 test pairs (32%)**: something permanent may have been added in a "nothing built" pair (paving stones, a bridge girder set in place, siding, a water tank, rooftop units) 7; two camera views, a dissolve or two rooms 6; title or advert cards 4; "work added" with no clear new structure 3 | 20 of 63 | The rows below, and the rest dropped by eye |
+| The teacher could judge only about half the view (moving workers): "no lasting change found" meant little | the paving-stone pairs | A no-progress pair needs ≥ 80% of the view judged, and may not span a stretch where the same shot shows work |
+| Hand-held clips, cuts and dissolves (frames 3–5 apart already differ, `lo` 0.5–1.3): the teacher calls almost everything unchanged and found **no** progress in any such test shot | 18 of 43 test shots | Shots with noise `lo` > 0.4 give no items. Below it, the wrong pairs left were title and advert cards and a few possible installs (the girder among them), all dropped by eye |
+| The same pair twice | 2 | Each pair of frames used once |
+| After the rules, a second look at the 31 test pairs they newly picked | 9 of 31 wrong | Dropped by eye: title or advert cards 4, possible installs 2, "work added" with no clear new structure 3 |
+
+**The timelapse "work added" labels are mostly wrong.** Of 41 such items across all splits, **1** shows clear new
+permanent structure (bridge girders placed across a river). The other 40 are season and snow changes on a webcam
+(19), advert or end cards (3), a talking head, drone parallax, a load still hanging from a crane, timber formwork,
+painting a fence, draining a pool, and webcam pairs with no visible new structure. The hindsight teacher
+(`hindsight.py`) counts any change that never returns as progress, and snow, a new season or a caption never
+returns within a shot. **This also bears on T146 (PR #120):** its DINOv2 student learnt from these same progress
+labels. Only the eye-confirmed one is kept here. The swapped versions stay ("B is earlier": not shown either way).
+
+**The government stage photos held up.** All 172 test items from GeoMGNREGA were right on the sheets. Two needed a
+full-size look: a CC road whose slab and joints are clear at full size, and a road photographed from a new angle,
+where the same teal house appears in both photos.
+
+**The dataset trained on (v4, `items_eye.jsonl`):**
+- **Train:** 2,642 items, 1,641 of them real and unedited.
+- **Calibration:** 155 items, all real.
+- **Test:** 205 items, **all real and every label checked by eye.**
+  - 16 progress, 141 no progress, 48 different place;
+  - government photos come from only 4 districts (Azamgarh, Sagar, Nagaur, Purulia), so the harvest now visits
+    those first, then 11 new districts.
+
+Counts: `data/trial/results/vlm_trial.txt`. Checks: `D:\nidhinetra-data\vlm\eye_checks.jsonl`, one line a review,
+keyed by photo pair (`eyecheck.key`), so they survive rebuilds.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

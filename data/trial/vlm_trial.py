@@ -34,6 +34,11 @@ def main() -> None:
     ap.add_argument("--data", required=True)
     ap.add_argument("--items", required=True, help="the vlmbuild output folder")
     ap.add_argument("--runs", default="", help="folder with *_score.json files")
+    ap.add_argument("--items-file", default="items.jsonl",
+                    help="the items file in --items (items_eye.jsonl: after the eye checks)")
+    ap.add_argument("--baseline", default="",
+                    help="predictions .jsonl under --runs that every other run is compared with "
+                         "(McNemar, on the items both answered)")
     a = ap.parse_args()
     data, items_dir = Path(a.data), Path(a.items)
     out: dict = {}
@@ -62,7 +67,7 @@ def main() -> None:
               f"  progress certain (change beats own noise, structural): {ok13} of {len(assets)}",
               ""]
 
-    rows = [json.loads(x) for x in (items_dir / "items.jsonl").read_text(
+    rows = [json.loads(x) for x in (items_dir / a.items_file).read_text(
         encoding="utf-8").splitlines() if x.strip()]
     out["items"] = {}
     lines += ["2. Claim-ladder items", ""]
@@ -71,11 +76,13 @@ def main() -> None:
         if not its:
             continue
         c = {"n": len(its), "real": sum(r["real"] for r in its),
+             "eye_checked": sum(r.get("label_check") == "eye" for r in its),
              "verdicts": dict(Counter(r["target"]["verdict"] for r in its)),
              "tricks": dict(Counter(r["trick"] + ("" if r["real"] else " (edited)") for r in its)),
              "sources": dict(Counter(r["source"] for r in its))}
         out["items"][sp] = c
-        lines += [f"  {sp}: {c['n']} items, {c['real']} real and unedited",
+        lines += [f"  {sp}: {c['n']} items, {c['real']} real and unedited, "
+                  f"{c['eye_checked']} labels checked by eye",
                   "    verdicts: " + ", ".join(f"{k} {v}" for k, v in sorted(c["verdicts"].items())),
                   "    tricks: " + ", ".join(f"{k} {v}" for k, v in sorted(c["tricks"].items())),
                   "    sources: " + ", ".join(f"{k} {v}" for k, v in sorted(c["sources"].items()))]
@@ -96,12 +103,35 @@ def main() -> None:
                       f"[{fmt(ci[0])}, {fmt(ci[1])}] of {h['n_no_progress']} no-progress pairs, "
                       f"missed {fmt(h['missed_rate'])} of {h['n_progress']} progress pairs, "
                       f"answers {fmt(h['answered_share'])}, ECE {fmt(h.get('ece'))}"]
-            if s.get("cost"):
-                lines.append(f"    {s['cost']['seconds_per_check']} s a check, "
-                             f"Rs {s['cost']['rupees_per_1000_checks_local']} per 1,000 checks")
+            cost = s.get("cost") or {}
+            if "rupees_per_1000_checks_local" in cost:
+                lines.append(f"    {cost['seconds_per_check']} s a check, "
+                             f"Rs {cost['rupees_per_1000_checks_local']} per 1,000 checks")
+            elif "usd_per_1000_checks_api" in cost:
+                lines.append(f"    {cost['seconds_per_check']} s a check, "
+                             f"${cost['usd_per_1000_checks_api']} per 1,000 checks (API)")
             per = s.get("per_trick", {})
             lines.append("    per trick: " + ", ".join(f"{k} {v['accuracy']:.2f} (n {v['n']})"
                                                      for k, v in per.items()))
+            sh = s.get("fooled_by_photo_difference")
+            if sh:
+                lines.append(f"    fooled when the photos look nearly the same "
+                             f"{fmt(sh['near_identical']['fooled_rate'])} "
+                             f"(n {sh['near_identical']['n']}), clearly different "
+                             f"{fmt(sh['clearly_different']['fooled_rate'])} "
+                             f"(n {sh['clearly_different']['n']})")
+            preds = p.with_name(p.name.replace("_score.json", ".jsonl"))
+            if a.baseline and preds.exists() and preds != Path(a.runs) / a.baseline:
+                from drishti_vision import vlmeval
+
+                def read(f: Path) -> list[dict]:
+                    return [json.loads(x) for x in f.read_text(encoding="utf-8").splitlines()
+                            if x.strip()]
+                m = vlmeval.mcnemar(read(Path(a.runs) / a.baseline), read(preds))
+                out["scores"][name]["mcnemar_vs_baseline"] = m
+                lines.append(f"    against {a.baseline}: on {m['n']} items only the baseline "
+                             f"right {m['only_a_right']}, only this right {m['only_b_right']}, "
+                             f"McNemar p {m['p']:.3g}")
         lines.append("")
     res = ROOT / "data" / "trial" / "results"
     (res / "vlm_trial.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")

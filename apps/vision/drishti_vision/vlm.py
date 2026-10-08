@@ -240,6 +240,7 @@ class TrainConfig:
     jitter: bool = True             # each photo cropped / turned / re-saved on its own (jitter())
     real_only: bool = False
     eval_every: int = 200
+    grad_ckpt: bool = True          # recompute activations (needed on 8 GB; off on a 40 GB card)
 
 
 def training_items(path: str, cfg: TrainConfig) -> list[dict]:
@@ -269,8 +270,8 @@ def fit(cfg: TrainConfig, log=print) -> dict:
     L = load(cfg.base, quant4=cfg.quant4)
     model = L.model
     if cfg.quant4:
-        model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=True)
-    else:
+        model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=cfg.grad_ckpt)
+    elif cfg.grad_ckpt:
         model.gradient_checkpointing_enable()
         model.enable_input_require_grads()
     targets = r"^(?!.*visual).*\.(q_proj|k_proj|v_proj|o_proj|gate_proj|up_proj|down_proj)$"

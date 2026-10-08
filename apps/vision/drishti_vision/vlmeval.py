@@ -141,6 +141,21 @@ def score(rows: list[dict]) -> dict:
     return out
 
 
+def mcnemar(rows_a: list[dict], rows_b: list[dict]) -> dict:
+    """Exact McNemar test on the items both judges answered (plan T150 §7.4: a difference counts
+    only if this agrees): how many only A got right, only B got right, and the two-sided p."""
+    from math import comb
+    b_by = {r["id"]: r for r in rows_b}
+    pairs = [(r["pred"] == r["truth"], b_by[r["id"]]["pred"] == b_by[r["id"]]["truth"])
+             for r in rows_a if r["id"] in b_by]
+    only_a = sum(x and not y for x, y in pairs)
+    only_b = sum(y and not x for x, y in pairs)
+    n = only_a + only_b
+    p = 1.0 if n == 0 else min(1.0, 2 * sum(comb(n, k) for k in range(min(only_a, only_b) + 1))
+                               / 2 ** n)
+    return {"n": len(pairs), "only_a_right": only_a, "only_b_right": only_b, "p": p}
+
+
 def predict(L, items: list, root: Path, out_path: Path, log=print) -> list[dict]:
     """Runs a judge over `items`, resumable (one JSON line an item in `out_path`). `L` is a loaded
     local model (vlm.load) or any callable judge(item, root) -> {text, answer, probs, seconds, ...}

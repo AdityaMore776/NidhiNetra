@@ -51,14 +51,14 @@ GPU = "A100-40GB"
 def sft(items: str = "/data/vlm/v1/items.jsonl", out: str = "/data/runs/sft4b",
         base: str = "Qwen/Qwen3-VL-4B-Instruct", epochs: float = 2.0, rank: int = 16,
         lr: float = 1e-4, accum: int = 8, real_only: bool = False, edited_share: float = 0.2,
-        max_items: int = 0, seed: int = 0):
+        max_items: int = 0, seed: int = 0, grad_ckpt: bool = False):
     import sys
     sys.path.insert(0, "/root")
     from drishti_vision import vlm
     cfg = vlm.TrainConfig(base=base, items=items, root="/data", out=out, quant4=False,
                           rank=rank, alpha=2 * rank, lr=lr, epochs=epochs, accum=accum,
                           real_only=real_only, edited_share=edited_share, eval_every=10**9,
-                          max_items=max_items, seed=seed)
+                          max_items=max_items, seed=seed, grad_ckpt=grad_ckpt)
     info = vlm.fit(cfg, log=lambda s: print(s, flush=True))
     vol.commit()
     return {k: info[k] for k in ("items", "steps", "minutes", "peak_gpu_gb")}
