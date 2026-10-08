@@ -303,6 +303,7 @@ def flagship_round(action: str = "submit", model: str = "gemini-3.1-pro-preview"
             jobs.append({"batch": fb.create(model, fb.upload(p, name), name),
                          "n": len(sel[k:k + chunk])})
         rec_p.write_text(json.dumps({"model": model, "split": split, "prompt": prompt,
+                                     "items": items,
                                      "max_output": max_output, "ids": [i.id for i in sel],
                                      "jobs": jobs, "reserved_usd": worst, "billed": False},
                                     indent=1))
@@ -326,10 +327,18 @@ def flagship_round(action: str = "submit", model: str = "gemini-3.1-pro-preview"
                      "BATCH_STATE_EXPIRED") for s in states):
         return {"states": states}
     ids = set(rec["ids"])
-    rows = fb.rows_from_results(lines, [i for i in its if i.id in ids])
+    # the round's own items file (8 Oct 2026: collecting against the default file matched only
+    # 12 of 165 answers and under-recorded the cost)
+    pool = [i for i in read_items(rec.get("items", items)) if i.split == split and i.id in ids]
+    rows = fb.rows_from_results(lines, pool)
+    if len(rows) < len(lines) - lines.count(""):
+        print(f"WARNING: {len(lines)} answers downloaded, only {len(rows)} matched items",
+              flush=True)
     actual = fb.batch_cost_usd(rows, rec["model"])
-    if not rec["billed"]:
-        total = led.add(actual, f"round {split} s{tag}: {len(rows)} answers")
+    prev = rec.get("actual_usd", 0.0) if rec["billed"] else 0.0
+    if actual > prev + 1e-9:                   # never under-record: top up a short entry
+        total = led.add(actual - prev, f"round {split} s{tag}: {len(rows)} answers"
+                        + (" (correction)" if prev else ""))
         rec.update(billed=True, actual_usd=actual)
         rec_p.write_text(json.dumps(rec, indent=1))
     else:
