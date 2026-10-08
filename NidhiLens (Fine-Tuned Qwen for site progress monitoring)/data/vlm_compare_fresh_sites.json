@@ -1,0 +1,48 @@
+{
+ "ours4b": {
+  "n": 314,
+  "f1": 0.914,
+  "ci": [
+   0.879,
+   0.946
+  ],
+  "acc": 0.943,
+  "fooled": "4 of 195",
+  "missed": "9 of 47",
+  "mcnemar_vs_gemini": {
+   "n": 314,
+   "only_a_right": 10,
+   "only_b_right": 29,
+   "p": 0.0033778479119064286
+  }
+ },
+ "ours2b": {
+  "n": 314,
+  "f1": 0.938,
+  "ci": [
+   0.907,
+   0.966
+  ],
+  "acc": 0.959,
+  "fooled": "5 of 195",
+  "missed": "6 of 47",
+  "mcnemar_vs_gemini": {
+   "n": 314,
+   "only_a_right": 8,
+   "only_b_right": 32,
+   "p": 0.0001821658297558315
+  }
+ },
+ "gemini": {
+  "n": 314,
+  "f1": 0.83,
+  "ci": [
+   0.77,
+   0.881
+  ],
+  "acc": 0.882,
+  "fooled": "5 of 195",
+  "missed": "18 of 47",
+  "mcnemar_vs_gemini": null
+ }
+}

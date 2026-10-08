@@ -46,6 +46,27 @@ McNemar against Gemini at its best (same 883 checks):
 
 The difference is not chance.
 
+### 1.2 Fresh sites, cleaned before any model saw them (314 real checks)
+
+The main test's labels were re-checked, among other times, wherever a model disagreed with them. That re-check was
+applied to every check of a site and to both sides, but a sceptic could still ask whether it favoured one model. So the
+benchmark was repeated on **166 new sites** from the held-out test districts:
+- they came in after the main test was frozen;
+- every label was checked by eye before any model answered;
+- nothing was changed afterwards.
+
+Gemini 3.1 Pro answered 314 of these checks with its best prompt (all that the remaining credit allowed, in shuffled
+order).
+
+| Judge | Macro-F1 [95% CI] | Accuracy | Fooled (of 195) | Real finished work missed (of 47) | McNemar against Gemini |
+|---|---|---|---|---|---|
+| **NidhiLens-FineTuned-Qwen4B** | **0.914** [0.879, 0.946] | 94.3% | 4 | 9 | 29 against 10, p = 0.003 |
+| **NidhiLens-FineTuned-Qwen2B** | **0.938** [0.907, 0.966] | 95.9% | 5 | 6 | 32 against 8, p = 0.0002 |
+| Gemini 3.1 Pro, its best prompt | 0.830 [0.770, 0.881] | 88.2% | 5 | 18 | n/a |
+
+On fresh sites, both of our models are more accurate than Gemini, and **Gemini is fooled no less often than ours**
+(5 of 195, against 4 and 5). On all 785 fresh checks, our models score 0.915 (4B) and 0.941 (2B).
+
 ### 1.3 The hardest trick: another finished work of the same kind (93 checks)
 
 Photo B is a finished road (or building) from **another** place in the same district. An agency could try exactly this.
@@ -82,8 +103,8 @@ How each cost was measured:
   - The gap is in confirming real work. Gemini misses a quarter (best prompt) to three-quarters of real, finished works, mostly
     answering "can't tell" because the two photos were taken from different spots. As a checker, that would send
     most honest agencies to an inspection.
-- **Gemini is fooled less often.**
-  - Fooled: 2 of 576 against our 4 (4B).
+- **Gemini is fooled slightly less often on the main test, not on fresh sites.**
+  - Fooled: 2 of 576 against our 4 (4B) on the main test; 5 of 195 against our 4–5 on fresh sites.
   - Probe: it passes 93 of 93 with our prompt, but that setting misses 69–72% of real work. With its best prompt it
     passes 82, below ours.
   - No Gemini setting we tried does both.
@@ -122,13 +143,13 @@ They also removed individual wrong ones. 32 were dropped in the last round, and 
 every check that uses it, not only to the disputed ones**, so the cleaning cannot favour either side.
 
 **Download:** the GitHub release [**`siteclaim-test-v1`**](https://github.com/AdityaMore776/NidhiNetra/releases/tag/siteclaim-test-v1)
-of this repository holds `siteclaim_test_v1.zip` (364 MB). Or run
+of this repository holds `siteclaim_test_v1.zip` (686 MB). Or run
 `gh release download siteclaim-test-v1 --repo AdityaMore776/NidhiNetra`. Inside:
 
 | Path | What |
 |---|---|
-| `images/` | All 1,053 photos, exactly as the judges saw them (Gemini got them at full size, ours at 512 px) |
-| `items_test.jsonl`, `items_probe.jsonl` | Each check: the two photo paths, the claim, the eye-checked label, how the check was made |
+| `images/` | All 1,897 photos, exactly as the judges saw them (Gemini got them at full size, ours at 512 px) |
+| `items_test.jsonl`, `items_probe.jsonl`, `items_fresh.jsonl` | Each check (main test, same-type probe, fresh sites): the two photo paths, the claim, the eye-checked label, how the check was made |
 | `predictions/` | **Every answer of every judge**, word for word, with timings and billed tokens |
 | `PROMPTS.md` | The exact prompts |
 | `ATTRIBUTION.md` | Where every photo comes from, with the licence of each video |

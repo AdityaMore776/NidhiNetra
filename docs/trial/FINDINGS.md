@@ -2600,3 +2600,17 @@ model saw it, so no disagreement-driven cleaning can favour either side. Of the 
 | NidhiLens-FineTuned-Qwen2B | 0.941 [0.921, 0.958] | 12 (2.5%) | 12 (9.1%) |
 
 Gemini 3.1 Pro (best prompt) is being run on this set with the rest of the owner's Rs 800 credit.
+
+**Gemini 3.1 Pro on the fresh sites** (best prompt, 314 of the 785 checks, shuffled order; `results/vlm_compare_fresh_sites.json`):
+
+| Judge | Macro-F1 [95% CI] | Fooled (of 195) | Missed (of 47) | McNemar against Gemini |
+|---|---|---|---|---|
+| Our 4B | 0.914 [0.879, 0.946] | 4 | 9 | 29 against 10, p = 0.003 |
+| Our 2B | 0.938 [0.907, 0.966] | 5 | 6 | 32 against 8, p = 0.0002 |
+| Gemini 3.1 Pro | 0.830 [0.770, 0.881] | 5 | 18 | n/a |
+
+**Gemini spend, final:**
+- Rs 724.96 of the owner's Rs 800 credit, by the ledger (billed tokens × Google's price, at Rs 96 a $, calibrated to
+  AI Studio). The owner said to stop when more would not improve the result.
+- One loop bug was caught: a collect without the round's items file recorded Rs 5.84 instead of Rs 84.49. It is fixed,
+  and the ledger was topped up.

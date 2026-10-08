@@ -42,8 +42,10 @@ def main() -> None:
     (out / "predictions").mkdir(parents=True)
     test = [i for i in read_items(DATA / "vlm/v6/items_eye3.jsonl") if i.split == "test"]
     probe = read_items(DATA / "vlm/v6/probe_eye.jsonl")
+    # fresh held-out sites, labels checked by eye before any model answered (v7)
+    fresh = read_items(DATA / "vlm/v7/new_test_eye.jsonl")
     files = set()
-    for name, its in (("test", test), ("probe", probe)):
+    for name, its in (("test", test), ("probe", probe), ("fresh", fresh)):
         with open(out / f"items_{name}.jsonl", "w", encoding="utf-8") as f:
             for it in its:
                 d = {k: getattr(it, k) for k in KEEP}
@@ -58,17 +60,23 @@ def main() -> None:
         dst = out / "images" / rel
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(DATA / rel, dst)
-    ids = {"test": {i.id for i in test}, "probe": {i.id for i in probe}}
-    for folder, (name, _) in JUDGES.items():
-        for split in ("test", "probe"):
-            src = DATA / "runs/modal" / folder / f"{split}.jsonl"
-            if not src.exists():
-                continue
-            rows = [json.loads(x) for x in src.read_text(encoding="utf-8").splitlines() if x]
-            rows = [{k: r.get(k) for k in ("id", "truth", "pred", "conf", "seconds", "usage",
-                                            "served_by", "text")}
-                    for r in rows if r["id"] in ids[split]]
-            (out / "predictions" / f"{name}_{split}.jsonl").write_text(
+    ids = {"test": {i.id for i in test}, "probe": {i.id for i in probe},
+           "fresh": {i.id for i in fresh}}
+    runs = DATA / "runs/modal"
+    sources = {(folder, split): [runs / folder / f"{split}.jsonl"]
+               for folder in JUDGES for split in ("test", "probe")}
+    sources[("ours4b", "fresh")] = [runs / "ours4b/test_v7new.jsonl"]
+    sources[("ours2b", "fresh")] = [runs / "ours2b/test_v7new.jsonl"]
+    sources[("gem_pro31_rules", "fresh")] = sorted(
+        (runs / "gem_pro31_rules_v7").glob("test_s*.jsonl"))
+    for (folder, split), srcs in sources.items():
+        rows = [json.loads(x) for src in srcs if src.exists()
+                for x in src.read_text(encoding="utf-8").splitlines() if x]
+        rows = [{k: r.get(k) for k in ("id", "truth", "pred", "conf", "seconds", "usage",
+                                        "served_by", "text")}
+                for r in rows if r["id"] in ids[split]]
+        if rows:
+            (out / "predictions" / f"{JUDGES[folder][0]}_{split}.jsonl").write_text(
                 "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows),
                 encoding="utf-8")
     example = test[0]
