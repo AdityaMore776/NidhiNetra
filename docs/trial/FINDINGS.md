@@ -2475,6 +2475,19 @@ Gemini), our 2B 74 of 93.
 - **Where our model still loses:** an empty plot, then a close-up of a finished building elsewhere (the probe). The
   photo's GPS tag or a shared landmark is the remedy, not more of the same photos.
 
+**GRPO (reinforcement stage) on the hard training items made the 4B worse, so it is not kept.** The run used 178
+prompts: the training items the tuned 4B got wrong or was unsure of, plus 20% easy ones; 20 minutes on an A100.
+- On its own prompts: verdicts right went from 0.35 to 0.81.
+- On the test:
+  - macro-F1 0.864 (from 0.918);
+  - missed progress 3% (from 22%);
+  - but **fooled 48 of 580 (from 5)**.
+- Same-type probe: **10 of 93** (from 86).
+
+McNemar against the SFT model: 88 against 41 items, p = 4×10⁻⁵. Most of the hard items were real progress the model
+hedged on, so the practice taught "say shown". **Lesson:** the practice prompts must be balanced across the three
+answers. A balanced run is judged on calibration and the probe before the test is touched.
+
 **Spend:**
 - Google, about $11 (₹942 on the owner's cap): live calibration calls about $5.04 and the batches about $6. Then the
   account was blocked for billing (fixed by the owner with ₹800 of prepaid credit).

@@ -59,6 +59,36 @@
    "p": 3.814697265625e-06
   }
  },
+ "rl4b": {
+  "n": 93,
+  "macro_f1": 0.06472491909385113,
+  "macro_f1_ci95": [
+   0.034013605442176874,
+   0.09785932721712538
+  ],
+  "fooled_rate": null,
+  "fooled_ci95": [
+   NaN,
+   NaN
+  ],
+  "missed_rate": null,
+  "accuracy": 0.10752688172043011,
+  "unreadable": 0,
+  "per_trick": {
+   "other_site_same": {
+    "n": 93,
+    "accuracy": 0.10752688172043011
+   }
+  },
+  "usd_per_1000_checks": 0.179,
+  "cost_basis": "L4 GPU time",
+  "mcnemar_vs_ref": {
+   "n": 93,
+   "only_a_right": 83,
+   "only_b_right": 0,
+   "p": 2.0679515313825692e-25
+  }
+ },
  "gem_pro31_batch": {
   "n": 93,
   "macro_f1": 1.0,

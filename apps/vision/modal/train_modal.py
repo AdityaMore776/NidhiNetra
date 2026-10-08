@@ -82,7 +82,7 @@ def sft(items: str = "/data/vlm/v1/items.jsonl", out: str = "/data/runs/sft4b",
 def rl(adapter: str = "/data/runs/sft4b/final", out: str = "/data/runs/rl4b",
        items: str = "/data/vlm/v1/items.jsonl", base: str = "Qwen/Qwen3-VL-4B-Instruct",
        prompts: int = 1500, group: int = 6, lr: float = 5e-6, hard: str = "",
-       focus: str = "", real_only: bool = False):
+       focus: str = "", real_only: bool = False, per_verdict: int = 0):
     """`focus`: comma-separated tricks to practise (vlmrl.focus_prompts); `real_only`: no edited
     items, as in sft --real-only."""
     import json
@@ -95,7 +95,8 @@ def rl(adapter: str = "/data/runs/sft4b/final", out: str = "/data/runs/rl4b",
     chosen = vlm.training_items(items, tc)
     if hard:                                   # predictions on the training split (H3)
         rows = [json.loads(x) for x in Path(hard).read_text(encoding="utf-8").splitlines() if x]
-        chosen = vlmrl.hard_prompts(rows, chosen)
+        chosen = (vlmrl.balanced_prompts(rows, chosen, per_verdict) if per_verdict
+                  else vlmrl.hard_prompts(rows, chosen))
     elif focus:
         chosen = vlmrl.focus_prompts(chosen, tuple(focus.split(",")))
 

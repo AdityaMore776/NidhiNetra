@@ -9,6 +9,9 @@ ours4b @1024px: n 915, macro-F1 0.917 [0.891, 0.941], accuracy 0.946, fooled 0.0
 ours2b: n 915, macro-F1 0.912 [0.889, 0.934], accuracy 0.939, fooled 0.026 of 580, missed 0.159 of 145, unreadable 0
     cost: $0.117 per 1,000 checks (L4 GPU time)
     against gem_pro31_batch: only gem_pro31_batch right 19, only this right 122, McNemar p 1.34e-19
+rl4b: n 915, macro-F1 0.864 [0.842, 0.882], accuracy 0.896, fooled 0.083 of 580, missed 0.028 of 145, unreadable 0
+    cost: $0.174 per 1,000 checks (L4 GPU time)
+    against gem_pro31_batch: only gem_pro31_batch right 82, only this right 146, McNemar p 2.69e-05
 gem_pro31_batch: n 915, macro-F1 0.689 [0.647, 0.735], accuracy 0.826, fooled 0.003 of 580, missed 0.752 of 145, unreadable 0
     cost: $5.180 per 1,000 checks (gemini-3.1-pro-preview billed tokens, Batch API price)
 base4b_v6: n 915, macro-F1 0.471 [0.428, 0.512], accuracy 0.443, fooled 0.012 of 580, missed 0.579 of 145, unreadable 0

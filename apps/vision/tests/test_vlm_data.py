@@ -327,6 +327,26 @@ def test_spend_ledger_refuses_a_call_that_could_pass_the_ceiling(tmp_path):
     assert spend.usd("gemini-3.8-flash", 1_000_000, 0, batch=True) == pytest.approx(0.375)
 
 
+def test_rl_practice_is_balanced_across_the_three_answers():
+    """8 Oct 2026: practice drawn from the model's mistakes alone was mostly real progress and
+    taught the model to say 'shown' (fooled 48 of 580 instead of 5). Balanced now."""
+    from drishti_vision import vlmrl
+    items, rows = [], []
+    for v, n, wrong in (("shown", 60, 50), ("not_shown", 200, 5), ("cant_tell", 80, 3)):
+        for k in range(n):
+            iid = f"{v}{k}"
+            items.append({"id": iid, "trick": "x", "target": {"verdict": v}})
+            miss = "shown" if v != "shown" else "cant_tell"
+            rows.append({"id": iid, "truth": v, "pred": miss if k < wrong else v, "conf": 0.95})
+    got = vlmrl.balanced_prompts(rows, items, per_verdict=20, seed=0)
+    by = {}
+    for r in got:
+        by.setdefault(r["target"]["verdict"], []).append(r["id"])
+    assert {v: len(x) for v, x in by.items()} == {"shown": 20, "not_shown": 20, "cant_tell": 20}
+    assert set(by["not_shown"]) >= {f"not_shown{k}" for k in range(5)}     # its mistakes first
+    assert set(by["cant_tell"]) >= {f"cant_tell{k}" for k in range(3)}
+
+
 def test_rl_practice_aims_at_the_weak_tricks():
     from drishti_vision import vlmrl
     items = ([{"id": f"s{k}", "trick": "swapped", "split": "train"} for k in range(10)]

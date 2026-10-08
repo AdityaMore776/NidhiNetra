@@ -167,6 +167,26 @@ def _update(model, L, enc, gen, n0, r, cfg, opt, dtype) -> None:
     opt.step()
 
 
+def balanced_prompts(pred_rows: list[dict], items: list[dict], per_verdict: int = 100,
+                     seed: int = 0) -> list[dict]:
+    """The same number of practice prompts for each answer (shown, not_shown, cant_tell): within
+    each, the model's mistakes and unsure answers first, then right ones at random. Practice
+    drawn from mistakes alone was mostly real progress and taught 'say shown' (8 Oct 2026)."""
+    rng = random.Random(seed)
+    by = {r["id"]: r for r in pred_rows}
+    out = []
+    for v in ("shown", "not_shown", "cant_tell"):
+        pool = [it for it in items if it["target"]["verdict"] == v and it["id"] in by]
+        hard = [it for it in pool if by[it["id"]]["pred"] != by[it["id"]]["truth"]
+                or (by[it["id"]].get("conf") or 0) < 0.8]
+        easy = [it for it in pool if it not in hard]
+        rng.shuffle(hard)
+        rng.shuffle(easy)
+        out += (hard + easy)[:per_verdict]
+    rng.shuffle(out)
+    return out
+
+
 def focus_prompts(items: list[dict], tricks: tuple[str, ...], keep_other: float = 0.3,
                   seed: int = 0) -> list[dict]:
     """Training items of the tricks the test showed to be weak (all of them), plus `keep_other`
