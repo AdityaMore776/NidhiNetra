@@ -97,21 +97,71 @@ def rl(adapter: str = "/data/runs/sft4b/final", out: str = "/data/runs/rl4b",
 def score(adapter: str = "", out: str = "/data/runs/base/test.jsonl",
           items: str = "/data/vlm/v1/items.jsonl", split: str = "test",
           base: str = "Qwen/Qwen3-VL-4B-Instruct", limit: int = 0, batch: int = 8,
-          real_only: bool = False):
-    return _score(adapter, out, items, split, base, limit, batch, real_only)
+          real_only: bool = False, max_side: int = 512):
+    return _score(adapter, out, items, split, base, limit, batch, real_only, max_side)
 
 
 @app.function(gpu="L4", volumes={"/data": vol}, timeout=3 * 3600)
 def score_l4(adapter: str = "", out: str = "/data/runs/base/test.jsonl",
              items: str = "/data/vlm/v1/items.jsonl", split: str = "test",
              base: str = "Qwen/Qwen3-VL-4B-Instruct", limit: int = 0, batch: int = 8,
-             real_only: bool = False):
+             real_only: bool = False, max_side: int = 512):
     """The same scoring on an L4 (24 GB, about a third of the A100's price an hour): scoring is
     one answer at a time, so the big card mostly waits. Resumable, like score."""
-    return _score(adapter, out, items, split, base, limit, batch, real_only)
+    return _score(adapter, out, items, split, base, limit, batch, real_only, max_side)
 
 
-def _score(adapter, out, items, split, base, limit, batch=8, real_only=False):
+@app.function(volumes={"/data": vol}, timeout=8 * 3600, secrets=[modal.Secret.from_name("gemini")])
+def flagship(model: str = "", items: str = "/data/vlm/v6/items_eye.jsonl", split: str = "test",
+             out: str = "", shots: int = 0, examples_from: str = "/data/vlm/v6/items_eye.jsonl",
+             max_side: int = 3072, rpm: float = 0.0, limit: int = 0, list_models: bool = False,
+             shard: int = 0, shards: int = 1):
+    """Gemini as the flagship baseline (flagship_other.GeminiJudge), on a CPU container: the key
+    comes from the Modal Secret "gemini" (the owner typed it into Modal; it never touches the PC).
+    At its best: full-resolution photos, its own thinking; `shots` worked examples from the
+    TRAINING split of `examples_from` only. Resumable; stops cleanly on the daily quota.
+    `shard`/`shards`: this container answers every shards-th item (run several at once; the
+    report script merges `<out>` files named *_s<k>.jsonl).
+    `list_models`: print the models this key can call, and nothing else."""
+    import json
+    import os
+    import sys
+    import urllib.request
+    sys.path.insert(0, "/root")
+    if list_models:
+        req = urllib.request.Request(
+            "https://generativelanguage.googleapis.com/v1beta/models?pageSize=1000",
+            headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"]})
+        with urllib.request.urlopen(req, timeout=60) as r:      # noqa: S310
+            for m in json.loads(r.read().decode()).get("models", []):
+                if "generateContent" in m.get("supportedGenerationMethods", []):
+                    print(m["name"], m.get("inputTokenLimit"), m.get("displayName"), flush=True)
+        return None
+    from drishti_vision import flagship_other, vlmeval
+    from drishti_vision.vlmdata import read_items
+    its = [i for i in read_items(items) if i.split == split]
+    its = its[:limit] if limit else its
+    its = its[shard::shards]
+    ex = flagship_other.few_shot_examples(read_items(examples_from), k=shots) if shots else None
+    J = flagship_other.GeminiJudge(model, examples=ex, root=Path("/data"), max_side=max_side,
+                                   min_interval=60.0 / rpm if rpm else 0.0)
+    Path(out).parent.mkdir(parents=True, exist_ok=True)
+
+    def log(s):
+        print(s, flush=True)
+        vol.commit()
+    rows = vlmeval.predict(J, its, Path("/data"), Path(out), log=log)
+    vol.commit()
+    if not rows:
+        return None
+    res = vlmeval.score(rows)
+    res["model"], res["answered_items"], res["asked_items"] = J.name, len(rows), len(its)
+    Path(out.replace(".jsonl", "_score.json")).write_text(json.dumps(res, indent=1))
+    vol.commit()
+    return {"answered": len(rows), "of": len(its), **res["headline_real_only"]}
+
+
+def _score(adapter, out, items, split, base, limit, batch=8, real_only=False, max_side=512):
     import json
     import sys
     sys.path.insert(0, "/root")
@@ -119,7 +169,7 @@ def _score(adapter, out, items, split, base, limit, batch=8, real_only=False):
     from drishti_vision.vlmdata import read_items
     its = [i for i in read_items(items) if i.split == split and (i.real or not real_only)]
     its = its[:limit] if limit else its
-    L = vlm.load(base, quant4=False, adapter=adapter or None, merge=True)
+    L = vlm.load(base, quant4=False, adapter=adapter or None, merge=True, max_side=max_side)
     Path(out).parent.mkdir(parents=True, exist_ok=True)
 
     def log(s):                     # every 25 answers: print and save to the volume, so a timeout

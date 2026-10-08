@@ -105,10 +105,11 @@ class Loaded:
     processor: object
     name: str
     device: str
+    max_side: int = MAX_SIDE        # photos are shrunk to this (training used MAX_SIDE)
 
 
 def load(name: str, quant4: bool = False, adapter: str | None = None,
-         device: str = "cuda", merge: bool = False) -> Loaded:
+         device: str = "cuda", merge: bool = False, max_side: int = MAX_SIDE) -> Loaded:
     """`merge`: fold the LoRA adapter into the weights (scoring only; same answers, about half the
     time a check, as the adapter's extra layers no longer run separately). Not for 4-bit."""
     import torch
@@ -124,20 +125,22 @@ def load(name: str, quant4: bool = False, adapter: str | None = None,
     if not quant4:
         model.to(device)
     proc = AutoProcessor.from_pretrained(name)
-    proc.image_processor.size = {"shortest_edge": 64 * 64, "longest_edge": MAX_SIDE * MAX_SIDE}
+    proc.image_processor.size = {"shortest_edge": 64 * 64, "longest_edge": max_side * max_side}
     if adapter:
         from peft import PeftModel
         model = PeftModel.from_pretrained(model, adapter)
         if merge and not quant4:
             model = model.merge_and_unload()
     model.eval()
-    return Loaded(model, proc, name + (f"+{Path(adapter).name}" if adapter else ""), device)
+    return Loaded(model, proc, name + (f"+{Path(adapter).name}" if adapter else "")
+                  + (f"@{max_side}px" if max_side != MAX_SIDE else ""), device, max_side)
 
 
 def _inputs(L: Loaded, item, root: Path | None, answer: dict | None = None, imgs=None):
     it = item if isinstance(item, dict) else item.__dict__
     if imgs is None:
-        imgs = [load_image(root / it["image_a"]), load_image(root / it["image_b"])]
+        imgs = [load_image(root / it["image_a"], L.max_side),
+                load_image(root / it["image_b"], L.max_side)]
     msgs = messages(item, answer)
     text = L.processor.apply_chat_template(msgs, tokenize=False,
                                            add_generation_prompt=answer is None)
@@ -190,7 +193,8 @@ def judge_batch(L: Loaded, items: list, root: Path, max_new_tokens: int = 220) -
     imgs, texts = [], []
     for it in items:
         d = it if isinstance(it, dict) else it.__dict__
-        imgs.append([load_image(root / d["image_a"]), load_image(root / d["image_b"])])
+        imgs.append([load_image(root / d["image_a"], L.max_side),
+                     load_image(root / d["image_b"], L.max_side)])
         texts.append(L.processor.apply_chat_template(messages(it), tokenize=False,
                                                      add_generation_prompt=True))
     tok.padding_side = "left"

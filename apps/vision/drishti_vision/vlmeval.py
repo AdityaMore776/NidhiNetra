@@ -166,7 +166,7 @@ def row(it, o: dict) -> dict:
             "truth": it.target["verdict"], "pred": pred, "conf": conf, "probs": o["probs"],
             "seconds": o["seconds"], "text": o["text"][:400],
             "served_by": o.get("served_by"), "cost_usd": o.get("cost_usd"),
-            "refused": bool(o.get("refused"))}
+            "usage": o.get("usage"), "refused": bool(o.get("refused"))}
 
 
 def predict(L, items: list, root: Path, out_path: Path, log=print, batch: int = 1) -> list[dict]:
@@ -192,6 +192,9 @@ def predict(L, items: list, root: Path, out_path: Path, log=print, batch: int = 
                 else:
                     outs = [L(chunk[0], root) if callable(L) else vlm.judge(L, chunk[0], root)]
             except Exception as e:  # noqa: BLE001 (an API error is recorded, the run goes on)
+                if getattr(e, "stop_run", False):     # e.g. a daily quota: stop, resume later
+                    log(f"stopped: {type(e).__name__}: {str(e)[:160]}")
+                    break
                 log(f"{chunk[0].id}: {type(e).__name__}: {str(e)[:120]}")
                 continue
             for it, o in zip(chunk, outs, strict=True):

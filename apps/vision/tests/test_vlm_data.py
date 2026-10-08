@@ -239,6 +239,48 @@ def test_mcnemar_compares_two_judges_on_the_same_items():
     assert vlmeval.mcnemar(a, rows([False] * 3))["n"] == 3     # shared items only
 
 
+def test_flagship_gets_full_resolution_photos_unless_asked_for_the_judges_view(tmp_path):
+    """Owner (8 Oct 2026): each model at its best; the flagship is not held to the judge's
+    512 px."""
+    import base64
+    import io
+
+    from PIL import Image
+
+    from drishti_vision import flagship_other, vlm
+
+    def size(**kw):
+        return Image.open(io.BytesIO(base64.b64decode(flagship_other._jpeg_b64(p, **kw)))).size
+    p = tmp_path / "a.jpg"
+    Image.new("RGB", (2000, 1500), (90, 120, 30)).save(p)
+    assert size() == (2000, 1500)
+    assert size(max_side=vlm.MAX_SIDE) == vlm.load_image(p).size == (512, 384)
+
+
+def test_flagship_waits_on_rate_limits_and_stops_on_the_daily_quota():
+    from drishti_vision import flagship_other as fo
+    minute = ('{"error": {"code": 429, "status": "RESOURCE_EXHAUSTED", "details": ['
+              '{"@type": "type.googleapis.com/google.rpc.QuotaFailure", "violations": ['
+              '{"quotaId": "GenerateRequestsPerMinutePerProjectPerModel-FreeTier"}]},'
+              '{"@type": "type.googleapis.com/google.rpc.RetryInfo", "retryDelay": "17s"}]}}')
+    day = minute.replace("PerMinute", "PerDay")
+    assert fo.retry_after(minute) == 17.0 and not fo.daily_quota(minute)
+    assert fo.daily_quota(day)
+
+
+def test_flagship_examples_come_from_training_only_and_cover_every_answer(tmp_path):
+    from drishti_vision import flagship_other as fo
+    a = _asset(tmp_path, 71, _district("train"))
+    b = _asset(tmp_path, 72, _district("train"), wt="building",
+               sub="Construction of Anganwadi Centre")
+    t = _asset(tmp_path, 73, _district("test"))
+    items = _items(tmp_path, [a, b, t], synthetic=False)
+    ex = fo.few_shot_examples(items, k=4, seed=0)
+    assert all(i.split == "train" and i.real for i in ex)
+    assert {i.target["verdict"] for i in ex} == {"shown", "not_shown", "cant_tell"}
+    assert fo.few_shot_examples(items, k=4, seed=0) == ex                 # fixed for every item
+
+
 def test_rl_practice_aims_at_the_weak_tricks():
     from drishti_vision import vlmrl
     items = ([{"id": f"s{k}", "trick": "swapped", "split": "train"} for k in range(10)]
