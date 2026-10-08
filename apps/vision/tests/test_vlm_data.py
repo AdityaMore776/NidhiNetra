@@ -281,6 +281,36 @@ def test_flagship_examples_come_from_training_only_and_cover_every_answer(tmp_pa
     assert fo.few_shot_examples(items, k=4, seed=0) == ex                 # fixed for every item
 
 
+def test_batch_requests_ask_exactly_what_the_live_judge_asks(tmp_path):
+    from drishti_vision import flagship_batch, flagship_other
+    a = _asset(tmp_path, 81, _district("test"))
+    items = _items(tmp_path, [a], synthetic=False)
+    line = json.loads(flagship_batch.request_line(items[0], tmp_path))
+    assert line["key"] == items[0].id
+    req = line["request"]
+    assert req["system_instruction"]["parts"][0]["text"] == vlmdata.SYSTEM
+    assert req["contents"][-1]["parts"] == flagship_other._gemini_turn(items[0].__dict__, tmp_path)
+    assert req["generationConfig"]["temperature"] == 0
+
+
+def test_batch_answers_become_the_same_rows_as_live_answers(tmp_path):
+    from drishti_vision import flagship_batch
+    a = _asset(tmp_path, 82, _district("test"))
+    it = _items(tmp_path, [a], synthetic=False)[0]
+    ans = {"same_place": "yes", "stage_A": "not started", "stage_B": "complete",
+           "permanent_change": "yes", "verdict": "shown", "reason": "built"}
+    resp = {"key": it.id, "response": {
+        "candidates": [{"content": {"parts": [{"text": "thinking...", "thought": True},
+                                              {"text": json.dumps(ans)}]}}],
+        "usageMetadata": {"promptTokenCount": 2300, "candidatesTokenCount": 90,
+                          "thoughtsTokenCount": 300}, "modelVersion": "gemini-x"}}
+    rows = flagship_batch.rows_from_results([json.dumps(resp)], [it])
+    assert rows[0]["pred"] == "shown" and rows[0]["usage"] == {"in": 2300, "out": 390}
+    assert rows[0]["served_by"] == "gemini-x (batch)"
+    bad = {"key": it.id, "error": {"code": 500, "message": "x"}}
+    assert flagship_batch.rows_from_results([json.dumps(bad)], [it]) == []
+
+
 def test_rl_practice_aims_at_the_weak_tricks():
     from drishti_vision import vlmrl
     items = ([{"id": f"s{k}", "trick": "swapped", "split": "train"} for k in range(10)]

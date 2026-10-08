@@ -47,6 +47,20 @@ app = modal.App("nidhinetra-claim-judge", image=image)
 GPU = "A100-40GB"
 
 
+def _logger(every_s: float = 180.0):
+    """print every progress line; save to the volume at most every `every_s` seconds. Many
+    containers saving the shared volume every 25 answers queued behind each other (8 Oct 2026:
+    a scoring run slowed from 1.3 s to over 10 s a check while 9 others ran)."""
+    import time
+    last = [time.time()]
+
+    def log(s):
+        print(s, flush=True)
+        if time.time() - last[0] >= every_s:
+            vol.commit()
+            last[0] = time.time()
+    return log
+
 @app.function(gpu=GPU, volumes={"/data": vol}, timeout=3 * 3600)
 def sft(items: str = "/data/vlm/v1/items.jsonl", out: str = "/data/runs/sft4b",
         base: str = "Qwen/Qwen3-VL-4B-Instruct", epochs: float = 2.0, rank: int = 16,
@@ -85,10 +99,7 @@ def rl(adapter: str = "/data/runs/sft4b/final", out: str = "/data/runs/rl4b",
     elif focus:
         chosen = vlmrl.focus_prompts(chosen, tuple(focus.split(",")))
 
-    def log(s):                                # every 25 prompts: print and save to the volume
-        print(s, flush=True)
-        vol.commit()
-    info = vlmrl.rl_fit(cfg, prompts=chosen, log=log)
+    info = vlmrl.rl_fit(cfg, prompts=chosen, log=_logger())
     vol.commit()
     return {k: info[k] for k in ("prompts", "skipped_flat_groups", "minutes", "peak_gpu_gb")}
 
@@ -147,16 +158,72 @@ def flagship(model: str = "", items: str = "/data/vlm/v6/items_eye.jsonl", split
                                    min_interval=60.0 / rpm if rpm else 0.0)
     Path(out).parent.mkdir(parents=True, exist_ok=True)
 
-    def log(s):
-        print(s, flush=True)
-        vol.commit()
-    rows = vlmeval.predict(J, its, Path("/data"), Path(out), log=log)
+    rows = vlmeval.predict(J, its, Path("/data"), Path(out), log=_logger())
     vol.commit()
     if not rows:
         return None
     res = vlmeval.score(rows)
     res["model"], res["answered_items"], res["asked_items"] = J.name, len(rows), len(its)
     Path(out.replace(".jsonl", "_score.json")).write_text(json.dumps(res, indent=1))
+    vol.commit()
+    return {"answered": len(rows), "of": len(its), **res["headline_real_only"]}
+
+
+@app.function(volumes={"/data": vol}, timeout=3 * 3600, memory=8192,
+              secrets=[modal.Secret.from_name("gemini")])
+def flagship_batch(action: str = "submit", model: str = "gemini-3.1-pro-preview",
+                   items: str = "/data/vlm/v6/items_eye2.jsonl", split: str = "test",
+                   out_dir: str = "", chunk: int = 300):
+    """Gemini through the Batch API (flagship_batch.py): `submit` builds the request file from
+    the photos on the volume (chunks of `chunk` questions), uploads it and starts the jobs;
+    `collect` reports their state and, when all have finished, writes <split>.jsonl and its
+    score in `out_dir`. Same questions and photos as the live judge; half the price."""
+    import json
+    import sys
+    sys.path.insert(0, "/root")
+    from drishti_vision import flagship_batch as fb
+    from drishti_vision import vlmeval
+    from drishti_vision.vlmdata import read_items
+    its = [i for i in read_items(items) if i.split == split]
+    od = Path(out_dir)
+    od.mkdir(parents=True, exist_ok=True)
+    rec_p = od / f"batch_{split}.json"
+    if action == "submit":
+        jobs = []
+        for k in range(0, len(its), chunk):
+            p = Path(f"/tmp/req_{split}_{k}.jsonl")
+            with open(p, "w", encoding="utf-8") as f:
+                for it in its[k:k + chunk]:
+                    f.write(fb.request_line(it, Path("/data")) + "\n")
+            name = f"nidhinetra-{split}-{k}"
+            fname = fb.upload(p, name)
+            jobs.append({"batch": fb.create(model, fname, name), "file": fname,
+                         "n": len(its[k:k + chunk]), "mb": round(p.stat().st_size / 1e6, 1)})
+            print(jobs[-1], flush=True)
+        rec_p.write_text(json.dumps({"model": model, "split": split, "items": items,
+                                     "jobs": jobs}, indent=1))
+        vol.commit()
+        return jobs
+    rec = json.loads(rec_p.read_text())
+    states, lines = [], []
+    for j in rec["jobs"]:
+        st = fb.status(j["batch"])
+        state = st.get("metadata", {}).get("state") or st.get("state")
+        states.append(state)
+        resp = (st.get("response") or {}).get("responsesFile") or \
+            (st.get("metadata", {}).get("output") or {}).get("responsesFile")
+        print(j["batch"], state, resp, flush=True)
+        if state in ("JOB_STATE_SUCCEEDED", "BATCH_STATE_SUCCEEDED") and resp:
+            lines += fb.download(resp)
+    if not all(s in ("JOB_STATE_SUCCEEDED", "BATCH_STATE_SUCCEEDED") for s in states):
+        return {"states": states}
+    rows = fb.rows_from_results(lines, its)
+    out = od / f"{split}.jsonl"
+    out.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows),
+                   encoding="utf-8")
+    res = vlmeval.score(rows)
+    res["model"], res["answered_items"], res["asked_items"] = rec["model"], len(rows), len(its)
+    (od / f"{split}_score.json").write_text(json.dumps(res, indent=1))
     vol.commit()
     return {"answered": len(rows), "of": len(its), **res["headline_real_only"]}
 
@@ -172,10 +239,8 @@ def _score(adapter, out, items, split, base, limit, batch=8, real_only=False, ma
     L = vlm.load(base, quant4=False, adapter=adapter or None, merge=True, max_side=max_side)
     Path(out).parent.mkdir(parents=True, exist_ok=True)
 
-    def log(s):                     # every 25 answers: print and save to the volume, so a timeout
-        print(s, flush=True)        # or a stop keeps what was done (predict resumes from it)
-        vol.commit()
-    rows = vlmeval.predict(L, its, Path("/data"), Path(out), log=log, batch=batch)
+    # progress saved to the volume every few minutes, so a timeout or a stop keeps what was done
+    rows = vlmeval.predict(L, its, Path("/data"), Path(out), log=_logger(), batch=batch)
     res = vlmeval.score(rows)
     Path(out.replace(".jsonl", "_score.json")).write_text(json.dumps(res, indent=1))
     vol.commit()
