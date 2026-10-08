@@ -1,0 +1,25 @@
+T158 replay (docs/plans/T158-same-spot-filming.md)
+
+Part 1: the engine on drawn site videos (5 viewpoints, phone-style GPS + compass logs)
+  baseline: spots kept ['v1', 'v2', 'v3', 'v4', 'v5'], v2 facing {'from': 60.0, 'to': 100.0, 'mid': 80.0, 'width': 40.0}, pans per viewpoint 3
+  a same spots, whole pan: offsets_m {'v1': 0.0, 'v2': 0.0, 'v3': 0.0, 'v4': 0.0, 'v5': 0.0} coverage {'v1': 1.0, 'v2': 1.0, 'v3': 1.0, 'v4': 1.0, 'v5': 1.0}
+      Site Progress: ['nothing to note']
+  b v2 filmed 25 m off: offsets_m {'v1': 0.0, 'v2': 25.0, 'v3': 0.0, 'v4': 0.0, 'v5': 0.0} coverage {'v1': 1.0, 'v2': 1.0, 'v3': 1.0, 'v4': 1.0, 'v5': 1.0}
+      Site Progress: ['The monthly visit of 01 Apr 2026: viewpoint v2 was filmed about 25 m from where it was first filmed (GPS); its pictures decide whether it is the same view.']
+  c v3 half panned: offsets_m {'v1': 0.0, 'v2': 0.0, 'v3': 0.0, 'v4': 0.0, 'v5': 0.0} coverage {'v1': 1.0, 'v2': 1.0, 'v3': 0.625, 'v4': 1.0, 'v5': 1.0}
+      Site Progress: ["The monthly visit of 01 Apr 2026: at viewpoint v3, 62% of the first visit's view was panned across; film the whole view next time."]
+  d no compass: offsets_m {'v1': 0.0, 'v2': 0.0, 'v3': 0.0, 'v4': 0.0, 'v5': 0.0} coverage {}
+      Site Progress: ['nothing to note']
+  e 'toilet block roof cast', 8 spots needed, 5 filmed, spot verdicts {'v1': 'not_shown', 'v2': 'not_shown', 'v3': 'not_shown', 'v4': 'not_shown', 'v5': 'not_shown'} -> claim not_shown
+  e 'toilet block roof cast', 12 spots needed, 5 filmed, spot verdicts {'v1': 'not_shown', 'v2': 'not_shown', 'v3': 'not_shown', 'v4': 'not_shown', 'v5': 'not_shown'} -> claim cant_tell
+  e 'walls up to lintel level in all rooms', 8 spots needed, 5 filmed, spot verdicts {'v1': 'shown', 'v2': 'not_shown', 'v3': 'shown', 'v4': 'shown', 'v5': 'shown'} -> claim not_shown
+  e 'walls up to lintel level in all rooms', 12 spots needed, 5 filmed, spot verdicts {'v1': 'shown', 'v2': 'not_shown', 'v3': 'shown', 'v4': 'shown', 'v5': 'shown'} -> claim not_shown
+  f road of 189 m, stretches ['s1', 's2', 's3', 's4']: first visit kept ['s1', 's2', 's3', 's4']; walked halfway -> judged ['s1', 's2'], missed ['s3', 's4']
+
+Part 2: the phone's maths (capture.ts in Node) against the engine's
+  covered   28 cases: same
+  stretch   16 cases: same
+  metres     6 cases: same
+  box        4 cases: same
+  bearing  north/east/south/west: [0, 90, 180, 270]
+  turn     350->10, 10->350, 0->180, 90->45: [20, -20, -180, -45]

@@ -34,6 +34,7 @@ BOX_M = 6.0             # the box's radius: phone GPS is about 5 m under open sk
 FACING_TOL_DEG = 20.0   # facing the anchor's middle within this: facing the right way
 COVER_GOOD = 0.7        # this share of last time's arc panned: the same areas shown
 PAD_S = 0.5             # GPS fixes this close before or after a viewpoint still place it
+HOLD_S = 60.0           # with no fix during a viewpoint, the last one this recent still stands
 BIN_DEG = 5.0
 VERDICTS = ("shown", "not_shown", "cant_tell")
 
@@ -48,17 +49,22 @@ def _num(v) -> float | None:
 
 
 def spot(gps: list, t0: float, t1: float, poor_m: float = 50.0) -> dict | None:
-    """The median of the good GPS fixes during a viewpoint (give or take PAD_S: fix timing)."""
-    pts = []
+    """The median of the good GPS fixes during a viewpoint (give or take PAD_S: fix timing). A
+    phone standing still often reports no new fix (an iPhone reports on a change), so with none
+    during the viewpoint the last good fix up to HOLD_S before it stands: no new fix, no move."""
+    pts, before = [], None
     for p in gps or []:
         if not isinstance(p, dict):
             continue
         t, lat, lon, acc = (_num(p.get(k)) for k in ("t", "lat", "lon", "accuracy"))
-        if None in (t, lat, lon) or not (t0 - PAD_S <= t <= t1 + PAD_S):
+        if None in (t, lat, lon) or (acc is not None and acc > poor_m):
             continue
-        if acc is not None and acc > poor_m:
-            continue
-        pts.append((lat, lon, acc))
+        if t0 - PAD_S <= t <= t1 + PAD_S:
+            pts.append((lat, lon, acc))
+        elif t0 - HOLD_S <= t < t0 - PAD_S and (before is None or t > before[0]):
+            before = (t, (lat, lon, acc))
+    if not pts and before is not None:
+        pts = [before[1]]
     if not pts:
         return None
     accs = [a for _la, _lo, a in pts if a is not None]
@@ -98,11 +104,12 @@ def arc(degs: list[float]) -> dict | None:
 
 
 def covered(first: dict | None, degs: list[float]) -> float | None:
-    """The share of an earlier arc that these headings panned across (None without an arc)."""
+    """The share of an earlier arc that these headings panned across (None without an arc, or
+    without any heading: a phone with no compass cannot tell, which is not 0%)."""
     if not first:
         return None
     if not degs:
-        return 0.0
+        return None
     if first["width"] < 2 * BIN_DEG:
         return 1.0 if any(_diff(d, first["mid"]) <= FACING_TOL_DEG for d in degs) else 0.0
     n = math.ceil(first["width"] / BIN_DEG)
@@ -130,26 +137,40 @@ def _trusted(readings: dict) -> bool:
 
 
 def anchors(visits: list[dict]) -> dict[str, dict]:
-    """{viewpoint: {lat, lon, acc, box_m, facing}} from the visits so far, OLDEST FIRST, each
-    {"readings": {...}, "spots": {viewpoint: {"spot": {...}, "facing": {...}}}}."""
-    cands: dict[str, list[tuple[dict, dict | None]]] = {}
+    """{viewpoint: {"box": {lat, lon, acc, box_m} | None, "facing": {...} | None}} from the
+    visits so far, OLDEST FIRST, each {"readings": {...}, "spots": {viewpoint: {"spot": {...},
+    "facing": {...}}}}. The facing is the box's visit's, else the first one filmed: a viewpoint
+    with no usable GPS still has a way to face."""
+    boxes: dict[str, list[tuple[dict, dict | None]]] = {}
+    facings: dict[str, dict] = {}
     for v in visits:
         if not isinstance(v, dict) or not _trusted(v.get("readings")):
             continue
         for vid, s in (v.get("spots") or {}).items():
-            sp = s.get("spot") if isinstance(s, dict) else None
+            if not isinstance(s, dict):
+                continue
+            f = s.get("facing") if isinstance(s.get("facing"), dict) else None
+            if f is not None:
+                facings.setdefault(vid, f)
+            sp = s.get("spot")
             if isinstance(sp, dict) and _num(sp.get("lat")) is not None \
                     and _num(sp.get("lon")) is not None:
-                cands.setdefault(vid, []).append((sp, s.get("facing")))
+                boxes.setdefault(vid, []).append((sp, f))
+
+    def acc(c) -> float:
+        a = _num(c[0].get("acc"))
+        return GOOD_FIX_M if a is None else a
+
     out = {}
-    for vid, cs in cands.items():
-        def acc(c):
-            a = _num(c[0].get("acc"))
-            return GOOD_FIX_M if a is None else a
-        good = [c for c in cs if acc(c) <= GOOD_FIX_M]
-        sp, facing = good[0] if good else min(cs, key=acc)
-        out[vid] = {"lat": sp["lat"], "lon": sp["lon"], "acc": _num(sp.get("acc")),
-                    "box_m": max(BOX_M, acc((sp, facing))), "facing": facing}
+    for vid in sorted(set(boxes) | set(facings)):
+        box, facing = None, facings.get(vid)
+        if vid in boxes:
+            good = [c for c in boxes[vid] if acc(c) <= GOOD_FIX_M]
+            c = good[0] if good else min(boxes[vid], key=acc)
+            box = {"lat": c[0]["lat"], "lon": c[0]["lon"], "acc": _num(c[0].get("acc")),
+                   "box_m": max(BOX_M, acc(c))}
+            facing = c[1] or facing
+        out[vid] = {"box": box, "facing": facing}
     return out
 
 

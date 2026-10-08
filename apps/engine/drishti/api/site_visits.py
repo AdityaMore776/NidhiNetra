@@ -103,8 +103,7 @@ def _viewpoints(con, work_id: str) -> list[dict]:
         a = anchors.get(vid)
         out.append({"id": vid, "frame_url": _frame_url(v.get("path")),
                     "pan_urls": [u for u in (_frame_url(p) for p in v.get("pans") or []) if u],
-                    "anchor": {k: a[k] for k in ("lat", "lon", "acc", "box_m")} if a else None,
-                    "facing": a.get("facing") if a else None})
+                    "anchor": a["box"] if a else None, "facing": a["facing"] if a else None})
     return out
 
 

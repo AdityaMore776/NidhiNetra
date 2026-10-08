@@ -362,10 +362,10 @@ def read(path, log: dict, site: Site | None, earlier: list[Earlier], others: lis
         a = anchors.get(vid)
         if a is None:
             continue
-        off = sp.offset_m(a, kept["viewpoints"][vid]["spot"])
+        off = sp.offset_m(a["box"], kept["viewpoints"][vid]["spot"])
         if off is not None:
             offsets[vid] = off
-        cov = sp.covered(a.get("facing"), sp.headings(log, *win[vid]))
+        cov = sp.covered(a["facing"], sp.headings(log, *win[vid]))
         if cov is not None:
             coverage[vid] = cov
     srefs = stretch_references(earlier)

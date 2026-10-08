@@ -323,9 +323,28 @@ export interface SiteMap {
   stretch_m: number;
 }
 
+/** Where a viewpoint was first filmed from (T158): the box to stand in. */
+export interface Anchor {
+  lat: number;
+  lon: number;
+  acc: number | null;
+  box_m: number;
+}
+
+/** Which way the phone faced, and the arc it panned (degrees, 0 = north; may wrap past north). */
+export interface Facing {
+  from: number;
+  to: number;
+  mid: number;
+  width: number;
+}
+
 export interface Viewpoint {
   id: string;
   frame_url: string | null;
+  pan_urls?: string[];
+  anchor?: Anchor | null;
+  facing?: Facing | null;
 }
 
 export interface SiteVisitRow {
@@ -343,6 +362,7 @@ export interface SiteVisits {
   site: SiteMap | null;
   next_kind: VisitKind;
   viewpoints: Viewpoint[];
+  spots_needed?: number;
   visits: SiteVisitRow[];
 }
 
@@ -352,4 +372,6 @@ export interface VisitStart {
   kind: VisitKind;
   site: SiteMap | null;
   viewpoints: Viewpoint[];
+  spots_needed?: number;
+  stretches_asked?: string[];
 }

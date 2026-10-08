@@ -120,7 +120,14 @@ def test_the_spot_is_the_median_of_the_good_fixes_around_the_viewpoint():
            _fix(8, 25.7503, acc=80), _fix(30, 25.80)]   # too early, poor, long after: left out
     s = spots.spot(gps, 5.0, 8.0)
     assert s["lat"] == pytest.approx(25.7501, abs=1e-7) and s["acc"] == 5.0
-    assert spots.spot(gps, 50.0, 55.0) is None
+    assert spots.spot(gps, 100.0, 105.0) is None             # the last fix (30 s) too old to stand
+
+
+def test_a_phone_standing_still_keeps_its_last_fix():
+    # found by the browser run (capture_e2e): standing still, a phone may send no new fix
+    gps = [_fix(1, 25.7500), _fix(3, 25.7504), _fix(4, 25.7509, acc=90)]
+    s = spots.spot(gps, 20.0, 25.0)
+    assert s["lat"] == 25.7504 and s["acc"] == 5.0          # the last GOOD fix before it
 
 
 def test_the_facing_is_the_smallest_arc_holding_the_headings():
@@ -147,7 +154,7 @@ def test_coverage_of_last_times_arc():
     first = spots.arc([60, 150])                           # 90° panned the first time
     assert spots.covered(first, list(range(60, 151, 5))) == pytest.approx(1.0)
     assert spots.covered(first, list(range(60, 106, 5))) == pytest.approx(0.5, abs=0.07)
-    assert spots.covered(first, []) == 0.0
+    assert spots.covered(first, []) is None          # no compass: can't tell, not 0%
     assert spots.covered(None, [100]) is None
 
 
@@ -169,31 +176,39 @@ def test_the_first_good_fix_is_the_anchor_and_never_moves():
     first = _visit(25.75000, 6, facing={"from": 80, "to": 120, "mid": 100, "width": 40})
     later = _visit(25.75020, 4, facing={"from": 0, "to": 10, "mid": 5, "width": 10})
     a = spots.anchors([first, later])["v1"]
-    assert a["lat"] == 25.75 and a["box_m"] == spots.BOX_M and a["facing"]["mid"] == 100
+    assert a["box"]["lat"] == 25.75 and a["box"]["box_m"] == spots.BOX_M
+    assert a["facing"]["mid"] == 100
 
 
 def test_a_poor_first_fix_gives_way_once_to_a_good_one():
     poor = _visit(25.75000, 40)
     good = _visit(25.75020, 8)
     best_later = _visit(25.75040, 3)
-    a = spots.anchors([poor, good, best_later])["v1"]
+    a = spots.anchors([poor, good, best_later])["v1"]["box"]
     assert a["lat"] == 25.7502 and a["box_m"] == 8
 
 
 def test_with_only_poor_fixes_the_best_one_anchors_with_a_bigger_box():
-    a = spots.anchors([_visit(25.75, 40), _visit(25.7501, 30)])["v1"]
+    a = spots.anchors([_visit(25.75, 40), _visit(25.7501, 30)])["v1"]["box"]
     assert a["lat"] == 25.7501 and a["box_m"] == 30
 
 
 def test_a_visit_that_did_not_match_the_site_never_anchors():
     away = _visit(25.80, 3, trusted=False)
     here = _visit(25.75, 6)
-    assert spots.anchors([away, here])["v1"]["lat"] == 25.75
+    assert spots.anchors([away, here])["v1"]["box"]["lat"] == 25.75
     assert spots.anchors([away]) == {}
 
 
+def test_a_viewpoint_with_no_usable_gps_still_has_its_facing():
+    # found by the browser run (capture_e2e): the facing must not hang on the GPS
+    arc_ = {"from": 80, "to": 120, "mid": 100, "width": 40}
+    v = {"readings": {}, "spots": {"v2": {"spot": None, "facing": arc_}}}
+    assert spots.anchors([v]) == {"v2": {"box": None, "facing": arc_}}
+
+
 def test_metres_from_the_anchor():
-    a = spots.anchors([_visit(25.75, 5)])["v1"]
+    a = spots.anchors([_visit(25.75, 5)])["v1"]["box"]
     assert spots.offset_m(a, {"lat": 25.7501, "lon": 82.69}) == pytest.approx(11.1, abs=0.2)
     assert spots.offset_m(a, None) is None
 

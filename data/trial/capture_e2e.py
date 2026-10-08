@@ -8,14 +8,19 @@ Progress (T123 + T124). A browser films a made-up site through a fake camera:
              uploaded with tips, and the reader says "can't tell" for the GPS
     visit 4  first visit of hall H2, filmed at H1's site (another work's place)
 
+T158 (the same spot every month): visits 1-3 carry a compass (the page is sent orientation events
+sweeping 40 degrees across each viewpoint, as a person panning would), visit 4 has none. The page's
+guidance is read off the screen at each viewpoint: the radar ("You are in the box for spot v2") and
+the facing guide ("Facing the right way ..."); the readings add the spots' offsets and coverage.
+
 Pieces: a local Postgres (pgserver), the engine (uvicorn, dev sign-in), the web app (next dev),
 a stand-in for Supabase Storage (a small HTTP server writing to a temporary folder), headless
 Chromium with --use-file-for-fake-video-capture, and the video job with a local store. Nothing
 real is filmed or kept: the scenes are drawn, and everything lives in a temporary folder.
 
 Needs the video job's environment (OpenCV 4.x), Playwright for Python, the web app's
-node_modules, and Chromium (PLAYWRIGHT_CHROMIUM or /opt/pw-browsers). Writes
-data/trial/results/capture_e2e.json and .txt.
+node_modules, and Chromium (PLAYWRIGHT_CHROMIUM, /opt/pw-browsers, or on Windows Playwright's own
+download in %LOCALAPPDATA%\ms-playwright). Writes data/trial/results/capture_e2e.json and .txt.
 """
 
 from __future__ import annotations
@@ -167,6 +172,26 @@ class Storage(http.server.BaseHTTPRequestHandler):
         pass
 
 
+# T158: a compass for the fake phone. Chromium sends no orientation events headless, so the page
+# is sent deviceorientationabsolute ten times a second; held upright (beta 90, gamma 0) the camera
+# heading is 360 - alpha (capture.ts cameraHeading). window.__h0 / __t0 start a 40-degree pan.
+COMPASS_JS = """
+window.__h0 = 0; window.__t0 = null;
+setInterval(() => {
+  let h = window.__h0;
+  if (window.__t0 !== null) h += Math.min(40, (performance.now() - window.__t0) / 1000 * 40 / %s);
+  window.dispatchEvent(new DeviceOrientationEvent("deviceorientationabsolute",
+    { alpha: (360 - h) %% 360, beta: 90, gamma: 0, absolute: true }));
+}, 100);
+"""
+
+GUIDE = ("You are in the box", "Spot v", "Facing the right way", "Turn ", "GPS is too weak", "No compass")
+
+
+def guide_texts(page) -> list[str]:
+    return [t for t in page.locator("p").all_inner_texts() if t.startswith(GUIDE)]
+
+
 def wait_http(url: str, seconds: float) -> None:
     end = time.time() + seconds
     while time.time() < end:
@@ -179,7 +204,7 @@ def wait_http(url: str, seconds: float) -> None:
 
 
 def film(page, url: str, kind_label: str, claim: str | None, marks: list[str],
-         skip: tuple[str, ...] = ()) -> str:
+         skip: tuple[str, ...] = (), seen: list | None = None) -> str:
     page.goto(url)
     page.get_by_text("Start filming").wait_for(timeout=120_000)
     page.get_by_label(kind_label).check()
@@ -190,9 +215,17 @@ def film(page, url: str, kind_label: str, claim: str | None, marks: list[str],
     for i, vid in enumerate(marks):
         if i:
             time.sleep(PAN)
+        before = guide_texts(page)                      # the radar, walking to the spot
+        page.evaluate("h => { window.__h0 = h; window.__t0 = performance.now(); }",
+                      60 * int(vid[1:]) - 60)
         page.get_by_role("button", name=f"At viewpoint {vid}").click()
-        time.sleep(DWELL - 0.6)
+        time.sleep(0.8)
+        at = guide_texts(page)                          # the facing guide, at the spot
+        time.sleep(DWELL - 1.4)
         page.get_by_role("button", name=f"Done at {vid}").click()
+        page.evaluate("() => { window.__h0 += 40; window.__t0 = null; }")
+        if seen is not None:
+            seen.append({"viewpoint": vid, "walking": before, "at": at})
     for vid in skip:
         page.get_by_role("button", name=f"Can't reach viewpoint {vid}").click()
     time.sleep(2.5)
@@ -253,38 +286,47 @@ def main() -> None:
     for k in ("NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY"):
         web_env.pop(k, None)
     # its own process group, so stopping it stops next-server too (npx alone leaves it running)
-    web = subprocess.Popen(["npx", "next", "dev", "-p", str(wport)], cwd=ROOT / "apps" / "web",
-                           env=web_env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                           start_new_session=True)
+    windows = os.name == "nt"
+    web = subprocess.Popen(["npx.cmd" if windows else "npx", "next", "dev", "-p", str(wport)],
+                           cwd=ROOT / "apps" / "web", env=web_env, stdout=subprocess.DEVNULL,
+                           stderr=subprocess.DEVNULL,
+                           **({"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP} if windows
+                              else {"start_new_session": True}))
     out: dict = {"visits": []}
     try:
         wait_http(f"http://127.0.0.1:{eport}/api/v1/health", 60)
         wait_http(f"http://localhost:{wport}/login", 180)
         exe = os.environ.get("PLAYWRIGHT_CHROMIUM") or (
-            glob.glob("/opt/pw-browsers/chromium-*/chrome-linux*/chrome") or [None])[0]
+            glob.glob("/opt/pw-browsers/chromium-*/chrome-linux*/chrome")
+            + sorted(glob.glob(os.path.expandvars(
+                r"%LOCALAPPDATA%\ms-playwright\chromium-*\chrome-win*\chrome.exe")))[::-1]
+            or [None])[0]
         every = [f"v{i + 1}" for i in range(VIEWS)]
         good_gps = {"latitude": SITE[0], "longitude": SITE[1], "accuracy": 6}
         weak_gps = {"latitude": SITE[0] + 150 / 111_195, "longitude": SITE[1], "accuracy": 90}
-        plan = [("H1", "h1_base", "First visit", None, every, (), good_gps),
-                ("H1", "h1_wall", "Monthly visit", "walls built", every, (), good_gps),
+        plan = [("H1", "h1_base", "First visit", None, every, (), good_gps, True),
+                ("H1", "h1_wall", "Monthly visit", "walls built", every, (), good_gps, True),
                 ("H1", "h1_plaster", "Monthly visit", "walls plastered", every[:3],
-                 ("v4", "v5"), weak_gps),
-                ("H2", "h1_base", "First visit", None, every, (), good_gps)]
+                 ("v4", "v5"), weak_gps, True),
+                ("H2", "h1_base", "First visit", None, every, (), good_gps, False)]
         with sync_playwright() as p:
-            for work, video, label, claim, marks, skip, gps in plan:
+            for work, video, label, claim, marks, skip, gps, compass in plan:
                 b = p.chromium.launch(executable_path=exe, args=[
                     "--use-fake-ui-for-media-stream", "--use-fake-device-for-media-stream",
                     f"--use-file-for-fake-video-capture={vids[video]}"])
                 ctx = b.new_context(geolocation=gps, permissions=["geolocation", "camera"])
+                if compass:
+                    ctx.add_init_script(COMPASS_JS % (DWELL - 0.6))
                 page = ctx.new_page()
+                seen: list = []
                 warned = film(page, f"http://localhost:{wport}/capture?work={work}", label,
-                              claim, marks, skip)
+                              claim, marks, skip, seen)
                 b.close()
                 with psycopg.connect(url, row_factory=dict_row) as con:
                     done = job.process(con, capture.LocalStore(store_dir))
                 out["visits"].append({"work": work, "video": video, "kind": label,
-                                      "page_warnings_at_stop": warned,
-                                      "job": [d["status"] for d in done]})
+                                      "compass": compass, "page_warnings_at_stop": warned,
+                                      "guide": seen, "job": [d["status"] for d in done]})
         with psycopg.connect(url, row_factory=dict_row) as con:
             rows = con.execute("SELECT work_id, kind, status, readings, kept, video_path "
                                "FROM site_visits ORDER BY captured_at").fetchall()
@@ -293,7 +335,10 @@ def main() -> None:
                 v["readings"] = {k: rd.get(k) for k in (
                     "sealed", "in_app", "quality_ok", "gps_inside", "views_match_site",
                     "viewpoints_expected", "viewpoints_matched", "change", "reused_from",
-                    "same_place_as", "motion_consistent", "gps_weak", "viewpoints_skipped")}
+                    "same_place_as", "motion_consistent", "gps_weak", "viewpoints_skipped",
+                    "spots_needed", "spots_filmed", "spot_offsets_m", "spot_coverage")}
+                v["facing_kept"] = {k: (x.get("facing") or {}).get("width")
+                                    for k, x in ((r["kept"] or {}).get("viewpoints") or {}).items()}
                 v["video_deleted"] = r["video_path"] is None
                 v["frames_kept"] = len((r["kept"] or {}).get("viewpoints") or {})
             for wid in ("H1", "H2"):
@@ -303,7 +348,11 @@ def main() -> None:
                 out[wid] = {"status": res.status.value, "findings": [f.code for f in res.findings],
                             "headline": res.headline}
     finally:
-        os.killpg(web.pid, signal.SIGTERM)
+        if os.name == "nt":
+            subprocess.run(["taskkill", "/PID", str(web.pid), "/T", "/F"], capture_output=True,
+                           check=False)
+        else:
+            os.killpg(web.pid, signal.SIGTERM)
         engine.terminate()
         httpd.shutdown()
         try:
@@ -320,6 +369,12 @@ def main() -> None:
         lines.append(f"    readings {json.dumps(v.get('readings'))}")
         if v["page_warnings_at_stop"]:
             lines.append(f"    page warnings at stop: {v['page_warnings_at_stop']}")
+        lines.append(f"    compass {v['compass']}; facing kept (arc width per viewpoint) "
+                     f"{v.get('facing_kept')}")
+        for g in v["guide"]:
+            if g["walking"] or g["at"]:
+                lines.append(f"    page at {g['viewpoint']}: walking {g['walking']}; at it "
+                             f"{g['at']}")
     for wid in ("H1", "H2"):
         lines.append(f"Site Progress on {wid}: {out[wid]['status']}, findings "
                      f"{out[wid]['findings']}")

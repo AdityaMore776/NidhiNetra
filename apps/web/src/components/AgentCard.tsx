@@ -7,6 +7,7 @@ import type { AgentResult } from "@/lib/api";
 import { agentMeta } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { EngineMark } from "./nn/badges";
+import { SiteSpots } from "./SiteSpots";
 import { StatisticalEvidence } from "./StatisticalEvidence";
 
 export const STATUS_NOTE: Record<AgentResult["status"], string> = {
@@ -71,6 +72,7 @@ export function AgentCard({ result }: { result: AgentResult }) {
       <div className="space-y-4 px-5 py-4">
         <p className="text-sm leading-relaxed text-foreground/90">{result.headline}</p>
         {result.agent === "statistical" && result.status === "ASSESSED" && <StatisticalEvidence result={result} />}
+        {result.agent === "site_progress" && result.status === "ASSESSED" && <SiteSpots result={result} />}
         {result.findings.length > 1 && (
           <ul className="space-y-2 text-sm">
             {result.findings.map((f) => (
