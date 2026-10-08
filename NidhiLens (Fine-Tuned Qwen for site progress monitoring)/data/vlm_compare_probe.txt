@@ -1,0 +1,7 @@
+T155: judges on the same 93 probe items (real photos; labels checked by eye)
+
+ours4b: n 93, macro-F1 0.320 [0.310, 0.492], accuracy 0.925, fooled n/a of 0, missed n/a of 0, unreadable 0
+    cost: $1.727 per 1,000 checks (L4 GPU time)
+rl4b_bal: n 93, macro-F1 0.227 [0.197, 0.253], accuracy 0.516, fooled n/a of 0, missed n/a of 0, unreadable 0
+    cost: $0.183 per 1,000 checks (L4 GPU time)
+    against ours4b: only ours4b right 38, only this right 0, McNemar p 7.28e-12

@@ -6,16 +6,18 @@
 
 **Working as a team (from 27 Sept 2026):** tasks, claims and progress now live in the team system: [`AGENTS.md`](../AGENTS.md) (manual), [`team/TASKS.md`](team/TASKS.md) (plan), GitHub Issues (who), [`team/log/`](team/log/) (what happened). This file stays milestone-level: update it only when a milestone moves, and only the lines about your milestone.
 
-## At a glance (26 Sept 2026)
+## At a glance (8 Oct 2026)
 
 | | |
 |---|---|
-| **Live** | https://drishti-lyart.vercel.app — all 2,09,993 real works assessed; review queue 276 (0.13%); Ministry / District / Field logins |
-| **In the live engine** | Cost agent, Data Validation, Risk Fusion v1, role scoping, India map on LGD outlines |
-| **Core engines, LIVE 30 Sept (merged, hosted DB reloaded; handoff: `team/log/2026-09-30-2322-*`)** | Guideline Compliance, Cost v2, Duplicate & Split, Delay (shown, not counted) + the 0–100 risk score with top-3 reasons in English and Hindi (T010–T050). Queue becomes 1,524 works (0.73%; 24 of 30 random ones worth checking). Stacked PRs #56 → #57 → #58 → #59 → #60 → T050; going live = merge in order **and** reload the hosted database (migrations 006 + 007, `load_db.py`, `batch_assess.py`). Checked on a full local copy: 313 MB. |
-| **Proven on real data, being ported** | Eligibility v2, Split & Duplicate, Photo Forensics, Geo-Location, Document, Contractor Network, Delay (as track records), Fund Flow (facts) — see [AGENT-CATALOG.md](AGENT-CATALOG.md) |
-| **Needs a decision** | paid AI key (capped) for Hindi/handwritten papers, Site Progress and plaque check |
-| **Gated off** | Satellite (no large works with coordinates yet); Citizen Verification is demo-only (no real ratings) |
+| **Live** | https://nidhinetra-sih.vercel.app: open to everyone (the work intelligence form with 13 graded filings, form to risk score, step by step); staff sign-in adds the dashboard, map, queue and work pages on all 2,09,993 real works. Review queue on the public dashboard table (40,935 works): 217 |
+| **Architecture** | Four agents, a quarter of the weight each (owner's decision, 3 Oct; plan [`plans/T120-four-agents.md`](plans/T120-four-agents.md)): **Cost** (the estimate form, line by line and labour by trade), **Duplicate Work** (map pins, declared rebuilds, strict splits), **Time & Rules** (75-day clock as an office fact, impossible dates, the comfort window), **Site Progress** (sealed monthly site videos). They feed the 0–100 risk score with its top 3 reasons in English and Hindi, then the inspection list, the officer's verdict and the learning loop |
+| **Proof** | 883 engine tests; robustness loop 112 probes, 0 FAIL; Duplicate Work fitted on real villages (T139–T140); numbers in [`trial/FINDINGS.md`](trial/FINDINGS.md) |
+| **NidhiLens** (the Site Progress claim judge) | Fine-tuned Qwen3-VL-4B, trained on an NVIDIA A100 on Modal. On 883 real site-photo checks, every label checked by eye: macro-F1 0.935, against 0.876 for Gemini 3.1 Pro at its best, at 1/30 of the cost. Report: [`../NidhiLens (Fine-Tuned Qwen for site progress monitoring)/`](../NidhiLens%20(Fine-Tuned%20Qwen%20for%20site%20progress%20monitoring)/README.md). Benchmarked, not yet switched on in the live engine; code in PRs #120 and #121 |
+| **Next** | Site Progress field trial on real sites (T126); NidhiLens wired into the engine's reader (T156); the state Schedule of Rates files (T096) |
+| **Retired** (results kept in FINDINGS) | Guideline Compliance (its timing rules live on in Time & Rules), Fund Flow, Office Patterns, Paperwork, Photo Evidence |
+
+*The table below is the 26 Sept roadmap, kept as history.*
 
 ### Roadmap (v2 design §8, reordered by the trial)
 

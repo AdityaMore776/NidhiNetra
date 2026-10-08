@@ -85,6 +85,11 @@ problem, never a small mistake, and says "couldn't check" when it has nothing to
   shown two months in a row. A blurry or dark video is simply filmed again. (Built and tested on made-up scenes; the
   trial on real sites comes next.)
 
+  Whether the footage *shows the agency's claim* ("walls up to lintel level") is read by **NidhiLens**, the team's
+  own fine-tuned vision model. On 883 real site-photo checks it scored macro-F1 0.935, against 0.876 for Gemini 3.1
+  Pro at its best, at 1/30 of the cost. Report: [`NidhiLens (Fine-Tuned Qwen for site progress monitoring)`](../NidhiLens%20(Fine-Tuned%20Qwen%20for%20site%20progress%20monitoring)/README.md).
+  It is benchmarked, and not yet switched on in the live engine.
+
 **For every work:** the risk score with its top three reasons ✅ · the pre-sanction check ✅ · Inspection Planner 📝
 
 Retired on 4 Oct 2026: Guideline Compliance (its timing rules live on in Time & Rules), Fund Flow, Office Patterns,
