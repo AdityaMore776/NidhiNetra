@@ -241,6 +241,66 @@ def flagship_batch(action: str = "submit", model: str = "gemini-3.1-pro-preview"
     return {"answered": len(rows), "of": len(its), **res["headline_real_only"]}
 
 
+LEDGER = "/data/budget/gemini_inr.json"     # the owner's Rs 800 Gemini credit (8 Oct 2026)
+
+
+@app.function(volumes={"/data": vol}, timeout=900, secrets=[modal.Secret.from_name("gemini")])
+def gemini_check(ping: bool = True):
+    """Free first: the state of every recorded batch job (status reads are not billed). Then, if
+    `ping`, ONE tiny prompt (a few tokens on the cheapest priced model, output capped at 16
+    tokens), priced at its worst case against the ledger before it is sent and recorded after."""
+    import json
+    import os
+    import sys
+    import urllib.error
+    import urllib.request
+    sys.path.insert(0, "/root")
+    from drishti_vision import flagship_batch as fb
+    from drishti_vision import spend
+    for rec_p in sorted(Path("/data/runs").glob("gem_*batch/batch_*.json")):
+        rec = json.loads(rec_p.read_text())
+        for j in rec["jobs"]:
+            try:
+                st = fb.status(j["batch"])
+                md = st.get("metadata", {})
+                print(rec_p.parent.name, rec["split"], j["n"], md.get("state") or st.get("state"),
+                      json.dumps(md.get("batchStats", {})), flush=True)
+            except Exception as e:  # noqa: BLE001
+                print(rec_p.parent.name, rec["split"], j["n"], "status error:", str(e)[:200],
+                      flush=True)
+    if not ping:
+        return None
+    led = spend.Ledger(LEDGER, limit_inr=800)
+    model, cap = "gemini-3.8-flash", 16
+    worst = spend.usd(model, 50, cap)
+    led.check(worst, "ping")
+    body = {"contents": [{"role": "user", "parts": [{"text": "Reply with the single word OK."}]}],
+            "generationConfig": {"maxOutputTokens": cap, "temperature": 0,
+                                 "thinkingConfig": {"thinkingLevel": "low"}}}
+    req = urllib.request.Request(
+        f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+        data=json.dumps(body).encode(), method="POST",
+        headers={"Content-Type": "application/json",
+                 "x-goog-api-key": os.environ["GEMINI_API_KEY"]})
+    try:
+        with urllib.request.urlopen(req, timeout=120) as r:      # noqa: S310
+            out = json.loads(r.read().decode())
+    except urllib.error.HTTPError as e:
+        msg = e.read().decode(errors="replace")
+        print("ping refused (not billed):", e.code, msg[:400], flush=True)
+        return None
+    u = out.get("usageMetadata", {})
+    t_in = u.get("promptTokenCount", 0)
+    t_out = u.get("candidatesTokenCount", 0) + u.get("thoughtsTokenCount", 0)
+    cost = spend.usd(model, t_in, t_out)
+    total = led.add(cost, f"ping {model} in {t_in} out {t_out}")
+    vol.commit()
+    text = "".join(p.get("text", "") for p in out["candidates"][0]["content"]["parts"])
+    print(f"ping OK: answer {text!r}; tokens in {t_in}, out {t_out}; cost ${cost:.6f} = "
+          f"Rs {cost * spend.INR_PER_USD:.4f}; ledger total Rs {total:.4f} of 800", flush=True)
+    return {"answer": text, "inr": cost * spend.INR_PER_USD, "ledger_inr": total}
+
+
 def _score(adapter, out, items, split, base, limit, batch=8, real_only=False, max_side=512):
     import json
     import sys

@@ -1,0 +1,13 @@
+T155: judges on the same 93 probe items (real photos; labels checked by eye)
+
+ours4b: n 93, macro-F1 0.320 [0.310, 0.492], accuracy 0.925, fooled n/a of 0, missed n/a of 0, unreadable 0
+    cost: $1.727 per 1,000 checks (L4 GPU time)
+    against gem_pro31_batch: only gem_pro31_batch right 7, only this right 0, McNemar p 0.0156
+ours2b: n 93, macro-F1 0.295 [0.277, 0.459], accuracy 0.796, fooled n/a of 0, missed n/a of 0, unreadable 0
+    cost: $1.342 per 1,000 checks (L4 GPU time)
+    against gem_pro31_batch: only gem_pro31_batch right 19, only this right 0, McNemar p 3.81e-06
+gem_pro31_batch: n 93, macro-F1 1.000 [1.000, 1.000], accuracy 1.000, fooled n/a of 0, missed n/a of 0, unreadable 0
+    cost: $5.178 per 1,000 checks (gemini-3.1-pro-preview billed tokens, Batch API price)
+base4b_v6: n 93, macro-F1 0.267 [0.242, 0.289], accuracy 0.667, fooled n/a of 0, missed n/a of 0, unreadable 0
+    cost: $0.856 per 1,000 checks (L4 GPU time)
+    against gem_pro31_batch: only gem_pro31_batch right 31, only this right 0, McNemar p 9.31e-10

@@ -311,6 +311,22 @@ def test_batch_answers_become_the_same_rows_as_live_answers(tmp_path):
     assert flagship_batch.rows_from_results([json.dumps(bad)], [it]) == []
 
 
+def test_spend_ledger_refuses_a_call_that_could_pass_the_ceiling(tmp_path):
+    from drishti_vision import spend
+    led = spend.Ledger(tmp_path / "gemini.json", limit_inr=800)        # stops at Rs 700
+    one = spend.usd("gemini-3.1-pro-preview", 2400, 1024)               # worst case of a call
+    led.check(one, "first")                                              # fine
+    led.add(7.0, "most of it")                                           # Rs 665 at Rs 95/$
+    with pytest.raises(spend.OverBudget):
+        led.check(1.0, "next")                                           # Rs 95 more: refused
+    led.check(0.3, "small")                                              # Rs 28.5: still fine
+    again = spend.Ledger(tmp_path / "gemini.json", limit_inr=800)       # shared across runs
+    assert again.spent_inr == pytest.approx(665.0)
+    with pytest.raises(spend.OverBudget):
+        spend.usd("some-unpriced-model", 10, 10)
+    assert spend.usd("gemini-3.8-flash", 1_000_000, 0, batch=True) == pytest.approx(0.375)
+
+
 def test_rl_practice_aims_at_the_weak_tricks():
     from drishti_vision import vlmrl
     items = ([{"id": f"s{k}", "trick": "swapped", "split": "train"} for k in range(10)]

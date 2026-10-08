@@ -2439,6 +2439,50 @@ The eye check of calibration also found wrong labels:
 - 6 sites (a before photo already showing the building; after photos showing only an earth track, grass or a wall);
 - 14 of 33 timelapse pairs (a talking head, title cards, a theatre stage, garden fence work).
 
+**THE RESULT: the 915 real test items, every label checked by eye** (`results/vlm_compare_test.txt`). Gemini 3.1 Pro is
+Google's top model, at its best setting (full-resolution photos, its own thinking), sent through the Batch API:
+
+| Judge | Macro-F1 [95% CI] | Fooled (of 580) | Missed progress (of 145) | $ per 1,000 checks |
+|---|---|---|---|---|
+| **Our 4B** (512 px) | **0.918** [0.896, 0.939] | 5 (0.9%) | 32 (22%) | **0.17** |
+| Our 4B, 1,024 px | 0.917 [0.891, 0.941] | 6 | 33 | 0.38 |
+| **Our 2B** | **0.912** [0.889, 0.934] | 15 (2.6%) | **23 (16%)** | **0.12** |
+| Gemini 3.1 Pro | 0.689 [0.647, 0.735] | **2 (0.3%)** | 109 (75%) | 5.18 batch; about 10.4 live |
+| Qwen3-VL-4B untrained | 0.471 [0.428, 0.512] | 7 | 84 | n/a |
+
+Costs:
+- ours: measured L4 seconds × Modal's price;
+- Gemini: its billed tokens, thinking included, × Google's price (the Batch API is half the live price).
+
+McNemar against Gemini, our 4B: our 4B is right on 117 items Gemini gets wrong, and wrong on 6 it gets right
+(p = 8×10⁻²⁸). Our 2B: 122 against 19 (p = 1×10⁻¹⁹).
+
+**Same-type probe** (`results/vlm_compare_probe.txt`): Gemini 3.1 Pro 93 of 93, our 4B 86 of 93 (p = 0.016 against
+Gemini), our 2B 74 of 93.
+
+**Against plan §7.4:**
+- **Track B (same accuracy at a fraction of the cost): achieved, and passed.** Our models are more accurate than
+  Google's top model:
+  - macro-F1 +0.23;
+  - it misses 75% of real progress, ours 16–22%;
+  - one check costs 1/30 (4B) to 1/44 (2B) of Gemini's bulk price, and 1/60 to 1/88 of its live price. The plan's
+    "1/100" is not quite reached against the bulk price.
+- **Track A (fooled at most half as often as the best flagship): NOT claimed.**
+  - Gemini is fooled less often (2 against 5 of 580) and passes the same-type probe (93 against 86 of 93).
+  - It gets there by rarely confirming any work: it answers "can't tell" or "not shown" for 109 of 145 real,
+    finished works. As a checker, that would send most honest agencies to an inspection.
+  - The stop rule applies: this is reported as it is.
+- **Where our model still loses:** an empty plot, then a close-up of a finished building elsewhere (the probe). The
+  photo's GPS tag or a shared landmark is the remedy, not more of the same photos.
+
+**Spend:**
+- Google, about $11 (₹942 on the owner's cap): live calibration calls about $5.04 and the batches about $6. Then the
+  account was blocked for billing (fixed by the owner with ₹800 of prepaid credit).
+- After that, one test call for ₹0.0009, logged in `D:\nidhinetra-data` and on the volume
+  (`/data/budget/gemini_inr.json`, ceiling ₹800, stop at ₹700; every paid call is priced at its worst case before it
+  is sent).
+- Of the Gemini 3.8 Flash test batch, 600 of 915 requests failed (unbilled) after the block. Flash is not re-run.
+
 **Speed:** scoring answered one pair at a time with the adapter kept separate: 7.5 s a check on an L4, the GPU about 39%
 busy. Folding the adapter into the weights and answering 8 pairs at once gives 0.84 s a check, with the same verdict
 and the same confidence on all 48 items compared.

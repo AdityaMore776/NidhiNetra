@@ -45,7 +45,13 @@
    }
   },
   "usd_per_1000_checks": 0.173,
-  "cost_basis": "L4 GPU time"
+  "cost_basis": "L4 GPU time",
+  "mcnemar_vs_ref": {
+   "n": 915,
+   "only_a_right": 6,
+   "only_b_right": 117,
+   "p": 8.41628443011684e-28
+  }
  },
  "ours4b @1024px": {
   "n": 915,
@@ -96,9 +102,9 @@
   "cost_basis": "L4 GPU time",
   "mcnemar_vs_ref": {
    "n": 915,
-   "only_a_right": 7,
-   "only_b_right": 6,
-   "p": 1.0
+   "only_a_right": 5,
+   "only_b_right": 115,
+   "p": 2.9954333738275177e-28
   }
  },
  "ours2b": {
@@ -150,10 +156,58 @@
   "cost_basis": "L4 GPU time",
   "mcnemar_vs_ref": {
    "n": 915,
-   "only_a_right": 23,
-   "only_b_right": 15,
-   "p": 0.2558750795433298
+   "only_a_right": 19,
+   "only_b_right": 122,
+   "p": 1.3381936476810788e-19
   }
+ },
+ "gem_pro31_batch": {
+  "n": 915,
+  "macro_f1": 0.6891441739802396,
+  "macro_f1_ci95": [
+   0.6466546590381939,
+   0.7348387563871112
+  ],
+  "fooled_rate": 0.0034482758620689655,
+  "fooled_ci95": [
+   0.0,
+   0.009061724317399308
+  ],
+  "missed_rate": 0.7517241379310344,
+  "accuracy": 0.8262295081967214,
+  "unreadable": 0,
+  "per_trick": {
+   "busy": {
+    "n": 166,
+    "accuracy": 1.0
+   },
+   "double_claim": {
+    "n": 141,
+    "accuracy": 0.9858156028368794
+   },
+   "light": {
+    "n": 18,
+    "accuracy": 1.0
+   },
+   "none": {
+    "n": 145,
+    "accuracy": 0.2482758620689655
+   },
+   "other_site": {
+    "n": 190,
+    "accuracy": 0.968421052631579
+   },
+   "swapped": {
+    "n": 43,
+    "accuracy": 0.20930232558139536
+   },
+   "view": {
+    "n": 212,
+    "accuracy": 0.9622641509433962
+   }
+  },
+  "usd_per_1000_checks": 5.18,
+  "cost_basis": "gemini-3.1-pro-preview billed tokens, Batch API price"
  },
  "base4b_v6": {
   "n": 915,
@@ -204,9 +258,9 @@
   "cost_basis": "L4 GPU time",
   "mcnemar_vs_ref": {
    "n": 915,
-   "only_a_right": 470,
-   "only_b_right": 8,
-   "p": 1.6612856496032924e-127
+   "only_a_right": 397,
+   "only_b_right": 46,
+   "p": 8.721780192363273e-71
   }
  },
  "base2b_v6": {
@@ -258,9 +312,9 @@
   "cost_basis": "L4 GPU time",
   "mcnemar_vs_ref": {
    "n": 915,
-   "only_a_right": 296,
-   "only_b_right": 33,
-   "p": 5.256888618522066e-54
+   "only_a_right": 252,
+   "only_b_right": 100,
+   "p": 2.8679655113731415e-16
   }
  }
 }
