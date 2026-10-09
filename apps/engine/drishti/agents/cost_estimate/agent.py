@@ -28,10 +28,17 @@ much for what is being built. Plan: docs/plans/T097-cost-agent-v3.md.
                                  is the question. Our own missing price data never counts here
                                  (that is a data gap, recorded, not a finding).
 
+  RATE_TYPO_NOT_ANSWERED         (T164, the owner) a line held as a likely typing mistake (below)
+                                 whose rate is above the form's guard and which, left unanswered,
+                                 puts at least GAP_MIN_RS and GAP_SHARE more into the estimate
+                                 than its fair rate here (else the guard's top): padding worse than
+                                 the guard had asked nothing
+
 A form with something still to fix is not judged. Warnings the agency has not confirmed do not
 switch the check off (T135: one unanswered warning was enough to): a line whose rate or unit looks
 like a typing mistake is held out of the price check until it is answered; everything else is
-judged, and the result says what was held.
+judged, and the result says what was held. The held line's money is still in the total: when it
+is big, RATE_TYPO_NOT_ANSWERED asks for the rate to be corrected before sanction.
 
 Notes, never findings: above the standard item but not above the MP's amount; above the MP's
 amount but in line with the standard; below the standard (may run short of money); what could
@@ -99,8 +106,45 @@ HI_WHOLE = ("पूरा अनुमान इस आकार और इस �
             "पंक्तियाँ विवरण में हैं। स्वीकृति से पहले जाँच करें।")
 
 
+HI_TYPO = ("एक दर टाइपिंग की गलती जैसी लगती है और इससे अनुमान में {extra} अधिक जुड़ता है; एजेंसी ने "
+           "फ़ॉर्म की चेतावनी का उत्तर नहीं दिया। स्वीकृति से पहले दर ठीक करवाएँ या स्पष्ट करवाएँ।")
+
+
 def _rs(v: float) -> str:
     return f"Rs {v / 1e5:,.2f} lakh" if v >= 1e5 else f"Rs {v:,.0f}"
+
+
+def _held_typos(form: dict, held: set, sor, index, work: dict, when) -> list[dict]:
+    """The lines held as a likely typing mistake whose rate is above the form's guard (T164),
+    each with the money it adds over its fair rate here, else over the guard's top (the highest
+    rate the form believes): a rate below the guard lowers the estimate, and is no question."""
+    out = []
+    sites = form.get("sites") if isinstance(form.get("sites"), list) else []
+    for i, j in sorted(held):
+        ln = sites[i]["lines"][j]
+        mid = ln.get("material_id")
+        if not isinstance(mid, str) or mid in ("", "none") or not catalog.material(mid):
+            mid = materials.match(ln.get("item") if isinstance(ln.get("item"), str) else None,
+                                  labour=materials.LABOUR_BY_GROUP.get(ln.get("group")))
+        mat = catalog.material(mid) if mid else None
+        if not mat or not mat.get("guard"):
+            continue
+        rate = rates.per_unit(mid, ln.get("rate"), ln.get("unit"))
+        qty = norms.to_first_unit(mid, ln.get("quantity"), ln.get("unit"))
+        if qty is None and catalog.is_labour(mid) and ln.get("quantity") in (None, ""):
+            qty = catalog.person_days(ln)
+        top = float(mat["guard"][1])
+        if rate is None or qty is None or qty <= 0 or rate <= top:
+            continue
+        fair, _gap = rates.price_line(mid, ln, sor, index, work.get("district_lgd"),
+                                      rates.agency_of(work), str(work.get("work_id")), when,
+                                      rates._state(work))
+        base, kind = (fair.rate, "fair") if fair else (top, "guard")
+        out.append({"site": i, "line": j, "material": mid, "label": mat["label"],
+                    "unit": mat["units"][0], "rate": round(rate, 2), "quantity": round(qty, 3),
+                    "base_rate": round(base, 2), "base": kind,
+                    "extra": round(qty * (rate - base), 2)})
+    return sorted(out, key=lambda t: -t["extra"])
 
 
 def _scope_text(form: dict, work: dict) -> str:
@@ -228,6 +272,7 @@ def assess(work: dict, ctx) -> AgentResult:
     pending = [i for i in checked["issues"] if i["level"] != "fix" and i["key"] not in done]
     held = {(int(m[1]), int(m[2])) for i in pending if i["key"].split(":")[0] in HOLD
             and (m := _LINE.match(i["field"]))}
+    as_filed = form
     if held:                     # judged without them: a typing mistake is never a question
         form = copy.deepcopy(form)
         for i, j in held:
@@ -438,7 +483,34 @@ def assess(work: dict, ctx) -> AgentResult:
                          + (f" ({span} at the lowest and highest rates other agencies here "
                             "charge)" if span != _rs(w.fair_grand) else "")
                          + f", {w.gap_share:+.1%}, pricing {w.coverage:.0%} of the money: within "
-                         "the fair band.")
+                         "the fair band"
+                         + (", leaving out the line held as a likely typing mistake, which counts "
+                            "at its own value" if held else "") + ".")
+    # 3b. a rate held as a likely typing mistake still carries its money in the estimate's total
+    #     (T164, the owner: worse padding than the form's guard went unasked)
+    typo = _held_typos(as_filed, held, sor, data.get("rates"), work, when)
+    extra = sum(t["extra"] for t in typo)
+    if typo and extra >= whole.GAP_MIN_RS and extra >= whole.GAP_SHARE * (lines_total - extra):
+        compared = True
+        top = typo[0]
+        base = (f"other agencies here charge {_rs(top['base_rate'])} a {top['unit']}"
+                if top["base"] == "fair" else
+                f"the form takes any rate above {_rs(top['base_rate'])} a {top['unit']} for a "
+                "typing mistake")
+        more = len(typo) - 1
+        findings.append(Finding(
+            "RATE_TYPO_NOT_ANSWERED",
+            f"{top['label']} at {_rs(top['rate'])} a {top['unit']} ({base}) puts "
+            f"{_rs(top['extra'])} more into this estimate"
+            + (f", and {more} more such line{'s' * (more != 1)} {_rs(extra - top['extra'])}"
+               if more else "")
+            + f": {_rs(extra)} of its {_rs(grand)}. The form asked the agency whether the rate is "
+            "a typing mistake, and it has not answered. Get the rate corrected or explained "
+            "before sanction.",
+            hard=False, risk=PRICE_RISK,
+            evidence={"lines": typo, "extra": round(extra, 2),
+                      "share": round(extra / max(lines_total - extra, 1.0), 4),
+                      "message_hi": HI_TYPO.format(extra=_rs(extra))}))
     # 4. labour, trade by trade: only blatant rates and days beyond the work (T141)
     lab = labour.judge(form, checked["issues"], done, sor, data.get("rates"),
                        work.get("district_lgd"), rates.agency_of(work), str(work.get("work_id")),
