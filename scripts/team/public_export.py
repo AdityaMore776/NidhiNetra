@@ -1,13 +1,15 @@
 r"""Build the public copy of the repository: the product, its docs and its results, without the
 team's working files (session logs, task plan, agent manuals, editor settings).
 
-The private repository stays the team's working copy. This script writes a clean snapshot of one
-commit into a separate folder that is its own git repository, so the public one never shares
-history (or pull requests, issues, branches) with the private one. Re-run it to refresh the public
-copy: files are added, changed and removed to match, then you commit and push from that folder.
+The private repository (AdityaMore776/NidhiNetra-team since 9 Oct 2026) stays the team's working
+copy. This script writes a clean snapshot of one commit into a separate folder that is its own git
+repository, so the public one never shares history (or pull requests, issues, branches) with the
+private one. That folder, D:\nidhinetra-public, is the public repository AdityaMore776/NidhiNetra
+(the old names drishti and NidhiNehtra redirect to it). Re-run this to refresh it: files are added,
+changed and removed to match; then commit and push from that folder.
 
     python scripts/team/public_export.py --ref origin/main --out D:\nidhinetra-public ^
-        --repo AdityaMore776/NidhiNetra-SIH
+        --repo AdityaMore776/NidhiNetra
 
 It stops with a list of lines if anything that should not be public is still there.
 """
@@ -106,7 +108,8 @@ REPLACE = [
 DENY = re.compile(r"claude[ -]?code|CLAUDE\.md|(?<![\w-])AGENTS\.md|GEMINI\.md|\.claude/|copilot|codex|"
                   r"windsurf|superpowers|docs/team|team/log|scripts/team|new_log|check_pr|"
                   r"Co-Authored-By|Generated with|cloud session|session log|handoff|"
-                  r"! npx|your AI\b|AI agents? on the team|claude/[a-z0-9-]+", re.IGNORECASE)
+                  r"! npx|your AI\b|AI agents? on the team|claude/[a-z0-9-]+|NidhiNetra-team",
+                  re.IGNORECASE)
 # ... except where the name is the subject: the Claude API as a benchmark baseline (code and
 # its results), and npm's lock file (package names)
 ALLOW_FILES = re.compile(r"^(apps/vision/drishti_vision/(flagship_claude|cli|vlmeval)\.py|"

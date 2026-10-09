@@ -17,7 +17,7 @@ import subprocess
 from _common import ROOT, run
 
 TASKS = ROOT / "docs" / "team" / "TASKS.md"
-SPEC_URL = "https://github.com/AdityaMore776/NidhiNetra/blob/main/docs/team/TASKS.md"
+SPEC_URL = "https://github.com/AdityaMore776/NidhiNetra-team/blob/main/docs/team/TASKS.md"
 LABELS = {
     "ready": ("0E8A16", "Not claimed yet: free to take once its dependencies are closed"),
     "in-progress": ("FBCA04", "Claimed: someone's agent is working on it"),
@@ -92,7 +92,7 @@ def main() -> None:
                 f"**Size:** {t['size']} · **Area:** {t['area']}\n"
                 f"**Depends on:** {dep_text}\n\n"
                 "**To claim:** assign yourself, swap label `ready` → `in-progress`, comment your plan "
-                "([AGENTS.md §3](https://github.com/AdityaMore776/NidhiNetra/blob/main/AGENTS.md)). "
+                "([AGENTS.md §3](https://github.com/AdityaMore776/NidhiNetra-team/blob/main/AGENTS.md)). "
                 "Link your PR with `Closes #<this issue>`.")
         labels = ["needs-owner" if t["owner"] else "ready"] + (["human-task"] if t["human"] else [])
         cmd = ["issue", "create", "--title", f"{t['id']}: {t['title']}", "--body", body,
