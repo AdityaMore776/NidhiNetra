@@ -2576,6 +2576,40 @@ at each; at ±90 m GPS it said "GPS is too weak to guide you" instead of a direc
 found, both fixed: a phone standing still sends no new fix (only v1 got a box), and the facing hung on
 the GPS.
 
+## T160 (9 Oct 2026): the agents audit — ways past Duplicate Work
+
+The engine itself, on made-up works: an earlier community hall (completed) and a new work filed near
+it (`data/trial/t160_audit.py` → `results/t160_audit.txt`).
+
+**1. A map pin typed some metres off the real site. Fixed.**
+
+| Pin off by | No site videos | Three videos filmed at the hall |
+|---|---|---|
+| 0–49 m | asked (`SANCTIONED_WORK_AT_THIS_SITE`) | asked |
+| 51–150 m | a note only (`NEAR_SANCTIONED_WORK`) | **asked** (`SANCTIONED_WORK_WHERE_FILMED`, new) |
+| 400 m | nothing | **asked** |
+
+Before T160, a pin typed 51–99 m off passed both lines: Duplicate Work's 50 m and Site Progress's
+100 m `SITE_NOT_AT_FORM_PIN`. Now the video job records where each video was filmed (the middle of its
+good GPS fixes, `gps_point`), and Duplicate Work compares that spot too. It asks when 2 or more
+trusted videos (and at least half of them) were filmed within 50 m of an earlier same-kind building,
+nearer to it than to the form's own pin. Left out on purpose: roads (filmed along their length),
+lights and pumps (filmed from a neighbour's door), purchases, and videos with weak or faked GPS or
+views not matching the site. An honest new hall 75 m from an old one, filmed around its own pin, is
+not asked. The new finding counts at the 1-in-4 prior until officers read real cases (10 tests).
+
+**2. The same building filed under another work type. Open.**
+
+| Work type of the new work (pin 10 m from the hall's) | Asked? |
+|---|---|
+| Community hall, school building, library | yes |
+| Other | **no** |
+
+The site check compares works of the same kind, and "Other" is a kind of its own. Comparing "Other"
+works with buildings at one pin would close it, but it could ask about honest pairs, such as a water
+tank beside a school. That needs a measurement on real forms before it is switched on. Until then,
+Site Progress's `SAME_PLACE_AS_ANOTHER_WORK` catches it once both works have site videos.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

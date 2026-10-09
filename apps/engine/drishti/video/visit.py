@@ -145,11 +145,15 @@ def _gps(log: dict, site: Site | None) -> dict:
            and -90 <= p["lat"] <= 90 and -180 <= p["lon"] <= 180]
     mocks = [p.get("mock") for p in pts if isinstance(p.get("mock"), bool)]
     out = {"mock_location": (True if any(mocks) else False) if mocks else None,
-           "gps_inside": None, "gps_distance_m": None, "gps_weak": None}
+           "gps_inside": None, "gps_distance_m": None, "gps_weak": None, "gps_point": None}
     # a fix with no accuracy is taken as good (older phones); one poorer than GPS_POOR_M is not
     good = [p for p in pts if (_num(p.get("accuracy")) or 0.0) <= GPS_POOR_M]
     if pts:
         out["gps_weak"] = len(good) < min(MIN_GOOD_FIXES, len(pts))
+    if good and not out["gps_weak"]:
+        # where the video was filmed (T160): Duplicate Work compares it with earlier works' pins
+        out["gps_point"] = {"lat": round(statistics.median(p["lat"] for p in good), 6),
+                            "lon": round(statistics.median(p["lon"] for p in good), 6)}
     if site and pts and not out["gps_weak"]:
         # each point is inside when it is, give or take its own reported accuracy
         inside = [site.outside_by(p["lat"], p["lon"]) - (_num(p.get("accuracy")) or 0.0)

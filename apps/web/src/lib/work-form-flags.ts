@@ -197,6 +197,11 @@ export function flagOf(agent: string, f: TraceFinding, form: Form): Flag {
       fields.push({ name: pinField(form), label: `${n(x.metres)} m from ${x.other}` });
       fields.push({ name: "known_nearby_work_ids", label: `${x.other} not named` });
       break;
+    case "SANCTIONED_WORK_WHERE_FILMED":
+      why = `The site videos were filmed ${n(x.metres)} m from work ${x.other}, already sanctioned${x.other_completed ? ` and completed on ${day(x.other_completed)}` : ""}, nearer to it than to the form's map pin (${n(x.pin_to_other_m)} m from it). The form does not mention it.`;
+      fields.push({ name: pinField(form), label: `videos filmed at ${x.other}` });
+      fields.push({ name: "known_nearby_work_ids", label: `${x.other} not named` });
+      break;
     case "REBUILT_SOON_AFTER_COMPLETION":
       why = x.same_ground
         ? `Called a continuation or repair of work ${x.other}, but it covers the same ground with the same size, finished only ${x.months_after_completion} months earlier.`

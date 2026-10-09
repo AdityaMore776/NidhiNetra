@@ -70,6 +70,11 @@ from drishti.cost_form import catalog
 
 PIN_METRES = 50.0                 # two pins this close are one site
 NEAR_METRES = 150.0               # a same-kind building this close, just past the line: a note
+# T160 (the agents audit, 9 Oct 2026): a pin typed 60-90 m from an earlier same-kind building
+# passed this 50 m line and Site Progress's 100 m "not at the form's pin" both. Where the site
+# videos were filmed is the second place a work is compared from: this many videos, and most of
+# them, within PIN_METRES of an earlier building and nearer to it than to the form's own pin
+FILMED_MIN_VISITS = 2
 # T139, real geography (data/trial/real_geo_check.py): in Jaunpur's village cores a house stands
 # 8 m from the next (Open Buildings), and 1,006 of its 1,038 real works are solar street lights at
 # named houses, so 50 m put honest neighbours "at this site" (37-87% of light works asked). Hand
@@ -643,6 +648,32 @@ class RepeatIndex:
                 "answers": answers(me.form), "compared": len(others), "split": split,
                 "sanctioned_earlier": len(earlier), "place_named": bool(me.place),
                 "line": line}
+
+    def where_filmed(self, work: dict, points: list[tuple[str, tuple[float, float]]]) -> list:
+        """The earlier sanctioned works of the same kind the site videos were filmed at (T160):
+        FILMED_MIN_VISITS or more of the videos, and at least half of them, each within
+        PIN_METRES of the work's pin and nearer to it than to this form's own pin. Buildings and
+        places only: a road is filmed along its length, and a light or a pump from a neighbour's
+        door. [(earlier work, metres from the form's pin to it, {visit: metres from it})]"""
+        me = Rec.of(work)
+        if (me is None or not me.sites or me.linear or me.family in POINT_FAMILIES
+                or me.family in BY_TYPE or len(points) < FILMED_MIN_VISITS):
+            return []
+        out = []
+        for x in self.by_district.get(me.district, []):
+            if (x.work_id == me.work_id or not x.sanctioned or not x.before(me) or not x.sites
+                    or x.kind != me.kind or x.linear):
+                continue
+            near = {}
+            for vid, p in points:
+                to_x = min(metres(p, b[0]) for b in x.sites)
+                if to_x <= PIN_METRES and to_x < min(metres(p, a[0]) for a in me.sites):
+                    near[vid] = round(to_x, 1)
+            if len(near) >= FILMED_MIN_VISITS and len(near) * 2 >= len(points):
+                pin = min(metres(a[0], b[0]) for a in me.sites for b in x.sites)
+                out.append((x, round(pin, 1), near))
+        out.sort(key=lambda t: (min(t[2].values()), t[0].work_id))
+        return out
 
     def candidates(self, work: dict) -> list[Rec]:
         """The sanctioned works the form must ask the agency about: those at the same site by

@@ -71,7 +71,9 @@ problem, never a small mistake, and says "couldn't check" when it has nothing to
 - ✅ **Duplicate Work** — *Is this work already sanctioned here, or one job cut to stay under a limit?* It asks when the
   cost form's map pin is within 50 m of a sanctioned work of the same kind, when the agency itself says it rebuilds a
   work completed under three years ago, or when every piece of one job sits within 4% under the ₹5 or 10 lakh limit
-  (12 of 14 such groups read as one job). Works that only *read* alike are notes for the agency to answer.
+  (12 of 14 such groups read as one job). Works that only *read* alike are notes for the agency to answer. A pin
+  typed a little away from the real site does not hide it: once two site videos are filmed next to an earlier
+  building of the same kind, it asks just the same.
 - ✅ **Time & Rules** — *Was it sanctioned on time, and is it being finished in a believable time?* A sanction later
   than 75 days is told as a fact about the office (6 in 10 works pass it), never as a problem with the work. The
   agency's own estimated time to completion sets a "comfort window": finishing far too early is asked about only when

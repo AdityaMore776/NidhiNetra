@@ -78,6 +78,14 @@ def _floats(v) -> dict[str, float]:
             if isinstance(v, dict) else {})
 
 
+def _point(v) -> dict[str, float] | None:
+    """{"lat", "lon"} where a video was filmed (T160), or None."""
+    if not isinstance(v, dict) or not _finite(v.get("lat")) or not _finite(v.get("lon")):
+        return None
+    lat, lon = float(v["lat"]), float(v["lon"])
+    return {"lat": lat, "lon": lon} if -90 <= lat <= 90 and -180 <= lon <= 180 else None
+
+
 def _verdicts(v) -> dict[str, str]:
     return ({k: x for k, x in v.items() if isinstance(k, str)
              and x in ("shown", "not_shown", "cant_tell")} if isinstance(v, dict) else {})
@@ -150,6 +158,7 @@ def of(work: dict) -> list[Visit]:
         readings["spot_verdicts"] = _verdicts(r.get("spot_verdicts"))
         readings["claim_spots_not_shown"] = _ids(r.get("claim_spots_not_shown"))
         readings["stretches_missed"] = _ids(r.get("stretches_missed"))
+        readings["gps_point"] = _point(r.get("gps_point"))       # T160
         for k in ("change", "claim_verdict"):
             readings[k] = r.get(k) if isinstance(r.get(k), str) else None
         reason = r.get("claim_reason")

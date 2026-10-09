@@ -265,11 +265,14 @@ def test_weak_gps_says_cant_tell_and_good_gps_counts_its_own_accuracy(site_a):
                                     for p in logs["m1"][1]["gps"]])          # 230 m off, +-90 m
     r, _ = vv.read(logs["m1"][0], weak, SITE, [base], [], "monthly")
     assert r["gps_weak"] is True and r["gps_inside"] is None
+    assert r["gps_point"] is None                       # T160: a weak fix says nowhere
     # 40 m outside the 30 m site with a 35 m fix: inside, give or take the phone's own error
     near = dict(logs["m1"][1], gps=[dict(p, lat=25.75 + 70 / 111_195, accuracy=35.0)
                                     for p in logs["m1"][1]["gps"]])
     r, _ = vv.read(logs["m1"][0], near, SITE, [base], [], "monthly")
     assert r["gps_weak"] is False and r["gps_inside"] is True
+    # T160: where it was filmed, for Duplicate Work, whatever the site circle says
+    assert r["gps_point"]["lat"] == pytest.approx(25.75 + 70 / 111_195, abs=1e-6)
 
 
 def test_a_viewpoint_skipped_with_a_reason_is_not_counted_against_the_visit(site_a):
