@@ -176,6 +176,22 @@ export function flagOf(agent: string, f: TraceFinding, form: Form): Flag {
       fields.push({ name: key, label: `scope says ${x.scope_size}` });
       break;
     }
+    case "RATE_TYPO_NOT_ANSWERED": {
+      // T164: a rate the form took for a typing mistake, left unanswered, still in the total
+      const typos = list(x.lines);
+      const t = typos[0] ?? {};
+      const base = t.base === "fair" ? `others here charge ${rs(t.base_rate)}` : `the form doubts any rate above ${rs(t.base_rate)}`;
+      why = `${cap(String(t.label ?? "a line").toLowerCase())} at ${rs(t.rate)} a ${t.unit ?? "unit"} (${base}) adds ${inr(num(x.extra))}; the agency has not answered the typing-mistake warning.`;
+      for (const r of typos) {
+        const row = rowOf(boq, r);
+        if (row) fields.push({ name: `boq_rate_${row.n}`, label: r.base === "fair" ? `others ${rs(r.base_rate)}` : "typing mistake?" });
+        else {
+          const name = labourField(labourRows(form), boq, { person_days: r.quantity, rate: r.rate }, "rate");
+          if (name) fields.push({ name, label: "typing mistake?" });
+        }
+      }
+      break;
+    }
     case "ESTIMATE_NOT_ITEMISED":
       why = `${Math.round(num(x.share) * 100)}% of the estimate (${inr(num(x.amount))}) is lump sums or items no standard name fits, so its price cannot be checked.`;
       fields.push({ name: "technical_estimate", label: "not itemised" });

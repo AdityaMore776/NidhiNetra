@@ -2647,6 +2647,52 @@ works with buildings at one pin would close it, but it could ask about honest pa
 tank beside a school. That needs a measurement on real forms before it is switched on. Until then,
 Site Progress's `SAME_PLACE_AS_ANOTHER_WORK` catches it once both works have site videos.
 
+## T164 (9 Oct 2026): the owner's review: the Cost agent's checks, and the four agents end to end
+
+**What was run** (all output saved): the 1,029 engine tests; the agent robustness loop (118 probes and 400
+random damages); the Cost trials (whole estimate, labour, quantities); the 13 work-form example filings and the 5
+end-to-end filings; and every example sent to the **live** site's form check (`data/trial/t164_review.py live`
+→ `results/t164_live_before.txt`). The eSAKSHI dashboard tables are not on the review machine, so the loop and the
+examples ran on a stand-in: the research export's Uttar Pradesh works, dated as the examples' own day. The loop
+gave the same answer to every one of its 118 probes as its saved run (108 PASS, 0 FAIL, 10 LIMIT), and every example
+raised exactly its codes. The Cost trials reproduced their saved results to the digit.
+
+**Each Cost check, read line by line.** Seven checks: quantities held to the size, the size against the form's own
+scope, the price per unit against the standard item and the MP's amount, the whole estimate against its fair price,
+the estimate not itemised, labour day rates, and labour days beyond the work. They do what their notes say, and the
+loop's evasions fail against them. Two points to know, neither a fault: the per-unit price check can only ever run for
+street lights and high masts (roads, borewells and the rest record no width, depth or specification, so they are
+turned off on purpose); and the whole-estimate check asks 6–8 honest forms in 100 if honest district rates spread
+15% (synthetic forms, T141: real spreads come with real forms, T098).
+
+**1. A loophole in Cost: padding worse than the form's typo guard was never asked. Fixed (the owner's choice).**
+The form asks the agency to confirm a rate it takes for a typing mistake (cement above Rs 3,000 a bag, masons above
+Rs 10,000 a day). Left unanswered, that line was held out of pricing, and nothing about it was asked. On Jaunpur's
+honest example road (`t164_review.py guard --standin` → `results/t164_guard.txt`):
+
+| One rate changed, warning never answered | Before | After |
+|---|---|---|
+| Cement Rs 2,900 a bag (7.6× Rs 380) | asked (whole estimate) | asked (whole estimate) |
+| Cement Rs 3,100 a bag (8.2×), Rs 35.55 lakh extra | **nothing; "within the fair band"** | asked: `RATE_TYPO_NOT_ANSWERED` |
+| Cement Rs 3,800 a bag (10×), Rs 44.70 lakh extra | **nothing** | asked |
+| Masons Rs 9,500 a day (12.7×) | asked (whole estimate and labour) | asked |
+| Masons Rs 10,500 a day (14×), Rs 11.51 lakh extra | **nothing** | asked |
+
+The held line stays out of the price comparison (a typing mistake never inflates the fair-price story), but when it
+adds Rs 50,000+ and 15%+ to the estimate over its fair rate here (else over the guard's top, the highest rate the
+form believes), the officer is asked to get it corrected before sanction. A typo in a few bags, or a rate below the
+guard (paise for rupees), is still left to the form's own warning. The new finding counts at the 1-in-4 prior until
+officers read real cases. The loop now has 120 probes: 110 PASS, 0 FAIL, the same 10 LIMIT.
+
+**2. The live form check judged the examples on the wrong day. Fixed.** The hosted site's "today" is its data
+snapshot, 26 May 2026; the example filings are written for 2 Oct 2026. Live, 6 of the 13 work-form examples did not
+raise what the page shows: Time & Rules missed `PAST_PROMISED_TIME`, Site Progress saw none of the site videos (all
+dated after May), and the too-fast road got a false `IMPOSSIBLE_TIMELINE` ("completion date … is after the data was
+published"). The demo file now carries its own day, and the demo check uses the later of it and the snapshot. A test
+sends all 13 examples through the route and requires each to raise its stored codes and band. (The /end-to-end page is
+a static file: 2 of its 5 filings lean on companions the live demo data does not hold, so they cannot be compared
+live; locally all 5 raise their codes.)
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

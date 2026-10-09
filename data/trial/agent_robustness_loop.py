@@ -908,13 +908,32 @@ def _(world):
     return quiet(res, "cost_estimate", "2% lump sum")
 
 
-@probe("cost_estimate", "noise", "a typed extra zero (cement Rs 3,800 a bag), not explained")
+def _typo_rate(world, rate: str) -> dict:
+    p = form_of(world, "clean")
+    rows = boq(p)
+    rows[0]["rate"] = rate
+    p = retotal(set_boq(p, rows))
+    p["mp_recommended_amount"] = p["mplads_share"]   # the MP's figure as on the estimate
+    return run(world, work_of(p, record_of(world, "clean"), world.place, world.as_of))
+
+
+@probe("cost_estimate", "evasion", "a typed extra zero (cement Rs 3,800 a bag), never answered")
+def _(world):
+    # T164 (the owner): held out of pricing, it had asked nothing, so padding worse than the
+    # form's guard (Rs 3,000 a bag) passed where Rs 2,900 was asked. Its money is in the total
+    res = _typo_rate(world, "3800")
+    got = flags(res, "cost_estimate")
+    return ("PASS" if got == ["RATE_TYPO_NOT_ANSWERED"] else "FAIL",
+            f"{got or 'no question'} (the rest of the road is honest: only the typo is asked)")
+
+
+@probe("cost_estimate", "noise", "a typed extra zero in 10 bags, never answered: the form's warning")
 def _(world):
     p = form_of(world, "clean")
     rows = boq(p)
-    rows[0]["rate"] = "3800"
+    rows.append({**rows[0], "desc": "Cement for the kerb joints", "qty": "10", "rate": "3800"})
     p = retotal(set_boq(p, rows))
-    p["mp_recommended_amount"] = p["mplads_share"]   # the MP's figure as on the estimate
+    p["mp_recommended_amount"] = p["mplads_share"]
     res = run(world, work_of(p, record_of(world, "clean"), world.place, world.as_of))
     told = "typing mistake" in said(res, "cost_estimate")
     got = flags(res, "cost_estimate")
@@ -1353,6 +1372,17 @@ def _scale(rows: list[dict], trade: str, by: float) -> None:
     for r in rows:
         if r["trade"] == trade:
             r["rate"] = f"{round(float(r['rate']) * by)}"
+
+
+@probe("cost_estimate", "evasion", "masons at 14 times (past the form's typo guard), never answered")
+def _(world):
+    # T164: Rs 10,500 a day is past the mason's guard (Rs 10,000): held, it had asked nothing
+    def edit(rows):
+        for r in rows:
+            if r["trade"] == "mason":
+                r["rate"] = "10500"
+    return still(run(world, _labour(world, "clean", edit)), "cost_estimate",
+                 "RATE_TYPO_NOT_ANSWERED", "masons at Rs 10,500 a day")
 
 
 @probe("cost_estimate", "noise", "a crew of 34 (16 helpers, 2 machine operators added) at honest rates")

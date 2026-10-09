@@ -1,0 +1,12 @@
+T164 typing-mistake guard: Jaunpur's honest example road (as of 2026-10-02), one rate changed, its warning never answered; works: research export (stand-in)
+
+cement Rs 2,900 a bag (7.6x Rs 380)          estimate Rs    4,745,590  asked: ESTIMATE_ABOVE_FAIR_PRICE  (score 0.25)
+                                             The estimate (Rs 47.46 lakh) is Rs 32.92 lakh above the fair price for this size of work in this district (Rs 14.53 lakh; Rs 14.21 to 14.94 lakh at th
+cement Rs 3,100 a bag (8.2x Rs 380)          estimate Rs    5,006,990  asked: RATE_TYPO_NOT_ANSWERED  (score 0.25)
+                                             Cement at Rs 3,100 a bag (other agencies here charge Rs 380 a bag) puts Rs 35.55 lakh more into this estimate: Rs 35.55 lakh of its Rs 50.07 lakh. The
+cement Rs 3,800 a bag (10.0x Rs 380)         estimate Rs    5,921,890  asked: RATE_TYPO_NOT_ANSWERED  (score 0.25)
+                                             Cement at Rs 3,800 a bag (other agencies here charge Rs 380 a bag) puts Rs 44.70 lakh more into this estimate: Rs 44.70 lakh of its Rs 59.22 lakh. The
+masons Rs 9,500 a day (12.7x Rs 750)         estimate Rs    2,484,450  asked: ESTIMATE_ABOVE_FAIR_PRICE, LABOUR_RATE_FAR_ABOVE  (score 0.4375)
+                                             The estimate (Rs 24.84 lakh) is Rs 10.31 lakh above the fair price for this size of work in this district (Rs 14.53 lakh; Rs 14.18 to 14.97 lakh at th
+masons Rs 10,500 a day (14.0x Rs 750)        estimate Rs    2,602,450  asked: RATE_TYPO_NOT_ANSWERED  (score 0.25)
+                                             Mason at Rs 10,500 a day (other agencies here charge Rs 750 a day) puts Rs 11.51 lakh more into this estimate: Rs 11.51 lakh of its Rs 26.02 lakh. The

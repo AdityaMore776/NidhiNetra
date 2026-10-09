@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import copy
 
+from drishti.agents.contract import check_plain_language
 from drishti.agents.cost_estimate import rates, whole
 from drishti.cost_form import materials, pswif
 from drishti.cost_form.validate import validate
@@ -90,6 +91,62 @@ def test_an_unanswered_typo_warning_holds_its_line_and_judges_the_rest():
     assert r.evidence["held_lines"] == [(0, len(f["sites"][0]["lines"]) - 1)]
     assert "ESTIMATE_ABOVE_FAIR_PRICE" in codes(r)          # the other lines still judged
     assert any("typing mistake" in lim for lim in r.limitations)
+
+
+def _typo(rate: float, confirmed: bool = False, line: int = 0) -> dict:
+    """The honest road with one line's rate set to `rate`, totals and the MP's amount to match."""
+    f = priced()
+    f["sites"][0]["lines"][line]["rate"] = rate
+    if confirmed:
+        f["confirmed"] = [f"rate_typo:sites[0].lines[{line}].rate"]
+    f["totals"]["total_as_per_document"] = validate(f, today=TODAY)["computed"]["grand_total"]
+    f["recommendation"]["mp_amount"] = f["totals"]["total_as_per_document"]
+    return f
+
+
+def test_a_typo_rate_left_unanswered_that_adds_big_money_is_asked():
+    # T164 (the owner chose this): cement at Rs 4,000 a bag, past the form's typing-mistake guard
+    # (Rs 3,000), was held out of pricing, so padding worse than the guard asked nothing and the
+    # estimate read "within the fair band"; at Rs 2,900 the same line was asked
+    r = run(_typo(4000))
+    assert r.evidence["held_lines"] == [(0, 0)]
+    assert "RATE_TYPO_NOT_ANSWERED" in codes(r)
+    f = next(x for x in r.findings if x.code == "RATE_TYPO_NOT_ANSWERED")
+    row = f.evidence["lines"][0]
+    assert row["material"] == "cement" and row["base_rate"] == 400 and row["base"] == "fair"
+    assert f.evidence["extra"] == round(row["quantity"] * (4000 - 400), 2)
+    assert "has not answered" in f.text and "message_hi" in f.evidence
+    check_plain_language(f.text)
+    assert r.risk >= f.risk > 0
+    assert "within the fair band" not in r.headline
+
+
+def test_a_small_typo_rate_or_a_low_one_is_not_asked():
+    # a typing mistake in a few bags, or paise for rupees (it lowers the estimate): the form's
+    # own warning is enough
+    f = priced()
+    f["sites"][0]["lines"].append({"group": "materials", "item": "Cement for the kerbs",
+                                   "material_id": "cement", "unit": "bag", "quantity": 10,
+                                   "rate": 4000, "basis": "market_rate"})
+    f["totals"]["total_as_per_document"] = validate(f, today=TODAY)["computed"]["grand_total"]
+    f["recommendation"]["mp_amount"] = f["totals"]["total_as_per_document"]
+    assert "RATE_TYPO_NOT_ANSWERED" not in codes(run(f))
+    assert "RATE_TYPO_NOT_ANSWERED" not in codes(run(_typo(4.0)))
+
+
+def test_a_typo_rate_the_agency_confirmed_is_priced_like_any_line():
+    r = run(_typo(4000, confirmed=True))
+    assert r.evidence["held_lines"] == []
+    assert "RATE_TYPO_NOT_ANSWERED" not in codes(r)
+    assert "ESTIMATE_ABOVE_FAIR_PRICE" in codes(r)
+
+
+def test_without_a_fair_rate_the_guard_is_the_yardstick():
+    # no price data at all: only the money above the highest rate the form believes is counted
+    r = run(_typo(40_000), sor=None)
+    f = next(x for x in r.findings if x.code == "RATE_TYPO_NOT_ANSWERED")
+    row = f.evidence["lines"][0]
+    assert row["base"] == "guard" and row["base_rate"] == 3000
 
 
 def test_padding_moved_into_a_lump_sum_or_other_charges_is_still_counted():

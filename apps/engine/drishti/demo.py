@@ -14,6 +14,7 @@ mixed into the batch or any other route.
 from __future__ import annotations
 
 import json
+from datetime import date
 from functools import cache
 from pathlib import Path
 
@@ -44,6 +45,16 @@ def records(work: dict) -> list[dict]:
     place = {k: work.get(k) for k in PLACE}
     return [{**r, **place} for r in _data().get("records") or []
             if isinstance(r, dict) and str(r.get("work_id") or "") != own]
+
+
+def as_of() -> date | None:
+    """The day the example data is written for (T164): the filings' dates and what their record
+    shows after sanction are set against it. None when the file gives none."""
+    v = _data().get("as_of")
+    try:
+        return date.fromisoformat(v) if isinstance(v, str) else None
+    except ValueError:
+        return None
 
 
 def later(work_id: str | None) -> dict:
