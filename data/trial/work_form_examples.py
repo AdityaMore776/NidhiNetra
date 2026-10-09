@@ -709,11 +709,13 @@ def plain_data(examples: list[dict], records: list[dict], traces: dict) -> dict:
     }
 
 
-def demo_file(examples: list[dict], records: list[dict]) -> dict:
+def demo_file(examples: list[dict], records: list[dict], as_of: date) -> dict:
     """The engine's copy (drishti/demo.py): every example record, without its district (the
-    demo places it in the checked form's), and each example's record after sanction."""
+    demo places it in the checked form's), each example's record after sanction, and the day
+    they are written for (the live check judges them on it, T164)."""
     return {"about": "Made-up example data for the work intelligence form's demo (T134), "
                      "written by data/trial/work_form_examples.py. Not real works.",
+            "as_of": as_of.isoformat(),
             "records": [{k: v for k, v in w.items() if k not in PLACE_KEYS} for w in records],
             "later": {e["form"]["recommendation_ref"]: e["record"] for e in examples
                       if e["record"]}}
@@ -764,8 +766,9 @@ def main() -> None:
     # the engine's demo data, and the live check's path through it (POST /work-form/check?demo=
     # true): the district's real works, the demo records, the form with its record after sanction
     DEMO.parent.mkdir(parents=True, exist_ok=True)
-    DEMO.write_text(json.dumps(demo_file(examples, background + records), ensure_ascii=False,
-                               separators=(",", ":"), default=str), encoding="utf-8")
+    DEMO.write_text(json.dumps(demo_file(examples, background + records, as_of),
+                               ensure_ascii=False, separators=(",", ":"), default=str),
+                    encoding="utf-8")
     demo._text.cache_clear()
     district = [w for w in works if w.get("district_lgd") == place["district_lgd"]]
     for e, o in zip(examples, out, strict=True):

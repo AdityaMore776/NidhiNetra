@@ -425,6 +425,11 @@ def work_form_check(form: dict = Body(...), demo: bool = Query(False),
     if not district:
         raise HTTPException(422, "the form names no district (section C)")
     as_of = config.snapshot_date()
+    if demo:
+        # the example filings are written for their own day (T164): judged on an earlier
+        # snapshot's, their later dates read as "in the future" and their site videos as not
+        # filmed yet. Never earlier than the snapshot
+        as_of = max(as_of, work_demo.as_of() or as_of)
     with connect() as con:
         rows = con.execute("SELECT district_lgd, name, state_lgd, state_name FROM districts "
                            "WHERE lower(name) = lower(%s)", (district,)).fetchall()

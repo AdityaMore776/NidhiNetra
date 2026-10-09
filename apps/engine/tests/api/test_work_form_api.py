@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 import psycopg
 from psycopg.types.json import Jsonb
@@ -125,6 +126,53 @@ def test_the_demo_compares_with_its_example_data_and_only_when_asked(client, mon
     time_rules = checks["time_rules"]
     assert time_rules["picture"]["completed"] == "2026-07-04"
     assert "FINISHED_TOO_FAST" in [f["code"] for f in time_rules["findings"]]
+
+
+def test_the_demo_is_judged_on_the_day_its_examples_were_written_for(client, monkeypatch):
+    # T164: the hosted snapshot is 26 May 2026; the examples are written for 2 Oct 2026. Judged
+    # on the snapshot's day, an example's later dates read as "in the future" (a false finding)
+    # and its site videos and overdue dates as not happened yet
+    from drishti import config, demo
+    monkeypatch.setattr(demo, "_text", lambda: json.dumps({
+        "as_of": "2026-10-02", "records": [],
+        "later": {"WF-1": {"status": "COMPLETED", "completed_date": "2026-07-04"}}}))
+    body = client.post("/api/v1/work-form/check?demo=true", json=road(**ANAND)).json()
+    assert body["trace"]["as_of"] == "2026-10-02"
+    time_rules = next(c for c in body["trace"]["checks"] if c["id"] == "time_rules")
+    codes = [f["code"] for f in time_rules["findings"]]
+    assert "FINISHED_TOO_FAST" in codes and "IMPOSSIBLE_TIMELINE" not in codes
+    # without the demo, the snapshot's day as before
+    plain = client.post("/api/v1/work-form/check", json=road(**ANAND)).json()
+    assert plain["trace"]["as_of"] == config.snapshot_date().isoformat()
+    # an example file older than the snapshot never moves the day back
+    monkeypatch.setattr(demo, "_text", lambda: json.dumps({"as_of": "2020-01-01"}))
+    body = client.post("/api/v1/work-form/check?demo=true", json=road(**ANAND)).json()
+    assert body["trace"]["as_of"] == config.snapshot_date().isoformat()
+
+
+EXAMPLES = Path(__file__).resolve().parents[4] / "apps" / "web" / "public" / "work-form" / \
+    "examples.json"
+
+
+def _asked(trace: dict) -> dict:
+    return {c["id"]: sorted(f["code"] for f in c["findings"] if f["risk"] > 0)
+            for c in trace["checks"]}
+
+
+def test_every_example_filing_raises_on_the_live_route_what_its_page_shows(client, api_db):
+    # T164: the page shows each example's stored verdict, and its "Check this form" button sends
+    # the form to this route. They must agree (live, the time and site examples raised nothing).
+    # The examples' own district, without its real works: the demo places its records there,
+    # and the state's price reference (reference/cost/uttar_pradesh.json) prices the lights
+    with psycopg.connect(api_db) as con:
+        con.execute("INSERT INTO districts VALUES ('194','Jaunpur','09','Uttar Pradesh')")
+        con.commit()
+    examples = json.loads(EXAMPLES.read_text(encoding="utf-8"))["examples"]
+    assert len(examples) >= 13
+    for ex in examples:
+        body = client.post("/api/v1/work-form/check?demo=true", json=ex["form"]).json()
+        assert _asked(body["trace"]) == _asked(ex["trace"]), ex["id"]
+        assert body["trace"]["result"]["band"] == ex["trace"]["result"]["band"], ex["id"]
 
 
 def test_the_demo_never_gives_another_work_an_examples_record(client, monkeypatch):
