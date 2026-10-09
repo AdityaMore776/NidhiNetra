@@ -7,6 +7,7 @@ import type { AgentResult } from "@/lib/api";
 import { agentMeta } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { EngineMark } from "./nn/badges";
+import { SiteSpots } from "./SiteSpots";
 import { StatisticalEvidence } from "./StatisticalEvidence";
 
 export const STATUS_NOTE: Record<AgentResult["status"], string> = {
@@ -28,9 +29,10 @@ export function AgentCard({ result }: { result: AgentResult }) {
   return (
     <section className={cn("panel group relative overflow-hidden transition-shadow hover:shadow-lift", result.status === "NOT_BUILT" && "opacity-70")}>
       <div className="absolute inset-x-0 top-0 h-[3px]" style={{ background: quiet ? "var(--border)" : meta.color }} />
-      <header className="flex items-start gap-3 px-5 pb-3 pt-5">
+      {/* the status wraps under the question on a narrow card instead of squeezing it (T143) */}
+      <header className="flex flex-wrap items-start gap-3 px-4 pb-3 pt-5 sm:px-5">
         <EngineMark id={result.agent} size={36} />
-        <div className="min-w-0">
+        <div className="min-w-0 flex-[1_1_12rem]">
           <div className="font-semibold text-brand-950">{meta.name}</div>
           <div className="text-xs leading-snug text-muted-foreground">{meta.question}</div>
         </div>
@@ -70,6 +72,7 @@ export function AgentCard({ result }: { result: AgentResult }) {
       <div className="space-y-4 px-5 py-4">
         <p className="text-sm leading-relaxed text-foreground/90">{result.headline}</p>
         {result.agent === "statistical" && result.status === "ASSESSED" && <StatisticalEvidence result={result} />}
+        {result.agent === "site_progress" && result.status === "ASSESSED" && <SiteSpots result={result} />}
         {result.findings.length > 1 && (
           <ul className="space-y-2 text-sm">
             {result.findings.map((f) => (

@@ -68,7 +68,9 @@ open 4-billion-parameter vision model:
 - trained on real Indian government stage photos;
 - tested on held-out districts, against Gemini 3.1 Pro.
 
-NidhiLens is benchmarked and published as a report. It is not yet switched on in the live engine.
+NidhiLens is built into Site Progress as its claim reader, behind a switch: it needs a GPU, so it runs offline
+on the team's own machine. Run the engine's way (phone-video frames, 4-bit weights) it scores macro-F1 0.933 on the
+same 883 checks. Its readings stay notes, never counted, until the field trial on real sites.
 
 ## What works today
 
@@ -76,7 +78,7 @@ NidhiLens is benchmarked and published as a report. It is not yet switched on in
 |---|---|
 | **Live web app** (https://nidhinetra-sih.vercel.app) | Open to everyone. **Work intelligence form** (`/work-form`): 13 real-style filings graded by the four agents, with every asked-about field outlined, and "check this form" on any filing. **Form to risk score** (`/end-to-end`): five filings through the real engine. **Step by step** (`/explain`): one work through every step. Staff sign-in adds the dashboard, India map, review queue, works search and work pages on the real data. |
 | **Real data** | All **2,09,993** real eSAKSHI works loaded and assessed. On eSAKSHI's public dashboard table (40,935 works), the review queue is **217** works. |
-| **The four agents** | Built and tested: **883 engine tests**; a robustness loop of 112 attack probes, 0 failing. Duplicate Work was re-fitted on real villages (Jaunpur, then tested in six more districts): honest street lights asked 0–1.5%, repeats still caught 86–98%. Cost judges labour trade by trade (honest filings 0 of 450 asked; one trade at 2.5× caught 88%). Numbers: [`docs/trial/FINDINGS.md`](docs/trial/FINDINGS.md) (T121–T142). |
+| **The four agents** | Built and tested: **1,029 engine tests**; a robustness loop of 112 attack probes, 0 failing. Duplicate Work was re-fitted on real villages (Jaunpur, then tested in six more districts): honest street lights asked 0–1.5%, repeats still caught 86–98%. Cost judges labour trade by trade (honest filings 0 of 450 asked; one trade at 2.5× caught 88%). Numbers: [`docs/trial/FINDINGS.md`](docs/trial/FINDINGS.md) (T121–T142). |
 | **Site Progress** | The capture app (sealed video, fixed viewpoints, GPS) and its video checks are built. The trial on real sites is next (T126). **NidhiLens** (the claim judge) is trained and benchmarked; [report](NidhiLens%20(Fine-Tuned%20Qwen%20for%20site%20progress%20monitoring)/README.md). |
 | **Real-evidence trial** | Every early check was tried on real evidence for **837 completed works**: 905 files from eSAKSHI's public endpoints, 1,925 pages read. |
 
@@ -121,7 +123,7 @@ NidhiNetra/
 ├── NidhiLens (Fine-Tuned Qwen for site progress monitoring)/
 │                        the vision model's report: benchmark vs Gemini 3.1 Pro, real examples, test data, design
 ├── apps/
-│   ├── engine/          Python FastAPI service: the four agents, the risk score, the API  (883 tests)
+│   ├── engine/          Python FastAPI service: the four agents, the risk score, the API  (1,029 tests)
 │   │   └── drishti/     (the engine's package keeps its first name)
 │   │       ├── agents/          cost_estimate · dup_split · time_rules · site_progress, and the agent contract
 │   │       ├── fusion/          combines agent results into the 0–100 score and its top 3 reasons

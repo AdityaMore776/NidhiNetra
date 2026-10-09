@@ -90,7 +90,7 @@ def test_a_bad_kind_or_a_huge_log_is_refused(client, monkeypatch):
     _setup(monkeypatch)
     assert _start(client, kind="selfie").status_code == 422
     v = _start(client).json()
-    big = {"in_app": True, "gps": [{"t": i, "lat": 25.0, "lon": 82.0} for i in range(20000)]}
+    big = {"in_app": True, "gps": [{"t": i, "lat": 25.0, "lon": 82.0} for i in range(60000)]}
     assert _done(client, v["visit_id"], v["token"], log=big).status_code == 413
 
 
@@ -123,7 +123,8 @@ def test_read_visits_reach_site_progress_and_the_work_page(client, monkeypatch, 
                      copy["visit_id"]))
         con.commit()
     back = client.get("/api/v1/site-visits/W-TYPICAL", headers=MINISTRY).json()
-    assert back["viewpoints"] == [{"id": "v1", "frame_url": "https://dl.example/frames/v1.jpg"}]
+    assert back["viewpoints"] == [{"id": "v1", "frame_url": "https://dl.example/frames/v1.jpg",
+                                   "pan_urls": [], "anchor": None, "facing": None}]
     from drishti import batch, config
     from drishti.agents.statistical.cohort import StatsStore
     from drishti.pipeline.orchestrator import Context
@@ -150,3 +151,62 @@ def test_capture_tokens_need_a_long_secret(monkeypatch):
         pass
     else:
         raise AssertionError("a short secret must not issue tokens")
+
+
+def test_the_stretch_seed_is_fixed_per_visit_and_needs_the_secret(monkeypatch):
+    # T158: which stretches of a long road a visit films is drawn from this seed
+    monkeypatch.setenv("DRISHTI_CAPTURE_SECRET", "test-secret-of-sixteen-plus")
+    a = capture.seed("visit-1")
+    assert len(a) == 32 and capture.seed("visit-1") == a and capture.seed("visit-2") != a
+    monkeypatch.setenv("DRISHTI_CAPTURE_SECRET", "another-secret-sixteen-plus")
+    assert capture.seed("visit-1") != a
+
+
+
+ROAD = {"work": {"work_type": "ROAD_CC"},
+        "sites": [{"location": {"lat": 22.30, "lon": 72.90, "end_lat": 22.33, "end_lon": 72.90},
+                   "size": {"length_m": 3300, "width_m": 3.75}}]}
+
+
+def test_the_next_visit_is_told_where_to_stand_and_which_way_to_face(client, monkeypatch, api_db):
+    # T158: each viewpoint's anchor is the first good fix; its facing comes from the same visit
+    _setup(monkeypatch)
+    ids = []
+    for kind, day in (("baseline", "2026-04-01"), ("monthly", "2026-05-01")):
+        v = _start(client, kind=kind).json()
+        _done(client, v["visit_id"], v["token"], captured_at=f"{day}T10:00:00+05:30")
+        ids.append(v["visit_id"])
+    first = {"viewpoints": {"v1": {"path": "frames/b/v1.jpg",
+                                   "spot": {"lat": 22.3000, "lon": 72.9, "acc": 6.0},
+                                   "facing": {"from": 80, "to": 120, "mid": 100, "width": 40},
+                                   "pans": ["frames/b/v1-pan1.jpg"]}}}
+    later = {"viewpoints": {"v1": {"path": "frames/m/v1.jpg",
+                                   "spot": {"lat": 22.3003, "lon": 72.9, "acc": 4.0},
+                                   "facing": {"from": 0, "to": 10, "mid": 5, "width": 10},
+                                   "pans": ["frames/m/v1-pan1.jpg", "frames/m/v1-pan2.jpg"]}}}
+    with psycopg.connect(api_db) as con:
+        for vid, kept in zip(ids, (first, later), strict=True):
+            con.execute("UPDATE site_visits SET status = 'read', readings = %s, kept = %s "
+                        "WHERE visit_id = %s", (Jsonb({"views_match_site": True}), Jsonb(kept),
+                                                vid))
+        con.commit()
+    back = client.get("/api/v1/site-visits/W-TYPICAL", headers=MINISTRY).json()
+    v1 = back["viewpoints"][0]
+    assert v1["anchor"] == {"lat": 22.3, "lon": 72.9, "acc": 6.0, "box_m": 6.0}
+    assert v1["facing"]["mid"] == 100
+    assert v1["frame_url"].endswith("frames/m/v1.jpg") and len(v1["pan_urls"]) == 2
+    assert back["spots_needed"] == 2                     # no submitted form: the minimum
+
+
+def test_a_long_road_visit_is_given_its_stretches_when_filming_starts(client, monkeypatch, api_db):
+    _setup(monkeypatch)
+    with psycopg.connect(api_db) as con:
+        con.execute("INSERT INTO cost_forms (work_id, status, form, ready, submitted_at) "
+                    "VALUES ('W-TYPICAL', 'submitted', %s, true, now()) ON CONFLICT (work_id) "
+                    "DO UPDATE SET form = EXCLUDED.form, status = 'submitted'", (Jsonb(ROAD),))
+        con.commit()
+    a, b = _start(client, kind="monthly").json(), _start(client, kind="monthly").json()
+    assert a["site"]["kind"] == "linear" and a["spots_needed"] == 8
+    assert len(a["stretches_asked"]) == 8 and a["stretches_asked"][0] == "s1"
+    assert a["stretches_asked"][-1] == a["site"]["stretches"][-1]
+    assert a["stretches_asked"] != b["stretches_asked"]     # a fresh draw for every visit

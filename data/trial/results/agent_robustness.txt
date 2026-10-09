@@ -1,5 +1,5 @@
-Agent robustness loop (T135-T139): 112 probes on the work form's example filings in Jaunpur (1,038 real works, 11 background filings), as of 2026-10-02
-PASS 102  FAIL 0  LIMIT 10
+Agent robustness loop (T135-T139): 118 probes on the work form's example filings in Jaunpur (1,038 real works, 11 background filings), as of 2026-10-02
+PASS 108  FAIL 0  LIMIT 10
 
 == cost_estimate
   PASS  noise    honest rates a few % apart (seeded): no question
@@ -37,7 +37,7 @@ PASS 102  FAIL 0  LIMIT 10
   PASS  scarce   a work in a state with no reference prices: no question
         solar lights in a state without a reference: nothing (ASSESSED)
   PASS  noise    GST 'added separately', 18% in other charges: honest, not asked
-        18% GST in other charges: nothing (NOT_ASSESSABLE)
+        18% GST in other charges: nothing (ASSESSED)
   PASS  noise    a 2% lump sum for sundries: honest, not asked
         2% lump sum: nothing (ASSESSED)
   PASS  noise    a typed extra zero (cement Rs 3,800 a bag), not explained
@@ -63,7 +63,19 @@ PASS 102  FAIL 0  LIMIT 10
   PASS  noise    honest unread items (earthwork, shuttering, curing ~10%): quiet
         earthwork, shuttering and curing lines: nothing (ASSESSED)
   PASS  evasion  sand and aggregate quantities doubled
-        twice the sand: MATERIAL_QUANTITY_ABOVE_SIZE (ASSESSED)
+        twice the sand and the stone: ESTIMATE_ABOVE_FAIR_PRICE, MATERIAL_QUANTITY_ABOVE_SIZE, MATERIAL_QUANTITY_ABOVE_SIZE (ASSESSED)
+  PASS  evasion  the road's stone alone doubled (the slab needs half)
+        twice the stone: ['aggregate'] (ASSESSED)
+  PASS  noise    the base's stone written 'Stone aggregate 63 mm for WBM'
+        read as the base, not the slab's stone: nothing (ASSESSED)
+  PASS  noise    all the stone on one line ('Stone aggregate'), no base line
+        the slab's and the base's stone together: the form asks to itemise them (NOT_ASSESSABLE), no question
+  PASS  evasion  the slab's stone doubled inside one unsized stone line
+        nothing (NOT_ASSESSABLE): the form asks for the base's stone on a line of its own before the estimate is judged; itemised, twice the slab's stone is asked
+  PASS  noise    solar panels bought by the watt, at the lights' own Wp
+        10 lights x 40 Wp: nothing (ASSESSED)
+  PASS  evasion  solar panels bought by the watt, twice the lights' Wp
+        800 Wp for 10 lights of 40 Wp: ['solar_panel'] (ASSESSED)
   LIMIT evasion  every crew's days x2.5, still within the work's time
         nothing: how many workers and days a work needs is never judged (the owner, T141); days beyond the work's own time are asked (below), and the site videos show the pace of work
   PASS  noise    a crew of 34 (16 helpers, 2 machine operators added) at honest rates
@@ -136,7 +148,7 @@ PASS 102  FAIL 0  LIMIT 10
   PASS  noise    pins rounded to 4 decimals (about 11 m): same answers
         changed: none
   PASS  scale    3,000 filed roads in one district: one check stays under 2 s
-        0.03 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']
+        0.04 s for the four agents; ['SANCTIONED_WORK_AT_THIS_SITE']
   PASS  evasion  a 'new' hall pinned 60 m from the old (just past the 50 m line)
         note: True; a pin past 50 m is another site by rule, so it is named in a note and the first site video (the hall already standing) settles it
   PASS  evasion  split with the checked piece called a paver road / 'Other'

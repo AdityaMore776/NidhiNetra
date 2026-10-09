@@ -83,12 +83,13 @@ export function SectionHeader({
 }) {
   return (
     <div className={cn("flex flex-wrap items-start justify-between gap-3", className)}>
-      <div className="min-w-0">
+      {/* grows from 16rem: on a phone the actions wrap under the text instead of squeezing it (T143) */}
+      <div className="min-w-0 flex-[1_1_16rem]">
         {eyebrow && <div className="eyebrow mb-1.5">{eyebrow}</div>}
         <h2 className="text-lg font-semibold tracking-[-0.02em] text-brand-950">{title}</h2>
         {description && <p className="mt-1 max-w-2xl text-[13px] leading-relaxed text-muted-foreground">{description}</p>}
       </div>
-      {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}
+      {actions && <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div>}
     </div>
   );
 }

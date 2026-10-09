@@ -16,10 +16,10 @@ mistake; "couldn't check" is a status, never a low score. Plan in plain words:
 
 | # | Agent | Folder | Asks when | Proof so far |
 |---|---|---|---|---|
-| 1 | **Cost** | `agents/cost_estimate/` | every confirmed line priced at a fair rate (its SoR item, else 3+ other agencies' recent district rates, never its own) and quantities held to the size; asked when 60%+ of the money is priced and the estimate is 15%+ and Rs 50,000+ above the fair price; a confirmed quantity far above the size; the per-unit price far above the standard item and the MP's amount (T099); labour by trade (T141): a trade's day rate 2×+ what others pay it, or workers on site beyond the work's time (never how many workers) | synthetic forms (T141): honest asked 0.0–1.2% and every line +20% caught 80.2–94.0% at a 5–10% honest spread; 6.0–8.0% honest asked at 15%. Labour: honest filings 0/450 asked, one trade ×2.5 caught 88%, ×3 98%. No real forms yet; SoR files wait on T096 |
-| 2 | **Duplicate Work** | `agents/dup_split/` | the form's map pin within 50 m of a sanctioned work of the same kind; a declared rebuild under 3 years; the strictest split (every piece 96–100% of a limit) | splits 12 of 14 groups read as one job; map-pin cases 100% on the test country, look-alikes 0% |
+| 1 | **Cost** | `agents/cost_estimate/` | every confirmed line priced at a fair rate (its SoR item, else 3+ other agencies' recent district rates, never its own) and quantities held to the size (T144: a CC road's cement, sand and stone by its mix, a pipeline's main by its length, solar panels and batteries by count or by Wp/Wh, paver blocks by area); asked when 60%+ of the money is priced and the estimate is 15%+ and Rs 50,000+ above the fair price; a confirmed quantity far above the size; the per-unit price far above the standard item and the MP's amount (T099); labour by trade (T141): a trade's day rate 2×+ what others pay it, or workers on site beyond the work's time (never how many workers) | synthetic forms (T141): honest asked 0.0–1.2% and every line +20% caught 80.2–94.0% at a 5–10% honest spread; 6.0–8.0% honest asked at 15%. Labour: honest filings 0/450 asked, one trade ×2.5 caught 88%, ×3 98%. Quantities (T144): honest 0 asked in every cell; ×1.5 and ×2 asked 100% (pipes all on one line 34.5% / 79%). No real forms yet; SoR files wait on T096 |
+| 2 | **Duplicate Work** | `agents/dup_split/` | the form's map pin within 50 m of a sanctioned work of the same kind (**T160:** or 2+ site videos filmed within 50 m of one, nearer to it than to the pin); a declared rebuild under 3 years; the strictest split (every piece 96–100% of a limit) | splits 12 of 14 groups read as one job; map-pin cases 100% on the test country, look-alikes 0% |
 | 3 | **Time & Rules** | `agents/time_rules/` | R01 still waiting past 75 days, R06 impossible dates, R13/R14 complete within days; with a form, the comfort window: finished before its early line with no site video showing the work, or past its late line (more when the site stands still) | R14 25 of 25 read worth checking; R06 read on the hosted data (T056); a late sanction (60% of works) is an office fact and never queues alone; the window's findings at the 1-in-4 prior until read |
-| 4 | **Site Progress** | `agents/site_progress/` (+ `video/`) | footage seen before, the same place as another undeclared work, not filmed here (GPS and views both), the claim not shown twice in a row, complete not shown, already built at the first visit | 21 rule tests, 14 video tests on drawn scenes, an end-to-end trial in a real browser; the field trial on real sites is T126. The claim judge **NidhiLens** (fine-tuned Qwen3-VL-4B): macro-F1 0.935 on 883 real site-photo checks, against 0.876 for Gemini 3.1 Pro at 1/30 of the cost ([report](../NidhiLens%20(Fine-Tuned%20Qwen%20for%20site%20progress%20monitoring)/README.md)); benchmarked, not yet in the live engine |
+| 4 | **Site Progress** | `agents/site_progress/` (+ `video/`) | footage seen before, the same place as another undeclared work, not filmed here (GPS and views both), the claim not shown twice in a row (naming the spots), complete not shown, already built at the first visit. **T158:** each spot's box and facing, more spots for big works (from the form's size), the claim judged spot by spot | 21 rule tests, 14 video tests on drawn scenes, 54 same-spot tests (`test_same_spot.py`, video and API tests), a replay (`t158_replay.py`) and an end-to-end trial in a real browser with a compass (`capture_e2e.py`); the field trial on real sites is T126. The claim judge **NidhiLens** (fine-tuned Qwen3-VL-4B): macro-F1 0.935 on 883 real site-photo checks, against 0.876 for Gemini 3.1 Pro at 1/30 of the cost ([report](../NidhiLens%20(Fine-Tuned%20Qwen%20for%20site%20progress%20monitoring)/README.md)); benchmarked, not yet in the live engine |
 
 Retired in T125 (results stored before still read by name until re-assessed; code kept as libraries): Guideline
 Compliance (its timing rules live on in Time & Rules), Fund Flow, Office Patterns, Paperwork and Photo Evidence. On the
@@ -55,6 +55,19 @@ Honest lights asked now: 1.5–6.4%. Repeats asked: 93–100%. Round 4 (6 Oct):
 Site Progress asks
 `FIRST_FILMED_FINISHED`: a new work whose first video already shows it finished, with no video
 before work.
+
+**A vision model for Site Progress's check 5 (T146, FINDINGS "T146"; not switched on)**: today
+check 5 counts changed pixels, so a worker, a truck or a shadow counts like a new wall. `apps/vision/`
+builds the dataset and model that replace it with "permanent work added, and where": a hindsight
+teacher labels timelapses (progress is change that never goes back), and a two-frame student on a
+frozen DINOv2 learns from it. Measured only on synthetic sites so far; real videos (T147), a GPU run
+(T148) and T126's real visits decide whether Site Progress reads it (T149).
+
+**More of what is built, held to its size (T144, FINDINGS "T144")**: the loop now has 118 probes,
+108 PASS, 0 FAIL, 10 LIMIT (400 random damages, 0 errors). Its 10 LIMITs are the owner's margins,
+the labour ruling, or wait on data still to come (the SoR, T096; real forms, T098; real site
+videos, T126). The harness itself was fixed: a padded filing over the MP's amount now cites the
+MP's consent, so it reaches the price check.
 
 **Round 6 and room for error (T136, FINDINGS "T136")**: 81 probes end 74 PASS, 0 FAIL, 7 LIMIT;
 3,000 random damages crash none. Cost norms sand by the IS 456 mix and counts unread items beyond

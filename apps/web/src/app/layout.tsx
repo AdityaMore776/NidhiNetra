@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Instrument_Serif, Noto_Sans_Devanagari } from "next/font/google";
-import "maplibre-gl/dist/maplibre-gl.css";
 import "./globals.css";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { Toaster } from "@/components/ui/sonner";
@@ -17,7 +16,9 @@ const instrument = Instrument_Serif({
   style: ["normal", "italic"],
   variable: "--font-instrument",
 });
-const devanagari = Noto_Sans_Devanagari({ subsets: ["devanagari"], variable: "--font-noto-deva" });
+// Not preloaded (T143): at 119 KB it was a phone's biggest download on every page, yet it serves only
+// Devanagari letters (its unicode-range), so a browser fetches it on the first page that shows Hindi.
+const devanagari = Noto_Sans_Devanagari({ subsets: ["devanagari"], variable: "--font-noto-deva", preload: false });
 
 export const metadata: Metadata = {
   title: { default: "NidhiNetra: the eye on every MPLADS rupee", template: "%s · NidhiNetra" },

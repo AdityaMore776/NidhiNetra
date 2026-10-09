@@ -4,7 +4,35 @@
       "work": "H1",
       "video": "h1_base",
       "kind": "First visit",
+      "compass": true,
       "page_warnings_at_stop": "",
+      "guide": [
+        {
+          "viewpoint": "v1",
+          "walking": [],
+          "at": []
+        },
+        {
+          "viewpoint": "v2",
+          "walking": [],
+          "at": []
+        },
+        {
+          "viewpoint": "v3",
+          "walking": [],
+          "at": []
+        },
+        {
+          "viewpoint": "v4",
+          "walking": [],
+          "at": []
+        },
+        {
+          "viewpoint": "v5",
+          "walking": [],
+          "at": []
+        }
+      ],
       "job": [
         "read"
       ],
@@ -21,7 +49,18 @@
         "same_place_as": [],
         "motion_consistent": null,
         "gps_weak": false,
-        "viewpoints_skipped": []
+        "viewpoints_skipped": [],
+        "spots_needed": 2,
+        "spots_filmed": 5,
+        "spot_offsets_m": {},
+        "spot_coverage": {}
+      },
+      "facing_kept": {
+        "v1": 35.0,
+        "v2": 35.0,
+        "v3": 34.9,
+        "v4": 39.5,
+        "v5": 35.0
       },
       "video_deleted": true,
       "frames_kept": 5
@@ -30,7 +69,55 @@
       "work": "H1",
       "video": "h1_wall",
       "kind": "Monthly visit",
+      "compass": true,
       "page_warnings_at_stop": "",
+      "guide": [
+        {
+          "viewpoint": "v1",
+          "walking": [
+            "You are in the box for spot v1."
+          ],
+          "at": [
+            "Facing the right way: pan slowly across the grey band, from one end to the other."
+          ]
+        },
+        {
+          "viewpoint": "v2",
+          "walking": [
+            "You are in the box for spot v2."
+          ],
+          "at": [
+            "Facing the right way: pan slowly across the grey band, from one end to the other."
+          ]
+        },
+        {
+          "viewpoint": "v3",
+          "walking": [
+            "You are in the box for spot v3."
+          ],
+          "at": [
+            "Facing the right way: pan slowly across the grey band, from one end to the other."
+          ]
+        },
+        {
+          "viewpoint": "v4",
+          "walking": [
+            "You are in the box for spot v4."
+          ],
+          "at": [
+            "Facing the right way: pan slowly across the grey band, from one end to the other."
+          ]
+        },
+        {
+          "viewpoint": "v5",
+          "walking": [
+            "You are in the box for spot v5."
+          ],
+          "at": [
+            "Facing the right way: pan slowly across the grey band, from one end to the other."
+          ]
+        }
+      ],
       "job": [
         "read"
       ],
@@ -47,7 +134,30 @@
         "same_place_as": [],
         "motion_consistent": null,
         "gps_weak": false,
-        "viewpoints_skipped": []
+        "viewpoints_skipped": [],
+        "spots_needed": 2,
+        "spots_filmed": 5,
+        "spot_offsets_m": {
+          "v1": 0.0,
+          "v2": 0.0,
+          "v3": 0.0,
+          "v4": 0.0,
+          "v5": 0.0
+        },
+        "spot_coverage": {
+          "v1": 1.0,
+          "v2": 1.0,
+          "v3": 1.0,
+          "v4": 1.0,
+          "v5": 1.0
+        }
+      },
+      "facing_kept": {
+        "v1": 35.0,
+        "v2": 39.1,
+        "v3": 35.0,
+        "v4": 35.0,
+        "v5": 35.0
       },
       "video_deleted": true,
       "frames_kept": 5
@@ -56,7 +166,37 @@
       "work": "H1",
       "video": "h1_plaster",
       "kind": "Monthly visit",
+      "compass": true,
       "page_warnings_at_stop": "\u2022 GPS is weak (\u00b190 m): stand in the open for a moment. The views still show where you are.",
+      "guide": [
+        {
+          "viewpoint": "v1",
+          "walking": [
+            "GPS is too weak to guide you to spot v1 (\u00b190 m): line up the faint picture instead."
+          ],
+          "at": [
+            "Facing the right way: pan slowly across the grey band, from one end to the other."
+          ]
+        },
+        {
+          "viewpoint": "v2",
+          "walking": [
+            "GPS is too weak to guide you to spot v2 (\u00b190 m): line up the faint picture instead."
+          ],
+          "at": [
+            "Facing the right way: pan slowly across the grey band, from one end to the other."
+          ]
+        },
+        {
+          "viewpoint": "v3",
+          "walking": [
+            "GPS is too weak to guide you to spot v3 (\u00b190 m): line up the faint picture instead."
+          ],
+          "at": [
+            "Facing the right way: pan slowly across the grey band, from one end to the other."
+          ]
+        }
+      ],
       "job": [
         "read"
       ],
@@ -76,7 +216,20 @@
         "viewpoints_skipped": [
           "v4",
           "v5"
-        ]
+        ],
+        "spots_needed": 2,
+        "spots_filmed": 5,
+        "spot_offsets_m": {},
+        "spot_coverage": {
+          "v1": 1.0,
+          "v2": 1.0,
+          "v3": 1.0
+        }
+      },
+      "facing_kept": {
+        "v1": 34.9,
+        "v2": 35.0,
+        "v3": 39.5
       },
       "video_deleted": true,
       "frames_kept": 3
@@ -85,7 +238,35 @@
       "work": "H2",
       "video": "h1_base",
       "kind": "First visit",
+      "compass": false,
       "page_warnings_at_stop": "",
+      "guide": [
+        {
+          "viewpoint": "v1",
+          "walking": [],
+          "at": []
+        },
+        {
+          "viewpoint": "v2",
+          "walking": [],
+          "at": []
+        },
+        {
+          "viewpoint": "v3",
+          "walking": [],
+          "at": []
+        },
+        {
+          "viewpoint": "v4",
+          "walking": [],
+          "at": []
+        },
+        {
+          "viewpoint": "v5",
+          "walking": [],
+          "at": []
+        }
+      ],
       "job": [
         "read"
       ],
@@ -100,20 +281,31 @@
         "change": null,
         "reused_from": [
           {
-            "frames": 43,
+            "frames": 42,
             "work_id": "H1",
-            "visit_id": "50c68d9db57d4ce9baa9a9fb4e86328e"
+            "visit_id": "351d0374580841ceb2a797b4296516b9"
           }
         ],
         "same_place_as": [
           {
-            "inliers": 870,
+            "inliers": 875,
             "work_id": "H1"
           }
         ],
         "motion_consistent": null,
         "gps_weak": false,
-        "viewpoints_skipped": []
+        "viewpoints_skipped": [],
+        "spots_needed": 2,
+        "spots_filmed": 5,
+        "spot_offsets_m": {},
+        "spot_coverage": {}
+      },
+      "facing_kept": {
+        "v1": null,
+        "v2": null,
+        "v3": null,
+        "v4": null,
+        "v5": null
       },
       "video_deleted": true,
       "frames_kept": 5
@@ -130,6 +322,6 @@
       "FOOTAGE_USED_BEFORE",
       "SAME_PLACE_AS_ANOTHER_WORK"
     ],
-    "headline": "The first visit of 05 Oct 2026 carries 43 frames already seen on work H1: the same footage, not new filming. A site video must be filmed fresh at this site; needs checking."
+    "headline": "The first visit of 08 Oct 2026 carries 42 frames already seen on work H1: the same footage, not new filming. A site video must be filmed fresh at this site; needs checking."
   }
 }

@@ -29,16 +29,23 @@ const n = (v: unknown) => Math.round(num(v)).toLocaleString("en-IN");
 const rs = (v: unknown) => `₹${n(v)}`;
 const day = (iso: unknown) =>
   new Date(`${String(iso).slice(0, 10)}T00:00:00`).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+/** T145: what a quantity or price should be is a range, low to high; one figure when they meet. */
+const span = (low: unknown, high: unknown, f: (v: unknown) => string) =>
+  low == null || f(low) === f(high) ? f(high) : `${f(low)}–${f(high)}`;
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const list = (v: unknown) => (Array.isArray(v) ? v : []) as Record<string, unknown>[];
 
+// units written as they are spoken of; a count needs none (T144: pipe in metres, panels in Wp)
+const UNIT_WORD: Record<string, string> = { m3: "m³", m2: "m²", nos: "", m: "m", rm: "m", wp: "Wp", wh: "Wh", kwh: "kWh", kg: "kg", l: "litres" };
+
 function unitWord(unit: unknown, q: number): string {
   const u = String(unit ?? "");
-  if (u === "m3") return "m³";
-  if (u === "m2") return "m²";
-  if (u === "nos") return "";
+  if (u in UNIT_WORD) return UNIT_WORD[u];
   return q === 1 ? u : `${u}s`;
 }
+
+// a material id as a word for the officer ("solar_panel" -> "Solar panels")
+const MATERIAL_WORD: Record<string, string> = { solar_panel: "Solar panels", led_luminaire: "Light fittings", paver_block: "Paver blocks", aggregate: "Stone aggregate", pipe: "Pipes" };
 
 function rows(form: Form): Row[] {
   const out: Row[] = [];
@@ -102,15 +109,15 @@ export function flagOf(agent: string, f: TraceFinding, form: Form): Flag {
   const fields: FieldMark[] = [];
   switch (f.code) {
     case "MATERIAL_QUANTITY_ABOVE_SIZE": {
-      const word = String(x.material ?? "").split("_")[0];
+      const word = MATERIAL_WORD[String(x.material)] ?? cap(String(x.material ?? "").split("_")[0]);
       const q = num(x.quantity);
-      why = `${cap(word)}: ${n(q)} ${unitWord(x.unit, q)} in the estimate, but the work's size needs only ${n(x.needed)}.`;
+      why = `${word}: ${n(q)} ${unitWord(x.unit, q)} in the estimate, but the work's size takes ${span(x.low, x.needed, n)} ${unitWord(x.unit, num(x.needed))}.`.replace(/ {2,}/g, " ").replace(/ \./, ".");
       const row = rowOf(boq, { material: x.material, quantity: x.quantity });
-      if (row) fields.push({ name: `boq_qty_${row.n}`, label: `needs ${n(x.needed)}` });
+      if (row) fields.push({ name: `boq_qty_${row.n}`, label: `size takes ${span(x.low, x.needed, n)} ${unitWord(x.unit, num(x.needed))}`.trim() });
       break;
     }
     case "ESTIMATE_ABOVE_FAIR_PRICE": {
-      why = `Estimate ${inr(num(x.grand_total))}; a fair price for this work here is ${inr(num(x.fair_total))} (${Math.round(num(x.gap_share) * 100)}% more).`;
+      why = `Estimate ${inr(num(x.grand_total))}, ${Math.round(num(x.gap_share) * 100)}% above a fair price for this work here: ${inr(num(x.fair_total))} at the usual rates, ${span(x.fair_low, x.fair_high, (v) => inr(num(v)))} from the lowest to the highest rates other agencies charge.`;
       {
         // where the gap is: the lines that make it, then money no line explains
         const parts = list(x.top).map((t) => `${String(t.label ?? t.material).toLowerCase()} +${inr(num(t.extra))}`);
@@ -124,13 +131,13 @@ export function flagOf(agent: string, f: TraceFinding, form: Form): Flag {
         for (const [k, v] of Object.entries(loose)) if (v > 0) parts.push(`${words[k] ?? k} +${inr(v)}`);
         if (parts.length) why += ` Most of the gap: ${parts.join(", ")}.`;
       }
-      fields.push({ name: "technical_estimate", label: `fair price ${inr(num(x.fair_total))}` });
+      fields.push({ name: "technical_estimate", label: `fair ${span(x.fair_low, x.fair_high, (v) => inr(num(v)))}` });
       for (const t of list(x.top)) {
         const row = rowOf(boq, t);
         if (!row) continue;
-        if (num(t.quantity) > num(t.fair_quantity) * 1.001) fields.push({ name: `boq_qty_${row.n}`, label: `fair ${n(t.fair_quantity)}` });
+        if (num(t.quantity) > num(t.fair_quantity) * 1.001) fields.push({ name: `boq_qty_${row.n}`, label: `size takes ${span(t.needed_low, t.fair_quantity, n)}` });
         if (t.fair_rate != null && num(t.rate) > num(t.fair_rate) * 1.001)
-          fields.push({ name: `boq_rate_${row.n}`, label: `usual ${rs(t.fair_rate)}` });
+          fields.push({ name: `boq_rate_${row.n}`, label: `others ${span(t.fair_low, t.fair_high, rs)}` });
       }
       const loose = (x.unexplained ?? {}) as Record<string, number>;
       if (loose.lump_sums) fields.push({ name: "lumpsum_components", label: `${inr(loose.lump_sums)} not itemised` });
@@ -142,12 +149,12 @@ export function flagOf(agent: string, f: TraceFinding, form: Form): Flag {
       const asked = list(x.rows);
       const t = asked[0] ?? {};
       const whose = t.level === "grade" ? "others here pay any trade of its grade" : "others here pay this trade";
-      why = `${cap(String(t.label ?? "a trade").toLowerCase())} at ${rs(t.rate)} a day: ${num(t.times).toFixed(1)}× the ${rs(t.fair_rate)} ${whose}.`;
+      why = `${cap(String(t.label ?? "a trade").toLowerCase())} at ${rs(t.rate)} a day: ${num(t.times).toFixed(1)}× the ${rs(t.fair_rate)} ${whose} (${span(t.fair_low, t.fair_high, rs)}).`;
       if (asked.length > 1) why += ` ${asked.length - 1} more trade${asked.length > 2 ? "s" : ""} too.`;
       const lab = labourRows(form);
       for (const r of asked) {
         const name = labourField(lab, boq, r, "rate");
-        if (name) fields.push({ name, label: `usual ${rs(r.fair_rate)}` });
+        if (name) fields.push({ name, label: `others ${span(r.fair_low, r.fair_high, rs)}` });
       }
       break;
     }
@@ -164,7 +171,7 @@ export function flagOf(agent: string, f: TraceFinding, form: Form): Flag {
       break;
     }
     case "SIZE_NOT_AS_DESCRIBED": {
-      why = `The form says ${x.form_size}, but its own scope says ${x.scope_size}: at that size the ${String(x.material ?? "").split("_")[0]} is ${num(x.ratio).toFixed(1)}× what is needed.`;
+      why = `The form says ${x.form_size}, but its own scope says ${x.scope_size}: at that size the ${String(x.material ?? "").split("_")[0]} is ${num(x.ratio).toFixed(1)}× what that size takes (${span(x.low, x.needed, n)}).`;
       const key = String(x.form_size ?? "").includes("wide") ? "road_width_m" : "road_length_m";
       fields.push({ name: key, label: `scope says ${x.scope_size}` });
       break;
@@ -176,9 +183,9 @@ export function flagOf(agent: string, f: TraceFinding, form: Form): Flag {
       break;
     case "ESTIMATE_ABOVE_STANDARD_AND_MP": {
       const times = Math.round((1 + num(x.mp_gap)) * 10) / 10;
-      why = `${rs(x.price_per_unit)} per ${x.unit ?? "unit"}; it usually costs ${rs(x.median)}. The estimate is ${times}× what the MP recommended.`;
+      why = `${rs(x.price_per_unit)} per ${x.unit ?? "unit"}; most similar works cost ${span(x.p10, x.p90, rs)} (median ${rs(x.median)}). The estimate is ${times}× what the MP recommended.`;
       const row = boq.find((r) => Math.abs(r.rate - num(x.price_per_unit)) < 0.5) ?? boq[0];
-      if (row) fields.push({ name: `boq_rate_${row.n}`, label: `usually ${rs(x.median)}` });
+      if (row) fields.push({ name: `boq_rate_${row.n}`, label: `most ${span(x.p10, x.p90, rs)}` });
       fields.push({ name: "mp_recommended_amount", label: `estimate is ${times}× this` });
       break;
     }
@@ -188,6 +195,11 @@ export function flagOf(agent: string, f: TraceFinding, form: Form): Flag {
         : `The map pin is ${n(x.metres)} m from work ${x.other}, already sanctioned${x.other_completed ? ` and completed on ${day(x.other_completed)}` : ""}.`;
       why += x.declared ? " The form calls it a continuation, but it lies on that work's own ground." : " The form does not mention it.";
       fields.push({ name: pinField(form), label: `${n(x.metres)} m from ${x.other}` });
+      fields.push({ name: "known_nearby_work_ids", label: `${x.other} not named` });
+      break;
+    case "SANCTIONED_WORK_WHERE_FILMED":
+      why = `The site videos were filmed ${n(x.metres)} m from work ${x.other}, already sanctioned${x.other_completed ? ` and completed on ${day(x.other_completed)}` : ""}, nearer to it than to the form's map pin (${n(x.pin_to_other_m)} m from it). The form does not mention it.`;
+      fields.push({ name: pinField(form), label: `videos filmed at ${x.other}` });
       fields.push({ name: "known_nearby_work_ids", label: `${x.other} not named` });
       break;
     case "REBUILT_SOON_AFTER_COMPLETION":

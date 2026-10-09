@@ -70,6 +70,15 @@ def _rs(v: float) -> str:
     return f"Rs {v / 1e5:,.2f} lakh" if abs(v) >= 1e5 else f"Rs {v:,.0f}"
 
 
+def rs_range(low: float | None, high: float | None) -> str:
+    """'Rs 13.90 to 15.10 lakh', 'Rs 372 to 395', or one figure when they agree (T145)."""
+    if low is None or high is None or _rs(low) == _rs(high):
+        return _rs(high if high is not None else low or 0.0)
+    if abs(low) >= 1e5 and abs(high) >= 1e5:
+        return f"Rs {low / 1e5:,.2f} to {high / 1e5:,.2f} lakh"
+    return f"{_rs(low)} to {_rs(high)}"
+
+
 @dataclass
 class Line:
     site: int
@@ -85,6 +94,11 @@ class Line:
     needed: float | None
     fair_quantity: float
     sor_code: str | None = None
+    # T145: the ranges around the fair rate (the lowest and highest rates other agencies here
+    # charge) and around the need (the standard amount for the size, up to it with its room)
+    fair_low: float | None = None
+    fair_high: float | None = None
+    needed_low: float | None = None
 
     @property
     def amount(self) -> float:
@@ -104,7 +118,10 @@ class Line:
                 "fair_rate": None if self.fair_rate is None else round(self.fair_rate, 2),
                 "fair_source": self.fair_source, "needed": None if self.needed is None
                 else round(self.needed, 3), "fair_quantity": round(self.fair_quantity, 3),
-                "extra": round(self.extra, 2), "sor_code": self.sor_code}
+                "extra": round(self.extra, 2), "sor_code": self.sor_code,
+                "fair_low": None if self.fair_low is None else round(self.fair_low, 2),
+                "fair_high": None if self.fair_high is None else round(self.fair_high, 2),
+                "needed_low": None if self.needed_low is None else round(self.needed_low, 3)}
 
 
 @dataclass
@@ -127,6 +144,8 @@ class Whole:
                             # or held by the agency's own unanswered warning (the verdict's gate)
     settled_labour: float = 0.0   # Rs of labour within twice its trade's rate (T141)
     settled_lines: list[dict] = field(default_factory=list)
+    fair_low: float = 0.0    # T145: the fair price at the lowest and highest rates other
+    fair_high: float = 0.0   # agencies here charge for each priced line
 
     def top(self) -> list[Line]:
         return sorted((x for x in self.lines if x.extra > 0), key=lambda x: -x.extra)[:TOP_LINES]
@@ -134,6 +153,7 @@ class Whole:
     def to_json(self) -> dict:
         return {"verdict": self.verdict, "grand_total": round(self.grand, 2),
                 "fair_total": round(self.fair_grand, 2), "gap": round(self.gap, 2),
+                "fair_low": round(self.fair_low, 2), "fair_high": round(self.fair_high, 2),
                 "gap_share": round(self.gap_share, 4), "coverage": round(self.coverage, 4),
                 "judged": round(self.judged, 4),
                 "settled_labour": round(self.settled_labour, 2),
@@ -201,15 +221,30 @@ def judge(form: dict, computed: dict, work_type: str | None, sor: dict | None,
     sites = form.get("sites") if isinstance(form.get("sites"), list) else []
     confirmed = list(rates.confirmed_lines(form))
 
-    # what each site's size needs, shared over the lines of that material in proportion
-    stated: dict[tuple[int, str], float] = defaultdict(float)
-    for i, _j, mid, _r, q, _ln in confirmed:
-        stated[(i, mid)] += q
+    # what each site's size needs, shared over the lines it holds (norms.held: the same lines the
+    # quantity check counts, T144) in proportion
     need: dict[tuple[int, str], float] = {}
+    need_low: dict[tuple[int, str], float] = {}
+    holds: set[tuple[int, int]] = set()     # (site, line) held to its material's need
     for i, site in enumerate(sites):
         size = site.get("size") if isinstance(site, dict) else None
+        lines_i = [(j, mid, q, None, ln.get("item")) for si, j, mid, _r, q, ln in confirmed
+                   if si == i]
         for n in norms.needs(work_type, size if isinstance(size, dict) else {}):
-            need[(i, n["material"])] = float(n["needed"])
+            if n.get("unit"):
+                continue            # a capacity need (Wp, Wh): these lines are priced by count
+            mine, needed, _why, low = norms.held(n, lines_i)
+            need[(i, n["material"])] = float(needed)
+            need_low[(i, n["material"])] = float(low)
+            holds.update((i, ln[0]) for ln in mine)
+
+    def held_to_need(i: int, j: int) -> bool:
+        return (i, j) in holds
+
+    stated: dict[tuple[int, str], float] = defaultdict(float)
+    for i, j, mid, _r, q, _ln in confirmed:
+        if held_to_need(i, j):
+            stated[(i, mid)] += q
 
     out: list[Line] = []
     mismatch: list[dict] = []
@@ -232,18 +267,23 @@ def judge(form: dict, computed: dict, work_type: str | None, sor: dict | None,
             settled += q * r
             settled_lines.append({"site": i, "line": j, "material": mid, "rate": round(r, 2),
                                   "fair_rate": round(fair.rate, 2), "fair_source": fair.source,
+                                  "fair_low": round(fair.low, 2), "fair_high": round(fair.high, 2),
                                   "quantity": round(q, 3)})
             continue
-        total_need = need.get((i, mid))
+        total_need = need.get((i, mid)) if held_to_need(i, j) else None
         needed = (total_need * q / stated[(i, mid)]) if total_need is not None else None
         fair_q = q if needed is None else min(q, needed * QTY_TOLERANCE)
         if fair is None and needed is None:
             continue                      # not compared: counts at its own value
         mat = catalog.material(mid)
         code = ln.get("sor_code") if isinstance(ln.get("sor_code"), str) else None
+        low_need = need_low.get((i, mid))
         line = Line(i, j, mid, mat["label"], mat["units"][0], q, r,
                     fair.rate if fair else None, fair.source if fair else None,
-                    fair.where if fair else None, needed, fair_q, code)
+                    fair.where if fair else None, needed, fair_q, code,
+                    fair.low if fair else None, fair.high if fair else None,
+                    low_need * q / stated[(i, mid)] if needed is not None and low_need is not None
+                    else None)
         out.append(line)
         if fair:
             sources.add(fair.where)
@@ -263,6 +303,13 @@ def judge(form: dict, computed: dict, work_type: str | None, sor: dict | None,
     fair_grand = (fair_lines * ((grand - charged) / lines_total) if lines_total > 0
                   else grand)
     gap = grand - fair_grand
+    # T145: the same fair price at the lowest and the highest rates other agencies here charge
+    scale = (grand - charged) / lines_total if lines_total > 0 else 1.0
+    down = sum(x.fair_quantity * (x.fair_rate - x.fair_low) for x in out
+               if x.fair_rate is not None and x.fair_low is not None)
+    up = sum(x.fair_quantity * (x.fair_high - x.fair_rate) for x in out
+             if x.fair_rate is not None and x.fair_high is not None)
+    fair_low, fair_high = fair_grand - down * scale, fair_grand + up * scale
     # the share of the fair price of what was priced (module note); the same as of the whole
     # fair estimate when everything is priced
     ratio = (grand - charged) / lines_total if lines_total > 0 else 1.0
@@ -279,7 +326,7 @@ def judge(form: dict, computed: dict, work_type: str | None, sor: dict | None,
         verdict = "FAIR"
     return Whole(verdict, grand, fair_grand, gap, share, coverage, out, above, len(priced),
                  sorted(sources), mismatch, list(gaps.values()), list(fallbacks.values()), extra,
-                 judged, settled, settled_lines)
+                 judged, settled, settled_lines, fair_low, fair_high)
 
 
 def sentence(w: Whole, label: str = "this size of work in this district") -> str:
@@ -288,17 +335,22 @@ def sentence(w: Whole, label: str = "this size of work in this district") -> str
     for x in w.top():
         why = []
         if x.fair_rate is not None and x.rate > x.fair_rate:
-            why.append(f"{_rs(x.rate)} a {x.unit} against {_rs(x.fair_rate)}")
+            others = ("" if x.fair_low is None or rs_range(x.fair_low, x.fair_high)
+                      == _rs(x.fair_rate) else f", others here {rs_range(x.fair_low, x.fair_high)}")
+            why.append(f"{_rs(x.rate)} a {x.unit} against {_rs(x.fair_rate)}{others}")
         if x.needed is not None and x.quantity > x.needed * QTY_TOLERANCE:
-            why.append(f"{catalog.quantity_text(x.quantity, x.unit)} where the size needs "
-                       f"{x.needed:,.0f}")
+            why.append(f"{catalog.quantity_text(x.quantity, x.unit)} where the size takes "
+                       f"{catalog.range_text(x.needed_low, x.needed, x.unit)}")
         parts.append(f"{x.label.lower()} +{_rs(x.extra)}" + (f" ({'; '.join(why)})" if why else ""))
     of = ("" if w.coverage >= 0.995 else
           f", {w.gap_share:.0%} above the fair price of the {w.coverage:.0%} of the money that "
           "could be priced")
     text = (f"The estimate ({_rs(w.grand)}) is {_rs(w.gap)}"
             + (f" ({w.gap_share:.0%})" if not of else "")
-            + f" above the fair price for {label} ({_rs(w.fair_grand)}){of}")
+            + f" above the fair price for {label} ({_rs(w.fair_grand)}"
+            + (f"; {rs_range(w.fair_low, w.fair_high)} at the lowest and highest rates other "
+               "agencies here charge" if rs_range(w.fair_low, w.fair_high) != _rs(w.fair_grand)
+               else "") + f"){of}")
     words = {"lump_sums": f"lump sums beyond {LUMP_SHARE:.0%} of the lines",
              "other_charges": "'other' charges beyond the usual share",
              "contingency": f"contingency beyond {CONTINGENCY_SHARE:.0%}",

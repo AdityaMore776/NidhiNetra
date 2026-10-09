@@ -439,7 +439,11 @@ function WholeEstimate({ c, start }: { c: Check; start: number }) {
       ))}
       <p className="x-in text-muted-foreground" style={at(start + 800)}>
         {pct(w.coverage)} of the money priced line by line; the estimate is {w.gap_share >= 0 ? "+" : ""}
-        {pct(w.gap_share, 1)} against the fair price. Asked only from +15% and Rs 50,000.
+        {pct(w.gap_share, 1)} against the fair price
+        {w.fair_low != null && w.fair_high != null && inr(w.fair_low) !== inr(w.fair_high)
+          ? ` (${inr(w.fair_low)}–${inr(w.fair_high)} at the lowest and highest rates other agencies charge)`
+          : ""}
+        . Asked only from +15% and Rs 50,000.
       </p>
     </div>
   );

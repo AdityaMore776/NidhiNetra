@@ -1,0 +1,158 @@
+{
+ "sft4b_v6_real": {
+  "n": 124,
+  "macro_f1": 0.8703933747412008,
+  "macro_f1_ci95": [
+   0.8106860002919786,
+   0.9516978756215646
+  ],
+  "fooled_rate": 0.011494252873563218,
+  "fooled_ci95": [
+   0.0,
+   0.03614457831325301
+  ],
+  "missed_rate": 0.3076923076923077,
+  "accuracy": 0.9193548387096774,
+  "unreadable": 0,
+  "per_trick": {
+   "busy": {
+    "n": 21,
+    "accuracy": 1.0
+   },
+   "double_claim": {
+    "n": 20,
+    "accuracy": 1.0
+   },
+   "light": {
+    "n": 14,
+    "accuracy": 1.0
+   },
+   "none": {
+    "n": 13,
+    "accuracy": 0.6923076923076923
+   },
+   "other_site": {
+    "n": 24,
+    "accuracy": 0.9166666666666666
+   },
+   "swapped": {
+    "n": 7,
+    "accuracy": 0.42857142857142855
+   },
+   "view": {
+    "n": 25,
+    "accuracy": 1.0
+   }
+  },
+  "usd_per_1000_checks": 0.172,
+  "cost_basis": "L4 GPU time"
+ },
+ "sft4b_v6_real @1024px": {
+  "n": 124,
+  "macro_f1": 0.8630778371954843,
+  "macro_f1_ci95": [
+   0.8070210161131625,
+   0.967563236522822
+  ],
+  "fooled_rate": 0.011494252873563218,
+  "fooled_ci95": [
+   0.0,
+   0.03614457831325301
+  ],
+  "missed_rate": 0.38461538461538464,
+  "accuracy": 0.9274193548387096,
+  "unreadable": 0,
+  "per_trick": {
+   "busy": {
+    "n": 21,
+    "accuracy": 1.0
+   },
+   "double_claim": {
+    "n": 20,
+    "accuracy": 1.0
+   },
+   "light": {
+    "n": 14,
+    "accuracy": 1.0
+   },
+   "none": {
+    "n": 13,
+    "accuracy": 0.6153846153846154
+   },
+   "other_site": {
+    "n": 24,
+    "accuracy": 0.9583333333333334
+   },
+   "swapped": {
+    "n": 7,
+    "accuracy": 0.5714285714285714
+   },
+   "view": {
+    "n": 25,
+    "accuracy": 1.0
+   }
+  },
+  "usd_per_1000_checks": 0.352,
+  "cost_basis": "L4 GPU time",
+  "mcnemar_vs_ref": {
+   "n": 124,
+   "only_a_right": 1,
+   "only_b_right": 2,
+   "p": 1.0
+  }
+ },
+ "rl4b_bal": {
+  "n": 124,
+  "macro_f1": 0.8926945695233878,
+  "macro_f1_ci95": [
+   0.8460870652294549,
+   0.9443447642857827
+  ],
+  "fooled_rate": 0.06896551724137931,
+  "fooled_ci95": [
+   0.02197802197802198,
+   0.12359840148268272
+  ],
+  "missed_rate": 0.07692307692307693,
+  "accuracy": 0.9274193548387096,
+  "unreadable": 0,
+  "per_trick": {
+   "busy": {
+    "n": 21,
+    "accuracy": 1.0
+   },
+   "double_claim": {
+    "n": 20,
+    "accuracy": 1.0
+   },
+   "light": {
+    "n": 14,
+    "accuracy": 1.0
+   },
+   "none": {
+    "n": 13,
+    "accuracy": 0.9230769230769231
+   },
+   "other_site": {
+    "n": 24,
+    "accuracy": 0.9166666666666666
+   },
+   "swapped": {
+    "n": 7,
+    "accuracy": 0.8571428571428571
+   },
+   "view": {
+    "n": 25,
+    "accuracy": 0.8
+   }
+  },
+  "usd_per_1000_checks": 0.178,
+  "cost_basis": "L4 GPU time",
+  "mcnemar_vs_ref": {
+   "n": 124,
+   "only_a_right": 5,
+   "only_b_right": 6,
+   "p": 1.0
+  }
+ }
+}

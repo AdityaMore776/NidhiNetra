@@ -17,9 +17,9 @@ import {
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { DistrictScatter, EngineFindings, MoneyTreemap, RiskMix, StatesBar } from "@/components/charts/DashboardCharts";
 import type { GlobeMetric } from "@/components/map/IndiaGlobe";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
+import { WhenVisible } from "@/components/motion/when-visible";
 import { useMe } from "@/components/me";
 import { PageHeader, SectionHeader, StatTile } from "@/components/nn/layout-bits";
 import { ExampleGallery, FormExamplesCard, useShowcase } from "@/components/nn/showcase";
@@ -39,6 +39,20 @@ const IndiaGlobe = dynamic(() => import("@/components/map/IndiaGlobe").then((m) 
   ssr: false,
   loading: () => <div className="size-full rounded-2xl skeleton-shimmer" />,
 });
+
+// T143: the charts (recharts, about 116 KB compressed) load when their panel nears the screen
+const charts = () => import("@/components/charts/DashboardCharts");
+const EngineFindings = dynamic(() => charts().then((m) => m.EngineFindings), {
+  ssr: false,
+  loading: () => <div className="h-64 rounded-xl skeleton-shimmer" />,
+});
+const RiskMix = dynamic(() => charts().then((m) => m.RiskMix), { ssr: false, loading: () => <div className="h-64 rounded-xl skeleton-shimmer" /> });
+const StatesBar = dynamic(() => charts().then((m) => m.StatesBar), { ssr: false, loading: () => <div className="h-80 rounded-xl skeleton-shimmer" /> });
+const DistrictScatter = dynamic(() => charts().then((m) => m.DistrictScatter), {
+  ssr: false,
+  loading: () => <div className="h-72 rounded-xl skeleton-shimmer" />,
+});
+const MoneyTreemap = dynamic(() => charts().then((m) => m.MoneyTreemap), { ssr: false, loading: () => <div className="h-80 rounded-xl skeleton-shimmer" /> });
 
 function greeting(): string {
   const h = new Date().getHours();
@@ -159,14 +173,20 @@ export default function Dashboard() {
         </Stagger>
 
         <Reveal className="lg:col-span-7" delay={0.1}>
-          <div className="panel relative h-[440px] overflow-hidden">
+          <div className="panel relative h-[360px] overflow-hidden sm:h-[440px]">
             <div className="absolute inset-0 grid-bg opacity-60 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
-            <div className="absolute inset-0">{s && <RiskVortex bands={s.bands} />}</div>
+            <div className="absolute inset-0">
+              {s && (
+                <WhenVisible className="size-full" idle>
+                  <RiskVortex bands={s.bands} />
+                </WhenVisible>
+              )}
+            </div>
             <div className="pointer-events-none absolute left-5 top-5 max-w-60">
               <div className="eyebrow">The review funnel</div>
               <div className="mt-1 text-lg font-semibold tracking-[-0.02em] text-brand-950">From every work to the few that need a look</div>
             </div>
-            <div className="glass absolute bottom-4 right-4 w-56 rounded-xl p-3 shadow-card">
+            <div className="glass absolute bottom-3 right-3 w-44 rounded-xl p-2.5 shadow-card sm:bottom-4 sm:right-4 sm:w-56 sm:p-3">
               {(["CRITICAL", "HIGH", "MEDIUM", "LOW"] as Band[]).map((b) => (
                 <div key={b} className="flex items-center gap-2 py-0.5 text-xs">
                   <span className="size-2.5 rounded-full" style={{ background: b === "LOW" ? "#9cc4ee" : BAND_COLOR[b] }} />
@@ -174,7 +194,7 @@ export default function Dashboard() {
                   <span className="num ml-auto font-semibold text-foreground">{s ? count(s.bands[b] ?? 0) : "—"}</span>
                 </div>
               ))}
-              <div className="mt-1.5 border-t pt-1.5 text-[10px] leading-snug text-muted-foreground">
+              <div className="mt-1.5 hidden border-t pt-1.5 text-[10px] leading-snug text-muted-foreground sm:block">
                 Points are a sample of the works; the counts are exact. Move the pointer: the eye follows.
               </div>
             </div>
@@ -210,7 +230,7 @@ export default function Dashboard() {
                     </Button>
                   }
                 />
-                <div className="mt-4">{s ? <EngineFindings agents={s.agents} /> : <div className="h-64 rounded-xl skeleton-shimmer" />}</div>
+                <div className="mt-4">{s ? <WhenVisible fallback={<div className="h-64 rounded-xl skeleton-shimmer" />}><EngineFindings agents={s.agents} /></WhenVisible> : <div className="h-64 rounded-xl skeleton-shimmer" />}</div>
               </div>
             </Reveal>
             <Reveal className="lg:col-span-5" delay={0.08}>
@@ -232,7 +252,13 @@ export default function Dashboard() {
                 description="Each district rises by the measure you pick. Hover a district for its numbers; click it to open its works. Ctrl + scroll to zoom."
               />
               <div className="mt-5 grid gap-5 lg:grid-cols-12">
-                <div className="h-[560px] lg:col-span-8">{districts && <IndiaGlobe rows={districts} metric={metric} onMetric={setMetric} focus={focus} className="size-full" />}</div>
+                <div className="h-[560px] lg:col-span-8">
+                  {districts && (
+                    <WhenVisible className="size-full" fallback={<div className="size-full rounded-2xl skeleton-shimmer" />}>
+                      <IndiaGlobe rows={districts} metric={metric} onMetric={setMetric} focus={focus} className="size-full" />
+                    </WhenVisible>
+                  )}
+                </div>
                 <div className="lg:col-span-4">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-semibold text-brand-950">Districts to look at first</h3>
@@ -296,13 +322,13 @@ export default function Dashboard() {
                     </Button>
                   }
                 />
-                <div className="mt-4">{s ? <EngineFindings agents={s.agents} /> : <div className="h-64 rounded-xl skeleton-shimmer" />}</div>
+                <div className="mt-4">{s ? <WhenVisible fallback={<div className="h-64 rounded-xl skeleton-shimmer" />}><EngineFindings agents={s.agents} /></WhenVisible> : <div className="h-64 rounded-xl skeleton-shimmer" />}</div>
               </div>
             </Reveal>
             <Reveal className="lg:col-span-5" delay={0.08}>
               <div className="panel h-full p-5 sm:p-6">
                 <SectionHeader eyebrow="Explain" title="Risk mix" description="How the flagged works split across the bands." />
-                <div className="mt-4">{s ? <RiskMix summary={s} /> : <div className="h-64 rounded-xl skeleton-shimmer" />}</div>
+                <div className="mt-4">{s ? <WhenVisible fallback={<div className="h-64 rounded-xl skeleton-shimmer" />}><RiskMix summary={s} /></WhenVisible> : <div className="h-64 rounded-xl skeleton-shimmer" />}</div>
               </div>
             </Reveal>
           </section>
@@ -312,7 +338,7 @@ export default function Dashboard() {
             <Reveal className="lg:col-span-5">
               <div className="panel h-full p-5 sm:p-6">
                 <SectionHeader eyebrow="States" title="Works needing review, by state" description="Top states by count. Hover for works, share and money." />
-                <div className="mt-4">{districts ? <StatesBar rows={districts} /> : <div className="h-80 rounded-xl skeleton-shimmer" />}</div>
+                <div className="mt-4">{districts ? <WhenVisible fallback={<div className="h-80 rounded-xl skeleton-shimmer" />}><StatesBar rows={districts} /></WhenVisible> : <div className="h-80 rounded-xl skeleton-shimmer" />}</div>
               </div>
             </Reveal>
             <Reveal className="lg:col-span-7" delay={0.08}>
@@ -322,7 +348,7 @@ export default function Dashboard() {
                   title="Size against share needing review"
                   description="Each dot is a district; its size is the money recommended. Blue dots have works needing review. Click one to open its works."
                 />
-                <div className="mt-4">{districts ? <DistrictScatter rows={districts} /> : <div className="h-72 rounded-xl skeleton-shimmer" />}</div>
+                <div className="mt-4">{districts ? <WhenVisible fallback={<div className="h-72 rounded-xl skeleton-shimmer" />}><DistrictScatter rows={districts} /></WhenVisible> : <div className="h-72 rounded-xl skeleton-shimmer" />}</div>
               </div>
             </Reveal>
           </section>
@@ -332,7 +358,7 @@ export default function Dashboard() {
             <Reveal className="lg:col-span-8">
               <div className="panel h-full p-5 sm:p-6">
                 <SectionHeader eyebrow="Money" title="Where the money goes" description="Each state's block is sized by the money recommended and shaded by its share of works needing review." />
-                <div className="mt-4">{districts ? <MoneyTreemap rows={districts} /> : <div className="h-80 rounded-xl skeleton-shimmer" />}</div>
+                <div className="mt-4">{districts ? <WhenVisible fallback={<div className="h-80 rounded-xl skeleton-shimmer" />}><MoneyTreemap rows={districts} /></WhenVisible> : <div className="h-80 rounded-xl skeleton-shimmer" />}</div>
               </div>
             </Reveal>
             <Reveal className="lg:col-span-4" delay={0.08}>

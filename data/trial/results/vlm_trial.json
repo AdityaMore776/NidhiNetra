@@ -1,0 +1,1242 @@
+{
+ "sources": {
+  "mgnrega_assets": 717,
+  "by_split": {
+   "train": 500,
+   "test": 193,
+   "calib": 24
+  },
+  "districts_by_split": {
+   "train": 29,
+   "test": 5,
+   "calib": 2
+  },
+  "work_types": {
+   "building": 148,
+   "other": 271,
+   "road": 260,
+   "drain": 33,
+   "boundary_wall": 5
+  },
+  "stages_present": {
+   "1-2-3": 717
+  },
+  "certain_progress_assets": 172
+ },
+ "items": {
+  "train": {
+   "n": 4663,
+   "real": 2924,
+   "eye_checked": 1,
+   "verdicts": {
+    "shown": 715,
+    "not_shown": 2649,
+    "cant_tell": 1299
+   },
+   "tricks": {
+    "none": 473,
+    "view": 565,
+    "swapped": 169,
+    "other_site": 499,
+    "other_site_same": 301,
+    "staged (edited)": 499,
+    "none (edited)": 242,
+    "light (edited)": 499,
+    "occluded (edited)": 256,
+    "double_claim": 358,
+    "busy": 405,
+    "dark (edited)": 243,
+    "light": 154
+   },
+   "sources": {
+    "geomgnrega": 4432,
+    "timelapse": 231
+   }
+  },
+  "calib": {
+   "n": 155,
+   "real": 155,
+   "eye_checked": 0,
+   "verdicts": {
+    "not_shown": 105,
+    "cant_tell": 24,
+    "shown": 26
+   },
+   "tricks": {
+    "view": 27,
+    "busy": 22,
+    "double_claim": 20,
+    "other_site": 24,
+    "none": 26,
+    "swapped": 13,
+    "light": 23
+   },
+   "sources": {
+    "geomgnrega": 122,
+    "timelapse": 33
+   }
+  },
+  "test": {
+   "n": 915,
+   "real": 915,
+   "eye_checked": 915,
+   "verdicts": {
+    "not_shown": 580,
+    "cant_tell": 190,
+    "shown": 145
+   },
+   "tricks": {
+    "view": 212,
+    "busy": 166,
+    "double_claim": 141,
+    "other_site": 190,
+    "none": 145,
+    "swapped": 43,
+    "light": 18
+   },
+   "sources": {
+    "geomgnrega": 882,
+    "timelapse": 33
+   }
+  }
+ },
+ "scores": {
+  "base2b_v6/test_score.json": {
+   "headline_real_only": {
+    "n": 915,
+    "accuracy": 0.6601092896174864,
+    "macro_f1": 0.46442133630674604,
+    "fooled_rate": 0.09655172413793103,
+    "n_no_progress": 580,
+    "missed_rate": 0.3793103448275862,
+    "n_progress": 145,
+    "answered_accuracy": 0.6599777034559643,
+    "answered_share": 0.980327868852459,
+    "macro_f1_ci95": [
+     0.4276072087486542,
+     0.5001810926084852
+    ],
+    "fooled_rate_ci95": [
+     0.0699752414778066,
+     0.1234996502715112
+    ],
+    "missed_rate_ci95": [
+     0.2654783454009118,
+     0.5069519927536231
+    ],
+    "ece": 0.1976824772344636
+   },
+   "edited_items_apart": null,
+   "per_trick": {
+    "busy": {
+     "n": 166,
+     "accuracy": 0.8614457831325302
+    },
+    "double_claim": {
+     "n": 141,
+     "accuracy": 0.8226950354609929
+    },
+    "light": {
+     "n": 18,
+     "accuracy": 1.0
+    },
+    "none": {
+     "n": 145,
+     "accuracy": 0.6206896551724138
+    },
+    "other_site": {
+     "n": 190,
+     "accuracy": 0.06315789473684211
+    },
+    "swapped": {
+     "n": 43,
+     "accuracy": 0.7674418604651163
+    },
+    "view": {
+     "n": 212,
+     "accuracy": 0.9056603773584906
+    }
+   },
+   "confusion_real": {
+    "shown": {
+     "shown": 90,
+     "not_shown": 54,
+     "unreadable": 1
+    },
+    "not_shown": {
+     "not_shown": 502,
+     "shown": 56,
+     "cant_tell": 6,
+     "unreadable": 16
+    },
+    "cant_tell": {
+     "not_shown": 49,
+     "shown": 127,
+     "unreadable": 2,
+     "cant_tell": 12
+    }
+   },
+   "cost": {
+    "seconds_per_check": 4.621,
+    "rupees_per_1000_checks_local": 2.98
+   },
+   "refused": 0,
+   "unreadable_answers": 19,
+   "fooled_by_photo_difference": {
+    "split_at_distance": 0.0238,
+    "near_identical": {
+     "n": 274,
+     "fooled_rate": 0.06934306569343066
+    },
+    "clearly_different": {
+     "n": 273,
+     "fooled_rate": 0.13553113553113552
+    }
+   },
+   "mcnemar_vs_baseline": {
+    "n": 915,
+    "only_a_right": 195,
+    "only_b_right": 394,
+    "p": 1.760036328901807e-16
+   }
+  },
+  "base4b_v4/probe_score.json": {
+   "headline_real_only": {
+    "n": 44,
+    "accuracy": 0.8863636363636364,
+    "macro_f1": 0.3132530120481928,
+    "fooled_rate": null,
+    "n_no_progress": 0,
+    "missed_rate": null,
+    "n_progress": 0,
+    "answered_accuracy": 0.0,
+    "answered_share": 0.11363636363636363,
+    "macro_f1_ci95": [
+     0.28806584362139914,
+     1.0
+    ],
+    "fooled_rate_ci95": [
+     NaN,
+     NaN
+    ],
+    "missed_rate_ci95": [
+     NaN,
+     NaN
+    ],
+    "ece": 0.1036077954552391
+   },
+   "edited_items_apart": null,
+   "per_trick": {
+    "other_site_same": {
+     "n": 44,
+     "accuracy": 0.8863636363636364
+    }
+   },
+   "confusion_real": {
+    "shown": {},
+    "not_shown": {},
+    "cant_tell": {
+     "cant_tell": 39,
+     "not_shown": 3,
+     "shown": 2
+    }
+   },
+   "cost": {
+    "seconds_per_check": 3.864,
+    "rupees_per_1000_checks_local": 2.49
+   },
+   "refused": 0,
+   "unreadable_answers": 0,
+   "mcnemar_vs_baseline": {
+    "n": 0,
+    "only_a_right": 0,
+    "only_b_right": 0,
+    "p": 1.0
+   }
+  },
+  "base4b_v4/test_score.json": {
+   "headline_real_only": {
+    "n": 205,
+    "accuracy": 0.36585365853658536,
+    "macro_f1": 0.4414564396498468,
+    "fooled_rate": 0.014184397163120567,
+    "n_no_progress": 141,
+    "missed_rate": 0.3125,
+    "n_progress": 16,
+    "answered_accuracy": 0.6486486486486487,
+    "answered_share": 0.36097560975609755,
+    "macro_f1_ci95": [
+     0.3079149442698453,
+     0.5090334728478081
+    ],
+    "fooled_rate_ci95": [
+     0.0,
+     0.0347344483568075
+    ],
+    "missed_rate_ci95": [
+     0.0,
+     0.6376623376623373
+    ],
+    "ece": 0.5107258638230765
+   },
+   "edited_items_apart": null,
+   "per_trick": {
+    "busy": {
+     "n": 46,
+     "accuracy": 0.34782608695652173
+    },
+    "double_claim": {
+     "n": 31,
+     "accuracy": 0.4838709677419355
+    },
+    "light": {
+     "n": 18,
+     "accuracy": 0.0
+    },
+    "none": {
+     "n": 16,
+     "accuracy": 0.6875
+    },
+    "other_site": {
+     "n": 48,
+     "accuracy": 0.5625
+    },
+    "swapped": {
+     "n": 6,
+     "accuracy": 0.16666666666666666
+    },
+    "view": {
+     "n": 40,
+     "accuracy": 0.125
+    }
+   },
+   "confusion_real": {
+    "shown": {
+     "shown": 11,
+     "not_shown": 3,
+     "cant_tell": 2
+    },
+    "not_shown": {
+     "cant_tell": 102,
+     "not_shown": 37,
+     "shown": 2
+    },
+    "cant_tell": {
+     "cant_tell": 27,
+     "not_shown": 16,
+     "shown": 5
+    }
+   },
+   "cost": {
+    "seconds_per_check": 3.733,
+    "rupees_per_1000_checks_local": 2.41
+   },
+   "refused": 0,
+   "unreadable_answers": 0,
+   "fooled_by_photo_difference": {
+    "split_at_distance": 0.0238,
+    "near_identical": {
+     "n": 54,
+     "fooled_rate": 0.0
+    },
+    "clearly_different": {
+     "n": 54,
+     "fooled_rate": 0.037037037037037035
+    }
+   },
+   "mcnemar_vs_baseline": {
+    "n": 89,
+    "only_a_right": 0,
+    "only_b_right": 2,
+    "p": 0.5
+   }
+  },
+  "base4b_v6/probe_score.json": {
+   "headline_real_only": {
+    "n": 93,
+    "accuracy": 0.6666666666666666,
+    "macro_f1": 0.26666666666666666,
+    "fooled_rate": null,
+    "n_no_progress": 0,
+    "missed_rate": null,
+    "n_progress": 0,
+    "answered_accuracy": 0.0,
+    "answered_share": 0.3333333333333333,
+    "macro_f1_ci95": [
+     0.24200913242009134,
+     0.2886178861788618
+    ],
+    "fooled_rate_ci95": [
+     NaN,
+     NaN
+    ],
+    "missed_rate_ci95": [
+     NaN,
+     NaN
+    ],
+    "ece": 0.28177466155380326
+   },
+   "edited_items_apart": null,
+   "per_trick": {
+    "other_site_same": {
+     "n": 93,
+     "accuracy": 0.6666666666666666
+    }
+   },
+   "confusion_real": {
+    "shown": {},
+    "not_shown": {},
+    "cant_tell": {
+     "cant_tell": 62,
+     "shown": 22,
+     "not_shown": 9
+    }
+   },
+   "cost": {
+    "seconds_per_check": 3.858,
+    "rupees_per_1000_checks_local": 2.49
+   },
+   "refused": 0,
+   "unreadable_answers": 0,
+   "mcnemar_vs_baseline": {
+    "n": 0,
+    "only_a_right": 0,
+    "only_b_right": 0,
+    "p": 1.0
+   }
+  },
+  "base4b_v6/test_score.json": {
+   "headline_real_only": {
+    "n": 915,
+    "accuracy": 0.4426229508196721,
+    "macro_f1": 0.47097195387920704,
+    "fooled_rate": 0.01206896551724138,
+    "n_no_progress": 580,
+    "missed_rate": 0.5793103448275863,
+    "n_progress": 145,
+    "answered_accuracy": 0.7741935483870968,
+    "answered_share": 0.33879781420765026,
+    "macro_f1_ci95": [
+     0.4276344376637292,
+     0.512222131731179
+    ],
+    "fooled_rate_ci95": [
+     0.004982566362948587,
+     0.020726285027878873
+    ],
+    "missed_rate_ci95": [
+     0.4666666666666667,
+     0.6788389258089116
+    ],
+    "ece": 0.4384449663383714
+   },
+   "edited_items_apart": null,
+   "per_trick": {
+    "busy": {
+     "n": 166,
+     "accuracy": 0.43373493975903615
+    },
+    "double_claim": {
+     "n": 141,
+     "accuracy": 0.41843971631205673
+    },
+    "light": {
+     "n": 18,
+     "accuracy": 0.0
+    },
+    "none": {
+     "n": 145,
+     "accuracy": 0.4206896551724138
+    },
+    "other_site": {
+     "n": 190,
+     "accuracy": 0.868421052631579
+    },
+    "swapped": {
+     "n": 43,
+     "accuracy": 0.09302325581395349
+    },
+    "view": {
+     "n": 212,
+     "accuracy": 0.20754716981132076
+    }
+   },
+   "confusion_real": {
+    "shown": {
+     "shown": 61,
+     "not_shown": 38,
+     "cant_tell": 46
+    },
+    "not_shown": {
+     "cant_tell": 394,
+     "not_shown": 179,
+     "shown": 7
+    },
+    "cant_tell": {
+     "cant_tell": 165,
+     "not_shown": 20,
+     "shown": 5
+    }
+   },
+   "cost": {
+    "seconds_per_check": 3.731,
+    "rupees_per_1000_checks_local": 2.4
+   },
+   "refused": 0,
+   "unreadable_answers": 0,
+   "fooled_by_photo_difference": {
+    "split_at_distance": 0.0238,
+    "near_identical": {
+     "n": 274,
+     "fooled_rate": 0.0
+    },
+    "clearly_different": {
+     "n": 273,
+     "fooled_rate": 0.02564102564102564
+    }
+   }
+  },
+  "sft2b_v6/probe_score.json": {
+   "headline_real_only": {
+    "n": 93,
+    "accuracy": 0.7956989247311828,
+    "macro_f1": 0.2954091816367265,
+    "fooled_rate": null,
+    "n_no_progress": 0,
+    "missed_rate": null,
+    "n_progress": 0,
+    "answered_accuracy": 0.0,
+    "answered_share": 0.20430107526881722,
+    "macro_f1_ci95": [
+     0.27672955974842767,
+     0.45930232558139533
+    ],
+    "fooled_rate_ci95": [
+     NaN,
+     NaN
+    ],
+    "missed_rate_ci95": [
+     NaN,
+     NaN
+    ],
+    "ece": 0.2042907758425641
+   },
+   "edited_items_apart": null,
+   "per_trick": {
+    "other_site_same": {
+     "n": 93,
+     "accuracy": 0.7956989247311828
+    }
+   },
+   "confusion_real": {
+    "shown": {},
+    "not_shown": {},
+    "cant_tell": {
+     "cant_tell": 74,
+     "shown": 17,
+     "not_shown": 2
+    }
+   },
+   "cost": {
+    "seconds_per_check": 6.047,
+    "rupees_per_1000_checks_local": 3.9
+   },
+   "refused": 0,
+   "unreadable_answers": 0,
+   "mcnemar_vs_baseline": {
+    "n": 0,
+    "only_a_right": 0,
+    "only_b_right": 0,
+    "p": 1.0
+   }
+  },
+  "sft2b_v6/test_score.json": {
+   "headline_real_only": {
+    "n": 915,
+    "accuracy": 0.9431693989071038,
+    "macro_f1": 0.9196597088654271,
+    "fooled_rate": 0.02586206896551724,
+    "n_no_progress": 580,
+    "missed_rate": 0.15172413793103448,
+    "n_progress": 145,
+    "answered_accuracy": 0.9657142857142857,
+    "answered_share": 0.7650273224043715,
+    "macro_f1_ci95": [
+     0.8984529631514807,
+     0.939899850747515
+    ],
+    "fooled_rate_ci95": [
+     0.01412693948916087,
+     0.038931595111593095
+    ],
+    "missed_rate_ci95": [
+     0.1,
+     0.2063517665130568
+    ],
+    "ece": 0.02942099258547926
+   },
+   "edited_items_apart": null,
+   "per_trick": {
+    "busy": {
+     "n": 166,
+     "accuracy": 1.0
+    },
+    "double_claim": {
+     "n": 141,
+     "accuracy": 1.0
+    },
+    "light": {
+     "n": 18,
+     "accuracy": 1.0
+    },
+    "none": {
+     "n": 145,
+     "accuracy": 0.8482758620689655
+    },
+    "other_site": {
+     "n": 190,
+     "accuracy": 0.9842105263157894
+    },
+    "swapped": {
+     "n": 43,
+     "accuracy": 0.7209302325581395
+    },
+    "view": {
+     "n": 212,
+     "accuracy": 0.9292452830188679
+    }
+   },
+   "confusion_real": {
+    "shown": {
+     "shown": 123,
+     "cant_tell": 16,
+     "not_shown": 6
+    },
+    "not_shown": {
+     "not_shown": 553,
+     "shown": 15,
+     "cant_tell": 12
+    },
+    "cant_tell": {
+     "shown": 1,
+     "cant_tell": 187,
+     "not_shown": 2
+    }
+   },
+   "cost": {
+    "seconds_per_check": 3.978,
+    "rupees_per_1000_checks_local": 2.56
+   },
+   "refused": 0,
+   "unreadable_answers": 0,
+   "fooled_by_photo_difference": {
+    "split_at_distance": 0.0238,
+    "near_identical": {
+     "n": 274,
+     "fooled_rate": 0.01824817518248175
+    },
+    "clearly_different": {
+     "n": 273,
+     "fooled_rate": 0.03663003663003663
+    }
+   },
+   "mcnemar_vs_baseline": {
+    "n": 915,
+    "only_a_right": 13,
+    "only_b_right": 471,
+    "p": 4.494935033893554e-121
+   }
+  },
+  "sft4b_v4/probe_score.json": {
+   "headline_real_only": {
+    "n": 44,
+    "accuracy": 0.045454545454545456,
+    "macro_f1": 0.028985507246376812,
+    "fooled_rate": null,
+    "n_no_progress": 0,
+    "missed_rate": null,
+    "n_progress": 0,
+    "answered_accuracy": 0.0,
+    "answered_share": 0.9545454545454546,
+    "macro_f1_ci95": [
+     0.0,
+     0.06944444444444445
+    ],
+    "fooled_rate_ci95": [
+     NaN,
+     NaN
+    ],
+    "missed_rate_ci95": [
+     NaN,
+     NaN
+    ],
+    "ece": 0.06818179921670392
+   },
+   "edited_items_apart": null,
+   "per_trick": {
+    "other_site_same": {
+     "n": 44,
+     "accuracy": 0.045454545454545456
+    }
+   },
+   "confusion_real": {
+    "shown": {},
+    "not_shown": {},
+    "cant_tell": {
+     "shown": 38,
+     "not_shown": 4,
+     "cant_tell": 2
+    }
+   },
+   "cost": {
+    "seconds_per_check": 5.113,
+    "rupees_per_1000_checks_local": 3.3
+   },
+   "refused": 0,
+   "unreadable_answers": 0,
+   "mcnemar_vs_baseline": {
+    "n": 0,
+    "only_a_right": 0,
+    "only_b_right": 0,
+    "p": 1.0
+   }
+  },
+  "sft4b_v4/test_score.json": {
+   "headline_real_only": {
+    "n": 205,
+    "accuracy": 0.9951219512195122,
+    "macro_f1": 0.9887127502785865,
+    "fooled_rate": 0.0070921985815602835,
+    "n_no_progress": 141,
+    "missed_rate": 0.0,
+    "n_progress": 16,
+    "answered_accuracy": 0.9936305732484076,
+    "answered_share": 0.7658536585365854,
+    "macro_f1_ci95": [
+     0.9305884927582365,
+     1.0
+    ],
+    "fooled_rate_ci95": [
+     0.0,
+     0.02479855371900826
+    ],
+    "missed_rate_ci95": [
+     0.0,
+     0.0
+    ],
+    "ece": 0.004872748037663894
+   },
+   "edited_items_apart": null,
+   "per_trick": {
+    "busy": {
+     "n": 46,
+     "accuracy": 1.0
+    },
+    "double_claim": {
+     "n": 31,
+     "accuracy": 1.0
+    },
+    "light": {
+     "n": 18,
+     "accuracy": 1.0
+    },
+    "none": {
+     "n": 16,
+     "accuracy": 1.0
+    },
+    "other_site": {
+     "n": 48,
+     "accuracy": 1.0
+    },
+    "swapped": {
+     "n": 6,
+     "accuracy": 1.0
+    },
+    "view": {
+     "n": 40,
+     "accuracy": 0.975
+    }
+   },
+   "confusion_real": {
+    "shown": {
+     "shown": 16
+    },
+    "not_shown": {
+     "not_shown": 140,
+     "shown": 1
+    },
+    "cant_tell": {
+     "cant_tell": 48
+    }
+   },
+   "cost": {
+    "seconds_per_check": 4.768,
+    "rupees_per_1000_checks_local": 3.07
+   },
+   "refused": 0,
+   "unreadable_answers": 0,
+   "fooled_by_photo_difference": {
+    "split_at_distance": 0.0238,
+    "near_identical": {
+     "n": 54,
+     "fooled_rate": 0.0
+    },
+    "clearly_different": {
+     "n": 54,
+     "fooled_rate": 0.018518518518518517
+    }
+   },
+   "mcnemar_vs_baseline": {
+    "n": 89,
+    "only_a_right": 0,
+    "only_b_right": 70,
+    "p": 1.6940658945086007e-21
+   }
+  },
+  "sft4b_v4_real/probe_score.json": {
+   "headline_real_only": {
+    "n": 44,
+    "accuracy": 0.2727272727272727,
+    "macro_f1": 0.14285714285714285,
+    "fooled_rate": null,
+    "n_no_progress": 0,
+    "missed_rate": null,
+    "n_progress": 0,
+    "answered_accuracy": 0.0,
+    "answered_share": 0.7272727272727273,
+    "macro_f1_ci95": [
+     0.09145927601809956,
+     0.18868448637316562
+    ],
+    "fooled_rate_ci95": [
+     NaN,
+     NaN
+    ],
+    "missed_rate_ci95": [
+     NaN,
+     NaN
+    ],
+    "ece": 0.045454415408047795
+   },
+   "edited_items_apart": null,
+   "per_trick": {
+    "other_site_same": {
+     "n": 44,
+     "accuracy": 0.2727272727272727
+    }
+   },
+   "confusion_real": {
+    "shown": {},
+    "not_shown": {},
+    "cant_tell": {
+     "shown": 26,
+     "not_shown": 6,
+     "cant_tell": 12
+    }
+   },
+   "cost": {
+    "seconds_per_check": 8.279,
+    "rupees_per_1000_checks_local": 5.34
+   },
+   "refused": 0,
+   "unreadable_answers": 0,
+   "mcnemar_vs_baseline": {
+    "n": 0,
+    "only_a_right": 0,
+    "only_b_right": 0,
+    "p": 1.0
+   }
+  },
+  "sft4b_v4_real/test_score.json": {
+   "headline_real_only": {
+    "n": 205,
+    "accuracy": 0.9902439024390244,
+    "macro_f1": 0.9745440009294248,
+    "fooled_rate": 0.0070921985815602835,
+    "n_no_progress": 141,
+    "missed_rate": 0.0625,
+    "n_progress": 16,
+    "answered_accuracy": 0.9935897435897436,
+    "answered_share": 0.7609756097560976,
+    "macro_f1_ci95": [
+     0.9114714265566931,
+     1.0
+    ],
+    "fooled_rate_ci95": [
+     0.0,
+     0.02479855371900826
+    ],
+    "missed_rate_ci95": [
+     0.0,
+     0.2
+    ],
+    "ece": 0.009750525544329354
+   },
+   "edited_items_apart": null,
+   "per_trick": {
+    "busy": {
+     "n": 46,
+     "accuracy": 1.0
+    },
+    "double_claim": {
+     "n": 31,
+     "accuracy": 1.0
+    },
+    "light": {
+     "n": 18,
+     "accuracy": 1.0
+    },
+    "none": {
+     "n": 16,
+     "accuracy": 0.9375
+    },
+    "other_site": {
+     "n": 48,
+     "accuracy": 1.0
+    },
+    "swapped": {
+     "n": 6,
+     "accuracy": 1.0
+    },
+    "view": {
+     "n": 40,
+     "accuracy": 0.975
+    }
+   },
+   "confusion_real": {
+    "shown": {
+     "shown": 15,
+     "cant_tell": 1
+    },
+    "not_shown": {
+     "not_shown": 140,
+     "shown": 1
+    },
+    "cant_tell": {
+     "cant_tell": 48
+    }
+   },
+   "cost": {
+    "seconds_per_check": 4.901,
+    "rupees_per_1000_checks_local": 3.16
+   },
+   "refused": 0,
+   "unreadable_answers": 0,
+   "fooled_by_photo_difference": {
+    "split_at_distance": 0.0238,
+    "near_identical": {
+     "n": 54,
+     "fooled_rate": 0.0
+    },
+    "clearly_different": {
+     "n": 54,
+     "fooled_rate": 0.018518518518518517
+    }
+   },
+   "mcnemar_vs_baseline": {
+    "n": 89,
+    "only_a_right": 0,
+    "only_b_right": 70,
+    "p": 1.6940658945086007e-21
+   }
+  },
+  "sft4b_v6/probe_score.json": {
+   "headline_real_only": {
+    "n": 93,
+    "accuracy": 0.8924731182795699,
+    "macro_f1": 0.4715909090909091,
+    "fooled_rate": null,
+    "n_no_progress": 0,
+    "missed_rate": null,
+    "n_progress": 0,
+    "answered_accuracy": 0.0,
+    "answered_share": 0.10752688172043011,
+    "macro_f1_ci95": [
+     0.45294117647058824,
+     0.4861878453038674
+    ],
+    "fooled_rate_ci95": [
+     NaN,
+     NaN
+    ],
+    "missed_rate_ci95": [
+     NaN,
+     NaN
+    ],
+    "ece": 0.0
+   },
+   "edited_items_apart": null,
+   "per_trick": {
+    "other_site_same": {
+     "n": 93,
+     "accuracy": 0.8924731182795699
+    }
+   },
+   "confusion_real": {
+    "shown": {},
+    "not_shown": {},
+    "cant_tell": {
+     "cant_tell": 83,
+     "shown": 10
+    }
+   },
+   "cost": {
+    "seconds_per_check": 7.68,
+    "rupees_per_1000_checks_local": 4.95
+   },
+   "refused": 0,
+   "unreadable_answers": 0,
+   "mcnemar_vs_baseline": {
+    "n": 0,
+    "only_a_right": 0,
+    "only_b_right": 0,
+    "p": 1.0
+   }
+  },
+  "sft4b_v6/test_score.json": {
+   "headline_real_only": {
+    "n": 915,
+    "accuracy": 0.9508196721311475,
+    "macro_f1": 0.9247640640259892,
+    "fooled_rate": 0.01896551724137931,
+    "n_no_progress": 580,
+    "missed_rate": 0.1793103448275862,
+    "n_progress": 145,
+    "answered_accuracy": 0.96875,
+    "answered_share": 0.7693989071038252,
+    "macro_f1_ci95": [
+     0.9046558666878594,
+     0.9446080437297817
+    ],
+    "fooled_rate_ci95": [
+     0.00831809243547256,
+     0.03131189891549008
+    ],
+    "missed_rate_ci95": [
+     0.11861914257228315,
+     0.23953942763823002
+    ],
+    "ece": 0.01857612230738654
+   },
+   "edited_items_apart": null,
+   "per_trick": {
+    "busy": {
+     "n": 166,
+     "accuracy": 1.0
+    },
+    "double_claim": {
+     "n": 141,
+     "accuracy": 1.0
+    },
+    "light": {
+     "n": 18,
+     "accuracy": 1.0
+    },
+    "none": {
+     "n": 145,
+     "accuracy": 0.8206896551724138
+    },
+    "other_site": {
+     "n": 190,
+     "accuracy": 0.9894736842105263
+    },
+    "swapped": {
+     "n": 43,
+     "accuracy": 0.813953488372093
+    },
+    "view": {
+     "n": 212,
+     "accuracy": 0.9575471698113207
+    }
+   },
+   "confusion_real": {
+    "shown": {
+     "shown": 119,
+     "cant_tell": 17,
+     "not_shown": 9
+    },
+    "not_shown": {
+     "not_shown": 563,
+     "shown": 11,
+     "cant_tell": 6
+    },
+    "cant_tell": {
+     "cant_tell": 188,
+     "shown": 2
+    }
+   },
+   "cost": {
+    "seconds_per_check": 7.415,
+    "rupees_per_1000_checks_local": 4.78
+   },
+   "refused": 0,
+   "unreadable_answers": 0,
+   "fooled_by_photo_difference": {
+    "split_at_distance": 0.0238,
+    "near_identical": {
+     "n": 274,
+     "fooled_rate": 0.0036496350364963502
+    },
+    "clearly_different": {
+     "n": 273,
+     "fooled_rate": 0.03663003663003663
+    }
+   },
+   "mcnemar_vs_baseline": {
+    "n": 915,
+    "only_a_right": 8,
+    "only_b_right": 473,
+    "p": 2.183759600443884e-128
+   }
+  },
+  "sft4b_v6_real/probe_score.json": {
+   "headline_real_only": {
+    "n": 93,
+    "accuracy": 0.9247311827956989,
+    "macro_f1": 0.3202979515828678,
+    "fooled_rate": null,
+    "n_no_progress": 0,
+    "missed_rate": null,
+    "n_progress": 0,
+    "answered_accuracy": 0.0,
+    "answered_share": 0.07526881720430108,
+    "macro_f1_ci95": [
+     0.3103448275862069,
+     0.4918032786885246
+    ],
+    "fooled_rate_ci95": [
+     NaN,
+     NaN
+    ],
+    "missed_rate_ci95": [
+     NaN,
+     NaN
+    ],
+    "ece": 0.010752524099042383
+   },
+   "edited_items_apart": null,
+   "per_trick": {
+    "other_site_same": {
+     "n": 93,
+     "accuracy": 0.9247311827956989
+    }
+   },
+   "confusion_real": {
+    "shown": {},
+    "not_shown": {},
+    "cant_tell": {
+     "not_shown": 2,
+     "cant_tell": 86,
+     "shown": 5
+    }
+   },
+   "cost": {
+    "seconds_per_check": 7.779,
+    "rupees_per_1000_checks_local": 5.01
+   },
+   "refused": 0,
+   "unreadable_answers": 0,
+   "mcnemar_vs_baseline": {
+    "n": 0,
+    "only_a_right": 0,
+    "only_b_right": 0,
+    "p": 1.0
+   }
+  },
+  "sft4b_v6_real/test_score.json": {
+   "headline_real_only": {
+    "n": 915,
+    "accuracy": 0.9486338797814208,
+    "macro_f1": 0.9195384048724864,
+    "fooled_rate": 0.008620689655172414,
+    "n_no_progress": 580,
+    "missed_rate": 0.2206896551724138,
+    "n_progress": 145,
+    "answered_accuracy": 0.9797687861271677,
+    "answered_share": 0.7562841530054645,
+    "macro_f1_ci95": [
+     0.8971805296915019,
+     0.9411145954604689
+    ],
+    "fooled_rate_ci95": [
+     0.0017240637426553505,
+     0.01663872350043501
+    ],
+    "missed_rate_ci95": [
+     0.1602440828402367,
+     0.2812657298657718
+    ],
+    "ece": 0.040436293453466686
+   },
+   "edited_items_apart": null,
+   "per_trick": {
+    "busy": {
+     "n": 166,
+     "accuracy": 1.0
+    },
+    "double_claim": {
+     "n": 141,
+     "accuracy": 1.0
+    },
+    "light": {
+     "n": 18,
+     "accuracy": 1.0
+    },
+    "none": {
+     "n": 145,
+     "accuracy": 0.7793103448275862
+    },
+    "other_site": {
+     "n": 190,
+     "accuracy": 1.0
+    },
+    "swapped": {
+     "n": 43,
+     "accuracy": 0.7674418604651163
+    },
+    "view": {
+     "n": 212,
+     "accuracy": 0.9764150943396226
+    }
+   },
+   "confusion_real": {
+    "shown": {
+     "shown": 113,
+     "cant_tell": 23,
+     "not_shown": 9
+    },
+    "not_shown": {
+     "not_shown": 565,
+     "cant_tell": 10,
+     "shown": 5
+    },
+    "cant_tell": {
+     "cant_tell": 190
+    }
+   },
+   "cost": {
+    "seconds_per_check": 4.464,
+    "rupees_per_1000_checks_local": 2.88
+   },
+   "refused": 0,
+   "unreadable_answers": 0,
+   "fooled_by_photo_difference": {
+    "split_at_distance": 0.0238,
+    "near_identical": {
+     "n": 274,
+     "fooled_rate": 0.0036496350364963502
+    },
+    "clearly_different": {
+     "n": 273,
+     "fooled_rate": 0.014652014652014652
+    }
+   },
+   "mcnemar_vs_baseline": {
+    "n": 915,
+    "only_a_right": 8,
+    "only_b_right": 471,
+    "p": 8.447206227085601e-128
+   }
+  }
+ }
+}

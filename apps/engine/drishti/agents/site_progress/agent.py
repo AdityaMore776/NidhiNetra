@@ -61,10 +61,11 @@ import time
 from datetime import date, timedelta
 
 from drishti.agents.contract import AgentResult, Finding, Status
+from drishti.agents.site_progress import spots
 from drishti.agents.site_progress import visits as site_visits
 
 AGENT = "site_progress"
-VERSION = "site-progress-3.3.0"
+VERSION = "site-progress-3.4.0"
 QUESTION = ("Do the monthly site videos show real, new work, at this work's site, for this "
             "work only?")
 CONFIDENCE = 0.8
@@ -80,6 +81,7 @@ UNUSABLE_OF, UNUSABLE_LAST = 4, 5   # this many of the latest videos cannot show
 UNUSABLE_ALL_FROM = 3         # ... or every video so far, from the third
 UNUSABLE_RISK = 0.4           # as NO_SITE_VIDEO: the same way past every other check
 FINAL_GRACE_DAYS = 30         # recorded complete: the final video is due within this many days
+OFF_SPOT_M = 20.0             # T158: a viewpoint filmed this far from its spot is noted
 RISK = {"FOOTAGE_USED_BEFORE": 0.8, "SAME_PLACE_AS_ANOTHER_WORK": 0.7,
         "NOT_FILMED_AT_THIS_SITE": 0.8, "CLAIM_NOT_SHOWN": 0.5, "COMPLETE_NOT_SHOWN": 0.6,
         "ALREADY_BUILT_AT_START": 0.6, "NO_SITE_VIDEO": NO_VIDEO_RISK,
@@ -154,6 +156,40 @@ def _nature(work: dict) -> str | None:
     form = work.get("cost_form") if isinstance(work.get("cost_form"), dict) else {}
     part = form.get("work") if isinstance(form.get("work"), dict) else {}
     return part.get("nature") if isinstance(part.get("nature"), str) else None
+
+
+def _at(v: site_visits.Visit) -> str:
+    """" at spot v2" / " at spots v2, v3": where a claim was not shown (T158)."""
+    ids = v.get("claim_spots_not_shown") or []
+    return f" at spot{'s' * (len(ids) > 1)} {', '.join(ids)}" if ids else ""
+
+
+def _int(n) -> int | None:
+    return int(n) if isinstance(n, float) else None
+
+
+def _spot_notes(v: site_visits.Visit) -> list[str]:
+    """T158: fewer spots than the work needs, a viewpoint filmed far from its spot, a short pan,
+    road stretches asked but not filmed. Each a note: the pictures decide, never these."""
+    out = []
+    needed, filmed = v.get("spots_needed"), v.get("spots_filmed")
+    if needed and filmed is not None and filmed < needed:
+        out.append(f"{_when_cap(v)}: {filmed:.0f} of the {needed:.0f} spots this work needs were "
+                   "filmed (its size needs a pair of spots for every 40 m), so part of the work "
+                   "was not judged. Ask for the missing spots on the next visit.")
+    for vid, m in sorted((v.get("spot_offsets_m") or {}).items()):
+        if m > OFF_SPOT_M:
+            out.append(f"{_when_cap(v)}: viewpoint {vid} was filmed about {m:.0f} m from where it "
+                       "was first filmed (GPS); its pictures decide whether it is the same view.")
+    for vid, c in sorted((v.get("spot_coverage") or {}).items()):
+        if c < spots.COVER_GOOD:
+            out.append(f"{_when_cap(v)}: at viewpoint {vid}, {c:.0%} of the first visit's view "
+                       "was panned across; film the whole view next time.")
+    missed = v.get("stretches_missed") or []
+    if missed:
+        out.append(f"{_when_cap(v)}: stretch{'es' * (len(missed) > 1)} {', '.join(missed)} "
+                   "of the line, asked for when filming started, were not filmed.")
+    return out
 
 
 def _no_video(work: dict, as_of: date, vs: list[site_visits.Visit]) -> Finding | None:
@@ -289,8 +325,8 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
         a, reason = prev, b.get("claim_reason")
         findings.append(_f("CLAIM_NOT_SHOWN",
                            f"The agency's claim is not shown at the same viewpoints on two "
-                           f"visits in a row ({a.captured:%d %b %Y}: {a.claim or 'no claim'}; "
-                           f"{b.captured:%d %b %Y}: {b.claim or 'no claim'})"
+                           f"visits in a row ({a.captured:%d %b %Y}: {a.claim or 'no claim'}"
+                           f"{_at(a)}; {b.captured:%d %b %Y}: {b.claim or 'no claim'}{_at(b)})"
                            + (f". Reader: {reason}" if reason else "")
                            + ". Check at the site.", visits=[a.visit_id, b.visit_id],
                            claims=[a.claim, b.claim]))
@@ -389,6 +425,7 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
         if v.get("gps_weak") is True:
             notes.append(f"{_when_cap(v)}: the phone's GPS was too weak to place it; the views "
                          "decide where it was filmed.")
+        notes.extend(_spot_notes(v))
     # T137: UNUSABLE_OF of the last UNUSABLE_LAST (two in a row asked 1 honest work in 4 a year,
     # checked monthly at the assumed error rates), or every video so far from the third
     last = poor[-UNUSABLE_LAST:]
@@ -446,7 +483,7 @@ def assess(work: dict, as_of: date) -> AgentResult:
             return out(Status.ASSESSED, missing.text, [missing], early)
         return out(Status.NOT_APPLICABLE, "No site video yet: Site Progress starts with the first "
                    "visit, filmed before work begins. This is not a clean chit.", notes=early)
-    read = [v for v in vs if any(x not in (None, [], "") for x in v.readings.values())]
+    read = [v for v in vs if any(x not in (None, [], "", {}) for x in v.readings.values())]
     if not read:
         return out(Status.NOT_ASSESSABLE, f"{len(vs)} site video{'s' * (len(vs) != 1)} filmed, "
                    "none read yet. This is not a clean chit.", visits=len(vs))
@@ -457,7 +494,10 @@ def assess(work: dict, as_of: date) -> AgentResult:
     summary = [{"visit": v.visit_id, "kind": v.kind, "captured": v.captured.isoformat(),
                 "change": v.change, "claim": v.claim_verdict,
                 "zones_shown": len(v.get("zones_shown") or []),
-                "viewpoints": [v.get("viewpoints_matched"), v.get("viewpoints_expected")]}
+                "viewpoints": [v.get("viewpoints_matched"), v.get("viewpoints_expected")],
+                "spots": {"needed": _int(v.get("spots_needed")),
+                          "filmed": _int(v.get("spots_filmed")),
+                          "verdicts": v.get("spot_verdicts") or {}}}
                for v in read]
     if findings:
         headline = max(findings, key=lambda f: f.risk).text

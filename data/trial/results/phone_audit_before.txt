@@ -1,0 +1,13 @@
+phone audit: http://localhost:3100, 390 px, throttled (150 ms, 1.6 Mbps, CPU 4x), median of 3 loads
+page | KB total (script, font) | FCP ms | LCP ms | text cut off | sideways boxes (in form frame)
+/ | 828 (523, 217) | 1532 | 5872 | 0 | 0 (0, 0 cut)
+/queue | 767 (465, 217) | 1068 | 4808 | 0 | 1 (0, 0 cut)
+/works | 723 (416, 217) | 1072 | 5348 | 0 | 1 (0, 0 cut)
+/work?id=WF-COST-4 | 878 (474, 217) | 1532 | 5088 | 0 | 3 (0, 0 cut)
+/work-form | 843 (461, 201) | 1528 | 5244 | 0 | 0 (4, 4 cut)
+/work-form?example=cost_labour | 860 (461, 217) | 1068 | 5332 | 0 | 0 (4, 4 cut)
+/explain | 901 (574, 217) | 1200 | 1200 | 0 | 0 (0, 0 cut)
+/how-it-works | 784 (494, 201) | 1532 | 5208 | 0 | 0 (0, 0 cut)
+/end-to-end | 864 (473, 217) | 1076 | 5372 | 0 | 2 (0, 0 cut)
+/login | 791 (463, 242) | 1408 | 5608 | 0 | 0 (0, 0 cut)
+median over the pages: 843 KB, LCP 5332 ms

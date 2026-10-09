@@ -2001,6 +2001,652 @@ a day where 8 other agencies pay Rs 750; its 34 workers are not questioned), ask
 district's wages); the end-to-end hall pads its materials 40%. Every other example raises what it
 did before, with the same score.
 
+## T143 (6 Oct 2026): the website on a phone, and faster to load
+
+The owner: "make the website usable on phones as well, and also make them faster to load if you
+can while keeping all the functionality". Measured with `scripts/dev/phone_audit.mjs`: each page
+in Chromium as a phone (390 px, touch) with Lighthouse's mobile throttling (150 ms round trip,
+1.6 Mbps down, CPU 4× slower), the median of three loads, on a production build. Before = main
+(`results/phone_audit_before.txt`), after = this branch (`results/phone_audit_after.txt`).
+
+| Page | Downloaded, KB | Largest paint (LCP), s | Boxes scrolling sideways (in the form) |
+|---|---|---|---|
+| Dashboard `/` | 828 → 482 | 5.87 → 4.00 | 0 → 0 |
+| Review queue | 767 → 506 | 4.81 → 3.73 | 1 → 0 |
+| All works | 723 → 478 | 5.35 → 4.46 | 1 → 0 |
+| An example's page | 878 → 719 | 5.09 → 4.17 | 3 → 0 |
+| Work intelligence form | 843 → 566 | 5.24 → 4.20 | 0 (4, and 4 texts cut off) → 0 (0) |
+| Step by step | 901 → 667 | 1.20 → 1.09 | 0 → 0 |
+| How it works | 784 → 506 | 5.21 → 4.46 | 0 → 0 |
+| Form to risk score | 864 → 586 | 5.37 → 4.35 | 2 → 0 |
+| Sign-in / landing | 791 → 720 | 5.61 → 1.35 | 0 → 0 |
+| **Median of the pages** | **843 → 582** | **5.33 → 4.20** | |
+
+**What made it lighter** (the same features, loaded when used):
+- the sign-in code (Supabase) loads only when a sign-in cookie exists, or on signing in; a
+  visitor never downloads it;
+- the Hindi font is no longer preloaded on every page; one-word Hindi labels use the device's
+  own Devanagari font;
+- the charts (recharts), the 3D scenes (three.js) and the staff map load when their panel nears
+  the screen, the 3D after the page is idle (the landing page shows the emblem
+  picture meanwhile);
+- smooth scrolling (Lenis, GSAP) loads only for a mouse; a phone scrolls natively;
+- "Staff sign in" no longer prefetches the sign-in page.
+
+**What made it fit:** works lists as cards on a phone (agents named, no hover needed); the form
+map's sections as a compact list; estimate and labour rows as cards; the form's own tables as
+labelled cards below 560 px; a one-line top bar and banner; section headers that wrap; the form
+frame at its full height below the wide layout (one page scrolls, "Show in form" still lands on
+the field); a dropdown for the 13 example filings.
+
+**Still slow, and why:** every app page is drawn in the browser (the server sends a loading
+screen), so its text waits for the scripts. Rendering pages on the server is the next step, a
+bigger change. The example and Step-by-step pages show 217 KB of fonts in this audit only because
+the test machine has no Devanagari font of its own; a phone uses its own.
+
+## T144 (6 Oct 2026): the agents, more concrete: quantities held to the size for more works
+
+The owner: "work even more on the agents. I need the agents to be fully concrete, working and
+good at it".
+
+**The audit.** The robustness loop's 10 LIMITs (112 probes) are of three kinds, none closable from
+here without changing the owner's rules or adding data:
+- margins the owner set: padding 14% under the 15% line; masons at 1.8× under 2×; split pieces at
+  95% under the 96% rule;
+- the owner's labour ruling: crews' days ×2.5 within the work's time (how many workers is never
+  judged);
+- data still to come: the state's Schedule of Rates (T096) for district-wide padding, composite
+  items and units; real filed forms (T098); real site videos (T126). The rate book on branch
+  `adityamore776/T096-up-sor` waits on a check by eye, per-circle rates and GST.
+
+What could be made concrete now: the Cost agent held quantities to the work's size for only four
+kinds of work (CC roads' cement and sand, solar lights by count, high masts, footpaths).
+
+**What changed** (`cost_form/norms.py`, `materials.py`, `validate.py`; whole estimate `whole.py`):
+- **A CC road's stone** by its concrete mix (IS 456 nominal mix: 0.84 m³ of dry stone per m³ of
+  M20), with 15% room for the analysis-of-rates figures (0.85–0.90) and wastage.
+- **A water pipeline's pipes:** with the house connections' pipes on lines of their own (32 mm or
+  less, or named for connections), the main alone is held to the pipeline's length + 10%; with
+  every pipe on one line, the length + 20 m a connection + 10%. A tank's connecting pipe + 10%.
+- **Solar lights bought by the watt or watt-hour:** panels at each light's Wp × the lights,
+  batteries at each light's Wh, + 5%. Count lines are still held to the count.
+- **Stone named for a base course is the base:** "40 mm aggregate for WBM", "Aggregate for GSB",
+  "ballast for base course" were read as concrete's aggregate (and priced as it).
+- **A road over a new stone base must itemise its stone:** with no base line and a stone line
+  sized for neither the slab (6–20 mm, "concrete", "PCC") nor the base (40 mm and up), the form
+  asks for the base on a line of its own before the estimate is judged. The loop found the reason:
+  one unsized stone line hid twice the slab's stone.
+- The whole estimate counts the same lines as the quantity check (one function, `norms.held`).
+
+**Planted filings** (`data/trial/quantity_trial.py`, `results/quantity_trial.txt`): 200 a cell,
+through the website form, the adapter, the form check and the Cost agent, the agency confirming
+whatever the form asks (the worst case for a false question):
+
+| Filing | Asked by the Cost agent |
+|---|---|
+| honest roads (base on a WBM line, as "aggregate for WBM", as "63 mm", none) | 0/800 |
+| honest roads, all stone on one unsized line | 0/200 (the form asks to itemise: not judged) |
+| road stone ×1.25 | 0/400 (the form asks the agency to confirm, 400/400) |
+| road stone ×1.5, ×2 | 400/400, 400/400 |
+| honest pipelines (itemised; one line) | 0/200, 0/200 |
+| pipes ×1.5, ×2, itemised | 200/200, 200/200 |
+| pipes ×1.5, ×2, all on one line | 69/200 (34.5%), 158/200 (79.0%) |
+| honest solar lights by Wp, by Wh | 0/200, 0/200 |
+| panels or batteries ×1.5, ×2 by capacity | 200/200 each |
+
+The honest ranges are assumptions (0.84–0.92 m³ of stone per m³; 6–15 m a house connection);
+real filings (T098) will show the real spread.
+
+**Effects elsewhere:** two example filings (a road "complete" 6 days after sanction; a road filmed
+2.4 km away) had their whole estimate "not judged" (43% of the money priced); their stone now has
+a known need, so they are judged fair (62–63% priced). Labour and whole-estimate trials:
+unchanged.
+
+**The robustness loop** (`results/agent_robustness.txt`): 118 probes, PASS 108, FAIL 0, LIMIT 10;
+400 random damages, 0 errors. New probes: the road's stone alone doubled (asked), the base's stone
+written "Stone aggregate 63 mm for WBM" (quiet), all stone on one line (the form asks to
+itemise), the slab's stone doubled inside one unsized line (the form refuses it until itemised),
+solar panels by the watt at the lights' own Wp (quiet) and at twice (asked).
+
+**A harness flaw, fixed:** when padding took the estimate more than 10% over the MP's amount, the
+form refused the planted filing for its missing reason, so "padding 14%: just under the 15% line"
+and "18% GST in other charges" never reached the price check. The planted agency now cites the
+MP's consent, as a padder would. Both results stand, now for the right reason: 14% padding is
+judged and quiet (under the 15% line); the GST line is judged and quiet.
+
+## T145 (6 Oct 2026): what a quantity or a price should be is a range
+
+The owner: the cost "size prediction" or "price prediction" "should give a range and not just
+'should be quantity 1334'". Every figure the Cost agent gives for what a line should be is now a
+range, from the same data as before (no rule or margin changed):
+- **a quantity** (`norms.py`): from the standard amount for the size (the mix, the area, the
+  count) to the same with the room honest estimates carry (wastage, the stone's analysis-of-rates
+  room, a pipe's house connections at 6 to 20 m each);
+- **a rate** (`rates.py`): from the lowest to the highest of the other agencies' own median rates
+  here (the fair rate stays their median); a state-wide rate carries its 10% leeway on both ends;
+  a schedule's rate is its own range;
+- **the whole estimate's fair price** (`whole.py`): every priced line at those lowest and those
+  highest rates;
+- **a labour day rate** (`labour.py`): what other agencies pay that trade, lowest to highest;
+- **a price per light or per metre**: the middle 8 in 10 of the similar works (10th to 90th
+  percentile).
+
+What the officer now reads, from the rebuilt examples (`apps/web/public/work-form/examples.json`,
+`end-to-end/examples.json`): "Cement: 2,614 bags in the estimate, but the work's size takes
+1,270–1,334 bags"; "a fair price for this work here: ₹15.13 L at the usual rates, ₹14.90 L–₹15.57 L
+from the lowest to the highest rates other agencies charge"; "Mason at ₹1,800 a day: 2.4× the ₹750
+others here pay this trade (₹735–₹780)". Jaunpur's 136 real solar lights cost ₹20,878–₹20,896 a
+light (8 in 10): one price nearly everywhere, so that range is narrow by the data, not by the code.
+
+**Unchanged:** every example raises the same findings; `quantity_trial.py`, `labour_trial.py`,
+`cost_whole_trial.py` and the robustness loop (118 probes, PASS 108, FAIL 0, LIMIT 10) print the
+same results. What is asked is still decided by the upper end and the owner's margins.
+
+## T146 (7 Oct 2026): a vision model for real construction progress, measured on synthetic sites
+
+The owner asked for a pipeline of construction site videos, a tuned dataset with augmentation, and an existing vision
+model fine-tuned to see actual progress. The plan, with each of the owner's notes judged, is
+`docs/plans/T146-site-progress-vision.md`; the code is `apps/vision/`. No real video could be fetched here: this
+machine's network refuses YouTube, Wikimedia, Hugging Face and Kaggle, and it has no GPU. So everything was measured on
+**synthetic timelapses whose truth is exact** (`data/trial/vision_synth_trial.py`,
+`results/vision_synth_trial.txt`):
+- 30 sites, 60 frames each, five kinds (masonry, concrete frame, wood, steel, road);
+- people, trucks, scaffolding, stacks, machines, a sweeping shadow, changing light, camera shake, a date stamp;
+- covered work (plaster over brick) and buried work (earth over footings).
+
+These numbers check the pipeline and its measures. **They say nothing about accuracy on real sites** (T147, T148).
+
+**The hindsight teacher against the truth** (progress = change that never goes back; 1,860 random pairs):
+
+| | precision | recall | IoU | pairs labelled | pairs right |
+|---|---|---|---|---|---|
+| auto thresholds + stage marks | 0.913 | 0.957 | 0.877 | 96.1% | 97.5% |
+| auto thresholds, no marks | 0.913 | 0.957 | 0.877 | 92.3% | 93.9% |
+| fixed lo = 0.10 / 0.15 / 0.20 / 0.25 | 0.819 / 0.898 / 0.940 / 0.962 | 0.990 / 0.977 / 0.952 / 0.910 | 0.812 / 0.879 / 0.897 / 0.879 | 90.7–93.0% | 92.7–94.8% |
+
+- By kind, pairs right: 96.2% (wood) to 98.3% (road); road's patch recall is the lowest (0.841).
+- The thresholds from each shot's own noise (lo 0.127 to 0.282) come within 0.02 IoU of the best fixed value.
+- **Buried work:** 16.9% of buried patches are called progress; the rest read "nothing changed", as no picture can
+  show a footing under earth. With stage marks those pairs are labelled right; this is why the marks exist.
+
+**Masks and splits:**
+- date stamps and logos found with IoU 0.785 on average (lowest 0.633);
+- 97.4% of patches with people or passing trucks masked, and 12.3% of other patches (around new work);
+- 100% of frames aligned;
+- a re-upload of a site (filmed at other moments) joined its original's site; no site or channel in two splits.
+
+**The student** (frozen hand-made features + the trained head, on CPU; DINOv2 needs the GPU), against the truth, on
+sites it never saw:
+
+| Fold | AUROC | train − test | patch IoU | light | staged | both ways | build-up τ |
+|---|---|---|---|---|---|---|---|
+| in-type | 0.960 | +0.018 | 0.454 | 0.006 | 0.070 | 0.003 | 0.312 |
+| in-type, no augmentation | 0.968 | +0.017 | 0.530 | 0.101 | 0.218 | 0.075 | 0.342 |
+| held out: masonry | 0.976 | −0.007 | 0.532 | 0.007 | 0.019 | 0.005 | 0.160 |
+| held out: concrete frame | 0.965 | +0.009 | 0.522 | 0.034 | 0.078 | 0.006 | 0.146 |
+| held out: wood | 0.947 | +0.023 | 0.496 | 0.000 | 0.000 | 0.000 | 0.227 |
+| held out: steel | 0.939 | +0.035 | 0.491 | 0.033 | 0.085 | 0.036 | 0.313 |
+| held out: road | 0.918 | +0.062 | 0.222 | 0.012 | 0.098 | 0.015 | 0.020 |
+
+Column meanings:
+- **light:** pairs only minutes apart with no work, called progress;
+- **staged:** no-work pairs with people, machines, scaffolds and stacks pasted in, called progress;
+- **both ways:** progress pairs also called progress when the frames are swapped.
+
+What this shows:
+- **Augmentation buys robustness, not score.** Without it AUROC is about the same (0.968 against 0.960). But light is
+  called progress 10.1% of the time (0.6% with it), a dressed-up site 21.8% (7.0%), and swapped pairs 7.5% (0.3%).
+  The model without augmentation had learned "different", not "added".
+- **The "wooden houses only" worry, measured.** Trained without a kind, the model still scores 0.92–0.98 on it. The
+  most different kind, roads, is the hardest: AUROC 0.918, the largest train-test gap (+0.062), a weak map (IoU 0.222).
+  Real data needs enough roads and drains of its own.
+- **Not memorising:** the train-test gaps are −0.007 to +0.062.
+- **Targets missed, said plainly:**
+  - the build-up score orders frames poorly (τ 0.02–0.34, target 0.8);
+  - the dressed-up audit is 7.0% in-type (target 2%).
+  Both are for the GPU run on DINOv2 features to answer (T148), with more ordering epochs.
+
+**Fixed along the way:**
+- **Alignment:** keypoints bunched on the changing brickwork, so 20–60% of frames of some sites aligned. Spreading
+  them over a grid and fitting a shift, rotation and zoom aligned 100%, with errors under 1 px.
+- **Overlay mask:** it took the shadow's flicker at the foot of the building for a date stamp (twice the true area). A
+  flickering box must now hug the frame's edge.
+- **Moving-things mask:** it flagged a whole sweeping shadow (26% of pixels). It now compares fine detail and colour,
+  which a shadow does not change, and drops huge blobs.
+- **Training:** the hand-made features of all patches pointed almost the same way (differences about 1% of their
+  length), so the head learned nothing (AUROC 0.48). The fixes:
+  - centre each image's features;
+  - give B's patches their difference from A's;
+  - lean the yes / no on the map;
+  - weigh rare progress patches up to 10 times.
+
+## T151–T153 (8 Oct 2026): real Indian stage photos for the claim judge, and what the eye found
+
+Plan: `docs/plans/T150-vlm-progress-dataset.md`. Code: `apps/vision/drishti_vision/` (`geomgnrega.py`, `change.py`,
+`vlmdata.py`, `eyecheck.py`). Counts: `data/trial/vlm_trial.py` → `results/vlm_trial.txt`. Photos and records stay on
+the owner's D: drive, never in git.
+
+**The source (T151).**
+- GeoMGNREGA photographs every MGNREGA asset at three stages: 1 before, 2 during, 3 after, two photos each. It is
+  public on ISRO's Bhuvan map. Bulk export is off (WFS disabled; compressed photo copies answer 403), so only the
+  requests a person's click makes are used, at one every 1.5 s: about 50 assets an hour.
+- 130 assets read so far: all 130 have all three stages.
+- The work types are MPLADS-like: interlocking, brick, CC and earth roads; Anganwadi and Panchayat buildings;
+  sanitary complexes; school toilet blocks; compound walls; ponds and trenches.
+
+**What looking at the photos changed (T153), each now a rule in code and a test:**
+
+| Found by eye | Rule now |
+|---|---|
+| A grove's "after" photo differed from its "before" only by season (dry leaves vs green growth), yet passed a "the photos changed a lot" check | "Progress" items only for unmistakable built structures (an allowlist of sub-categories); no ponds, earth or gravel roads, bunds, trenches, playfields or repairs |
+| One "before" photo already showed a (different, older) building | Progress also needs the before → after change to beat the asset's own same-moment noise, and to pass a floor (DINOv2 distance 0.25; the margins were set by eye on 12 pilot assets) |
+| A pond's two "before" photos were taken from very different spots (a dry pit close-up vs a wide view with water): "nothing was added between them" could not be read from the photos | Same-moment pairs count only when the two photos show the same scene (distance ≤ 0.10; 78–85% of pairs) |
+| "Is it finished?" on a grove's before photo cannot be decided from pixels (a finished trench may look the same) | Such claims only for structures that would be unmistakable once built |
+| A green plot next to a green grove could pass for one place | The "different place" photo is always a finished structure of another work type |
+| The portal writes "CmpOnd wall"; "pond" matched inside it | Word-start matching; a compound wall is a wall |
+
+**The items (`vlm_trial.txt`):**
+- 130 assets, of which 86 pass the progress certainty rule.
+- **Train:** 1,063 items (633 real and unedited) from 5 districts.
+- **Test:** 55 items, **all real and unedited**, from 1 district never used in training.
+- Edited items (people pasted in, light, dark, blocked) are training-only. They are capped at 20% when training, and
+  every edit also goes into a real progress pair labelled "shown".
+
+**Every test label was looked at** (contact sheets, `eyecheck.py`; by the agent, a person to follow). The rules
+above came from that look; after them, no label on the 6 test sheets was wrong.
+
+**The untrained Qwen3-VL-4B (4-bit) on the 55 real test items:**
+
+| | Result |
+|---|---|
+| Accuracy | 76% |
+| Macro-F1 | 0.54 |
+| Fooled | 2 of 38 no-progress pairs |
+| Missed | 1 of 8 progress pairs |
+| Time | 3.6 s a check, about ₹2 per 1,000 checks on the owner's PC |
+
+Two things it shows:
+- **It never says "can't tell" for a different place:** 0 of 9; it says "not shown".
+- **It is fooled only when the two photos look clearly different:** 2 of 19 such pairs, against 0 of 19 nearly
+  identical pairs.
+
+The second is the shortcut the owner warned of: "different photos" standing in for "progress". It is why:
+- training crops, turns and re-saves each photo on its own;
+- the scores are split by how different the photos look;
+- the timelapses' busy and light pairs (real photos, taken at different times, with nothing built between them) are
+  being added.
+
+These are early numbers on one test district; the final ones come with the full harvest (T152) and the trained
+models (T154).
+
+### T153–T154 (8 Oct 2026, later): the timelapse labels, checked by eye
+
+The v3 build added 488 items from 180 CC BY timelapses. Every test label was looked at, larger than on the sheets
+(two 640 px frames side by side). What the eye found:
+
+| Found by eye | Count | Rule now (each with a test) |
+|---|---|---|
+| Every timelapse photo had red and blue swapped (orange skies): frames are kept RGB, OpenCV writes BGR | all 488 | Frames flipped before saving |
+| **Wrong labels on the first look: 20 of 63 test pairs (32%)**: something permanent may have been added in a "nothing built" pair (paving stones, a bridge girder set in place, siding, a water tank, rooftop units) 7; two camera views, a dissolve or two rooms 6; title or advert cards 4; "work added" with no clear new structure 3 | 20 of 63 | The rows below, and the rest dropped by eye |
+| The teacher could judge only about half the view (moving workers): "no lasting change found" meant little | the paving-stone pairs | A no-progress pair needs ≥ 80% of the view judged, and may not span a stretch where the same shot shows work |
+| Hand-held clips, cuts and dissolves (frames 3–5 apart already differ, `lo` 0.5–1.3): the teacher calls almost everything unchanged and found **no** progress in any such test shot | 18 of 43 test shots | Shots with noise `lo` > 0.4 give no items. Below it, the wrong pairs left were title and advert cards and a few possible installs (the girder among them), all dropped by eye |
+| The same pair twice | 2 | Each pair of frames used once |
+| After the rules, a second look at the 31 test pairs they newly picked | 9 of 31 wrong | Dropped by eye: title or advert cards 4, possible installs 2, "work added" with no clear new structure 3 |
+
+**The timelapse "work added" labels are mostly wrong.** Of 41 such items across all splits, **1** shows clear new
+permanent structure (bridge girders placed across a river). The other 40 are season and snow changes on a webcam
+(19), advert or end cards (3), a talking head, drone parallax, a load still hanging from a crane, timber formwork,
+painting a fence, draining a pool, and webcam pairs with no visible new structure. The hindsight teacher
+(`hindsight.py`) counts any change that never returns as progress, and snow, a new season or a caption never
+returns within a shot. **This also bears on T146 (PR #120):** its DINOv2 student learnt from these same progress
+labels. Only the eye-confirmed one is kept here. The swapped versions stay ("B is earlier": not shown either way).
+
+**The government stage photos held up.** All 172 test items from GeoMGNREGA were right on the sheets. Two needed a
+full-size look: a CC road whose slab and joints are clear at full size, and a road photographed from a new angle,
+where the same teal house appears in both photos.
+
+**The dataset trained on (v4, `items_eye.jsonl`):**
+- **Train:** 2,642 items, 1,641 of them real and unedited.
+- **Calibration:** 155 items, all real.
+- **Test:** 205 items, **all real and every label checked by eye.**
+  - 16 progress, 141 no progress, 48 different place;
+  - government photos come from only 4 districts (Azamgarh, Sagar, Nagaur, Purulia), so the harvest now visits
+    those first, then 11 new districts.
+
+Counts: `data/trial/results/vlm_trial.txt`. Checks: `D:\nidhinetra-data\vlm\eye_checks.jsonl`, one line a review,
+keyed by photo pair (`eyecheck.key`), so they survive rebuilds.
+
+### T154 (8 Oct 2026): first fine-tuned judge, and the shortcut it learnt
+
+Trained on Modal (A100-40GB, the owner's credit): LoRA rank 16, 2 passes, 2,051 training items (410 edited), about
+32 minutes and about $1.2 a run. Scored on the 205 eye-checked real test items (v4):
+
+| Judge | Macro-F1 [95% CI] | Fooled (no-progress called "shown") | Missed progress | Accuracy |
+|---|---|---|---|---|
+| Qwen3-VL-2B, untrained (owner's PC) | 0.39 | 19 of 141 (13.5%) | 3 of 16 | 64% |
+| Qwen3-VL-4B, untrained | 0.44 [0.31, 0.51] | 2 of 141 (1.4%) | 5 of 16 | 37% |
+| **4B fine-tuned** | **0.99** [0.93, 1.00] | **1 of 141 (0.7%)** | **0 of 16** | **99.5%** |
+| 4B fine-tuned, real photos only (no edited items) | 0.98 | 1 of 141 | 1 of 16 | 99.0% |
+
+The untrained 4B is rarely fooled because it rarely commits: it answered "can't tell" to 102 of the 141 no-progress
+pairs. The tuned 4B's one miss is an honest hard case: a CC road's two before photos taken from two spots, one
+showing an older paved stretch.
+
+**The near-perfect score hid a shortcut.** In v4 the "different place" photo was always a finished work of
+**another type** (the owner's rule, so that "different" was unmistakable). So a probe was built: photo B is a
+finished work of the **same** type somewhere else in the same held-out district (another block), checked by eye
+(44 of 58 pairs kept):
+
+| Judge | Correct "can't tell" on 44 same-type other places |
+|---|---|
+| 4B untrained | **39 (89%)** |
+| 4B fine-tuned | **2 (5%)**: it called another finished road "shown" 38 times |
+| 4B fine-tuned on real photos only | 12 (27%) |
+
+The tuning had taught "different place = different kind of work". An agency could pass the tuned judge by
+photographing someone else's finished road. **Fix (now in `vlmdata.py`, with tests):** every training asset also
+gets a same-type, other-block pair labelled "can't tell" (`other_site_same`). The probe stays as its own report.
+The edited items made the shortcut worse (5% against 27%), which is the first hint for the owner's keep-or-drop
+rule on edits.
+
+**More test labels by eye (v5/v6).** The harvest reached 717 assets. The 193 new test assets were checked as **asset
+cards** (all 6 stage photos and the other-place photo in one row), 967 labels in all:
+- **82 wrong.** The worst group: 7 of 7 "Roof top rain water harvesting structure in gov/panchayat building"
+  assets. "Panchayat" made them buildings, and their before photo always shows the building the pit sits beside.
+  Now a rule (type "other", never progress), with a test.
+- The rest were dropped by eye:
+  - a before photo already showing an older paved road, or a toilet block standing;
+  - after photos showing a field, a gate or a different spot;
+  - 3 other-place pairs where the two could be one place.
+
+**v6 (`items_eye.jsonl`), the set being trained now:**
+- **Train:** 4,663 items, 563 assets, 53 districts (2,924 real).
+- **Test:** 915 items from 203 assets in 15 held-out districts, **every label checked by eye**: 145 progress,
+  580 no progress, 190 different place.
+- **Probe:** 93 same-type other-place pairs, checked by eye.
+
+### T154 (8 Oct 2026, later): v6 results (915 real test items, every label checked by eye)
+
+LoRA rank 16, 2 passes, on Modal (A100 for training, L4 for scoring). Output: `data/trial/results/vlm_trial.txt`.
+
+| Judge | Macro-F1 [95% CI] | Fooled (of 580 no-progress) | Missed progress (of 145) | Same-type probe right (of 93) |
+|---|---|---|---|---|
+| Qwen3-VL-2B untrained | 0.46 [0.43, 0.50] | 56 (9.7%) | 55 (38%) | not run |
+| Qwen3-VL-4B untrained | 0.47 [0.43, 0.51] | 7 (1.2%), answers only 34% of the time | 84 (58%) | 62 (67%) |
+| 2B tuned | 0.92 [0.90, 0.94] | 15 (2.6%) | 22 (15%) | 74 (80%) |
+| 4B tuned (with edited photos) | 0.925 [0.91, 0.95] | 11 (1.9%) [0.8, 3.1] | 26 (18%) | 83 (89%) |
+| **4B tuned, real photos only** | **0.92 [0.90, 0.94]** | **5 (0.9%) [0.2, 1.7]** | 32 (22%) | **86 (92%)** |
+
+McNemar tests:
+- every tuned model against its untrained base: p < 10⁻⁵⁰;
+- with edits against real only: 13 against 11 items, p = 0.84 on the test, and p = 0.55 on the probe;
+- 2B tuned against 4B tuned: p = 0.32.
+
+What follows:
+- **The edited photos are dropped (the owner's rule).** The real-only model is not worse: it ties overall, is fooled
+  less, and passes the probe more often.
+- **The same-type shortcut is mostly fixed** (89–92% on the probe, from 5% before). The pairs left are all "an empty
+  plot, then a close-up of a finished building elsewhere". Real progress pairs for buildings look exactly like that, so
+  photos alone cannot separate them: the photo's GPS tag, or a landmark seen in both, must.
+- **Track B is in reach:** on the test, the tuned 2B is level with the tuned 4B. It is weaker on the probe (80%).
+- **Weak spots left (the reinforcement stage's targets):**
+  - real progress answered "can't tell" (17–23 of 145);
+  - photos in reverse order (72–81% right).
+
+### T155 (8 Oct 2026): against the flagship, at each model's best (owner's rules)
+
+**The owner's rules for the comparison** (8 Oct 2026):
+- **Real data only.** Every compared item is a real construction-site photo pair: GeoMGNREGA stage photos of
+  MGNREGA works, plus real site timelapse frames. Nothing is edited or rendered, and every label was checked by eye
+  (test 915, calibration 124 after the eye check).
+- **The same question and the same photos for both models.** No model has seen the test before: 0 test districts,
+  0 sites and 0 identical photo files are shared with training (checked by file hash over all 1,008 test and probe
+  items).
+- **Each model at its maximum, never weakened to match the other:**
+  - Gemini gets full-resolution photos, its own thinking, temperature 0, and the choice of 4 worked examples (from
+    training districts only);
+  - ours may also run at 1,024 px.
+  - Each model's setting is chosen on the calibration split, not the test.
+- **Cost counts as much as accuracy:** a ton of checks will be run. Each judge's cost a check is measured:
+  - Gemini: its billed tokens, thinking included, × Google's published price (ai.google.dev/gemini-api/docs/pricing,
+    read 8 Oct 2026: 3.1 Pro $2 / $12 per million tokens in / out; 3.8 Flash $0.75 / $3.75), and the Batch API at
+    half price for bulk;
+  - ours: measured GPU seconds × Modal's published L4 price ($0.000222 a second).
+
+**The key** is a Modal Secret, which the owner typed into Modal's website. Code reads it only inside Modal
+containers; it never touches the PC or the repo.
+
+**Calibration (92 items shared by all judges, labels checked by eye; only 11 progress pairs, so it only picks
+settings):**
+
+| Judge | Macro-F1 | Fooled (of 60) | Missed (of 11) | $ per 1,000 checks |
+|---|---|---|---|---|
+| Our 4B, 512 px | 0.84 | 1 | 4 | 0.18 |
+| **Our 4B, 1,024 px** (chosen) | 0.86 | 1 | 4 | 0.39 |
+| **Our 2B, 512 px** (chosen) | 0.87 | 1 | 3 | 0.12 |
+| **Gemini 3.1 Pro** (chosen) | 0.73 | 0 | 8 | 9.56 |
+| Gemini 3.1 Pro + 4 worked examples | 0.68 | 0 | 9 | 28.62 |
+| Gemini 3.8 Flash | 0.66 | 0 | 10 | 2.80 |
+
+Gemini is never fooled here, but it rarely confirms real work: it calls most real progress "not shown" or "can't
+tell". The worked examples made it worse and cost 3× more.
+
+**Daily cap:** Gemini 3.1 Pro stopped after 250 requests in a day on the owner's tier (Google: "You exceeded your
+current quota"). The 915-item test therefore goes through the Batch API: the same requests, as one file, at half
+price, with no daily request cap.
+
+The eye check of calibration also found wrong labels:
+- 6 sites (a before photo already showing the building; after photos showing only an earth track, grass or a wall);
+- 14 of 33 timelapse pairs (a talking head, title cards, a theatre stage, garden fence work).
+
+**THE RESULT: the 915 real test items, every label checked by eye** (`results/vlm_compare_test.txt`). Gemini 3.1 Pro is
+Google's top model, at its best setting (full-resolution photos, its own thinking), sent through the Batch API:
+
+| Judge | Macro-F1 [95% CI] | Fooled (of 580) | Missed progress (of 145) | $ per 1,000 checks |
+|---|---|---|---|---|
+| **Our 4B** (512 px) | **0.918** [0.896, 0.939] | 5 (0.9%) | 32 (22%) | **0.17** |
+| Our 4B, 1,024 px | 0.917 [0.891, 0.941] | 6 | 33 | 0.38 |
+| **Our 2B** | **0.912** [0.889, 0.934] | 15 (2.6%) | **23 (16%)** | **0.12** |
+| Gemini 3.1 Pro | 0.689 [0.647, 0.735] | **2 (0.3%)** | 109 (75%) | 5.18 batch; about 10.4 live |
+| Qwen3-VL-4B untrained | 0.471 [0.428, 0.512] | 7 | 84 | n/a |
+
+Costs:
+- ours: measured L4 seconds × Modal's price;
+- Gemini: its billed tokens, thinking included, × Google's price (the Batch API is half the live price).
+
+McNemar against Gemini, our 4B: our 4B is right on 117 items Gemini gets wrong, and wrong on 6 it gets right
+(p = 8×10⁻²⁸). Our 2B: 122 against 19 (p = 1×10⁻¹⁹).
+
+**Same-type probe** (`results/vlm_compare_probe.txt`): Gemini 3.1 Pro 93 of 93, our 4B 86 of 93 (p = 0.016 against
+Gemini), our 2B 74 of 93.
+
+**Against plan §7.4:**
+- **Track B (same accuracy at a fraction of the cost): achieved, and passed.** Our models are more accurate than
+  Google's top model:
+  - macro-F1 +0.23;
+  - it misses 75% of real progress, ours 16–22%;
+  - one check costs 1/30 (4B) to 1/44 (2B) of Gemini's bulk price, and 1/60 to 1/88 of its live price. The plan's
+    "1/100" is not quite reached against the bulk price.
+- **Track A (fooled at most half as often as the best flagship): NOT claimed.**
+  - Gemini is fooled less often (2 against 5 of 580) and passes the same-type probe (93 against 86 of 93).
+  - It gets there by rarely confirming any work: it answers "can't tell" or "not shown" for 109 of 145 real,
+    finished works. As a checker, that would send most honest agencies to an inspection.
+  - The stop rule applies: this is reported as it is.
+- **Where our model still loses:** an empty plot, then a close-up of a finished building elsewhere (the probe). The
+  photo's GPS tag or a shared landmark is the remedy, not more of the same photos.
+
+**GRPO (reinforcement stage) on the hard training items made the 4B worse, so it is not kept.** The run used 178
+prompts: the training items the tuned 4B got wrong or was unsure of, plus 20% easy ones; 20 minutes on an A100.
+- On its own prompts: verdicts right went from 0.35 to 0.81.
+- On the test:
+  - macro-F1 0.864 (from 0.918);
+  - missed progress 3% (from 22%);
+  - but **fooled 48 of 580 (from 5)**.
+- Same-type probe: **10 of 93** (from 86).
+
+McNemar against the SFT model: 88 against 41 items, p = 4×10⁻⁵. Most of the hard items were real progress the model
+hedged on, so the practice taught "say shown". **Lesson:** the practice prompts must be balanced across the three
+answers. A balanced run is judged on calibration and the probe before the test is touched.
+
+**Spend:**
+- Google, about $11 (₹942 on the owner's cap): live calibration calls about $5.04 and the batches about $6. Then the
+  account was blocked for billing (fixed by the owner with ₹800 of prepaid credit).
+- After that, one test call for ₹0.0009, logged in `D:\nidhinetra-data` and on the volume
+  (`/data/budget/gemini_inr.json`, ceiling ₹800, stop at ₹700; every paid call is priced at its worst case before it
+  is sent).
+- Of the Gemini 3.8 Flash test batch, 600 of 915 requests failed (unbilled) after the block. Flash is not re-run.
+
+### T155 final (8 Oct 2026, evening): the clean test, Gemini at its best, the report
+
+**The report:** `NidhiLens (Fine-Tuned Qwen for site progress monitoring)/README.md`. The model is named
+**NidhiLens-FineTuned-Qwen4B** (and -Qwen2B). The weights are in the private repo `AdityaMore776/NidhiLens-FineTuned-Qwen4B`
+(release v1.0). The test data is the `siteclaim-test-v1` release of this repo.
+
+**The test was cleaned once more.**
+- Every site where any judge disagreed with the label (61 sites) was re-checked on large cards.
+- 32 labels were dropped: 24 shown, 4 can't tell, 4 not shown. A fix to a photo applies to every item using it.
+- Test now: 883 items (850 GeoMGNREGA from 5 districts, 33 timelapse).
+
+**Gemini, with its best prompt, is much better.** That prompt is ours plus the task's rules, with no examples and
+nothing from the test, written after reading its failures. On the 223 checks it answered with it:
+
+| Judge | Macro-F1 | Missed progress |
+|---|---|---|
+| **Our 4B** | **0.934** | 6 of 32 |
+| Gemini, best prompt | 0.863 | 10 of 32 |
+| Gemini, our prompt | 0.738 | 22 of 32 |
+
+- McNemar, our 4B against Gemini's best: 16 against 4, p = 0.012.
+- Same-type probe:
+  - Gemini, best prompt: 82 of 93;
+  - our 4B: 86 of 93 (p = 0.45);
+  - Gemini, our prompt: 93 of 93.
+
+Google's monthly spending cap stopped the remaining 660 checks. Prepaid usage counts toward the cap, at a ledger of
+₹226.50.
+
+**The whole clean test (Gemini with our prompt):**
+
+| Judge | Macro-F1 | Fooled (of 576) | Missed (of 121) | $ per 1,000 checks |
+|---|---|---|---|---|
+| Our 4B | 0.935 | 4 | 21 | 0.17 |
+| Our 2B | 0.927 | 15 | 14 | 0.12 |
+| Gemini 3.1 Pro | 0.711 | 2 | 87 | 5.15 batch (about 10.3 live) |
+
+**Balanced GRPO** (100 prompts per answer, lr 2.5e-6) was **rejected**, judged on calibration and the probe without
+touching the test:
+- calibration macro-F1 0.893 against 0.870;
+- but fooled 6 of 87 against 1;
+- probe 48 of 93 against 86.
+
+**`judge.py` was tested from the private release:** it ran on the owner's RTX 3070 Ti and returned the right answer on
+example 1 (shown, 0.9998).
+
+**Modal:** $22.82 spent on 8 Oct.
+
+**Speed:** scoring answered one pair at a time with the adapter kept separate: 7.5 s a check on an L4, the GPU about 39%
+busy. Folding the adapter into the weights and answering 8 pairs at once gives 0.84 s a check, with the same verdict
+and the same confidence on all 48 items compared.
+
+### T158 (8 Oct 2026): the same spot every month (docs/plans/T158-same-spot-filming.md)
+
+Not a measurement of accuracy on real sites (that is the owner's walk test, then T126); checks that
+the guidance and the readings behave as the plan says.
+
+**Replay** (`data/trial/t158_replay.py` → `results/t158_replay.txt`; the drawn T124 scenes, 5 viewpoints):
+
+| Scenario | Engine reading | Site Progress says |
+|---|---|---|
+| Same spots, whole pan | offsets 0 m, coverage 1.0 at all 5 | nothing |
+| v2 filmed 25 m off | v2 offset 25.0 m | a note (never a finding) |
+| v3 half panned | v3 coverage 0.625 | a note |
+| No compass | no coverage reading | nothing (was "0% panned" at every spot until fixed) |
+| One-part claim, not shown at all 5 spots, 8 needed | | not shown |
+| The same, 12 needed (5 filmed < half) | | can't tell |
+| Whole-work claim, not shown at 1 of 5 | | not shown |
+| 189 m road walked halfway | stretches s1, s2 judged | s3, s4 missed (a note) |
+
+The phone's maths (`apps/web/src/lib/capture.ts`, run in Node) gives the engine's answers on all 54
+cases (arc coverage 28, stretch 16, distance 6, in the box 4).
+
+**Real browser** (`data/trial/capture_e2e.py` → `results/capture_e2e.txt`; headless Chromium, a fake
+camera, a compass sent as orientation events): on the monthly visit the page said "You are in the box
+for spot vN" and "Facing the right way" at all 5 viewpoints, and the engine read 0 m and coverage 1.0
+at each; at ±90 m GPS it said "GPS is too weak to guide you" instead of a direction. Two bugs this run
+found, both fixed: a phone standing still sends no new fix (only v1 got a box), and the facing hung on
+the GPS.
+
+## T159 (9 Oct 2026): NidhiLens the way the engine runs it
+
+The report's 883 main-test checks again, with the same tuned 4B, run as Site Progress's video job runs it
+(`apps/vision/modal/train_modal.py::reader_check` on an L4, scored by `data/trial/t159_reader.py` →
+`results/t159_reader.txt`):
+- each photo first made into what the job keeps of a phone video: a frame 1,280 px on its long side, saved
+  as JPEG quality 80;
+- full precision, and the 4-bit weights `readers.VLMReader` loads to fit the team's 8 GB GPU;
+- every answer passed through the engine's own code (`VLMReader`, sure = 0.6, then `video.visit._answer`).
+
+| Run | Macro-F1 [95% CI] | Fooled (of 576) | Missed (of 121) | Answered | McNemar against the report |
+|---|---|---|---|---|---|
+| The report (photos, full precision) | 0.935 [0.921, 0.951] | 4 | 21 | 75.8% | n/a |
+| Video frames, full precision | 0.930 [0.916, 0.947] | 5 | 22 | 75.7% | 2 against 5, p = 0.45 |
+| Video frames, 4-bit (the engine) | 0.933 [0.913, 0.951] | 10 | 17 | 76.6% | 9 against 12, p = 0.66 |
+
+- **Phone-video frames cost nothing measurable.** The full-precision model gives the same answers on all
+  but 7 of 883 checks.
+- **4-bit leans towards "shown".** Accuracy is the same, but it is fooled more often: 7 no-progress checks
+  only 4-bit calls "shown", against 1 only the report's run does (exact binomial p = 0.07, suggestive, not
+  proven). All 7 are photos in reverse order (3) or one moment from another viewpoint (4). It also misses
+  less real work (17 against 21).
+- **The engine's "unsure" rule never fires.** The verdict's probability is read after the model has written
+  its own `same_place`, `stage_A`, `stage_B` and `permanent_change`, and by then it is all but certain: the
+  lowest of 883 answers is 0.9998 (both runs). So `VLMReader`'s sure = 0.6 changes no answer, and the
+  report's calibration error of 0.03 reflects the high accuracy, not a useful sense of doubt. A real
+  doubt signal must come from elsewhere: the probability of `same_place` or `permanent_change`, the
+  verdict asked before the reasoning, or agreement across spots and visits (which `_answer` and T158's
+  spot-by-spot judging already use).
+- **Speed:** one check at a time, as the reader runs today, takes 7.8 s (full precision) and 10.3 s
+  (4-bit) on an L4, against 0.78 s for the report's batched run with the add-on merged. 4-bit is slower,
+  not faster, on a data-centre GPU; it exists to fit 8 GB.
+
+What follows: the engine can use NidhiLens on video frames as it is. Where a GPU with about 11 GB is
+available, run it in full precision (fooled 5, not 10). Batch the spots of a visit and merge the add-on
+before a large run. Its readings stay notes, never counted, until the field trial (T126).
+
+## T160 (9 Oct 2026): the agents audit — ways past Duplicate Work
+
+The engine itself, on made-up works: an earlier community hall (completed) and a new work filed near
+it (`data/trial/t160_audit.py` → `results/t160_audit.txt`).
+
+**1. A map pin typed some metres off the real site. Fixed.**
+
+| Pin off by | No site videos | Three videos filmed at the hall |
+|---|---|---|
+| 0–49 m | asked (`SANCTIONED_WORK_AT_THIS_SITE`) | asked |
+| 51–150 m | a note only (`NEAR_SANCTIONED_WORK`) | **asked** (`SANCTIONED_WORK_WHERE_FILMED`, new) |
+| 400 m | nothing | **asked** |
+
+Before T160, a pin typed 51–99 m off passed both lines: Duplicate Work's 50 m and Site Progress's
+100 m `SITE_NOT_AT_FORM_PIN`. Now the video job records where each video was filmed (the middle of its
+good GPS fixes, `gps_point`), and Duplicate Work compares that spot too. It asks when 2 or more
+trusted videos (and at least half of them) were filmed within 50 m of an earlier same-kind building,
+nearer to it than to the form's own pin. Left out on purpose: roads (filmed along their length),
+lights and pumps (filmed from a neighbour's door), purchases, and videos with weak or faked GPS or
+views not matching the site. An honest new hall 75 m from an old one, filmed around its own pin, is
+not asked. The new finding counts at the 1-in-4 prior until officers read real cases (10 tests).
+
+**2. The same building filed under another work type. Open.**
+
+| Work type of the new work (pin 10 m from the hall's) | Asked? |
+|---|---|
+| Community hall, school building, library | yes |
+| Other | **no** |
+
+The site check compares works of the same kind, and "Other" is a kind of its own. Comparing "Other"
+works with buildings at one pin would close it, but it could ask about honest pairs, such as a water
+tank beside a school. That needs a measurement on real forms before it is switched on. Until then,
+Site Progress's `SAME_PLACE_AS_ANOTHER_WORK` catches it once both works have site videos.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**
@@ -2039,3 +2685,31 @@ did before, with the same score.
    ends.
 8. **AI key (paid, capped)** for Hindi and handwritten papers, site progress and plaques. This
    is the one switch that is the user's decision.
+
+### T155 (8 Oct 2026, night): fresh held-out sites, never re-checked against any model
+
+The harvest's 166 new sites in the held-out test districts were each checked by eye on asset cards (888 items; 103
+wrong labels dropped, flags in `D:\nidhinetra-data\vlm\v7\eye_cards\flags.json`). This set was cleaned before any
+model saw it, so no disagreement-driven cleaning can favour either side. Of the 785 items left: 132 progress,
+487 no progress, 166 different place.
+
+| Judge | Macro-F1 [95% CI] | Fooled (of 487) | Missed (of 132) |
+|---|---|---|---|
+| NidhiLens-FineTuned-Qwen4B | 0.915 [0.890, 0.939] | 9 (1.8%) | 26 (19.7%) |
+| NidhiLens-FineTuned-Qwen2B | 0.941 [0.921, 0.958] | 12 (2.5%) | 12 (9.1%) |
+
+Gemini 3.1 Pro (best prompt) is being run on this set with the rest of the owner's Rs 800 credit.
+
+**Gemini 3.1 Pro on the fresh sites** (best prompt, 314 of the 785 checks, shuffled order; `results/vlm_compare_fresh_sites.json`):
+
+| Judge | Macro-F1 [95% CI] | Fooled (of 195) | Missed (of 47) | McNemar against Gemini |
+|---|---|---|---|---|
+| Our 4B | 0.914 [0.879, 0.946] | 4 | 9 | 29 against 10, p = 0.003 |
+| Our 2B | 0.938 [0.907, 0.966] | 5 | 6 | 32 against 8, p = 0.0002 |
+| Gemini 3.1 Pro | 0.830 [0.770, 0.881] | 5 | 18 | n/a |
+
+**Gemini spend, final:**
+- Rs 724.96 of the owner's Rs 800 credit, by the ledger (billed tokens × Google's price, at Rs 96 a $, calibrated to
+  AI Studio). The owner said to stop when more would not improve the result.
+- One loop bug was caught: a collect without the round's items file recorded Rs 5.84 instead of Rs 84.49. It is fixed,
+  and the ledger was topped up.

@@ -544,7 +544,7 @@ materials:
   - {id: paver_block, label: "Paver / interlocking blocks", names: [paver, pavers, interlocking, interlocking tile, paver block], units: [m2, sqft, nos], guard: [30, 10000]}
   - {id: rmc, label: "Ready-mix concrete", names: [rmc, ready mix, readymix, ready mix concrete], units: [m3], guard: [500, 50000]}
   - {id: bitumen, label: "Bitumen", names: [bitumen, dammar, tar, emulsion, vg 30, vg30], units: [kg, t, l], guard: [5, 1000]}
-  - {id: granular_base, label: "GSB / WBM / moorum", names: [gsb, wbm, wmm, moorum, murrum, kankar], units: [m3, cft, brass], guard: [50, 30000]}
+  - {id: granular_base, label: "GSB / WBM / moorum", names: [gsb, wbm, wmm, moorum, murrum, kankar, base course, sub base, subbase, granular sub base, water bound macadam, wet mix macadam], units: [m3, cft, brass], guard: [50, 30000]}
   - {id: earth_fill, label: "Earth for filling", names: [earth, soil, mitti, "मिट्टी", earth filling], units: [m3, cft], guard: [5, 10000]}
   - {id: pipe, label: "Pipes", names: [pipe, pipes, hdpe, upvc, pvc pipe, di pipe, gi pipe, hume pipe, rcc pipe, np2, np3], units: [m, rm, nos], guard: null}
   - {id: cable, label: "Cable / wire", names: [cable, wire, wiring, armoured cable], units: [m, rm], guard: null}

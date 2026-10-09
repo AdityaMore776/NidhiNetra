@@ -71,7 +71,9 @@ problem, never a small mistake, and says "couldn't check" when it has nothing to
 - ✅ **Duplicate Work** — *Is this work already sanctioned here, or one job cut to stay under a limit?* It asks when the
   cost form's map pin is within 50 m of a sanctioned work of the same kind, when the agency itself says it rebuilds a
   work completed under three years ago, or when every piece of one job sits within 4% under the ₹5 or 10 lakh limit
-  (12 of 14 such groups read as one job). Works that only *read* alike are notes for the agency to answer.
+  (12 of 14 such groups read as one job). Works that only *read* alike are notes for the agency to answer. A pin
+  typed a little away from the real site does not hide it: once two site videos are filmed next to an earlier
+  building of the same kind, it asks just the same.
 - ✅ **Time & Rules** — *Was it sanctioned on time, and is it being finished in a believable time?* A sanction later
   than 75 days is told as a fact about the office (6 in 10 works pass it), never as a problem with the work. The
   agency's own estimated time to completion sets a "comfort window": finishing far too early is asked about only when
@@ -84,11 +86,21 @@ problem, never a small mistake, and says "couldn't check" when it has nothing to
   site is another work's, when both the GPS and the views say it was not filmed here, or when the agency's claim is not
   shown two months in a row. A blurry or dark video is simply filmed again. (Built and tested on made-up scenes; the
   trial on real sites comes next.)
+  **The same spot every month (T158):** the first visit saves where the person stood at each spot (GPS) and which
+  way they faced and panned (the phone's compass). Next month the app shows a radar to each spot's box (about 12 m
+  across), an arrow to turn the right way, and a band to pan across, with last month's three pictures. A work too
+  big for one spot asks for more, from its size on the form: a pair of spots at opposite corners for every 40 m (a
+  60×40 m hall needs 4); a road is filmed stretch by stretch, and over 1 km the app picks 6 stretches at random when
+  filming starts. The claim is judged spot by spot, on last month's and this month's pictures of the same spot. A
+  claim about the whole work must hold at every spot; a claim about one part needs one spot to show it, and "not
+  shown" only when every filmed spot agrees and at least half the needed spots were filmed. The guidance never
+  stops anyone filming: being off the box is only noted, and the pictures decide.
 
   Whether the footage *shows the agency's claim* ("walls up to lintel level") is read by **NidhiLens**, the team's
   own fine-tuned vision model. On 883 real site-photo checks it scored macro-F1 0.935, against 0.876 for Gemini 3.1
   Pro at its best, at 1/30 of the cost. Report: [`NidhiLens (Fine-Tuned Qwen for site progress monitoring)`](../NidhiLens%20(Fine-Tuned%20Qwen%20for%20site%20progress%20monitoring)/README.md).
-  It is benchmarked, and not yet switched on in the live engine.
+  It is built into Site Progress behind a switch (it needs a GPU), and run that way it scores 0.933 on the same
+  checks. Its answers stay notes for the officer until the field trial on real sites.
 
 **For every work:** the risk score with its top three reasons ✅ · the pre-sanction check ✅ · Inspection Planner 📝
 

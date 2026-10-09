@@ -7,6 +7,11 @@ sure of, and that comes from the implementing agency's cost estimate form (work[
                                            sanctioned work of the same kind of asset (a linear
                                            work by both ends), and the agency did not name that
                                            work as the one this work continues
+  SANCTIONED_WORK_WHERE_FILMED   risk 0.7  (T160) the same, by where the site videos were filmed:
+                                           2+ trusted videos (and most of them) within 50 m of
+                                           an earlier same-kind building's pin, nearer to it
+                                           than to the form's own pin (a pin typed 60-90 m off
+                                           passed the line above and Site Progress's 100 m)
   REBUILT_SOON_AFTER_COMPLETION  risk 0.6  the agency declares this work rebuilds sanctioned work
                                            X, and X was completed less than 3 years before this
                                            work was recommended
@@ -40,6 +45,7 @@ from datetime import timedelta
 
 from drishti.agents.contract import AgentResult, Finding, Status
 from drishti.agents.dup_split.repeat import PIN_METRES, RepeatIndex, pin_problems, same_ground
+from drishti.agents.site_progress import visits as site_visits
 
 AGENT = "dup_split"
 VERSION = "dup-split-3.0.0"
@@ -111,6 +117,18 @@ def _rebuilt(me, x, lead: str, nature: str | None, ground: bool) -> Finding:
                   "other_amount": x.amount, "same_ground": ground, "kind": "declared"})
 
 
+def filmed_at(work: dict) -> list[tuple[str, tuple[float, float]]]:
+    """(visit id, where it was filmed) for each accepted site video that can be trusted on place:
+    its GPS not weak and not a mock location, its views those of the site's own (T160)."""
+    out = []
+    for v in site_visits.of(work):
+        p = v.get("gps_point")
+        if (p and site_visits.accepted(v) and v.get("mock_location") is not True
+                and v.get("gps_weak") is not True and v.get("views_match_site") is not False):
+            out.append((v.visit_id, (p["lat"], p["lon"])))
+    return out
+
+
 def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
     t0 = time.perf_counter()
     if index is None or not work.get("district_lgd"):
@@ -150,6 +168,28 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
                       "pin_metres": found.get("line", PIN_METRES), "overlap": share,
                       "declared": bool(named),
                       "kind": "at_site"}))
+
+    # 1b. the same site by where the site videos were filmed (T160): a pin typed 60-90 m off an
+    #     earlier same-kind building passed 1. and Site Progress's 100 m check both
+    at_pin = {x.work_id for x, _ in found["at_site"]}
+    for x, pin_m, near in index.where_filmed(work, filmed_at(work)):
+        named = ((link and link["work_id"] == x.work_id)
+                 or (answers.get(x.work_id) or {}).get("answer") == "continues")
+        if x.work_id in at_pin or named:
+            continue
+        findings.append(Finding(
+            "SANCTIONED_WORK_WHERE_FILMED",
+            f"{len(near)} site videos ({', '.join(sorted(near))}) were filmed within "
+            f"{max(near.values()):,.0f} m of sanctioned work {x.work_id} of the same kind "
+            f"({_lakh(x.amount)}, {_state(x)}), nearer to it than to this form's map pin, which is "
+            f"{pin_m:,.0f} m from it. The form does not name it as the work this one continues."
+            f"{_said(answers, x.work_id)} Please check on site whether it is the same work, and "
+            "where this work really is.",
+            hard=False, risk=SITE_RISK,
+            evidence={"other": x.work_id, "metres": min(near.values()), "pin_to_other_m": pin_m,
+                      "visits": near, "other_amount": x.amount,
+                      "other_completed": x.done.isoformat() if x.done else None,
+                      "pin_metres": PIN_METRES, "kind": "where_filmed"}))
 
     # 2. what the agency declares this work continues
     if link:

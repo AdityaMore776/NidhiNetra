@@ -1,0 +1,246 @@
+{
+ "ours4b": {
+  "n": 223,
+  "macro_f1": 0.9337734347536345,
+  "macro_f1_ci95": [
+   0.9045307535108108,
+   0.9640939439088753
+  ],
+  "fooled_rate": 0.0072992700729927005,
+  "fooled_ci95": [
+   0.0,
+   0.0243952419032387
+  ],
+  "missed_rate": 0.1875,
+  "accuracy": 0.9596412556053812,
+  "unreadable": 0,
+  "per_trick": {
+   "busy": {
+    "n": 40,
+    "accuracy": 1.0
+   },
+   "double_claim": {
+    "n": 37,
+    "accuracy": 1.0
+   },
+   "none": {
+    "n": 32,
+    "accuracy": 0.8125
+   },
+   "other_site": {
+    "n": 54,
+    "accuracy": 1.0
+   },
+   "swapped": {
+    "n": 8,
+    "accuracy": 0.75
+   },
+   "view": {
+    "n": 52,
+    "accuracy": 0.9807692307692307
+   }
+  },
+  "usd_per_1000_checks": 0.178,
+  "cost_basis": "L4 GPU time",
+  "mcnemar_vs_ref": {
+   "n": 223,
+   "only_a_right": 4,
+   "only_b_right": 16,
+   "p": 0.01181793212890625
+  }
+ },
+ "ours4b @1024px": {
+  "n": 223,
+  "macro_f1": 0.946671826625387,
+  "macro_f1_ci95": [
+   0.9151997186905478,
+   0.9760919261457243
+  ],
+  "fooled_rate": 0.0072992700729927005,
+  "fooled_ci95": [
+   0.0,
+   0.0243952419032387
+  ],
+  "missed_rate": 0.15625,
+  "accuracy": 0.968609865470852,
+  "unreadable": 0,
+  "per_trick": {
+   "busy": {
+    "n": 40,
+    "accuracy": 1.0
+   },
+   "double_claim": {
+    "n": 37,
+    "accuracy": 1.0
+   },
+   "none": {
+    "n": 32,
+    "accuracy": 0.84375
+   },
+   "other_site": {
+    "n": 54,
+    "accuracy": 1.0
+   },
+   "swapped": {
+    "n": 8,
+    "accuracy": 0.875
+   },
+   "view": {
+    "n": 52,
+    "accuracy": 0.9807692307692307
+   }
+  },
+  "usd_per_1000_checks": 0.4,
+  "cost_basis": "L4 GPU time",
+  "mcnemar_vs_ref": {
+   "n": 223,
+   "only_a_right": 2,
+   "only_b_right": 16,
+   "p": 0.001312255859375
+  }
+ },
+ "ours2b": {
+  "n": 223,
+  "macro_f1": 0.9392233164489082,
+  "macro_f1_ci95": [
+   0.9047806510255858,
+   0.9687736012722947
+  ],
+  "fooled_rate": 0.021897810218978103,
+  "fooled_ci95": [
+   0.0,
+   0.047638248847926244
+  ],
+  "missed_rate": 0.125,
+  "accuracy": 0.9596412556053812,
+  "unreadable": 0,
+  "per_trick": {
+   "busy": {
+    "n": 40,
+    "accuracy": 1.0
+   },
+   "double_claim": {
+    "n": 37,
+    "accuracy": 1.0
+   },
+   "none": {
+    "n": 32,
+    "accuracy": 0.875
+   },
+   "other_site": {
+    "n": 54,
+    "accuracy": 1.0
+   },
+   "swapped": {
+    "n": 8,
+    "accuracy": 0.75
+   },
+   "view": {
+    "n": 52,
+    "accuracy": 0.9423076923076923
+   }
+  },
+  "usd_per_1000_checks": 0.12,
+  "cost_basis": "L4 GPU time",
+  "mcnemar_vs_ref": {
+   "n": 223,
+   "only_a_right": 4,
+   "only_b_right": 16,
+   "p": 0.01181793212890625
+  }
+ },
+ "gem_pro31_batch": {
+  "n": 223,
+  "macro_f1": 0.7383795170054711,
+  "macro_f1_ci95": [
+   0.6624150745221473,
+   0.8188598449602879
+  ],
+  "fooled_rate": 0.0,
+  "fooled_ci95": [
+   0.0,
+   0.0
+  ],
+  "missed_rate": 0.6875,
+  "accuracy": 0.8565022421524664,
+  "unreadable": 0,
+  "per_trick": {
+   "busy": {
+    "n": 40,
+    "accuracy": 1.0
+   },
+   "double_claim": {
+    "n": 37,
+    "accuracy": 1.0
+   },
+   "none": {
+    "n": 32,
+    "accuracy": 0.3125
+   },
+   "other_site": {
+    "n": 54,
+    "accuracy": 0.9629629629629629
+   },
+   "swapped": {
+    "n": 8,
+    "accuracy": 0.25
+   },
+   "view": {
+    "n": 52,
+    "accuracy": 0.9615384615384616
+   }
+  },
+  "usd_per_1000_checks": 5.115,
+  "cost_basis": "gemini-3.1-pro-preview billed tokens, Batch API price",
+  "mcnemar_vs_ref": {
+   "n": 223,
+   "only_a_right": 16,
+   "only_b_right": 5,
+   "p": 0.02660369873046875
+  }
+ },
+ "gem_pro31_rules": {
+  "n": 223,
+  "macro_f1": 0.8631364146515662,
+  "macro_f1_ci95": [
+   0.8027155081783384,
+   0.9237299383733478
+  ],
+  "fooled_rate": 0.0,
+  "fooled_ci95": [
+   0.0,
+   0.0
+  ],
+  "missed_rate": 0.3125,
+  "accuracy": 0.905829596412556,
+  "unreadable": 0,
+  "per_trick": {
+   "busy": {
+    "n": 40,
+    "accuracy": 1.0
+   },
+   "double_claim": {
+    "n": 37,
+    "accuracy": 1.0
+   },
+   "none": {
+    "n": 32,
+    "accuracy": 0.6875
+   },
+   "other_site": {
+    "n": 54,
+    "accuracy": 0.9259259259259259
+   },
+   "swapped": {
+    "n": 8,
+    "accuracy": 0.25
+   },
+   "view": {
+    "n": 52,
+    "accuracy": 0.9807692307692307
+   }
+  },
+  "usd_per_1000_checks": 5.331,
+  "cost_basis": "gemini-3.1-pro-preview billed tokens, Batch API price"
+ }
+}

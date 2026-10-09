@@ -518,14 +518,24 @@ def validate(form: dict, today: date | None = None, earlier=None) -> dict:
                         f"{ln.get('item')} appears twice. Remove one, or confirm both are needed.")
             seen.add(key)
         _labour_links(out, lines, p, ctx)
-        used = [(j, r["material_id"], lines[j].get("quantity"), lines[j].get("unit"))
-                for j, r in enumerate(done) if isinstance(lines[j], dict)]
+        used = [(j, r["material_id"], lines[j].get("quantity"), lines[j].get("unit"),
+                 lines[j].get("item")) for j, r in enumerate(done) if isinstance(lines[j], dict)]
         for q in norms.check(ctx.work_type, size, used):
             if q["ratio"] > 1.0 + 1e-9:
                 out.add(CONFIRM, "more_than_size_needs", f"{p}.lines[{q['lines'][0]}].quantity",
                         f"The lines have {q['quantity']:,.0f} {q['unit']} of "
-                        f"{catalog.material(q['material'])['label'].lower()}; the size needs "
-                        f"{q['needed']:,.0f} ({q['why']}). Check the quantity, or confirm it.")
+                        f"{catalog.material(q['material'])['label'].lower()}; this size takes "
+                        f"{catalog.range_text(q['low'], q['needed'], q['unit'])} ({q['why']}). "
+                        "Check the quantity, or confirm it.")
+        loose = norms.stone_not_itemised(ctx.work_type, size, used)
+        if loose is not None:
+            # T144: one stone line for slab and base hid twice the slab's stone; a road over a
+            # stone base lists its base on a line of its own, as every schedule of rates does
+            out.add(FIX, "stone_not_itemised", f"{p}.lines[{loose}].item",
+                    f"The road has a {str(size.get('base_type')).upper()} base: write its stone on "
+                    "a line of its own (e.g. \"WBM, 63 mm stone\"), and the concrete's stone with "
+                    "its size (e.g. \"Stone aggregate 20 mm\"), so each can be checked against "
+                    "the road's size.")
         groups = {r["group"] for r in done}
         if ctx.goods and "goods" not in groups:
             out.add(FIX, "no_goods_lines", f"{p}.lines", "Add each item bought as a goods line.")

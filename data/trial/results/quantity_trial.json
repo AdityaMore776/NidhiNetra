@@ -1,0 +1,199 @@
+{
+ "n": 200,
+ "pads": [
+  1.25,
+  1.5,
+  2.0
+ ],
+ "cells": {
+  "honest, base: wbm line": {
+   "n": 200,
+   "asked": 0,
+   "share": 0.0,
+   "not_judged": 0,
+   "form_confirms": 0
+  },
+  "honest, base: aggregate for WBM": {
+   "n": 200,
+   "asked": 0,
+   "share": 0.0,
+   "not_judged": 0,
+   "form_confirms": 0
+  },
+  "honest, base: plain 63 mm": {
+   "n": 200,
+   "asked": 0,
+   "share": 0.0,
+   "not_judged": 0,
+   "form_confirms": 0
+  },
+  "honest, base: no stone base": {
+   "n": 200,
+   "asked": 0,
+   "share": 0.0,
+   "not_judged": 0,
+   "form_confirms": 0
+  },
+  "honest, base: one unsized line": {
+   "n": 200,
+   "asked": 0,
+   "share": 0.0,
+   "not_judged": 200,
+   "form_confirms": 0
+  },
+  "stone x1.25, base: wbm line": {
+   "n": 200,
+   "asked": 0,
+   "share": 0.0,
+   "not_judged": 0,
+   "form_confirms": 200
+  },
+  "stone x1.25, base: plain 63 mm": {
+   "n": 200,
+   "asked": 0,
+   "share": 0.0,
+   "not_judged": 0,
+   "form_confirms": 200
+  },
+  "stone x1.5, base: wbm line": {
+   "n": 200,
+   "asked": 200,
+   "share": 1.0,
+   "not_judged": 0,
+   "form_confirms": 200
+  },
+  "stone x1.5, base: plain 63 mm": {
+   "n": 200,
+   "asked": 200,
+   "share": 1.0,
+   "not_judged": 0,
+   "form_confirms": 200
+  },
+  "stone x2.0, base: wbm line": {
+   "n": 200,
+   "asked": 200,
+   "share": 1.0,
+   "not_judged": 0,
+   "form_confirms": 200
+  },
+  "stone x2.0, base: plain 63 mm": {
+   "n": 200,
+   "asked": 200,
+   "share": 1.0,
+   "not_judged": 0,
+   "form_confirms": 200
+  },
+  "honest, main and connections itemised": {
+   "n": 200,
+   "asked": 0,
+   "share": 0.0,
+   "not_judged": 0,
+   "form_confirms": 0
+  },
+  "pipes x1.25, main and connections itemised": {
+   "n": 200,
+   "asked": 0,
+   "share": 0.0,
+   "not_judged": 0,
+   "form_confirms": 200
+  },
+  "pipes x1.5, main and connections itemised": {
+   "n": 200,
+   "asked": 200,
+   "share": 1.0,
+   "not_judged": 0,
+   "form_confirms": 200
+  },
+  "pipes x2.0, main and connections itemised": {
+   "n": 200,
+   "asked": 200,
+   "share": 1.0,
+   "not_judged": 0,
+   "form_confirms": 200
+  },
+  "honest, all pipe on one line": {
+   "n": 200,
+   "asked": 0,
+   "share": 0.0,
+   "not_judged": 0,
+   "form_confirms": 0
+  },
+  "pipes x1.25, all pipe on one line": {
+   "n": 200,
+   "asked": 0,
+   "share": 0.0,
+   "not_judged": 0,
+   "form_confirms": 76
+  },
+  "pipes x1.5, all pipe on one line": {
+   "n": 200,
+   "asked": 67,
+   "share": 0.335,
+   "not_judged": 0,
+   "form_confirms": 154
+  },
+  "pipes x2.0, all pipe on one line": {
+   "n": 200,
+   "asked": 159,
+   "share": 0.795,
+   "not_judged": 0,
+   "form_confirms": 200
+  },
+  "honest, WP lines": {
+   "n": 200,
+   "asked": 0,
+   "share": 0.0,
+   "not_judged": 0,
+   "form_confirms": 0
+  },
+  "WP x1.25": {
+   "n": 200,
+   "asked": 0,
+   "share": 0.0,
+   "not_judged": 0,
+   "form_confirms": 200
+  },
+  "WP x1.5": {
+   "n": 200,
+   "asked": 200,
+   "share": 1.0,
+   "not_judged": 0,
+   "form_confirms": 200
+  },
+  "WP x2.0": {
+   "n": 200,
+   "asked": 200,
+   "share": 1.0,
+   "not_judged": 0,
+   "form_confirms": 200
+  },
+  "honest, WH lines": {
+   "n": 200,
+   "asked": 0,
+   "share": 0.0,
+   "not_judged": 0,
+   "form_confirms": 0
+  },
+  "WH x1.25": {
+   "n": 200,
+   "asked": 0,
+   "share": 0.0,
+   "not_judged": 0,
+   "form_confirms": 200
+  },
+  "WH x1.5": {
+   "n": 200,
+   "asked": 200,
+   "share": 1.0,
+   "not_judged": 0,
+   "form_confirms": 200
+  },
+  "WH x2.0": {
+   "n": 200,
+   "asked": 200,
+   "share": 1.0,
+   "not_judged": 0,
+   "form_confirms": 200
+  }
+ }
+}

@@ -37,7 +37,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }, [me]);
 
   async function signOut() {
-    await supabase()?.auth.signOut();
+    await (await supabase())?.auth.signOut();
     router.replace("/");
     window.location.reload();
   }

@@ -51,19 +51,19 @@ export function Topbar({ snapshot }: { snapshot: string | null }) {
     <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 rounded-t-xl border-b bg-white/75 px-3 backdrop-blur-xl sm:px-4">
       <SidebarTrigger className="-ml-1 text-muted-foreground" />
       <Separator orientation="vertical" className="mr-1 data-[orientation=vertical]:h-4" />
-      <Breadcrumb>
-        <BreadcrumbList>
+      <Breadcrumb className="min-w-0">
+        <BreadcrumbList className="flex-nowrap">
           <BreadcrumbItem className="hidden sm:block">
             <span className="font-medium text-brand-900">NidhiNetra</span>
           </BreadcrumbItem>
           <BreadcrumbSeparator className="hidden sm:block" />
-          <BreadcrumbItem>
-            <BreadcrumbPage className="font-medium">{here?.label ?? "Overview"}</BreadcrumbPage>
+          <BreadcrumbItem className="min-w-0">
+            <BreadcrumbPage className="block truncate font-medium">{here?.label ?? "Overview"}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="ml-auto flex items-center gap-2">
+      <div className="ml-auto flex shrink-0 items-center gap-2">
         {snapshot && (
           <span className="hidden items-center gap-2 rounded-full border bg-white px-3 py-1 text-xs text-muted-foreground lg:inline-flex">
             <LiveDot />
@@ -80,8 +80,9 @@ export function Topbar({ snapshot }: { snapshot: string | null }) {
           <ClipboardList className="size-4 text-brand-600" />
           <span className="hidden sm:inline">Mock form</span>
         </Link>
-        <CommandButton onClick={() => setOpen(true)} className="w-40 sm:w-64">
-          Search works, pages…
+        {/* T143: an icon on a phone, a search field from sm up */}
+        <CommandButton onClick={() => setOpen(true)} aria-label="Search works and pages" className="w-9 justify-center gap-0 px-0 sm:w-64 sm:justify-start sm:gap-2 sm:px-3">
+          <span className="hidden sm:inline">Search works, pages…</span>
         </CommandButton>
       </div>
 

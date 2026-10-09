@@ -12,9 +12,10 @@
 |---|---|
 | **Live** | https://nidhinetra-sih.vercel.app: open to everyone (the work intelligence form with 13 graded filings, form to risk score, step by step); staff sign-in adds the dashboard, map, queue and work pages on all 2,09,993 real works. Review queue on the public dashboard table (40,935 works): 217 |
 | **Architecture** | Four agents, a quarter of the weight each (owner's decision, 3 Oct; plan [`plans/T120-four-agents.md`](plans/T120-four-agents.md)): **Cost** (the estimate form, line by line and labour by trade), **Duplicate Work** (map pins, declared rebuilds, strict splits), **Time & Rules** (75-day clock as an office fact, impossible dates, the comfort window), **Site Progress** (sealed monthly site videos). They feed the 0–100 risk score with its top 3 reasons in English and Hindi, then the inspection list, the officer's verdict and the learning loop |
-| **Proof** | 883 engine tests; robustness loop 112 probes, 0 FAIL; Duplicate Work fitted on real villages (T139–T140); numbers in [`trial/FINDINGS.md`](trial/FINDINGS.md) |
-| **NidhiLens** (the Site Progress claim judge) | Fine-tuned Qwen3-VL-4B, trained on an NVIDIA A100 on Modal. On 883 real site-photo checks, every label checked by eye: macro-F1 0.935, against 0.876 for Gemini 3.1 Pro at its best, at 1/30 of the cost. Report: [`../NidhiLens (Fine-Tuned Qwen for site progress monitoring)/`](../NidhiLens%20(Fine-Tuned%20Qwen%20for%20site%20progress%20monitoring)/README.md). Benchmarked, not yet switched on in the live engine; code in PRs #120 and #121 |
-| **Next** | Site Progress field trial on real sites (T126); NidhiLens wired into the engine's reader (T156); the state Schedule of Rates files (T096) |
+| **Proof** | 1,029 engine tests; robustness loop 112 probes, 0 FAIL; Duplicate Work fitted on real villages (T139–T140); numbers in [`trial/FINDINGS.md`](trial/FINDINGS.md) |
+| **NidhiLens** (the Site Progress claim judge) | Fine-tuned Qwen3-VL-4B, trained on an NVIDIA A100 on Modal. On 883 real site-photo checks, every label checked by eye: macro-F1 0.935, against 0.876 for Gemini 3.1 Pro at its best, at 1/30 of the cost. Report: [`../NidhiLens (Fine-Tuned Qwen for site progress monitoring)/`](../NidhiLens%20(Fine-Tuned%20Qwen%20for%20site%20progress%20monitoring)/README.md). Built into Site Progress as its claim reader behind a switch (GPU, offline); the engine's way (video frames, 4-bit) scores 0.933 (T159); notes only until the field trial |
+| **Same spot every month** (T158, PR #124) | Site Progress guides the person back to each spot's box and facing, asks more spots of big works (a pair per 40 m of side; long roads: 6 random stretches + both ends) and judges the claim spot by spot. Proved on drawn scenes, a replay and a real-browser run; the owner's walk test on a real phone is next |
+| **Next** | The owner's walk test (T158); Site Progress field trial on real sites (T126); the state Schedule of Rates files (T096) |
 | **Retired** (results kept in FINDINGS) | Guideline Compliance (its timing rules live on in Time & Rules), Fund Flow, Office Patterns, Paperwork, Photo Evidence |
 
 *The table below is the 26 Sept roadmap, kept as history.*
@@ -45,6 +46,41 @@ The sections below are the working notes the team resumes from.
   `AdityaMore776`; "Phoenix-techstuf" no longer resolves)
 
 ## >>> RESUME HERE <<<
+
+**7 Oct 2026: a vision model for real construction progress (T146).**
+`apps/vision/` is a full pipeline from site videos to a trained model:
+- the steps: manifest and licences, shots, alignment, date-stamp and people masks, a hindsight teacher (progress is
+  change that never goes back), pairs, splits by site and channel, augmentation;
+- the model: a frozen DINOv2 with a small two-frame head, and every measure and shortcut audit.
+
+On synthetic sites with exact truth:
+- the teacher's pair labels are right 97.5% of the time;
+- the student scores AUROC 0.96 on unseen sites and 0.92–0.98 on a construction type it never saw;
+- augmentation cuts "light called progress" from 10% to 0.6%.
+
+Real videos (T147, the owner decides the sources), Kaggle's free GPU (T148), and only then Site Progress (T149). Plan
+`docs/plans/T146-site-progress-vision.md`; FINDINGS "T146".
+
+**6 Oct 2026: ranges, not single figures (T145).**
+What a line should cost or hold is now a range everywhere the officer reads it: "the work's size
+takes 1,270–1,334 bags", "others here pay ₹735–₹780", a fair price from the lowest to the highest
+rates other agencies charge. No rule or margin changed; every example and trial gives the same
+answers. FINDINGS "T145".
+
+**6 Oct 2026: the agents, more concrete (T144).**
+Cost now holds more quantities to the work's own size: a CC road's stone by its concrete mix, a
+water pipeline's main by its length, and solar panels and batteries bought by the watt or
+watt-hour by what each light carries. Stone named for a base course is read as the base, and a
+road over a stone base must itemise its stone. Planted filings: honest 0 asked; ×1.5 and ×2
+padding asked 100% (pipes all on one line: 34.5% and 79%). The loop: 118 probes, 0 FAIL. What
+the agents still need is data: the SoR checked by eye (T096), real forms (T098), real site videos
+(T126). FINDINGS "T144".
+
+**6 Oct 2026: the website on a phone, and faster to load (T143).**
+Every page fits a phone: works as cards, the form's tables as labelled cards, a one-line top bar.
+The same features load when used (sign-in code, charts, 3D, the map), so the median page
+downloads 582 KB instead of 843 and its largest element paints in 4.2 s instead of 5.3 under
+phone throttling. FINDINGS "T143".
 
 **6 Oct 2026: the public examples are graded forms (T142).**
 The public view no longer rates eSAKSHI recommendations from their records. Its examples are the

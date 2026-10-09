@@ -89,6 +89,22 @@ td input,td select{min-height:32px;padding:5px 6px;border-color:#c7d0dc}
 .ok{border-color:#b8dfc7;background:#f2fbf5;color:#14532d}
 .smallbtn{padding:5px 8px;font-size:11px}
 @media(max-width:900px){.brandrow{display:block}.meta{margin-top:14px;min-width:0}.field,.field.w2,.field.w4,.field.w6,.field.w8,.field.w9{grid-column:span 12}.checkgrid{grid-template-columns:1fr 1fr}.locationrow{grid-template-columns:1fr 1fr}.readiness{grid-template-columns:1fr 1fr}.signature{grid-template-columns:1fr}.statuspill{margin-left:0}.toolbar{position:static}}
+@media(max-width:560px){
+  .shell{margin:0;padding:0}.paper{border-left:0;border-right:0}
+  .header{padding:14px 12px 10px}.brand h1{font-size:19px}.meta{grid-template-columns:1fr 1fr}
+  .toolbar{padding:10px 12px}.alert{margin:10px 12px 0}.formbody{padding:4px 8px 14px}
+  .sectionhead{flex-wrap:wrap}.sectionbody{padding:10px 8px}.footer{display:block;padding:12px}
+  .checkgrid,.readiness,.locationrow{grid-template-columns:1fr}.locbtn{width:100%}.readycard{overflow-wrap:anywhere}
+  .totalbar{flex-wrap:wrap;justify-content:space-between}
+  .tablewrap{overflow:visible;border:0}
+  .tablewrap table{min-width:0!important;background:transparent}
+  .tablewrap thead{display:none}
+  .tablewrap table,.tablewrap tbody,.tablewrap tr,.tablewrap td{display:block;width:100%}
+  .tablewrap tr{border:1px solid var(--line);margin-bottom:10px;background:#fff}
+  .tablewrap td{border-right:0;display:grid;grid-template-columns:36% minmax(0,1fr);gap:8px;align-items:center;padding:5px 8px}
+  .tablewrap td::before{content:attr(data-label);font-size:10.5px;font-weight:700;color:var(--navy)}
+  .tablewrap tr:last-child td{border-bottom:1px solid var(--line)}.tablewrap tr td:last-child{border-bottom:0}
+}
 @media print{body{background:#fff}.shell{margin:0;max-width:none;padding:0}.paper{box-shadow:none;border:0}.toolbar,.alert,.locbtn,.row-actions,.no-print{display:none!important}.section{break-inside:avoid}.sectionbody{padding:9px}.header{padding-top:10px}.formbody{padding:4px 14px 14px}.footer{padding:10px 14px}.sectionhead{background:#dfe8f4!important;color:#0b1f3a!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.field{break-inside:avoid}}
 </style>
 </head>
@@ -625,6 +641,14 @@ function downloadJSON(){
 function showAlert(msg,ok){const b=document.getElementById('alertBox');b.className='alert show'+(ok?' ok':'');b.textContent=msg;setTimeout(()=>b.classList.remove('show'),7000)}
 
 addBoqRow();addBoqRow();addBoqRow();addLabourRow();addLabourRow();addMilestoneRow();addMilestoneRow();addMilestoneRow();
+
+// On a phone each table row is a card (CSS below 560px): every cell names its column from the
+// table's header, and rows added later get their names too.
+function labelCells(table){
+  const heads=[...table.querySelectorAll('thead th')].map(th=>th.textContent.trim());
+  table.querySelectorAll('tbody tr').forEach(tr=>[...tr.children].forEach((td,i)=>{if(heads[i]&&!td.dataset.label)td.dataset.label=heads[i]}));
+}
+document.querySelectorAll('.tablewrap table').forEach(t=>{labelCells(t);new MutationObserver(()=>labelCells(t)).observe(t.tBodies[0],{childList:true})});
 </script>
 </body>
 </html>

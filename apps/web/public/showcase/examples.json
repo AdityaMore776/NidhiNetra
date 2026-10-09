@@ -117,7 +117,7 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "The whole estimate is Rs 14.52 lakh against a fair Rs 14.53 lakh (-0.1%), pricing 73% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+       "headline": "The whole estimate is Rs 14.52 lakh against a fair Rs 14.53 lakh (Rs 14.21 to 14.94 lakh at the lowest and highest rates other agencies here charge), -0.1%, pricing 73% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
        "version": "",
        "findings": [],
        "limitations": [
@@ -226,7 +226,7 @@
     "alerts": [
      "cost_estimate"
     ],
-    "headline": "The estimate (Rs 17.16 lakh) is Rs 2.64 lakh above the fair price for this size of work in this district (Rs 14.52 lakh), 25% above the fair price of the 77% of the money that could be priced. Most of the gap: cement +Rs 1.24 lakh (Rs 475 a bag against Rs 380), stone aggregate +Rs 70,875 (Rs 2,625 a m3 against Rs 2,100), gsb / wbm / moorum +Rs 38,010 (Rs 1,812 a m3 against Rs 1,450). 4 of the 4 priced lines are above their fair rate. Needs checking before sanction.",
+    "headline": "The estimate (Rs 17.16 lakh) is Rs 2.64 lakh above the fair price for this size of work in this district (Rs 14.52 lakh; Rs 14.30 to 14.94 lakh at the lowest and highest rates other agencies here charge), 25% above the fair price of the 77% of the money that could be priced. Most of the gap: cement +Rs 1.24 lakh (Rs 475 a bag against Rs 380, others here Rs 372 to Rs 395), stone aggregate +Rs 70,875 (Rs 2,625 a m3 against Rs 2,100, others here Rs 2,058 to Rs 2,184), gsb / wbm / moorum +Rs 38,010 (Rs 1,812 a m3 against Rs 1,450, others here Rs 1,421 to Rs 1,508). 4 of the 4 priced lines are above their fair rate. Needs checking before sanction.",
     "case_id": null,
     "case_size": null
    },
@@ -275,7 +275,7 @@
         "label": "Cost",
         "contribution": 0.25,
         "code": "ESTIMATE_ABOVE_FAIR_PRICE",
-        "text_en": "The estimate (Rs 17.16 lakh) is Rs 2.64 lakh above the fair price for this size of work in this district (Rs 14.52 lakh), 25% above the fair price of the 77% of the money that could be priced. Most of the gap: cement +Rs 1.24 lakh (Rs 475 a bag against Rs 380), stone aggregate +Rs 70,875 (Rs 2,625 a m3 against Rs 2,100), gsb / wbm / moorum +Rs 38,010 (Rs 1,812 a m3 against Rs 1,450). 4 of the 4 priced lines are above their fair rate. Needs checking before sanction.",
+        "text_en": "The estimate (Rs 17.16 lakh) is Rs 2.64 lakh above the fair price for this size of work in this district (Rs 14.52 lakh; Rs 14.30 to 14.94 lakh at the lowest and highest rates other agencies here charge), 25% above the fair price of the 77% of the money that could be priced. Most of the gap: cement +Rs 1.24 lakh (Rs 475 a bag against Rs 380, others here Rs 372 to Rs 395), stone aggregate +Rs 70,875 (Rs 2,625 a m3 against Rs 2,100, others here Rs 2,058 to Rs 2,184), gsb / wbm / moorum +Rs 38,010 (Rs 1,812 a m3 against Rs 1,450, others here Rs 1,421 to Rs 1,508). 4 of the 4 priced lines are above their fair rate. Needs checking before sanction.",
         "text_hi": "पूरा अनुमान इस आकार और इस ज़िले के उचित मूल्य से 25% अधिक है; अंतर बनाने वाली पंक्तियाँ विवरण में हैं। स्वीकृति से पहले जाँच करें।",
         "chance": 0.25,
         "hit_rate": 0.25,
@@ -295,12 +295,12 @@
        "risk": 0.6,
        "confidence": 0.0,
        "hard": false,
-       "headline": "The estimate (Rs 17.16 lakh) is Rs 2.64 lakh above the fair price for this size of work in this district (Rs 14.52 lakh), 25% above the fair price of the 77% of the money that could be priced. Most of the gap: cement +Rs 1.24 lakh (Rs 475 a bag against Rs 380), stone aggregate +Rs 70,875 (Rs 2,625 a m3 against Rs 2,100), gsb / wbm / moorum +Rs 38,010 (Rs 1,812 a m3 against Rs 1,450). 4 of the 4 priced lines are above their fair rate. Needs checking before sanction.",
+       "headline": "The estimate (Rs 17.16 lakh) is Rs 2.64 lakh above the fair price for this size of work in this district (Rs 14.52 lakh; Rs 14.30 to 14.94 lakh at the lowest and highest rates other agencies here charge), 25% above the fair price of the 77% of the money that could be priced. Most of the gap: cement +Rs 1.24 lakh (Rs 475 a bag against Rs 380, others here Rs 372 to Rs 395), stone aggregate +Rs 70,875 (Rs 2,625 a m3 against Rs 2,100, others here Rs 2,058 to Rs 2,184), gsb / wbm / moorum +Rs 38,010 (Rs 1,812 a m3 against Rs 1,450, others here Rs 1,421 to Rs 1,508). 4 of the 4 priced lines are above their fair rate. Needs checking before sanction.",
        "version": "",
        "findings": [
         {
          "code": "ESTIMATE_ABOVE_FAIR_PRICE",
-         "text": "The estimate (Rs 17.16 lakh) is Rs 2.64 lakh above the fair price for this size of work in this district (Rs 14.52 lakh), 25% above the fair price of the 77% of the money that could be priced. Most of the gap: cement +Rs 1.24 lakh (Rs 475 a bag against Rs 380), stone aggregate +Rs 70,875 (Rs 2,625 a m3 against Rs 2,100), gsb / wbm / moorum +Rs 38,010 (Rs 1,812 a m3 against Rs 1,450). 4 of the 4 priced lines are above their fair rate. Needs checking before sanction.",
+         "text": "The estimate (Rs 17.16 lakh) is Rs 2.64 lakh above the fair price for this size of work in this district (Rs 14.52 lakh; Rs 14.30 to 14.94 lakh at the lowest and highest rates other agencies here charge), 25% above the fair price of the 77% of the money that could be priced. Most of the gap: cement +Rs 1.24 lakh (Rs 475 a bag against Rs 380, others here Rs 372 to Rs 395), stone aggregate +Rs 70,875 (Rs 2,625 a m3 against Rs 2,100, others here Rs 2,058 to Rs 2,184), gsb / wbm / moorum +Rs 38,010 (Rs 1,812 a m3 against Rs 1,450, others here Rs 1,421 to Rs 1,508). 4 of the 4 priced lines are above their fair rate. Needs checking before sanction.",
          "hard": false,
          "risk": 0.6,
          "evidence": {}
@@ -365,7 +365,7 @@
      "alerts": [
       "cost_estimate"
      ],
-     "headline": "The estimate (Rs 17.16 lakh) is Rs 2.64 lakh above the fair price for this size of work in this district (Rs 14.52 lakh), 25% above the fair price of the 77% of the money that could be priced. Most of the gap: cement +Rs 1.24 lakh (Rs 475 a bag against Rs 380), stone aggregate +Rs 70,875 (Rs 2,625 a m3 against Rs 2,100), gsb / wbm / moorum +Rs 38,010 (Rs 1,812 a m3 against Rs 1,450). 4 of the 4 priced lines are above their fair rate. Needs checking before sanction.",
+     "headline": "The estimate (Rs 17.16 lakh) is Rs 2.64 lakh above the fair price for this size of work in this district (Rs 14.52 lakh; Rs 14.30 to 14.94 lakh at the lowest and highest rates other agencies here charge), 25% above the fair price of the 77% of the money that could be priced. Most of the gap: cement +Rs 1.24 lakh (Rs 475 a bag against Rs 380, others here Rs 372 to Rs 395), stone aggregate +Rs 70,875 (Rs 2,625 a m3 against Rs 2,100, others here Rs 2,058 to Rs 2,184), gsb / wbm / moorum +Rs 38,010 (Rs 1,812 a m3 against Rs 1,450, others here Rs 1,421 to Rs 1,508). 4 of the 4 priced lines are above their fair rate. Needs checking before sanction.",
      "compact": false,
      "case_id": null,
      "case_size": null
@@ -408,7 +408,7 @@
     "alerts": [
      "cost_estimate"
     ],
-    "headline": "The work: cement, 2,614 bags in the estimate, but the size needs 1,334 (157.5 m3 of M20 concrete (300 m x 3.5 m x 150 mm), 8.06 bags per m3, plus 5%); the agency confirmed the quantity when filling the form. Please check the estimate.",
+    "headline": "The work: cement, 2,614 bags in the estimate, but this size takes 1,270 to 1,334 bags (157.5 m3 of M20 concrete (300 m x 3.5 m x 150 mm), 8.06 bags per m3, plus 5%); the agency confirmed the quantity when filling the form. Please check the estimate.",
     "case_id": null,
     "case_size": null
    },
@@ -457,7 +457,7 @@
         "label": "Cost",
         "contribution": 0.4375,
         "code": "MATERIAL_QUANTITY_ABOVE_SIZE",
-        "text_en": "The work: cement, 2,614 bags in the estimate, but the size needs 1,334 (157.5 m3 of M20 concrete (300 m x 3.5 m x 150 mm), 8.06 bags per m3, plus 5%); the agency confirmed the quantity when filling the form. Please check the estimate.",
+        "text_en": "The work: cement, 2,614 bags in the estimate, but this size takes 1,270 to 1,334 bags (157.5 m3 of M20 concrete (300 m x 3.5 m x 150 mm), 8.06 bags per m3, plus 5%); the agency confirmed the quantity when filling the form. Please check the estimate.",
         "text_hi": "इस कार्य पर एक जाँच ने ध्यान देने योग्य बात पाई है। विवरण देखें।",
         "chance": 0.4375,
         "hit_rate": 0.4375,
@@ -477,19 +477,19 @@
        "risk": 0.6,
        "confidence": 0.0,
        "hard": false,
-       "headline": "The work: cement, 2,614 bags in the estimate, but the size needs 1,334 (157.5 m3 of M20 concrete (300 m x 3.5 m x 150 mm), 8.06 bags per m3, plus 5%); the agency confirmed the quantity when filling the form. Please check the estimate.",
+       "headline": "The work: cement, 2,614 bags in the estimate, but this size takes 1,270 to 1,334 bags (157.5 m3 of M20 concrete (300 m x 3.5 m x 150 mm), 8.06 bags per m3, plus 5%); the agency confirmed the quantity when filling the form. Please check the estimate.",
        "version": "",
        "findings": [
         {
          "code": "MATERIAL_QUANTITY_ABOVE_SIZE",
-         "text": "The work: cement, 2,614 bags in the estimate, but the size needs 1,334 (157.5 m3 of M20 concrete (300 m x 3.5 m x 150 mm), 8.06 bags per m3, plus 5%); the agency confirmed the quantity when filling the form. Please check the estimate.",
+         "text": "The work: cement, 2,614 bags in the estimate, but this size takes 1,270 to 1,334 bags (157.5 m3 of M20 concrete (300 m x 3.5 m x 150 mm), 8.06 bags per m3, plus 5%); the agency confirmed the quantity when filling the form. Please check the estimate.",
          "hard": false,
          "risk": 0.6,
          "evidence": {}
         },
         {
          "code": "ESTIMATE_ABOVE_FAIR_PRICE",
-         "text": "The estimate (Rs 19.49 lakh) is Rs 4.36 lakh above the fair price for this size of work in this district (Rs 15.13 lakh), 39% above the fair price of the 80% of the money that could be priced. Most of the gap: cement +Rs 4.36 lakh (2,614 bags where the size needs 1,334). 0 of the 4 priced lines are above their fair rate. Needs checking before sanction.",
+         "text": "The estimate (Rs 19.49 lakh) is Rs 4.36 lakh above the fair price for this size of work in this district (Rs 15.13 lakh; Rs 14.90 to 15.57 lakh at the lowest and highest rates other agencies here charge), 39% above the fair price of the 80% of the money that could be priced. Most of the gap: cement +Rs 4.36 lakh (2,614 bags where the size takes 1,270 to 1,334 bags). 0 of the 4 priced lines are above their fair rate. Needs checking before sanction.",
          "hard": false,
          "risk": 0.6,
          "evidence": {}
@@ -554,7 +554,7 @@
      "alerts": [
       "cost_estimate"
      ],
-     "headline": "The work: cement, 2,614 bags in the estimate, but the size needs 1,334 (157.5 m3 of M20 concrete (300 m x 3.5 m x 150 mm), 8.06 bags per m3, plus 5%); the agency confirmed the quantity when filling the form. Please check the estimate.",
+     "headline": "The work: cement, 2,614 bags in the estimate, but this size takes 1,270 to 1,334 bags (157.5 m3 of M20 concrete (300 m x 3.5 m x 150 mm), 8.06 bags per m3, plus 5%); the agency confirmed the quantity when filling the form. Please check the estimate.",
      "compact": false,
      "case_id": null,
      "case_size": null
@@ -597,7 +597,7 @@
     "alerts": [
      "cost_estimate"
     ],
-    "headline": "The work: Rs 48,000 per light (10 of them, Rs 4.80 lakh with charges); 98 in 100 of the 136 similar works in Jaunpur cost at most Rs 20,896 per light (median Rs 20,896). The estimate (Rs 4.80 lakh) is also 100% above the MP's recommended Rs 2.40 lakh (reason given: 'Survey found ten poles are needed, not five.'). Please check the estimate and whether its specification (LED 12 W, pole 6 m, panel 40 Wp, battery 384 Wh) explains the price.",
+    "headline": "The work: Rs 48,000 per light (10 of them, Rs 4.80 lakh with charges); 8 in 10 of the 136 similar works in Jaunpur cost Rs 20,878 to Rs 20,896 per light (median Rs 20,896); 98 in 100 cost at most Rs 20,896. The estimate (Rs 4.80 lakh) is also 100% above the MP's recommended Rs 2.40 lakh (reason given: 'Survey found ten poles are needed, not five.'). Please check the estimate and whether its specification (LED 12 W, pole 6 m, panel 40 Wp, battery 384 Wh) explains the price.",
     "case_id": null,
     "case_size": null
    },
@@ -646,7 +646,7 @@
         "label": "Cost",
         "contribution": 0.25,
         "code": "ESTIMATE_ABOVE_STANDARD_AND_MP",
-        "text_en": "The work: Rs 48,000 per light (10 of them, Rs 4.80 lakh with charges); 98 in 100 of the 136 similar works in Jaunpur cost at most Rs 20,896 per light (median Rs 20,896). The estimate (Rs 4.80 lakh) is also 100% above the MP's recommended Rs 2.40 lakh (reason given: 'Survey found ten poles are needed, not five.'). Please check the estimate and whether its specification (LED 12 W, pole 6 m, panel 40 Wp, battery 384 Wh) explains the price.",
+        "text_en": "The work: Rs 48,000 per light (10 of them, Rs 4.80 lakh with charges); 8 in 10 of the 136 similar works in Jaunpur cost Rs 20,878 to Rs 20,896 per light (median Rs 20,896); 98 in 100 cost at most Rs 20,896. The estimate (Rs 4.80 lakh) is also 100% above the MP's recommended Rs 2.40 lakh (reason given: 'Survey found ten poles are needed, not five.'). Please check the estimate and whether its specification (LED 12 W, pole 6 m, panel 40 Wp, battery 384 Wh) explains the price.",
         "text_hi": "इस कार्य पर एक जाँच ने ध्यान देने योग्य बात पाई है। विवरण देखें।",
         "chance": 0.25,
         "hit_rate": 0.25,
@@ -666,12 +666,12 @@
        "risk": 0.5,
        "confidence": 0.0,
        "hard": false,
-       "headline": "The work: Rs 48,000 per light (10 of them, Rs 4.80 lakh with charges); 98 in 100 of the 136 similar works in Jaunpur cost at most Rs 20,896 per light (median Rs 20,896). The estimate (Rs 4.80 lakh) is also 100% above the MP's recommended Rs 2.40 lakh (reason given: 'Survey found ten poles are needed, not five.'). Please check the estimate and whether its specification (LED 12 W, pole 6 m, panel 40 Wp, battery 384 Wh) explains the price.",
+       "headline": "The work: Rs 48,000 per light (10 of them, Rs 4.80 lakh with charges); 8 in 10 of the 136 similar works in Jaunpur cost Rs 20,878 to Rs 20,896 per light (median Rs 20,896); 98 in 100 cost at most Rs 20,896. The estimate (Rs 4.80 lakh) is also 100% above the MP's recommended Rs 2.40 lakh (reason given: 'Survey found ten poles are needed, not five.'). Please check the estimate and whether its specification (LED 12 W, pole 6 m, panel 40 Wp, battery 384 Wh) explains the price.",
        "version": "",
        "findings": [
         {
          "code": "ESTIMATE_ABOVE_STANDARD_AND_MP",
-         "text": "The work: Rs 48,000 per light (10 of them, Rs 4.80 lakh with charges); 98 in 100 of the 136 similar works in Jaunpur cost at most Rs 20,896 per light (median Rs 20,896). The estimate (Rs 4.80 lakh) is also 100% above the MP's recommended Rs 2.40 lakh (reason given: 'Survey found ten poles are needed, not five.'). Please check the estimate and whether its specification (LED 12 W, pole 6 m, panel 40 Wp, battery 384 Wh) explains the price.",
+         "text": "The work: Rs 48,000 per light (10 of them, Rs 4.80 lakh with charges); 8 in 10 of the 136 similar works in Jaunpur cost Rs 20,878 to Rs 20,896 per light (median Rs 20,896); 98 in 100 cost at most Rs 20,896. The estimate (Rs 4.80 lakh) is also 100% above the MP's recommended Rs 2.40 lakh (reason given: 'Survey found ten poles are needed, not five.'). Please check the estimate and whether its specification (LED 12 W, pole 6 m, panel 40 Wp, battery 384 Wh) explains the price.",
          "hard": false,
          "risk": 0.5,
          "evidence": {}
@@ -736,7 +736,7 @@
      "alerts": [
       "cost_estimate"
      ],
-     "headline": "The work: Rs 48,000 per light (10 of them, Rs 4.80 lakh with charges); 98 in 100 of the 136 similar works in Jaunpur cost at most Rs 20,896 per light (median Rs 20,896). The estimate (Rs 4.80 lakh) is also 100% above the MP's recommended Rs 2.40 lakh (reason given: 'Survey found ten poles are needed, not five.'). Please check the estimate and whether its specification (LED 12 W, pole 6 m, panel 40 Wp, battery 384 Wh) explains the price.",
+     "headline": "The work: Rs 48,000 per light (10 of them, Rs 4.80 lakh with charges); 8 in 10 of the 136 similar works in Jaunpur cost Rs 20,878 to Rs 20,896 per light (median Rs 20,896); 98 in 100 cost at most Rs 20,896. The estimate (Rs 4.80 lakh) is also 100% above the MP's recommended Rs 2.40 lakh (reason given: 'Survey found ten poles are needed, not five.'). Please check the estimate and whether its specification (LED 12 W, pole 6 m, panel 40 Wp, battery 384 Wh) explains the price.",
      "compact": false,
      "case_id": null,
      "case_size": null
@@ -779,7 +779,7 @@
     "alerts": [
      "cost_estimate"
     ],
-    "headline": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 16 recent forms of 8 other agencies in the district): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
+    "headline": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 16 recent forms of 8 other agencies in the district; other agencies pay Rs 735 to Rs 780 a day): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
     "case_id": null,
     "case_size": null
    },
@@ -828,7 +828,7 @@
         "label": "Cost",
         "contribution": 0.25,
         "code": "LABOUR_RATE_FAR_ABOVE",
-        "text_en": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 16 recent forms of 8 other agencies in the district): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
+        "text_en": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 16 recent forms of 8 other agencies in the district; other agencies pay Rs 735 to Rs 780 a day): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
         "text_hi": "मज़दूरी की दर इस ज़िले में उसी काम के लिए दूसरी एजेंसियों की दर से 2.4 गुना है। स्वीकृति से पहले जाँच करें।",
         "chance": 0.25,
         "hit_rate": 0.25,
@@ -848,12 +848,12 @@
        "risk": 0.5,
        "confidence": 0.0,
        "hard": false,
-       "headline": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 16 recent forms of 8 other agencies in the district): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
+       "headline": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 16 recent forms of 8 other agencies in the district; other agencies pay Rs 735 to Rs 780 a day): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
        "version": "",
        "findings": [
         {
          "code": "LABOUR_RATE_FAR_ABOVE",
-         "text": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 16 recent forms of 8 other agencies in the district): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
+         "text": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 16 recent forms of 8 other agencies in the district; other agencies pay Rs 735 to Rs 780 a day): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
          "hard": false,
          "risk": 0.5,
          "evidence": {}
@@ -919,7 +919,7 @@
      "alerts": [
       "cost_estimate"
      ],
-     "headline": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 16 recent forms of 8 other agencies in the district): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
+     "headline": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 16 recent forms of 8 other agencies in the district; other agencies pay Rs 735 to Rs 780 a day): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
      "compact": false,
      "case_id": null,
      "case_size": null
@@ -1031,7 +1031,7 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "The whole estimate is Rs 14.52 lakh against a fair Rs 14.52 lakh (+0.0%), pricing 73% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+       "headline": "The whole estimate is Rs 14.52 lakh against a fair Rs 14.52 lakh (Rs 14.30 to 14.94 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 73% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
        "version": "",
        "findings": [],
        "limitations": [
@@ -1214,7 +1214,7 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "The whole estimate is Rs 24.75 lakh against a fair Rs 24.75 lakh (+0.0%), pricing 32% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+       "headline": "The whole estimate is Rs 24.75 lakh against a fair Rs 24.75 lakh (Rs 24.59 to 25.07 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 32% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
        "version": "",
        "findings": [],
        "limitations": [
@@ -1401,7 +1401,7 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "The whole estimate is Rs 5.12 lakh against a fair Rs 5.12 lakh (+0.0%), pricing 65% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+       "headline": "The whole estimate is Rs 5.12 lakh against a fair Rs 5.12 lakh (Rs 5.05 to 5.25 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 65% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
        "version": "",
        "findings": [],
        "limitations": [
@@ -1603,13 +1603,12 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "The quantities fit the size of the work.",
+       "headline": "The whole estimate is Rs 16.82 lakh against a fair Rs 16.82 lakh, +0.0%, pricing 63% of the money: within the fair band.",
        "version": "",
        "findings": [],
        "limitations": [
         "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
         "Not priced here, for want of reliable price data (recorded, so it can be collected): cement (4 recent forms from 4 other agencies; 5 from 3 needed); sand (4 recent forms from 4 other agencies; 5 from 3 needed); stone aggregate (4 recent forms from 4 other agencies; 5 from 3 needed); gsb / wbm / moorum (2 recent forms from 2 other agencies; 5 from 3 needed); mason (4 recent forms from 4 other agencies; 5 from 3 needed); beldar / mazdoor (4 recent forms from 4 other agencies; 5 from 3 needed).",
-        "Only 43% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged.",
         "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
        ],
        "evidence": {},
@@ -1988,7 +1987,7 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "The whole estimate is Rs 24.75 lakh against a fair Rs 24.75 lakh (+0.0%), pricing 32% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+       "headline": "The whole estimate is Rs 24.75 lakh against a fair Rs 24.75 lakh (Rs 24.52 to 24.92 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 32% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
        "version": "",
        "findings": [],
        "limitations": [
@@ -2368,13 +2367,12 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "The quantities fit the size of the work.",
+       "headline": "The whole estimate is Rs 14.52 lakh against a fair Rs 14.52 lakh, +0.0%, pricing 62% of the money: within the fair band.",
        "version": "",
        "findings": [],
        "limitations": [
         "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
         "Not priced here, for want of reliable price data (recorded, so it can be collected): cement (4 recent forms from 4 other agencies; 5 from 3 needed); sand (4 recent forms from 4 other agencies; 5 from 3 needed); stone aggregate (4 recent forms from 4 other agencies; 5 from 3 needed); gsb / wbm / moorum (2 recent forms from 2 other agencies; 5 from 3 needed); mason (4 recent forms from 4 other agencies; 5 from 3 needed); beldar / mazdoor (4 recent forms from 4 other agencies; 5 from 3 needed).",
-        "Only 43% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged.",
         "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
        ],
        "evidence": {},

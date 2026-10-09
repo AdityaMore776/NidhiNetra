@@ -137,7 +137,7 @@ def test_extra_quantity_counts_in_the_gap():
     # cement at 1.5x what the 250 m x 3.75 m x 150 mm slab needs (plus 10% tolerance)
     r = run(priced(by={"sand": 1.2, "aggregate": 1.2}, qty={"cement": 1.6}))
     f = next(f for f in r.findings if f.code == "ESTIMATE_ABOVE_FAIR_PRICE")
-    assert "cement" in f.text and "where the size needs" in f.text
+    assert "cement" in f.text and "where the size takes 1,134 to 1,191 bags" in f.text
     # a confirmed quantity far beyond the size stays its own question as well
     assert "MATERIAL_QUANTITY_ABOVE_SIZE" in codes(r)
 

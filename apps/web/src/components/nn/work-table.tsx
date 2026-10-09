@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import type { WorkRow } from "@/lib/api";
-import { BAND_COLOR, inr, workHref, workType } from "@/lib/format";
+import { agentMeta, BAND_COLOR, inr, workHref, workType } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { BandBadge, EngineChips } from "./badges";
 
@@ -31,7 +31,50 @@ export function WorkTable({
   const reduce = useReducedMotion();
   return (
     <div className="panel overflow-hidden">
-      <div className="overflow-x-auto">
+      {/* T143: on a phone each work is a card, every column readable without sideways scrolling */}
+      <ul className="divide-y md:hidden">
+        {loading &&
+          Array.from({ length: 4 }).map((_, i) => (
+            <li key={`s${i}`} className="px-4 py-4">
+              <div className="h-4 w-2/3 rounded-md skeleton-shimmer" />
+              <div className="mt-2 h-3 w-1/2 rounded-md skeleton-shimmer" />
+            </li>
+          ))}
+        {!loading &&
+          items.map((w, i) => (
+            <li key={w.work_id} className="relative">
+              <span className="absolute left-0 top-0 h-full w-[3px]" style={{ background: w.band ? BAND_COLOR[w.band] : "var(--border)" }} />
+              <Link href={workHref(w.work_id)} className="block px-4 py-3.5 active:bg-brand-50/70">
+                <div className="flex items-start gap-2">
+                  {rank && <span className="num mt-0.5 font-mono text-xs text-subtle-foreground">{String(start + i + 1).padStart(2, "0")}</span>}
+                  <span className="min-w-0 flex-1 font-medium text-brand-900">{workType(w.work_type_code)}</span>
+                  <BandBadge band={w.band} limited={w.limited} />
+                </div>
+                <div className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{w.description}</div>
+                <div className="mt-1.5 flex flex-wrap items-baseline gap-x-2 text-xs">
+                  <span className="font-medium">{w.district_name ?? "—"}</span>
+                  <span className="text-muted-foreground">{w.state_name}</span>
+                  <span className="num ml-auto text-sm font-semibold">{inr(w.amount)}</span>
+                </div>
+                {showWhy && w.headline && (
+                  <div className="mt-2 rounded-lg border-l-2 border-brand-200 bg-muted/70 px-2.5 py-1.5 text-xs leading-relaxed text-foreground/80">
+                    <p className="line-clamp-3">{w.headline}</p>
+                  </div>
+                )}
+                <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <AgentNames alerts={w.alerts} />
+                  {w.case_size && w.case_size > 1 ? (
+                    <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
+                      <Layers className="size-3" /> One case: {w.case_size} alike works
+                    </span>
+                  ) : null}
+                </div>
+              </Link>
+            </li>
+          ))}
+        {!loading && items.length === 0 && <li className="px-5 py-12 text-center text-sm text-muted-foreground">{emptyText}</li>}
+      </ul>
+      <div className="hidden overflow-x-auto md:block">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b bg-muted/60 text-left">
@@ -83,8 +126,8 @@ export function WorkTable({
                     </Link>
                     <div className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{w.description}</div>
                     {showWhy && w.headline && (
-                      <div className="mt-2 line-clamp-2 rounded-lg border-l-2 border-brand-200 bg-muted/70 px-2.5 py-1.5 text-xs leading-relaxed text-foreground/80">
-                        {w.headline}
+                      <div className="mt-2 rounded-lg border-l-2 border-brand-200 bg-muted/70 px-2.5 py-1.5 text-xs leading-relaxed text-foreground/80">
+                        <p className="line-clamp-2">{w.headline}</p>
                       </div>
                     )}
                     {w.case_size && w.case_size > 1 ? (
@@ -125,6 +168,25 @@ export function WorkTable({
         </table>
       </div>
     </div>
+  );
+}
+
+/** The checks that raised a work, by name: a phone has no hover to read a chip's tooltip. */
+function AgentNames({ alerts }: { alerts: string[] | null }) {
+  const list = (alerts ?? []).filter((a) => a !== "validation");
+  if (!list.length) return <span className="text-[11px] text-subtle-foreground">No check asked</span>;
+  return (
+    <span className="flex flex-wrap gap-x-2.5 gap-y-1">
+      {list.map((a) => {
+        const m = agentMeta(a);
+        return (
+          <span key={a} className="inline-flex items-center gap-1 text-[11px] font-medium" style={{ color: m.color }}>
+            <span className="size-1.5 rounded-full" style={{ background: m.color }} />
+            {m.name}
+          </span>
+        );
+      })}
+    </span>
   );
 }
 

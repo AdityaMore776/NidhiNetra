@@ -1,0 +1,33 @@
+T160: the agents audit, replayed through Duplicate Work (made-up works: an earlier community hall, completed, and a new work filed near it)
+
+1. The map pin typed some metres off the real site (the hall). 'videos' = three site videos filmed at the hall (within 8 m of its pin).
+
+pin off by  videos  asked                               notes
+       0 m  no      SANCTIONED_WORK_AT_THIS_SITE        -
+       0 m  yes     SANCTIONED_WORK_AT_THIS_SITE        -
+      30 m  no      SANCTIONED_WORK_AT_THIS_SITE        -
+      30 m  yes     SANCTIONED_WORK_AT_THIS_SITE        -
+      49 m  no      SANCTIONED_WORK_AT_THIS_SITE        -
+      49 m  yes     SANCTIONED_WORK_AT_THIS_SITE        -
+      51 m  no      -                                   NEAR_SANCTIONED_WORK
+      51 m  yes     SANCTIONED_WORK_WHERE_FILMED        -
+      60 m  no      -                                   NEAR_SANCTIONED_WORK
+      60 m  yes     SANCTIONED_WORK_WHERE_FILMED        -
+      75 m  no      -                                   NEAR_SANCTIONED_WORK
+      75 m  yes     SANCTIONED_WORK_WHERE_FILMED        -
+      90 m  no      -                                   NEAR_SANCTIONED_WORK
+      90 m  yes     SANCTIONED_WORK_WHERE_FILMED        -
+     120 m  no      -                                   NEAR_SANCTIONED_WORK
+     120 m  yes     SANCTIONED_WORK_WHERE_FILMED        -
+     150 m  no      -                                   NEAR_SANCTIONED_WORK
+     150 m  yes     SANCTIONED_WORK_WHERE_FILMED        -
+     400 m  no      -                                   -
+     400 m  yes     SANCTIONED_WORK_WHERE_FILMED        -
+
+2. The same building, its pin 10 m from the hall's, filed under another work type.
+
+work type           asked                               notes
+COMMUNITY_HALL      SANCTIONED_WORK_AT_THIS_SITE        -
+SCHOOL_BUILDING     SANCTIONED_WORK_AT_THIS_SITE        -
+LIBRARY             SANCTIONED_WORK_AT_THIS_SITE        -
+OTHER               -                                   -

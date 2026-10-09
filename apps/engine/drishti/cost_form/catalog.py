@@ -150,3 +150,11 @@ def quantity_text(n: float, unit: str | None) -> str:
         "" if unit == "nos" else unit or "")
     return f"{n:,.0f} {word}".rstrip()
 
+
+def range_text(low: float | None, high: float, unit: str | None) -> str:
+    """'1,270 to 1,334 bags', or '10' when the range is one figure (a count): what an honest
+    estimate for the size carries (T145, the owner: "it should give a range")."""
+    if low is None or round(low) >= round(high):
+        return quantity_text(high, unit)
+    return f"{low:,.0f} to {quantity_text(high, unit)}"
+

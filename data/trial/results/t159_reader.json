@@ -1,0 +1,134 @@
+{
+ "benchmark (report) | raw": {
+  "n": 883,
+  "accuracy": 0.9603624009060022,
+  "macro_f1": 0.9346632258902198,
+  "fooled_rate": 0.006944444444444444,
+  "n_no_progress": 576,
+  "missed_rate": 0.17355371900826447,
+  "n_progress": 121,
+  "answered_accuracy": 0.9895366218236173,
+  "answered_share": 0.7576443941109853,
+  "macro_f1_ci95": [
+   0.9206933453342313,
+   0.9509094620981349
+  ],
+  "mcnemar_vs_benchmark": {
+   "n": 883,
+   "only_a_right": 0,
+   "only_b_right": 0,
+   "p": 1.0
+  },
+  "seconds_per_check_l4": 0.78
+ },
+ "benchmark (report) | engine": {
+  "n": 883,
+  "accuracy": 0.9603624009060022,
+  "macro_f1": 0.9346632258902198,
+  "fooled_rate": 0.006944444444444444,
+  "n_no_progress": 576,
+  "missed_rate": 0.17355371900826447,
+  "n_progress": 121,
+  "answered_accuracy": 0.9895366218236173,
+  "answered_share": 0.7576443941109853,
+  "macro_f1_ci95": [
+   0.9206933453342313,
+   0.9509094620981349
+  ],
+  "mcnemar_vs_benchmark": {
+   "n": 883,
+   "only_a_right": 0,
+   "only_b_right": 0,
+   "p": 1.0
+  },
+  "seconds_per_check_l4": 0.78
+ },
+ "bf16, video frames | raw": {
+  "n": 883,
+  "accuracy": 0.956964892412231,
+  "macro_f1": 0.9300456461186215,
+  "fooled_rate": 0.008680555555555556,
+  "n_no_progress": 576,
+  "missed_rate": 0.18181818181818182,
+  "n_progress": 121,
+  "answered_accuracy": 0.9865269461077845,
+  "answered_share": 0.7565118912797282,
+  "macro_f1_ci95": [
+   0.9164428993674569,
+   0.9468299638703787
+  ],
+  "mcnemar_vs_benchmark": {
+   "n": 883,
+   "only_a_right": 2,
+   "only_b_right": 5,
+   "p": 0.453125
+  },
+  "seconds_per_check_l4": 7.81
+ },
+ "bf16, video frames | engine": {
+  "n": 883,
+  "accuracy": 0.956964892412231,
+  "macro_f1": 0.9300456461186215,
+  "fooled_rate": 0.008680555555555556,
+  "n_no_progress": 576,
+  "missed_rate": 0.18181818181818182,
+  "n_progress": 121,
+  "answered_accuracy": 0.9865269461077845,
+  "answered_share": 0.7565118912797282,
+  "macro_f1_ci95": [
+   0.9164428993674569,
+   0.9468299638703787
+  ],
+  "mcnemar_vs_benchmark": {
+   "n": 883,
+   "only_a_right": 2,
+   "only_b_right": 5,
+   "p": 0.453125
+  },
+  "seconds_per_check_l4": 7.81
+ },
+ "4-bit, video frames | raw": {
+  "n": 883,
+  "accuracy": 0.956964892412231,
+  "macro_f1": 0.9325046762358385,
+  "fooled_rate": 0.017361111111111112,
+  "n_no_progress": 576,
+  "missed_rate": 0.14049586776859505,
+  "n_progress": 121,
+  "answered_accuracy": 0.977810650887574,
+  "answered_share": 0.7655719139297849,
+  "macro_f1_ci95": [
+   0.9132914919371705,
+   0.951448171547684
+  ],
+  "mcnemar_vs_benchmark": {
+   "n": 883,
+   "only_a_right": 9,
+   "only_b_right": 12,
+   "p": 0.6636238098144531
+  },
+  "seconds_per_check_l4": 10.3
+ },
+ "4-bit, video frames | engine": {
+  "n": 883,
+  "accuracy": 0.956964892412231,
+  "macro_f1": 0.9325046762358385,
+  "fooled_rate": 0.017361111111111112,
+  "n_no_progress": 576,
+  "missed_rate": 0.14049586776859505,
+  "n_progress": 121,
+  "answered_accuracy": 0.977810650887574,
+  "answered_share": 0.7655719139297849,
+  "macro_f1_ci95": [
+   0.9132914919371705,
+   0.951448171547684
+  ],
+  "mcnemar_vs_benchmark": {
+   "n": 883,
+   "only_a_right": 9,
+   "only_b_right": 12,
+   "p": 0.6636238098144531
+  },
+  "seconds_per_check_l4": 10.3
+ }
+}

@@ -168,6 +168,9 @@
   --font-display: var(--font-instrument), ui-serif, Georgia, serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "Cascadia Code", monospace;
   --font-devanagari: var(--font-noto-deva), var(--font-geist), sans-serif;
+  /* T143: one-word labels (निधिनेत्र, हिंदी) use the device's own Devanagari font (Android's Noto,
+     Windows' Nirmala UI, Apple's Kohinoor), so a page need not download the 119 KB web font for a word */
+  --font-deva-label: "Noto Sans Devanagari", "Kohinoor Devanagari", "Nirmala UI", Mangal, var(--font-noto-deva), sans-serif;
 
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);

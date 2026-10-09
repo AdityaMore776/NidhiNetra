@@ -330,6 +330,7 @@ def cost_lines(w: dict, ctx, p: dict) -> dict:
         if (0, j) in settled:
             sx = settled[(0, j)]
             row.update(state="labour", fair_rate=sx["fair_rate"], unit="day", level="ok",
+                       fair_low=sx.get("fair_low"), fair_high=sx.get("fair_high"),
                        pct=round(sx["rate"] / sx["fair_rate"] - 1, 4),
                        limit=round(sx["fair_rate"] * labour_rules.RATE_MARGIN, 2))
         elif x and x.get("fair_rate") is not None:
@@ -338,6 +339,9 @@ def cost_lines(w: dict, ctx, p: dict) -> dict:
                    else (rates._state(w), mid))
             book = idx.by_key if x["fair_source"] == "district" else idx.by_state
             rng = _others_range(book, key, agency, wid, when) if idx else None
+            if rng and x.get("fair_low") is not None:
+                # T145: the engine's own range (a state-wide one carries its leeway)
+                rng.update(low=x["fair_low"], high=x["fair_high"])
             pct = x["rate"] / fair - 1
             row.update(state="rate", fair_rate=fair, pct=round(pct, 4), range=rng,
                        where=x["fair_source"], unit=x["unit"],
@@ -360,6 +364,7 @@ def cost_lines(w: dict, ctx, p: dict) -> dict:
             per = site["price_per_unit"]
             row.update(state="whole_item", level="high" if per > site["question_above"] else "ok",
                        per=per, per_unit=site["unit"], median=ref["median"], p98=ref["p98"],
+                       p10=ref.get("p10"), p90=ref.get("p90"),
                        works=ref["n"], where_text=site["where"], limit=site["question_above"],
                        pct=round(per / ref["median"] - 1, 4))
         if "state" not in row:
@@ -368,7 +373,9 @@ def cost_lines(w: dict, ctx, p: dict) -> dict:
         if x:
             needed = x.get("needed")
             if needed is not None:
+                low = x.get("needed_low")
                 row.update(needed=round(needed, 1),
+                           needed_low=round(low if low is not None else needed, 1),
                            allowed=round(needed * whole.QTY_TOLERANCE, 1),
                            qty_ratio=round(x["quantity"] / needed, 3) if needed else None)
                 if x["quantity"] > needed * whole.QTY_TOLERANCE:
@@ -379,7 +386,8 @@ def cost_lines(w: dict, ctx, p: dict) -> dict:
         out.append(row)
     unread = wh.get("unexplained", {})
     summary = {"verdict": wh.get("verdict"), "grand": wh.get("grand_total"),
-               "fair": wh.get("fair_total"), "gap": wh.get("gap"), "share": wh.get("gap_share"),
+               "fair": wh.get("fair_total"), "fair_low": wh.get("fair_low"),
+               "fair_high": wh.get("fair_high"), "gap": wh.get("gap"), "share": wh.get("gap_share"),
                "coverage": wh.get("coverage"), "limit_share": whole.GAP_SHARE,
                "limit_rs": whole.GAP_MIN_RS, "qty_slack": round(whole.QTY_TOLERANCE - 1, 4),
                "unread_allowed": whole.UNREAD_SHARE, "unexplained": unread,

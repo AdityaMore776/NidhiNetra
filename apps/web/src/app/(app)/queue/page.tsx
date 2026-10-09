@@ -65,7 +65,7 @@ function Queue() {
         lead="Works flagged Critical or High, most important first. Importance is the risk score weighted by the money at stake. Every entry is a request to look, not a finding of wrongdoing."
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         <StatTile label="Cases in the queue" value={all?.total ?? 0} icon={<Inbox className="size-4" />} note="alike works shown once, as one case" />
         <StatTile label="Critical" value={crit ?? 0} icon={<AlertOctagon className="size-4" />} tone="var(--critical)" note="highest priority" />
         <StatTile label="High" value={high ?? 0} icon={<Scale className="size-4" />} tone="var(--high)" note="works worth a look first" />
