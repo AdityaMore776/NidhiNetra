@@ -2576,6 +2576,43 @@ at each; at ±90 m GPS it said "GPS is too weak to guide you" instead of a direc
 found, both fixed: a phone standing still sends no new fix (only v1 got a box), and the facing hung on
 the GPS.
 
+## T159 (9 Oct 2026): NidhiLens the way the engine runs it
+
+The report's 883 main-test checks again, with the same tuned 4B, run as Site Progress's video job runs it
+(`apps/vision/modal/train_modal.py::reader_check` on an L4, scored by `data/trial/t159_reader.py` →
+`results/t159_reader.txt`):
+- each photo first made into what the job keeps of a phone video: a frame 1,280 px on its long side, saved
+  as JPEG quality 80;
+- full precision, and the 4-bit weights `readers.VLMReader` loads to fit the team's 8 GB GPU;
+- every answer passed through the engine's own code (`VLMReader`, sure = 0.6, then `video.visit._answer`).
+
+| Run | Macro-F1 [95% CI] | Fooled (of 576) | Missed (of 121) | Answered | McNemar against the report |
+|---|---|---|---|---|---|
+| The report (photos, full precision) | 0.935 [0.921, 0.951] | 4 | 21 | 75.8% | n/a |
+| Video frames, full precision | 0.930 [0.916, 0.947] | 5 | 22 | 75.7% | 2 against 5, p = 0.45 |
+| Video frames, 4-bit (the engine) | 0.933 [0.913, 0.951] | 10 | 17 | 76.6% | 9 against 12, p = 0.66 |
+
+- **Phone-video frames cost nothing measurable.** The full-precision model gives the same answers on all
+  but 7 of 883 checks.
+- **4-bit leans towards "shown".** Accuracy is the same, but it is fooled more often: 7 no-progress checks
+  only 4-bit calls "shown", against 1 only the report's run does (exact binomial p = 0.07, suggestive, not
+  proven). All 7 are photos in reverse order (3) or one moment from another viewpoint (4). It also misses
+  less real work (17 against 21).
+- **The engine's "unsure" rule never fires.** The verdict's probability is read after the model has written
+  its own `same_place`, `stage_A`, `stage_B` and `permanent_change`, and by then it is all but certain: the
+  lowest of 883 answers is 0.9998 (both runs). So `VLMReader`'s sure = 0.6 changes no answer, and the
+  report's calibration error of 0.03 reflects the high accuracy, not a useful sense of doubt. A real
+  doubt signal must come from elsewhere: the probability of `same_place` or `permanent_change`, the
+  verdict asked before the reasoning, or agreement across spots and visits (which `_answer` and T158's
+  spot-by-spot judging already use).
+- **Speed:** one check at a time, as the reader runs today, takes 7.8 s (full precision) and 10.3 s
+  (4-bit) on an L4, against 0.78 s for the report's batched run with the add-on merged. 4-bit is slower,
+  not faster, on a data-centre GPU; it exists to fit 8 GB.
+
+What follows: the engine can use NidhiLens on video frames as it is. Where a GPU with about 11 GB is
+available, run it in full precision (fooled 5, not 10). Batch the spots of a visit and merge the add-on
+before a large run. Its readings stay notes, never counted, until the field trial (T126).
+
 ## T160 (9 Oct 2026): the agents audit — ways past Duplicate Work
 
 The engine itself, on made-up works: an earlier community hall (completed) and a new work filed near

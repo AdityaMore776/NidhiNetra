@@ -290,8 +290,13 @@ claim ─────> text tokens ───────────────
 - **Base:** Qwen3-VL-4B-Instruct (open weights). The vision encoder is frozen. LoRA adapters (33.0 M trainable
   weights; 17.4 M for the 2B) sit on the language model's linear layers. The 2B was trained before the edited-photo
   decision, so its training data includes them (3,655 checks).
-- **Output:** short JSON. The verdict's probability is read from the model's own next-token scores, so it can be
-  calibrated: expected calibration error 0.03 on the test.
+- **Output:** short JSON. The verdict's probability is read from the model's own next-token scores: expected
+  calibration error 0.03 on the test. That low error reflects the high accuracy more than a sense of doubt: the
+  verdict comes after the model's own reasoning fields, and its probability is all but 1 on nearly every check
+  (the lowest of 883 is 0.9998).
+- **In the engine (9 Oct 2026):** run as the video job runs it, on phone-video frames (1,280 px, JPEG quality
+  80), it scores macro-F1 0.930 at full precision and 0.933 with the 4-bit weights that fit an 8 GB GPU, against
+  0.935 here (neither difference is significant). The 4-bit model is fooled more often: 10 of 576 against 4.
 - **Training:**
   - 2 passes over 2,924 real training checks, learning rate 1e-4 with cosine decay, batch of 8 (accumulated);
   - loss only on the answer's tokens;

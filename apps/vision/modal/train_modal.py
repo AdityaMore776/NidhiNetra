@@ -482,3 +482,64 @@ def _score(adapter, out, items, split, base, limit, batch=8, real_only=False, ma
     Path(out.replace(".jsonl", "_score.json")).write_text(json.dumps(res, indent=1))
     vol.commit()
     return res["headline_real_only"]
+
+
+@app.function(gpu="L4", volumes={"/data": vol}, timeout=3 * 3600)
+def reader_check(adapter: str = "/data/runs/sft4b_v6_real/final",
+                 items: str = "/data/vlm/v6/items_eye3.jsonl", split: str = "test",
+                 out: str = "/data/runs/reader_check/q4_frames.jsonl", quant4: bool = True,
+                 engine_frames: bool = True, base: str = "Qwen/Qwen3-VL-4B-Instruct",
+                 limit: int = 0) -> int:
+    """T159: NidhiLens as the engine's video job runs it (readers.VLMReader: vlm.load with 4-bit
+    weights, judge_images), on each photo made into what the job keeps of a phone video: a frame
+    1280 px on its long side, saved as JPEG quality 80 (video/reader.py jpeg). Raw answers only;
+    the engine's own combining is replayed on them locally (data/trial/t159_reader.py). Resumes
+    from `out` if stopped."""
+    import io
+    import json
+    import sys
+    import time
+
+    import cv2
+    import numpy as np
+    from PIL import Image
+    sys.path.insert(0, "/root")
+    from drishti_vision import vlm
+    from drishti_vision.vlmdata import read_items
+    its = [i for i in read_items(items) if i.split == split and i.real]
+    its = its[:limit] if limit else its
+    L = vlm.load(base, quant4=quant4, adapter=adapter or None)
+
+    def frame(rel: str):
+        im = Image.open(Path("/data") / rel).convert("RGB")
+        if not engine_frames:
+            return im
+        s = 1280 / max(im.size)
+        im = im.resize((round(im.width * s), round(im.height * s)), Image.BICUBIC)
+        ok, buf = cv2.imencode(".jpg", cv2.cvtColor(np.asarray(im), cv2.COLOR_RGB2BGR),
+                               [cv2.IMWRITE_JPEG_QUALITY, 80])
+        return Image.open(io.BytesIO(buf.tobytes()))
+
+    p = Path(out)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    done = {json.loads(x)["id"] for x in p.read_text(encoding="utf-8").splitlines() if x} \
+        if p.exists() else set()
+    log = _logger()
+    with open(p, "a", encoding="utf-8") as f:
+        for k, it in enumerate(its):
+            if it.id in done:
+                continue
+            t = time.time()
+            o = vlm.judge_images(L, frame(it.image_a), frame(it.image_b), it.work_type, it.claim,
+                                 it.claim_kind)
+            ans = o.get("answer") or {}
+            f.write(json.dumps({"id": it.id, "truth": vlm.answer_of(it)["verdict"],
+                                "verdict": ans.get("verdict"), "probs": o.get("probs") or {},
+                                "reason": ans.get("reason", ""), "trick": it.trick,
+                                "site": it.site, "seconds": round(time.time() - t, 2)},
+                               ensure_ascii=False) + "\n")
+            f.flush()
+            if k % 25 == 0:
+                log(f"{k}/{len(its)} {o.get('seconds')} s")
+    vol.commit()
+    return len(its)

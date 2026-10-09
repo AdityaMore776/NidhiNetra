@@ -1,0 +1,15 @@
+T159: NidhiLens-4B as the engine runs it, on 883 real main-test checks (every label checked by eye)
+
+run                      verdict  macro-F1 [95% CI]         fooled  missed  answered  McNemar against the benchmark
+benchmark (report)       raw      0.935 [0.921, 0.951]       0.007   0.174     0.758  same answers
+benchmark (report)       engine   0.935 [0.921, 0.951]       0.007   0.174     0.758  same answers
+bf16, video frames       raw      0.930 [0.916, 0.947]       0.009   0.182     0.757  2 against 5, p = 0.453
+bf16, video frames       engine   0.930 [0.916, 0.947]       0.009   0.182     0.757  2 against 5, p = 0.453
+4-bit, video frames      raw      0.933 [0.913, 0.951]       0.017   0.140     0.766  9 against 12, p = 0.664
+4-bit, video frames      engine   0.933 [0.913, 0.951]       0.017   0.140     0.766  9 against 12, p = 0.664
+
+fooled = no-progress checks judged shown; missed = progress checks not judged shown; answered = share not 'can't tell'.
+engine = the raw answer passed through readers.VLMReader (sure 0.6) and video.visit._answer, as the video job judges one spot.
+seconds a check on an L4 GPU, benchmark (report): 0.78
+seconds a check on an L4 GPU, bf16, video frames: 7.81
+seconds a check on an L4 GPU, 4-bit, video frames: 10.3

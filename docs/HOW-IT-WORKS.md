@@ -99,7 +99,8 @@ problem, never a small mistake, and says "couldn't check" when it has nothing to
   Whether the footage *shows the agency's claim* ("walls up to lintel level") is read by **NidhiLens**, the team's
   own fine-tuned vision model. On 883 real site-photo checks it scored macro-F1 0.935, against 0.876 for Gemini 3.1
   Pro at its best, at 1/30 of the cost. Report: [`NidhiLens (Fine-Tuned Qwen for site progress monitoring)`](../NidhiLens%20(Fine-Tuned%20Qwen%20for%20site%20progress%20monitoring)/README.md).
-  It is benchmarked, and not yet switched on in the live engine.
+  It is built into Site Progress behind a switch (it needs a GPU), and run that way it scores 0.933 on the same
+  checks. Its answers stay notes for the officer until the field trial on real sites.
 
 **For every work:** the risk score with its top three reasons ✅ · the pre-sanction check ✅ · Inspection Planner 📝
 

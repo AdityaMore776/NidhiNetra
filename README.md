@@ -68,7 +68,9 @@ open 4-billion-parameter vision model:
 - trained on real Indian government stage photos;
 - tested on held-out districts, against Gemini 3.1 Pro.
 
-NidhiLens is benchmarked and published as a report. It is not yet switched on in the live engine.
+NidhiLens is built into Site Progress as its claim reader, behind a switch: it needs a GPU, so it runs offline
+on the team's own machine. Run the engine's way (phone-video frames, 4-bit weights) it scores macro-F1 0.933 on the
+same 883 checks. Its readings stay notes, never counted, until the field trial on real sites.
 
 ## What works today
 

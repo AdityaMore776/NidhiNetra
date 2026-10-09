@@ -94,6 +94,7 @@ REPLACE = [
      "doing it.", ' "You" means a person; "AI" means it is automated.'),
     # the report's links: the test data and the code, in this repository
     (f"{REPORT}/README.md", f"github.com/{PRIVATE_REPO}/releases/", "github.com/{repo}/releases/"),
+    (f"{REPORT}/README.md", f"--repo {PRIVATE_REPO}`", "--repo {repo}`"),
     ("*", "AGENTS.md section 8", "CONTRIBUTING.md, decisions"),
     ("*", "AGENTS.md", "CONTRIBUTING.md"),
 ]
