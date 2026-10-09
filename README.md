@@ -111,7 +111,7 @@ report shows the cases where each model fails.
 | **Where the build is and what's next** | [`docs/STATUS.md`](docs/STATUS.md) |
 | **MPLADS and project terms** | [`docs/GLOSSARY.md`](docs/GLOSSARY.md) |
 | **Joining the team?** How we work together (humans + their AI agents) | [`docs/team/README.md`](docs/team/README.md) · AI manual: [`AGENTS.md`](AGENTS.md) |
-| **The task plan** and who's doing what | [`docs/team/TASKS.md`](docs/team/TASKS.md) · [Issues](https://github.com/AdityaMore776/NidhiNetra-team/issues) · [progress log](docs/team/log/) |
+| **The task plan** and who's doing what | [`docs/team/TASKS.md`](docs/team/TASKS.md) · [Issues](https://github.com/AdityaMore776/NidhiNetra/issues) · [progress log](docs/team/log/) |
 | **Team rules** for working on the repo | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
 | Earlier design documents (history) | [`docs/specs/`](docs/specs/) |
 | The SIH idea-submission deck | [`docs/deck/DRISHTI_SIH26102_v2.pdf`](docs/deck/DRISHTI_SIH26102_v2.pdf) |
