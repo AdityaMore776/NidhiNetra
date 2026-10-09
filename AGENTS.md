@@ -61,7 +61,7 @@ Then:
 
 If `gh` (the GitHub command-line tool) is not installed or not logged in, ask your human to run
 `gh auth login` once (see [`docs/team/README.md`](docs/team/README.md)). Without it, read tasks at
-https://github.com/AdityaMore776/NidhiNetra/issues and have your human click "assign yourself".
+https://github.com/AdityaMore776/NidhiNetra-team/issues and have your human click "assign yourself".
 
 ---
 
