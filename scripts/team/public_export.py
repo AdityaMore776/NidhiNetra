@@ -69,29 +69,32 @@ REPLACE = [
      "├── scripts/             local development"),
     ("README.md", "├── .github/             CI (tests, team checks, secret scan), issue and PR templates",
      "├── .github/             CI: tests and a secret scan"),
-    ("docs/SETUP.md", "## The quick way (teammates)\n\n```powershell\n"
-     "python scripts/team/setup.py         # installs engine + web, unpacks the data pack from "
-     "Downloads, runs tests\n"
-     "python scripts/team/setup.py --db    # builds the local database with the real corpus "
-     "(~10 min, once)\n"
-     "python scripts/dev/start.py          # database + engine + web together: "
-     "http://localhost:3000\n```\nThe sections below are the same steps by hand.\n\n", ""),
+    ("docs/SETUP.md", ("## The quick way (teammates)\n\n```powershell\n"
+                       "python scripts/team/setup.py         # installs engine + web, unpacks the data "
+                       "pack from Downloads, runs tests\n"
+                       "python scripts/team/setup.py --db    # builds the local database with the real "
+                       "corpus (~10 min, once)\n"
+                       "python scripts/dev/start.py          # database + engine + web together: "
+                       "http://localhost:3000\n```\nThe sections below are the same steps by hand.\n\n"),
+     ""),
     ("data/requirements.txt", "Installed into the engine's venv by scripts/team/setup.py:",
      "Installed into the engine's venv:"),
     ("data/trial/results/hosted_assess_v3.txt", "(T054 handoff, 1 Oct 2026", "(T054, 1 Oct 2026"),
     ("data/trial/dashboard_labels.py", "Read by the agent (Claude Code) working for @AdityaMore776,",
      "Read by an AI model,"),
     ("docs/plans/T120-four-agents.md", "(AGENTS.md §8)", "(CONTRIBUTING.md, decisions)"),
-    ("docs/STATUS.md", " The roadmap and v2 notes below are history / side track; the live task order "
-     "is [`team/TASKS.md`](team/TASKS.md).", ""),
+    ("docs/STATUS.md", (" The roadmap and v2 notes below are history / side track; the live task "
+                        "order is [`team/TASKS.md`](team/TASKS.md)."), ""),
     ("docs/AGENT-CATALOG.md", "specs/2026-09-25-drishti-v2-full-agents-design.md",
      "specs/2026-09-27-nidhinetra-blueprint.md"),
-    ("docs/plans/T097-cost-agent-v3.md", "(tasks **T093–T098** in `docs/team/TASKS.md`). Any agent, "
-     "yours\nor a teammate's, can pick a task from here.", "(tasks **T093–T098**)."),
-    ("docs/plans/T099-T100-simple-and-certain.md", "This plan covers two tasks in "
-     "`docs/team/TASKS.md`: ", "This plan covers two tasks: "),
-    ("docs/plans/T150-vlm-progress-dataset.md", ' "You" means a person; "AI" means Claude Code '
-     "doing it.", ' "You" means a person; "AI" means it is automated.'),
+    ("docs/plans/T097-cost-agent-v3.md", ("(tasks **T093–T098** in `docs/team/TASKS.md`). Any "
+                                          "agent, yours\nor a teammate's, can pick a task from here."),
+     "(tasks **T093–T098**)."),
+    ("docs/plans/T099-T100-simple-and-certain.md",
+     "This plan covers two tasks in `docs/team/TASKS.md`: ", "This plan covers two tasks: "),
+    ("docs/plans/T150-vlm-progress-dataset.md",
+     ' "You" means a person; "AI" means Claude Code doing it.',
+     ' "You" means a person; "AI" means it is automated.'),
     # the report's links: the test data and the code, in this repository
     (f"{REPORT}/README.md", f"github.com/{PRIVATE_REPO}/releases/", "github.com/{repo}/releases/"),
     (f"{REPORT}/README.md", f"--repo {PRIVATE_REPO}`", "--repo {repo}`"),
@@ -103,7 +106,7 @@ REPLACE = [
 DENY = re.compile(r"claude[ -]?code|CLAUDE\.md|(?<![\w-])AGENTS\.md|GEMINI\.md|\.claude/|copilot|codex|"
                   r"windsurf|superpowers|docs/team|team/log|scripts/team|new_log|check_pr|"
                   r"Co-Authored-By|Generated with|cloud session|session log|handoff|"
-                  r"! npx|your AI\b|AI agents? on the team|claude/[a-z0-9-]+", re.I)
+                  r"! npx|your AI\b|AI agents? on the team|claude/[a-z0-9-]+", re.IGNORECASE)
 # ... except where the name is the subject: the Claude API as a benchmark baseline (code and
 # its results), and npm's lock file (package names)
 ALLOW_FILES = re.compile(r"^(apps/vision/drishti_vision/(flagship_claude|cli|vlmeval)\.py|"
