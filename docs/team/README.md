@@ -29,7 +29,7 @@ as much as you like, but a decision only counts once it's in an issue comment or
 ## One-time setup (about 30 minutes)
 
 1. **GitHub account** → send your username to the owner (@AdityaMore776), who adds you as a collaborator.
-   Accept the email invite (or open https://github.com/AdityaMore776/NidhiNetra-team/invitations).
+   Accept the email invite (or open https://github.com/AdityaMore776/NidhiNetra/invitations).
 2. **Install the tools.** On Windows, open PowerShell and run:
    ```powershell
    winget install --id Git.Git -e
@@ -47,7 +47,7 @@ as much as you like, but a decision only counts once it's in an issue comment or
 4. **Download the project:**
    ```powershell
    cd $HOME
-   gh repo clone AdityaMore776/NidhiNetra-team drishti
+   gh repo clone AdityaMore776/NidhiNetra drishti
    cd drishti
    ```
 5. **Download the private data pack** `DRISHTI-team-pack.zip` from the team's Google Drive folder (the owner
@@ -127,5 +127,5 @@ To ask the owner something, your AI adds the `needs-owner` label and mentions @A
 | Private data pack | [`DATA-PACK.md`](DATA-PACK.md) |
 | Where the build stands | [`docs/STATUS.md`](../STATUS.md) |
 | What DRISHTI is, in plain words | [`docs/HOW-IT-WORKS.md`](../HOW-IT-WORKS.md) |
-| Task tickets | https://github.com/AdityaMore776/NidhiNetra-team/issues |
-| Pull requests | https://github.com/AdityaMore776/NidhiNetra-team/pulls |
+| Task tickets | https://github.com/AdityaMore776/NidhiNetra/issues |
+| Pull requests | https://github.com/AdityaMore776/NidhiNetra/pulls |

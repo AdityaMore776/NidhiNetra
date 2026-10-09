@@ -76,7 +76,7 @@ def board(me: str) -> None:
     if not gh_ok():
         section("Task board")
         print("gh is not logged in: run `gh auth login`, or see "
-              "https://github.com/AdityaMore776/NidhiNetra-team/issues")
+              "https://github.com/AdityaMore776/NidhiNetra/issues")
         return
 
     def issues(label: str, limit: int = 30) -> list[dict]:
