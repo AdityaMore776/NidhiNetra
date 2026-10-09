@@ -367,9 +367,7 @@ How the costs were worked out:
 
 ## 7. Reproduce
 
-The code is in `apps/vision/` (the vision package and `modal/train_modal.py`). Until pull requests #120 and #121
-are merged it lives on the branch
-[`adityamore776/T150-vlm-progress-dataset`](https://github.com/AdityaMore776/NidhiNetra/tree/adityamore776/T150-vlm-progress-dataset/apps/vision).
+The code is in [`apps/vision/`](../apps/vision) (the vision package and `modal/train_modal.py`).
 
 | Step | Command |
 |---|---|
