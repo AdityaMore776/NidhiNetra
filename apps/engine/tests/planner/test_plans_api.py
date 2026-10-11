@@ -139,6 +139,13 @@ def test_a_district_with_nothing_in_the_queue_gives_an_empty_day(client):
     assert p["totals"]["back_by"] is None
 
 
+def test_the_district_list_holds_districts_with_queue_cases(client):
+    r = client.get("/api/v1/plans/districts", headers=MINISTRY)
+    assert r.status_code == 200
+    assert r.json() == [{"district_lgd": KARUR, "name": "Karur", "state": "Tamil Nadu",
+                         "cases": 3}]
+
+
 def test_plan_ids_round_trip():
     from datetime import date
 

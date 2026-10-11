@@ -349,6 +349,25 @@ def _plan(user: Principal, district: str, day: date, hours: int) -> dict:
     return got
 
 
+@router.get("/plans/districts")
+def plans_districts(user: Principal = Depends(viewer)) -> list[dict]:
+    """The districts with review-queue cases, most first: what the planner can plan."""
+    key = f"{CACHE_VERSION}:plan-districts:{user.scope_district() or 'ALL'}"
+    return _cached(key, lambda: _plan_districts(user))
+
+
+def _plan_districts(user: Principal) -> list[dict]:
+    where, params = _scope(user)
+    with connect() as con:
+        rows = con.execute(
+            f"SELECT w.district_lgd, max(w.district_name) AS name, max(w.state_name) AS state, "
+            f"count(DISTINCT coalesce(a.case_id, w.work_id)) AS cases "
+            f"FROM works w JOIN assessments a USING (work_id) "
+            f"WHERE {where} AND w.district_lgd IS NOT NULL AND a.band IN ('CRITICAL', 'HIGH') "
+            f"GROUP BY w.district_lgd ORDER BY cases DESC, name", params).fetchall()
+    return [_jsonable(r) for r in rows]
+
+
 @router.post("/plans/generate")
 def plans_generate(req: PlanRequest = Body(...), user: Principal = Depends(viewer)) -> dict:
     return _plan(user, req.district, req.day or date.today(), req.hours)

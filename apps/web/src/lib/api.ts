@@ -375,3 +375,76 @@ export interface VisitStart {
   spots_needed?: number;
   stretches_asked?: string[];
 }
+
+// ---- Inspection Planner (mirror apps/engine/drishti/planner/service.py, T062) ---------
+
+export type PlacePrecision = "village" | "area" | "block" | "district";
+
+export interface PlanPlace {
+  lat: number;
+  lon: number;
+  precision: PlacePrecision;
+  place: string | null;
+}
+
+export interface PlanCheck {
+  en: string;
+  hi: string | null;
+  /** the engine whose reason this is, or null for the visit's own steps */
+  check: string | null;
+}
+
+export interface PlanWork {
+  work_id: string;
+  /** flagged = a review-queue case; spot = a random lower-risk work (not a finding) */
+  kind: "flagged" | "spot";
+  description: string | null;
+  amount: number | null;
+  status: string | null;
+  work_type_code: string | null;
+  band: Band | null;
+  score: number | null;
+  case_size: number | null;
+  headline?: string | null;
+  checklist: PlanCheck[];
+  location: PlanPlace;
+}
+
+export interface PlanStop extends PlanWork {
+  order: number;
+  drive_km: number;
+  arrive: string;
+  leave: string;
+}
+
+export interface Plan {
+  id: string;
+  date: string;
+  hours: number;
+  district: { code: string; name: string; state: string };
+  start: PlanPlace & { label: string };
+  stops: PlanStop[];
+  next_trip: PlanWork[];
+  spot_not_fitted: PlanWork[];
+  totals: {
+    flagged_in_queue: number;
+    spot_checks_drawn: number;
+    stops: number;
+    flagged_visited: number;
+    road_km: number;
+    minutes: number;
+    back_by: string | null;
+    list_order_km: number;
+    km_saved: number;
+  };
+  precision: Partial<Record<PlacePrecision, number>>;
+  rules: { speed_kmh: number; road_factor: number; stop_minutes: number; spot_share: number };
+  notes: string[];
+}
+
+export interface PlanDistrict {
+  district_lgd: string;
+  name: string;
+  state: string;
+  cases: number;
+}

@@ -1,0 +1,95 @@
+T164 live check: https://nidhinetra-sih.vercel.app/api/v1/work-form/check?demo=true, 2026-10-09
+
+[work-form] clean           same (19.0 s), as of 2026-10-02: score page (0.0, 'LOW') live (0.0, 'LOW')
+    cost_estimate  ASSESSED        -
+    dup_split      ASSESSED        -
+    site_progress  ASSESSED        -
+    time_rules     ASSESSED        -
+[work-form] cost_padded     same (6.6 s), as of 2026-10-02: score page (0.25, 'MEDIUM') live (0.25, 'MEDIUM')
+    cost_estimate  ASSESSED        ESTIMATE_ABOVE_FAIR_PRICE
+    dup_split      ASSESSED        -
+    site_progress  NOT_APPLICABLE  -
+    time_rules     ASSESSED        -
+[work-form] cost_quantity   same (6.1 s), as of 2026-10-02: score page (0.4375, 'MEDIUM') live (0.4375, 'MEDIUM')
+    cost_estimate  ASSESSED        ESTIMATE_ABOVE_FAIR_PRICE, MATERIAL_QUANTITY_ABOVE_SIZE
+    dup_split      ASSESSED        -
+    site_progress  NOT_APPLICABLE  -
+    time_rules     ASSESSED        -
+[work-form] cost_lights     same (6.0 s), as of 2026-10-02: score page (0.25, 'MEDIUM') live (0.25, 'MEDIUM')
+    cost_estimate  ASSESSED        ESTIMATE_ABOVE_STANDARD_AND_MP
+    dup_split      ASSESSED        -
+    site_progress  NOT_APPLICABLE  -
+    time_rules     ASSESSED        -
+[work-form] cost_labour     same (5.6 s), as of 2026-10-02: score page (0.25, 'MEDIUM') live (0.25, 'MEDIUM')
+    cost_estimate  ASSESSED        LABOUR_RATE_FAR_ABOVE
+    dup_split      ASSESSED        -
+    site_progress  NOT_APPLICABLE  -
+    time_rules     ASSESSED        -
+[work-form] dup_pin         same (6.1 s), as of 2026-10-02: score page (0.25, 'MEDIUM') live (0.25, 'MEDIUM')
+    cost_estimate  ASSESSED        -
+    dup_split      ASSESSED        SANCTIONED_WORK_AT_THIS_SITE
+    site_progress  NOT_APPLICABLE  -
+    time_rules     ASSESSED        -
+[work-form] dup_rebuild     same (5.5 s), as of 2026-10-02: score page (0.25, 'MEDIUM') live (0.25, 'MEDIUM')
+    cost_estimate  ASSESSED        -
+    dup_split      ASSESSED        REBUILT_SOON_AFTER_COMPLETION
+    site_progress  NOT_APPLICABLE  -
+    time_rules     ASSESSED        -
+[work-form] dup_split       same (5.4 s), as of 2026-10-02: score page (0.7222, 'HIGH') live (0.7222, 'HIGH')
+    cost_estimate  ASSESSED        -
+    dup_split      ASSESSED        SPLIT_JUST_UNDER_LIMIT
+    site_progress  NOT_APPLICABLE  -
+    time_rules     ASSESSED        -
+[work-form] time_fast       same (5.5 s), as of 2026-10-02: score page (0.4375, 'MEDIUM') live (0.4375, 'MEDIUM')
+    cost_estimate  ASSESSED        -
+    dup_split      ASSESSED        -
+    site_progress  ASSESSED        NO_SITE_VIDEO
+    time_rules     ASSESSED        FINISHED_TOO_FAST
+[work-form] time_late       same (5.3 s), as of 2026-10-02: score page (0.25, 'MEDIUM') live (0.25, 'MEDIUM')
+    cost_estimate  NOT_ASSESSABLE  -
+    dup_split      ASSESSED        -
+    site_progress  ASSESSED        -
+    time_rules     ASSESSED        PAST_PROMISED_TIME
+[work-form] site_reused     same (5.8 s), as of 2026-10-02: score page (0.4375, 'MEDIUM') live (0.4375, 'MEDIUM')
+    cost_estimate  ASSESSED        -
+    dup_split      ASSESSED        -
+    site_progress  ASSESSED        FOOTAGE_USED_BEFORE, SAME_PLACE_AS_ANOTHER_WORK
+    time_rules     ASSESSED        -
+[work-form] site_claim      same (5.2 s), as of 2026-10-02: score page (0.25, 'MEDIUM') live (0.25, 'MEDIUM')
+    cost_estimate  NOT_ASSESSABLE  -
+    dup_split      ASSESSED        -
+    site_progress  ASSESSED        CLAIM_NOT_SHOWN
+    time_rules     ASSESSED        -
+[work-form] site_elsewhere  same (5.1 s), as of 2026-10-02: score page (0.25, 'MEDIUM') live (0.25, 'MEDIUM')
+    cost_estimate  ASSESSED        -
+    dup_split      ASSESSED        -
+    site_progress  ASSESSED        NOT_FILMED_AT_THIS_SITE
+    time_rules     ASSESSED        -
+[end-to-end] legit_road      same (5.0 s), as of 2026-10-02: score page (0.0, 'LOW') live (0.0, 'LOW')
+    cost_estimate  ASSESSED        -
+    dup_split      ASSESSED        -
+    site_progress  NOT_APPLICABLE  -
+    time_rules     ASSESSED        -
+[end-to-end] legit_lights    same (5.3 s), as of 2026-10-02: score page (0.0, 'LOW') live (0.0, 'LOW')
+    cost_estimate  ASSESSED        -
+    dup_split      ASSESSED        -
+    site_progress  NOT_APPLICABLE  -
+    time_rules     ASSESSED        -
+[end-to-end] cost_hidden     same (5.3 s), as of 2026-10-02: score page (0.25, 'MEDIUM') live (0.25, 'MEDIUM')
+    cost_estimate  ASSESSED        ESTIMATE_ABOVE_FAIR_PRICE
+    dup_split      ASSESSED        -
+    site_progress  NOT_APPLICABLE  -
+    time_rules     ASSESSED        -
+[end-to-end] dup_pieces      DIFFERS (5.6 s), as of 2026-10-02: score page (0.7222, 'HIGH') live (0.0, 'LOW')
+    cost_estimate  ASSESSED        -
+    dup_split      ASSESSED        -   <- page ('ASSESSED', ['SPLIT_JUST_UNDER_LIMIT'])
+    site_progress  NOT_APPLICABLE  -
+    time_rules     ASSESSED        -
+[end-to-end] many_flags      DIFFERS (5.7 s), as of 2026-10-02: score page (0.4563, 'MEDIUM') live (0.275, 'MEDIUM')
+    cost_estimate  ASSESSED        ESTIMATE_ABOVE_FAIR_PRICE
+    dup_split      ASSESSED        -   <- page ('ASSESSED', ['SANCTIONED_WORK_AT_THIS_SITE'])
+    site_progress  NOT_APPLICABLE  -
+    time_rules     ASSESSED        SANCTION_OVERDUE
+
+examples whose live answer differs from the page's: 2
+(the /end-to-end page is a static file: its dup_pieces and many_flags lean on filings the live demo data does not hold, so those two cannot match live)

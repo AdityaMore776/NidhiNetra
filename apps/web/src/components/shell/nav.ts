@@ -4,6 +4,7 @@ import {
   Database,
   Inbox,
   LayoutDashboard,
+  MapPinned,
   type LucideIcon,
   Route,
   Workflow,
@@ -32,6 +33,7 @@ export const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
         icon: ClipboardList,
         hint: "The check before sanction: fill the form, see what each check asks",
       },
+      { href: "/planner", label: "Inspection Planner", icon: MapPinned, hint: "One day's visits for a district, in driving order" },
     ],
   },
   {
