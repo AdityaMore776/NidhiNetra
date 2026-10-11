@@ -1,0 +1,64 @@
+T062 eye sample (seed 63): 30 random queue cases placed below district level.
+Read: is the matched name the place where the work is (the village, or its block)?
+
+ 1. WS/MP524/2023-2024/81558  [Annamayya]  -> ramapuram (block, 14.2134, 78.7509)
+    Providing CC Drains (Reach - II) at B.C. Colony of Nallaguttapalli Village of Ramapuram Mandal
+ 2. WS/MP350/2024-2025/178309  [Kasaragod]  -> kamballur (village, 12.2798, 75.3453)
+    Installation of  Mini High Mast  Light at  Kamballur  Mini Bus standarea in East Eleri Gramapanchayath
+ 3. NOREF-a8a01d7b5bc962  [Parvathipuram Manyam]  -> veeraghattam (block, 18.6886, 83.6096)
+    Extension of CC drain Bit 1 near Diguvathalli Temple at Vanduva Village of Veeraghattam Mandal Parvathipuram Manyam dt
+ 4. NOREF-57bbdb44bc0fbf  [Y.S.R.]  -> proddatur (block, 14.7472, 78.5448)
+    Providing CC Road from Bongu Bazar  Khader to Samdhani Body Builders,  Reach 2 of  Location Old Augonagar of Kothapalli GP of Proddatur Mandal
+ 5. WS/MP611/2023-2024/105406  [Uttara Kannada]  -> ankola (block, 14.6676, 74.8345)
+    Construction of road for Makkigadde village at Agasur Panchayat Taluk Ankola
+ 6. NOREF-249f3f941916e0  [Y.S.R.]  -> proddatur (block, 14.7472, 78.5448)
+    Providing of CC Road from Chowsan Valli lath to Daadapeer body Builders, reach 2 location Old Augonagar of Kothapalli GP of Proddatur mandal
+ 7. WS/MP681/2023-2024/43497  [Parbhani]  -> sonpeth (block, 19.0275, 76.4744)
+    Construction of Sabha mandap at Sirsi Bk. tal.sonpeth.
+ 8. WS/MP18338/2025-2026/233611  [Nalgonda]  -> nakrekal (village, 17.1631, 79.4294)
+    Construction of Additional Room to Community Hall in Ward No 18 Nakrekal 18
+ 9. WS/MP456/2023-2024/40002  [Mayiladuthurai]  -> kuttalam (block, 11.0722, 79.5627)
+    Construction of new cremation ground for public convenience in Kuttalam Block
+10. NOREF-d9f35ca284737b  [Pune]  -> katraj (village, 18.4460, 73.8603)
+    Installation of Smart Solar Hut (Gazebo) with solar power system, USB and wireless charging, digital display, security system, CCTV, and seating arrangement at Mahaveer Park Katraj
+11. WS/MP18006/2025-2026/226512  [Tirupati]  -> pakala (block, 13.4497, 79.1146)
+    Providing Fixing of Octagonal pole Double Arm street lights from Uttlavaripalli HW-2nd street to Divider-1 middle point at Uttlavaripalli in Pakala mandal.
+12. WS/MP099/2024-2025/133001  [Kannur]  -> naduvil (area, 12.0418, 75.3569)
+    Construction of Nariyanmavu Colony-Ponmala-Mannamkundu Road,Ward No.IX, Naduvil  Grama Panchayath
+13. WS/EXLS009/2024-2025/154739  [Gandhinagar]  -> jethlaj (village, 23.1361, 72.4305)
+    "Remaining amount for renovation/upgradation at Jethlaj village of Kalol taluka for crematorium (like improved crematorium furnace, seating benches, crematorium roof, paver block, crematorium
+Protection wall etc.)"
+14. WS/MP526/2023-2024/106190  [Y.S.R.]  -> badvel (block, 14.7399, 79.0599)
+    Formation of Metalling and Gravelling the Road from Papireddipalli to Bodapadu of Bodapadu village of Badvel Mandal, YSR District, Reach II
+15. WS/MP531/2023-2024/4078  [Ananthapuramu]  -> uravakonda (village, 14.9437, 77.2578)
+    Providing CC Road from [name] House to [name] house at Uravakonda (V) & (M) – Reach-I
+16. WS/MP061/2025-2026/164284  [Ahmadabad]  -> chaloda (village, 22.7800, 72.4600)
+    Smart Class at Shri C B Patel Vidhyavihar Chaloda, Ta. Dholka Dist Ahmedabad
+17. WS/MP759/2024-2025/123499  [Ranga Reddy]  -> chevella (block, 17.3104, 78.1379)
+    Implementation of Multi- Language E- Learning DIGITAL CLASS ROOM SOLUTION	ZPHS Class-IX Aloor (V), Chevella (M), Rangareddy DIst.
+18. WS/MP884/2023-2024/54377  [Kakinada]  -> thondangi (village, 17.2480, 82.4577)
+    Construction of CC Road from SC Colony Church to Bathina Sujatha (H) at Thondangi (V) of Thondangi Mandal
+19. WS/MP096/2024-2025/132961  [Palakkad]  -> nellaya (village, 10.8633, 76.2757)
+    Construction of Chemmatupadi road/pathway, Ward No. 1, Nellaya Panchayat (SC)
+20. WS/MP18138/2024-2025/148109  [Mamit]  -> phuldungsei (village, 23.4805, 92.4222)
+    Upgradation/Renovationof Thaidawr to Zomuantlang road, Phuldungsei, Zampui
+21. WS/MP084/2024-2025/133931  [Tumakuru]  -> mugalur (village, 13.0786, 76.6545)
+    Road Development Work, Mugalur village, Soravanahalli Gram Panchayat, Turuvekere Taluk, Tumakuru District.
+22. NOREF-11a431fe4429b3  [Medak]  -> chegunta (block, 17.9727, 78.4633)
+    Construction of Community Hall at Reddypally (V), Chegunta (M)
+23. NOREF-111c1b650d3cff  [Dharwad]  -> maradagi (block, 15.4789, 75.1171)
+    Construction of Community Bhavan at Dharwad TQ Maradagi Village Pry No.409 near Benchi Basaveshwar  Temple
+24. WS/MP350/2023-2024/62541  [Kasaragod]  -> balal (village, 12.3880, 75.2834)
+    Construction of a Community Hall Building for Anamanjal, Kayakkunnu ST Colony, Ward 13 of Balal Grama Panchayath(ST WORK)
+25. WS/MP508/2023-2024/47405  [Madhubani]  -> ladania (block, 26.5990, 86.3149)
+    pcc sadak Ladania block ke antargat belhi panchayat ke ward no 14 [name] ke khet se lekar mukhya sadak tk pcc sadak.
+26. WS/MP015/2023-2024/38374  [Madurai]  -> thuvariman (village, 9.9591, 78.0570)
+    Providing Bituminous Macadam road at Srinivasan Street in Venkatachalapathy Nagar,Thuvariman,Madurai.2023-24
+27. NOREF-05069cb7fcdb18  [Raichur]  -> lingasugur (block, 16.1582, 76.5234)
+    Construction of CC road From Kumarkhedaa village to vakarni villagr Lingasugur Taluk
+28. WS/MP403/2023-2024/96338  [Prakasam]  -> chollaveedu (village, 15.5300, 78.9400)
+    Gravelling the Road from J.P.Cheruvu S.C. Palem to Chollaveedu from KM 0/5 to KM 1/0 in Racherla Mandal
+29. WS/MP460/2025-2026/172149  [Sangareddy]  -> mogudampally (block, 17.6176, 77.4988)
+    Laying of CC road near Moti Mata Temple at Jamgarbowli Thanda, Mogudampally (M)  Phase  I of Sangareddy (D)
+30. WS/MP18006/2024-2025/139517  [Chittoor]  -> thumba (area, 13.1962, 78.9133)
+    Construction of CC road from Thumba SC Colony BT Road to [name] House near SC Colony burial ground road in Thumba Village and GP of Bangarupalem Mandal, Puthalapattu Constituency.

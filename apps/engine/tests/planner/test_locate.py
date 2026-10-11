@@ -56,6 +56,23 @@ def test_a_name_beside_a_block_word_is_a_block_and_loses_to_a_village():
     assert got is not None and got.place == "walki"
 
 
+def test_short_block_words_come_before_the_block_so_the_name_before_them_is_a_village():
+    # T062 eye sample: "Nesari, Tal.Gadhinglaj" and "At. Ashti Tq. Hadgaon" name the village
+    got = m("Sabhagruh, Highschool, Sapti, Tal. Walki")
+    assert got is not None and (got.place, got.precision) == ("sapti", "village")
+    got = m("CC road At. Sapti Tq. Walki")
+    assert got is not None and (got.place, got.precision) == ("sapti", "village")
+    got = m("Solar light, Taluka. Sapti")
+    assert got is not None and (got.place, got.precision) == ("sapti", "block")
+
+
+def test_a_name_beside_a_district_word_is_the_district_not_a_place():
+    # T062 eye sample: "...Butchireddypalem of Nellore District" in Sri Potti Sriramulu Nellore
+    assert m("CC road near the apartment of Vasad District") is None
+    assert m("Smart class, Dist. Vasad") is None
+    assert m("CC road, Sapti (M), Vasad (D)").place == "sapti"
+
+
 def test_without_a_cue_the_first_named_place_wins():
     got = m("Sapti Walki link road")
     assert got is not None and got.place == "sapti"

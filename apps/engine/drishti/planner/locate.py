@@ -16,7 +16,9 @@ Precision, always shown with the stop:
 
 Rules (tests/planner/test_locate.py): whole words only (a name written as two words matches a
 one-word office); never a generic word, a name under 4 letters or the district's own name; a
-name held by offices more than 5 km apart is ambiguous and never used; of several names, one
+name held by offices more than 5 km apart is ambiguous and never used; a name beside a district
+word ("of Nellore District", "Dist. Ahmedabad") is the district written another way and never
+used; of several names, one
 next to a place word ("village", "at", "panchayat"...) wins, then one with no word beside it,
 then one next to a block word; the first written breaks a tie.
 """
@@ -39,8 +41,13 @@ MIN_LETTERS = 4
 SPREAD_KM = 5.0               # one name, offices further apart than this: ambiguous
 CUES = frozenset({"at", "in", "near", "village", "vill", "vil", "gram", "gaon", "panchayat",
                   "gp", "po", "mouza", "mauza", "ward", "v", "h"})       # (V) village, (H) hamlet
-BLOCK_CUES = frozenset({"taluk", "taluka", "tal", "tq", "tehsil", "tahsil", "mandal", "m",
-                        "block", "mandalam"})
+# a block word written before its name ("Tal. Gadhinglaj", "Taluka.purna") or after it
+# ("Lingasugur Taluk", "Pendlimarri (M)"); "Tal"/"Tq" only ever come before
+BLOCK_BEFORE = frozenset({"taluk", "taluka", "tal", "tq", "tehsil", "tahsil", "mandal", "block"})
+BLOCK_AFTER = frozenset({"taluk", "taluka", "tehsil", "tahsil", "mandal", "m", "block",
+                         "mandalam"})
+# "of Nellore District", "Dist. Ahmedabad", "Sangareddy (D)": the district, written another way
+DISTRICT_WORDS = frozenset({"district", "dist", "dt", "d", "zilla", "jilla", "zila", "jila"})
 WORD = re.compile(r"[a-z]+")
 
 
@@ -106,8 +113,12 @@ def match(description: str | None, offices: dict[str, Match | None], *, district
             hit = offices.get(key)
             if hit is None:
                 continue
-            beside = {words[i - 1] if i > 0 else "", words[i + n] if i + n < len(words) else ""}
-            if beside & BLOCK_CUES:
+            before = words[i - 1] if i > 0 else ""
+            after = words[i + n] if i + n < len(words) else ""
+            if before in DISTRICT_WORDS or after in DISTRICT_WORDS:
+                continue                              # the district itself, not a place in it
+            beside = {before, after}
+            if before in BLOCK_BEFORE or after in BLOCK_AFTER:
                 hit = Match(hit.place, hit.lat, hit.lon, "block")
                 rank = 2
             else:

@@ -1,0 +1,19 @@
+T062 eye check of the location lookup (read by Claude Code for @AdityaMore776, 11 Oct 2026)
+Question for each case: is the matched name the place where the work is (its village, or its block)?
+The positions themselves were not checked on a map; they are India Post's, kept only inside the
+district's outline.
+
+Round 1: seed 62, before the two fixes. 29 of 30 right place.
+  wrong  NOREF-a9b9b8103fbc8e  [Sri Potti Sriramulu Nellore] -> nellore: "...Butchireddypalem of
+         Nellore District": the district's name in a shorter spelling, not the work's place.
+         Fix: a name beside a district word (district, dist, dt, (D), zilla) is never used.
+  label  WS/MP112/2024-2025/136783 -> nesari ("Nesari, Tal.Gadhinglaj") and
+         WS/MP18120/2025-2026/193720 -> ashti ("At. Ashti Tq. Hadgaon"): right place, labelled
+         block though the name is the village. Fix: "Tal"/"Tq" count only BEFORE a name.
+  right  29 in all, as labelled: 12 villages or panchayats, 15 blocks, 2 areas.
+
+Round 2: seed 63, a fresh sample after the fixes. 30 of 30 right place.
+  label  NOREF-111c1b650d3cff ("Dharwad TQ Maradagi Village") -> maradagi: right place, labelled
+         block though it is the village (the block word sits between the block and the village).
+         Left as is: "block" understates the precision, it never overstates it.
+  right  all 30, as labelled: 13 villages or panchayats, 15 blocks, 2 areas.
