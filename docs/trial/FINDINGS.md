@@ -2693,6 +2693,55 @@ sends all 13 examples through the route and requires each to raise its stored co
 a static file: 2 of its 5 filings lean on companions the live demo data does not hold, so they cannot be compared
 live; locally all 5 raise their codes.)
 
+## T061 + T062 (11 Oct 2026): where each work is, and one day's inspection visits
+
+**Where each work is (T061).** eSAKSHI records only a work's district. The planner reads the village or block named in
+the description and finds it among India Post's offices with map positions (`indiapins` on PyPI; built by
+`data/build_post_offices.py`). Each office is placed in a district by its **position**, inside the LGD outlines, never
+by joining names or codes:
+
+| India Post offices | count |
+|---|---|
+| in the directory | 165,627 |
+| no map position | 12,104 |
+| position outside every district outline | 7,474 |
+| inside, India Post's district name agrees with the outline | 123,423 |
+| inside, same state, name differs (newer districts; kept) | 17,687 |
+| inside another state's outline (dropped: the position is not to be trusted) | 4,939 |
+| kept, every one of the 752 districts has offices | 140,614 |
+| of those, on a position 3+ offices share (a branch given its parent's place: an **area**, not a village) | 34,459 |
+
+On the live review queue (217 cases; `data/trial/t062_planner.py` → `results/t062_planner.txt`): **village 55
+(25.3%), block 31 (14.3%), area 10 (4.6%), district only 119 (54.8%)**, no district 2. So 96 of 215 cases (45%) are
+placed below the district.
+
+**Read by eye** (`results/t062_eye_verdicts.txt`): is the matched name where the work is? Round 1, 30 random placed
+cases: **29 of 30**. The miss: "...Butchireddypalem of Nellore District" matched Nellore town, because the
+district's official name is "Sri Potti Sriramulu Nellore". Fixed: a name beside a district word (district, dist, dt,
+(D), zilla) is never used. Two places were right but labelled block when they were the village ("Nesari,
+Tal.Gadhinglaj", "At. Ashti Tq. Hadgaon"); fixed: "Tal"/"Tq" count only before a name. Round 2, a fresh 30 after
+the fixes: **30 of 30**; one is labelled block though it is the village (the label understates, never overstates).
+The positions themselves are India Post's and were not checked on a map.
+
+**One day's visits (T062).** The blueprint's algorithm, with the calibrated queue as the candidates (band Critical or
+High, one stop per case): value = the queue's priority (risk × money weight); add the case with the most value per
+extra minute while the day fits; order exactly (Held-Karp, up to 12 places); 10% random lower-risk spot checks fill
+the time left. Travel = straight line × 1.3 at 30 km/h, 40 min a stop, from the district's head office (else the
+outline's centre). On the 109 districts with queue cases, an 8-hour day each:
+
+| | Working down the queue | The planner |
+|---|---|---|
+| queue cases visited in the day | 192 | **198** (more in 4 districts) |
+| their value (sum of priorities) | 254.4 | **261.3** |
+| road km for the same chosen stops | 4,335 | **4,162** (−4.0%) |
+| every case of each district in one trip, road km | 6,342 | **5,765** (−9.1%) |
+| …districts with 5+ cases | 2,391 | **1,933** (−19.1%) |
+
+**Honest reading.** The gain is modest because the queue is thin: 217 cases in 109 districts, most districts 1–3. With
+one or two places there is one round trip, so the median district saves nothing; the planner helps where a district
+has several placed cases (Y.S.R.: 6 visits instead of 3 in the day, 40 km instead of 80). The km figures are
+estimates on approximate places; 55% of cases sit at the district's start point, which shortens both orders alike.
+
 ## Bugs and data problems found along the way
 
 1. **The live map painted the wrong districts.**

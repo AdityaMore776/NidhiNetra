@@ -28,8 +28,8 @@ officer should inspect go into one ranked list, each with the reason, in plain E
 - **NidhiNetra checks every work.**
   - It checks at the source: the agency's own estimate form, its map pins, and the site itself on video.
   - Four agents each answer one question.
-  - Their answers become one **0–100 risk score** with the **top three reasons**, and an **inspection list** for the
-    district officer.
+  - Their answers become one **0–100 risk score** with the **top three reasons**, and an **inspection plan** for the
+    district officer: one day's visits, in the order that drives least.
 - **It never accuses anyone.** It says "needs checking", shows the facts behind it, and an officer decides. "Couldn't
   check" is a status, never a clean chit.
 
@@ -45,7 +45,7 @@ flowchart LR
   VID["Monthly site video, filmed in the app<br/>at fixed viewpoints, with GPS"] --> S["4 · Site Progress"]
   S --> NL["NidhiLens: does the footage show<br/>the agency's claim? (fine-tuned Qwen3-VL)"]
   C & D & T & S --> F["Risk score 0–100<br/>top 3 reasons, English + Hindi"]
-  F --> Q["Inspection list"]
+  F --> Q["Inspection Planner<br/>one day's visits, in driving order"]
   Q --> O["Officer visits<br/>verdict: real / not real"]
   O -- "learning loop: each finding's hit rate" --> F
 ```
@@ -76,9 +76,10 @@ same 883 checks. Its readings stay notes, never counted, until the field trial o
 
 | | State |
 |---|---|
-| **Live web app** (https://nidhinetra-sih.vercel.app) | Open to everyone. **Work intelligence form** (`/work-form`): 13 real-style filings graded by the four agents, with every asked-about field outlined, and "check this form" on any filing. **Form to risk score** (`/end-to-end`): five filings through the real engine. **Step by step** (`/explain`): one work through every step. Staff sign-in adds the dashboard, India map, review queue, works search and work pages on the real data. |
+| **Live web app** (https://nidhinetra-sih.vercel.app) | Open to everyone. **Work intelligence form** (`/work-form`): 13 real-style filings graded by the four agents, with every asked-about field outlined, and "check this form" on any filing. **Form to risk score** (`/end-to-end`): five filings through the real engine. **Step by step** (`/explain`): one work through every step. **Inspection Planner** (`/planner`): pick a district and get one day's visits on the real review queue, each work placed at the village or block its description names, with a checklist per stop. Staff sign-in adds the dashboard, India map, review queue, works search and work pages on the real data. |
+| **Inspection Planner** | Each work placed by the village or block its description names, among India Post's 1.4 lakh offices with map positions: 45% of queue cases placed below the district, 59 of 60 random placements read right by eye. On the 109 districts with queue cases, an 8-hour day fits 198 cases where working down the queue fits 192, on a 4% shorter route (19% shorter for districts with 5+ cases). Numbers: [`docs/trial/FINDINGS.md`](docs/trial/FINDINGS.md) (T061 + T062). |
 | **Real data** | All **2,09,993** real eSAKSHI works loaded and assessed. On eSAKSHI's public dashboard table (40,935 works), the review queue is **217** works. |
-| **The four agents** | Built and tested: **1,029 engine tests**; a robustness loop of 112 attack probes, 0 failing. Duplicate Work was re-fitted on real villages (Jaunpur, then tested in six more districts): honest street lights asked 0–1.5%, repeats still caught 86–98%. Cost judges labour trade by trade (honest filings 0 of 450 asked; one trade at 2.5× caught 88%). Numbers: [`docs/trial/FINDINGS.md`](docs/trial/FINDINGS.md) (T121–T142). |
+| **The four agents** | Built and tested: **1,074 engine tests**; a robustness loop of 120 attack probes, 0 failing. Duplicate Work was re-fitted on real villages (Jaunpur, then tested in six more districts): honest street lights asked 0–1.5%, repeats still caught 86–98%. Cost judges labour trade by trade (honest filings 0 of 450 asked; one trade at 2.5× caught 88%). Numbers: [`docs/trial/FINDINGS.md`](docs/trial/FINDINGS.md) (T121–T142). |
 | **Site Progress** | The capture app (sealed video, fixed viewpoints, GPS) and its video checks are built. The trial on real sites is next (T126). **NidhiLens** (the claim judge) is trained and benchmarked; [report](NidhiLens%20(Fine-Tuned%20Qwen%20for%20site%20progress%20monitoring)/README.md). |
 | **Real-evidence trial** | Every early check was tried on real evidence for **837 completed works**: 905 files from eSAKSHI's public endpoints, 1,925 pages read. |
 
@@ -123,13 +124,14 @@ NidhiNetra/
 ├── NidhiLens (Fine-Tuned Qwen for site progress monitoring)/
 │                        the vision model's report: benchmark vs Gemini 3.1 Pro, real examples, test data, design
 ├── apps/
-│   ├── engine/          Python FastAPI service: the four agents, the risk score, the API  (1,029 tests)
+│   ├── engine/          Python FastAPI service: the four agents, the risk score, the planner, the API  (1,074 tests)
 │   │   └── drishti/     (the engine's package keeps its first name)
 │   │       ├── agents/          cost_estimate · dup_split · time_rules · site_progress, and the agent contract
 │   │       ├── fusion/          combines agent results into the 0–100 score and its top 3 reasons
 │   │       ├── cost_form/       the work intelligence form: fields, materials, labour trades, checks
 │   │       ├── video/           the site video job: fingerprints, view matching, change, face blurring
 │   │       ├── pipeline/        runs agents → fusion for one work
+│   │       ├── planner/         Inspection Planner: where each work is, one day's visits
 │   │       ├── api/             REST endpoints used by the web app
 │   │       ├── reference/       guideline clauses, rates, time bands, work types
 │   │       └── migrations/      database schema (SQL)

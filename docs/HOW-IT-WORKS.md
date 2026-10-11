@@ -102,7 +102,9 @@ problem, never a small mistake, and says "couldn't check" when it has nothing to
   It is built into Site Progress behind a switch (it needs a GPU), and run that way it scores 0.933 on the same
   checks. Its answers stay notes for the officer until the field trial on real sites.
 
-**For every work:** the risk score with its top three reasons ✅ · the pre-sanction check ✅ · Inspection Planner 📝
+**For every work:** the risk score with its top three reasons ✅ · the pre-sanction check ✅ · Inspection Planner ✅ (`/planner`: one day's
+visits for a district, each work placed at the village or block its description names, the most important visits
+fitted into the day in the order that drives least, with random spot checks and a checklist per stop)
 
 Retired on 4 Oct 2026: Guideline Compliance (its timing rules live on in Time & Rules), Fund Flow, Office Patterns,
 Paperwork and Photo Evidence. Their trial results stay in [`trial/FINDINGS.md`](trial/FINDINGS.md).
