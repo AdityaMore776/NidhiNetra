@@ -352,7 +352,8 @@ def _plan(user: Principal, district: str, day: date, hours: int) -> dict:
 @router.get("/plans/districts")
 def plans_districts(user: Principal = Depends(viewer)) -> list[dict]:
     """The districts with review-queue cases, most first: what the planner can plan."""
-    key = f"{CACHE_VERSION}:plan-districts:{user.scope_district() or 'ALL'}"
+    # v2: without districts the planner cannot start from (an answer saved before is not reused)
+    key = f"{CACHE_VERSION}:plan-districts-v2:{user.scope_district() or 'ALL'}"
     return _cached(key, lambda: _plan_districts(user))
 
 
@@ -365,7 +366,8 @@ def _plan_districts(user: Principal) -> list[dict]:
             f"FROM works w JOIN assessments a USING (work_id) "
             f"WHERE {where} AND w.district_lgd IS NOT NULL AND a.band IN ('CRITICAL', 'HIGH') "
             f"GROUP BY w.district_lgd ORDER BY cases DESC, name", params).fetchall()
-    return [_jsonable(r) for r in rows]
+    # a work whose district eSAKSHI left unresolved has no place to start a day from
+    return [_jsonable(r) for r in rows if planner.district_start(r["district_lgd"])]
 
 
 @router.post("/plans/generate")

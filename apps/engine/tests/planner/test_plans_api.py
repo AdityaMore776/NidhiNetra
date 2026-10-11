@@ -48,6 +48,11 @@ def client(migrated_url, monkeypatch):
                  f"Check {wid}.", case))
         con.execute("INSERT INTO works (work_id, source, district_lgd, district_name, status) "
                     "VALUES ('OTHER-1','REAL','640','Elsewhere','COMPLETED')")
+        # eSAKSHI's district left unresolved (2 live queue cases, 11 Oct 2026): nowhere to plan from
+        con.execute("INSERT INTO works (work_id, source, district_lgd, status) "
+                    "VALUES ('NOWHERE-1','REAL','UNRESOLVED','COMPLETED')")
+        con.execute("INSERT INTO assessments (work_id, score, band, priority, parts, validation, "
+                    "agents, versions) VALUES ('NOWHERE-1',0.6,'HIGH',1,'{}','{}','[]','{}')")
         con.commit()
     monkeypatch.setenv("DATABASE_URL", migrated_url)
     monkeypatch.setenv("DRISHTI_AUTH", "dev")
