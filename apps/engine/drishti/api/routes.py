@@ -38,6 +38,7 @@ from drishti.cost_form.validate import validate as validate_cost_form
 from drishti.db import connect
 from drishti.explain import explain as explain_work
 from drishti.pipeline.orchestrator import Context, assess_work
+from drishti.planner import service as planner
 from drishti.presanction import judge as presanction_judge
 from drishti.validation import pii
 
@@ -329,6 +330,36 @@ def _described(agents: list[dict]) -> list[dict]:
                           else registry.RETIRED.get(aid, (aid, "")))
         out.append({**r, "agent": aid, "name": name, "question": question})
     return out
+
+
+class PlanRequest(BaseModel):
+    """One day's inspection visits for a district (T062)."""
+
+    district: str = Field(min_length=1, max_length=8, pattern=r"^[0-9A-Za-z]+$")
+    hours: int = Field(default=8, ge=planner.MIN_HOURS, le=planner.MAX_HOURS)
+    day: date | None = None
+
+
+def _plan(user: Principal, district: str, day: date, hours: int) -> dict:
+    where, params = _scope(user)
+    with connect() as con:
+        got = planner.generate(con, district, day, hours, where, params)
+    if got is None:
+        raise HTTPException(404, "no such district in your area")
+    return got
+
+
+@router.post("/plans/generate")
+def plans_generate(req: PlanRequest = Body(...), user: Principal = Depends(viewer)) -> dict:
+    return _plan(user, req.district, req.day or date.today(), req.hours)
+
+
+@router.get("/plans/{plan_id}")
+def plans_get(plan_id: str, user: Principal = Depends(viewer)) -> dict:
+    parsed = planner.parse_id(plan_id)
+    if parsed is None:
+        raise HTTPException(404, "no such plan")
+    return _plan(user, *parsed)
 
 
 class Recommendation(BaseModel):
