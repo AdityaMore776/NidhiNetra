@@ -500,14 +500,16 @@ to console.
 ### T061 · Location lookup  ·  S–M  ·  data  ·  Data: LGD / PIN files
 **What:** work → approximate lat/lon: village or place token → block → district centroid, with a precision flag
 ("approximate"). Our LGD outlines + PIN file + district crosswalk are the starting point.
-**Done when:** [ ] share of works at each precision level in the log · [ ] never joins census and LGD codes by number
+**Done when:** [x] share of works at each precision level in the log (FINDINGS "T061 + T062": village 25.3%, block 14.3%,
+area 4.6%, district 54.8% of the live queue) · [x] never joins census and LGD codes by number (offices placed by position)
 
 ### T062 · Inspection Planner (headline)  ·  L  ·  engine + web  ·  Depends on: T050, T061
 **What:** exactly the spec's algorithm (candidates risk ≥ 40 + 10% random, value = risk × money weight, greedy
 by value per extra minute within 8 h, OR-Tools TSP, per-stop checklist from the reasons). `POST /plans/generate`,
 `GET /plans/{id}`; map + stop list on the district dashboard.
-**Done when:** [ ] plan in `docs/plans/` · [ ] km saved vs visiting the top sites in list order, measured on real
-districts · [ ] tests for the greedy step and the budget
+**Done when:** [x] plan in `docs/plans/` (T062-inspection-planner.md; owner chose exact route order over OR-Tools) ·
+[x] km saved vs visiting the top sites in list order, measured on real districts (`results/t062_planner.txt`) ·
+[x] tests for the greedy step and the budget (`apps/engine/tests/planner/`). The page is `/planner`
 
 ### T063 · Field verification app (mobile web)  ·  M  ·  web + engine  ·  Depends on: T062
 **What:** today's route, site card, checklist, photo + GPS + time, verdict (OK / Issue / Not found / Can't verify);

@@ -1,0 +1,48 @@
+T062 Inspection Planner on the live review queue (https://nidhinetra-sih.vercel.app), 11 Oct 2026
+
+queue cases 217 in 109 districts
+  placed at village        55  (25.3%)
+  placed at block          31  (14.3%)
+  placed at area           10  (4.6%)
+  placed at district      119  (54.8%)
+  placed at no district     2  (0.9%)
+
+All districts with queue cases
+  districts 109, cases 215, one-day stops 198 (all cases fit in the day in 98)
+  one day:   queue order     4335 road km, planned     4162 km, saved    173 km (4.0%)
+             per district: median saved 0.0%, best 50.0%, districts with any saving 6 of 55
+  per day:   working down the queue visits 192 cases (value 254.4); the planner 198 (value 261.3); more visits in 4 districts
+  all cases: queue order     6342 road km, planned     5765 km, saved    578 km (9.1%)
+
+Districts with 2+ cases placed below district level (the route has real places)
+  districts 19, cases 84, one-day stops 70 (all cases fit in the day in 11)
+  one day:   queue order     1935 road km, planned     1762 km, saved    173 km (8.9%)
+             per district: median saved 0.0%, best 50.0%, districts with any saving 6 of 19
+  per day:   working down the queue visits 64 cases (value 84.9); the planner 70 (value 91.8); more visits in 4 districts
+  all cases: queue order     3341 road km, planned     2764 km, saved    578 km (17.3%)
+
+Districts with 5+ cases
+  districts 13, cases 85, one-day stops 71 (all cases fit in the day in 5)
+  one day:   queue order      834 road km, planned      781 km, saved     53 km (6.3%)
+             per district: median saved 0.0%, best 50.0%, districts with any saving 2 of 10
+  per day:   working down the queue visits 66 cases (value 83.1); the planner 71 (value 88.9); more visits in 3 districts
+  all cases: queue order     2391 road km, planned     1933 km, saved    458 km (19.1%)
+
+Per district (5+ cases), one 8-hour day:
+  district                                   cases placed stops  queue-km plan-km saved  queue-day
+  Vijayapura (Karnataka)                        11      1    10         0       0     0     10
+  Y.S.R. (Andhra Pradesh)                        9      7     6        80      40    40      3
+  Sri Potti Sriramulu Nellore (Andhra Prades     8      4     5        36      36     0      5
+  Tirupati (Andhra Pradesh)                      7      4     5       101     101     0      5
+  Bengaluru (Urban) (Karnataka)                  7      1     7        42      42     0      7
+  Kannur (Kerala)                                6      3     5        48      48     0      4
+  Belagavi (Karnataka)                           6      0     6         0       0     0      6
+  Kalaburagi (Karnataka)                         6      2     5        57      57     0      4
+  Tumakuru (Karnataka)                           5      5     3       147     147     0      3
+  Ananthapuramu (Andhra Pradesh)                 5      4     4       137     137     0      4
+  Sri Sathya Sai (Andhra Pradesh)                5      0     5         0       0     0      5
+  Kolar (Karnataka)                              5      2     5        61      61     0      5
+  Annamayya (Andhra Pradesh)                     5      3     5       123     110    13      5
+
+Distances: straight line x 1.3 at 30 km/h, 40 min a stop, from the district's start
+point (its head office, else the outline's centre). Places are approximate.
