@@ -90,7 +90,7 @@ export function WorkFormData({ data, titles }: { data: FormData; titles: Record<
             </p>
           ))}
           <details className="text-sm">
-            <summary className="cursor-pointer text-xs font-medium text-brand-700">The {data.filings.length} other agencies&apos; road filings</summary>
+            <summary className="more-toggle">The {data.filings.length} other agencies&apos; road filings</summary>
             <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
               {data.filings.map((f) => (
                 <li key={f.id}>

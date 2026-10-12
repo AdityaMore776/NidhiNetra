@@ -241,6 +241,42 @@
     border-radius: calc(var(--radius) * 1.6);
     box-shadow: var(--shadow-card);
   }
+  /* a button that opens extra detail ("Show blank fields too", a <summary>): a tinted pill, never plain grey text (T165) */
+  .more-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    cursor: pointer;
+    list-style: none;
+    border: 1px solid var(--brand-200);
+    background: var(--brand-50);
+    color: var(--brand-800);
+    border-radius: 0.6rem;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: background-color 0.15s, border-color 0.15s;
+  }
+  .more-toggle:hover {
+    background: var(--brand-100);
+    border-color: var(--brand-400);
+  }
+  .more-toggle::-webkit-details-marker {
+    display: none;
+  }
+  .more-toggle::after {
+    content: "";
+    width: 0.4rem;
+    height: 0.4rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: translateY(-15%) rotate(45deg);
+    transition: transform 0.15s;
+  }
+  details[open] > .more-toggle::after,
+  .more-toggle[aria-expanded="true"]::after {
+    transform: translateY(15%) rotate(225deg);
+  }
   /* kept for the Explainer */
   .card {
     background: var(--surface);
