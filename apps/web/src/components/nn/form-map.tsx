@@ -246,7 +246,7 @@ export function FormMap({ form, flags, agents }: { form: Record<string, unknown>
         <span>
           <Minus className="inline size-3.5" /> does not use this section
         </span>
-        <button type="button" className="ml-auto font-medium text-brand-700 hover:underline" onClick={() => setAll((a) => !a)}>
+        <button type="button" className="more-toggle ml-auto" aria-expanded={all} onClick={() => setAll((a) => !a)}>
           {all ? "Hide blank fields" : "Show blank fields too"}
         </button>
       </p>
@@ -284,7 +284,9 @@ export function FormMap({ form, flags, agents }: { form: Record<string, unknown>
                     {s.sectionFlags.length} to check
                   </span>
                 )}
-                <ChevronDown className={cn("size-4 shrink-0 text-muted-foreground transition-transform", opened && "rotate-180")} />
+                <span className="grid size-6 shrink-0 place-items-center rounded-md border border-brand-200 bg-brand-50 text-brand-700">
+                  <ChevronDown className={cn("size-4 transition-transform", opened && "rotate-180")} />
+                </span>
               </button>
               {opened && (
                 <div className="space-y-3 border-t px-3 py-3">

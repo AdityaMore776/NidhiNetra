@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { BandBadge, EngineMark } from "@/components/nn/badges";
 import { PageHeader } from "@/components/nn/layout-bits";
+import { Segmented } from "@/components/nn/segmented";
 import { type FormData, WorkFormData } from "@/components/nn/work-form-data";
 import { Button } from "@/components/ui/button";
 import { ApiError, apiPost } from "@/lib/api";
@@ -238,28 +239,16 @@ function WorkForm() {
         </div>
       </section>
 
-      <div className="flex gap-1 rounded-xl bg-muted p-1 text-sm font-medium sm:w-fit" role="tablist">
-        {(
-          [
-            ["form", "Form and flags", FileText],
-            ["data", "Data the agents use", Database],
-          ] as const
-        ).map(([id, label, Icon]) => (
-          <button
-            key={id}
-            type="button"
-            role="tab"
-            aria-selected={tab === id}
-            onClick={() => setTab(id)}
-            className={cn(
-              "inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 transition-colors sm:flex-none",
-              tab === id ? "bg-white text-brand-950 shadow-sm" : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            <Icon className="size-4" /> {label}
-          </button>
-        ))}
-      </div>
+      <Segmented<"form" | "data">
+        value={tab}
+        onChange={setTab}
+        label="View"
+        className="w-full sm:w-fit"
+        options={[
+          { value: "form", label: "Form and flags", icon: <FileText /> },
+          { value: "data", label: "Data the agents use", icon: <Database /> },
+        ]}
+      />
 
       {/* the form stays mounted on the Data tab, so a filled form is never lost */}
       <div className={cn("grid gap-5 xl:grid-cols-[minmax(0,1fr)_400px]", tab !== "form" && "hidden")}>
@@ -334,7 +323,7 @@ function Verdict({ shown, onShow, onData }: { shown: Shown | null; onShow: (fiel
         )}
         {fixes.length > 0 && (
           <details className="text-xs text-muted-foreground">
-            <summary className="cursor-pointer">
+            <summary className="more-toggle">
               {fixes.length} {fixes.length === 1 ? "answer" : "answers"} missing for Cost
             </summary>
             <ul className="mt-1 max-h-32 space-y-0.5 overflow-auto">

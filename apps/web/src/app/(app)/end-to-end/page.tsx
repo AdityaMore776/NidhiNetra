@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Check, ClipboardCheck, Construction, Gauge, ListChecks, PenLine, Play, RotateCcw, Video, X } from "lucide-react";
+import { ArrowRight, Check, ClipboardCheck, Construction, FileText, Gauge, ListChecks, ListTree, PenLine, Play, RotateCcw, Video, X } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -12,6 +12,7 @@ import type { Trace } from "@/lib/explain";
 import { agentMeta, inr } from "@/lib/format";
 import FORM_HTML from "@/lib/forms/pre-sanction-work-intelligence-form";
 import { FormMap } from "@/components/nn/form-map";
+import { Segmented } from "@/components/nn/segmented";
 import { type AgentLine, agentLines, type Flag, markForm } from "@/lib/work-form-flags";
 import { cn } from "@/lib/utils";
 import { fillForm, fitFrame } from "@/lib/work-form-frame";
@@ -359,28 +360,16 @@ function FormStep({ ex }: { ex: Filing }) {
           </Link>
           : every section, what each agent reads, and every field an agent asks about, in its colour.
         </p>
-        <div className="flex gap-1 rounded-xl bg-muted p-1 text-xs font-medium" role="tablist">
-          {(
-            [
-              ["sections", "Section by section"],
-              ["form", "The form as filed"],
-            ] as const
-          ).map(([id, label]) => (
-            <button
-              key={id}
-              type="button"
-              role="tab"
-              aria-selected={mode === id}
-              onClick={() => setMode(id)}
-              className={cn(
-                "rounded-lg px-2.5 py-1 transition-colors",
-                mode === id ? "bg-white text-brand-950 shadow-sm" : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+        <Segmented<"sections" | "form">
+          value={mode}
+          onChange={setMode}
+          label="View"
+          size="sm"
+          options={[
+            { value: "sections", label: "Section by section", icon: <ListTree /> },
+            { value: "form", label: "The form as filed", icon: <FileText /> },
+          ]}
+        />
       </div>
       {mode === "sections" && <FormMap form={ex.form} flags={flags} agents={lines} />}
       <div className={cn("overflow-hidden rounded-xl border", mode !== "form" && "hidden")}>
