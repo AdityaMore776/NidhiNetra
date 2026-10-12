@@ -40,7 +40,7 @@
    },
    {
     "id": "site_progress",
-    "name": "Site Progress",
+    "name": "NidhiLens (Fine-Tuned Site Progress Model)",
     "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
     "built": true,
     "weight": 0.25,
@@ -161,7 +161,7 @@
       },
       {
        "agent": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
        "status": "ASSESSED",
        "verdict": "PROGRESS_AS_SHOWN",
@@ -347,14 +347,14 @@
       },
       {
        "agent": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
        "status": "NOT_APPLICABLE",
        "verdict": "NOT_APPLICABLE",
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+       "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
        "version": "",
        "findings": [],
        "limitations": [],
@@ -536,14 +536,14 @@
       },
       {
        "agent": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
        "status": "NOT_APPLICABLE",
        "verdict": "NOT_APPLICABLE",
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+       "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
        "version": "",
        "findings": [],
        "limitations": [],
@@ -718,14 +718,14 @@
       },
       {
        "agent": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
        "status": "NOT_APPLICABLE",
        "verdict": "NOT_APPLICABLE",
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+       "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
        "version": "",
        "findings": [],
        "limitations": [],
@@ -901,14 +901,14 @@
       },
       {
        "agent": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
        "status": "NOT_APPLICABLE",
        "verdict": "NOT_APPLICABLE",
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+       "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
        "version": "",
        "findings": [],
        "limitations": [],
@@ -1083,14 +1083,14 @@
       },
       {
        "agent": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
        "status": "NOT_APPLICABLE",
        "verdict": "NOT_APPLICABLE",
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+       "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
        "version": "",
        "findings": [],
        "limitations": [],
@@ -1267,14 +1267,14 @@
       },
       {
        "agent": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
        "status": "NOT_APPLICABLE",
        "verdict": "NOT_APPLICABLE",
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+       "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
        "version": "",
        "findings": [],
        "limitations": [],
@@ -1453,14 +1453,14 @@
       },
       {
        "agent": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
        "status": "NOT_APPLICABLE",
        "verdict": "NOT_APPLICABLE",
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+       "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
        "version": "",
        "findings": [],
        "limitations": [],
@@ -1559,7 +1559,7 @@
        },
        {
         "source": "site_progress",
-        "label": "Site Progress",
+        "label": "NidhiLens (Fine-Tuned Site Progress Model)",
         "weight": 0.1875,
         "contribution": 0.1875
        }
@@ -1580,7 +1580,7 @@
        },
        {
         "source": "site_progress",
-        "label": "Site Progress",
+        "label": "NidhiLens (Fine-Tuned Site Progress Model)",
         "contribution": 0.1875,
         "code": "NO_SITE_VIDEO",
         "text_en": "Recorded complete on 30 Jun 2026, 6 days after its sanction, but no site video was ever accepted. A work with a form is filmed before it starts and every month: ask the agency for the videos, and check the site before it is closed.",
@@ -1656,7 +1656,7 @@
       },
       {
        "agent": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
        "status": "ASSESSED",
        "verdict": "NO_SITE_VIDEO",
@@ -1852,7 +1852,7 @@
       },
       {
        "agent": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
        "status": "ASSESSED",
        "verdict": "PROGRESS_AS_SHOWN",
@@ -1886,7 +1886,7 @@
       "site_progress"
      ],
      "shows": "Promised in 8 months; 16 months later it is not finished and the site is still.",
-     "why": "Time & Rules judges the work by the agency's own promise plus a grace period, and the site videos say the work has stopped, not merely slowed. Site Progress itself asks nothing: the videos are genuine.",
+     "why": "Time & Rules judges the work by the agency's own promise plus a grace period, and the site videos say the work has stopped, not merely slowed. NidhiLens (Fine-Tuned Site Progress Model) itself asks nothing: the videos are genuine.",
      "explain": "time_late",
      "form_example": "time_late",
      "later": [
@@ -1955,7 +1955,7 @@
       "parts": [
        {
         "source": "site_progress",
-        "label": "Site Progress",
+        "label": "NidhiLens (Fine-Tuned Site Progress Model)",
         "weight": 0.4375,
         "contribution": 0.4375
        }
@@ -1964,7 +1964,7 @@
       "reasons": [
        {
         "source": "site_progress",
-        "label": "Site Progress",
+        "label": "NidhiLens (Fine-Tuned Site Progress Model)",
         "contribution": 0.4375,
         "code": "FOOTAGE_USED_BEFORE",
         "text_en": "The first visit of 04 Jul 2026 carries 42 frames already seen on work WF-TIME-2: the same footage, not new filming. A site video must be filmed fresh at this site; needs checking.",
@@ -2032,7 +2032,7 @@
       },
       {
        "agent": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
        "status": "ASSESSED",
        "verdict": "FOOTAGE_USED_BEFORE",
@@ -2148,7 +2148,7 @@
       "parts": [
        {
         "source": "site_progress",
-        "label": "Site Progress",
+        "label": "NidhiLens (Fine-Tuned Site Progress Model)",
         "weight": 0.25,
         "contribution": 0.25
        }
@@ -2157,7 +2157,7 @@
       "reasons": [
        {
         "source": "site_progress",
-        "label": "Site Progress",
+        "label": "NidhiLens (Fine-Tuned Site Progress Model)",
         "contribution": 0.25,
         "code": "CLAIM_NOT_SHOWN",
         "text_en": "The agency's claim is not shown at the same viewpoints on two visits in a row (03 Aug 2026: roof slab cast; 02 Sep 2026: roof slab cast, plaster started). Reader: the same walls, no slab, no plaster. Check at the site.",
@@ -2226,7 +2226,7 @@
       },
       {
        "agent": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
        "status": "ASSESSED",
        "verdict": "CLAIM_NOT_SHOWN",
@@ -2267,7 +2267,7 @@
       "site_progress"
      ],
      "shows": "\"Roof slab cast\" claimed in two monthly videos that show no slab.",
-     "why": "Site Progress judges the agency's own claims against its videos: shown, not shown or can't tell. A claim not shown twice in a row is a question; once could be a bad angle.",
+     "why": "NidhiLens (Fine-Tuned Site Progress Model) judges the agency's own claims against its videos: shown, not shown or can't tell. A claim not shown twice in a row is a question; once could be a bad angle.",
      "explain": "site_claim",
      "form_example": "site_claim",
      "later": [
@@ -2335,7 +2335,7 @@
       "parts": [
        {
         "source": "site_progress",
-        "label": "Site Progress",
+        "label": "NidhiLens (Fine-Tuned Site Progress Model)",
         "weight": 0.25,
         "contribution": 0.25
        }
@@ -2344,7 +2344,7 @@
       "reasons": [
        {
         "source": "site_progress",
-        "label": "Site Progress",
+        "label": "NidhiLens (Fine-Tuned Site Progress Model)",
         "contribution": 0.25,
         "code": "NOT_FILMED_AT_THIS_SITE",
         "text_en": "The monthly visit of 13 Aug 2026: its GPS points are 2,400 m outside the site, and its views do not match this site's earlier views. Needs checking where it was filmed.",
@@ -2412,7 +2412,7 @@
       },
       {
        "agent": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
        "status": "ASSESSED",
        "verdict": "NOT_FILMED_AT_THIS_SITE",

@@ -90,13 +90,13 @@ EXAMPLES = [
      "work."),
     ("time_late", ["time_rules", "site_progress"],
      "Time & Rules judges the work by the agency's own promise plus a grace period, and the site "
-     "videos say the work has stopped, not merely slowed. Site Progress itself asks nothing: the "
+     "videos say the work has stopped, not merely slowed. NidhiLens (Fine-Tuned Site Progress Model) itself asks nothing: the "
      "videos are genuine."),
     ("site_reused", ["site_progress"],
      "The video passes every check at the site. Only comparing it with every earlier video shows "
      "the footage was filmed for another work, at that work's place."),
     ("site_claim", ["site_progress"],
-     "Site Progress judges the agency's own claims against its videos: shown, not shown or can't "
+     "NidhiLens (Fine-Tuned Site Progress Model) judges the agency's own claims against its videos: shown, not shown or can't "
      "tell. A claim not shown twice in a row is a question; once could be a bad angle."),
     ("site_elsewhere", ["site_progress"],
      "A video counts as filmed elsewhere only when its GPS and its views both disagree with the "

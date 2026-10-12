@@ -241,7 +241,7 @@ def test_site_progress_v3_is_the_fourth_agent_and_v2_is_kept_for_the_photo_trial
     from drishti.agents import registry
     from drishti.agents.site_progress import agent as v3
     spec = registry.by_id()["site_progress"]
-    assert spec.name == "Site Progress" and spec.weight == 0.25 and spec.question == v3.QUESTION
+    assert spec.name == v3.NAME and spec.weight == 0.25 and spec.question == v3.QUESTION
     assert agent.VERSION.startswith("site-progress-2")
 
 

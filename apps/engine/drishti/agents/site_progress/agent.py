@@ -65,6 +65,7 @@ from drishti.agents.site_progress import spots
 from drishti.agents.site_progress import visits as site_visits
 
 AGENT = "site_progress"
+NAME = "NidhiLens (Fine-Tuned Site Progress Model)"  # the name shown on the website (T166)
 VERSION = "site-progress-3.4.0"
 QUESTION = ("Do the monthly site videos show real, new work, at this work's site, for this "
             "work only?")
@@ -481,7 +482,7 @@ def assess(work: dict, as_of: date) -> AgentResult:
     if not vs:
         if missing:
             return out(Status.ASSESSED, missing.text, [missing], early)
-        return out(Status.NOT_APPLICABLE, "No site video yet: Site Progress starts with the first "
+        return out(Status.NOT_APPLICABLE, f"No site video yet: {NAME} starts with the first "
                    "visit, filmed before work begins. This is not a clean chit.", notes=early)
     read = [v for v in vs if any(x not in (None, [], "", {}) for x in v.readings.values())]
     if not read:

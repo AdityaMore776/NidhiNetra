@@ -26,7 +26,7 @@ export const AGENTS: Record<AgentId, AgentMeta> = {
   cost_estimate: { n: "01", name: "Cost", color: "var(--eng-cost)", question: "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?" },
   dup_split: { n: "02", name: "Duplicate Work", color: "var(--eng-dup)", question: "Is this work already sanctioned here, or one job cut to stay under a limit?" },
   time_rules: { n: "03", name: "Time & Rules", color: "var(--eng-compliance)", question: "Was it sanctioned on time, and is it being finished in a believable time?" },
-  site_progress: { n: "04", name: "Site Progress", color: "var(--eng-flow)", question: "Do the monthly site videos show real, new work, at this work's site, for this work only?" },
+  site_progress: { n: "04", name: "NidhiLens (Fine-Tuned Site Progress Model)", color: "var(--eng-flow)", question: "Do the monthly site videos show real, new work, at this work's site, for this work only?" },
   // retired (T099, T125): results stored before then still read by name until re-assessed
   compliance: { n: "··", name: "Guideline Compliance (retired)", color: "var(--muted-foreground)", question: "Does the work follow the MPLADS guidelines?" },
   delay: { n: "··", name: "Fund Flow (retired)", color: "var(--muted-foreground)", question: "Is money stuck waiting for sanction?" },
