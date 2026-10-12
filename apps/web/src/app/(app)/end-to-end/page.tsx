@@ -813,7 +813,7 @@ function AfterSanction({ ex }: { ex: Filing }) {
       </span>
       <p className="min-w-0 flex-1">
         <span className="font-semibold">The loop goes on after sanction.</span> Time &amp; Rules watches the window
-        {tp ? ` (by ${day(tp.late)})` : ""}; Site Progress (placeholder) reads the monthly site videos; each new answer goes back into the
+        {tp ? ` (by ${day(tp.late)})` : ""}; NidhiLens (Fine-Tuned Site Progress Model), a placeholder here, reads the monthly site videos; each new answer goes back into the
         score, and the officer sees it.
       </p>
     </section>

@@ -82,7 +82,7 @@ const STAGES = [
 
 const PRINCIPLES = [
   { icon: Gavel, title: "It never accuses", text: "Every flag says “needs verification”. The software refuses accusing words; a test fails if an engine uses one." },
-  { icon: CircleSlash, title: "“Couldn't check” is not clean", text: "With no cost form or site video yet, Cost and Site Progress say they could not check. That is a status, never a clean chit." },
+  { icon: CircleSlash, title: "“Couldn't check” is not clean", text: "With no cost form or site video yet, Cost and NidhiLens (Fine-Tuned Site Progress Model) say they could not check. That is a status, never a clean chit." },
   { icon: UserX, title: "It never scores an MP", text: "It looks at works, offices and agencies. A Member of Parliament is never ranked or scored." },
   { icon: Fingerprint, title: "Private data stays hidden", text: "Phone numbers, bank account numbers and private names are masked before anything else runs." },
   { icon: BadgeCheck, title: "Officers decide", text: "NidhiNetra suggests where to look. An officer always makes the call, and a district sees only its own works." },

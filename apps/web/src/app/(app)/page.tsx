@@ -313,7 +313,7 @@ export default function Dashboard() {
                 <SectionHeader
                   eyebrow="Detect"
                   title="What each check found"
-                  description="Works where each of the four checks raised a question. Cost and Site Progress start as agencies file the cost estimate form and monthly site videos."
+                  description="Works where each of the four checks raised a question. Cost and NidhiLens (Fine-Tuned Site Progress Model) start as agencies file the cost estimate form and monthly site videos."
                   actions={
                     <Button asChild variant="ghost" size="sm" className="text-brand-700">
                       <Link href="/how-it-works">
@@ -432,7 +432,7 @@ function EvidenceFacts() {
         Cost prices every line against the district&apos;s rates; Duplicate Work checks the form&apos;s map pin against sanctioned works.
       </Fact>
       <Fact icon={<Camera className="size-4" />} tone="var(--eng-flow)" title="Monthly site videos">
-        Site Progress compares the agency&apos;s own claim with what a GPS-stamped video of the site shows.
+        NidhiLens (Fine-Tuned Site Progress Model) compares the agency&apos;s own claim with what a GPS-stamped video of the site shows.
       </Fact>
     </>
   );

@@ -58,7 +58,7 @@ CORE: tuple[EngineSpec, ...] = (
     EngineSpec("time_rules", "Time & Rules",
                "Was it sanctioned on time, and is it being finished in a believable time?",
                weight=0.25, order=3),
-    EngineSpec("site_progress", "Site Progress",
+    EngineSpec("site_progress", "NidhiLens (Fine-Tuned Site Progress Model)",
                "Do the monthly site videos show real, new work, at this work's site, for this "
                "work only?", weight=0.25, order=4),
 )

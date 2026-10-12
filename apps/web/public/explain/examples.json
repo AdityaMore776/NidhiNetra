@@ -224,13 +224,13 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "NOT_APPLICABLE",
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
-      "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+      "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -506,13 +506,13 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "NOT_APPLICABLE",
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
-      "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+      "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -821,13 +821,13 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "NOT_APPLICABLE",
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
-      "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+      "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -1125,13 +1125,13 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "NOT_APPLICABLE",
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
-      "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+      "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -1427,13 +1427,13 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "NOT_APPLICABLE",
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
-      "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+      "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -1707,7 +1707,7 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "ASSESSED",
@@ -2175,7 +2175,7 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "ASSESSED",
@@ -2226,7 +2226,7 @@
      "engines": [
       {
        "engine": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "chance": 0.4375,
        "findings": [
         {
@@ -2278,7 +2278,7 @@
      "advice": null,
      "reasons": [
       {
-       "engine": "Site Progress",
+       "engine": "NidhiLens (Fine-Tuned Site Progress Model)",
        "text": "The first visit of 18 Aug 2026 carries 42 frames already seen on work EXAMPLE-11: the same footage, not new filming. A site video must be filmed fresh at this site; needs checking.",
        "text_hi": "इस वीडियो के दृश्य पहले किसी अन्य वीडियो में देखे जा चुके हैं। साइट वीडियो इसी साइट पर नया फ़िल्माया जाना चाहिए; जाँच करें।",
        "chance": 0.4375,
@@ -2543,13 +2543,13 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "NOT_APPLICABLE",
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
-      "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+      "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
       "limitations": [],
       "findings": [],
       "picture": null

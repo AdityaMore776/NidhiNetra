@@ -14,4 +14,4 @@ def _assess(work: dict, ctx):
     return agent.assess(work, ctx.as_of)
 
 
-ENGINE = EngineSpec(id=agent.AGENT, name="Site Progress", question=agent.QUESTION, assess=_assess)
+ENGINE = EngineSpec(id=agent.AGENT, name=agent.NAME, question=agent.QUESTION, assess=_assess)

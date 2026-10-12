@@ -426,7 +426,7 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "ASSESSED",
@@ -999,13 +999,13 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "NOT_APPLICABLE",
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
-      "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+      "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -1556,13 +1556,13 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "NOT_APPLICABLE",
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
-      "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+      "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -2034,13 +2034,13 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "NOT_APPLICABLE",
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
-      "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+      "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -2588,13 +2588,13 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "NOT_APPLICABLE",
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
-      "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+      "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -3104,13 +3104,13 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "NOT_APPLICABLE",
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
-      "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+      "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -3624,13 +3624,13 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "NOT_APPLICABLE",
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
-      "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+      "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -4151,13 +4151,13 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "NOT_APPLICABLE",
       "verdict": "NOT_APPLICABLE",
       "risk": 0.0,
-      "headline": "No site video yet: Site Progress starts with the first visit, filmed before work begins. This is not a clean chit.",
+      "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
       "limitations": [],
       "findings": [],
       "picture": null
@@ -4675,7 +4675,7 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "ASSESSED",
@@ -4724,7 +4724,7 @@
       },
       {
        "engine": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "chance": 0.25,
        "findings": [
         {
@@ -4779,7 +4779,7 @@
        "read": null
       },
       {
-       "engine": "Site Progress",
+       "engine": "NidhiLens (Fine-Tuned Site Progress Model)",
        "text": "Recorded complete on 30 Jun 2026, 6 days after its sanction, but no site video was ever accepted. A work with a form is filmed before it starts and every month: ask the agency for the videos, and check the site before it is closed.",
        "text_hi": "स्वीकृति और नियोजित आरंभ के बाद भी कोई साइट वीडियो स्वीकार नहीं हुआ। एजेंसी से वीडियो माँगें और स्थल की जाँच करें।",
        "chance": 0.25,
@@ -5217,7 +5217,7 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "ASSESSED",
@@ -5906,7 +5906,7 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "ASSESSED",
@@ -5976,7 +5976,7 @@
      "engines": [
       {
        "engine": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "chance": 0.4375,
        "findings": [
         {
@@ -6028,7 +6028,7 @@
      "advice": null,
      "reasons": [
       {
-       "engine": "Site Progress",
+       "engine": "NidhiLens (Fine-Tuned Site Progress Model)",
        "text": "The first visit of 04 Jul 2026 carries 42 frames already seen on work WF-TIME-2: the same footage, not new filming. A site video must be filmed fresh at this site; needs checking.",
        "text_hi": "इस वीडियो के दृश्य पहले किसी अन्य वीडियो में देखे जा चुके हैं। साइट वीडियो इसी साइट पर नया फ़िल्माया जाना चाहिए; जाँच करें।",
        "chance": 0.4375,
@@ -6451,7 +6451,7 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "ASSESSED",
@@ -6552,7 +6552,7 @@
      "engines": [
       {
        "engine": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "chance": 0.25,
        "findings": [
         {
@@ -6594,7 +6594,7 @@
      "advice": null,
      "reasons": [
       {
-       "engine": "Site Progress",
+       "engine": "NidhiLens (Fine-Tuned Site Progress Model)",
        "text": "The agency's claim is not shown at the same viewpoints on two visits in a row (03 Aug 2026: roof slab cast; 02 Sep 2026: roof slab cast, plaster started). Reader: the same walls, no slab, no plaster. Check at the site.",
        "text_hi": "एजेंसी का बताया गया काम लगातार दो विज़िट में उन्हीं दृश्यों पर दिखाई नहीं देता। साइट पर जाँच करें।",
        "chance": 0.25,
@@ -7034,7 +7034,7 @@
      },
      {
       "id": "site_progress",
-      "name": "Site Progress",
+      "name": "NidhiLens (Fine-Tuned Site Progress Model)",
       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
       "counted": true,
       "status": "ASSESSED",
@@ -7106,7 +7106,7 @@
      "engines": [
       {
        "engine": "site_progress",
-       "name": "Site Progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
        "chance": 0.25,
        "findings": [
         {
@@ -7148,7 +7148,7 @@
      "advice": null,
      "reasons": [
       {
-       "engine": "Site Progress",
+       "engine": "NidhiLens (Fine-Tuned Site Progress Model)",
        "text": "The monthly visit of 13 Aug 2026: its GPS points are 2,400 m outside the site, and its views do not match this site's earlier views. Needs checking where it was filmed.",
        "text_hi": "वीडियो की जीपीएस स्थिति साइट से बाहर है और दृश्य भी इस साइट के पहले के दृश्यों से मेल नहीं खाते। जाँच करें।",
        "chance": 0.25,
