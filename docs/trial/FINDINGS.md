@@ -2974,4 +2974,25 @@ carries no risk.
 overwritten): 120 probes, **115 PASS, 0 FAIL, 5 LIMIT**; 400 random damages, 0 errors, 0 contract breaks. One probe
 now expects `SAME_BUILDING_NEAR` where it expected the note.
 
+**Where each site video was filmed (the owner, 20 Oct 2026):** "each site check every time period also captures the
+location it was taken at; if it differs a lot from where the form says the project is (a little is fine, markers aren't
+fully accurate, a small rough area), flag it". Before: the video job already logged GPS, but one video filmed far from
+the form's place was only a note (a finding needed two consistent videos 100 m+ off, or GPS 300 m+ out AND other
+views), a video with location off was only a note however often, only the form's first place was used, and the
+capture page let a visit finish with location off. Now:
+- the capture page will not finish a visit without a GPS fix, nor with an "approximate location" (+-500 m or worse);
+- the video job records how many fixes and how accurate they were (`gps_fixes`, `gps_accuracy_m`);
+- `FILMED_AWAY_FROM_FORM_SITE`: a video more than **75 m beyond the edge** of every place the form gives (the site's
+  own size, a road's whole line), after the phone's own reported accuracy: one video "check this" (0.3), two or more a
+  question (0.5). 75 m covers standing back to film (40 m, T158) and a pin typed a little off;
+- `LOCATION_NOT_RECORDED`: 2 of the last 3 accepted videos with no location (GPS off, a mock location, or only an
+  approximate one): check (0.3); all 3: a question (0.4). One alone is a note asking for a retake. Weak GPS under trees
+  or a roof (+-50-500 m) is still a location, the views decide (T136); readings made before the fix count existed say
+  nothing and are never judged.
+Measured on 8 scenarios written from the owner's words (`data/eval/site_progress/holdout2.py`, committed before their
+first run): 16 of 16 pass (honest within 60 m, one month with GPS off, +-45 m under trees, old readings: clean; one month
+450 m away: check; twice: question; GPS off three times: question; a mock location twice: check). 13 unit tests; the
+robustness loop stays 115 PASS, 0 FAIL, 5 LIMIT (its "weak GPS on every video" honest probe is why weak GPS is not
+"no location"). Not yet read on real visits: both codes stand at the 1-in-4 prior until T126's field trial.
+
 **NidhiLens on altered photos:** NIDHILENS_RESULTS

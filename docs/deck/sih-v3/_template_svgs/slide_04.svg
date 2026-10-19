@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1280" height="720" viewBox="0 0 1280 720" font-family="Calibri, sans-serif"><defs><filter id="fx1" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="2.41469816" stdDeviation="0" flood-color="#808080" flood-opacity="0.34999" /></filter></defs><rect x="0" y="0" width="1280" height="720" fill="#FFFFFF" />
+<g id="shape-10" data-pptx-object="shape" data-pptx-frame="0 667.17 1280 52.83" data-pptx-prst="rect" data-pptx-source-ref="slide:10" data-pptx-semantic-object="shape">
+<path d="M 0 667.17 L 1280 667.17 L 1280 720 L 0 720 Z" fill="#0070C0" stroke-width="1" stroke="none" stroke-linejoin="miter" filter="url(#fx1)" data-pptx-part="geometry" />
+
+
+</g>
+<g id="shape-17409" data-pptx-object="shape" data-pptx-frame="64 -5 1152 120" data-ph-type="title" data-pptx-prst="rect" data-pptx-source-ref="slide:17409" data-pptx-semantic-object="shape">
+<path d="M 64 -5 L 1216 -5 L 1216 115 L 64 115 Z" fill="none" data-ph-type="title" data-pptx-part="geometry" />
+
+
+<text x="640" y="67" text-anchor="middle" xml:space="preserve" font-family="&quot;Times New Roman&quot;, &quot;ＭＳ Ｐゴシック&quot;, sans-serif" font-size="48" fill="#000000" font-weight="bold">FEASIBILITY AND VIABILITY</text>
+</g>
+<g id="shape-17410" data-pptx-object="shape" data-pptx-frame="64 266 985.33 145.41" data-pptx-prst="rect" data-pptx-source-ref="slide:17410" data-pptx-semantic-object="shape">
+<path d="M 64 266 L 1049.33 266 L 1049.33 411.41 L 64 411.41 Z" fill="none" stroke-width="1" stroke="none" stroke-linejoin="miter" data-pptx-part="geometry" />
+
+
+<text x="73.6" y="302.53" text-anchor="start" xml:space="preserve" font-family="Arial, &quot;ＭＳ Ｐゴシック&quot;, sans-serif" font-size="37.33" fill="#000000" data-pptx-text-model="paragraphs" data-paragraph-line-height="37.33"><tspan><tspan>• </tspan><tspan>Analysis of the feasibility of the idea</tspan></tspan><tspan font-family="Arial, sans-serif" data-paragraph-space-before="0.01"><tspan>• </tspan><tspan>Potential challenges and risks</tspan></tspan><tspan><tspan>• </tspan><tspan>Strategies</tspan><tspan> for overcoming these challenges</tspan></tspan></text>
+</g>
+<g id="shape-6" data-pptx-object="shape" data-pptx-frame="917.33 667.33 298.67 38.33" data-ph-type="sldNum" data-pptx-placeholder-index="12" data-pptx-placeholder-size="quarter" data-pptx-prst="rect" data-pptx-source-ref="slide:6" data-pptx-semantic-object="shape">
+<path d="M 917.33 667.33 L 1216 667.33 L 1216 705.67 L 917.33 705.67 Z" fill="none" data-ph-type="sldNum" data-pptx-placeholder-index="12" data-pptx-placeholder-size="quarter" data-pptx-part="geometry" />
+
+
+<text x="1206.4" y="685.73" text-anchor="end" xml:space="preserve" font-family="TradeGothic, &quot;ＭＳ Ｐゴシック&quot;, Calibri, sans-serif" font-size="16" fill="#FFFFFF" font-weight="bold">4</text>
+</g>
+<g id="shape-7" data-pptx-object="shape" data-pptx-frame="488 667.33 336.38 38.33" data-ph-type="ftr" data-pptx-placeholder-index="11" data-pptx-placeholder-size="quarter" data-pptx-prst="rect" data-pptx-source-ref="slide:7" data-pptx-semantic-object="shape">
+<path d="M 488 667.33 L 824.38 667.33 L 824.38 705.67 L 488 705.67 Z" fill="none" data-ph-type="ftr" data-pptx-placeholder-index="11" data-pptx-placeholder-size="quarter" data-pptx-part="geometry" />
+
+
+<text x="656.19" y="685.73" text-anchor="middle" xml:space="preserve" font-family="TradeGothic, Calibri, sans-serif" font-size="16" fill="#FFFFFF">@SIH Idea submission- Template</text>
+</g>
+<g id="shape-12" data-pptx-object="shape" data-pptx-frame="34.62 26.48 131.43 84.76" data-pptx-prst="ellipse" data-pptx-source-ref="slide:12" data-pptx-semantic-object="shape">
+<path d="M 34.62 68.86 A 65.71 42.38 0 0 1 100.34 26.48 A 65.71 42.38 0 0 1 166.05 68.86 A 65.71 42.38 0 0 1 100.34 111.24 A 65.71 42.38 0 0 1 34.62 68.86 Z" fill="#FFFFFF" stroke="#8064A2" stroke-width="1" data-pptx-part="geometry" />
+
+
+<text x="100.34" y="74.86" text-anchor="middle" xml:space="preserve" font-size="24" fill="#000000">Your Team Name</text>
+</g>
+<g id="shape-11" data-pptx-object="picture" data-pptx-frame="1026.78 0.16 236.2 111.53" data-pptx-source-ref="slide:11">
+<image data-pptx-object="picture" data-pptx-frame="1026.78 0.16 236.2 111.53" href="../images/image2.png" x="1026.78" y="0.16" width="236.2" height="111.53" preserveAspectRatio="none" />
+</g></svg>

@@ -1,0 +1,912 @@
+{
+  "schema": "ppt-master.pptx-postflight-report.v1",
+  "status": "passed-with-warnings",
+  "output": {
+    "path": "C:\\Users\\abhim\\drishti\\docs\\deck\\sih-v3\\exports\\sih-v3_20260926_142215.pptx",
+    "bytes": 996139
+  },
+  "source": {
+    "svg_slide_count": 6,
+    "layout_definition_count": 0,
+    "fingerprint": {
+      "algorithm": "sha256",
+      "digest": "189e207481718ba86d5b9adbb092a1eb12dde93ddb61e49597770d9acdea30b1",
+      "file_count": 8,
+      "files": [
+        {
+          "file": "authoring-svg-flat/slide_01.svg",
+          "sha256": "85888bba406185ada92eb5e21f6d01c737c44baf0b9cbfd35744b445305d5abe"
+        },
+        {
+          "file": "authoring-svg-flat/slide_02.svg",
+          "sha256": "450ef5b8e7612b3bd6290f0c0226c96b63af1df2924827280cf66d22cfc2fec9"
+        },
+        {
+          "file": "authoring-svg-flat/slide_03.svg",
+          "sha256": "cb6a6ce856b1cc65ed85ef3d4f81cf156e70b4f0c7f41a86ebdb8cde808aa4a0"
+        },
+        {
+          "file": "authoring-svg-flat/slide_04.svg",
+          "sha256": "56b67e5140819b006fddf4f8a7bb27f114e16943ade80d3dfe5fd897c1c1de6e"
+        },
+        {
+          "file": "authoring-svg-flat/slide_05.svg",
+          "sha256": "ace2c99be71dfb892d4a0d75cfd134cf9371226bcf5e741ac7cd95cbad0afe91"
+        },
+        {
+          "file": "authoring-svg-flat/slide_06.svg",
+          "sha256": "1ad0fbdc4a7606f7dffed7b215b923d6de82ad73aef44f81d319559fda566c8b"
+        },
+        {
+          "file": "authoring-svg-flat/slide_07.svg",
+          "sha256": "7a367348c1967252cfccf8bf00c8cde1296b671c5efff534100387cf7560ecd7"
+        },
+        {
+          "file": "page_plan.json",
+          "sha256": "714f8935fd9e83f45fb494f7323c6f25b8ed238d14d99344a90898240f3969a0"
+        }
+      ]
+    },
+    "authoring_roundtrip": {
+      "schema": "ppt-master.authoring-roundtrip-materialization.v1",
+      "authoring_root": "C:\\Users\\abhim\\drishti\\docs\\deck\\sih-v3\\authoring-svg-flat",
+      "manifest_schema": "ppt-master.svg-authoring-ir.v1",
+      "projection_kind": "flat",
+      "materialized_slide_count": 6,
+      "page_plan": {
+        "schema": "ppt-master.roundtrip-page-plan.v1",
+        "output_pages": 6,
+        "pages": [
+          {
+            "output_index": 1,
+            "source_slide": 1,
+            "svg": "slide_01.svg"
+          },
+          {
+            "output_index": 2,
+            "source_slide": 2,
+            "svg": "slide_02.svg"
+          },
+          {
+            "output_index": 3,
+            "source_slide": 3,
+            "svg": "slide_03.svg"
+          },
+          {
+            "output_index": 4,
+            "source_slide": 4,
+            "svg": "slide_04.svg"
+          },
+          {
+            "output_index": 5,
+            "source_slide": 5,
+            "svg": "slide_05.svg"
+          },
+          {
+            "output_index": 6,
+            "source_slide": 6,
+            "svg": "slide_06.svg"
+          }
+        ]
+      },
+      "totals": {
+        "source_ref_count": 42,
+        "unchanged_refs": 29,
+        "edited_refs": 7,
+        "deleted_refs": 6,
+        "authored_unreferenced": 25,
+        "expanded_vector_uses": 0
+      },
+      "documents": [
+        {
+          "file": "slide_01.svg",
+          "source_file": "slide_01.svg",
+          "source_slide": 1,
+          "document_unchanged": false,
+          "source_ref_count": 7,
+          "source_ref_ids": [
+            "slide:10",
+            "slide:2",
+            "slide:36",
+            "slide:37",
+            "slide:4",
+            "slide:5",
+            "slide:8"
+          ],
+          "unchanged_refs": 5,
+          "unchanged_ref_ids": [
+            "slide:2",
+            "slide:36",
+            "slide:37",
+            "slide:5",
+            "slide:8"
+          ],
+          "edited_refs": 1,
+          "edited_ref_ids": [
+            "slide:4"
+          ],
+          "deleted_refs": 1,
+          "deleted_ref_ids": [
+            "slide:10"
+          ],
+          "authored_unreferenced": 3,
+          "expanded_vector_uses": 0,
+          "defs_changed": false
+        },
+        {
+          "file": "slide_02.svg",
+          "source_file": "slide_02.svg",
+          "source_slide": 2,
+          "document_unchanged": false,
+          "source_ref_count": 7,
+          "source_ref_ids": [
+            "slide:10",
+            "slide:11",
+            "slide:15361",
+            "slide:15362",
+            "slide:6",
+            "slide:7",
+            "slide:9"
+          ],
+          "unchanged_refs": 4,
+          "unchanged_ref_ids": [
+            "slide:11",
+            "slide:6",
+            "slide:7",
+            "slide:9"
+          ],
+          "edited_refs": 2,
+          "edited_ref_ids": [
+            "slide:10",
+            "slide:15361"
+          ],
+          "deleted_refs": 1,
+          "deleted_ref_ids": [
+            "slide:15362"
+          ],
+          "authored_unreferenced": 4,
+          "expanded_vector_uses": 0,
+          "defs_changed": true
+        },
+        {
+          "file": "slide_03.svg",
+          "source_file": "slide_03.svg",
+          "source_slide": 3,
+          "document_unchanged": false,
+          "source_ref_count": 7,
+          "source_ref_ids": [
+            "slide:10",
+            "slide:11",
+            "slide:12",
+            "slide:17409",
+            "slide:17410",
+            "slide:6",
+            "slide:7"
+          ],
+          "unchanged_refs": 5,
+          "unchanged_ref_ids": [
+            "slide:10",
+            "slide:12",
+            "slide:17409",
+            "slide:6",
+            "slide:7"
+          ],
+          "edited_refs": 1,
+          "edited_ref_ids": [
+            "slide:11"
+          ],
+          "deleted_refs": 1,
+          "deleted_ref_ids": [
+            "slide:17410"
+          ],
+          "authored_unreferenced": 5,
+          "expanded_vector_uses": 0,
+          "defs_changed": true
+        },
+        {
+          "file": "slide_04.svg",
+          "source_file": "slide_04.svg",
+          "source_slide": 4,
+          "document_unchanged": false,
+          "source_ref_count": 7,
+          "source_ref_ids": [
+            "slide:10",
+            "slide:11",
+            "slide:12",
+            "slide:17409",
+            "slide:17410",
+            "slide:6",
+            "slide:7"
+          ],
+          "unchanged_refs": 5,
+          "unchanged_ref_ids": [
+            "slide:10",
+            "slide:11",
+            "slide:17409",
+            "slide:6",
+            "slide:7"
+          ],
+          "edited_refs": 1,
+          "edited_ref_ids": [
+            "slide:12"
+          ],
+          "deleted_refs": 1,
+          "deleted_ref_ids": [
+            "slide:17410"
+          ],
+          "authored_unreferenced": 5,
+          "expanded_vector_uses": 0,
+          "defs_changed": true
+        },
+        {
+          "file": "slide_05.svg",
+          "source_file": "slide_05.svg",
+          "source_slide": 5,
+          "document_unchanged": false,
+          "source_ref_count": 7,
+          "source_ref_ids": [
+            "slide:10",
+            "slide:11",
+            "slide:12",
+            "slide:17409",
+            "slide:17410",
+            "slide:6",
+            "slide:7"
+          ],
+          "unchanged_refs": 5,
+          "unchanged_ref_ids": [
+            "slide:10",
+            "slide:11",
+            "slide:17409",
+            "slide:6",
+            "slide:7"
+          ],
+          "edited_refs": 1,
+          "edited_ref_ids": [
+            "slide:12"
+          ],
+          "deleted_refs": 1,
+          "deleted_ref_ids": [
+            "slide:17410"
+          ],
+          "authored_unreferenced": 5,
+          "expanded_vector_uses": 0,
+          "defs_changed": true
+        },
+        {
+          "file": "slide_06.svg",
+          "source_file": "slide_06.svg",
+          "source_slide": 6,
+          "document_unchanged": false,
+          "source_ref_count": 7,
+          "source_ref_ids": [
+            "slide:10",
+            "slide:12",
+            "slide:17409",
+            "slide:17410",
+            "slide:6",
+            "slide:7",
+            "slide:9"
+          ],
+          "unchanged_refs": 5,
+          "unchanged_ref_ids": [
+            "slide:10",
+            "slide:12",
+            "slide:17409",
+            "slide:6",
+            "slide:7"
+          ],
+          "edited_refs": 1,
+          "edited_ref_ids": [
+            "slide:9"
+          ],
+          "deleted_refs": 1,
+          "deleted_ref_ids": [
+            "slide:17410"
+          ],
+          "authored_unreferenced": 3,
+          "expanded_vector_uses": 0,
+          "defs_changed": true
+        }
+      ],
+      "source_slide_passthrough": {
+        "count": 0,
+        "slides": []
+      },
+      "export_summary": {
+        "output_pages": 6,
+        "passthrough": 0,
+        "cloned_passthrough": 0,
+        "patched": 0,
+        "rebuilt": 6
+      }
+    }
+  },
+  "package": {
+    "zip_integrity": "passed",
+    "corrupt_member": null,
+    "slides": 6,
+    "notes": 6,
+    "masters": 1,
+    "layouts": 11
+  },
+  "checks": {
+    "zip_integrity": "passed",
+    "slide_count": "passed",
+    "internal_relationships": "enforced-at-build",
+    "structured_package": "not-applicable",
+    "transitions": "enforced-at-build",
+    "animations": "enforced-at-build",
+    "project_svg_contract": "enforced-at-build",
+    "compatibility_normalization": "not-applicable",
+    "authoring_roundtrip": "materialized-from-flat-authoring",
+    "quality_gate": "passed",
+    "quality_warnings": "warning",
+    "template_tokens": "passed",
+    "external_images": "passed",
+    "font_portability": "passed"
+  },
+  "quality": {
+    "status": "loaded",
+    "path": "validation\\svg_quality_report.json",
+    "schema": "ppt-master.svg-quality-report.v1",
+    "stage": "final",
+    "source_match": "passed",
+    "source_fingerprint": {
+      "algorithm": "sha256",
+      "digest": "189e207481718ba86d5b9adbb092a1eb12dde93ddb61e49597770d9acdea30b1",
+      "file_count": 8,
+      "files": [
+        {
+          "file": "authoring-svg-flat/slide_01.svg",
+          "sha256": "85888bba406185ada92eb5e21f6d01c737c44baf0b9cbfd35744b445305d5abe"
+        },
+        {
+          "file": "authoring-svg-flat/slide_02.svg",
+          "sha256": "450ef5b8e7612b3bd6290f0c0226c96b63af1df2924827280cf66d22cfc2fec9"
+        },
+        {
+          "file": "authoring-svg-flat/slide_03.svg",
+          "sha256": "cb6a6ce856b1cc65ed85ef3d4f81cf156e70b4f0c7f41a86ebdb8cde808aa4a0"
+        },
+        {
+          "file": "authoring-svg-flat/slide_04.svg",
+          "sha256": "56b67e5140819b006fddf4f8a7bb27f114e16943ade80d3dfe5fd897c1c1de6e"
+        },
+        {
+          "file": "authoring-svg-flat/slide_05.svg",
+          "sha256": "ace2c99be71dfb892d4a0d75cfd134cf9371226bcf5e741ac7cd95cbad0afe91"
+        },
+        {
+          "file": "authoring-svg-flat/slide_06.svg",
+          "sha256": "1ad0fbdc4a7606f7dffed7b215b923d6de82ad73aef44f81d319559fda566c8b"
+        },
+        {
+          "file": "authoring-svg-flat/slide_07.svg",
+          "sha256": "7a367348c1967252cfccf8bf00c8cde1296b671c5efff534100387cf7560ecd7"
+        },
+        {
+          "file": "page_plan.json",
+          "sha256": "714f8935fd9e83f45fb494f7323c6f25b8ed238d14d99344a90898240f3969a0"
+        }
+      ]
+    },
+    "summary": {
+      "total": 6,
+      "passed": 2,
+      "warnings": 4,
+      "errors": 0
+    },
+    "categories": {
+      "blocking": {
+        "count": 0,
+        "issues": []
+      },
+      "introduced": {
+        "count": 109,
+        "issues": [
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=32, y=204; text='DETAILED EXPLANATION…') exceeds owning frame <rect> on the horizontal axis: estimated text (32.0, 194.2)-(324.3, 208.0), frame (162.0, 216.0)-(862.0, 428.0), overflow horizontal 18.6%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=86, y=372; text='eSAKSHI') exceeds owning frame <rect> on the horizontal axis: estimated text (58.8, 360.1)-(113.2, 376.9), frame (162.0, 216.0)-(862.0, 428.0), overflow horizontal 14.7%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=86, y=388; text='works, papers,') exceeds owning frame <rect> on the horizontal axis: estimated text (51.6, 378.6)-(120.4, 391.9), frame (162.0, 216.0)-(862.0, 428.0), overflow horizontal 15.8%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=86, y=402; text='site photos') exceeds owning frame <rect> on the horizontal axis: estimated text (59.9, 392.6)-(112.1, 405.9), frame (162.0, 216.0)-(862.0, 428.0), overflow horizontal 14.6%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=682, y=386; text='12 AI AGENTS') exceeds owning frame <rect> on the horizontal axis: estimated text (640.3, 374.9)-(723.7, 390.6), frame (686.0, 266.0)-(842.0, 294.0), overflow horizontal 29.3%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=682, y=402; text='each answers one que…') exceeds owning frame <rect> on the horizontal axis: estimated text (617.9, 392.6)-(746.1, 405.9), frame (900.0, 222.0)-(1248.0, 280.0), overflow horizontal 81.1%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=682, y=416; text='about the work') exceeds owning frame <rect> on the horizontal axis: estimated text (645.8, 406.6)-(718.2, 419.9), frame (900.0, 222.0)-(1248.0, 280.0), overflow horizontal 73.0%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=973, y=463; text='verdicts become trai…') exceeds owning frame <rect> on the horizontal axis: estimated text (882.5, 453.6)-(1063.5, 466.9), frame (900.0, 374.0)-(1248.0, 432.0), overflow horizontal 5.0%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=49, y=474; text='live') exceeds owning frame <rect> on the horizontal axis: estimated text (49.0, 464.6)-(65.3, 477.9), frame (900.0, 374.0)-(1248.0, 432.0), overflow horizontal 244.5%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=93, y=474; text='tested on real eSAKS…') exceeds owning frame <rect> on the horizontal axis: estimated text (93.0, 464.6)-(233.1, 477.9), frame (900.0, 374.0)-(1248.0, 432.0), overflow horizontal 231.9%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=271, y=474; text='planned') exceeds owning frame <rect> on the horizontal axis: estimated text (271.0, 464.6)-(309.3, 477.9), frame (900.0, 374.0)-(1248.0, 432.0), overflow horizontal 180.7%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=676, y=506; text='Innovation and uniqu…') exceeds owning frame <rect> on the horizontal axis: estimated text (676.0, 493.2)-(954.5, 511.2), frame (660.0, 525.0)-(949.0, 587.0), overflow horizontal 1.9%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=720, y=552; text='Reads the GPS stamp') exceeds owning frame <rect> on the horizontal axis: estimated text (720.0, 540.1)-(852.3, 556.9), frame (959.0, 525.0)-(1248.0, 587.0), overflow horizontal 82.7%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=720, y=570; text='printed inside site …') exceeds owning frame <rect> on the horizontal axis: estimated text (720.0, 559.8)-(851.6, 574.2), frame (959.0, 525.0)-(1248.0, 587.0), overflow horizontal 82.7%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=1019, y=552; text='Proven before launch') exceeds owning frame <rect> on the horizontal axis: estimated text (1019.0, 540.1)-(1151.7, 556.9), frame (660.0, 597.0)-(949.0, 659.0), overflow horizontal 70.1%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=1019, y=570; text='on real eSAKSHI work…') exceeds owning frame <rect> on the horizontal axis: estimated text (1019.0, 559.8)-(1137.1, 574.2), frame (660.0, 597.0)-(949.0, 659.0), overflow horizontal 65.1%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=720, y=624; text='Evidence, not accusa…') exceeds owning frame <rect> on the horizontal axis: estimated text (720.0, 612.1)-(872.7, 628.9), frame (959.0, 597.0)-(1248.0, 659.0), overflow horizontal 82.7%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_02.svg",
+            "message": "<text> (x=720, y=642; text='every flag cites its…') exceeds owning frame <rect> on the horizontal axis: estimated text (720.0, 631.8)-(847.4, 646.2), frame (959.0, 597.0)-(1248.0, 659.0), overflow horizontal 82.7%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=48, y=211; text='Screens') exceeds owning frame <rect> on the horizontal axis: estimated text (48.0, 199.1)-(95.7, 215.9), frame (32.0, 179.0)-(37.0, 253.0), overflow horizontal 1174.1%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=48, y=229; text='web dashboards') exceeds owning frame <rect> on the horizontal axis: estimated text (48.0, 220.1)-(122.6, 232.7), frame (32.0, 179.0)-(37.0, 253.0), overflow horizontal 1712.0%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=182, y=239; text='Next.js') exceeds owning frame <rect> on the horizontal axis: estimated text (167.1, 230.5)-(196.9, 242.5), frame (32.0, 179.0)-(37.0, 253.0), overflow horizontal 3199.0%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=48, y=291; text='Engine') exceeds owning frame <rect> on the horizontal axis: estimated text (48.0, 279.1)-(89.7, 295.9), frame (32.0, 259.0)-(37.0, 333.0), overflow horizontal 1054.1%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=48, y=309; text='API + agents') exceeds owning frame <rect> on the horizontal axis: estimated text (48.0, 300.1)-(104.8, 312.7), frame (32.0, 259.0)-(37.0, 333.0), overflow horizontal 1356.7%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=48, y=371; text='Data') exceeds owning frame <rect> on the horizontal axis: estimated text (48.0, 359.1)-(77.6, 375.9), frame (32.0, 339.0)-(37.0, 413.0), overflow horizontal 811.3%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=48, y=389; text='Mumbai region') exceeds owning frame <rect> on the horizontal axis: estimated text (48.0, 380.1)-(118.0, 392.7), frame (32.0, 339.0)-(37.0, 413.0), overflow horizontal 1619.6%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=48, y=451; text='AI & vision') exceeds owning frame <rect> on the horizontal axis: estimated text (48.0, 439.1)-(115.2, 455.9), frame (32.0, 419.0)-(37.0, 493.0), overflow horizontal 1564.5%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=48, y=469; text='+ LightGBM, OCR') exceeds owning frame <rect> on the horizontal axis: estimated text (48.0, 460.1)-(128.4, 472.7), frame (32.0, 419.0)-(37.0, 493.0), overflow horizontal 1827.6%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=182, y=479; text='scikit-learn') exceeds owning frame <rect> on the horizontal axis: estimated text (158.4, 470.5)-(205.6, 482.5), frame (32.0, 419.0)-(37.0, 493.0), overflow horizontal 3371.6%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=48, y=531; text='Hosting') exceeds owning frame <rect> on the horizontal axis: estimated text (48.0, 519.1)-(95.4, 535.9), frame (32.0, 499.0)-(37.0, 573.0), overflow horizontal 1168.6%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=48, y=549; text='tests on every push') exceeds owning frame <rect> on the horizontal axis: estimated text (48.0, 540.1)-(136.2, 552.7), frame (32.0, 499.0)-(37.0, 573.0), overflow horizontal 1983.3%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=182, y=559; text='Vercel') exceeds owning frame <rect> on the horizontal axis: estimated text (168.3, 550.5)-(195.7, 562.5), frame (32.0, 499.0)-(37.0, 573.0), overflow horizontal 3174.3%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=244, y=559; text='Actions') exceeds owning frame <rect> on the horizontal axis: estimated text (227.9, 550.5)-(260.1, 562.5), frame (32.0, 499.0)-(37.0, 573.0), overflow horizontal 4461.6%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=306, y=559; text='GitHub') exceeds owning frame <rect> on the horizontal axis: estimated text (290.5, 550.5)-(321.5, 562.5), frame (32.0, 499.0)-(37.0, 573.0), overflow horizontal 5689.9%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=74, y=599; text='No hardware to buy') exceeds owning frame <rect> on the horizontal axis: estimated text (74.0, 587.5)-(193.3, 603.7), frame (32.0, 499.0)-(37.0, 573.0), overflow horizontal 3125.9%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=74, y=615; text='officers use a brows…') exceeds owning frame <rect> on the horizontal axis: estimated text (74.0, 605.6)-(320.4, 618.9), frame (32.0, 499.0)-(37.0, 573.0), overflow horizontal 5668.9%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=781, y=391; text='WORKING PROTOTYPE · …') exceeds owning frame <rect> on the horizontal axis: estimated text (781.0, 381.2)-(934.4, 395.0), frame (781.0, 429.0)-(930.0, 503.0), overflow horizontal 3.0%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=805, y=414; text='drishti-lyart.vercel…') exceeds owning frame <rect> on the horizontal axis: estimated text (805.0, 402.1)-(945.8, 418.9), frame (781.0, 429.0)-(930.0, 503.0), overflow horizontal 10.6%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=791, y=478; text='real works assessed') exceeds owning frame <rect> on the horizontal axis: estimated text (791.0, 468.6)-(883.8, 481.9), frame (940.0, 429.0)-(1089.0, 503.0), overflow horizontal 100.0%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=950, y=478; text='in the review queue …') exceeds owning frame <rect> on the horizontal axis: estimated text (950.0, 468.6)-(1082.4, 481.9), frame (1099.0, 429.0)-(1248.0, 503.0), overflow horizontal 100.0%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=781, y=525; text='EVERY AGENT ANSWERS …') exceeds owning frame <rect> on the horizontal axis: estimated text (781.0, 515.6)-(978.8, 528.9), frame (781.0, 535.0)-(838.8, 557.0), overflow horizontal 242.2%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=781, y=579; text='SIGN-IN BY ROLE') exceeds owning frame <rect> on the horizontal axis: estimated text (781.0, 569.6)-(866.1, 582.9), frame (1069.4, 535.0)-(1234.3, 557.0), overflow horizontal 174.9%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=823, y=607; text='Ministry') exceeds owning frame <rect> on the horizontal axis: estimated text (823.0, 596.0)-(871.5, 611.5), frame (1069.4, 535.0)-(1234.3, 557.0), overflow horizontal 149.4%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=823, y=622; text='all India') exceeds owning frame <rect> on the horizontal axis: estimated text (823.0, 612.6)-(860.1, 625.9), frame (1069.4, 535.0)-(1234.3, 557.0), overflow horizontal 149.4%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=982, y=607; text='District') exceeds owning frame <rect> on the horizontal axis: estimated text (982.0, 596.0)-(1023.7, 611.5), frame (1069.4, 535.0)-(1234.3, 557.0), overflow horizontal 53.0%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_03.svg",
+            "message": "<text> (x=982, y=622; text='own district') exceeds owning frame <rect> on the horizontal axis: estimated text (982.0, 612.6)-(1037.8, 625.9), frame (1069.4, 535.0)-(1234.3, 557.0), overflow horizontal 53.0%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=48, y=142; text='Analysis of the feas…') exceeds owning frame <rect> on the horizontal axis: estimated text (48.0, 129.2)-(286.9, 147.2), frame (32.0, 179.0)-(273.3, 269.0), overflow horizontal 5.6%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=32, y=169; text='EACH AGENT, MEASURED…') exceeds owning frame <rect> on the horizontal axis: estimated text (32.0, 159.7)-(296.2, 172.8), frame (32.0, 179.0)-(273.3, 269.0), overflow horizontal 9.5%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=78, y=208; text='Cost') exceeds owning frame <rect> on the horizontal axis: estimated text (78.0, 196.5)-(104.2, 212.7), frame (224.5, 195.0)-(263.3, 211.0), overflow horizontal 377.7%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=46, y=245; text='63%') exceeds owning frame <rect> on the horizontal axis: estimated text (46.0, 223.8)-(92.3, 253.8), frame (224.5, 195.0)-(263.3, 211.0), overflow horizontal 460.1%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=102, y=239; text='of 5× mark-ups caugh…') exceeds owning frame <rect> on the horizontal axis: estimated text (102.0, 229.7)-(238.6, 255.8), frame (283.3, 179.0)-(524.7, 269.0), overflow horizontal 75.1%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=329.33, y=208; text='Photo Forensics') exceeds owning frame <rect> on the horizontal axis: estimated text (329.3, 196.5)-(423.9, 212.7), frame (463.5, 195.0)-(514.7, 211.0), overflow horizontal 262.0%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=297.33, y=245; text='99.9%') exceeds owning frame <rect> on the horizontal axis: estimated text (297.3, 223.8)-(364.2, 253.8), frame (463.5, 195.0)-(514.7, 211.0), overflow horizontal 324.5%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=381.33, y=239; text='of edited photo copi…') exceeds owning frame <rect> on the horizontal axis: estimated text (381.3, 229.7)-(487.4, 255.8), frame (534.7, 179.0)-(776.0, 269.0), overflow horizontal 63.5%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=580.67, y=208; text='Geo-Location') exceeds owning frame <rect> on the horizontal axis: estimated text (580.7, 196.5)-(660.3, 212.7), frame (714.8, 195.0)-(766.0, 211.0), overflow horizontal 262.0%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=548.67, y=245; text='12 / 12') exceeds owning frame <rect> on the horizontal axis: estimated text (548.7, 223.8)-(626.0, 253.8), frame (714.8, 195.0)-(766.0, 211.0), overflow horizontal 324.5%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=660.67, y=239; text='GPS points correctwh…') exceeds owning frame <rect> on the horizontal axis: estimated text (660.7, 229.7)-(748.5, 255.8), frame (32.0, 279.0)-(273.3, 369.0), overflow horizontal 196.9%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=78, y=308; text='Document') exceeds owning frame <rect> on the horizontal axis: estimated text (78.0, 296.5)-(140.2, 312.7), frame (212.1, 295.0)-(263.3, 311.0), overflow horizontal 262.0%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=46, y=345; text='≥99%') exceeds owning frame <rect> on the horizontal axis: estimated text (46.0, 323.8)-(105.5, 353.8), frame (212.1, 295.0)-(263.3, 311.0), overflow horizontal 324.5%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=116, y=339; text='of amounts & payment…') exceeds owning frame <rect> on the horizontal axis: estimated text (116.0, 329.6)-(253.3, 355.9), frame (283.3, 279.0)-(524.7, 369.0), overflow horizontal 69.3%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=329.33, y=308; text='Eligibility') exceeds owning frame <rect> on the horizontal axis: estimated text (329.3, 296.5)-(383.7, 312.7), frame (463.5, 295.0)-(514.7, 311.0), overflow horizontal 262.0%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=297.33, y=345; text='56%') exceeds owning frame <rect> on the horizontal axis: estimated text (297.3, 323.8)-(343.6, 353.8), frame (463.5, 295.0)-(514.7, 311.0), overflow horizontal 324.5%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=353.33, y=339; text='of its flags plainly…') exceeds owning frame <rect> on the horizontal axis: estimated text (353.3, 329.6)-(486.7, 342.9), frame (534.7, 279.0)-(776.0, 369.0), overflow horizontal 75.1%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=580.67, y=308; text='Split works') exceeds owning frame <rect> on the horizontal axis: estimated text (580.7, 296.5)-(646.6, 312.7), frame (714.8, 295.0)-(766.0, 311.0), overflow horizontal 262.0%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=548.67, y=345; text='12×') exceeds owning frame <rect> on the horizontal axis: estimated text (548.7, 323.8)-(588.8, 353.8), frame (714.8, 295.0)-(766.0, 311.0), overflow horizontal 324.5%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=604.67, y=339; text='more works just unde…') exceeds owning frame <rect> on the horizontal axis: estimated text (604.7, 329.6)-(748.4, 342.9), frame (32.0, 379.0)-(273.3, 469.0), overflow horizontal 196.8%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=78, y=408; text='Delay') exceeds owning frame <rect> on the horizontal axis: estimated text (78.0, 396.5)-(111.9, 412.7), frame (224.5, 395.0)-(263.3, 411.0), overflow horizontal 377.7%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=46, y=445; text='0.71') exceeds owning frame <rect> on the horizontal axis: estimated text (46.0, 423.8)-(93.5, 453.8), frame (224.5, 395.0)-(263.3, 411.0), overflow horizontal 460.1%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=116, y=439; text='vs 0.68 for the offi…') exceeds owning frame <rect> on the horizontal axis: estimated text (116.0, 429.6)-(253.4, 442.9), frame (283.3, 379.0)-(524.7, 469.0), overflow horizontal 69.3%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=329.33, y=408; text='Satellite') exceeds owning frame <rect> on the horizontal axis: estimated text (329.3, 396.5)-(378.2, 412.7), frame (482.1, 395.0)-(514.7, 411.0), overflow horizontal 468.5%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=297.33, y=445; text='OFF') exceeds owning frame <rect> on the horizontal axis: estimated text (297.3, 423.8)-(342.1, 453.8), frame (482.1, 395.0)-(514.7, 411.0), overflow horizontal 566.7%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=353.33, y=439; text='pilot works too smal…') exceeds owning frame <rect> on the horizontal axis: estimated text (353.3, 429.6)-(482.9, 442.9), frame (534.7, 379.0)-(776.0, 469.0), overflow horizontal 75.1%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=580.67, y=408; text='Citizen') exceeds owning frame <rect> on the horizontal axis: estimated text (580.7, 396.5)-(621.0, 412.7), frame (696.2, 395.0)-(766.0, 411.0), overflow horizontal 165.5%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=548.67, y=445; text='4') exceeds owning frame <rect> on the horizontal axis: estimated text (548.7, 423.8)-(562.1, 453.8), frame (696.2, 395.0)-(766.0, 411.0), overflow horizontal 211.4%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=576.67, y=439; text='of 21,793 eSAKSHI ra…') exceeds owning frame <rect> on the horizontal axis: estimated text (576.7, 429.6)-(772.8, 442.9), frame (696.2, 395.0)-(766.0, 411.0), overflow horizontal 171.2%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=32, y=495; text='COST AGENT: INFLATED…') exceeds owning frame <rect> on the horizontal axis: estimated text (32.0, 485.6)-(239.9, 498.9), frame (42.0, 615.9)-(82.0, 638.0), overflow horizontal 394.9%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=62, y=652; text='2×') exceeds owning frame <rect> on the horizontal axis: estimated text (56.2, 642.6)-(67.8, 655.9), frame (106.0, 590.0)-(146.0, 638.0), overflow horizontal 124.6%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=126, y=652; text='3×') exceeds owning frame <rect> on the horizontal axis: estimated text (120.2, 642.6)-(131.8, 655.9), frame (170.0, 560.5)-(210.0, 638.0), overflow horizontal 124.6%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=190, y=652; text='5×') exceeds owning frame <rect> on the horizontal axis: estimated text (184.2, 642.6)-(195.8, 655.9), frame (234.0, 534.7)-(274.0, 638.0), overflow horizontal 124.6%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=370, y=527; text='Technical') exceeds owning frame <rect> on the horizontal axis: estimated text (370.0, 516.0)-(424.3, 531.5), frame (554.0, 505.0)-(776.0, 555.0), overflow horizontal 82.9%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=370, y=543; text='live on Vercel + Sup…') exceeds owning frame <rect> on the horizontal axis: estimated text (370.0, 533.6)-(490.2, 546.9), frame (554.0, 505.0)-(776.0, 555.0), overflow horizontal 82.9%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=602, y=527; text='Data') exceeds owning frame <rect> on the horizontal axis: estimated text (602.0, 516.0)-(629.6, 531.5), frame (322.0, 563.0)-(544.0, 613.0), overflow horizontal 38.6%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=602, y=543; text='2 in 3 finished work…') exceeds owning frame <rect> on the horizontal axis: estimated text (602.0, 533.6)-(745.7, 546.9), frame (322.0, 563.0)-(544.0, 613.0), overflow horizontal 90.8%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=370, y=585; text='Operational') exceeds owning frame <rect> on the horizontal axis: estimated text (370.0, 574.0)-(439.2, 589.5), frame (554.0, 563.0)-(776.0, 613.0), overflow horizontal 82.9%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=370, y=601; text='read-only, no new da…') exceeds owning frame <rect> on the horizontal axis: estimated text (370.0, 591.6)-(506.9, 604.9), frame (554.0, 563.0)-(776.0, 613.0), overflow horizontal 82.9%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=1052, y=142; text='Strategies for overc…') exceeds owning frame <rect> on the horizontal axis: estimated text (1052.0, 129.2)-(1221.8, 165.2), frame (796.0, 179.0)-(1008.0, 231.0), overflow horizontal 100.8%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=1080, y=200; text='Planted test cases; …') exceeds owning frame <rect> on the horizontal axis: estimated text (1080.0, 190.2)-(1207.1, 218.0), frame (796.0, 239.0)-(1008.0, 291.0), overflow horizontal 93.9%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=1080, y=260; text='Price alone never ma…') exceeds owning frame <rect> on the horizontal axis: estimated text (1080.0, 250.2)-(1236.8, 278.0), frame (796.0, 299.0)-(1008.0, 351.0), overflow horizontal 107.9%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=1080, y=320; text='Unclear reads = “can…') exceeds owning frame <rect> on the horizontal axis: estimated text (1080.0, 310.2)-(1229.7, 338.0), frame (796.0, 359.0)-(1008.0, 411.0), overflow horizontal 104.6%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=1080, y=380; text='Phone & bank numbers…') exceeds owning frame <rect> on the horizontal axis: estimated text (1080.0, 370.2)-(1240.7, 398.0), frame (796.0, 419.0)-(1008.0, 471.0), overflow horizontal 109.8%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=1008, y=580.5; text='Meets its') exceeds owning frame <rect> on the horizontal axis: estimated text (985.6, 571.1)-(1030.4, 584.4), frame (1096.0, 548.5)-(1234.0, 576.5), overflow horizontal 80.0%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_04.svg",
+            "message": "<text> (x=1008, y=593.5; text='target?') exceeds owning frame <rect> on the horizontal axis: estimated text (990.7, 584.1)-(1025.3, 597.4), frame (1096.0, 548.5)-(1234.0, 576.5), overflow horizontal 76.3%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=48, y=142; text='Potential impact on …') exceeds owning frame <rect> on the horizontal axis: estimated text (48.0, 129.2)-(310.1, 147.2), frame (32.0, 161.0)-(218.0, 333.0), overflow horizontal 49.5%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=125, y=261; text='Ministry') exceeds owning frame <rect> on the horizontal axis: estimated text (95.3, 247.4)-(154.7, 266.6), frame (230.0, 161.0)-(416.0, 333.0), overflow horizontal 72.4%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=125, y=285; text='national risk mapsan…') exceeds owning frame <rect> on the horizontal axis: estimated text (78.4, 274.4)-(171.6, 307.4), frame (230.0, 161.0)-(416.0, 333.0), overflow horizontal 81.5%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=323, y=261; text='State nodal') exceeds owning frame <rect> on the horizontal axis: estimated text (282.6, 247.4)-(363.4, 266.6), frame (428.0, 161.0)-(614.0, 333.0), overflow horizontal 78.2%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=323, y=285; text='district track recor…') exceeds owning frame <rect> on the horizontal axis: estimated text (267.4, 274.4)-(378.6, 307.4), frame (428.0, 161.0)-(614.0, 333.0), overflow horizontal 86.3%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=521, y=261; text='District') exceeds owning frame <rect> on the horizontal axis: estimated text (495.5, 247.4)-(546.5, 266.6), frame (626.0, 161.0)-(812.0, 333.0), overflow horizontal 70.2%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=521, y=285; text='276 works to review1…') exceeds owning frame <rect> on the horizontal axis: estimated text (466.3, 274.4)-(575.7, 307.4), frame (626.0, 161.0)-(812.0, 333.0), overflow horizontal 85.9%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=32, y=365; text='ALREADY FOUND IN REA…') exceeds owning frame <rect> on the horizontal axis: estimated text (32.0, 355.2)-(467.0, 369.0), frame (32.0, 375.0)-(267.2, 459.0), overflow horizontal 85.0%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=80, y=409; text='21,323') exceeds owning frame <rect> on the horizontal axis: estimated text (80.0, 388.6)-(151.0, 417.4), frame (32.0, 385.0)-(36.0, 449.0), overflow horizontal 2875.6%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=46, y=433; text='works waiting for sa…') exceeds owning frame <rect> on the horizontal axis: estimated text (46.0, 423.2)-(240.3, 437.0), frame (277.2, 375.0)-(512.4, 459.0), overflow horizontal 98.3%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=325.2, y=409; text='40,489') exceeds owning frame <rect> on the horizontal axis: estimated text (325.2, 388.6)-(396.2, 417.4), frame (277.2, 385.0)-(281.2, 449.0), overflow horizontal 2875.6%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=291.2, y=433; text='works still incomple…') exceeds owning frame <rect> on the horizontal axis: estimated text (291.2, 423.2)-(476.9, 437.0), frame (522.4, 375.0)-(757.6, 459.0), overflow horizontal 98.3%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=570.4, y=409; text='136') exceeds owning frame <rect> on the horizontal axis: estimated text (570.4, 388.6)-(609.1, 417.4), frame (522.4, 385.0)-(526.4, 449.0), overflow horizontal 2067.0%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=536.4, y=433; text='bulk orders kept jus…') exceeds owning frame <rect> on the horizontal axis: estimated text (536.4, 423.2)-(709.0, 437.0), frame (767.6, 375.0)-(1002.8, 459.0), overflow horizontal 98.3%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=815.6, y=409; text='282 / 285') exceeds owning frame <rect> on the horizontal axis: estimated text (815.6, 388.6)-(915.4, 417.4), frame (767.6, 385.0)-(771.6, 449.0), overflow horizontal 3594.8%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=781.6, y=433; text='“done” works whose p…') exceeds owning frame <rect> on the horizontal axis: estimated text (781.6, 423.2)-(956.6, 451.0), frame (1012.8, 375.0)-(1248.0, 459.0), overflow horizontal 98.3%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=1060.8, y=409; text='3') exceeds owning frame <rect> on the horizontal axis: estimated text (1060.8, 388.6)-(1073.7, 417.4), frame (1012.8, 385.0)-(1016.8, 449.0), overflow horizontal 1422.3%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          },
+          {
+            "file": "slide_05.svg",
+            "message": "<text> (x=1026.8, y=433; text='works photographed f…') exceeds owning frame <rect> on the horizontal axis: estimated text (1026.8, 423.2)-(1207.4, 451.0), frame (1012.8, 385.0)-(1016.8, 449.0), overflow horizontal 4764.9%; shorten or reflow the edited text, or enlarge its owning frame; frame inferred from nearest rect sibling; add data-pptx-frame to make this blocking"
+          }
+        ]
+      },
+      "inherited": {
+        "count": 0,
+        "issues": []
+      },
+      "source-import": {
+        "count": 0,
+        "summary": {
+          "warning_count": 0,
+          "by_code": {}
+        }
+      }
+    }
+  },
+  "resources": {
+    "unresolved_template_tokens": [],
+    "fonts": {
+      "stacks": [
+        "\"Times New Roman\", \"ＭＳ Ｐゴシック\", sans-serif",
+        "\"Times New Roman\", sans-serif",
+        "Arial, sans-serif",
+        "Calibri",
+        "Calibri, sans-serif"
+      ],
+      "generic_only_stacks": [],
+      "unsafe_exported_faces": []
+    },
+    "images": {
+      "data_uri": 0,
+      "local": 2,
+      "external": 0,
+      "external_references": []
+    }
+  },
+  "export_policy": {
+    "project_svg_contract": "strict",
+    "dangerous_normalization_count": 0
+  },
+  "deck_motion": {
+    "transition": {
+      "effect": null,
+      "effect_options": {},
+      "duration": 0.0,
+      "auto_advance": null,
+      "sound": null
+    },
+    "animation": {
+      "effect": "none",
+      "effect_request": null,
+      "duration": 0.4,
+      "stagger": 0.5,
+      "trigger": "after-previous"
+    },
+    "cli_overrides": {
+      "transition": false,
+      "transition_duration": false,
+      "auto_advance": false,
+      "transition_sound": false,
+      "animation": false,
+      "animation_duration": false,
+      "animation_stagger": false,
+      "animation_trigger": false
+    },
+    "narration_timings": false
+  },
+  "backup_path": null,
+  "conversion_trace_path": null
+}
