@@ -1,0 +1,42 @@
+{
+ "source": "data/trial/results/t168_split_measure.txt (seed-0 samples; every new group of each looser rule), read by eye 19 Oct 2026 (T168). yes = reads as one job filed twice or cut into pieces; grey = cannot tell from the words; no = different spots, kinds or communities",
+ "share 90%, 30 days": {
+  "G-WS/MP521/2023-2024/11984": ["yes", "stretches", "CC drain Bit 1/2/3, one place, same day"],
+  "G-WS/MP583/2024-2025/74131": ["yes", "stretches", "chhatralay room Part 1-4, same day"],
+  "G-NOREF-66704fbdf1f74a": ["yes", "stretches", "ashram shala room part-1/2, same day"],
+  "G-WS/MP093/2024-2025/48139": ["yes", "same_site_split", "drainage and gutters, same words twice"],
+  "G-WS/MP426/2023-2024/29474": ["grey", "same_site_split", "high mast at one talab, two masts possible"],
+  "G-NOREF-9f00fdbfdb9897": ["grey", "same_site_split", "internal LED lights at Nerli, 10 and 9 lakh"],
+  "G-NOREF-071b545e4ea997": ["grey", "same_site_split", "hitech bus shelter Kiranagi twice"],
+  "G-WS/MP612/2024-2025/78836": ["grey", "same_site_split", "hitech bus shelter, no place"],
+  "G-WS/MP428/2025-2026/249274": ["grey", "same_site_split", "e-rickshaw purchase twice"],
+  "G-WS/MP530/2023-2024/55858": ["no", "same_site_split", "two burial grounds (Muslim, SC)"],
+  "G-NOREF-cf5f018e0741d3": ["no", "same_site_split", "borewells at C-Block and D-Block"],
+  "G-WS/MP310/2023-2024/12765": ["no", "same_site_split", "water scheme BC colony / SC colony"],
+  "G-WS/MP18367/2025-2026/198245": ["no", "same_site_split", "high masts at ground / chowk"],
+  "G-WS/MP18193/2025-2026/252677": ["no", "same_site_split", "borewells at two nagars"],
+  "G-WS/MP310/2023-2024/12790": ["no", "same_site_split", "pipeline BC colony / OC colony"],
+  "G-NOREF-43bf45afb783cc": ["no", "same_site_split", "mini high masts at two places"],
+  "G-WS/MP772/2024-2025/61811": ["no", "same_site_split", "4-arm lights vs solar lights"]
+ },
+ "96%, 90 days": {
+  "G-WS/MP18114/2025-2026/157492": ["yes", "same_site_split", "sabhamandap, same words, 38 days"],
+  "G-NOREF-16c8fb6611bb13": ["yes", "same_site_split", "cultural hall, same words, 44 days"],
+  "G-NOREF-53b8238908a6b8": ["yes", "same_site_split", "meenavar oyivu arai twice, 65 days"],
+  "G-NOREF-e6eb6af58e4277": ["yes", "same_site_split", "Kalmeshwar sabha bhavan twice, 43 days"],
+  "G-NOREF-b013d3d1505580": ["yes", "same_site_split", "library next to one school twice, 80 days"],
+  "G-WS/MP630/2023-2024/70393": ["yes", "same_site_split", "sanskrutika bhavan twice, 63 days"],
+  "G-NOREF-a7fbff60afcb9c": ["yes", "same_site_split", "sanskrutik bhavan twice, 80 days"],
+  "G-WS/MP18051/2025-2026/218948": ["yes", "same_site_split", "ahata at samudayik bhavan twice, 74 days"],
+  "G-NOREF-1f11404508b3c9": ["yes", "same_site_split", "additional class room SSVM twice, 65 days"],
+  "G-WS/MP18087/2025-2026/244489": ["yes", "same_site_split", "choudeshwari sabha bhavan twice, 52 days"],
+  "G-WS/MP662/2024-2025/130595": ["yes", "same_site_split", "senior citizen katta twice, 62 days"],
+  "G-NOREF-32770d67c103fc": ["yes", "same_site_split", "community cultural building twice, 65 days"],
+  "G-WS/MP370/2023-2024/25743": ["grey", "same_site_split", "flood rest shed twice (two sheds possible)"],
+  "G-WS/MP18113/2025-2026/192641": ["grey", "same_site_split", "community HALLS at one gut no"],
+  "G-WS/MP021/2025-2026/225744": ["grey", "same_site_split", "borewells across wards 2 and 3"],
+  "G-WS/MP313/2024-2025/138683": ["no", "same_site_split", "shelters, the second declared Ph-II"],
+  "G-NOREF-232613497b8465": ["no", "same_site_split", "gravel road then CC road in one campus"]
+ },
+ "tally": {"numbered parts at 90-96% (stretches)": "3 yes of 3", "unnumbered at 90-96%": "1 yes, 5 grey, 8 no of 14 (not used)", "96%+, 31-90 days": "12 yes, 3 grey, 2 no of 17"}
+}

@@ -50,10 +50,13 @@ def lights(ref, k, north=0.0, east=0.0, agency=AGENCY, village="Nayagaon", rec=N
                      latitude=f"{la:.6f}", longitude=f"{lo:.6f}", **over)
 
 
-def done(p, days_ago: int, sanctioned_days_ago: int | None = None) -> dict:
-    """An earlier work, completed `days_ago`."""
-    return filed(p, status="COMPLETED", completed_date=d(m(days_ago)),
-                 sanction_date=d(m(sanctioned_days_ago or days_ago + 120)))
+def done(p, days_ago: int) -> dict:
+    """An earlier work: recommended `days_ago` + 200 days back, sanctioned 40 days later,
+    completed `days_ago`."""
+    rec, san = m(days_ago + 200), m(days_ago + 160)
+    p.update(mp_recommendation_date=d(rec), ida_received_date=d(rec), sanction_date=d(san),
+             sanction_decision="Sanction")
+    return filed(p, status="COMPLETED", completed_date=d(m(days_ago)), sanction_date=d(san))
 
 
 def piece(ref, k, i, amount, rec, length=95.0, village="Pratappur", gap=100.0, **over):

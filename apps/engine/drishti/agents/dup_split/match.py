@@ -432,8 +432,9 @@ def _cv(amounts: list[float]) -> float:
     return var ** 0.5 / m
 
 
-def groups_in_block(recs: list[Rec]) -> list[dict]:
-    """Chains of alike works of one district, type and MP, then cut by place words."""
+def groups_in_block(recs: list[Rec], gap: int = SPLIT_GAP_DAYS) -> list[dict]:
+    """Chains of alike works of one district, type and MP, recommended within `gap` days of the
+    next, then cut by place words."""
     recs = sorted((r for r in recs if r.rec is not None), key=lambda r: r.rec)
     parent = list(range(len(recs)))
 
@@ -445,7 +446,7 @@ def groups_in_block(recs: list[Rec]) -> list[dict]:
 
     for i in range(len(recs)):
         for j in range(i + 1, len(recs)):
-            if (recs[j].rec - recs[i].rec).days > SPLIT_GAP_DAYS:
+            if (recs[j].rec - recs[i].rec).days > gap:
                 break
             if text_sim(recs[i].description, recs[j].description) >= SPLIT_TEXT:
                 parent[find(i)] = find(j)
