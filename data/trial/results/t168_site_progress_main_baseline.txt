@@ -1,5 +1,5 @@
 T168 site_progress eval, set main, label baseline: 24 cases x 2 worlds
-totals: {"pass": "46/48", "honest_clear": "10/12", "honest_asked": "2/12", "ideal": "46/48", "fraud_caught": "30/30", "fraud_excused": "0/30", "broken_cleared": "0/6", "verdicts": {"pass": 46, "hard": 2}}
+totals: {"pass": "48/48", "honest_clear": "12/12", "honest_asked": "0/12", "ideal": "48/48", "fraud_caught": "30/30", "fraud_excused": "0/30", "broken_cleared": "0/6", "verdicts": {"pass": 48}}
 
   S-H1-honest-months           sparse honest  got fits   (allowed fits/edge) -
   S-H1-honest-months           dense  honest  got fits   (allowed fits/edge) -
@@ -9,10 +9,8 @@ totals: {"pass": "46/48", "honest_clear": "10/12", "honest_asked": "2/12", "idea
   S-H3-gps-jitter              dense  edge    got fits   (allowed fits/edge) -
   S-H4-monsoon-pause           sparse edge    got fits   (allowed fits/edge) -
   S-H4-monsoon-pause           dense  edge    got fits   (allowed fits/edge) -
-X S-H5-declared-upgrade        sparse edge    got ask    (allowed fits/edge) ALREADY_BUILT_AT_START
-      The first visit of 05 Apr 2026, filmed before work was to start, already shows the asset standing, but the form calls the work new. Check whether the work was done before sanction.
-X S-H5-declared-upgrade        dense  edge    got ask    (allowed fits/edge) ALREADY_BUILT_AT_START
-      The first visit of 05 Apr 2026, filmed before work was to start, already shows the asset standing, but the form calls the work new. Check whether the work was done before sanction.
+  S-H5-declared-upgrade        sparse edge    got fits   (allowed fits/edge) -
+  S-H5-declared-upgrade        dense  edge    got fits   (allowed fits/edge) -
   S-H6-complete-filmed         sparse honest  got fits   (allowed fits/edge) -
   S-H6-complete-filmed         dense  honest  got fits   (allowed fits/edge) -
   S-F1-footage-reused          sparse fraud   got ask    (allowed ask) FOOTAGE_USED_BEFORE

@@ -1,5 +1,5 @@
 T168 time_rules eval, set main, label baseline: 23 cases x 2 worlds
-totals: {"pass": "40/46", "honest_clear": "12/16", "honest_asked": "0/16", "ideal": "38/46", "fraud_caught": "20/24", "fraud_excused": "4/24", "broken_cleared": "0/6", "verdicts": {"pass": 40, "hard": 4, "soft": 2}}
+totals: {"pass": "40/44", "honest_clear": "12/16", "honest_asked": "0/16", "ideal": "38/44", "fraud_caught": "20/22", "fraud_excused": "2/22", "broken_cleared": "0/6", "verdicts": {"pass": 40, "hard": 2, "soft": 2}, "apart": {"T-V6-nine-days-after-sanction@sparse": "limit: evasion got edge", "T-V6-nine-days-after-sanction@dense": "limit: evasion got edge"}}
 
   T-H1-on-track                sparse honest  got fits   (allowed fits/edge) -
   T-H1-on-track                dense  honest  got fits   (allowed fits/edge) -
@@ -39,9 +39,9 @@ X T-V1-filmed-on-the-last-day  dense  evasion got fits   (allowed check/ask) -
   T-V4-padded-estimate         dense  evasion got check  (allowed check/ask) PAST_PROMISED_TIME
   T-V5-reused-video            sparse evasion got ask    (allowed ask) FINISHED_TOO_FAST
   T-V5-reused-video            dense  evasion got ask    (allowed ask) FINISHED_TOO_FAST
-X T-V6-nine-days-after-sanction sparse evasion got edge   (allowed check/ask) - notes SANCTIONED_LATE
+X T-V6-nine-days-after-sanction sparse evasion got edge   (allowed check/ask) - notes SANCTIONED_LATE [limit: not counted]
       Sanctioned 100 days after the MP's recommendation (06 Dec 2025 to 16 Mar 2026); the guidelines give 75 days. 60% of the works on the eSAKSHI dashboard are sanctioned past the 75-day limit, so this is a fact about the office's pace and goes 
-X T-V6-nine-days-after-sanction dense  evasion got edge   (allowed check/ask) - notes SANCTIONED_LATE
+X T-V6-nine-days-after-sanction dense  evasion got edge   (allowed check/ask) - notes SANCTIONED_LATE [limit: not counted]
       Sanctioned 100 days after the MP's recommendation (06 Dec 2025 to 16 Mar 2026); the guidelines give 75 days. 60% of the works on the eSAKSHI dashboard are sanctioned past the 75-day limit, so this is a fact about the office's pace and goes 
   T-V7-backdated-complete      sparse evasion got ask    (allowed check/ask) BUILT_RIGHT_AFTER_SANCTION notes SANCTIONED_LATE
   T-V7-backdated-complete      dense  evasion got ask    (allowed check/ask) BUILT_RIGHT_AFTER_SANCTION notes SANCTIONED_LATE

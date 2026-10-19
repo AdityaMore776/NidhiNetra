@@ -1,0 +1,445 @@
+{
+ "totals": {
+  "pass": "16/20",
+  "honest_clear": "6/8",
+  "honest_asked": "0/8",
+  "ideal": "14/20",
+  "fraud_caught": "8/10",
+  "fraud_excused": "2/10",
+  "broken_cleared": "2/2",
+  "verdicts": {
+   "pass": 16,
+   "hard": 4
+  }
+ },
+ "rows": [
+  {
+   "case": "TH-H1-hall-in-70-days-filmed",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "TH-H1-hall-in-70-days-filmed",
+   "world": "dense",
+   "truth": "honest",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "TH-H2-hall-fast-filmed",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "TH-H2-hall-fast-filmed",
+   "world": "dense",
+   "truth": "edge",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "TH-H3-extension-recorded",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge",
+    "check"
+   ],
+   "ideal": "fits",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.125,
+   "headline": "Not complete 77 days after its own promised time: 3.9 months from 01 Jul 2025, 61 days of grace, a recorded extension of 200 days, so due by 17 Jul 2026. Most works finish late; follow up with the agency on progress.",
+   "pair": ""
+  },
+  {
+   "case": "TH-H3-extension-recorded",
+   "world": "dense",
+   "truth": "edge",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge",
+    "check"
+   ],
+   "ideal": "fits",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.125,
+   "headline": "Not complete 77 days after its own promised time: 3.9 months from 01 Jul 2025, 61 days of grace, a recorded extension of 200 days, so due by 17 Jul 2026. Most works finish late; follow up with the agency on progress.",
+   "pair": ""
+  },
+  {
+   "case": "TH-H4-waiting-70-days",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "waiting",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "TH-H4-waiting-70-days",
+   "world": "dense",
+   "truth": "honest",
+   "family": "waiting",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "TH-F1-filmed-after-done",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "FINISHED_TOO_FAST"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.438,
+   "headline": "Recorded complete 5 days after the work could start (04 Jun 2026 to 09 Jun 2026). The agency's own estimate was 3.9 months, and a cement concrete road work of this size is not finished in under 30 days (the early line of its comfort window)",
+   "pair": ""
+  },
+  {
+   "case": "TH-F1-filmed-after-done",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "FINISHED_TOO_FAST"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.438,
+   "headline": "Recorded complete 5 days after the work could start (04 Jun 2026 to 09 Jun 2026). The agency's own estimate was 3.9 months, and a cement concrete road work of this size is not finished in under 30 days (the early line of its comfort window)",
+   "pair": ""
+  },
+  {
+   "case": "TH-F2-reused-then-final",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "fits",
+   "verdict": "hard",
+   "codes": [],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "TH-F2-reused-then-final",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "fits",
+   "verdict": "hard",
+   "codes": [],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "TH-F3-backdated-10-days",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "BUILT_RIGHT_AFTER_SANCTION"
+   ],
+   "notes": [
+    "SANCTIONED_LATE"
+   ],
+   "band": "HIGH",
+   "score": 0.902,
+   "headline": "Rs 7.00 lakh Drainage / nala construction work recorded complete 10 days before it was sanctioned (2026-03-16 to 2026-03-06); a construction of this size cannot be built that fast. Check whether the work was executed before sanction, or the",
+   "pair": ""
+  },
+  {
+   "case": "TH-F3-backdated-10-days",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "BUILT_RIGHT_AFTER_SANCTION"
+   ],
+   "notes": [
+    "SANCTIONED_LATE"
+   ],
+   "band": "HIGH",
+   "score": 0.902,
+   "headline": "Rs 7.00 lakh Drainage / nala construction work recorded complete 10 days before it was sanctioned (2026-03-16 to 2026-03-06); a construction of this size cannot be built that fast. Check whether the work was executed before sanction, or the",
+   "pair": ""
+  },
+  {
+   "case": "TH-F4-built-same-day",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "BUILT_IN_DAYS",
+    "BUILT_RIGHT_AFTER_SANCTION"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.982,
+   "headline": "Rs 12.00 lakh Cement concrete road work recorded complete 0 days after it was recommended (2025-12-06 to 2025-12-06); a construction of this size cannot be finished that fast. Check the completion certificate and the dates.",
+   "pair": ""
+  },
+  {
+   "case": "TH-F4-built-same-day",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "BUILT_IN_DAYS",
+    "BUILT_RIGHT_AFTER_SANCTION"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.982,
+   "headline": "Rs 12.00 lakh Cement concrete road work recorded complete 0 days after it was recommended (2025-12-06 to 2025-12-06); a construction of this size cannot be finished that fast. Check the completion certificate and the dates.",
+   "pair": ""
+  },
+  {
+   "case": "TH-F5-almost-stalled",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.125,
+   "headline": "Not complete 300 days after its own promised time: 7.9 months from 11 Dec 2024, 120 days of grace, so due by 06 Dec 2025. Most works finish late; follow up with the agency on progress.",
+   "pair": ""
+  },
+  {
+   "case": "TH-F5-almost-stalled",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.125,
+   "headline": "Not complete 300 days after its own promised time: 7.9 months from 11 Dec 2024, 120 days of grace, so due by 06 Dec 2025. Most works finish late; follow up with the agency on progress.",
+   "pair": ""
+  },
+  {
+   "case": "TH-B1-sanction-before-recommendation",
+   "world": "sparse",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "na",
+    "edge",
+    "check"
+   ],
+   "ideal": "edge",
+   "got": "fits",
+   "verdict": "hard",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "TH-B1-sanction-before-recommendation",
+   "world": "dense",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "na",
+    "edge",
+    "check"
+   ],
+   "ideal": "edge",
+   "got": "fits",
+   "verdict": "hard",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  }
+ ]
+}

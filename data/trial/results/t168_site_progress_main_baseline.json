@@ -1,15 +1,14 @@
 {
  "totals": {
-  "pass": "46/48",
-  "honest_clear": "10/12",
-  "honest_asked": "2/12",
-  "ideal": "46/48",
+  "pass": "48/48",
+  "honest_clear": "12/12",
+  "honest_asked": "0/12",
+  "ideal": "48/48",
   "fraud_caught": "30/30",
   "fraud_excused": "0/30",
   "broken_cleared": "0/6",
   "verdicts": {
-   "pass": 46,
-   "hard": 2
+   "pass": 48
   }
  },
  "rows": [
@@ -184,15 +183,13 @@
     "edge"
    ],
    "ideal": "fits",
-   "got": "ask",
-   "verdict": "hard",
-   "codes": [
-    "ALREADY_BUILT_AT_START"
-   ],
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.25,
-   "headline": "The first visit of 05 Apr 2026, filmed before work was to start, already shows the asset standing, but the form calls the work new. Check whether the work was done before sanction.",
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "6 site videos read: nothing the videos show needs checking.",
    "pair": ""
   },
   {
@@ -206,15 +203,13 @@
     "edge"
    ],
    "ideal": "fits",
-   "got": "ask",
-   "verdict": "hard",
-   "codes": [
-    "ALREADY_BUILT_AT_START"
-   ],
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.25,
-   "headline": "The first visit of 05 Apr 2026, filmed before work was to start, already shows the asset standing, but the form calls the work new. Check whether the work was done before sanction.",
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "6 site videos read: nothing the videos show needs checking.",
    "pair": ""
   },
   {

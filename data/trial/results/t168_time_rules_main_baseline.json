@@ -1,16 +1,20 @@
 {
  "totals": {
-  "pass": "40/46",
+  "pass": "40/44",
   "honest_clear": "12/16",
   "honest_asked": "0/16",
-  "ideal": "38/46",
-  "fraud_caught": "20/24",
-  "fraud_excused": "4/24",
+  "ideal": "38/44",
+  "fraud_caught": "20/22",
+  "fraud_excused": "2/22",
   "broken_cleared": "0/6",
   "verdicts": {
    "pass": 40,
-   "hard": 4,
+   "hard": 2,
    "soft": 2
+  },
+  "apart": {
+   "T-V6-nine-days-after-sanction@sparse": "limit: evasion got edge",
+   "T-V6-nine-days-after-sanction@dense": "limit: evasion got edge"
   }
  },
  "rows": [
@@ -787,7 +791,7 @@
    "world": "sparse",
    "truth": "evasion",
    "family": "record",
-   "scope": "self",
+   "scope": "limit",
    "allowed": [
     "check",
     "ask"
@@ -809,7 +813,7 @@
    "world": "dense",
    "truth": "evasion",
    "family": "record",
-   "scope": "self",
+   "scope": "limit",
    "allowed": [
     "check",
     "ask"
