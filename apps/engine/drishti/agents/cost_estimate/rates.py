@@ -52,6 +52,7 @@ MAX_SPREAD = 0.30             # interquartile range of the agencies' medians / t
 STATE_MIN_FORMS, STATE_MIN_AGENCIES = 8, 4
 STATE_ALLOWANCE = 0.10        # a state-wide rate is this much more lenient than a district's
 POOL = "labour_grade:"        # T141: every trade of one grade together (labour.py, blatant only)
+DAYS = "person_days_per:"     # T167: a trade's person-days per unit of size, by work type
 # words that name a branch of an agency, not another agency
 _BRANCH = {"the", "of", "and", "office", "offices", "division", "div", "dvn", "divn", "dept",
            "deptt", "department", "circle", "sub", "subdivision", "unit", "zone", "branch", "no",
@@ -240,17 +241,41 @@ class RateIndex:
             agency = agency_of(w)
             month = _form_month(form, (w.get("cost_form_meta") or {}).get("submitted_on"))
             st = _state(w)
-            for _i, _j, mid, r, _q, _ln in confirmed_lines(form):
-                row = (agency, str(w.get("work_id")), r, month)
-                keys = [mid]
+            work_type = (form.get("work") or {}).get("work_type")
+            sites = form.get("sites") if isinstance(form.get("sites"), list) else []
+            for i, _j, mid, r, q, _ln in confirmed_lines(form):
+                # the 5th place: the district, so the rest of the state can be told apart (T167)
+                rows = [((agency, str(w.get("work_id")), r, month, str(d)), mid)]
                 if (catalog.material(mid) or {}).get("trade"):
                     # its trade's grade, never the grade a row declares (T141)
-                    keys.append(pool_key(catalog.grade_of(mid)))
-                for k in keys:
+                    rows.append((rows[0][0], pool_key(catalog.grade_of(mid))))
+                    # T167: its person-days per unit of the work's size, for a crew far larger
+                    # than other agencies' for the same size (ghost workers)
+                    size = sites[i].get("size") if isinstance(sites[i], dict) else None
+                    m = size_measure(work_type, size)
+                    if m:
+                        rows.append(((agency, str(w.get("work_id")), q / m[0], month, str(d)),
+                                     days_key(work_type, mid)))
+                for row, k in rows:
                     out[(str(d), k)].append(row)
                     if st:
                         state[(st, k)].append(row)
         return cls(dict(out), dict(state))
+
+    def rest_of_state(self, district, state: str | None, material_id: str, agency: str,
+                      work_id: str, when: date | None) -> Vote | None:
+        """Other agencies' recent rates for a material in the state's OTHER districts (T167: a
+        district whose agencies all raise their rates together is told by the rest of the state),
+        when there are enough of them and they agree."""
+        if not state:
+            return None
+        rows = [x for x in self.by_state.get((state, material_id), [])
+                if len(x) > 4 and x[4] != str(district)]
+        v = _vote(rows, agency, work_id, when)
+        if (v.rate is None or v.forms < STATE_MIN_FORMS or v.agencies < STATE_MIN_AGENCIES
+                or (v.spread is not None and v.spread > MAX_SPREAD)):
+            return None
+        return v
 
     def district_rate(self, district, material_id: str, agency: str, work_id: str,
                       when: date | None) -> tuple[float, int, int] | None:
@@ -290,6 +315,23 @@ class RateIndex:
 def pool_key(grade: str | None) -> str:
     """The rate index's key for every trade of one grade (T141)."""
     return f"{POOL}{grade}"
+
+
+def days_key(work_type: str | None, trade: str) -> str:
+    """The rate index's key for a trade's person-days per unit of a work type's size (T167)."""
+    return f"{DAYS}{work_type}:{trade}"
+
+
+def size_measure(work_type: str | None, size) -> tuple[float, str] | None:
+    """(the work's size in one number, its unit) that its crews scale with (T167), or None: a
+    road's or path's area, a building's built-up area."""
+    if not isinstance(size, dict):
+        return None
+    if work_type in ("ROAD_CC", "ROAD_BT", "FOOTPATH"):
+        a, b = _num(size.get("length_m")), _num(size.get("width_m"))
+        return (a * b, "m2") if a and b and a > 0 and b > 0 else None
+    area = _num(size.get("built_up_area_m2"))
+    return (area, "m2 built up") if area and area > 0 else None
 
 
 # the materials every construction district needs prices for, listed even before any form

@@ -57,3 +57,6 @@ apps/vision/.venv/
 apps/vision/data/
 apps/vision/videos/
 apps/vision/runs/
+
+# Inspect AI eval logs (T167): local runs, browse with inspect view
+data/eval/cost/logs/

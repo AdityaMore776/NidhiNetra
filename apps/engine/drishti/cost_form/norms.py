@@ -27,8 +27,11 @@ is corrected there); the Cost agent asks the officer about one well above it (ag
 
 Bags per m3 come from the nominal mix proportions of IS 456:2000 (Table 9: M10 1:3:6, M15 1:2:4,
 M20 1:1.5:3) with the standard 1.54 dry-volume factor and loose cement at 1,440 kg/m3: M20 gives
-1.54 x 1/5.5 x 1440 / 50 = 8.06 bags. Design mixes (M25 and above) have no fixed proportion and
-are not checked. T096 adds the CPWD analysis-of-rates norms for more items.
+1.54 x 1/5.5 x 1440 / 50 = 8.06 bags. Design mixes (M25 and above) have no fixed proportion, but
+IS 456 clause 8.2.4.2 caps their cement at 450 kg per m3 (9 bags): T167 checks their cement
+against that ceiling (low: M20's nominal 8.06 bags), so declaring M25 no longer switches the
+check off; their sand and stone are not checked. T096 adds the CPWD analysis-of-rates norms for
+more items.
 """
 
 from __future__ import annotations
@@ -39,6 +42,8 @@ import re
 from drishti.cost_form import catalog
 
 NOMINAL_MIX = {"M10": (1, 3, 6), "M15": (1, 2, 4), "M20": (1, 1.5, 3)}
+DESIGN_MIXES = ("M25", "M30", "M35", "M40")
+DESIGN_MAX_KG = 450     # IS 456 clause 8.2.4.2: cement above this per m3 is not used
 DRY_VOLUME = 1.54
 CEMENT_KG_PER_M3 = 1440
 BAG_KG = 50
@@ -67,6 +72,17 @@ def cement_bags_per_m3(grade: str) -> float | None:
     if not mix:
         return None
     return DRY_VOLUME * mix[0] / sum(mix) * CEMENT_KG_PER_M3 / BAG_KG
+
+
+def cement_range_per_m3(grade: str) -> tuple[float, float] | None:
+    """(low, high) bags per m3: a nominal mix's own figure twice, a design mix (M25 and above)
+    from M20's nominal figure up to IS 456's 450 kg ceiling (module note)."""
+    bags = cement_bags_per_m3(grade)
+    if bags:
+        return bags, bags
+    if grade in DESIGN_MIXES:
+        return cement_bags_per_m3("M20"), DESIGN_MAX_KG / BAG_KG
+    return None
 
 
 def _num(v) -> float | None:
@@ -123,16 +139,19 @@ def needs(work_type: str | None, size: dict) -> list[dict]:
         out.append({"material": "paver_block", "low": area, "needed": area * WASTAGE,
                     "why": f"{g['length_m']:g} m x {g['width_m']:g} m = {area:,.0f} m2, plus 5%"})
     elif work_type == "ROAD_CC":
-        bags = cement_bags_per_m3(str(size.get("concrete_grade")))
+        span = cement_range_per_m3(str(size.get("concrete_grade")))
         alone = (size.get("base_type") != "pcc" and not g.get("side_drain_m")
                  and not g.get("kerb_m") and not g.get("cross_drains_nos"))
         dims = (g.get("length_m"), g.get("width_m"), g.get("cc_thickness_mm"))
-        if bags and alone and all(dims):
+        if span and alone and all(dims):
             vol = dims[0] * dims[1] * dims[2] / 1000
-            out.append({"material": "cement", "low": vol * bags, "needed": vol * bags * WASTAGE,
+            lo, hi = span
+            per = (f"{hi:.2f} bags per m3" if lo == hi else
+                   f"{lo:.2f} to {hi:.2f} bags per m3 (a design mix, IS 456's 450 kg ceiling)")
+            out.append({"material": "cement", "low": vol * lo, "needed": vol * hi * WASTAGE,
                         "why": f"{vol:,.1f} m3 of {size['concrete_grade']} concrete "
                                f"({dims[0]:g} m x {dims[1]:g} m x {dims[2]:g} mm), "
-                               f"{bags:.2f} bags per m3, plus 5%"})
+                               f"{per}, plus 5%"})
             # sand from the same mix (T136: twice the sand went unasked); only under bases that
             # take none (GSB, brick soling and a sand bed do)
             sand = sand_m3_per_m3(str(size.get("concrete_grade")))
