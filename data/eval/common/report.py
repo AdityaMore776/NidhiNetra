@@ -18,8 +18,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-import world as W  # noqa: E402,I001  (first: it sets the paths levels.py imports from)
-import levels as L  # noqa: E402
+import world as W  # noqa: E402,I001  (first: it sets the paths grade.py imports from)
+import grade as L  # noqa: E402
 
 OUT = W.ROOT / "data" / "trial" / "results"
 SETS = ("main", "holdout", "holdout2")

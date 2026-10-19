@@ -5,7 +5,7 @@ agencies, and labelled cases run through the four agents exactly as the website'
 them: `orchestrator.assess_work` with the district's indexes rebuilt with the case's own earlier
 works and the case in it. Nothing here is a real agency, person or work.
 
-A case carries its truth and the levels its label allows (levels.py):
+A case carries its truth and the levels its label allows (grade.py):
 
   truth    honest   an ordinary honest work
            edge     honest, but unusual: it looks like a problem on some measure

@@ -24,7 +24,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "common"))
 import world as W  # noqa: E402,I001  (first: it sets the paths)
-import levels as L  # noqa: E402
+import grade as L  # noqa: E402
 import report as R  # noqa: E402
 from inspect_ai import Task, task  # noqa: E402
 from inspect_ai.dataset import MemoryDataset, Sample  # noqa: E402
