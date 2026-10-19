@@ -1,0 +1,430 @@
+{
+ "totals": {
+  "pass": "20/20",
+  "honest_clear": "6/6",
+  "honest_asked": "0/6",
+  "ideal": "20/20",
+  "fraud_caught": "12/12",
+  "fraud_excused": "0/12",
+  "broken_cleared": "0/2",
+  "verdicts": {
+   "pass": 20
+  }
+ },
+ "rows": [
+  {
+   "case": "SH-H1-two-dark-not-in-a-row",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "room for error",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "6 site videos read: nothing the videos show needs checking.",
+   "pair": ""
+  },
+  {
+   "case": "SH-H1-two-dark-not-in-a-row",
+   "world": "dense",
+   "truth": "edge",
+   "family": "room for error",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "6 site videos read: nothing the videos show needs checking.",
+   "pair": ""
+  },
+  {
+   "case": "SH-H2-viewpoint-blocked",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "room for error",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "6 site videos read: nothing the videos show needs checking.",
+   "pair": ""
+  },
+  {
+   "case": "SH-H2-viewpoint-blocked",
+   "world": "dense",
+   "truth": "edge",
+   "family": "room for error",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "6 site videos read: nothing the videos show needs checking.",
+   "pair": ""
+  },
+  {
+   "case": "SH-H3-retake-after-unsealed",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "room for error",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "7 site videos read: nothing the videos show needs checking.",
+   "pair": ""
+  },
+  {
+   "case": "SH-H3-retake-after-unsealed",
+   "world": "dense",
+   "truth": "edge",
+   "family": "room for error",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "7 site videos read: nothing the videos show needs checking.",
+   "pair": ""
+  },
+  {
+   "case": "SH-F1-own-video-again",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "reuse",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "FOOTAGE_USED_BEFORE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The monthly visit of 02 Sep 2026 carries 120 frames already seen on an earlier visit of this same work: the same footage, not new filming. A site video must be filmed fresh at this site; needs checking.",
+   "pair": ""
+  },
+  {
+   "case": "SH-F1-own-video-again",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "reuse",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "FOOTAGE_USED_BEFORE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The monthly visit of 02 Sep 2026 carries 120 frames already seen on an earlier visit of this same work: the same footage, not new filming. A site video must be filmed fresh at this site; needs checking.",
+   "pair": ""
+  },
+  {
+   "case": "SH-F2-four-of-five-unusable",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "room for error",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "SITE_VIDEOS_UNUSABLE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "4 of the last 5 site videos cannot show this site's progress (04 Jun 2026: too dark, blurred or short; 24 Jun 2026: too dark, blurred or short; 03 Aug 2026: too dark, blurred or short; 23 Aug 2026: too dark, blurred or short). A poor video ",
+   "pair": ""
+  },
+  {
+   "case": "SH-F2-four-of-five-unusable",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "room for error",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "SITE_VIDEOS_UNUSABLE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "4 of the last 5 site videos cannot show this site's progress (04 Jun 2026: too dark, blurred or short; 24 Jun 2026: too dark, blurred or short; 03 Aug 2026: too dark, blurred or short; 23 Aug 2026: too dark, blurred or short). A poor video ",
+   "pair": ""
+  },
+  {
+   "case": "SH-F3-dark-between-not-shown",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "claim",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "CLAIM_NOT_SHOWN"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The agency's claim is not shown at the same viewpoints on two visits in a row (04 Jul 2026: roof slab cast; 02 Sep 2026: roof slab cast). Check at the site.",
+   "pair": ""
+  },
+  {
+   "case": "SH-F3-dark-between-not-shown",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "claim",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "CLAIM_NOT_SHOWN"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The agency's claim is not shown at the same viewpoints on two visits in a row (04 Jul 2026: roof slab cast; 02 Sep 2026: roof slab cast). Check at the site.",
+   "pair": ""
+  },
+  {
+   "case": "SH-F4-final-at-another-work",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "reuse",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "SAME_PLACE_AS_ANOTHER_WORK"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The viewpoints of the final visit of 12 Sep 2026 show the same place as the site videos of work WF-TIME-2 (500 matching points in one geometry), and this work's form does not say it continues that work. Check that one site is not shown for ",
+   "pair": ""
+  },
+  {
+   "case": "SH-F4-final-at-another-work",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "reuse",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "SAME_PLACE_AS_ANOTHER_WORK"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The viewpoints of the final visit of 12 Sep 2026 show the same place as the site videos of work WF-TIME-2 (500 matching points in one geometry), and this work's form does not say it continues that work. Check that one site is not shown for ",
+   "pair": ""
+  },
+  {
+   "case": "SH-F5-no-first-visit-late-start",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "built before",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "NO_FIRST_VISIT"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "Recorded complete, but no first visit was filmed before work started and only 1 video shows the work going on before the end (first: the monthly visit of 03 Aug 2026), so nothing filmed shows the asset is new. Check this: that it was not st",
+   "pair": ""
+  },
+  {
+   "case": "SH-F5-no-first-visit-late-start",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "built before",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "NO_FIRST_VISIT"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "Recorded complete, but no first visit was filmed before work started and only 1 video shows the work going on before the end (first: the monthly visit of 03 Aug 2026), so nothing filmed shows the asset is new. Check this: that it was not st",
+   "pair": ""
+  },
+  {
+   "case": "SH-F6-mock-gps-every-month",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "elsewhere",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "NOT_FILMED_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The monthly visit of 05 May 2026: the phone reported a mock location, and its views do not match this site's earlier views. Needs checking where it was filmed.",
+   "pair": ""
+  },
+  {
+   "case": "SH-F6-mock-gps-every-month",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "elsewhere",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "NOT_FILMED_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The monthly visit of 05 May 2026: the phone reported a mock location, and its views do not match this site's earlier views. Needs checking where it was filmed.",
+   "pair": ""
+  },
+  {
+   "case": "SH-B1-readings-all-empty",
+   "world": "sparse",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "na"
+   ],
+   "ideal": "na",
+   "got": "na",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "2 site videos filmed, none read yet. This is not a clean chit.",
+   "pair": ""
+  },
+  {
+   "case": "SH-B1-readings-all-empty",
+   "world": "dense",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "na"
+   ],
+   "ideal": "na",
+   "got": "na",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "2 site videos filmed, none read yet. This is not a clean chit.",
+   "pair": ""
+  }
+ ]
+}

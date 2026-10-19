@@ -75,7 +75,8 @@ def cases():
     out.append(case(
         "SH-F5-no-first-visit-late-start", "evasion", "check", "check/ask", "built before",
         "No first visit; the first video is a monthly one, then the final one: complete.",
-        "Nothing filmed before work started shows the asset is new.",
+        "Nothing filmed before work started shows the asset is new. SEEN: NO_FIRST_VISIT was "
+        "added after this case's first run.",
         lambda: built("ZF5", [v(1, "monthly", 60, claim="plastering"),
                               v(2, "final", 25, claim="complete", complete_shown=True)],
                       status="COMPLETED", done_days_ago=25)))
