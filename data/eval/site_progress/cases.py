@@ -88,7 +88,7 @@ def cases() -> list[Case]:
         "An upgrade of an existing hall: the first visit shows the old hall, as the form says.",
         "An existing asset the form declares.",
         lambda: built("SH5", [v(1, "baseline", 180, asset_at_start=True)] +
-                      honest_months()[1:], work_nature="Upgrade")))
+                      honest_months()[1:], work_nature="Repair / renovation")))
     out.append(case(
         "S-H6-complete-filmed", "honest", "fits", "fits/edge", "honest",
         "Complete, with a final video showing every part finished.",

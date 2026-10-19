@@ -134,9 +134,9 @@ def cases() -> list[Case]:
         "D-E1-declared-extension", "edge", "edge", "fits/edge", "declared",
         "A road declared as the extension of a finished road, starting at its end.",
         "A real continuation beside it: a note naming the earlier work.",
-        lambda: filed(road("DE1", 7, north=300, work_nature="Extension",
+        lambda: filed(road("DE1", 7, north=300, work_nature="Extension / additional component",
                            prior_work_id="DE1-OLD", known_nearby_work_ids="DE1-OLD",
-                           nearby_work_relationship="Continuation / extension")),
+                           nearby_work_relationship="Same asset, separate phase")),
         lambda: [done(road("DE1-OLD", 7, agency=OTHER[4]), 500)]))
     out.append(case(
         "D-E2-rebuild-after-4y", "edge", "edge", "fits/edge", "declared",
@@ -209,9 +209,9 @@ def cases() -> list[Case]:
         "D-V3-rebuild-called-upgrade", "evasion", "ask", "ask", "declared",
         "A hall finished 16 months ago, filed again as an 'upgrade' of itself, same size.",
         "T135: a continuation on the old work's own ground with its size is a rebuild.",
-        lambda: filed(hall("DV3", 16, work_nature="Upgrade", prior_work_id="DV3-OLD",
+        lambda: filed(hall("DV3", 16, work_nature="Repair / renovation", prior_work_id="DV3-OLD",
                            known_nearby_work_ids="DV3-OLD",
-                           nearby_work_relationship="Continuation / extension")),
+                           nearby_work_relationship="Same asset, separate phase")),
         lambda: [done(hall("DV3-OLD", 16, agency=OTHER[2]), 485)]))
     out.append(case(
         "D-V4-split-95pct", "evasion", "check", "check/ask", "split",
@@ -237,17 +237,17 @@ def cases() -> list[Case]:
         "D-V7-names-fake-work", "evasion", "ask", "ask", "same site",
         "Pinned on an old road, the form names another work ID that is not on record.",
         "Naming a work that does not exist must not excuse the one at the pin.",
-        lambda: filed(road("DV7", 20, north=10, work_nature="Extension",
+        lambda: filed(road("DV7", 20, north=10, work_nature="Extension / additional component",
                            prior_work_id="WS/FAKE/0001", known_nearby_work_ids="WS/FAKE/0001",
-                           nearby_work_relationship="Continuation / extension")),
+                           nearby_work_relationship="Same asset, separate phase")),
         lambda: [done(road("DV7-OLD", 20, agency=OTHER[4]), 330)]))
     out.append(case(
         "D-V8-continues-unfinished", "evasion", "ask", "ask", "declared",
         "Declared an extension of a road still being built, but lying on its ground.",
         "T135: named, on the earlier work's own ground, not finished: still asked.",
-        lambda: filed(road("DV8", 21, north=5, work_nature="Extension", prior_work_id="DV8-OLD",
+        lambda: filed(road("DV8", 21, north=5, work_nature="Extension / additional component", prior_work_id="DV8-OLD",
                            known_nearby_work_ids="DV8-OLD",
-                           nearby_work_relationship="Continuation / extension")),
+                           nearby_work_relationship="Same asset, separate phase")),
         lambda: [filed(road("DV8-OLD", 21, agency=OTHER[0], rec=m(200), sanction=m(160)),
                        status="SANCTIONED")]))
     out.append(case(

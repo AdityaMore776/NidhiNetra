@@ -15,8 +15,8 @@ totals: {"pass": "52/52", "honest_clear": "18/18", "honest_asked": "0/18", "idea
   D-H6-crossing-road           dense  honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK
   D-H7-two-works-70pct         sparse honest  got fits   (allowed fits) -
   D-H7-two-works-70pct         dense  honest  got fits   (allowed fits) -
-  D-E1-declared-extension      sparse edge    got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK
-  D-E1-declared-extension      dense  edge    got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK
+  D-E1-declared-extension      sparse edge    got edge   (allowed fits/edge) - notes CONTINUES_SANCTIONED_WORK
+  D-E1-declared-extension      dense  edge    got edge   (allowed fits/edge) - notes CONTINUES_SANCTIONED_WORK
   D-E2-rebuild-after-4y        sparse edge    got edge   (allowed fits/edge) - notes CONTINUES_SANCTIONED_WORK
   D-E2-rebuild-after-4y        dense  edge    got edge   (allowed fits/edge) - notes CONTINUES_SANCTIONED_WORK
   D-F1-road-on-old-road        sparse fraud   got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
@@ -33,18 +33,18 @@ totals: {"pass": "52/52", "honest_clear": "18/18", "honest_asked": "0/18", "idea
   D-V1-pin-70m-filmed-old      dense  evasion got ask    (allowed ask) SANCTIONED_WORK_WHERE_FILMED
   D-V2-pin-70m-before-sanction sparse evasion got check  (allowed check/ask) SAME_BUILDING_NEAR
   D-V2-pin-70m-before-sanction dense  evasion got check  (allowed check/ask) SAME_BUILDING_NEAR
-  D-V3-rebuild-called-upgrade  sparse evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
-  D-V3-rebuild-called-upgrade  dense  evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+  D-V3-rebuild-called-upgrade  sparse evasion got ask    (allowed ask) REBUILT_SOON_AFTER_COMPLETION
+  D-V3-rebuild-called-upgrade  dense  evasion got ask    (allowed ask) REBUILT_SOON_AFTER_COMPLETION
   D-V4-split-95pct             sparse evasion got check  (allowed check/ask) SPLIT_NEAR_LIMIT
   D-V4-split-95pct             dense  evasion got check  (allowed check/ask) SPLIT_NEAR_LIMIT
   D-V5-split-35-days           sparse evasion got check  (allowed check/ask) SPLIT_NEAR_LIMIT
   D-V5-split-35-days           dense  evasion got check  (allowed check/ask) SPLIT_NEAR_LIMIT
   D-V6-road-longer             sparse evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
   D-V6-road-longer             dense  evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
-  D-V7-names-fake-work         sparse evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
-  D-V7-names-fake-work         dense  evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
-  D-V8-continues-unfinished    sparse evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
-  D-V8-continues-unfinished    dense  evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+  D-V7-names-fake-work         sparse evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE notes CONTINUES_SANCTIONED_WORK
+  D-V7-names-fake-work         dense  evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE notes CONTINUES_SANCTIONED_WORK
+  D-V8-continues-unfinished    sparse evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE notes CONTINUES_SANCTIONED_WORK
+  D-V8-continues-unfinished    dense  evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE notes CONTINUES_SANCTIONED_WORK
   D-V9-pin-swapped             sparse evasion got na     (allowed na/check/ask) - notes LOOKS_LIKE_SANCTIONED_WORK
   D-V9-pin-swapped             dense  evasion got na     (allowed na/check/ask) - notes LOOKS_LIKE_SANCTIONED_WORK
   D-B1-no-district             sparse broken  got na     (allowed na) -

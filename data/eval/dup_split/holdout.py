@@ -29,9 +29,9 @@ def cases():
         "DH-H2-phase-two-60-days", "edge", "edge", "fits/edge/check", "split look-alike",
         "A road's declared phase II, filed 60 days after phase I, both at Rs 5 lakh.",
         "Declared and numbered; 'check this' is tolerated, never a question.",
-        lambda: filed(piece("XH2-2", 31, 1, 500_000, m(40), work_nature="Extension",
+        lambda: filed(piece("XH2-2", 31, 1, 500_000, m(40), work_nature="Extension / additional component",
                             prior_work_id="XH2-1", known_nearby_work_ids="XH2-1",
-                            nearby_work_relationship="Continuation / extension")),
+                            nearby_work_relationship="Same asset, separate phase")),
         lambda: [filed(piece("XH2-1", 31, 0, 500_000, m(100)), status="SANCTIONED")]))
     out.append(case(
         "DH-H3-borewells-two-blocks", "honest", "fits", "fits/edge", "split look-alike",
