@@ -1,0 +1,192 @@
+T167 Cost agent sweep: a random honest population and a dose curve per scheme
+
+== Honest population (200 random honest filings per world, the world's FULL honest spread)
+  tight na 0  fits 177  edge 19  check 4  ask 0   checked 2.0%, asked 0.0%
+        RATE_ABOVE_ALL_OTHERS: 4
+  wide  na 0  fits 132  edge 63  check 5  ask 0   checked 2.5%, asked 0.0%
+        ESTIMATE_ABOVE_FAIR_RANGE: 3
+        RATE_ABOVE_ALL_OTHERS: 2
+
+== uniform padding (dose = % on every material; 10 honest bases per dose and world)
+  tight
+       0  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: -5% to +4%
+       4  F 7 E 3 C 0 A 0   ..........  whole estimate vs the market: -2% to +8%
+       6  F 3 E 7 C 0 A 0   ..........  whole estimate vs the market: +0% to +10%
+       8  F 2 E 5 C 3 A 0   .......ccc  whole estimate vs the market: +2% to +12%
+      10  F 1 E 3 C 6 A 0   ....cccccc  whole estimate vs the market: +4% to +14%
+      11  F 1 E 2 C 7 A 0   ...ccccccc  whole estimate vs the market: +5% to +15%
+      12  F 0 E 3 C 6 A 1   ...ccccccA  whole estimate vs the market: +6% to +16%
+      14  F 0 E 1 C 6 A 3   .ccccccAAA  whole estimate vs the market: +8% to +18%
+      16  F 0 E 1 C 2 A 7   .ccAAAAAAA  whole estimate vs the market: +10% to +20%
+      18  F 0 E 0 C 2 A 8   ccAAAAAAAA  whole estimate vs the market: +12% to +22%
+      20  F 0 E 0 C 1 A 9   cAAAAAAAAA  whole estimate vs the market: +13% to +24%
+      25  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +18% to +29%
+      30  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +23% to +35%
+  wide
+       0  F 9 E 1 C 0 A 0   ..........  whole estimate vs the market: -8% to +5%
+       4  F 5 E 5 C 0 A 0   ..........  whole estimate vs the market: -4% to +10%
+       6  F 4 E 5 C 1 A 0   .........c  whole estimate vs the market: -2% to +12%
+       8  F 3 E 2 C 5 A 0   .....ccccc  whole estimate vs the market: -0% to +14%
+      10  F 1 E 4 C 4 A 1   .....ccccA  whole estimate vs the market: +2% to +16%
+      11  F 1 E 3 C 5 A 1   ....cccccA  whole estimate vs the market: +3% to +17%
+      12  F 1 E 3 C 4 A 2   ....ccccAA  whole estimate vs the market: +3% to +18%
+      14  F 0 E 2 C 3 A 5   ..cccAAAAA  whole estimate vs the market: +5% to +20%
+      16  F 0 E 1 C 3 A 6   .cccAAAAAA  whole estimate vs the market: +7% to +22%
+      18  F 0 E 1 C 2 A 7   .ccAAAAAAA  whole estimate vs the market: +9% to +24%
+      20  F 0 E 0 C 2 A 8   ccAAAAAAAA  whole estimate vs the market: +11% to +27%
+      25  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +15% to +32%
+      30  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +20% to +37%
+
+== one line (cement) (dose = % on the cement line; 10 honest bases per dose and world)
+  tight
+       0  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: -5% to +4%
+      10  F 3 E 1 C 6 A 0   ....cccccc  whole estimate vs the market: -1% to +8%
+      20  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: +3% to +13%
+      30  F 0 E 0 C 5 A 5   cccccAAAAA  whole estimate vs the market: +7% to +18%
+      40  F 0 E 0 C 1 A 9   cAAAAAAAAA  whole estimate vs the market: +11% to +23%
+      60  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +20% to +33%
+      80  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +28% to +43%
+     100  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +37% to +53%
+  wide
+       0  F 9 E 1 C 0 A 0   ..........  whole estimate vs the market: -8% to +5%
+      10  F 5 E 3 C 2 A 0   ........cc  whole estimate vs the market: -4% to +10%
+      20  F 1 E 0 C 8 A 1   .ccccccccA  whole estimate vs the market: +1% to +15%
+      30  F 0 E 0 C 5 A 5   cccccAAAAA  whole estimate vs the market: +5% to +20%
+      40  F 0 E 0 C 2 A 8   ccAAAAAAAA  whole estimate vs the market: +9% to +25%
+      60  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +17% to +35%
+      80  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +25% to +45%
+     100  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +34% to +55%
+
+== cement quantity (dose = % more cement, justified; 10 honest bases per dose and world)
+  tight
+       0  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: -5% to +4%
+       5  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: -6% to +4%
+      10  F 8 E 0 C 2 A 0   ........cc  whole estimate vs the market: -6% to +4%
+      15  F 2 E 0 C 8 A 0   ..cccccccc  whole estimate vs the market: -5% to +5%
+      20  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -3% to +7%
+      25  F 0 E 0 C 8 A 2   ccccccccAA  whole estimate vs the market: -1% to +9%
+      30  F 0 E 0 C 2 A 8   ccAAAAAAAA  whole estimate vs the market: +1% to +12%
+      40  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +5% to +16%
+      60  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +13% to +26%
+  wide
+       0  F 9 E 1 C 0 A 0   ..........  whole estimate vs the market: -8% to +5%
+       5  F 9 E 1 C 0 A 0   ..........  whole estimate vs the market: -8% to +6%
+      10  F 7 E 1 C 2 A 0   ........cc  whole estimate vs the market: -8% to +6%
+      15  F 1 E 1 C 8 A 0   ..cccccccc  whole estimate vs the market: -7% to +6%
+      20  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -5% to +9%
+      25  F 0 E 0 C 8 A 2   ccccccccAA  whole estimate vs the market: -3% to +11%
+      30  F 0 E 0 C 2 A 8   ccAAAAAAAA  whole estimate vs the market: -1% to +13%
+      40  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +3% to +18%
+      60  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +11% to +27%
+
+== sand + stone quantity (dose = % more sand and stone, justified; 10 honest bases per dose and world)
+  tight
+       0  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: -5% to +4%
+      10  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: -5% to +4%
+      15  F 6 E 0 C 4 A 0   ......cccc  whole estimate vs the market: -5% to +3%
+      20  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -5% to +3%
+      25  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -4% to +3%
+      30  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -3% to +5%
+      40  F 0 E 0 C 8 A 2   ccccccccAA  whole estimate vs the market: +0% to +8%
+  wide
+       0  F 9 E 1 C 0 A 0   ..........  whole estimate vs the market: -8% to +5%
+      10  F 9 E 1 C 0 A 0   ..........  whole estimate vs the market: -7% to +5%
+      15  F 7 E 1 C 2 A 0   ........cc  whole estimate vs the market: -7% to +5%
+      20  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -7% to +5%
+      25  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -6% to +5%
+      30  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -5% to +7%
+      40  F 0 E 0 C 8 A 2   ccccccccAA  whole estimate vs the market: -2% to +10%
+
+== wages (every trade) (dose = % above the district's wage; 10 honest bases per dose and world)
+  tight
+       0  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: -5% to +4%
+      20  F 0 E10 C 0 A 0   ..........  whole estimate vs the market: -5% to +4%
+      40  F 0 E10 C 0 A 0   ..........  whole estimate vs the market: -5% to +4%
+      50  F 0 E 4 C 6 A 0   ....cccccc  whole estimate vs the market: -5% to +4%
+      60  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -5% to +4%
+      80  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -5% to +4%
+     100  F 0 E 0 C 4 A 6   ccccAAAAAA  whole estimate vs the market: -5% to +27%
+     140  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +27% to +36%
+  wide
+       0  F 9 E 1 C 0 A 0   ..........  whole estimate vs the market: -8% to +5%
+      20  F 0 E10 C 0 A 0   ..........  whole estimate vs the market: -8% to +5%
+      40  F 0 E10 C 0 A 0   ..........  whole estimate vs the market: -8% to +5%
+      50  F 0 E 4 C 6 A 0   ....cccccc  whole estimate vs the market: -8% to +5%
+      60  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -8% to +5%
+      80  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -8% to +5%
+     100  F 0 E 0 C 4 A 6   ccccAAAAAA  whole estimate vs the market: -8% to +29%
+     140  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +25% to +39%
+
+== ghost labourers (dose = % more labourers, same days; 10 honest bases per dose and world)
+  tight
+       0  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: -5% to +4%
+      25  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: -5% to +4%
+      50  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: -5% to +4%
+     100  F 6 E 0 C 4 A 0   ......cccc  whole estimate vs the market: -5% to +4%
+     150  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -5% to +4%
+     200  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -5% to +4%
+  wide
+       0  F 9 E 1 C 0 A 0   ..........  whole estimate vs the market: -8% to +5%
+      25  F 9 E 1 C 0 A 0   ..........  whole estimate vs the market: -8% to +5%
+      50  F 9 E 1 C 0 A 0   ..........  whole estimate vs the market: -8% to +5%
+     100  F 2 E 0 C 8 A 0   ..cccccccc  whole estimate vs the market: -8% to +5%
+     150  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -8% to +5%
+     200  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -8% to +5%
+
+== 'other' charges, tax in rates (dose = % of the lines; 10 honest bases per dose and world)
+  tight
+       0  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: -5% to +4%
+       3  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: -5% to +4%
+       5  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: -5% to +4%
+       8  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -2% to +8%
+      10  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: +1% to +10%
+      12  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: +3% to +13%
+      15  F 0 E 0 C 7 A 3   cccccccAAA  whole estimate vs the market: +7% to +17%
+      20  F 0 E 0 C 1 A 9   cAAAAAAAAA  whole estimate vs the market: +13% to +24%
+  wide
+       0  F 9 E 1 C 0 A 0   ..........  whole estimate vs the market: -8% to +5%
+       3  F 9 E 1 C 0 A 0   ..........  whole estimate vs the market: -8% to +5%
+       5  F 9 E 1 C 0 A 0   ..........  whole estimate vs the market: -8% to +5%
+       8  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -4% to +10%
+      10  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: -1% to +12%
+      12  F 0 E 0 C 9 A 1   cccccccccA  whole estimate vs the market: +1% to +15%
+      15  F 0 E 0 C 5 A 5   cccccAAAAA  whole estimate vs the market: +5% to +19%
+      20  F 0 E 0 C 2 A 8   ccAAAAAAAA  whole estimate vs the market: +11% to +26%
+
+== solar lights, MP agrees (dose = % of the district's 98th percentile; 10 honest bases per dose and world)
+  tight
+      90  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: +0% to +0%
+     100  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: +0% to +0%
+     115  F 0 E10 C 0 A 0   ..........  whole estimate vs the market: +0% to +0%
+     125  F 0 E10 C 0 A 0   ..........  whole estimate vs the market: +0% to +0%
+     130  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: +0% to +0%
+     150  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: +0% to +0%
+     200  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: +0% to +0%
+  wide
+      90  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: +0% to +0%
+     100  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: +0% to +0%
+     115  F 0 E10 C 0 A 0   ..........  whole estimate vs the market: +0% to +0%
+     125  F 0 E10 C 0 A 0   ..........  whole estimate vs the market: +0% to +0%
+     130  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: +0% to +0%
+     150  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: +0% to +0%
+     200  F 0 E 0 C10 A 0   cccccccccc  whole estimate vs the market: +0% to +0%
+
+== solar lights, MP 20% lower (dose = % of the district's 98th percentile; 10 honest bases per dose and world)
+  tight
+      90  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: +0% to +0%
+     100  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: +0% to +0%
+     115  F 0 E10 C 0 A 0   ..........  whole estimate vs the market: +0% to +0%
+     125  F 0 E10 C 0 A 0   ..........  whole estimate vs the market: +0% to +0%
+     130  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +0% to +0%
+     150  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +0% to +0%
+     200  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +0% to +0%
+  wide
+      90  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: +0% to +0%
+     100  F10 E 0 C 0 A 0   ..........  whole estimate vs the market: +0% to +0%
+     115  F 0 E10 C 0 A 0   ..........  whole estimate vs the market: +0% to +0%
+     125  F 0 E10 C 0 A 0   ..........  whole estimate vs the market: +0% to +0%
+     130  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +0% to +0%
+     150  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +0% to +0%
+     200  F 0 E 0 C 0 A10   AAAAAAAAAA  whole estimate vs the market: +0% to +0%
+
+Levels: F fits, E edge, C check, A ask (counts of the seeds). Bar: . fits/edge, c check, A ask. The dose is on the agency's own honest prices, which already sit a few % above or below the market; the agent sees only the market gap.

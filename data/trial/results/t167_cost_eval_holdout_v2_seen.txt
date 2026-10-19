@@ -1,0 +1,43 @@
+T167 Cost agent eval (holdout_v2_seen)
+36 runs (18 cases x 2 worlds); pass 36, soft 0, hard 0
+frauds: 20 runs; flagged (check or ask) 20, asked 2, EXCUSED (fits/edge) 0, not judged 0
+honest + edge: 16 runs; clear (fits/edge) 14, check 2, ASKED 0, not judged 0
+ideal level exact: 34 of 36
+look-alike pairs: fraud ranked above its honest twin in 0 of 0; fraud at least 'check' in 0 of 0
+
+  ok  ho_fraud_two_lines_35        tight fraud  got check (ideal check, allowed check/ask) ESTIMATE_ABOVE_FAIR_RANGE  gap +13.5%
+  ok  ho_fraud_two_lines_35        wide  fraud  got check (ideal check, allowed check/ask) ESTIMATE_ABOVE_FAIR_RANGE  gap +13.6%
+  ok  ho_fraud_hall_13             tight fraud  got check (ideal check, allowed check/ask) ESTIMATE_ABOVE_FAIR_RANGE  gap +13.0%
+  ok  ho_fraud_hall_13             wide  fraud  got check (ideal check, allowed check/ask) ESTIMATE_ABOVE_FAIR_RANGE  gap +13.3%
+  ok  ho_fraud_hall_22             tight fraud  got ask   (ideal ask, allowed check/ask) ESTIMATE_ABOVE_FAIR_PRICE  gap +22.0%
+  ok  ho_fraud_hall_22             wide  fraud  got ask   (ideal ask, allowed check/ask) ESTIMATE_ABOVE_FAIR_PRICE  gap +22.3%
+  ok  ho_fraud_qty_two_materials   tight fraud  got check (ideal check, allowed check/ask) MATERIAL_QUANTITY_ABOVE_PEERS,MATERIAL_QUANTITY_ABOVE_PEERS  gap +0.0%
+  ok  ho_fraud_qty_two_materials   wide  fraud  got check (ideal check, allowed check/ask) MATERIAL_QUANTITY_ABOVE_PEERS,MATERIAL_QUANTITY_ABOVE_PEERS  gap +0.0%
+  ok  ho_fraud_rates_plus_charges  tight fraud  got check (ideal check, allowed check/ask) ESTIMATE_ABOVE_FAIR_RANGE  gap +12.2%
+  ok  ho_fraud_rates_plus_charges  wide  fraud  got check (ideal check, allowed check/ask) ESTIMATE_ABOVE_FAIR_RANGE  gap +12.2%
+  ok  ho_fraud_cement_kg_16        tight fraud  got check (ideal check, allowed check/ask) RATE_ABOVE_ALL_OTHERS  gap +7.5%
+  ok  ho_fraud_cement_kg_16        wide  fraud  got check (ideal check, allowed check/ask) RATE_ABOVE_ALL_OTHERS  gap +7.5%
+  ok  ho_fraud_hall_labour_16      tight fraud  got check (ideal check, allowed check/ask) LABOUR_RATE_ABOVE  gap -0.0%
+  ok  ho_fraud_hall_labour_16      wide  fraud  got check (ideal check, allowed check/ask) LABOUR_RATE_ABOVE  gap +0.3%
+  ok  ho_fraud_hall_ghost_masons   tight fraud  got check (ideal check, allowed check/ask) LABOUR_DAYS_ABOVE_PEERS  gap -0.0%
+  ok  ho_fraud_hall_ghost_masons   wide  fraud  got check (ideal check, allowed check/ask) LABOUR_DAYS_ABOVE_PEERS  gap +0.3%
+  ok  ho_fraud_lights_130_mp       tight fraud  got check (ideal check, allowed check/ask) PRICE_ABOVE_STANDARD  gap +0.0%
+  ok  ho_fraud_lights_130_mp       wide  fraud  got check (ideal check, allowed check/ask) PRICE_ABOVE_STANDARD  gap +0.0%
+  ok  ho_fraud_long_road_11        tight fraud  got check (ideal check, allowed check/ask) ESTIMATE_ABOVE_FAIR_RANGE  gap +11.0%
+  ok  ho_fraud_long_road_11        wide  fraud  got check (ideal check, allowed check/ask) ESTIMATE_ABOVE_FAIR_RANGE  gap +11.0%
+  ok  ho_edge_hall_better_tiles    tight edge   got check (ideal edge, allowed fits/edge/check) RATE_ABOVE_ALL_OTHERS  gap +2.5%
+  ok  ho_edge_hall_better_tiles    wide  edge   got check (ideal edge, allowed fits/edge/check) RATE_ABOVE_ALL_OTHERS  gap +2.8%
+  ok  ho_edge_hall_top_range       tight edge   got edge  (ideal edge, allowed fits/edge) -  gap +6.0%
+  ok  ho_edge_hall_top_range       wide  edge   got edge  (ideal edge, allowed fits/edge) -  gap +6.3%
+  ok  ho_honest_hall_big_crew      tight edge   got fits  (ideal fits, allowed fits/edge) -  gap -0.0%
+  ok  ho_honest_hall_big_crew      wide  edge   got fits  (ideal fits, allowed fits/edge) -  gap +0.3%
+  ok  ho_honest_lights_120         tight edge   got edge  (ideal edge, allowed fits/edge) -  gap +0.0%
+  ok  ho_honest_lights_120         wide  edge   got edge  (ideal edge, allowed fits/edge) -  gap +0.0%
+  ok  ho_honest_wide_road          tight honest got fits  (ideal fits, allowed fits/edge) -  gap +0.0%
+  ok  ho_honest_wide_road          wide  honest got fits  (ideal fits, allowed fits/edge) -  gap +0.0%
+  ok  ho_honest_gst_sundries       tight honest got fits  (ideal fits, allowed fits/edge) -  gap -0.0%
+  ok  ho_honest_gst_sundries       wide  honest got fits  (ideal fits, allowed fits/edge) -  gap +0.0%
+  ok  ho_honest_signage            tight honest got fits  (ideal fits, allowed fits/edge) -  gap +0.0%
+  ok  ho_honest_signage            wide  honest got fits  (ideal fits, allowed fits/edge) -  gap +0.0%
+  ok  ho_edge_price_rise_9_hall    tight edge   got edge  (ideal edge, allowed fits/edge) -  gap +9.0%
+  ok  ho_edge_price_rise_9_hall    wide  edge   got edge  (ideal edge, allowed fits/edge) -  gap +9.3%

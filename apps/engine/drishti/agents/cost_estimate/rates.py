@@ -41,7 +41,7 @@ from pathlib import Path
 
 from drishti import reference
 from drishti.agents.cost_estimate.reference import slug
-from drishti.cost_form import catalog, materials
+from drishti.cost_form import catalog, materials, norms
 from drishti.cost_form.norms import to_first_unit
 
 SOR_DIR = Path(reference.__file__).resolve().parent / "cost" / "sor"
@@ -53,6 +53,7 @@ STATE_MIN_FORMS, STATE_MIN_AGENCIES = 8, 4
 STATE_ALLOWANCE = 0.10        # a state-wide rate is this much more lenient than a district's
 POOL = "labour_grade:"        # T141: every trade of one grade together (labour.py, blatant only)
 DAYS = "person_days_per:"     # T167: a trade's person-days per unit of size, by work type
+ROOM = "quantity_room:"       # T167: a material's quantity over the size's standard amount
 # words that name a branch of an agency, not another agency
 _BRANCH = {"the", "of", "and", "office", "offices", "division", "div", "dvn", "divn", "dept",
            "deptt", "department", "circle", "sub", "subdivision", "unit", "zone", "branch", "no",
@@ -243,6 +244,24 @@ class RateIndex:
             st = _state(w)
             work_type = (form.get("work") or {}).get("work_type")
             sites = form.get("sites") if isinstance(form.get("sites"), list) else []
+            # T167: how much of the size's standard amount each material's lines take (sand at
+            # 1.05 times the slab's dry need), so a quantity padded inside the norm's room is
+            # told by other agencies' own room
+            for i, site in enumerate(sites):
+                if not isinstance(site, dict):
+                    continue
+                lines = [(j, ln.get("material_id"), ln.get("quantity"), ln.get("unit"),
+                          ln.get("item")) for j, ln in enumerate(site.get("lines") or [])
+                         if isinstance(ln, dict) and isinstance(ln.get("material_id"), str)
+                         and catalog.material(ln["material_id"])]
+                for q in norms.check(work_type, site.get("size") or {}, lines):
+                    if q["low"] > 0:
+                        k = room_key(work_type, q["material"], q["unit"])
+                        row = (agency, str(w.get("work_id")), q["quantity"] / q["low"], month,
+                               str(d))
+                        out[(str(d), k)].append(row)
+                        if st:
+                            state[(st, k)].append(row)
             for i, _j, mid, r, q, _ln in confirmed_lines(form):
                 # the 5th place: the district, so the rest of the state can be told apart (T167)
                 rows = [((agency, str(w.get("work_id")), r, month, str(d)), mid)]
@@ -315,6 +334,11 @@ class RateIndex:
 def pool_key(grade: str | None) -> str:
     """The rate index's key for every trade of one grade (T141)."""
     return f"{POOL}{grade}"
+
+
+def room_key(work_type: str | None, material_id: str, unit: str) -> str:
+    """The rate index's key for a material's quantity over its standard amount (T167)."""
+    return f"{ROOM}{work_type}:{material_id}:{unit}"
 
 
 def days_key(work_type: str | None, trade: str) -> str:

@@ -105,7 +105,11 @@ CHECK_SHARE = 0.10          # up to 10% allowed with recorded reasons, beyond it
 CHECK_MIN_RS = 25_000       # below this the money is too small to check (half the ask floor)
 QUANTITY_CHECK = 1.10       # a confirmed quantity this far above the need (with its room)
 LABOUR_CHECK = 1.5          # a trade's day rate this many times others' (below labour's 2x ask)
-DAYS_CHECK = 2.0            # a trade's person-days per unit of size, times other agencies'
+QTY_PEER_CHECK = 1.15      # a material's share of the standard amount, times other agencies'
+LINE_CHECK = 1.05           # a line's rate this far above the HIGHEST rate other agencies
+                            # charge (CPWD: up to 5% may be ignored)
+LINE_STANDOUT = 0.05        # ... and this far above the estimate's own lines (concentrated)
+DAYS_CHECK = 2.0          # a trade's person-days per unit of size, times other agencies'
 ASK_LEVEL = 0.4             # a finding this risky or more is a question ("ask")
 CLAIMED_ALLOWANCE = 0.15   # a hilly or head-load site: an ask below GAP_SHARE + this -> check
 REMOTE = {"terrain": ("hilly",), "access": ("head_load_only",)}
@@ -243,6 +247,25 @@ def _quantity_rs(lines: list, q: dict) -> float:
         if r is not None and x:
             qty, rs = qty + x, rs + x * r
     return max(0.0, q["quantity"] - q["needed"]) * rs / qty if qty > 0 else 0.0
+
+
+def _room_against_peers(work_type, q: dict, index, work: dict, as_of, form: dict) -> dict | None:
+    """When this estimate takes QTY_PEER_CHECK times or more of a material's standard amount
+    than other agencies' estimates take (rates.room_key: one agency, one vote): {room, peer,
+    usual (the quantity at the peers' room), where}, else None."""
+    if index is None or q["low"] <= 0:
+        return None
+    when = rates._form_month(form, as_of)
+    found, _gap = index.price(work.get("district_lgd"), rates._state(work),
+                              rates.room_key(work_type, q["material"], q["unit"]),
+                              rates.agency_of(work), str(work.get("work_id")), when)
+    if not found or found[0] <= 0:
+        return None
+    room = q["quantity"] / q["low"]
+    if room < QTY_PEER_CHECK * found[0]:
+        return None
+    return {"room": round(room, 3), "peer": round(found[0], 3),
+            "usual": round(found[0] * q["low"], 3), "where": found[2]}
 
 
 def _check_sentence(w: whole.Whole) -> str:
@@ -409,6 +432,24 @@ def assess(work: dict, ctx) -> AgentResult:
         # 1. quantities against what the size needs (confirmed materials only)
         for q in norms.check(work_type, size, _confirmed(lines)):
             compared = True
+            peer = _room_against_peers(work_type, q, data.get("rates"), work, as_of, form)
+            if peer and q["ratio"] <= QUANTITY_CHECK:
+                # T167: inside the norm's room, but far more of it than other agencies take
+                extra = _quantity_rs(lines, {**q, "needed": peer["usual"]})
+                if extra >= CHECK_MIN_RS:
+                    name = catalog.material(q["material"])["label"].lower()
+                    findings.append(Finding(
+                        "MATERIAL_QUANTITY_ABOVE_PEERS",
+                        f"{label.capitalize()}: {name}, "
+                        f"{catalog.quantity_text(q['quantity'], q['unit'])} in the estimate, "
+                        f"{peer['room']:.2f} times the standard amount for this size "
+                        f"({catalog.quantity_text(q['low'], q['unit'])}); other agencies' "
+                        f"estimates here take {peer['peer']:.2f} times it ({peer['where']}). "
+                        f"About {_rs(extra)} of material beyond theirs. Within what the size can "
+                        "take, but check this.", hard=False, risk=CHECK_RISK,
+                        evidence={"site": i, "material": q["material"], "quantity": q["quantity"],
+                                  "low": q["low"], "unit": q["unit"], **peer,
+                                  "extra": round(extra, 2), "lines": q["lines"]}))
             if QUANTITY_CHECK < q["ratio"] <= QUANTITY_MARGIN:
                 # T167: beyond the usual room, below the question's 25%: check this when the
                 # extra is real money (1.2 times a road's cement is about Rs 1 lakh)
@@ -661,6 +702,26 @@ def assess(work: dict, ctx) -> AgentResult:
             if w.fallbacks and w.gap > 0:
                 leeway.append({"kind": "verified", "what": "priced from the state's forms",
                                "why": f"{rates.STATE_ALLOWANCE:.0%} allowed for local prices"})
+        # 3a. T167: one line far above even the highest rate other agencies here charge, with
+        #     real money in it ("one costly line can be honest", T121: never a question alone,
+        #     but check this)
+        dear = [x for x in w.lines if not catalog.is_labour(x.material) and x.fair_high
+                and x.fair_source != "sor_code" and x.rate > x.fair_high * LINE_CHECK
+                and x.fair_rate and x.rate / x.fair_rate >= 1 + max(w.gap_share, 0.0)
+                + LINE_STANDOUT and x.quantity * (x.rate - x.fair_high) >= CHECK_MIN_RS]
+        if dear and not any(f.code in ("ESTIMATE_ABOVE_FAIR_PRICE", "ESTIMATE_ABOVE_FAIR_RANGE")
+                            for f in findings):
+            above = sum(x.quantity * (x.rate - x.fair_high) for x in dear)
+            findings.append(Finding(
+                "RATE_ABOVE_ALL_OTHERS",
+                "Priced above every other agency here: "
+                + "; ".join(f"{x.label.lower()} at {_rs(x.rate)} a {x.unit}, where the highest "
+                            f"other agency charges {_rs(x.fair_high)} (middle {_rs(x.fair_rate)})"
+                            for x in sorted(dear, key=lambda x: -x.extra)[:3])
+                + f". {_rs(above)} above the highest rate. The whole estimate is within its fair "
+                "band, so it is not asked as a question: check this line.", hard=False,
+                risk=CHECK_RISK,
+                evidence={"lines": [x.to_json() for x in dear], "above_highest": round(above, 2)}))
     # 3b. a rate held as a likely typing mistake still carries its money in the estimate's total
     #     (T164, the owner: worse padding than the form's guard went unasked)
     typo = _held_typos(as_filed, held, sor, data.get("rates"), work, when)

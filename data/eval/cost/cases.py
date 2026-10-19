@@ -94,11 +94,19 @@ def _m(days: int) -> date:
     return AS_OF - timedelta(days=days)
 
 
+QTY_NOISE = 0.04       # honest agencies' quantities differ a few % (their own analysis of rates)
+DAYS_NOISE = 0.15      # and their crews' person-days more (productivity, the season)
+
+
 def _noisy(p: dict, rng: random.Random, line_sd: float) -> dict:
-    """An honest agency's own small differences, line by line."""
+    """An honest agency's own small differences, line by line: rates, quantities, crew days."""
     for k in list(p):
         if k.startswith("boq_rate_"):
             p[k] = f"{float(p[k]) * (1 + rng.gauss(0, line_sd)):.0f}"
+        elif k.startswith("boq_qty_"):
+            p[k] = f"{float(p[k]) * rng.uniform(1 - QTY_NOISE, 1 + QTY_NOISE):.2f}"
+        elif k.startswith("lab_days_"):
+            p[k] = f"{max(0.5, float(p[k]) * rng.uniform(1 - DAYS_NOISE, 1 + DAYS_NOISE)):.1f}"
     return finish(p)
 
 
