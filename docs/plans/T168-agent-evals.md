@@ -101,3 +101,29 @@ good video never adds a Site Progress finding; no input raises (ERROR) or breaks
 - [ ] fraud excused 0, honest asked 0, broken cleared 0 on the main sets; held-out sets committed before first runs
 - [ ] promptfoo suite green; Hypothesis properties green in CI
 - [ ] FINDINGS "T168", AGENT-CATALOG rows, log entry, PR
+
+## 8. Build steps (executed inline, in this order)
+
+Shared interfaces (`data/eval/common/`):
+- `world.py`: `World` (as_of, place, background works) built from `work_form_examples` builders; `Case` (id, agent,
+  truth, ideal, allowed, why, family, pair, scope, `form` or `record`, `extra` earlier works, `record_over`);
+  `run(case, world) -> dict[agent, AgentResult] + Fused` through `orchestrator.assess_work` with
+  `Context(stats=build_store(...), data=indexes(background + extra + [work]))`, the route's own path.
+- `levels.py`: `level(agent, result)` (fits / edge / check / ask / na; facts that never queue, such as
+  `SANCTIONED_LATE`, read as edge), `verdict(truth, allowed, got)`.
+- `inspect_task.py`: `make_task(agent, sets)`: one Sample per case and world, solver = the real agent, scorer with
+  the T167 metrics plus `broken_cleared`.
+- `report.py`: the plain report without Inspect: `results/t168_<agent>_<label>.txt/.json`.
+
+Steps:
+1. NidhiLens: time 20 checks on the GPU; then start the full perturbation run in the background
+   (`data/eval/nidhilens/run.py`, resumable jsonl) and score it with the Inspect task afterwards.
+2. Common harness + its unit test (`apps/engine/tests/eval/test_eval_common.py`: a case runs, levels map).
+3. Duplicate Work cases -> baseline on today's agent -> commit held-out -> fix misses -> re-run.
+4. Time & Rules, the same loop.
+5. Site Progress, the same loop.
+6. The four together (bands).
+7. Hypothesis properties (`apps/engine/tests/properties/`), `hypothesis` pinned in `requirements-dev`.
+8. promptfoo suite (`data/eval/promptfoo/`), run with `npx promptfoo@<pinned> eval`.
+9. CI gate: `apps/engine/tests/eval/test_agent_evals.py` runs every main case; ruff + pytest; FINDINGS, catalog,
+   log, PR ready.
