@@ -21,11 +21,16 @@ import levels as L  # noqa: E402
 OUT = C.ROOT / "data" / "trial" / "results"
 
 
-def run(only: set[str] | None = None) -> list[dict]:
+def run(only: set[str] | None = None, holdout: bool = False) -> list[dict]:
     worlds = {name: C.build_world(name, spread, seed)
               for name, (spread, seed) in C.WORLDS.items()}
     rows = []
-    for case in C.cases():
+    if holdout:
+        import holdout as H
+        case_list = H.holdout()
+    else:
+        case_list = C.cases()
+    for case in case_list:
         if only and case.id not in only:
             continue
         for name, world in worlds.items():
@@ -96,8 +101,9 @@ def main() -> None:
     a = argparse.ArgumentParser()
     a.add_argument("--label", default="run")
     a.add_argument("--only", default="")
+    a.add_argument("--holdout", action="store_true", help="the held-out cases (holdout.py)")
     args = a.parse_args()
-    rows = run(set(args.only.split(",")) if args.only else None)
+    rows = run(set(args.only.split(",")) if args.only else None, args.holdout)
     text = "\n".join(summary(rows))
     print(text)
     (OUT / f"t167_cost_eval_{args.label}.txt").write_text(
