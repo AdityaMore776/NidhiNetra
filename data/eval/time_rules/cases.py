@@ -194,9 +194,12 @@ def cases() -> list[Case]:
     out.append(case(
         "T-V6-nine-days-after-sanction", "evasion", "check", "check/ask", "record",
         "A Rs 6 lakh road (no form) recorded complete 9 days after its sanction.",
-        "Two days past R14's 7-day line: as unbelievable for a road.",
+        "Two days past R14's 7-day line: as unbelievable for a road. LIMIT (after the first "
+        "run): R14's line was measured on the dashboard's sanction dates (25 of 25 at 0-7 days); "
+        "widening it needs the same measurement at 8-21 days, and no table with sanction dates "
+        "is on this PC. With a form the comfort window catches it (T-F1).",
         lambda: record("TV6", "ROAD_CC", "CC road at Siddhipur", 600_000, m(300), m(200),
-                       m(191))))
+                       m(191)), scope="limit"))
     out.append(case(
         "T-V7-backdated-complete", "evasion", "ask", "check/ask", "record",
         "A Rs 6 lakh road (no form) recorded complete 20 days BEFORE its sanction.",

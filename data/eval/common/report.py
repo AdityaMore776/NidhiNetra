@@ -68,6 +68,10 @@ def totals(rows: list[dict]) -> dict:
                 agg.setdefault(k, []).append(v)
     out = {k: f"{sum(v):.0f}/{len(v)}" for k, v in agg.items()}
     out["verdicts"] = dict(Counter(x["verdict"] for x in rows if x["scope"] == "self"))
+    apart = [x for x in rows if x["scope"] != "self"]
+    if apart:
+        out["apart"] = {f"{x['case']}@{x['world']}": f"{x['scope']}: {x['truth']} got {x['got']}"
+                        for x in apart}
     return out
 
 
@@ -84,10 +88,11 @@ def main() -> None:
              f"{len(W.WORLDS)} worlds", "totals: " + json.dumps(tot), ""]
     for x in rows:
         mark = {"pass": " ", "soft": "~", "hard": "X"}[x["verdict"]]
+        notes = f" notes {','.join(x['notes'])}" if x["notes"] else ""
+        apart = f" [{x['scope']}: not counted]" if x["scope"] != "self" else ""
         lines.append(f"{mark} {x['case']:28} {x['world']:6} {x['truth']:7} got {x['got']:6} "
                      f"(allowed {'/'.join(x['allowed'])}) {','.join(x['codes']) or '-'}"
-                     f"{' notes ' + ','.join(x['notes']) if x['notes'] else ''}"
-                     f"{' [other agent]' if x['scope'] != 'self' else ''}")
+                     f"{notes}{apart}")
         if x["verdict"] != "pass":
             lines.append(f"      {x['headline']}")
     text = "\n".join(lines) + "\n"

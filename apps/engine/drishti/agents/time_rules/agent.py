@@ -40,7 +40,7 @@ from drishti.agents.site_progress import visits as site_visits
 from drishti.agents.time_rules import window as win
 
 AGENT = "time_rules"
-VERSION = "time-rules-1.0.0"
+VERSION = "time-rules-1.1.0"
 QUESTION = "Was it sanctioned on time, and is it being finished in a believable time?"
 CONFIDENCE = 0.9
 KEEP_RULES = ("R01", "R06", "R13", "R14")      # the measured timing rules, from rules.json
@@ -113,7 +113,10 @@ def too_fast(work: dict, w: win.Window, vs: list[site_visits.Visit]) -> Finding 
             or done >= w.early or not is_construction(work)
             or float(work.get("amount") or 0) < float(win.floors().get("min_amount_rs", 0))):
         return None
-    shown = [v for v in vs if v.shows_work and site_visits.genuine(v) and v.captured <= done]
+    # T168: only a video of the work going on BEFORE the day it is called complete, never the
+    # final video: one video filmed on the completion day cleared a road "built" in 6 days
+    shown = [v for v in vs if v.shows_work and site_visits.genuine(v) and v.kind != "final"
+             and v.captured < done]
     if shown:
         return None        # a real fast finish: the videos show the work going on
     # recorded complete before its own planned start month: count from the sanction instead
@@ -172,7 +175,7 @@ def assess(work: dict, as_of: date, timeline=None, offices=None) -> AgentResult:
 
     def done(status, headline, findings=(), limitations=(), **evidence) -> AgentResult:
         findings = sorted(findings, key=lambda f: -f.risk)
-        top = findings[0] if findings else None
+        top = findings[0] if findings and status == Status.ASSESSED else None
         return AgentResult(agent=AGENT, status=status,
                            verdict=top.code if top else (status.value if status != Status.ASSESSED
                                                          else "ON_TIME_AS_FAR_AS_CHECKED"),
@@ -227,6 +230,16 @@ def assess(work: dict, as_of: date, timeline=None, offices=None) -> AgentResult:
                            "finished could not be checked: ask for the date.")
     if w is not None:
         limitations += w.notes     # an estimate or start the window did not take as written
+    counted = [f for f in findings if f.risk >= LATE_FACT_RISK * 2]
+    if (work.get("status") == "COMPLETED" and not as_date(work.get("completed_date"))
+            and not counted):
+        # T168: the pace of a finished work cannot be judged without the day it finished:
+        # "nothing found" would read as a clean chit
+        return done(Status.NOT_ASSESSABLE, "Cannot be assessed: recorded complete without a "
+                    "completion date, so how fast it was finished cannot be checked. This is not "
+                    "a clean chit: ask for the date.", findings, limitations,
+                    window=w.to_json() if w else None, videos=len(vs),
+                    rules_checked=list(KEEP_RULES))
     headline = (max(findings, key=lambda f: f.risk).text if findings else
                 "No timing problem the dates and the agency's own estimate can show.")
     return done(Status.ASSESSED, headline, findings, limitations,

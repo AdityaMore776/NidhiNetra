@@ -1,0 +1,1010 @@
+{
+ "totals": {
+  "pass": "40/46",
+  "honest_clear": "12/16",
+  "honest_asked": "0/16",
+  "ideal": "38/46",
+  "fraud_caught": "20/24",
+  "fraud_excused": "4/24",
+  "broken_cleared": "0/6",
+  "verdicts": {
+   "pass": 40,
+   "hard": 4,
+   "soft": 2
+  }
+ },
+ "rows": [
+  {
+   "case": "T-H1-on-track",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "in progress",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "T-H1-on-track",
+   "world": "dense",
+   "truth": "honest",
+   "family": "in progress",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "T-H2-fast-but-filmed",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": "fast"
+  },
+  {
+   "case": "T-H2-fast-but-filmed",
+   "world": "dense",
+   "truth": "edge",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": "fast"
+  },
+  {
+   "case": "T-H3-sanctioned-late",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "late sanction",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "edge",
+   "got": "edge",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "SANCTIONED_LATE"
+   ],
+   "band": "LOW",
+   "score": 0.05,
+   "headline": "Sanctioned 130 days after the MP's recommendation (16 Mar 2026 to 24 Jul 2026); the guidelines give 75 days. 60% of the works on the eSAKSHI dashboard are sanctioned past the 75-day limit, so this is a fact about the office's pace and goes ",
+   "pair": ""
+  },
+  {
+   "case": "T-H3-sanctioned-late",
+   "world": "dense",
+   "truth": "honest",
+   "family": "late sanction",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "edge",
+   "got": "edge",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "SANCTIONED_LATE"
+   ],
+   "band": "LOW",
+   "score": 0.05,
+   "headline": "Sanctioned 130 days after the MP's recommendation (16 Mar 2026 to 24 Jul 2026); the guidelines give 75 days. 60% of the works on the eSAKSHI dashboard are sanctioned past the 75-day limit, so this is a fact about the office's pace and goes ",
+   "pair": ""
+  },
+  {
+   "case": "T-H4-late-but-moving",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge",
+    "check"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.125,
+   "headline": "Not complete 159 days after its own promised time: 7.9 months from 01 May 2025, 120 days of grace, so due by 26 Apr 2026. Most works finish late; follow up with the agency on progress.",
+   "pair": "late"
+  },
+  {
+   "case": "T-H4-late-but-moving",
+   "world": "dense",
+   "truth": "edge",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge",
+    "check"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.125,
+   "headline": "Not complete 159 days after its own promised time: 7.9 months from 01 May 2025, 120 days of grace, so due by 26 Apr 2026. Most works finish late; follow up with the agency on progress.",
+   "pair": "late"
+  },
+  {
+   "case": "T-H5-record-normal",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "T-H5-record-normal",
+   "world": "dense",
+   "truth": "honest",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "T-H6-purchase-fast",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "T-H6-purchase-fast",
+   "world": "dense",
+   "truth": "honest",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "T-H7-waiting-40-days",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "waiting",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "T-H7-waiting-40-days",
+   "world": "dense",
+   "truth": "honest",
+   "family": "waiting",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "T-H8-waiting-long",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "waiting",
+   "scope": "self",
+   "allowed": [
+    "edge",
+    "check"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "SANCTION_OVERDUE"
+   ],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.157,
+   "headline": "Waiting 300 days for sanction, 225 days past the 75-day limit (para 3.12). This is common: 15 in 100 works recommended this long ago were also still waiting.",
+   "pair": ""
+  },
+  {
+   "case": "T-H8-waiting-long",
+   "world": "dense",
+   "truth": "edge",
+   "family": "waiting",
+   "scope": "self",
+   "allowed": [
+    "edge",
+    "check"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "SANCTION_OVERDUE"
+   ],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.157,
+   "headline": "Waiting 300 days for sanction, 225 days past the 75-day limit (para 3.12). This is common: 15 in 100 works recommended this long ago were also still waiting.",
+   "pair": ""
+  },
+  {
+   "case": "T-F1-done-in-6-days",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "FINISHED_TOO_FAST"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.438,
+   "headline": "Recorded complete 6 days after its sanction (24 Jun 2026 to 30 Jun 2026). The agency's own estimate was 3.9 months, and a cement concrete road work of this size is not finished in under 30 days (the early line of its comfort window). There ",
+   "pair": "fast"
+  },
+  {
+   "case": "T-F1-done-in-6-days",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "FINISHED_TOO_FAST"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.438,
+   "headline": "Recorded complete 6 days after its sanction (24 Jun 2026 to 30 Jun 2026). The agency's own estimate was 3.9 months, and a cement concrete road work of this size is not finished in under 30 days (the early line of its comfort window). There ",
+   "pair": "fast"
+  },
+  {
+   "case": "T-F2-done-before-recommended",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "BUILT_RIGHT_AFTER_SANCTION",
+    "IMPOSSIBLE_TIMELINE"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.91,
+   "headline": "Rs 4.50 lakh Cement concrete road work recorded complete 110 days before it was sanctioned (2026-05-05 to 2026-01-15); a construction of this size cannot be built that fast. Check whether the work was executed before sanction, or the dates ",
+   "pair": ""
+  },
+  {
+   "case": "T-F2-done-before-recommended",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "BUILT_RIGHT_AFTER_SANCTION",
+    "IMPOSSIBLE_TIMELINE"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.91,
+   "headline": "Rs 4.50 lakh Cement concrete road work recorded complete 110 days before it was sanctioned (2026-05-05 to 2026-01-15); a construction of this size cannot be built that fast. Check whether the work was executed before sanction, or the dates ",
+   "pair": ""
+  },
+  {
+   "case": "T-F3-built-in-days",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "BUILT_IN_DAYS",
+    "BUILT_RIGHT_AFTER_SANCTION"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.982,
+   "headline": "Rs 8.00 lakh Community hall / bhavan work recorded complete 5 days after it was recommended (2026-03-16 to 2026-03-21); a construction of this size cannot be finished that fast. Check the completion certificate and the dates.",
+   "pair": ""
+  },
+  {
+   "case": "T-F3-built-in-days",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "BUILT_IN_DAYS",
+    "BUILT_RIGHT_AFTER_SANCTION"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.982,
+   "headline": "Rs 8.00 lakh Community hall / bhavan work recorded complete 5 days after it was recommended (2026-03-16 to 2026-03-21); a construction of this size cannot be finished that fast. Check the completion certificate and the dates.",
+   "pair": ""
+  },
+  {
+   "case": "T-F4-right-after-sanction",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "BUILT_RIGHT_AFTER_SANCTION"
+   ],
+   "notes": [
+    "SANCTIONED_LATE"
+   ],
+   "band": "HIGH",
+   "score": 0.902,
+   "headline": "Rs 6.00 lakh Cement concrete road work recorded complete 3 days after it was sanctioned (2026-03-16 to 2026-03-19); a construction of this size cannot be built that fast. Check whether the work was executed before sanction, or the dates are",
+   "pair": ""
+  },
+  {
+   "case": "T-F4-right-after-sanction",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "BUILT_RIGHT_AFTER_SANCTION"
+   ],
+   "notes": [
+    "SANCTIONED_LATE"
+   ],
+   "band": "HIGH",
+   "score": 0.902,
+   "headline": "Rs 6.00 lakh Cement concrete road work recorded complete 3 days after it was sanctioned (2026-03-16 to 2026-03-19); a construction of this size cannot be built that fast. Check whether the work was executed before sanction, or the dates are",
+   "pair": ""
+  },
+  {
+   "case": "T-F5-abandoned",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "Not complete 300 days after its own promised time: 7.9 months from 11 Dec 2024, 120 days of grace, so due by 06 Dec 2025. The last 3 site videos show no change at the same views. Ask the agency why the work has stopped.",
+   "pair": "late"
+  },
+  {
+   "case": "T-F5-abandoned",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "Not complete 300 days after its own promised time: 7.9 months from 11 Dec 2024, 120 days of grace, so due by 06 Dec 2025. The last 3 site videos show no change at the same views. Ask the agency why the work has stopped.",
+   "pair": "late"
+  },
+  {
+   "case": "T-V1-filmed-on-the-last-day",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "fits",
+   "verdict": "hard",
+   "codes": [],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "T-V1-filmed-on-the-last-day",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "fits",
+   "verdict": "hard",
+   "codes": [],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "No timing problem the dates and the agency's own estimate can show.",
+   "pair": ""
+  },
+  {
+   "case": "T-V2-start-years-away",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.344,
+   "headline": "Not complete 136 days after its own promised time: 3.9 months from 19 Nov 2025, 61 days of grace, so due by 19 May 2026. Most works finish late; follow up with the agency on progress.",
+   "pair": ""
+  },
+  {
+   "case": "T-V2-start-years-away",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.344,
+   "headline": "Not complete 136 days after its own promised time: 3.9 months from 19 Nov 2025, 61 days of grace, so due by 19 May 2026. Most works finish late; follow up with the agency on progress.",
+   "pair": ""
+  },
+  {
+   "case": "T-V3-ten-year-estimate",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.344,
+   "headline": "Not complete 426 days after its own promised time: 6.7 months from 02 Oct 2024, 102 days of grace, so due by 02 Aug 2025. Most works finish late; follow up with the agency on progress.",
+   "pair": ""
+  },
+  {
+   "case": "T-V3-ten-year-estimate",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.344,
+   "headline": "Not complete 426 days after its own promised time: 6.7 months from 02 Oct 2024, 102 days of grace, so due by 02 Aug 2025. Most works finish late; follow up with the agency on progress.",
+   "pair": ""
+  },
+  {
+   "case": "T-V4-padded-estimate",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.344,
+   "headline": "Not complete 206 days after its own promised time: 15 months from 15 Apr 2024, 231 days of grace, so due by 10 Mar 2026. Most works finish late; follow up with the agency on progress.",
+   "pair": ""
+  },
+  {
+   "case": "T-V4-padded-estimate",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.344,
+   "headline": "Not complete 206 days after its own promised time: 15 months from 15 Apr 2024, 231 days of grace, so due by 10 Mar 2026. Most works finish late; follow up with the agency on progress.",
+   "pair": ""
+  },
+  {
+   "case": "T-V5-reused-video",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "FINISHED_TOO_FAST"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.578,
+   "headline": "Recorded complete 6 days after its sanction (24 Jun 2026 to 30 Jun 2026). The agency's own estimate was 3.9 months, and a cement concrete road work of this size is not finished in under 30 days (the early line of its comfort window). No sit",
+   "pair": ""
+  },
+  {
+   "case": "T-V5-reused-video",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "FINISHED_TOO_FAST"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.578,
+   "headline": "Recorded complete 6 days after its sanction (24 Jun 2026 to 30 Jun 2026). The agency's own estimate was 3.9 months, and a cement concrete road work of this size is not finished in under 30 days (the early line of its comfort window). No sit",
+   "pair": ""
+  },
+  {
+   "case": "T-V6-nine-days-after-sanction",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "edge",
+   "verdict": "hard",
+   "codes": [],
+   "notes": [
+    "SANCTIONED_LATE"
+   ],
+   "band": "LOW",
+   "score": 0.05,
+   "headline": "Sanctioned 100 days after the MP's recommendation (06 Dec 2025 to 16 Mar 2026); the guidelines give 75 days. 60% of the works on the eSAKSHI dashboard are sanctioned past the 75-day limit, so this is a fact about the office's pace and goes ",
+   "pair": ""
+  },
+  {
+   "case": "T-V6-nine-days-after-sanction",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "edge",
+   "verdict": "hard",
+   "codes": [],
+   "notes": [
+    "SANCTIONED_LATE"
+   ],
+   "band": "LOW",
+   "score": 0.05,
+   "headline": "Sanctioned 100 days after the MP's recommendation (06 Dec 2025 to 16 Mar 2026); the guidelines give 75 days. 60% of the works on the eSAKSHI dashboard are sanctioned past the 75-day limit, so this is a fact about the office's pace and goes ",
+   "pair": ""
+  },
+  {
+   "case": "T-V7-backdated-complete",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "BUILT_RIGHT_AFTER_SANCTION"
+   ],
+   "notes": [
+    "SANCTIONED_LATE"
+   ],
+   "band": "HIGH",
+   "score": 0.902,
+   "headline": "Rs 6.00 lakh Cement concrete road work recorded complete 20 days before it was sanctioned (2026-03-16 to 2026-02-24); a construction of this size cannot be built that fast. Check whether the work was executed before sanction, or the dates a",
+   "pair": ""
+  },
+  {
+   "case": "T-V7-backdated-complete",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "verdict": "pass",
+   "codes": [
+    "BUILT_RIGHT_AFTER_SANCTION"
+   ],
+   "notes": [
+    "SANCTIONED_LATE"
+   ],
+   "band": "HIGH",
+   "score": 0.902,
+   "headline": "Rs 6.00 lakh Cement concrete road work recorded complete 20 days before it was sanctioned (2026-03-16 to 2026-02-24); a construction of this size cannot be built that fast. Check whether the work was executed before sanction, or the dates a",
+   "pair": ""
+  },
+  {
+   "case": "T-B1-no-status",
+   "world": "sparse",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "na"
+   ],
+   "ideal": "na",
+   "got": "na",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Cannot be assessed: the record carries no status, so its dates cannot be checked. This is not a clean chit.",
+   "pair": ""
+  },
+  {
+   "case": "T-B1-no-status",
+   "world": "dense",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "na"
+   ],
+   "ideal": "na",
+   "got": "na",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Cannot be assessed: the record carries no status, so its dates cannot be checked. This is not a clean chit.",
+   "pair": ""
+  },
+  {
+   "case": "T-B2-complete-no-date",
+   "world": "sparse",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "na",
+    "check"
+   ],
+   "ideal": "na",
+   "got": "edge",
+   "verdict": "soft",
+   "codes": [],
+   "notes": [
+    "SANCTIONED_LATE"
+   ],
+   "band": "LOW",
+   "score": 0.05,
+   "headline": "Sanctioned 100 days after the MP's recommendation (06 Dec 2025 to 16 Mar 2026); the guidelines give 75 days. 60% of the works on the eSAKSHI dashboard are sanctioned past the 75-day limit, so this is a fact about the office's pace and goes ",
+   "pair": ""
+  },
+  {
+   "case": "T-B2-complete-no-date",
+   "world": "dense",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "na",
+    "check"
+   ],
+   "ideal": "na",
+   "got": "edge",
+   "verdict": "soft",
+   "codes": [],
+   "notes": [
+    "SANCTIONED_LATE"
+   ],
+   "band": "LOW",
+   "score": 0.05,
+   "headline": "Sanctioned 100 days after the MP's recommendation (06 Dec 2025 to 16 Mar 2026); the guidelines give 75 days. 60% of the works on the eSAKSHI dashboard are sanctioned past the 75-day limit, so this is a fact about the office's pace and goes ",
+   "pair": ""
+  },
+  {
+   "case": "T-B3-done-in-future",
+   "world": "sparse",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "na",
+    "edge",
+    "check"
+   ],
+   "ideal": "na",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "IMPOSSIBLE_TIMELINE"
+   ],
+   "notes": [
+    "SANCTIONED_LATE"
+   ],
+   "band": "LOW",
+   "score": 0.174,
+   "headline": "Completion date 2026-12-01 is after the data was published (2026-10-02); the date needs correcting.",
+   "pair": ""
+  },
+  {
+   "case": "T-B3-done-in-future",
+   "world": "dense",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "na",
+    "edge",
+    "check"
+   ],
+   "ideal": "na",
+   "got": "check",
+   "verdict": "pass",
+   "codes": [
+    "IMPOSSIBLE_TIMELINE"
+   ],
+   "notes": [
+    "SANCTIONED_LATE"
+   ],
+   "band": "LOW",
+   "score": 0.174,
+   "headline": "Completion date 2026-12-01 is after the data was published (2026-10-02); the date needs correcting.",
+   "pair": ""
+  }
+ ]
+}

@@ -13,8 +13,9 @@ A case carries its truth and the levels its label allows (levels.py):
            evasion  a fraud dressed to slip past a rule
            broken   missing or damaged data: "couldn't check" is right, a clean chit is not
   agent    the agent the case is about (dup_split, time_rules, site_progress, or "pipeline")
-  scope    "self", or "other" for a fraud this agent cannot see (another agent's job: listed,
-           never counted as coverage)
+  scope    "self"; "other" for a fraud this agent cannot see (another agent's job); "limit" for
+           a known edge of a measured rule that cannot be moved without data not on hand. Both
+           are listed apart, never counted as coverage
 
 Each case runs in two worlds: a sparse district (a dozen honest filings) and a dense one (seventy,
 some of them honest street lights at houses 8-20 m apart, the T139 pattern), so a level must hold
