@@ -59,7 +59,7 @@ STATE_AGENCIES = ["Awadh Path Nirman", "Purvanchal Sadak Sewa", "Doaba Infra Cel
 AGENCY = "Nirman Seva Agency"          # the filing agency of every case (not in the background)
 
 
-# ---- the world ------------------------------------------------------------------------------------
+# ---- the world -----------------------------------------------------------------------------------
 
 @dataclass
 class World:
@@ -144,7 +144,7 @@ def build_world(name: str, spread: float, seed: int = 7) -> World:
 WORLDS = {"tight": (0.04, 7), "wide": (0.10, 11)}
 
 
-# ---- editing a filing -----------------------------------------------------------------------------
+# ---- editing a filing ----------------------------------------------------------------------------
 
 def _work(p: dict) -> dict:
     w = pswif.to_work(p, today=AS_OF, status="RECOMMENDED")
@@ -205,7 +205,7 @@ def finish(p: dict, mp_x: float | None = 1.0, mp: float | None = None) -> dict:
     return p
 
 
-# ---- running the agent ----------------------------------------------------------------------------
+# ---- running the agent ---------------------------------------------------------------------------
 
 def assess(world: World, p: dict, background: list[dict] | None = None) -> AgentResult:
     """The Cost agent on filing `p`, the rate index holding the world's filings and this one,
@@ -218,7 +218,7 @@ def assess(world: World, p: dict, background: list[dict] | None = None) -> Agent
     return cost.assess(work, ctx)
 
 
-# ---- the cases ------------------------------------------------------------------------------------
+# ---- the cases -----------------------------------------------------------------------------------
 
 @dataclass
 class Case:
@@ -394,7 +394,8 @@ def cases() -> list[Case]:
         lambda w: finish(road(w, length=40, rate_up=1.12)), pair="small_vs_big_12")
 
     def hilly(w):
-        p = road(w, rate_up=1.18, terrain="Hilly / steep", site_access="Foot / manual carry required",
+        p = road(w, rate_up=1.18, terrain="Hilly / steep",
+                 site_access="Foot / manual carry required",
                  motorable_access_distance_m="800")
         return finish(p)
     add("edge_hilly_remote", "edge: site", EDGE, "check", OK_SOFT,
@@ -635,7 +636,8 @@ def cases() -> list[Case]:
         lambda w: lights(48_000, mp=240_000))
 
     def hilly_claim(w):
-        p = road(w, rate_up=1.18, terrain="Hilly / steep", site_access="Foot / manual carry required",
+        p = road(w, rate_up=1.18, terrain="Hilly / steep",
+                 site_access="Foot / manual carry required",
                  motorable_access_distance_m="800")
         return finish(p)
     add("fraud_claimed_hilly", "fraud: claimed reason", FRAUD, "check", FLAG,

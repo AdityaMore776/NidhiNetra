@@ -2808,3 +2808,82 @@ Gemini 3.1 Pro (best prompt) is being run on this set with the rest of the owner
   AI Studio). The owner said to stop when more would not improve the result.
 - One loop bug was caught: a collect without the round's items file recorded Rs 5.84 instead of Rs 84.49. It is fixed,
   and the ledger was topped up.
+
+## T167 (19 Oct 2026): an eval environment for the Cost agent: frauds against honest edge cases
+
+**The owner's request:** run the price checks through a popular AI evaluation environment, with edge cases; change
+the rules where that makes a better agent, not just a higher score; give honest edge cases some leeway; **a fraud is
+never an edge case: at the least "check this".** Plan: `docs/plans/T167-cost-eval.md`. Code: `data/eval/cost/`.
+
+**The environment.** Inspect AI (the UK AI Security Institute's open-source eval framework) runs the real Cost agent
+as its solver, with no AI model involved; `inspect view` browses every case. Each case is a filing of the website's
+form by a made-up agency in Jaunpur, labelled `honest`, `edge` (honest but unusual) or `fraud`. Each case runs in two
+worlds: other agencies' honest rates ±4% apart, and ±10%. The agent's answer is one level: **fits**, **edge** (a
+leeway explained something, a note), **check** (risk 0.3, "check this"), **ask** (a question before sanction).
+
+**The rule the owner asked for, made structural:** leeway the agent can verify itself (other agencies charge as
+much; the gap is inside the 10% the CPWD Works Manual, para 20.4.3.2, allows over justified rates; the money is too
+small) may clear a case to *edge*. Leeway that rests on the agency's word (a hilly or head-load site, a bigger
+specification, the MP agreeing) only softens *ask* to *check*. A fraud can claim all of those, so it is never
+cleared.
+
+**Before and after, on the same cases** (`results/t167_cost_eval_oldagent_*.txt` against `t167_cost_eval_final.txt`,
+`_holdout_final`, `_holdout2_final`; the held-out first runs: `_holdout_firstrun`, `_holdout2_firstrun`):
+
+| Case set | Old agent: frauds excused | New agent: frauds excused | Honest asked (old → new) |
+|---|---|---|---|
+| Main (68 cases × 2 worlds; the rules were built on it) | 24 of 60 | 0 of 60 | 4 → 2 (both the honest extra-zero typo, which must be corrected before sanction either way) |
+| Held-out 1 (18 cases, labelled before their first run) | 18 of 20 | first run 4 of 20; after two fixes 0 | 0 → 0 |
+| Held-out 2 (15 cases, labelled before their first run) | 14 of 16 | first run 4 of 16; after one fix 0 | 0 → 0 |
+
+The held-out sets are "seen" once a fix used them; their first-run numbers are the honest test of generalisation.
+Inspect AI over all 202 samples: pass 1.000, fraud_caught 1.000, fraud_excused 0.000, honest_asked 0.000.
+
+**The price of it** (`results/t167_cost_sweep.txt`: 200 random honest filings per world across the world's FULL
+honest spread, roads and halls, GST, sundries, low MP figures, extra items): asked **0%** (old 0%), "check this"
+**2.0% / 2.5%** (old 0%). The checks fall on honest agencies at the very edge of the district's own range (a line
+above every other agency's rate, or a whole estimate above 10% where honest agencies reach +10%).
+
+**What the eval found and changed** (each a measured miss first):
+
+| Scheme that got through | Why | Now |
+|---|---|---|
+| Padding 10–15% on every line | the question line is 15% and Rs 50,000 | `ESTIMATE_ABOVE_FAIR_RANGE` (check) from 10% and Rs 25,000, above the highest rates other agencies charge |
+| 12% "other charges" with tax already in the rates | under 15% overall | unitemised money beyond the usual shares, Rs 25,000+: check |
+| Solar lights at 2× the usual, the MP's amount as high | the MP agreeing made it a note | `PRICE_ABOVE_STANDARD` (check): an MP's figure can follow the agency's |
+| Declaring M25 so no mix applies, then 1.6× the cement | design mixes were not checked | IS 456 cl. 8.2.4.2 caps cement at 450 kg/m³: checked against it |
+| 1.2× the cement, "justified" | under the 25% quantity line | `MATERIAL_QUANTITY_ABOVE_NEED` (check) from 10% above the need, Rs 25,000+ |
+| Sand and stone padded inside the norm's own room (bulking) | within what the size can take | `MATERIAL_QUANTITY_ABOVE_PEERS`: 1.15× the room other agencies take |
+| A hall with 1.5× the bricks or 1.4× the cement | no norm sizes a building | bulk materials per m² built up, 1.25× other agencies' halls (counted items such as doors excluded: an honest small hall has as many doors) |
+| One line 16–30% high, the rest fair | the whole stays under 10% | `RATE_ABOVE_ALL_OTHERS` (check): 5% above the HIGHEST other agency and 5 points above the estimate's own lines (a uniform 9% price rise is not a dear line) |
+| Every trade at 1.7× the wage | wages under 2× were the agency's call (T141) | `LABOUR_RATE_ABOVE` (check) from 1.5× (scaled to the margin when priced from a grade's pool, so an honest mason against labourers' pay is not checked) |
+| Three times the labourers, same days (ghost workers) | how many workers was never judged | `LABOUR_DAYS_ABOVE_PEERS` (check): person-days per m² twice other agencies' crews |
+| Every agency in the district pads 22% together | the district's own rate was the fair rate | `DISTRICT_RATES_ABOVE_STATE` (check): the rest of the state's forms plus 10% |
+| Padding 22% where only the state's forms price it | the state rate carries 10% | the check tier above |
+| A hilly, head-load site 18% above plains rates (honest) was ASKED | no leeway for site conditions | a claimed hilly or head-load site softens the question to check, up to 15% more; beyond it, still asked |
+
+Also fixed in the eval itself (never counted as agent wins): agencies named "State Works Unit 1..6" read as one agency
+(the agent's anti-gaming rule); options the form does not accept; a "typo" the form's guard does not call one.
+
+**Where the boundaries sit** (dose curves, 10 honest bases per dose and world; the dose is on the agency's own honest
+prices, which already sit a few % from the market):
+
+| Scheme | Never flagged up to | Flagged in most seeds from | Always flagged from | Always asked from |
+|---|---|---|---|---|
+| Padding on every line | 4% | 10% | 18% (tight) / 20% (wide) | 25% |
+| One line (cement) | — | 10% (tight) / 20% (wide) | 20% / 30% | 60% |
+| Cement quantity, "justified" | 5% | 15% | 20% | 40% |
+| Sand + stone quantity, "justified" | 10% | 20% | 20% | — (check) |
+| Wages, every trade | 40% (an edge note) | 50% | 60% | 140% |
+| Ghost labourers (more workers, same days) | 50% more | 100% more (4 of 10 tight, 8 of 10 wide) | 150% more | — (check) |
+| 'Other' charges, tax already in the rates | 5% | 8% | 8% | — (20%: 8–9 of 10) |
+| Solar lights over the 98th percentile, MP agrees | 25% (an edge note) | 30% | 30% | — (check) |
+| Same, the estimate 20% above the MP | 25% (an edge note) | 30% | 30% | 30% |
+
+**What no estimate check can tell, said plainly.** Padding small enough to sit inside honest variation looks exactly
+like an honest estimate on paper: under about 10% on the whole estimate, wages under 1.5×, a crew under 2×, quantities
+inside the room other agencies take. Those are left to the site videos and the officer's visit. A size inflated
+everywhere (field and scope agree) is Site Progress's job, and is listed apart in the eval, never counted as coverage.
+
+**Not yet:** no real agency has filed a form, so every number above is on planted forms in a modelled district; the
+new codes count at the 1-in-4 prior (fusion: MEDIUM) until officers' verdicts (T098).

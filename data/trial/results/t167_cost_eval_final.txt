@@ -1,4 +1,4 @@
-T167 Cost agent eval (v2)
+T167 Cost agent eval (final)
 136 runs (68 cases x 2 worlds); pass 136, soft 0, hard 0
 frauds: 60 runs; flagged (check or ask) 60, asked 36, EXCUSED (fits/edge) 0, not judged 0
 honest + edge: 76 runs; clear (fits/edge) 70, check 4, ASKED 2, not judged 0

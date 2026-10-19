@@ -1,0 +1,2 @@
+# T167: the Cost agent's eval environment (not needed by CI: its test imports cases.py only)
+inspect-ai==0.3.281

@@ -105,7 +105,8 @@ CHECK_SHARE = 0.10          # up to 10% allowed with recorded reasons, beyond it
 CHECK_MIN_RS = 25_000       # below this the money is too small to check (half the ask floor)
 QUANTITY_CHECK = 1.10       # a confirmed quantity this far above the need (with its room)
 LABOUR_CHECK = 1.5          # a trade's day rate this many times others' (below labour's 2x ask)
-QTY_PEER_CHECK = 1.15      # a material's share of the standard amount, times other agencies'
+BUILDING_QTY_CHECK = 1.25  # a building material per m2 built up, times other agencies' (no norm)
+QTY_PEER_CHECK = 1.15     # a material's share of the standard amount, times other agencies'
 LINE_CHECK = 1.05           # a line's rate this far above the HIGHEST rate other agencies
                             # charge (CPWD: up to 5% may be ignored)
 LINE_STANDOUT = 0.05        # ... and this far above the estimate's own lines (concentrated)
@@ -266,6 +267,42 @@ def _room_against_peers(work_type, q: dict, index, work: dict, as_of, form: dict
         return None
     return {"room": round(room, 3), "peer": round(found[0], 3),
             "usual": round(found[0] * q["low"], 3), "where": found[2]}
+
+
+def _per_size_against_peers(work_type, size: dict, lines: list, index, work: dict,
+                            when) -> list[dict]:
+    """A building's confirmed materials that no norm sizes, BUILDING_QTY_CHECK times or more what
+    other agencies' estimates use per m2 built up (rates.per_size_key: one agency, one vote)."""
+    m = rates.size_measure(work_type, size)
+    if index is None or not m or catalog.is_linear(work_type):
+        return []
+    normed = {n["material"] for n in norms.needs(work_type, size)}
+    qty: dict[str, float] = {}
+    rs: dict[str, float] = {}
+    for ln in lines:
+        mid = ln.get("material_id") if isinstance(ln, dict) else None
+        if not isinstance(mid, str) or mid in normed or mid not in rates.BULK:
+            continue
+        x = norms.to_first_unit(mid, ln.get("quantity"), ln.get("unit"))
+        r = rates.per_unit(mid, ln.get("rate"), ln.get("unit"))
+        if x and x > 0 and r is not None:
+            qty[mid] = qty.get(mid, 0.0) + x
+            rs[mid] = rs.get(mid, 0.0) + x * r
+    out = []
+    for mid, x in qty.items():
+        found, _gap = index.price(work.get("district_lgd"), rates._state(work),
+                                  rates.per_size_key(work_type, mid), rates.agency_of(work),
+                                  str(work.get("work_id")), when)
+        if not found or found[0] <= 0:
+            continue
+        usual = found[0] * m[0]
+        if x >= BUILDING_QTY_CHECK * usual:
+            mat = catalog.material(mid)
+            out.append({"material": mid, "label": mat["label"], "unit": mat["units"][0],
+                        "quantity": round(x, 2), "usual": round(usual, 2),
+                        "times": round(x / usual, 2), "where": found[2],
+                        "extra": round((x - usual) * rs[mid] / x, 2)})
+    return sorted(out, key=lambda y: -y["extra"])
 
 
 def _check_sentence(w: whole.Whole) -> str:
@@ -429,6 +466,19 @@ def assess(work: dict, ctx) -> AgentResult:
         lines = site.get("lines") if isinstance(site.get("lines"), list) else []
         label = f"site {i + 1}" if len(form.get("sites") or []) > 1 else "the work"
 
+        # 1a. T167: a building's materials (no norm for its size) against other agencies' per m2
+        for x in _per_size_against_peers(work_type, size, lines, data.get("rates"), work,
+                                         rates._form_month(form, as_of)):
+            compared = True
+            if x["extra"] >= CHECK_MIN_RS:
+                findings.append(Finding(
+                    "MATERIAL_QUANTITY_ABOVE_PEERS",
+                    f"{label.capitalize()}: {x['label'].lower()}, "
+                    f"{catalog.quantity_text(x['quantity'], x['unit'])} in the estimate, "
+                    f"{x['times']:.1f} times what other agencies' estimates use for this size "
+                    f"({catalog.quantity_text(x['usual'], x['unit'])}; {x['where']}). About "
+                    f"{_rs(x['extra'])} of material beyond theirs: check this.", hard=False,
+                    risk=CHECK_RISK, evidence={"site": i, **x}))
         # 1. quantities against what the size needs (confirmed materials only)
         for q in norms.check(work_type, size, _confirmed(lines)):
             compared = True

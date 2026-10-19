@@ -54,6 +54,11 @@ STATE_ALLOWANCE = 0.10        # a state-wide rate is this much more lenient than
 POOL = "labour_grade:"        # T141: every trade of one grade together (labour.py, blatant only)
 DAYS = "person_days_per:"     # T167: a trade's person-days per unit of size, by work type
 ROOM = "quantity_room:"       # T167: a material's quantity over the size's standard amount
+PER_SIZE = "quantity_per:"    # T167: a building material's quantity per m2 built up
+# T167: the bulk materials whose quantity scales with a building's area (doors, fittings and
+# other counted items do not: a small hall has as many doors as a big one)
+BULK = ("cement", "sand", "aggregate", "steel_rebar", "structural_steel", "brick", "tiles",
+        "granular_base", "earth_fill", "rmc", "paint")
 # words that name a branch of an agency, not another agency
 _BRANCH = {"the", "of", "and", "office", "offices", "division", "div", "dvn", "divn", "dept",
            "deptt", "department", "circle", "sub", "subdivision", "unit", "zone", "branch", "no",
@@ -247,21 +252,40 @@ class RateIndex:
             # T167: how much of the size's standard amount each material's lines take (sand at
             # 1.05 times the slab's dry need), so a quantity padded inside the norm's room is
             # told by other agencies' own room
-            for i, site in enumerate(sites):
+            for site in sites:
                 if not isinstance(site, dict):
                     continue
                 lines = [(j, ln.get("material_id"), ln.get("quantity"), ln.get("unit"),
                           ln.get("item")) for j, ln in enumerate(site.get("lines") or [])
                          if isinstance(ln, dict) and isinstance(ln.get("material_id"), str)
                          and catalog.material(ln["material_id"])]
+                normed = set()
                 for q in norms.check(work_type, site.get("size") or {}, lines):
                     if q["low"] > 0:
+                        normed.add(q["material"])
                         k = room_key(work_type, q["material"], q["unit"])
                         row = (agency, str(w.get("work_id")), q["quantity"] / q["low"], month,
                                str(d))
                         out[(str(d), k)].append(row)
                         if st:
                             state[(st, k)].append(row)
+                # T167: a building's materials (no norm says what its size needs) per m2 built
+                # up, so 1.5 times the bricks of other halls of its size is told
+                m = size_measure(work_type, site.get("size")) if not catalog.is_linear(
+                    work_type) else None
+                per: dict[str, float] = defaultdict(float)
+                for _j, mid, qty, unit, _item in lines if m else []:
+                    if mid in normed or mid not in BULK:
+                        continue
+                    x = to_first_unit(mid, qty, unit)
+                    if x and x > 0:
+                        per[mid] += x
+                for mid, x in per.items():
+                    k = per_size_key(work_type, mid)
+                    row = (agency, str(w.get("work_id")), x / m[0], month, str(d))
+                    out[(str(d), k)].append(row)
+                    if st:
+                        state[(st, k)].append(row)
             for i, _j, mid, r, q, _ln in confirmed_lines(form):
                 # the 5th place: the district, so the rest of the state can be told apart (T167)
                 rows = [((agency, str(w.get("work_id")), r, month, str(d)), mid)]
@@ -339,6 +363,11 @@ def pool_key(grade: str | None) -> str:
 def room_key(work_type: str | None, material_id: str, unit: str) -> str:
     """The rate index's key for a material's quantity over its standard amount (T167)."""
     return f"{ROOM}{work_type}:{material_id}:{unit}"
+
+
+def per_size_key(work_type: str | None, material_id: str) -> str:
+    """The rate index's key for a building material's quantity per m2 built up (T167)."""
+    return f"{PER_SIZE}{work_type}:{material_id}"
 
 
 def days_key(work_type: str | None, trade: str) -> str:

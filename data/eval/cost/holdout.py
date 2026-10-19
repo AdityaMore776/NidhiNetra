@@ -7,8 +7,24 @@ Same shape as cases.py (Case, the same worlds, levels and verdicts). run.py --ho
 
 from __future__ import annotations
 
-from cases import (EDGE, FLAG, FRAUD, HONEST, OK, OK_SOFT, Case, add_line, find, finish, hall,
-                   lab, lights, lines_total, road, scale)
+from cases import (
+    EDGE,
+    FLAG,
+    FRAUD,
+    HONEST,
+    OK,
+    OK_SOFT,
+    Case,
+    add_line,
+    find,
+    finish,
+    hall,
+    lab,
+    lights,
+    lines_total,
+    road,
+    scale,
+)
 
 
 def holdout() -> list[Case]:

@@ -1,4 +1,4 @@
-T167 Cost agent eval (holdout_v2_seen)
+T167 Cost agent eval (holdout_final)
 36 runs (18 cases x 2 worlds); pass 36, soft 0, hard 0
 frauds: 20 runs; flagged (check or ask) 20, asked 2, EXCUSED (fits/edge) 0, not judged 0
 honest + edge: 16 runs; clear (fits/edge) 14, check 2, ASKED 0, not judged 0

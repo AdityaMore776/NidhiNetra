@@ -5,7 +5,7 @@ called (`mockllm/model` only fills Inspect's model slot). One sample per case an
 reads the agent's level and grades it against the case's label.
 
   apps\engine\.venv\Scripts\inspect.exe eval data\eval\cost\task.py --model mockllm/model ^
-      --log-dir data\eval\cost\logs
+      -T set=all --log-dir data\eval\cost\logs
   apps\engine\.venv\Scripts\inspect.exe view --log-dir data\eval\cost\logs
 
 Scores per sample (each a metric, the mean over its samples):
@@ -42,13 +42,29 @@ def _world(name: str) -> C.World:
 
 
 @cache
+def _sets() -> dict[str, list[C.Case]]:
+    import holdout
+    import holdout2
+    return {"main": C.cases(), "holdout": holdout.holdout(), "holdout2": holdout2.holdout2()}
+
+
+@cache
 def _cases() -> dict[str, C.Case]:
-    return C.by_id()
+    return {c.id: c for cases in _sets().values() for c in cases}
 
 
-def samples() -> list[Sample]:
+def samples(which: str = "all") -> list[Sample]:
     out = []
-    for case in C.cases():
+    for name, cases in _sets().items():
+        if which not in ("all", name):
+            continue
+        out += _samples(name, cases)
+    return out
+
+
+def _samples(set_name: str, cases: list[C.Case]) -> list[Sample]:
+    out = []
+    for case in cases:
         if case.scope != "cost":
             continue
         for name in C.WORLDS:
@@ -56,7 +72,7 @@ def samples() -> list[Sample]:
                 id=f"{case.id}@{name}",
                 input=f"[{case.truth}] {case.story}",
                 target=case.ideal,
-                metadata={"case": case.id, "world": name, "truth": case.truth,
+                metadata={"case": case.id, "world": name, "truth": case.truth, "set": set_name,
                           "family": case.family, "allowed": list(case.allowed),
                           "pair": case.pair or "", "why": case.why}))
     return out
@@ -96,12 +112,14 @@ def level_grade():
         return Score(value=value, answer=got,
                      explanation=f"{verdict}: {truth} case got {got} (allowed "
                                  f"{'/'.join(allowed)}, ideal {target.text}); "
-                                 f"{', '.join(md['codes']) or 'no finding'}. {md['headline'][:300]}",
+                                 f"{', '.join(md['codes']) or 'no finding'}. "
+                                 f"{md['headline'][:300]}",
                      metadata={"verdict": verdict, "family": md["family"]})
     return score
 
 
 @task
-def cost_eval() -> Task:
-    return Task(dataset=MemoryDataset(samples(), name="t167_cost_cases"),
+def cost_eval(set: str = "all") -> Task:
+    """`set`: main (the cases the rules were built on), holdout, holdout2, or all."""
+    return Task(dataset=MemoryDataset(samples(set), name=f"t167_cost_cases_{set}"),
                 solver=cost_agent(), scorer=level_grade())

@@ -542,6 +542,13 @@ splits, rule breaches, impossible timelines, `source = SCENARIO`), runs the pipe
 the top 5% of each engine and overall. Never mixes planted rows into the live database silently.
 **Done when:** [ ] result JSON in `data/trial/results/` · [ ] numbers in FINDINGS and the deck, reported honestly
 
+### T167 · Cost agent eval environment: frauds against honest edge cases  ·  L  ·  engine + eval
+**Owner's request, 19 Oct 2026.** Plan: `docs/plans/T167-cost-eval.md`. An Inspect AI eval of the Cost agent with
+labelled honest, edge and fraud cases, look-alike pairs, two worlds and held-out sets; levels fits / edge / check /
+ask; a fraud is never an edge case (at the least "check this").
+**Done when:** [x] eval + baseline (24 of 60 fraud runs excused) · [x] agent changed, 0 excused, honest population
+asked 0% · [x] two held-out sets labelled before their first run · [x] tests gate every case in CI · [x] FINDINGS "T167"
+
 ### T090 · Five-minute demo script + judge Q&A  ·  S  ·  docs  ·  Depends on: T062, T080
 **Done when:** [ ] script walks the loop by role on the live site · [ ] every number from FINDINGS
 

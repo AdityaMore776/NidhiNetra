@@ -1,0 +1,37 @@
+T167 Cost agent eval (holdout2)
+30 runs (15 cases x 2 worlds); pass 26, soft 0, hard 4
+frauds: 16 runs; flagged (check or ask) 12, asked 2, EXCUSED (fits/edge) 4, not judged 0
+honest + edge: 14 runs; clear (fits/edge) 12, check 2, ASKED 0, not judged 0
+ideal level exact: 24 of 30
+look-alike pairs: fraud ranked above its honest twin in 0 of 0; fraud at least 'check' in 0 of 0
+
+  ok  h2_fraud_hall_steel_rate     tight fraud  got check (ideal check, allowed check/ask) ESTIMATE_ABOVE_FAIR_RANGE  gap +11.3%
+  ok  h2_fraud_hall_steel_rate     wide  fraud  got check (ideal check, allowed check/ask) ESTIMATE_ABOVE_FAIR_RANGE  gap +11.6%
+  ok  h2_fraud_lump_and_rates      tight fraud  got check (ideal check, allowed check/ask) ESTIMATE_ABOVE_FAIR_RANGE  gap +11.6%
+  ok  h2_fraud_lump_and_rates      wide  fraud  got check (ideal check, allowed check/ask) ESTIMATE_ABOVE_FAIR_RANGE  gap +11.6%
+ HARD h2_fraud_hall_bricks_qty     tight fraud  got fits  (ideal check, allowed check/ask) -  gap -0.0%
+ HARD h2_fraud_hall_bricks_qty     wide  fraud  got fits  (ideal check, allowed check/ask) -  gap +0.2%
+ HARD h2_fraud_hall_cement_qty     tight fraud  got fits  (ideal check, allowed check/ask) -  gap -0.0%
+ HARD h2_fraud_hall_cement_qty     wide  fraud  got fits  (ideal check, allowed check/ask) -  gap +0.2%
+  ok  h2_fraud_hall_labour_days    tight fraud  got check (ideal check, allowed check/ask) LABOUR_DAYS_ABOVE_PEERS  gap -0.0%
+  ok  h2_fraud_hall_labour_days    wide  fraud  got check (ideal check, allowed check/ask) LABOUR_DAYS_ABOVE_PEERS  gap +0.3%
+  ok  h2_fraud_cement_split_30     tight fraud  got check (ideal check, allowed check/ask) ESTIMATE_ABOVE_FAIR_RANGE  gap +14.2%
+  ok  h2_fraud_cement_split_30     wide  fraud  got check (ideal check, allowed check/ask) ESTIMATE_ABOVE_FAIR_RANGE  gap +14.1%
+  ok  h2_fraud_stone_25x_answered  tight fraud  got ask   (ideal ask, allowed check/ask) ESTIMATE_ABOVE_FAIR_PRICE  gap +40.0%
+  ok  h2_fraud_stone_25x_answered  wide  fraud  got ask   (ideal ask, allowed check/ask) ESTIMATE_ABOVE_FAIR_PRICE  gap +40.5%
+  ok  h2_fraud_pad_13_wide_road    tight fraud  got check (ideal check, allowed check/ask) ESTIMATE_ABOVE_FAIR_RANGE  gap +13.0%
+  ok  h2_fraud_pad_13_wide_road    wide  fraud  got check (ideal check, allowed check/ask) ESTIMATE_ABOVE_FAIR_RANGE  gap +13.0%
+  ok  h2_edge_hall_heavier_steel   tight edge   got fits  (ideal fits, allowed fits/edge/check) -  gap -0.0%
+  ok  h2_edge_hall_heavier_steel   wide  edge   got fits  (ideal fits, allowed fits/edge/check) -  gap +0.2%
+  ok  h2_edge_road_200mm           tight edge   got fits  (ideal fits, allowed fits/edge) -  gap +0.0%
+  ok  h2_edge_road_200mm           wide  edge   got fits  (ideal fits, allowed fits/edge) -  gap +0.0%
+  ok  h2_edge_road_m15             tight edge   got fits  (ideal fits, allowed fits/edge) -  gap +0.0%
+  ok  h2_edge_road_m15             wide  edge   got fits  (ideal fits, allowed fits/edge) -  gap +0.0%
+  ok  h2_edge_small_dear_item      tight edge   got fits  (ideal fits, allowed fits/edge) -  gap +0.0%
+  ok  h2_edge_small_dear_item      wide  edge   got fits  (ideal fits, allowed fits/edge) -  gap +0.0%
+  ok  h2_edge_hall_fire_doors      tight edge   got check (ideal edge, allowed fits/edge/check) RATE_ABOVE_ALL_OTHERS  gap +3.3%
+  ok  h2_edge_hall_fire_doors      wide  edge   got check (ideal edge, allowed fits/edge/check) RATE_ABOVE_ALL_OTHERS  gap +3.6%
+  ok  h2_honest_hall_cheap         tight honest got fits  (ideal fits, allowed fits/edge) -  gap -8.0%
+  ok  h2_honest_hall_cheap         wide  honest got fits  (ideal fits, allowed fits/edge) -  gap -7.8%
+  ok  h2_honest_lines_in_halves    tight honest got fits  (ideal fits, allowed fits/edge) -  gap +0.0%
+  ok  h2_honest_lines_in_halves    wide  honest got fits  (ideal fits, allowed fits/edge) -  gap +0.0%

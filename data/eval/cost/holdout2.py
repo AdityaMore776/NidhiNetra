@@ -8,8 +8,24 @@ run.py --holdout2 runs them.
 
 from __future__ import annotations
 
-from cases import (EDGE, FLAG, FRAUD, HONEST, OK, OK_SOFT, Case, add_line, find, finish, hall,
-                   lab, lines_total, road, rows, scale)
+from cases import (
+    EDGE,
+    FLAG,
+    FRAUD,
+    HONEST,
+    OK,
+    OK_SOFT,
+    Case,
+    add_line,
+    find,
+    finish,
+    hall,
+    lab,
+    lines_total,
+    road,
+    rows,
+    scale,
+)
 
 
 def _qty(p: dict, start: str, f: float, just: str = "") -> dict:
