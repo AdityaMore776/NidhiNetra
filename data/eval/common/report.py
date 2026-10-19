@@ -48,8 +48,9 @@ def judge(case: W.Case, w: W.World) -> dict:
         got = L.level(res)
     return {"case": case.id, "world": w.name, "truth": case.truth, "family": case.family,
             "scope": case.scope, "allowed": list(case.allowed), "ideal": case.ideal, "got": got,
+            "agent": target,
             "verdict": L.verdict(case.truth, case.allowed, got) if target != "pipeline"
-            else ("pass" if got in case.allowed else "hard"),
+            else L.band_verdict(case.truth, case.allowed, got),
             "codes": L.codes(res) if res else sorted(
                 f"{a}:{f.code}" for a, x in r.results.items() for f in x.findings
                 if f.risk >= L.FACT_RISK),
@@ -63,7 +64,8 @@ def totals(rows: list[dict]) -> dict:
     for x in rows:
         if x["scope"] != "self":
             continue
-        for k, v in L.scores(x["truth"], tuple(x["allowed"]), x["ideal"], x["got"]).items():
+        grade = L.band_scores if x.get("agent") == "pipeline" else L.scores
+        for k, v in grade(x["truth"], tuple(x["allowed"]), x["ideal"], x["got"]).items():
             if not math.isnan(v):
                 agg.setdefault(k, []).append(v)
     out = {k: f"{sum(v):.0f}/{len(v)}" for k, v in agg.items()}

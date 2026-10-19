@@ -67,3 +67,31 @@ def scores(truth: str, allowed: tuple[str, ...], ideal: str, got: str) -> dict[s
         "broken_cleared": float(got == "fits") if truth == "broken" else nan,
         "ideal": float(got == ideal),
     }
+
+
+QUEUE = ("MEDIUM", "HIGH", "CRITICAL")
+
+
+def band_verdict(truth: str, allowed: tuple[str, ...], band: str) -> str:
+    """The four agents together: hard when a fraud stays LOW or an honest filing is pulled into
+    the queue beyond what its label allows."""
+    if band in allowed:
+        return "pass"
+    if truth in FRAUDS or (truth != "broken" and band in QUEUE):
+        return "hard"
+    return "soft"
+
+
+def band_scores(truth: str, allowed: tuple[str, ...], ideal: str, band: str) -> dict[str, float]:
+    nan = float("nan")
+    fraud = truth in FRAUDS
+    honest = truth in ("honest", "edge")
+    return {
+        "pass": float(band in allowed),
+        "fraud_queued": float(band in QUEUE) if fraud else nan,
+        "fraud_excused": float(band not in QUEUE) if fraud else nan,
+        "honest_low": float(band == "LOW") if honest else nan,
+        "honest_queued": float(band in QUEUE and band not in allowed) if honest else nan,
+        "honest_high": float(band in ("HIGH", "CRITICAL")) if honest else nan,
+        "ideal": float(band == ideal),
+    }
