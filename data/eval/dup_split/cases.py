@@ -60,11 +60,12 @@ def done(p, days_ago: int) -> dict:
 
 
 def piece(ref, k, i, amount, rec, length=95.0, village="Pratappur", gap=100.0, **over):
-    p = road(ref, k, length=length, north=gap * i, village=village, rec=rec,
-             work_title=f"CC road in village {village}, part {i + 1}",
-             scope_of_work=f"Construction of a CC road in village {village}, part {i + 1} of the "
-                           "lane from the main road to the harijan basti, 95 m long, 3.5 m wide, "
-                           "150 mm thick in M20 over a WBM base.", **over)
+    words = {"work_title": f"CC road in village {village}, part {i + 1}",
+             "scope_of_work": f"Construction of a CC road in village {village}, part {i + 1} of "
+                              "the lane from the main road to the harijan basti, 95 m long, "
+                              "3.5 m wide, 150 mm thick in M20 over a WBM base."}
+    words.update(over)
+    p = road(ref, k, length=length, north=gap * i, village=village, rec=rec, **words)
     p["mp_recommended_amount"] = str(round(amount))
     return p
 

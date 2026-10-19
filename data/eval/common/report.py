@@ -10,7 +10,6 @@ its level, the codes raised, and the totals (fraud excused, honest asked, broken
 from __future__ import annotations
 
 import argparse
-import importlib.util
 import json
 import math
 import sys
@@ -34,18 +33,8 @@ def case_sets(agent: str) -> dict[str, list[W.Case]]:
     out = {}
     for name, mod in (("main", "cases"), ("holdout", "holdout"), ("holdout2", "holdout2")):
         if (folder / f"{mod}.py").exists():
-            out[name] = _load(folder / f"{mod}.py", f"{agent}_{mod}").cases()
+            out[name] = W.load(folder / f"{mod}.py", f"{agent}_{mod}").cases()
     return out
-
-
-def _load(path: Path, name: str):
-    if name in sys.modules:
-        return sys.modules[name]
-    spec = importlib.util.spec_from_file_location(name, path)
-    mod = importlib.util.module_from_spec(spec)
-    sys.modules[name] = mod
-    spec.loader.exec_module(mod)
-    return mod
 
 
 def judge(case: W.Case, w: W.World) -> dict:

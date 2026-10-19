@@ -23,6 +23,7 @@ however busy the district's index is.
 
 from __future__ import annotations
 
+import importlib.util
 import sys
 from collections.abc import Callable
 from dataclasses import dataclass, field
@@ -52,6 +53,17 @@ AGENCY = "Nirman Seva Agency"            # most cases' filing agency (never in t
 OTHER = ["Lok Nirman Mandal", "Sadak Vikas Prakoshth", "Nagar Seva Kendra", "Gram Unnati Agency",
          "Shramik Works Cooperative"]
 BG_K = 60                                # background sites start at pin 60: far from every case
+
+
+def load(path: Path, name: str):
+    """A case file as a module of its own name (every agent has a cases.py: never mixed up)."""
+    if name in sys.modules:
+        return sys.modules[name]
+    spec = importlib.util.spec_from_file_location(name, path)
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[name] = mod
+    spec.loader.exec_module(mod)
+    return mod
 
 
 def m(days: int) -> date:
