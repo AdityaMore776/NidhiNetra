@@ -1,0 +1,247 @@
+{
+  "schema": "ppt-master.pptx-delivery-check.v1",
+  "status": "passed-with-advisories",
+  "file": {
+    "path": "C:\\Users\\abhim\\drishti\\docs\\deck\\sih-v3\\exports\\sih-v3_20260926_134548.pptx",
+    "bytes": 903677
+  },
+  "package": {
+    "zip_integrity": "passed",
+    "corrupt_member": null,
+    "duplicate_parts": [],
+    "canonical_part_collisions": [],
+    "parts": {
+      "entries": 66,
+      "unique": 66,
+      "slides": 6,
+      "notes": 6,
+      "masters": 1,
+      "layouts": 11,
+      "media": 4
+    },
+    "relationships": {
+      "problems": []
+    }
+  },
+  "slides": {
+    "count": 6,
+    "hidden_count": 0,
+    "hidden": []
+  },
+  "fonts": {
+    "theme": {
+      "title": {
+        "latin": "Calibri",
+        "scripts": {
+          "Jpan": "ＭＳ Ｐゴシック",
+          "Hang": "맑은 고딕",
+          "Hans": "宋体",
+          "Hant": "新細明體"
+        }
+      },
+      "body": {
+        "latin": "Calibri",
+        "scripts": {
+          "Jpan": "ＭＳ Ｐゴシック",
+          "Hang": "맑은 고딕",
+          "Hans": "宋体",
+          "Hant": "新細明體"
+        }
+      }
+    },
+    "declared": {
+      "latin": [
+        {
+          "value": "Calibri",
+          "count": 453
+        },
+        {
+          "value": "TradeGothic",
+          "count": 29
+        },
+        {
+          "value": "+mn-lt",
+          "count": 26
+        },
+        {
+          "value": "Times New Roman",
+          "count": 7
+        },
+        {
+          "value": "Garamond",
+          "count": 3
+        }
+      ],
+      "ea": [
+        {
+          "value": "Calibri",
+          "count": 437
+        },
+        {
+          "value": "ＭＳ Ｐゴシック",
+          "count": 41
+        },
+        {
+          "value": "+mn-ea",
+          "count": 28
+        },
+        {
+          "value": "Times New Roman",
+          "count": 3
+        }
+      ],
+      "cs": [
+        {
+          "value": "Calibri",
+          "count": 437
+        },
+        {
+          "value": "+mn-cs",
+          "count": 52
+        },
+        {
+          "value": "ＭＳ Ｐゴシック",
+          "count": 11
+        },
+        {
+          "value": "Times New Roman",
+          "count": 7
+        }
+      ]
+    },
+    "embedded_parts": [],
+    "portability_advisory_faces": [
+      "TradeGothic"
+    ]
+  },
+  "media": {
+    "embedded_count": 4,
+    "external_count": 0,
+    "embedded": [
+      {
+        "part": "ppt/media/image2.png",
+        "kind": "image",
+        "content_type": "image/png",
+        "bytes": 671097,
+        "compressed_bytes": 442154,
+        "reference_count": 6,
+        "relationship_types": [
+          "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
+        ]
+      },
+      {
+        "part": "ppt/media/image1.png",
+        "kind": "image",
+        "content_type": "image/png",
+        "bytes": 182377,
+        "compressed_bytes": 177850,
+        "reference_count": 1,
+        "relationship_types": [
+          "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
+        ]
+      },
+      {
+        "part": "ppt/media/image_6f93ba4eae30f26d.png",
+        "kind": "image",
+        "content_type": "image/png",
+        "bytes": 128915,
+        "compressed_bytes": 127970,
+        "reference_count": 1,
+        "relationship_types": [
+          "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
+        ]
+      },
+      {
+        "part": "ppt/media/image_b73f1401bb514a1b.png",
+        "kind": "image",
+        "content_type": "image/png",
+        "bytes": 66520,
+        "compressed_bytes": 66545,
+        "reference_count": 1,
+        "relationship_types": [
+          "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
+        ]
+      }
+    ],
+    "external": [],
+    "uncompressed_bytes": 1048909,
+    "archive_compressed_bytes": 814519,
+    "share_of_archive": 0.901339,
+    "share_of_uncompressed_parts": 0.648028,
+    "top_contributors": [
+      {
+        "part": "ppt/media/image2.png",
+        "kind": "image",
+        "content_type": "image/png",
+        "bytes": 671097,
+        "compressed_bytes": 442154,
+        "reference_count": 6,
+        "relationship_types": [
+          "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
+        ]
+      },
+      {
+        "part": "ppt/media/image1.png",
+        "kind": "image",
+        "content_type": "image/png",
+        "bytes": 182377,
+        "compressed_bytes": 177850,
+        "reference_count": 1,
+        "relationship_types": [
+          "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
+        ]
+      },
+      {
+        "part": "ppt/media/image_6f93ba4eae30f26d.png",
+        "kind": "image",
+        "content_type": "image/png",
+        "bytes": 128915,
+        "compressed_bytes": 127970,
+        "reference_count": 1,
+        "relationship_types": [
+          "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
+        ]
+      },
+      {
+        "part": "ppt/media/image_b73f1401bb514a1b.png",
+        "kind": "image",
+        "content_type": "image/png",
+        "bytes": 66520,
+        "compressed_bytes": 66545,
+        "reference_count": 1,
+        "relationship_types": [
+          "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
+        ]
+      }
+    ]
+  },
+  "motion": {
+    "transitions": {
+      "carrier_slide_count": 0,
+      "visual_effect_slide_count": 0,
+      "timed_advance_slide_count": 0,
+      "carrier_slides": [],
+      "visual_effect_slides": [],
+      "timed_advance_slides": [],
+      "effects": {}
+    },
+    "object_animations": {
+      "timing_slide_count": 0,
+      "object_animation_slide_count": 0,
+      "audio_timing_slide_count": 0,
+      "timing_slides": [],
+      "object_animation_slides": [],
+      "audio_timing_slides": []
+    }
+  },
+  "errors": [],
+  "advisories": [
+    {
+      "code": "font_portability",
+      "message": "Some fonts declared or referenced by the presentation are outside the common Office/OS portability set; target-system availability was not verified.",
+      "faces": [
+        "TradeGothic"
+      ]
+    }
+  ]
+}

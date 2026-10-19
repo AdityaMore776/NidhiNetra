@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1280" height="720" viewBox="0 0 1280 720"><g id="layout-shape-2" data-pptx-object="shape" data-pptx-shape-id="2" data-pptx-shape-scope="layout" data-pptx-frame="928 28.83370079 288 614.33333333" data-pptx-shape-name="Vertical Title 1" data-ph-type="title" data-pptx-placeholder-orientation="vert" data-name="Vertical Title 1" data-pptx-prst="rect" data-pptx-preview-sha256="1d57642cd6a3cd9717bb87c92560c4f6ec74940c3fc9ad1b71bd0101c040496a">
+<path d="M 928 28.83 L 1216 28.83 L 1216 643.17 L 928 643.17 Z" fill="none" data-pptx-prst="rect" data-pptx-object="shape" data-pptx-shape-id="2" data-pptx-shape-scope="layout" data-pptx-frame="928 28.83370079 288 614.33333333" data-pptx-shape-name="Vertical Title 1" data-ph-type="title" data-pptx-placeholder-orientation="vert" data-pptx-preview-sha256="1d57642cd6a3cd9717bb87c92560c4f6ec74940c3fc9ad1b71bd0101c040496a" data-pptx-part="geometry" visibility="hidden" pointer-events="none"/>
+<g data-pptx-part="geometry-preview">
+<path d="M 928 28.83 L 1216 28.83 L 1216 643.17 L 928 643.17 Z" fill="none" data-pptx-part="geometry-detail"/>
+</g>
+</g>
+<g id="layout-shape-2-text" data-name="Vertical Title 1 text">
+<text x="1064.8" y="36.03" text-anchor="start" xml:space="preserve" font-family="Calibri, sans-serif" font-size="24" fill="#000000" transform="rotate(90 1064.8 36.03)">Click to edit Master title style</text>
+</g>
+<g id="layout-shape-3" data-pptx-object="shape" data-pptx-shape-id="3" data-pptx-shape-scope="layout" data-pptx-frame="64 28.83370079 842.66666667 614.33333333" data-pptx-shape-name="Vertical Text Placeholder 2" data-ph-type="body" data-pptx-placeholder-index="1" data-pptx-placeholder-orientation="vert" data-name="Vertical Text Placeholder 2" data-pptx-prst="rect" data-pptx-preview-sha256="7fbee82b6c71662cdc731f649e6ed2d8f3e1bf1aa20462f179122e82b142b627">
+<path d="M 64 28.83 L 906.67 28.83 L 906.67 643.17 L 64 643.17 Z" fill="none" data-pptx-prst="rect" data-pptx-object="shape" data-pptx-shape-id="3" data-pptx-shape-scope="layout" data-pptx-frame="64 28.83370079 842.66666667 614.33333333" data-pptx-shape-name="Vertical Text Placeholder 2" data-ph-type="body" data-pptx-placeholder-index="1" data-pptx-placeholder-orientation="vert" data-pptx-preview-sha256="7fbee82b6c71662cdc731f649e6ed2d8f3e1bf1aa20462f179122e82b142b627" data-pptx-part="geometry" visibility="hidden" pointer-events="none"/>
+<g data-pptx-part="geometry-preview">
+<path d="M 64 28.83 L 906.67 28.83 L 906.67 643.17 L 64 643.17 Z" fill="none" data-pptx-part="geometry-detail"/>
+</g>
+</g>
+<g id="layout-shape-3-text" data-name="Vertical Text Placeholder 2 text">
+<text x="528.53" y="36.03" text-anchor="start" xml:space="preserve" font-family="Calibri, sans-serif" font-size="24" fill="#000000" transform="rotate(90 528.53 36.03)">Click to edit Master text styles</text>
+<text x="503.33" y="36.03" text-anchor="start" xml:space="preserve" font-family="Calibri, sans-serif" font-size="24" fill="#000000" transform="rotate(90 503.33 36.03)">Second level</text>
+<text x="478.13" y="36.03" text-anchor="start" xml:space="preserve" font-family="Calibri, sans-serif" font-size="24" fill="#000000" transform="rotate(90 478.13 36.03)">Third level</text>
+<text x="452.93" y="36.03" text-anchor="start" xml:space="preserve" font-family="Calibri, sans-serif" font-size="24" fill="#000000" transform="rotate(90 452.93 36.03)">Fourth level</text>
+<text x="427.73" y="36.03" text-anchor="start" xml:space="preserve" font-family="Calibri, sans-serif" font-size="24" fill="#000000" transform="rotate(90 427.73 36.03)">Fifth level</text>
+</g>
+<g id="layout-shape-4" data-pptx-object="shape" data-pptx-shape-id="4" data-pptx-shape-scope="layout" data-pptx-frame="0 0 0 0" data-pptx-shape-name="Date Placeholder 3" data-ph-type="dt" data-pptx-placeholder-index="10" data-pptx-placeholder-size="half" data-name="Date Placeholder 3">
+<text x="9.6" y="25.2" text-anchor="start" xml:space="preserve" font-family="Calibri, sans-serif" font-size="24" fill="#000000"><tspan fill="#000000" font-family="Calibri, sans-serif" font-size="24">6/2/2026</tspan></text>
+</g>
+<g id="layout-shape-5" data-pptx-object="shape" data-pptx-shape-id="5" data-pptx-shape-scope="layout" data-pptx-frame="0 0 0 0" data-pptx-shape-name="Footer Placeholder 4" data-ph-type="ftr" data-pptx-placeholder-index="11" data-pptx-placeholder-size="quarter" data-name="Footer Placeholder 4">
+<text x="9.6" y="25.2" text-anchor="start" xml:space="preserve" font-family="Calibri, sans-serif" font-size="24" fill="#000000"><tspan fill="#000000" font-family="Calibri, sans-serif" font-size="24">@</tspan></text>
+</g>
+<g id="layout-shape-6" data-pptx-object="shape" data-pptx-shape-id="6" data-pptx-shape-scope="layout" data-pptx-frame="0 0 0 0" data-pptx-shape-name="Slide Number Placeholder 5" data-ph-type="sldNum" data-pptx-placeholder-index="12" data-pptx-placeholder-size="quarter" data-name="Slide Number Placeholder 5">
+<text x="9.6" y="25.2" text-anchor="start" xml:space="preserve" font-family="Calibri, sans-serif" font-size="24" fill="#000000"><tspan fill="#000000" font-family="Calibri, sans-serif" font-size="24">‹#›</tspan></text>
+</g></svg>

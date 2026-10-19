@@ -1,0 +1,1 @@
+Good morning. We are team NeuralNexus, and our problem statement is SIH26102 from the Ministry of Statistics and Programme Implementation: finding anomalies, fraud and inefficiencies in how MPLADS works are carried out. Our answer is DRISHTI, which means sight. It looks at every MPLADS work and tells an officer which ones need checking first, and why.

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1280" height="720" viewBox="0 0 1280 720"><g id="layout-shape-2" data-pptx-object="shape" data-pptx-shape-id="2" data-pptx-shape-scope="layout" data-pptx-frame="0 0 0 0" data-pptx-shape-name="Title 1" data-ph-type="title" data-name="Title 1">
+<text x="9.6" y="25.2" text-anchor="start" xml:space="preserve" font-family="Calibri, sans-serif" font-size="24" fill="#000000"><tspan fill="#000000" font-family="Calibri, sans-serif" font-size="24">C</tspan></text>
+</g>
+<g id="layout-shape-3" data-pptx-object="shape" data-pptx-shape-id="3" data-pptx-shape-scope="layout" data-pptx-frame="0 0 0 0" data-pptx-shape-name="Content Placeholder 2" data-pptx-placeholder-index="1" data-name="Content Placeholder 2">
+<text x="9.6" y="25.2" text-anchor="start" xml:space="preserve" font-family="Calibri, sans-serif" font-size="24" fill="#000000"><tspan fill="#000000" font-family="Calibri, sans-serif" font-size="24">C</tspan></text>
+</g>
+<g id="layout-shape-4" data-pptx-object="shape" data-pptx-shape-id="4" data-pptx-shape-scope="layout" data-pptx-frame="0 0 0 0" data-pptx-shape-name="Date Placeholder 3" data-ph-type="dt" data-pptx-placeholder-index="10" data-pptx-placeholder-size="half" data-name="Date Placeholder 3">
+<text x="9.6" y="25.2" text-anchor="start" xml:space="preserve" font-family="Calibri, sans-serif" font-size="24" fill="#000000"><tspan fill="#000000" font-family="Calibri, sans-serif" font-size="24">6/2/2026</tspan></text>
+</g>
+<g id="layout-shape-5" data-pptx-object="shape" data-pptx-shape-id="5" data-pptx-shape-scope="layout" data-pptx-frame="0 0 0 0" data-pptx-shape-name="Footer Placeholder 4" data-ph-type="ftr" data-pptx-placeholder-index="11" data-pptx-placeholder-size="quarter" data-name="Footer Placeholder 4">
+<text x="9.6" y="25.2" text-anchor="start" xml:space="preserve" font-family="Calibri, sans-serif" font-size="24" fill="#000000"><tspan fill="#000000" font-family="Calibri, sans-serif" font-size="24">@</tspan></text>
+</g>
+<g id="layout-shape-6" data-pptx-object="shape" data-pptx-shape-id="6" data-pptx-shape-scope="layout" data-pptx-frame="0 0 0 0" data-pptx-shape-name="Slide Number Placeholder 5" data-ph-type="sldNum" data-pptx-placeholder-index="12" data-pptx-placeholder-size="quarter" data-name="Slide Number Placeholder 5">
+<text x="9.6" y="25.2" text-anchor="start" xml:space="preserve" font-family="Calibri, sans-serif" font-size="24" fill="#000000"><tspan fill="#000000" font-family="Calibri, sans-serif" font-size="24">‹#›</tspan></text>
+</g></svg>

@@ -299,6 +299,8 @@ agencies), `LABOUR_RATE_ABOVE` (1.5×), `LABOUR_DAYS_ABOVE_PEERS` (twice other c
 workers), `DISTRICT_RATES_ABOVE_STATE` (the district's agencies all dear together). Design mixes (M25+) are held to
 IS 456's 450 kg cement ceiling. Measured by the Inspect AI eval in `data/eval/cost/`: FINDINGS "T167".
 
+**T168 (20 Oct 2026): every agent through three eval environments** (Inspect AI, promptfoo, Hypothesis; `data/eval/README.md`, FINDINGS "T168"). New "check this" findings (risk 0.3): Duplicate Work `SPLIT_NEAR_LIMIT` (numbered pieces at 90-96% of a limit within 30 days, or every piece 96-100% within 90 days; 15 of 20 read one job on the real works) and `SPLIT_NEAR_LIMIT_DECLARED` (the same, the agency naming the other pieces as earlier phases: at the prior), `SAME_BUILDING_NEAR` (a same-kind building 50-150 m away with the same words and size, not named); Site Progress `NO_FIRST_VISIT` (complete, no first visit, under two progress videos); Time & Rules note `SANCTIONED_BEFORE_RECOMMENDED`. A form pin that cannot be compared and a completed work with no completion date are NOT_ASSESSABLE, never a clean chit; only a video before the completion day clears a fast finish; a stall survives one unreadable video.
+
 A group of real works is compared only when it has 30+ works, is tight (p90 within +25% of the median), and is
 priced in the form's own unit of size. Roads (priced per m²) are never compared with roads per metre.
 

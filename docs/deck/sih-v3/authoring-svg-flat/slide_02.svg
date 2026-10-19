@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1280" height="720" viewBox="0 0 1280 720" font-family="Arial, sans-serif"><defs><marker id="arrMuted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#667085"/></marker><marker id="arrNavy" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0B3D6E"/></marker><marker id="arrGreen" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1E7B45"/></marker><marker id="arrSaff" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#E8871E"/></marker><filter id="fx1" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="2.41469816" stdDeviation="0" flood-color="#808080" flood-opacity="0.34999" /></filter></defs><rect x="0" y="0" width="1280" height="720" fill="#FFFFFF" />
+<g id="shape-9" data-pptx-object="shape" data-pptx-frame="0 667.17 1280 52.83" data-pptx-prst="rect" data-pptx-source-ref="slide:9" data-pptx-semantic-object="shape">
+<path d="M 0 667.17 L 1280 667.17 L 1280 720 L 0 720 Z" fill="#0070C0" stroke-width="1" stroke="none" stroke-linejoin="miter" filter="url(#fx1)" data-pptx-part="geometry" />
+
+
+</g>
+<g id="shape-15361" data-pptx-object="shape" data-pptx-frame="19.21 0 1152 120" data-ph-type="title" data-pptx-prst="rect" data-pptx-source-ref="slide:15361">
+
+<path d="M 19.21 0 L 1171.21 0 L 1171.21 120 L 19.21 120 Z" fill="none" />
+
+
+<text x="595.21" y="45.6" text-anchor="middle" xml:space="preserve" font-family="&quot;Times New Roman&quot;, &quot;ＭＳ Ｐゴシック&quot;, sans-serif" font-size="48" fill="#000000" font-weight="bold"><tspan x="595.21" dy="57.6"><tspan>DRISHTI</tspan><tspan font-size="24" font-weight="normal" font-style="italic" fill="#344054">  ·  the AI-eye on every MPLADS rupee</tspan></tspan></text>
+</g>
+<g id="shape-6" data-pptx-object="shape" data-pptx-frame="917.33 667.33 298.67 38.33" data-ph-type="sldNum" data-pptx-placeholder-index="12" data-pptx-placeholder-size="quarter" data-pptx-prst="rect" data-pptx-source-ref="slide:6" data-pptx-semantic-object="shape">
+<path d="M 917.33 667.33 L 1216 667.33 L 1216 705.67 L 917.33 705.67 Z" fill="none" data-ph-type="sldNum" data-pptx-placeholder-index="12" data-pptx-placeholder-size="quarter" data-pptx-part="geometry" />
+
+
+<text x="1206.4" y="692.53" text-anchor="end" xml:space="preserve" font-family="Calibri, sans-serif" font-size="24" fill="#FFFFFF" font-weight="bold">2</text>
+</g>
+<g id="shape-7" data-pptx-object="shape" data-pptx-frame="488 667.33 336.38 38.33" data-ph-type="ftr" data-pptx-placeholder-index="11" data-pptx-placeholder-size="quarter" data-pptx-prst="rect" data-pptx-source-ref="slide:7" data-pptx-semantic-object="shape">
+<path d="M 488 667.33 L 824.38 667.33 L 824.38 705.67 L 488 705.67 Z" fill="none" data-ph-type="ftr" data-pptx-placeholder-index="11" data-pptx-placeholder-size="quarter" data-pptx-part="geometry" />
+
+
+<text x="656.19" y="692.53" text-anchor="middle" xml:space="preserve" font-family="Calibri, sans-serif" font-size="24" fill="#FFFFFF">@SIH Idea submission- </text>
+</g>
+<g id="shape-10" data-pptx-object="shape" data-pptx-frame="34.62 26.48 131.43 84.76" data-pptx-prst="ellipse" data-pptx-source-ref="slide:10" data-pptx-semantic-object="shape">
+<path d="M 34.62 68.86 A 65.71 42.38 0 0 1 100.34 26.48 A 65.71 42.38 0 0 1 166.05 68.86 A 65.71 42.38 0 0 1 100.34 111.24 A 65.71 42.38 0 0 1 34.62 68.86 Z" fill="#FFFFFF" stroke="#8064A2" stroke-width="1" data-pptx-part="geometry" />
+
+
+<text x="100.34" y="74.86" text-anchor="middle" xml:space="preserve" font-family="Calibri, sans-serif" font-size="21" font-weight="bold" fill="#0B3D6E">NeuralNexus</text>
+</g>
+<g id="shape-11" data-pptx-object="picture" data-pptx-frame="1026.78 0.16 236.2 111.53" data-pptx-source-ref="slide:11">
+<image data-pptx-object="picture" data-pptx-frame="1026.78 0.16 236.2 111.53" href="../images/image2.png" x="1026.78" y="0.16" width="236.2" height="111.53" preserveAspectRatio="none" />
+</g>
+<g id="solution" data-pptx-bounds="30 124 1220 51" font-family="Calibri">
+  <polygon points="37,132.05 42,137.05 37,142.05 32,137.05" fill="#E8871E"/><text x="48" y="142" font-size="15" fill="#0B3D6E" font-weight="bold"><tspan x="48" dy="0">Proposed Solution (Describe your Idea/Solution/Prototype)</tspan></text><line x1="32" y1="149" x2="1248" y2="149" stroke="#D0D5DD" stroke-width="1"/>
+  <text x="32" y="169" font-size="15" fill="#344054"><tspan x="32" dy="0"><tspan fill="#1D2939" font-weight="bold">A read-only AI layer on eSAKSHI. </tspan><tspan fill="#344054">Every work is checked; only the risky ones reach an officer, with the evidence.</tspan></tspan></text>
+</g>
+<g id="pipeline" data-pptx-bounds="30 190 1220 288" font-family="Calibri">
+  <text x="32" y="204" font-size="11.5" fill="#0B3D6E" font-weight="bold"><tspan x="32" dy="0">DETAILED EXPLANATION OF THE PROPOSED SOLUTION</tspan></text>
+  <circle cx="86" cy="318" r="36" fill="#F2F5F9" stroke="#D0D5DD" stroke-width="1.5"/><use data-icon="phosphor-duotone/database" x="65.3" y="297.3" width="41.4" height="41.4" fill="#0B3D6E"/>
+  <text x="86" y="372" font-size="14" fill="#1D2939" font-weight="bold" text-anchor="middle"><tspan x="86" dy="0">eSAKSHI</tspan></text>
+  <text x="86" y="388" font-size="11" fill="#667085" text-anchor="middle"><tspan x="86" dy="0">works, papers,</tspan></text>
+  <text x="86" y="402" font-size="11" fill="#667085" text-anchor="middle"><tspan x="86" dy="0">site photos</tspan></text>
+  <line x1="126" y1="318" x2="156" y2="318" stroke="#0B3D6E" stroke-width="1.6" marker-end="url(#arrNavy)"/>
+  <rect x="162" y="216" width="700" height="212" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+  <polygon points="172,226 328,226 340,240 328,254 172,254" fill="#0B3D6E"/>
+  <text x="257" y="245" font-size="12" fill="#FFFFFF" font-weight="bold" text-anchor="middle"><tspan x="257" dy="0">Before sanction</tspan></text>
+  <rect x="176" y="266" width="156" height="28" rx="5" fill="#F2F5F9"/>
+  <use data-icon="phosphor-duotone/prohibit" x="182" y="270" width="20" height="20" fill="#0B3D6E"/>
+  <text x="208" y="285" font-size="12.5" fill="#1D2939" font-weight="bold"><tspan x="208" dy="0">Eligibility</tspan></text>
+  <circle cx="320" cy="280" r="4.5" fill="#0070C0"/>
+  <rect x="176" y="297.5" width="156" height="28" rx="5" fill="#F2F5F9"/>
+  <use data-icon="phosphor-duotone/copy" x="182" y="301.5" width="20" height="20" fill="#0B3D6E"/>
+  <text x="208" y="316.5" font-size="12.5" fill="#1D2939" font-weight="bold"><tspan x="208" dy="0">Duplicate &amp; Split</tspan></text>
+  <circle cx="320" cy="311.5" r="4.5" fill="#0070C0"/>
+  <rect x="176" y="329" width="156" height="28" rx="5" fill="#F2F5F9"/>
+  <use data-icon="phosphor-duotone/currency-inr" x="182" y="333" width="20" height="20" fill="#0B3D6E"/>
+  <text x="208" y="348" font-size="12.5" fill="#1D2939" font-weight="bold"><tspan x="208" dy="0">Cost</tspan></text>
+  <circle cx="320" cy="343" r="4.5" fill="#1E7B45"/>
+  <polygon points="342,226 498,226 510,240 498,254 342,254 354,240" fill="#1B5A94"/>
+  <text x="431" y="245" font-size="12" fill="#FFFFFF" font-weight="bold" text-anchor="middle"><tspan x="431" dy="0">During construction</tspan></text>
+  <rect x="346" y="266" width="156" height="28" rx="5" fill="#F2F5F9"/>
+  <use data-icon="phosphor-duotone/hard-hat" x="352" y="270" width="20" height="20" fill="#0B3D6E"/>
+  <text x="378" y="285" font-size="12.5" fill="#1D2939" font-weight="bold"><tspan x="378" dy="0">Site Progress</tspan></text>
+  <circle cx="490" cy="280" r="4" fill="#FFFFFF" stroke="#667085" stroke-width="1.3"/>
+  <rect x="346" y="297.5" width="156" height="28" rx="5" fill="#F2F5F9"/>
+  <use data-icon="phosphor-duotone/image" x="352" y="301.5" width="20" height="20" fill="#0B3D6E"/>
+  <text x="378" y="316.5" font-size="12.5" fill="#1D2939" font-weight="bold"><tspan x="378" dy="0">Photo Forensics</tspan></text>
+  <circle cx="490" cy="311.5" r="4.5" fill="#0070C0"/>
+  <rect x="346" y="329" width="156" height="28" rx="5" fill="#F2F5F9"/>
+  <use data-icon="phosphor-duotone/map-pin" x="352" y="333" width="20" height="20" fill="#0B3D6E"/>
+  <text x="378" y="348" font-size="12.5" fill="#1D2939" font-weight="bold"><tspan x="378" dy="0">Geo-Location</tspan></text>
+  <circle cx="490" cy="343" r="4.5" fill="#0070C0"/>
+  <rect x="346" y="360.5" width="156" height="28" rx="5" fill="#F2F5F9"/>
+  <use data-icon="phosphor-duotone/file-text" x="352" y="364.5" width="20" height="20" fill="#0B3D6E"/>
+  <text x="378" y="379.5" font-size="12.5" fill="#1D2939" font-weight="bold"><tspan x="378" dy="0">Document</tspan></text>
+  <circle cx="490" cy="374.5" r="4.5" fill="#0070C0"/>
+  <rect x="346" y="392" width="156" height="28" rx="5" fill="#F2F5F9"/>
+  <use data-icon="phosphor-duotone/globe-hemisphere-east" x="352" y="396" width="20" height="20" fill="#0B3D6E"/>
+  <text x="378" y="411" font-size="12.5" fill="#1D2939" font-weight="bold"><tspan x="378" dy="0">Satellite</tspan></text>
+  <circle cx="490" cy="406" r="4" fill="#FFFFFF" stroke="#667085" stroke-width="1.3"/>
+  <polygon points="512,226 668,226 680,240 668,254 512,254 524,240" fill="#0B3D6E"/>
+  <text x="601" y="245" font-size="12" fill="#FFFFFF" font-weight="bold" text-anchor="middle"><tspan x="601" dy="0">Money &amp; time</tspan></text>
+  <rect x="516" y="266" width="156" height="28" rx="5" fill="#F2F5F9"/>
+  <use data-icon="phosphor-duotone/hourglass-medium" x="522" y="270" width="20" height="20" fill="#0B3D6E"/>
+  <text x="548" y="285" font-size="12.5" fill="#1D2939" font-weight="bold"><tspan x="548" dy="0">Delay</tspan></text>
+  <circle cx="660" cy="280" r="4.5" fill="#0070C0"/>
+  <rect x="516" y="297.5" width="156" height="28" rx="5" fill="#F2F5F9"/>
+  <use data-icon="phosphor-duotone/hand-coins" x="522" y="301.5" width="20" height="20" fill="#0B3D6E"/>
+  <text x="548" y="316.5" font-size="12.5" fill="#1D2939" font-weight="bold"><tspan x="548" dy="0">Fund Flow</tspan></text>
+  <circle cx="660" cy="311.5" r="4.5" fill="#0070C0"/>
+  <rect x="516" y="329" width="156" height="28" rx="5" fill="#F2F5F9"/>
+  <use data-icon="phosphor-duotone/handshake" x="522" y="333" width="20" height="20" fill="#0B3D6E"/>
+  <text x="548" y="348" font-size="12.5" fill="#1D2939" font-weight="bold"><tspan x="548" dy="0">Contractor</tspan></text>
+  <circle cx="660" cy="343" r="4.5" fill="#0070C0"/>
+  <polygon points="682,226 838,226 850,240 838,254 682,254 694,240" fill="#1B5A94"/>
+  <text x="771" y="245" font-size="12" fill="#FFFFFF" font-weight="bold" text-anchor="middle"><tspan x="771" dy="0">After completion</tspan></text>
+  <rect x="686" y="266" width="156" height="28" rx="5" fill="#F2F5F9"/>
+  <use data-icon="phosphor-duotone/qr-code" x="692" y="270" width="20" height="20" fill="#0B3D6E"/>
+  <text x="718" y="285" font-size="12.5" fill="#1D2939" font-weight="bold"><tspan x="718" dy="0">Citizen check</tspan></text>
+  <circle cx="830" cy="280" r="4" fill="#FFFFFF" stroke="#667085" stroke-width="1.3"/>
+  <text x="682" y="386" font-size="13" fill="#0B3D6E" font-weight="bold" text-anchor="middle"><tspan x="682" dy="0">12 AI AGENTS</tspan></text>
+  <text x="682" y="402" font-size="11" fill="#667085" text-anchor="middle"><tspan x="682" dy="0">each answers one question</tspan></text>
+  <text x="682" y="416" font-size="11" fill="#667085" text-anchor="middle"><tspan x="682" dy="0">about the work</tspan></text>
+  <line x1="864" y1="318" x2="896" y2="318" stroke="#0B3D6E" stroke-width="1.6" marker-end="url(#arrNavy)"/>
+  <rect x="900" y="222" width="348" height="58" rx="8" fill="#FDF1E4" stroke="#E8871E" stroke-width="1.2"/>
+  <circle cx="932" cy="251" r="20" fill="#FFFFFF"/><use data-icon="phosphor-duotone/gauge" x="920.5" y="239.5" width="23" height="23" fill="#E8871E"/>
+  <text x="962" y="247" font-size="15" fill="#1D2939" font-weight="bold"><tspan x="962" dy="0">Risk score</tspan></text>
+  <text x="962" y="265" font-size="12" fill="#667085"><tspan x="962" dy="0">0–100, parts add up</tspan></text>
+  <line x1="1074" y1="280" x2="1074" y2="296" stroke="#0B3D6E" stroke-width="1.6" marker-end="url(#arrNavy)"/>
+  <rect x="900" y="298" width="348" height="58" rx="8" fill="#E8F1FA" stroke="#0B3D6E" stroke-width="1.2"/>
+  <circle cx="932" cy="327" r="20" fill="#FFFFFF"/><use data-icon="phosphor-duotone/list-numbers" x="920.5" y="315.5" width="23" height="23" fill="#0B3D6E"/>
+  <text x="962" y="323" font-size="15" fill="#1D2939" font-weight="bold"><tspan x="962" dy="0">Ranked review list</tspan></text>
+  <text x="962" y="341" font-size="12" fill="#667085"><tspan x="962" dy="0">risk × money</tspan></text>
+  <line x1="1074" y1="356" x2="1074" y2="372" stroke="#0B3D6E" stroke-width="1.6" marker-end="url(#arrNavy)"/>
+  <rect x="900" y="374" width="348" height="58" rx="8" fill="#E7F4EC" stroke="#1E7B45" stroke-width="1.2"/>
+  <circle cx="932" cy="403" r="20" fill="#FFFFFF"/><use data-icon="phosphor-duotone/user-check" x="920.5" y="391.5" width="23" height="23" fill="#1E7B45"/>
+  <text x="962" y="399" font-size="15" fill="#1D2939" font-weight="bold"><tspan x="962" dy="0">Officer decides</tspan></text>
+  <text x="962" y="417" font-size="12" fill="#667085"><tspan x="962" dy="0">visits, then gives a verdict</tspan></text>
+  <path d="M 1218 432 L 1218 446 L 512.0 446 L 512.0 432" fill="none" stroke="#1E7B45" stroke-width="1.4" stroke-dasharray="5,4" marker-end="url(#arrGreen)"/>
+  <text x="973" y="463" font-size="11" fill="#1E7B45" font-weight="bold" text-anchor="middle"><tspan x="973" dy="0">verdicts become training labels (next)</tspan></text>
+  <circle cx="40" cy="470" r="4.5" fill="#1E7B45"/>
+  <text x="49" y="474" font-size="11" fill="#667085"><tspan x="49" dy="0">live</tspan></text>
+  <circle cx="84" cy="470" r="4.5" fill="#0070C0"/>
+  <text x="93" y="474" font-size="11" fill="#667085"><tspan x="93" dy="0">tested on real eSAKSHI works</tspan></text>
+  <circle cx="262" cy="470" r="4" fill="#FFFFFF" stroke="#667085" stroke-width="1.3"/>
+  <text x="271" y="474" font-size="11" fill="#667085"><tspan x="271" dy="0">planned</tspan></text>
+</g>
+<g id="problem-fix" data-pptx-bounds="30 488 606 172" font-family="Calibri">
+  <polygon points="37,496.05 42,501.05 37,506.05 32,501.05" fill="#E8871E"/><text x="48" y="506" font-size="15" fill="#0B3D6E" font-weight="bold"><tspan x="48" dy="0">How it addresses the problem</tspan></text><line x1="32" y1="513" x2="632" y2="513" stroke="#D0D5DD" stroke-width="1"/>
+  <circle cx="52" cy="545" r="18" fill="#FDECEA"/><use data-icon="phosphor-duotone/signpost" x="41.65" y="534.65" width="20.7" height="20.7" fill="#B42318"/>
+  <text x="78" y="543" font-size="18" fill="#B42318" font-weight="bold"><tspan x="78" dy="0">4,918</tspan></text>
+  <text x="78" y="558" font-size="11.5" fill="#667085"><tspan x="78" dy="0">works had no plaque (CAG)</tspan></text>
+  <line x1="292" y1="545" x2="346" y2="545" stroke="#0B3D6E" stroke-width="1.6" marker-end="url(#arrNavy)"/>
+  <circle cx="372" cy="545" r="18" fill="#E7F4EC"/><use data-icon="phosphor-duotone/image" x="361.65" y="534.65" width="20.7" height="20.7" fill="#1E7B45"/>
+  <text x="398" y="550" font-size="14" fill="#1D2939" font-weight="bold"><tspan x="398" dy="0">Photo + plaque check</tspan></text>
+  <circle cx="52" cy="591" r="18" fill="#FDECEA"/><use data-icon="phosphor-duotone/hourglass-medium" x="41.65" y="580.65" width="20.7" height="20.7" fill="#B42318"/>
+  <text x="78" y="589" font-size="18" fill="#B42318" font-weight="bold"><tspan x="78" dy="0">12,006</tspan></text>
+  <text x="78" y="604" font-size="11.5" fill="#667085"><tspan x="78" dy="0">works left incomplete (CAG)</tspan></text>
+  <line x1="292" y1="591" x2="346" y2="591" stroke="#0B3D6E" stroke-width="1.6" marker-end="url(#arrNavy)"/>
+  <circle cx="372" cy="591" r="18" fill="#E7F4EC"/><use data-icon="phosphor-duotone/clock" x="361.65" y="580.65" width="20.7" height="20.7" fill="#1E7B45"/>
+  <text x="398" y="596" font-size="14" fill="#1D2939" font-weight="bold"><tspan x="398" dy="0">Stuck-work alerts</tspan></text>
+  <circle cx="52" cy="637" r="18" fill="#FDECEA"/><use data-icon="phosphor-duotone/magnifying-glass" x="41.65" y="626.65" width="20.7" height="20.7" fill="#B42318"/>
+  <text x="78" y="635" font-size="18" fill="#B42318" font-weight="bold"><tspan x="78" dy="0">10%</tspan></text>
+  <text x="78" y="650" font-size="11.5" fill="#667085"><tspan x="78" dy="0">of works a district must inspect</tspan></text>
+  <line x1="292" y1="637" x2="346" y2="637" stroke="#0B3D6E" stroke-width="1.6" marker-end="url(#arrNavy)"/>
+  <circle cx="372" cy="637" r="18" fill="#E7F4EC"/><use data-icon="phosphor-duotone/sort-descending" x="361.65" y="626.65" width="20.7" height="20.7" fill="#1E7B45"/>
+  <text x="398" y="642" font-size="14" fill="#1D2939" font-weight="bold"><tspan x="398" dy="0">Risk-ranked visit list</tspan></text>
+</g>
+<g id="innovation" data-pptx-bounds="658 488 592 172" font-family="Calibri">
+  <polygon points="665,496.05 670,501.05 665,506.05 660,501.05" fill="#E8871E"/><text x="676" y="506" font-size="15" fill="#0B3D6E" font-weight="bold"><tspan x="676" dy="0">Innovation and uniqueness of the solution</tspan></text><line x1="660" y1="513" x2="1248" y2="513" stroke="#D0D5DD" stroke-width="1"/>
+  <rect x="660" y="525" width="289" height="62" rx="8" fill="#F2F5F9"/>
+  <circle cx="690" cy="556" r="20" fill="#FFFFFF"/><use data-icon="phosphor-duotone/map-pin" x="678.5" y="544.5" width="23" height="23" fill="#B35900"/>
+  <text x="720" y="552" font-size="14" fill="#1D2939" font-weight="bold"><tspan x="720" dy="0">Reads the GPS stamp</tspan></text>
+  <text x="720" y="570" font-size="12" fill="#667085"><tspan x="720" dy="0">printed inside site photos</tspan></text>
+  <rect x="959" y="525" width="289" height="62" rx="8" fill="#F2F5F9"/>
+  <circle cx="989" cy="556" r="20" fill="#FFFFFF"/><use data-icon="phosphor-duotone/flask" x="977.5" y="544.5" width="23" height="23" fill="#B35900"/>
+  <text x="1019" y="552" font-size="14" fill="#1D2939" font-weight="bold"><tspan x="1019" dy="0">Proven before launch</tspan></text>
+  <text x="1019" y="570" font-size="12" fill="#667085"><tspan x="1019" dy="0">on real eSAKSHI works</tspan></text>
+  <rect x="660" y="597" width="289" height="62" rx="8" fill="#F2F5F9"/>
+  <circle cx="690" cy="628" r="20" fill="#FFFFFF"/><use data-icon="phosphor-duotone/seal-check" x="678.5" y="616.5" width="23" height="23" fill="#B35900"/>
+  <text x="720" y="624" font-size="14" fill="#1D2939" font-weight="bold"><tspan x="720" dy="0">Evidence, not accusation</tspan></text>
+  <text x="720" y="642" font-size="12" fill="#667085"><tspan x="720" dy="0">every flag cites its clause</tspan></text>
+  <rect x="959" y="597" width="289" height="62" rx="8" fill="#F2F5F9"/>
+  <circle cx="989" cy="628" r="20" fill="#FFFFFF"/><use data-icon="phosphor-duotone/file-text" x="977.5" y="616.5" width="23" height="23" fill="#B35900"/>
+  <text x="1019" y="624" font-size="14" fill="#1D2939" font-weight="bold"><tspan x="1019" dy="0">Reads papers for free</tspan></text>
+  <text x="1019" y="642" font-size="12" fill="#667085"><tspan x="1019" dy="0">certificates &amp; bills, on our server</tspan></text>
+</g>
+</svg>
