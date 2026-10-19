@@ -46,6 +46,7 @@ const GOOD_BASE_VIEWS = 4;
 const DARK = 40;
 const FAST_MPS = 2.5;
 const WEAK_GPS_M = 50; // a fix less accurate than this cannot place the phone (the engine's GPS_POOR_M)
+const APPROX_GPS_M = 500; // T168: "approximate location" mode: no location at all (the engine's APPROX_M)
 
 interface Mark {
   id: string;
@@ -214,6 +215,10 @@ function Capture() {
     seconds < MIN_SECONDS && `Keep filming: at least ${MIN_SECONDS} seconds.`,
     chosen === "baseline" && done.length < MIN_BASE_VIEWS && `Mark at least ${MIN_BASE_VIEWS} viewpoints around the site (a fixed object at each: a tree, a pole, a wall).`,
     at && "Finish the viewpoint you are at.",
+    // T168: every visit records where it was filmed, so it can be held to the form's site
+    gps === null && "Turn on location: every site visit must record where it was filmed (waiting for a GPS fix).",
+    gps !== null && gps.accuracy > APPROX_GPS_M &&
+      `The phone gives only an approximate location (±${Math.round(gps.accuracy)} m): allow precise location for this site in the phone's settings.`,
   ].filter(Boolean) as string[];
   // T158: the stretches of a long road this visit was asked for, and those the GPS has walked
   const walked = new Set(walkedIds);

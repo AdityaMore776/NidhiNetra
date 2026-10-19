@@ -1,0 +1,19 @@
+T168 site_progress eval, set holdout2, label fixed: 8 cases x 2 worlds
+totals: {"pass": "16/16", "honest_clear": "8/8", "honest_asked": "0/8", "ideal": "16/16", "fraud_caught": "8/8", "fraud_excused": "0/8", "verdicts": {"pass": 16}}
+
+  SL-H1-filmed-around-the-site sparse honest  got fits   (allowed fits/edge) -
+  SL-H1-filmed-around-the-site dense  honest  got fits   (allowed fits/edge) -
+  SL-H2-one-month-gps-off      sparse edge    got fits   (allowed fits/edge) -
+  SL-H2-one-month-gps-off      dense  edge    got fits   (allowed fits/edge) -
+  SL-H3-weak-gps-honest-accuracy sparse edge    got fits   (allowed fits/edge) -
+  SL-H3-weak-gps-honest-accuracy dense  edge    got fits   (allowed fits/edge) -
+  SL-F1-one-month-elsewhere    sparse evasion got check  (allowed check/ask) FILMED_AWAY_FROM_FORM_SITE
+  SL-F1-one-month-elsewhere    dense  evasion got check  (allowed check/ask) FILMED_AWAY_FROM_FORM_SITE
+  SL-F2-filmed-far-twice       sparse evasion got ask    (allowed ask) FILMED_AWAY_FROM_FORM_SITE
+  SL-F2-filmed-far-twice       dense  evasion got ask    (allowed ask) FILMED_AWAY_FROM_FORM_SITE
+  SL-F3-gps-off-every-month    sparse evasion got ask    (allowed ask) LOCATION_NOT_RECORDED
+  SL-F3-gps-off-every-month    dense  evasion got ask    (allowed ask) LOCATION_NOT_RECORDED
+  SL-F4-mock-location-twice    sparse evasion got check  (allowed check/ask) LOCATION_NOT_RECORDED
+  SL-F4-mock-location-twice    dense  evasion got check  (allowed check/ask) LOCATION_NOT_RECORDED
+  SL-H4-old-readings           sparse honest  got fits   (allowed fits/edge) -
+  SL-H4-old-readings           dense  honest  got fits   (allowed fits/edge) -
