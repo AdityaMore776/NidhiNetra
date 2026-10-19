@@ -55,6 +55,9 @@ HI = {
     "FINISHED_TOO_FAST": "कार्य आरंभ के {days} दिन बाद ही पूर्ण दर्ज है, जबकि इस आकार का कार्य "
                          "{early} दिन से पहले नहीं बन सकता, और कोई साइट वीडियो निर्माण होते नहीं "
                          "दिखाता। पूर्णता की जाँच करें।",
+    "SANCTIONED_BEFORE_RECOMMENDED": "सांसद की अनुशंसा से {days} दिन पहले स्वीकृत दर्ज: तिथियाँ "
+                                     "असंभव क्रम में हैं। अभिलेख की तिथियाँ और स्वीकृति आदेश "
+                                     "जाँचें।",
     "PAST_PROMISED_TIME": "एजेंसी द्वारा बताए समय (अनुग्रह अवधि सहित {late} तक) के {days} दिन बाद "
                           "भी पूर्ण नहीं। एजेंसी से प्रगति की जानकारी लें।",
 }
@@ -101,6 +104,25 @@ def sanctioned_late(work: dict) -> Finding | None:
                    evidence={"value": lag, "limit": limit, "mcc_days_excluded": off,
                              "share_late": share,
                              "message_hi": HI["SANCTIONED_LATE"].format(days=lag, limit=limit)})
+
+
+BEFORE_DAYS = 7               # as R06: a week's slack for dates typed in a hurry
+
+
+def sanctioned_before_recommended(work: dict) -> Finding | None:
+    """T168: sanctioned 7+ days before the MP recommended it, dates in an impossible order. A
+    note (risk as SANCTIONED_LATE): how often this is a typing slip and how often backdated
+    paperwork is not measured yet (no table with sanction dates on hand), so it never queues."""
+    rec, san = as_date(work.get("recommended_date")), as_date(work.get("sanction_date"))
+    if not rec or not san or (rec - san).days < BEFORE_DAYS:
+        return None
+    text = (f"Recorded as sanctioned {_days((rec - san).days)} before the MP recommended it "
+            f"({san:%d %b %Y}, recommended {rec:%d %b %Y}): dates in an impossible order. Check "
+            "the record's dates and the sanction order.")
+    return Finding("SANCTIONED_BEFORE_RECOMMENDED", text, hard=False, risk=LATE_FACT_RISK,
+                   evidence={"value": (rec - san).days, "limit": BEFORE_DAYS,
+                             "message_hi": HI["SANCTIONED_BEFORE_RECOMMENDED"].format(
+                                 days=(rec - san).days)})
 
 
 def _first_work_seen(vs: list[site_visits.Visit]) -> date | None:
@@ -206,9 +228,9 @@ def assess(work: dict, as_of: date, timeline=None, offices=None) -> AgentResult:
         if w is not None and rule in ("R13", "R14"):
             continue          # with a form, the comfort window asks the same question better
         findings.append(f)
-    late = sanctioned_late(work)
-    if late:
-        findings.append(late)
+    for f in (sanctioned_late(work), sanctioned_before_recommended(work)):
+        if f:
+            findings.append(f)
     limitations = []
     if w is not None:
         for f in (too_fast(work, w, vs), past_promised(work, w, vs, as_of)):

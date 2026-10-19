@@ -44,8 +44,9 @@ def test_complete_without_a_completion_date_is_not_a_clean_chit():
     assert "completion date" in r.headline and "not a clean chit" in r.headline
 
 
-def test_complete_without_a_date_still_raises_what_its_other_dates_show():
-    # recorded complete before it was even recommended: still asked, whatever date is missing
-    r = assess(_work(status="COMPLETED", recommended_date=date(2026, 3, 1),
-                     sanction_date=date(2026, 2, 1), completed_date=None), AS_OF)
-    assert r.status in (Status.ASSESSED, Status.NOT_ASSESSABLE)
+def test_sanctioned_before_it_was_recommended_is_a_note_never_a_clean_chit():
+    r = assess(_work(recommended_date=date(2026, 3, 1), sanction_date=date(2026, 1, 30)), AS_OF)
+    f = next(f for f in r.findings if f.code == "SANCTIONED_BEFORE_RECOMMENDED")
+    assert 0 < f.risk < 0.1 and "impossible order" in f.text
+    near = assess(_work(recommended_date=date(2026, 3, 1), sanction_date=date(2026, 2, 26)), AS_OF)
+    assert "SANCTIONED_BEFORE_RECOMMENDED" not in _codes(near)      # a few days: a typing slip

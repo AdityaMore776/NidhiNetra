@@ -90,6 +90,7 @@ def cases():
     out.append(case(
         "TH-B1-sanction-before-recommendation", "broken", "edge", "na/edge/check", "broken",
         "A record sanctioned 30 days before it was recommended.",
-        "Dates in an impossible order: at least a note, never a clean chit.",
+        "Dates in an impossible order: at least a note, never a clean chit. SEEN: the note "
+        "SANCTIONED_BEFORE_RECOMMENDED was added after this case's first run.",
         lambda: record("YB1", "ROAD_CC", "CC road at Barauli", 400_000, m(100), m(130))))
     return out
