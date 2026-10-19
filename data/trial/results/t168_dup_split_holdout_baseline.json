@@ -26,6 +26,7 @@
    ],
    "ideal": "edge",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -49,6 +50,7 @@
    ],
    "ideal": "edge",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -73,6 +75,7 @@
    ],
    "ideal": "edge",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -96,6 +99,7 @@
    ],
    "ideal": "edge",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -118,6 +122,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -138,6 +143,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -158,14 +164,15 @@
    ],
    "ideal": "fits",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
     "LOOKS_LIKE_SANCTIONED_WORK"
    ],
-   "band": "MEDIUM",
-   "score": 0.25,
-   "headline": "Reads like sanctioned work XH4-OLD (Rs 3.00 lakh, completed on 2025-12-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work XH4-OLD (Rs 2.10 lakh, completed on 2025-12-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
    "pair": ""
   },
   {
@@ -180,14 +187,15 @@
    ],
    "ideal": "fits",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
     "LOOKS_LIKE_SANCTIONED_WORK"
    ],
-   "band": "MEDIUM",
-   "score": 0.25,
-   "headline": "Reads like sanctioned work XH4-OLD (Rs 3.00 lakh, completed on 2025-12-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work XH4-OLD (Rs 2.10 lakh, completed on 2025-12-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
    "pair": ""
   },
   {
@@ -202,6 +210,7 @@
    ],
    "ideal": "check",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "hard",
    "codes": [],
    "notes": [
@@ -225,6 +234,7 @@
    ],
    "ideal": "check",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "hard",
    "codes": [],
    "notes": [
@@ -248,6 +258,7 @@
    ],
    "ideal": "check",
    "got": "fits",
+   "agent": "dup_split",
    "verdict": "hard",
    "codes": [],
    "notes": [],
@@ -268,6 +279,7 @@
    ],
    "ideal": "check",
    "got": "fits",
+   "agent": "dup_split",
    "verdict": "hard",
    "codes": [],
    "notes": [],
@@ -288,6 +300,7 @@
    ],
    "ideal": "check",
    "got": "fits",
+   "agent": "dup_split",
    "verdict": "hard",
    "codes": [],
    "notes": [],
@@ -308,6 +321,7 @@
    ],
    "ideal": "check",
    "got": "fits",
+   "agent": "dup_split",
    "verdict": "hard",
    "codes": [],
    "notes": [],
@@ -327,6 +341,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -348,6 +363,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -369,14 +385,15 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
    ],
    "notes": [],
    "band": "MEDIUM",
-   "score": 0.438,
-   "headline": "The map pin is 15 m from sanctioned work XF5-OLD, of the same kind (Rs 3.00 lakh, completed on 2025-12-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
+   "score": 0.25,
+   "headline": "The map pin is 15 m from sanctioned work XF5-OLD, of the same kind (Rs 2.10 lakh, completed on 2025-12-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
    "pair": ""
   },
   {
@@ -390,14 +407,15 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
    ],
    "notes": [],
    "band": "MEDIUM",
-   "score": 0.438,
-   "headline": "The map pin is 15 m from sanctioned work XF5-OLD, of the same kind (Rs 3.00 lakh, completed on 2025-12-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
+   "score": 0.25,
+   "headline": "The map pin is 15 m from sanctioned work XF5-OLD, of the same kind (Rs 2.10 lakh, completed on 2025-12-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
    "pair": ""
   },
   {
@@ -411,6 +429,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -432,6 +451,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -453,6 +473,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -474,6 +495,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -497,6 +519,7 @@
    ],
    "ideal": "na",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "soft",
    "codes": [],
    "notes": [
@@ -520,6 +543,7 @@
    ],
    "ideal": "na",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "soft",
    "codes": [],
    "notes": [

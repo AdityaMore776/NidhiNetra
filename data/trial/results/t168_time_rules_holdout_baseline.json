@@ -25,11 +25,12 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.25,
+   "band": "LOW",
+   "score": 0.0,
    "headline": "No timing problem the dates and the agency's own estimate can show.",
    "pair": ""
   },
@@ -45,11 +46,12 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.25,
+   "band": "LOW",
+   "score": 0.0,
    "headline": "No timing problem the dates and the agency's own estimate can show.",
    "pair": ""
   },
@@ -65,11 +67,12 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.25,
+   "band": "LOW",
+   "score": 0.0,
    "headline": "No timing problem the dates and the agency's own estimate can show.",
    "pair": ""
   },
@@ -85,11 +88,12 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.25,
+   "band": "LOW",
+   "score": 0.0,
    "headline": "No timing problem the dates and the agency's own estimate can show.",
    "pair": ""
   },
@@ -106,6 +110,7 @@
    ],
    "ideal": "fits",
    "got": "check",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "PAST_PROMISED_TIME"
@@ -129,6 +134,7 @@
    ],
    "ideal": "fits",
    "got": "check",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "PAST_PROMISED_TIME"
@@ -151,6 +157,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -171,6 +178,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -191,6 +199,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "FINISHED_TOO_FAST"
@@ -213,6 +222,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "FINISHED_TOO_FAST"
@@ -235,6 +245,7 @@
    ],
    "ideal": "ask",
    "got": "fits",
+   "agent": "time_rules",
    "verdict": "hard",
    "codes": [],
    "notes": [],
@@ -255,6 +266,7 @@
    ],
    "ideal": "ask",
    "got": "fits",
+   "agent": "time_rules",
    "verdict": "hard",
    "codes": [],
    "notes": [],
@@ -275,6 +287,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "BUILT_RIGHT_AFTER_SANCTION"
@@ -299,6 +312,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "BUILT_RIGHT_AFTER_SANCTION"
@@ -322,6 +336,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "BUILT_IN_DAYS",
@@ -344,6 +359,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "BUILT_IN_DAYS",
@@ -367,6 +383,7 @@
    ],
    "ideal": "check",
    "got": "check",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "PAST_PROMISED_TIME"
@@ -389,6 +406,7 @@
    ],
    "ideal": "check",
    "got": "check",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "PAST_PROMISED_TIME"
@@ -412,6 +430,7 @@
    ],
    "ideal": "edge",
    "got": "fits",
+   "agent": "time_rules",
    "verdict": "hard",
    "codes": [],
    "notes": [],
@@ -433,6 +452,7 @@
    ],
    "ideal": "edge",
    "got": "fits",
+   "agent": "time_rules",
    "verdict": "hard",
    "codes": [],
    "notes": [],
