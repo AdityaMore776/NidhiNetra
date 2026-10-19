@@ -28,7 +28,8 @@ def cases():
     out.append(case(
         "DH-H2-phase-two-60-days", "edge", "edge", "fits/edge/check", "split look-alike",
         "A road's declared phase II, filed 60 days after phase I, both at Rs 5 lakh.",
-        "Declared and numbered; 'check this' is tolerated, never a question.",
+        "Declared and numbered; 'check this' is tolerated, never a question. SEEN (band): "
+        "SPLIT_NEAR_LIMIT_DECLARED was added after the four-agent run's first pass (it was HIGH).",
         lambda: filed(piece("XH2-2", 31, 1, 500_000, m(40), work_nature="Extension / additional component",
                             prior_work_id="XH2-1", known_nearby_work_ids="XH2-1",
                             nearby_work_relationship="Same asset, separate phase")),

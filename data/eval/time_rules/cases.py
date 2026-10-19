@@ -85,7 +85,9 @@ def cases() -> list[Case]:
                       status="COMPLETED", completed_date=d(san2 + timedelta(days=30)),
                       site_visits=[visit(1, "baseline", san2 + timedelta(days=5)),
                                    visit(2, "check", san2 + timedelta(days=15)),
-                                   visit(3, "monthly", san2 + timedelta(days=27))]),
+                                   visit(3, "monthly", san2 + timedelta(days=27)),
+                                   visit(4, "final", san2 + timedelta(days=30), claim="complete",
+                                         complete_shown=True)]),
         pair="fast"))
     out.append(case(
         "T-H3-sanctioned-late", "honest", "edge", "fits/edge", "late sanction",

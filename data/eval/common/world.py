@@ -133,7 +133,7 @@ def _background(n_roads: int, n_halls: int, n_light_runs: int) -> list[dict]:
         lat, lon = wf.pin(k)
         for j in range(10):
             p = wf.lights(f"EV-BG-L{run}-{j}", OTHER[run % 5], f"Basti {run}", k, m(300 - run),
-                          30_000, 300_000, latitude=f"{lat + 8 * j * METRE:.6f}",
+                          21_000, 210_000, latitude=f"{lat + 8 * j * METRE:.6f}",
                           longitude=f"{lon + (j % 2) * 12 * METRE:.6f}")
             bg.append(filed(p, status="COMPLETED", completed_date=d(m(250 - run)),
                             sanction_date=d(m(290 - run))))

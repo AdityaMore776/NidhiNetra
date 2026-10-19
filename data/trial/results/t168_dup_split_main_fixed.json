@@ -23,6 +23,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -42,6 +43,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -62,6 +64,7 @@
    ],
    "ideal": "fits",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -84,6 +87,7 @@
    ],
    "ideal": "fits",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -106,6 +110,7 @@
    ],
    "ideal": "fits",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -128,6 +133,7 @@
    ],
    "ideal": "fits",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -150,14 +156,15 @@
    ],
    "ideal": "fits",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
     "LOOKS_LIKE_SANCTIONED_WORK"
    ],
-   "band": "MEDIUM",
-   "score": 0.25,
-   "headline": "Reads like sanctioned work DH4-OLD (Rs 3.00 lakh, completed on 2025-12-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work DH4-OLD (Rs 2.10 lakh, completed on 2025-12-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
    "pair": "light-spot"
   },
   {
@@ -172,14 +179,15 @@
    ],
    "ideal": "fits",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
     "LOOKS_LIKE_SANCTIONED_WORK"
    ],
-   "band": "MEDIUM",
-   "score": 0.25,
-   "headline": "Reads like sanctioned work DH4-OLD (Rs 3.00 lakh, completed on 2025-12-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work DH4-OLD (Rs 2.10 lakh, completed on 2025-12-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
    "pair": "light-spot"
   },
   {
@@ -194,14 +202,15 @@
    ],
    "ideal": "fits",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
     "LOOKS_LIKE_SANCTIONED_WORK"
    ],
-   "band": "MEDIUM",
-   "score": 0.25,
-   "headline": "Reads like sanctioned work DH5-A (Rs 3.00 lakh, sanctioned on 2026-09-22, not yet completed): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work DH5-A (Rs 2.10 lakh, sanctioned on 2026-09-22, not yet completed): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
    "pair": ""
   },
   {
@@ -216,14 +225,15 @@
    ],
    "ideal": "fits",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
     "LOOKS_LIKE_SANCTIONED_WORK"
    ],
-   "band": "MEDIUM",
-   "score": 0.25,
-   "headline": "Reads like sanctioned work DH5-A (Rs 3.00 lakh, sanctioned on 2026-09-22, not yet completed): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work DH5-A (Rs 2.10 lakh, sanctioned on 2026-09-22, not yet completed): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
    "pair": ""
   },
   {
@@ -238,6 +248,7 @@
    ],
    "ideal": "fits",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -260,6 +271,7 @@
    ],
    "ideal": "fits",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -281,6 +293,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -300,6 +313,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -320,6 +334,7 @@
    ],
    "ideal": "edge",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -342,6 +357,7 @@
    ],
    "ideal": "edge",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -364,6 +380,7 @@
    ],
    "ideal": "edge",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -386,6 +403,7 @@
    ],
    "ideal": "edge",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -407,6 +425,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -428,6 +447,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -449,6 +469,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "REBUILT_SOON_AFTER_COMPLETION"
@@ -470,6 +491,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "REBUILT_SOON_AFTER_COMPLETION"
@@ -491,6 +513,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SPLIT_JUST_UNDER_LIMIT"
@@ -512,6 +535,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SPLIT_JUST_UNDER_LIMIT"
@@ -533,6 +557,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -554,6 +579,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -575,14 +601,15 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
    ],
    "notes": [],
    "band": "MEDIUM",
-   "score": 0.438,
-   "headline": "The map pin is 5 m from sanctioned work DF5-OLD, of the same kind (Rs 3.00 lakh, completed on 2025-12-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
+   "score": 0.25,
+   "headline": "The map pin is 5 m from sanctioned work DF5-OLD, of the same kind (Rs 2.10 lakh, completed on 2025-12-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
    "pair": "light-spot"
   },
   {
@@ -596,14 +623,15 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
    ],
    "notes": [],
    "band": "MEDIUM",
-   "score": 0.438,
-   "headline": "The map pin is 5 m from sanctioned work DF5-OLD, of the same kind (Rs 3.00 lakh, completed on 2025-12-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
+   "score": 0.25,
+   "headline": "The map pin is 5 m from sanctioned work DF5-OLD, of the same kind (Rs 2.10 lakh, completed on 2025-12-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
    "pair": "light-spot"
   },
   {
@@ -617,6 +645,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_WHERE_FILMED"
@@ -638,6 +667,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_WHERE_FILMED"
@@ -660,6 +690,7 @@
    ],
    "ideal": "check",
    "got": "check",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SAME_BUILDING_NEAR"
@@ -682,6 +713,7 @@
    ],
    "ideal": "check",
    "got": "check",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SAME_BUILDING_NEAR"
@@ -703,6 +735,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "REBUILT_SOON_AFTER_COMPLETION"
@@ -724,6 +757,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "REBUILT_SOON_AFTER_COMPLETION"
@@ -746,13 +780,14 @@
    ],
    "ideal": "check",
    "got": "check",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SPLIT_NEAR_LIMIT"
    ],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.25,
+   "band": "HIGH",
+   "score": 0.667,
    "headline": "One of 3 alike works at one place, recommended within 8 days: each Rs 4,73,000 to Rs 4,77,000, near the Rs 5.00 lakh limit, Rs 14.26 lakh together. Just outside the strictest split (every piece 96-100% of a limit, within 30 days), so not a ",
    "pair": "split-share"
   },
@@ -768,13 +803,14 @@
    ],
    "ideal": "check",
    "got": "check",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SPLIT_NEAR_LIMIT"
    ],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.25,
+   "band": "HIGH",
+   "score": 0.667,
    "headline": "One of 3 alike works at one place, recommended within 8 days: each Rs 4,73,000 to Rs 4,77,000, near the Rs 5.00 lakh limit, Rs 14.26 lakh together. Just outside the strictest split (every piece 96-100% of a limit, within 30 days), so not a ",
    "pair": "split-share"
   },
@@ -790,13 +826,14 @@
    ],
    "ideal": "check",
    "got": "check",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SPLIT_NEAR_LIMIT"
    ],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.275,
+   "band": "HIGH",
+   "score": 0.678,
    "headline": "One of 3 alike works at one place, recommended within 70 days: each Rs 4,93,000 to Rs 4,98,000, near the Rs 5.00 lakh limit, Rs 14.87 lakh together. Just outside the strictest split (every piece 96-100% of a limit, within 30 days), so not a",
    "pair": ""
   },
@@ -812,13 +849,14 @@
    ],
    "ideal": "check",
    "got": "check",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SPLIT_NEAR_LIMIT"
    ],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.275,
+   "band": "HIGH",
+   "score": 0.678,
    "headline": "One of 3 alike works at one place, recommended within 70 days: each Rs 4,93,000 to Rs 4,98,000, near the Rs 5.00 lakh limit, Rs 14.87 lakh together. Just outside the strictest split (every piece 96-100% of a limit, within 30 days), so not a",
    "pair": ""
   },
@@ -833,6 +871,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -854,6 +893,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -875,6 +915,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -898,6 +939,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -921,6 +963,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -944,6 +987,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -969,6 +1013,7 @@
    ],
    "ideal": "na",
    "got": "na",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -992,6 +1037,7 @@
    ],
    "ideal": "na",
    "got": "na",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -1013,6 +1059,7 @@
    ],
    "ideal": "na",
    "got": "na",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -1032,6 +1079,7 @@
    ],
    "ideal": "na",
    "got": "na",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -1051,6 +1099,7 @@
    ],
    "ideal": "na",
    "got": "na",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -1070,6 +1119,7 @@
    ],
    "ideal": "na",
    "got": "na",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -1091,6 +1141,7 @@
    ],
    "ideal": "na",
    "got": "na",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -1114,6 +1165,7 @@
    ],
    "ideal": "na",
    "got": "na",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [

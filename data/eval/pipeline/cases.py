@@ -7,7 +7,7 @@ The band must say what the case is:
   fraud / evasion                      MEDIUM or above (in the review queue)
   honest / edge, never "check this"    LOW (another agent must not drag an honest filing in)
   honest / edge that may be checked    LOW or MEDIUM (a follow-up), never HIGH or CRITICAL
-  broken                               any band: "couldn't check" carries no weight
+  broken, or "couldn't check" allowed  any band: "couldn't check" carries no weight
 """
 
 from __future__ import annotations
@@ -24,10 +24,12 @@ AGENTS = ("dup_split", "time_rules", "site_progress")
 
 
 def _bands(c: W.Case) -> tuple[str, ...]:
+    if c.truth == "broken" or "na" in c.allowed:
+        # "couldn't check" carries no weight (rule 2): a garbled pin leaves Duplicate Work blind,
+        # and the form's own check refuses that pin as a fix
+        return ("LOW", *QUEUE)
     if c.truth in ("fraud", "evasion"):
         return QUEUE
-    if c.truth == "broken":
-        return ("LOW", *QUEUE)
     return ("LOW", "MEDIUM") if "check" in c.allowed else ("LOW",)
 
 

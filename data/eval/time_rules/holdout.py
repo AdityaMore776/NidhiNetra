@@ -27,7 +27,9 @@ def cases():
         lambda: filed(hall("YH1", m(240), san, start=san + timedelta(days=10)),
                       status="COMPLETED", completed_date=d(san + timedelta(days=80)),
                       site_visits=monthly(san + timedelta(days=10), san + timedelta(days=79),
-                                          every=14))))
+                                          every=14) + [
+                          visit(20, "final", san + timedelta(days=80), claim="complete",
+                                complete_shown=True)])))
     out.append(case(
         "TH-H2-hall-fast-filmed", "edge", "fits", "fits/edge", "fast finish",
         "A small hall finished 40 days after its start (before the early line), filmed twice "
@@ -37,7 +39,9 @@ def cases():
                       status="COMPLETED", completed_date=d(san + timedelta(days=50)),
                       site_visits=[visit(1, "baseline", san + timedelta(days=10)),
                                    visit(2, "monthly", san + timedelta(days=25)),
-                                   visit(3, "check", san + timedelta(days=40))])))
+                                   visit(3, "check", san + timedelta(days=40)),
+                                   visit(4, "final", san + timedelta(days=50), claim="complete",
+                                         complete_shown=True)])))
     out.append(case(
         "TH-H3-extension-recorded", "edge", "fits", "fits/edge/check", "late",
         "A road past its promised time, with a 200-day extension the district recorded.",
@@ -81,7 +85,8 @@ def cases():
     out.append(case(
         "TH-F5-almost-stalled", "evasion", "check", "check/ask", "late",
         "A hall months past its time; its last three videos: no change, can't tell, no change.",
-        "Past its own time: at least a follow-up.",
+        "Past its own time: at least a follow-up. SEEN (band): the stall count was changed after "
+        "the four-agent run's first pass (an unreadable video no longer resets it).",
         lambda: filed(hall("YF5", m(700), m(660), days=240, start=m(640)), status="SANCTIONED",
                       site_visits=monthly(m(640), m(300)) + [
                           visit(30, "monthly", m(90), "no_change", verdict="cant_tell"),

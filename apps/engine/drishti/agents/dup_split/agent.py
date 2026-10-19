@@ -258,18 +258,26 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
         others = [m for m in g["members"] if m != me.work_id]
         lo, hi = min(g["amounts"]), max(g["amounts"])
         span = "on the same day" if not g["days"] else f"within {g['days']} days"
+        # the agency naming every other piece as an earlier phase of this asset is a claim: it
+        # softens (its own code, at the 1-in-4 prior), never clears (T168, pipeline eval)
+        declared = all((link and link["work_id"] == o)
+                       or (answers.get(o) or {}).get("answer") == "continues" for o in others)
+        said = (" The agency names the others as earlier phases of the same asset; a phase "
+                "filed at the limit each time is how a job is cut, so check this all the same."
+                if declared else "")
         findings.append(Finding(
-            "SPLIT_NEAR_LIMIT",
+            "SPLIT_NEAR_LIMIT_DECLARED" if declared else "SPLIT_NEAR_LIMIT",
             f"One of {g['size']} alike works at one place, recommended {span}: each "
             f"{_rupees(lo)}{'' if lo == hi else f' to {_rupees(hi)}'}, near the "
             f"{_lakh(g['limit'])} limit, {_lakh(g['total'])} together. Just outside the strictest "
             "split (every piece 96-100% of a limit, within 30 days), so not a question: check "
             "this, whether it is one job filed twice or cut into pieces. Others: "
-            f"{', '.join(others)}.",
+            f"{', '.join(others)}.{said}",
             hard=False, risk=CHECK_RISK,
             evidence={"group_id": g["group_id"], "size": g["size"], "total": g["total"],
                       "limit": g["limit"], "others": others, "days": g["days"],
-                      "segments": g.get("segments") or [], "kind": "split_loose"}))
+                      "segments": g.get("segments") or [], "kind": "split_loose",
+                      "declared": declared}))
 
     # 4. look-alikes by words: a note, the form asks the agency
     asked = {f.evidence.get("other") for f in findings}

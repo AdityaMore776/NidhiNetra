@@ -3,8 +3,8 @@ totals: {"pass": "24/24", "honest_clear": "6/8", "honest_asked": "0/8", "ideal":
 
   DH-H1-two-halls-70m-other-size sparse honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK,NEAR_SANCTIONED_WORK
   DH-H1-two-halls-70m-other-size dense  honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK,NEAR_SANCTIONED_WORK
-  DH-H2-phase-two-60-days      sparse edge    got check  (allowed fits/edge/check) SPLIT_NEAR_LIMIT notes CONTINUES_SANCTIONED_WORK
-  DH-H2-phase-two-60-days      dense  edge    got check  (allowed fits/edge/check) SPLIT_NEAR_LIMIT notes CONTINUES_SANCTIONED_WORK
+  DH-H2-phase-two-60-days      sparse edge    got check  (allowed fits/edge/check) SPLIT_NEAR_LIMIT_DECLARED notes CONTINUES_SANCTIONED_WORK
+  DH-H2-phase-two-60-days      dense  edge    got check  (allowed fits/edge/check) SPLIT_NEAR_LIMIT_DECLARED notes CONTINUES_SANCTIONED_WORK
   DH-H3-borewells-two-blocks   sparse honest  got fits   (allowed fits/edge) -
   DH-H3-borewells-two-blocks   dense  honest  got fits   (allowed fits/edge) -
   DH-H4-light-21m              sparse honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK

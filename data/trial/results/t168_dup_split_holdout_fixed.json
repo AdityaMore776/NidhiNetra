@@ -24,6 +24,7 @@
    ],
    "ideal": "edge",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -47,6 +48,7 @@
    ],
    "ideal": "edge",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -71,9 +73,10 @@
    ],
    "ideal": "edge",
    "got": "check",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
-    "SPLIT_NEAR_LIMIT"
+    "SPLIT_NEAR_LIMIT_DECLARED"
    ],
    "notes": [
     "CONTINUES_SANCTIONED_WORK"
@@ -96,9 +99,10 @@
    ],
    "ideal": "edge",
    "got": "check",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
-    "SPLIT_NEAR_LIMIT"
+    "SPLIT_NEAR_LIMIT_DECLARED"
    ],
    "notes": [
     "CONTINUES_SANCTIONED_WORK"
@@ -120,6 +124,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -140,6 +145,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -160,14 +166,15 @@
    ],
    "ideal": "fits",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
     "LOOKS_LIKE_SANCTIONED_WORK"
    ],
-   "band": "MEDIUM",
-   "score": 0.25,
-   "headline": "Reads like sanctioned work XH4-OLD (Rs 3.00 lakh, completed on 2025-12-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work XH4-OLD (Rs 2.10 lakh, completed on 2025-12-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
    "pair": ""
   },
   {
@@ -182,14 +189,15 @@
    ],
    "ideal": "fits",
    "got": "edge",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
     "LOOKS_LIKE_SANCTIONED_WORK"
    ],
-   "band": "MEDIUM",
-   "score": 0.25,
-   "headline": "Reads like sanctioned work XH4-OLD (Rs 3.00 lakh, completed on 2025-12-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work XH4-OLD (Rs 2.10 lakh, completed on 2025-12-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
    "pair": ""
   },
   {
@@ -204,6 +212,7 @@
    ],
    "ideal": "check",
    "got": "check",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SAME_BUILDING_NEAR"
@@ -226,6 +235,7 @@
    ],
    "ideal": "check",
    "got": "check",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SAME_BUILDING_NEAR"
@@ -248,13 +258,14 @@
    ],
    "ideal": "check",
    "got": "check",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SPLIT_NEAR_LIMIT"
    ],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.25,
+   "band": "HIGH",
+   "score": 0.667,
    "headline": "One of 4 alike works at one place, recommended within 10 days: each Rs 4,58,000 to Rs 4,62,000, near the Rs 5.00 lakh limit, Rs 18.41 lakh together. Just outside the strictest split (every piece 96-100% of a limit, within 30 days), so not a",
    "pair": ""
   },
@@ -270,13 +281,14 @@
    ],
    "ideal": "check",
    "got": "check",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SPLIT_NEAR_LIMIT"
    ],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.25,
+   "band": "HIGH",
+   "score": 0.667,
    "headline": "One of 4 alike works at one place, recommended within 10 days: each Rs 4,58,000 to Rs 4,62,000, near the Rs 5.00 lakh limit, Rs 18.41 lakh together. Just outside the strictest split (every piece 96-100% of a limit, within 30 days), so not a",
    "pair": ""
   },
@@ -292,13 +304,14 @@
    ],
    "ideal": "check",
    "got": "check",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SPLIT_NEAR_LIMIT"
    ],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.25,
+   "band": "HIGH",
+   "score": 0.667,
    "headline": "One of 2 alike works at one place, recommended within 85 days: each Rs 4,96,000 to Rs 4,97,000, near the Rs 5.00 lakh limit, Rs 9.93 lakh together. Just outside the strictest split (every piece 96-100% of a limit, within 30 days), so not a ",
    "pair": ""
   },
@@ -314,13 +327,14 @@
    ],
    "ideal": "check",
    "got": "check",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SPLIT_NEAR_LIMIT"
    ],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.25,
+   "band": "HIGH",
+   "score": 0.667,
    "headline": "One of 2 alike works at one place, recommended within 85 days: each Rs 4,96,000 to Rs 4,97,000, near the Rs 5.00 lakh limit, Rs 9.93 lakh together. Just outside the strictest split (every piece 96-100% of a limit, within 30 days), so not a ",
    "pair": ""
   },
@@ -335,6 +349,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -356,6 +371,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -377,14 +393,15 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
    ],
    "notes": [],
    "band": "MEDIUM",
-   "score": 0.438,
-   "headline": "The map pin is 15 m from sanctioned work XF5-OLD, of the same kind (Rs 3.00 lakh, completed on 2025-12-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
+   "score": 0.25,
+   "headline": "The map pin is 15 m from sanctioned work XF5-OLD, of the same kind (Rs 2.10 lakh, completed on 2025-12-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
    "pair": ""
   },
   {
@@ -398,14 +415,15 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
    ],
    "notes": [],
    "band": "MEDIUM",
-   "score": 0.438,
-   "headline": "The map pin is 15 m from sanctioned work XF5-OLD, of the same kind (Rs 3.00 lakh, completed on 2025-12-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
+   "score": 0.25,
+   "headline": "The map pin is 15 m from sanctioned work XF5-OLD, of the same kind (Rs 2.10 lakh, completed on 2025-12-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
    "pair": ""
   },
   {
@@ -419,6 +437,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -440,6 +459,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -461,6 +481,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -482,6 +503,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [
     "SANCTIONED_WORK_AT_THIS_SITE"
@@ -505,6 +527,7 @@
    ],
    "ideal": "na",
    "got": "na",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [
@@ -528,6 +551,7 @@
    ],
    "ideal": "na",
    "got": "na",
+   "agent": "dup_split",
    "verdict": "pass",
    "codes": [],
    "notes": [

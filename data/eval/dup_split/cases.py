@@ -46,7 +46,8 @@ def hall(ref, k, north=0.0, east=0.0, agency=AGENCY, village="Kusumi", rec=None,
 
 def lights(ref, k, north=0.0, east=0.0, agency=AGENCY, village="Nayagaon", rec=None, **over):
     la, lo = at(k, north, east)
-    return wf.lights(ref, agency, village, k, rec or m(40), 30_000, 300_000,
+    # Rs 21,000 a light: Jaunpur's real solar street lights (reference/cost, median Rs 20,896)
+    return wf.lights(ref, agency, village, k, rec or m(40), 21_000, 210_000,
                      latitude=f"{la:.6f}", longitude=f"{lo:.6f}", **over)
 
 

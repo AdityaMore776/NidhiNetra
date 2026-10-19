@@ -169,9 +169,13 @@ def past_promised(work: dict, w: win.Window, vs: list[site_visits.Visit],
     if work.get("status") == "COMPLETED" or as_of <= w.late:
         return None
     over = (as_of - w.late).days
+    # T168: the last videos show no change, and at most one of them could not be read: one with
+    # no change reading between still ones reset the count (as "can't tell" between two claims
+    # not shown did, T135)
     recent = [v for v in vs if v.kind != "baseline"][-STALLED_VISITS:]
     stalled = (len(recent) == STALLED_VISITS
-               and all(v.change == "no_change" for v in recent))
+               and not any(v.change == "changed" for v in recent)
+               and sum(v.change == "no_change" for v in recent) >= STALLED_VISITS - 1)
     parts = [f"{_months(w.accepted_days)} from {w.start:%d %b %Y}",
              f"{_days(w.grace_days)} of grace"]
     if w.lost_months:

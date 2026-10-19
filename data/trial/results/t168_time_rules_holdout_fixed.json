@@ -3,7 +3,7 @@
   "pass": "20/20",
   "honest_clear": "6/8",
   "honest_asked": "0/8",
-  "ideal": "18/20",
+  "ideal": "16/20",
   "fraud_caught": "10/10",
   "fraud_excused": "0/10",
   "broken_cleared": "0/2",
@@ -24,11 +24,12 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.25,
+   "band": "LOW",
+   "score": 0.0,
    "headline": "No timing problem the dates and the agency's own estimate can show.",
    "pair": ""
   },
@@ -44,11 +45,12 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.25,
+   "band": "LOW",
+   "score": 0.0,
    "headline": "No timing problem the dates and the agency's own estimate can show.",
    "pair": ""
   },
@@ -64,11 +66,12 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.25,
+   "band": "LOW",
+   "score": 0.0,
    "headline": "No timing problem the dates and the agency's own estimate can show.",
    "pair": ""
   },
@@ -84,11 +87,12 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.25,
+   "band": "LOW",
+   "score": 0.0,
    "headline": "No timing problem the dates and the agency's own estimate can show.",
    "pair": ""
   },
@@ -105,6 +109,7 @@
    ],
    "ideal": "fits",
    "got": "check",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "PAST_PROMISED_TIME"
@@ -128,6 +133,7 @@
    ],
    "ideal": "fits",
    "got": "check",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "PAST_PROMISED_TIME"
@@ -150,6 +156,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -170,6 +177,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -190,6 +198,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "FINISHED_TOO_FAST"
@@ -212,6 +221,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "FINISHED_TOO_FAST"
@@ -234,13 +244,14 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "FINISHED_TOO_FAST"
    ],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.438,
+   "band": "HIGH",
+   "score": 0.578,
    "headline": "Recorded complete 6 days after the work could start (04 Jun 2026 to 10 Jun 2026). The agency's own estimate was 3.9 months, and a cement concrete road work of this size is not finished in under 30 days (the early line of its comfort window)",
    "pair": ""
   },
@@ -256,13 +267,14 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "FINISHED_TOO_FAST"
    ],
    "notes": [],
-   "band": "MEDIUM",
-   "score": 0.438,
+   "band": "HIGH",
+   "score": 0.578,
    "headline": "Recorded complete 6 days after the work could start (04 Jun 2026 to 10 Jun 2026). The agency's own estimate was 3.9 months, and a cement concrete road work of this size is not finished in under 30 days (the early line of its comfort window)",
    "pair": ""
   },
@@ -278,6 +290,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "BUILT_RIGHT_AFTER_SANCTION"
@@ -302,6 +315,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "BUILT_RIGHT_AFTER_SANCTION"
@@ -325,6 +339,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "BUILT_IN_DAYS",
@@ -347,6 +362,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "BUILT_IN_DAYS",
@@ -369,15 +385,16 @@
     "ask"
    ],
    "ideal": "check",
-   "got": "check",
+   "got": "ask",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "PAST_PROMISED_TIME"
    ],
    "notes": [],
-   "band": "LOW",
-   "score": 0.125,
-   "headline": "Not complete 300 days after its own promised time: 7.9 months from 11 Dec 2024, 120 days of grace, so due by 06 Dec 2025. Most works finish late; follow up with the agency on progress.",
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "Not complete 300 days after its own promised time: 7.9 months from 11 Dec 2024, 120 days of grace, so due by 06 Dec 2025. The last 3 site videos show no change at the same views. Ask the agency why the work has stopped.",
    "pair": ""
   },
   {
@@ -391,15 +408,16 @@
     "ask"
    ],
    "ideal": "check",
-   "got": "check",
+   "got": "ask",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [
     "PAST_PROMISED_TIME"
    ],
    "notes": [],
-   "band": "LOW",
-   "score": 0.125,
-   "headline": "Not complete 300 days after its own promised time: 7.9 months from 11 Dec 2024, 120 days of grace, so due by 06 Dec 2025. Most works finish late; follow up with the agency on progress.",
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "Not complete 300 days after its own promised time: 7.9 months from 11 Dec 2024, 120 days of grace, so due by 06 Dec 2025. The last 3 site videos show no change at the same views. Ask the agency why the work has stopped.",
    "pair": ""
   },
   {
@@ -415,13 +433,14 @@
    ],
    "ideal": "edge",
    "got": "edge",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [],
    "notes": [
     "SANCTIONED_BEFORE_RECOMMENDED"
    ],
-   "band": "MEDIUM",
-   "score": 0.25,
+   "band": "LOW",
+   "score": 0.05,
    "headline": "Recorded as sanctioned 30 days before the MP recommended it (25 May 2026, recommended 24 Jun 2026): dates in an impossible order. Check the record's dates and the sanction order.",
    "pair": ""
   },
@@ -438,13 +457,14 @@
    ],
    "ideal": "edge",
    "got": "edge",
+   "agent": "time_rules",
    "verdict": "pass",
    "codes": [],
    "notes": [
     "SANCTIONED_BEFORE_RECOMMENDED"
    ],
-   "band": "MEDIUM",
-   "score": 0.25,
+   "band": "LOW",
+   "score": 0.05,
    "headline": "Recorded as sanctioned 30 days before the MP recommended it (25 May 2026, recommended 24 Jun 2026): dates in an impossible order. Check the record's dates and the sanction order.",
    "pair": ""
   }

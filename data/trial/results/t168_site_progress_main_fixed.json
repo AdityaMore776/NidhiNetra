@@ -24,6 +24,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -44,6 +45,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -64,6 +66,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -84,6 +87,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -104,6 +108,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -124,6 +129,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -144,6 +150,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -164,6 +171,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -184,6 +192,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -204,6 +213,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -224,6 +234,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -244,6 +255,7 @@
    ],
    "ideal": "fits",
    "got": "fits",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -263,6 +275,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "FOOTAGE_USED_BEFORE"
@@ -284,6 +297,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "FOOTAGE_USED_BEFORE"
@@ -305,6 +319,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "NOT_FILMED_AT_THIS_SITE"
@@ -326,6 +341,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "NOT_FILMED_AT_THIS_SITE"
@@ -347,6 +363,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "CLAIM_NOT_SHOWN"
@@ -368,6 +385,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "CLAIM_NOT_SHOWN"
@@ -389,6 +407,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "COMPLETE_NOT_SHOWN"
@@ -410,6 +429,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "COMPLETE_NOT_SHOWN"
@@ -431,6 +451,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "ALREADY_BUILT_AT_START"
@@ -452,6 +473,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "ALREADY_BUILT_AT_START"
@@ -473,6 +495,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "NO_SITE_VIDEO"
@@ -494,6 +517,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "NO_SITE_VIDEO"
@@ -515,6 +539,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "SAME_PLACE_AS_ANOTHER_WORK"
@@ -536,6 +561,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "SAME_PLACE_AS_ANOTHER_WORK"
@@ -557,6 +583,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "CLAIM_NOT_SHOWN"
@@ -578,6 +605,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "CLAIM_NOT_SHOWN"
@@ -600,6 +628,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "SITE_VIDEOS_UNUSABLE"
@@ -622,6 +651,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "SITE_VIDEOS_UNUSABLE"
@@ -643,6 +673,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "NOT_FILMED_AT_THIS_SITE"
@@ -664,6 +695,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "NOT_FILMED_AT_THIS_SITE"
@@ -686,6 +718,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "FIRST_FILMED_FINISHED"
@@ -708,6 +741,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "FIRST_FILMED_FINISHED"
@@ -729,6 +763,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "NO_SITE_VIDEO"
@@ -750,6 +785,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "NO_SITE_VIDEO"
@@ -772,6 +808,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "SITE_NOT_AT_FORM_PIN"
@@ -794,6 +831,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "SITE_NOT_AT_FORM_PIN"
@@ -816,6 +854,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "FOOTAGE_USED_BEFORE"
@@ -838,6 +877,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "FOOTAGE_USED_BEFORE"
@@ -860,6 +900,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "COMPLETE_NOT_FILMED"
@@ -882,6 +923,7 @@
    ],
    "ideal": "ask",
    "got": "ask",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [
     "COMPLETE_NOT_FILMED"
@@ -903,6 +945,7 @@
    ],
    "ideal": "na",
    "got": "na",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -922,6 +965,7 @@
    ],
    "ideal": "na",
    "got": "na",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -941,6 +985,7 @@
    ],
    "ideal": "na",
    "got": "na",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -960,6 +1005,7 @@
    ],
    "ideal": "na",
    "got": "na",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -982,6 +1028,7 @@
    ],
    "ideal": "na",
    "got": "na",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
@@ -1004,6 +1051,7 @@
    ],
    "ideal": "na",
    "got": "na",
+   "agent": "site_progress",
    "verdict": "pass",
    "codes": [],
    "notes": [],
