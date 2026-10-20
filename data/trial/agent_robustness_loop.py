@@ -397,9 +397,11 @@ def _(world):
     res = run(world, work_of(retotal(set_boq(p, rows)), record_of(world, "clean"), world.place,
                              world.as_of))
     got = flags(res, "cost_estimate")
+    # T167: beyond CPWD's 10% (and above the highest rates others here charge) it is "check
+    # this"; a question still needs 15% and Rs 50,000 (plan T120 §6.5)
     return ("LIMIT" if not got else "PASS",
-            f"{got or 'nothing'}: the line is 15% and Rs 50,000 (plan T120 §6.5, measured on "
-            "planted forms); below it a gap is an honest spread")
+            f"{got or 'nothing'}: a question needs 15% and Rs 50,000; from 10% it is 'check "
+            "this' (T167, CPWD Works Manual 20.4.3.2)")
 
 
 @probe("cost_estimate", "scarce", "only 4 other filings in the district: prices off, gap recorded")
@@ -1009,8 +1011,9 @@ def _(world):
               drop=tuple(r["work_id"] for k, r in world.records.items() if k != "cost_padded"))
     got = flags(res, "cost_estimate")
     return ("PASS" if got else "LIMIT",
-            f"{got or 'nothing'}: when every agency raises its rates together, only the state's "
-            "Schedule of Rates (T096, not loaded yet) can cap the district's own rate")
+            f"{got or 'nothing'}: when every agency raises its rates together, the rest of the "
+            "state's forms tell it (T167, DISTRICT_RATES_ABOVE_STATE); this world has no forms "
+            "from other districts, so only the state's Schedule of Rates (T096) could cap it")
 
 
 @probe("dup_split", "noise", "a hall at the old road's pin (another kind of work): not asked")

@@ -1,0 +1,692 @@
+[
+ {
+  "id": "ho_fraud_two_lines_35",
+  "family": "fraud: one line",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "fits",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The whole estimate is Rs 15.97 lakh against a fair Rs 14.55 lakh (Rs 14.09 to 14.91 lakh at the lowest and highest rates other agencies here charge), +13.5%, pricing 75% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.1346,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_two_lines_35",
+  "family": "fraud: one line",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "fits",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The whole estimate is Rs 15.95 lakh against a fair Rs 14.51 lakh (Rs 13.34 to 15.46 lakh at the lowest and highest rates other agencies here charge), +13.6%, pricing 75% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.1356,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_hall_13",
+  "family": "fraud: salami padding",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "fits",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The whole estimate is Rs 27.02 lakh against a fair Rs 24.77 lakh (Rs 24.16 to 25.29 lakh at the lowest and highest rates other agencies here charge), +13.0%, pricing 72% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.1299,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_hall_13",
+  "family": "fraud: salami padding",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "fits",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The whole estimate is Rs 27.01 lakh against a fair Rs 24.72 lakh (Rs 22.74 to 26.53 lakh at the lowest and highest rates other agencies here charge), +13.3%, pricing 72% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.1329,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_hall_22",
+  "family": "fraud: uniform padding",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "ask",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "ask",
+  "verdict": "pass",
+  "codes": [
+   "ESTIMATE_ABOVE_FAIR_PRICE"
+  ],
+  "headline": "The estimate (Rs 28.57 lakh) is Rs 3.80 lakh above the fair price for this size of work in this district (Rs 24.77 lakh; Rs 24.16 to 25.29 lakh at the lowest and highest rates other agencies here charge), 22% above the fair price of the 74% of the money that could be priced. Most of the gap: cement ",
+  "gap_share": 0.2199,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_hall_22",
+  "family": "fraud: uniform padding",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "ask",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "ask",
+  "verdict": "pass",
+  "codes": [
+   "ESTIMATE_ABOVE_FAIR_PRICE"
+  ],
+  "headline": "The estimate (Rs 28.56 lakh) is Rs 3.84 lakh above the fair price for this size of work in this district (Rs 24.72 lakh; Rs 22.74 to 26.53 lakh at the lowest and highest rates other agencies here charge), 22% above the fair price of the 74% of the money that could be priced. Most of the gap: cement ",
+  "gap_share": 0.2232,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_qty_two_materials",
+  "family": "fraud: quantity",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "fits",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The whole estimate is Rs 15.44 lakh against a fair Rs 15.44 lakh (Rs 14.95 to 15.84 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 74% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_qty_two_materials",
+  "family": "fraud: quantity",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "fits",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The whole estimate is Rs 15.42 lakh against a fair Rs 15.42 lakh (Rs 14.15 to 16.43 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 74% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_rates_plus_charges",
+  "family": "fraud: hidden",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "fits",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The whole estimate is Rs 16.69 lakh against a fair Rs 15.34 lakh (Rs 14.85 to 15.72 lakh at the lowest and highest rates other agencies here charge), +12.2%, pricing 74% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.1217,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_rates_plus_charges",
+  "family": "fraud: hidden",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "fits",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The whole estimate is Rs 16.65 lakh against a fair Rs 15.30 lakh (Rs 14.07 to 16.30 lakh at the lowest and highest rates other agencies here charge), +12.2%, pricing 74% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.1217,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_cement_kg_16",
+  "family": "fraud: one line",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "fits",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The whole estimate is Rs 15.34 lakh against a fair Rs 14.55 lakh (Rs 14.09 to 14.91 lakh at the lowest and highest rates other agencies here charge), +7.5%, pricing 74% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0753,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_cement_kg_16",
+  "family": "fraud: one line",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "fits",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The whole estimate is Rs 15.31 lakh against a fair Rs 14.51 lakh (Rs 13.34 to 15.46 lakh at the lowest and highest rates other agencies here charge), +7.5%, pricing 74% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0755,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_hall_labour_16",
+  "family": "fraud: labour",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "fits",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The whole estimate is Rs 29.28 lakh against a fair Rs 29.28 lakh (Rs 28.66 to 29.80 lakh at the lowest and highest rates other agencies here charge), -0.0%, pricing 59% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": -0.0001,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_hall_labour_16",
+  "family": "fraud: labour",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "fits",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The whole estimate is Rs 29.27 lakh against a fair Rs 29.22 lakh (Rs 27.24 to 31.03 lakh at the lowest and highest rates other agencies here charge), +0.3%, pricing 59% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0026,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_hall_ghost_masons",
+  "family": "fraud: labour",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "fits",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The whole estimate is Rs 30.71 lakh against a fair Rs 30.71 lakh (Rs 30.10 to 31.23 lakh at the lowest and highest rates other agencies here charge), -0.0%, pricing 56% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": -0.0001,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_hall_ghost_masons",
+  "family": "fraud: labour",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "fits",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The whole estimate is Rs 30.70 lakh against a fair Rs 30.66 lakh (Rs 28.68 to 32.47 lakh at the lowest and highest rates other agencies here charge), +0.3%, pricing 56% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0026,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_lights_130_mp",
+  "family": "fraud: price per unit",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "edge",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The work: Rs 27,200 per light is above the usual item (8 in 10 of the 136 similar works in Jaunpur cost Rs 20,878 to Rs 20,896 per light (median Rs 20,896); 98 in 100 cost at most Rs 20,896), but the MP's amount was as high, so it is not raised as a question. The whole estimate is Rs 2.72 lakh again",
+  "gap_share": 0.0,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_lights_130_mp",
+  "family": "fraud: price per unit",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "edge",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The work: Rs 27,200 per light is above the usual item (8 in 10 of the 136 similar works in Jaunpur cost Rs 20,878 to Rs 20,896 per light (median Rs 20,896); 98 in 100 cost at most Rs 20,896), but the MP's amount was as high, so it is not raised as a question. The whole estimate is Rs 2.72 lakh again",
+  "gap_share": 0.0,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_long_road_11",
+  "family": "fraud: salami padding",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "fits",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The whole estimate is Rs 44.94 lakh against a fair Rs 41.59 lakh (Rs 40.28 to 42.63 lakh at the lowest and highest rates other agencies here charge), +11.0%, pricing 75% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.1103,
+  "leeway": null
+ },
+ {
+  "id": "ho_fraud_long_road_11",
+  "family": "fraud: salami padding",
+  "truth": "fraud",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "check",
+  "allowed": [
+   "check",
+   "ask"
+  ],
+  "level": "fits",
+  "verdict": "hard",
+  "codes": [],
+  "headline": "The whole estimate is Rs 44.84 lakh against a fair Rs 41.50 lakh (Rs 38.16 to 44.22 lakh at the lowest and highest rates other agencies here charge), +11.0%, pricing 75% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.1103,
+  "leeway": null
+ },
+ {
+  "id": "ho_edge_hall_better_tiles",
+  "family": "edge: specification",
+  "truth": "edge",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "edge",
+  "allowed": [
+   "fits",
+   "edge",
+   "check"
+  ],
+  "level": "fits",
+  "verdict": "pass",
+  "codes": [],
+  "headline": "The whole estimate is Rs 25.21 lakh against a fair Rs 24.77 lakh (Rs 24.16 to 25.29 lakh at the lowest and highest rates other agencies here charge), +2.5%, pricing 70% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0254,
+  "leeway": null
+ },
+ {
+  "id": "ho_edge_hall_better_tiles",
+  "family": "edge: specification",
+  "truth": "edge",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "edge",
+  "allowed": [
+   "fits",
+   "edge",
+   "check"
+  ],
+  "level": "fits",
+  "verdict": "pass",
+  "codes": [],
+  "headline": "The whole estimate is Rs 25.21 lakh against a fair Rs 24.72 lakh (Rs 22.74 to 26.53 lakh at the lowest and highest rates other agencies here charge), +2.8%, pricing 70% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0284,
+  "leeway": null
+ },
+ {
+  "id": "ho_edge_hall_top_range",
+  "family": "edge: rates",
+  "truth": "edge",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "edge",
+  "allowed": [
+   "fits",
+   "edge"
+  ],
+  "level": "fits",
+  "verdict": "pass",
+  "codes": [],
+  "headline": "The whole estimate is Rs 25.81 lakh against a fair Rs 24.77 lakh (Rs 24.16 to 25.29 lakh at the lowest and highest rates other agencies here charge), +6.0%, pricing 71% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0599,
+  "leeway": null
+ },
+ {
+  "id": "ho_edge_hall_top_range",
+  "family": "edge: rates",
+  "truth": "edge",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "edge",
+  "allowed": [
+   "fits",
+   "edge"
+  ],
+  "level": "fits",
+  "verdict": "pass",
+  "codes": [],
+  "headline": "The whole estimate is Rs 25.80 lakh against a fair Rs 24.72 lakh (Rs 22.74 to 26.53 lakh at the lowest and highest rates other agencies here charge), +6.3%, pricing 71% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0627,
+  "leeway": null
+ },
+ {
+  "id": "ho_honest_hall_big_crew",
+  "family": "edge: labour",
+  "truth": "edge",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "fits",
+  "allowed": [
+   "fits",
+   "edge"
+  ],
+  "level": "fits",
+  "verdict": "pass",
+  "codes": [],
+  "headline": "The whole estimate is Rs 24.77 lakh against a fair Rs 24.77 lakh (Rs 24.16 to 25.29 lakh at the lowest and highest rates other agencies here charge), -0.0%, pricing 70% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": -0.0001,
+  "leeway": null
+ },
+ {
+  "id": "ho_honest_hall_big_crew",
+  "family": "edge: labour",
+  "truth": "edge",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "fits",
+  "allowed": [
+   "fits",
+   "edge"
+  ],
+  "level": "fits",
+  "verdict": "pass",
+  "codes": [],
+  "headline": "The whole estimate is Rs 24.76 lakh against a fair Rs 24.72 lakh (Rs 22.74 to 26.53 lakh at the lowest and highest rates other agencies here charge), +0.3%, pricing 70% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0026,
+  "leeway": null
+ },
+ {
+  "id": "ho_honest_lights_120",
+  "family": "edge: price per unit",
+  "truth": "edge",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "edge",
+  "allowed": [
+   "fits",
+   "edge"
+  ],
+  "level": "fits",
+  "verdict": "pass",
+  "codes": [],
+  "headline": "The work: Rs 24,000 per light is in line with similar works in Jaunpur (8 in 10 of the 136 similar works in Jaunpur cost Rs 20,878 to Rs 20,896 per light (median Rs 20,896); 98 in 100 cost at most Rs 20,896). The whole estimate is Rs 2.40 lakh against a fair Rs 2.40 lakh, +0.0%, pricing 100% of the ",
+  "gap_share": 0.0,
+  "leeway": null
+ },
+ {
+  "id": "ho_honest_lights_120",
+  "family": "edge: price per unit",
+  "truth": "edge",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "edge",
+  "allowed": [
+   "fits",
+   "edge"
+  ],
+  "level": "fits",
+  "verdict": "pass",
+  "codes": [],
+  "headline": "The work: Rs 24,000 per light is in line with similar works in Jaunpur (8 in 10 of the 136 similar works in Jaunpur cost Rs 20,878 to Rs 20,896 per light (median Rs 20,896); 98 in 100 cost at most Rs 20,896). The whole estimate is Rs 2.40 lakh against a fair Rs 2.40 lakh, +0.0%, pricing 100% of the ",
+  "gap_share": 0.0,
+  "leeway": null
+ },
+ {
+  "id": "ho_honest_wide_road",
+  "family": "honest noise",
+  "truth": "honest",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "fits",
+  "allowed": [
+   "fits",
+   "edge"
+  ],
+  "level": "fits",
+  "verdict": "pass",
+  "codes": [],
+  "headline": "The whole estimate is Rs 38.17 lakh against a fair Rs 38.17 lakh (Rs 36.96 to 39.12 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 73% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0,
+  "leeway": null
+ },
+ {
+  "id": "ho_honest_wide_road",
+  "family": "honest noise",
+  "truth": "honest",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "fits",
+  "allowed": [
+   "fits",
+   "edge"
+  ],
+  "level": "fits",
+  "verdict": "pass",
+  "codes": [],
+  "headline": "The whole estimate is Rs 38.09 lakh against a fair Rs 38.09 lakh (Rs 35.02 to 40.58 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 73% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0,
+  "leeway": null
+ },
+ {
+  "id": "ho_honest_gst_sundries",
+  "family": "honest noise",
+  "truth": "honest",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "fits",
+  "allowed": [
+   "fits",
+   "edge"
+  ],
+  "level": "fits",
+  "verdict": "pass",
+  "codes": [],
+  "headline": "The whole estimate is Rs 17.38 lakh against a fair Rs 17.38 lakh (Rs 16.84 to 17.81 lakh at the lowest and highest rates other agencies here charge), -0.0%, pricing 72% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": -0.0,
+  "leeway": null
+ },
+ {
+  "id": "ho_honest_gst_sundries",
+  "family": "honest noise",
+  "truth": "honest",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "fits",
+  "allowed": [
+   "fits",
+   "edge"
+  ],
+  "level": "fits",
+  "verdict": "pass",
+  "codes": [],
+  "headline": "The whole estimate is Rs 17.35 lakh against a fair Rs 17.35 lakh (Rs 15.97 to 18.46 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 72% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0,
+  "leeway": null
+ },
+ {
+  "id": "ho_honest_signage",
+  "family": "honest noise",
+  "truth": "honest",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "fits",
+  "allowed": [
+   "fits",
+   "edge"
+  ],
+  "level": "fits",
+  "verdict": "pass",
+  "codes": [],
+  "headline": "The whole estimate is Rs 14.69 lakh against a fair Rs 14.69 lakh (Rs 14.23 to 15.05 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 72% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0,
+  "leeway": null
+ },
+ {
+  "id": "ho_honest_signage",
+  "family": "honest noise",
+  "truth": "honest",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "fits",
+  "allowed": [
+   "fits",
+   "edge"
+  ],
+  "level": "fits",
+  "verdict": "pass",
+  "codes": [],
+  "headline": "The whole estimate is Rs 14.65 lakh against a fair Rs 14.65 lakh (Rs 13.48 to 15.60 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 72% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0,
+  "leeway": null
+ },
+ {
+  "id": "ho_edge_price_rise_9_hall",
+  "family": "edge: rates",
+  "truth": "edge",
+  "scope": "cost",
+  "pair": null,
+  "world": "tight",
+  "ideal": "edge",
+  "allowed": [
+   "fits",
+   "edge"
+  ],
+  "level": "fits",
+  "verdict": "pass",
+  "codes": [],
+  "headline": "The whole estimate is Rs 26.33 lakh against a fair Rs 24.77 lakh (Rs 24.16 to 25.29 lakh at the lowest and highest rates other agencies here charge), +9.0%, pricing 71% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0899,
+  "leeway": null
+ },
+ {
+  "id": "ho_edge_price_rise_9_hall",
+  "family": "edge: rates",
+  "truth": "edge",
+  "scope": "cost",
+  "pair": null,
+  "world": "wide",
+  "ideal": "edge",
+  "allowed": [
+   "fits",
+   "edge"
+  ],
+  "level": "fits",
+  "verdict": "pass",
+  "codes": [],
+  "headline": "The whole estimate is Rs 26.32 lakh against a fair Rs 24.72 lakh (Rs 22.74 to 26.53 lakh at the lowest and highest rates other agencies here charge), +9.3%, pricing 71% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+  "gap_share": 0.0928,
+  "leeway": null
+ }
+]

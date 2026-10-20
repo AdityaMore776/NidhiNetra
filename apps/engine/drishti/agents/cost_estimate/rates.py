@@ -41,7 +41,7 @@ from pathlib import Path
 
 from drishti import reference
 from drishti.agents.cost_estimate.reference import slug
-from drishti.cost_form import catalog, materials
+from drishti.cost_form import catalog, materials, norms
 from drishti.cost_form.norms import to_first_unit
 
 SOR_DIR = Path(reference.__file__).resolve().parent / "cost" / "sor"
@@ -52,6 +52,13 @@ MAX_SPREAD = 0.30             # interquartile range of the agencies' medians / t
 STATE_MIN_FORMS, STATE_MIN_AGENCIES = 8, 4
 STATE_ALLOWANCE = 0.10        # a state-wide rate is this much more lenient than a district's
 POOL = "labour_grade:"        # T141: every trade of one grade together (labour.py, blatant only)
+DAYS = "person_days_per:"     # T167: a trade's person-days per unit of size, by work type
+ROOM = "quantity_room:"       # T167: a material's quantity over the size's standard amount
+PER_SIZE = "quantity_per:"    # T167: a building material's quantity per m2 built up
+# T167: the bulk materials whose quantity scales with a building's area (doors, fittings and
+# other counted items do not: a small hall has as many doors as a big one)
+BULK = ("cement", "sand", "aggregate", "steel_rebar", "structural_steel", "brick", "tiles",
+        "granular_base", "earth_fill", "rmc", "paint")
 # words that name a branch of an agency, not another agency
 _BRANCH = {"the", "of", "and", "office", "offices", "division", "div", "dvn", "divn", "dept",
            "deptt", "department", "circle", "sub", "subdivision", "unit", "zone", "branch", "no",
@@ -240,17 +247,78 @@ class RateIndex:
             agency = agency_of(w)
             month = _form_month(form, (w.get("cost_form_meta") or {}).get("submitted_on"))
             st = _state(w)
-            for _i, _j, mid, r, _q, _ln in confirmed_lines(form):
-                row = (agency, str(w.get("work_id")), r, month)
-                keys = [mid]
+            work_type = (form.get("work") or {}).get("work_type")
+            sites = form.get("sites") if isinstance(form.get("sites"), list) else []
+            # T167: how much of the size's standard amount each material's lines take (sand at
+            # 1.05 times the slab's dry need), so a quantity padded inside the norm's room is
+            # told by other agencies' own room
+            for site in sites:
+                if not isinstance(site, dict):
+                    continue
+                lines = [(j, ln.get("material_id"), ln.get("quantity"), ln.get("unit"),
+                          ln.get("item")) for j, ln in enumerate(site.get("lines") or [])
+                         if isinstance(ln, dict) and isinstance(ln.get("material_id"), str)
+                         and catalog.material(ln["material_id"])]
+                normed = set()
+                for q in norms.check(work_type, site.get("size") or {}, lines):
+                    if q["low"] > 0:
+                        normed.add(q["material"])
+                        k = room_key(work_type, q["material"], q["unit"])
+                        row = (agency, str(w.get("work_id")), q["quantity"] / q["low"], month,
+                               str(d))
+                        out[(str(d), k)].append(row)
+                        if st:
+                            state[(st, k)].append(row)
+                # T167: a building's materials (no norm says what its size needs) per m2 built
+                # up, so 1.5 times the bricks of other halls of its size is told
+                m = size_measure(work_type, site.get("size")) if not catalog.is_linear(
+                    work_type) else None
+                per: dict[str, float] = defaultdict(float)
+                for _j, mid, qty, unit, _item in lines if m else []:
+                    if mid in normed or mid not in BULK:
+                        continue
+                    x = to_first_unit(mid, qty, unit)
+                    if x and x > 0:
+                        per[mid] += x
+                for mid, x in per.items():
+                    k = per_size_key(work_type, mid)
+                    row = (agency, str(w.get("work_id")), x / m[0], month, str(d))
+                    out[(str(d), k)].append(row)
+                    if st:
+                        state[(st, k)].append(row)
+            for i, _j, mid, r, q, _ln in confirmed_lines(form):
+                # the 5th place: the district, so the rest of the state can be told apart (T167)
+                rows = [((agency, str(w.get("work_id")), r, month, str(d)), mid)]
                 if (catalog.material(mid) or {}).get("trade"):
                     # its trade's grade, never the grade a row declares (T141)
-                    keys.append(pool_key(catalog.grade_of(mid)))
-                for k in keys:
+                    rows.append((rows[0][0], pool_key(catalog.grade_of(mid))))
+                    # T167: its person-days per unit of the work's size, for a crew far larger
+                    # than other agencies' for the same size (ghost workers)
+                    size = sites[i].get("size") if isinstance(sites[i], dict) else None
+                    m = size_measure(work_type, size)
+                    if m:
+                        rows.append(((agency, str(w.get("work_id")), q / m[0], month, str(d)),
+                                     days_key(work_type, mid)))
+                for row, k in rows:
                     out[(str(d), k)].append(row)
                     if st:
                         state[(st, k)].append(row)
         return cls(dict(out), dict(state))
+
+    def rest_of_state(self, district, state: str | None, material_id: str, agency: str,
+                      work_id: str, when: date | None) -> Vote | None:
+        """Other agencies' recent rates for a material in the state's OTHER districts (T167: a
+        district whose agencies all raise their rates together is told by the rest of the state),
+        when there are enough of them and they agree."""
+        if not state:
+            return None
+        rows = [x for x in self.by_state.get((state, material_id), [])
+                if len(x) > 4 and x[4] != str(district)]
+        v = _vote(rows, agency, work_id, when)
+        if (v.rate is None or v.forms < STATE_MIN_FORMS or v.agencies < STATE_MIN_AGENCIES
+                or (v.spread is not None and v.spread > MAX_SPREAD)):
+            return None
+        return v
 
     def district_rate(self, district, material_id: str, agency: str, work_id: str,
                       when: date | None) -> tuple[float, int, int] | None:
@@ -290,6 +358,33 @@ class RateIndex:
 def pool_key(grade: str | None) -> str:
     """The rate index's key for every trade of one grade (T141)."""
     return f"{POOL}{grade}"
+
+
+def room_key(work_type: str | None, material_id: str, unit: str) -> str:
+    """The rate index's key for a material's quantity over its standard amount (T167)."""
+    return f"{ROOM}{work_type}:{material_id}:{unit}"
+
+
+def per_size_key(work_type: str | None, material_id: str) -> str:
+    """The rate index's key for a building material's quantity per m2 built up (T167)."""
+    return f"{PER_SIZE}{work_type}:{material_id}"
+
+
+def days_key(work_type: str | None, trade: str) -> str:
+    """The rate index's key for a trade's person-days per unit of a work type's size (T167)."""
+    return f"{DAYS}{work_type}:{trade}"
+
+
+def size_measure(work_type: str | None, size) -> tuple[float, str] | None:
+    """(the work's size in one number, its unit) that its crews scale with (T167), or None: a
+    road's or path's area, a building's built-up area."""
+    if not isinstance(size, dict):
+        return None
+    if work_type in ("ROAD_CC", "ROAD_BT", "FOOTPATH"):
+        a, b = _num(size.get("length_m")), _num(size.get("width_m"))
+        return (a * b, "m2") if a and b and a > 0 and b > 0 else None
+    area = _num(size.get("built_up_area_m2"))
+    return (area, "m2 built up") if area and area > 0 else None
 
 
 # the materials every construction district needs prices for, listed even before any form

@@ -128,9 +128,19 @@ def test_a_high_price_above_the_mps_amount_is_asked_about():
     assert r.risk == pytest.approx(agent.PRICE_RISK)
 
 
-def test_a_high_price_the_mp_also_recommended_is_only_a_note():
+def test_a_high_price_the_mp_also_recommended_is_check_this_never_a_note():
+    # T167: the MP agreeing softens the question to "check this"; it never clears the price
     r = run(light_form(rate=42000))           # the MP's amount equals the estimate
-    assert not r.findings and "MP's amount was as high" in r.headline
+    assert codes(r) == ["PRICE_ABOVE_STANDARD"] and r.risk == pytest.approx(agent.CHECK_RISK)
+    assert r.evidence["level"] == "check"
+    assert [x["kind"] for x in r.evidence["leeway"]] == ["claimed"]
+    assert "MP's amount is as high" in r.findings[0].text
+
+
+def test_a_price_just_above_the_98th_percentile_is_an_edge_case():
+    r = run(light_form(rate=23000))           # p98 22,000; the question line is 25% above it
+    assert not r.findings and r.evidence["level"] == "edge"
+    assert r.evidence["leeway"][0]["kind"] == "verified"
 
 
 def test_an_mps_low_guess_alone_is_never_a_question():
