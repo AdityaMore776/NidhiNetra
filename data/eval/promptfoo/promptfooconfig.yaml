@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
 # T168: the whole system, end to end, on promptfoo (plan docs/plans/T168-agent-evals.md §5).
 # A filled work form goes in (provider.py: POST /work-form/check's own steps, in process); the four
-# agents and the risk score come out. Two groups: the website's 13 example filings must raise
+# agents and the risk score come out. Two groups: the website's example filings must raise
 # exactly the questions the page says they do, and attacks on the form's text and number fields
 # must change nothing (or be refused, or say "couldn't check"), never crash, never clear a fraud.
 #
@@ -81,6 +81,84 @@ tests:
     vars: {request: '{"example": "site_elsewhere"}'}
     assert:
       - {type: javascript, value: "(o => o.codes.site_progress.includes('NOT_FILMED_AT_THIS_SITE'))(JSON.parse(output))"}
+
+  # ---- T170: more examples, each different: normal, edge cases, suspected -------------------------
+  - description: 'normal ok_lights: every agent looks, none asks'
+    vars: {request: '{"example": "ok_lights"}'}
+    assert:
+      - {type: javascript, value: "(o => o.band === 'LOW' && Object.values(o.codes).every(c => c.length === 0))(JSON.parse(output))"}
+  - description: 'normal ok_hall_done: every agent looks, none asks'
+    vars: {request: '{"example": "ok_hall_done"}'}
+    assert:
+      - {type: javascript, value: "(o => o.band === 'LOW' && Object.values(o.codes).every(c => c.length === 0))(JSON.parse(output))"}
+  - description: 'normal ok_next_lane: every agent looks, none asks'
+    vars: {request: '{"example": "ok_next_lane"}'}
+    assert:
+      - {type: javascript, value: "(o => o.band === 'LOW' && Object.values(o.codes).every(c => c.length === 0))(JSON.parse(output))"}
+  - description: 'normal ok_hindi_gst: every agent looks, none asks'
+    vars: {request: '{"example": "ok_hindi_gst"}'}
+    assert:
+      - {type: javascript, value: "(o => o.band === 'LOW' && Object.values(o.codes).every(c => c.length === 0))(JSON.parse(output))"}
+  - description: 'edge edge_slow_sanction'
+    vars: {request: '{"example": "edge_slow_sanction"}'}
+    assert:
+      - {type: javascript, value: "(o => o.level.time_rules === 'edge' && Object.values(o.codes).every(c => c.length === 0) && o.band === 'LOW')(JSON.parse(output))"}
+  - description: 'edge edge_fast_filmed'
+    vars: {request: '{"example": "edge_fast_filmed"}'}
+    assert:
+      - {type: javascript, value: "(o => o.codes.cost_estimate.length === 0 && o.codes.dup_split.length === 0 && o.codes.time_rules.length === 0 && o.codes.site_progress.length === 0 && o.band === 'LOW')(JSON.parse(output))"}
+  - description: 'edge edge_rain_pause'
+    vars: {request: '{"example": "edge_rain_pause"}'}
+    assert:
+      - {type: javascript, value: "(o => o.codes.cost_estimate.length === 0 && o.codes.dup_split.length === 0 && o.codes.time_rules.length === 0 && o.codes.site_progress.length === 0 && o.band === 'LOW')(JSON.parse(output))"}
+  - description: 'edge edge_extension'
+    vars: {request: '{"example": "edge_extension"}'}
+    assert:
+      - {type: javascript, value: "(o => o.codes.cost_estimate.length === 0 && o.codes.dup_split.length === 0 && o.codes.time_rules.length === 0 && o.codes.site_progress.length === 0 && o.band === 'LOW')(JSON.parse(output))"}
+  - description: 'edge edge_weak_gps'
+    vars: {request: '{"example": "edge_weak_gps"}'}
+    assert:
+      - {type: javascript, value: "(o => o.codes.cost_estimate.length === 0 && o.codes.dup_split.length === 0 && o.codes.time_rules.length === 0 && o.codes.site_progress.length === 0 && o.band === 'LOW')(JSON.parse(output))"}
+  - description: 'edge edge_price_rise'
+    vars: {request: '{"example": "edge_price_rise"}'}
+    assert:
+      - {type: javascript, value: "(o => o.codes.cost_estimate.length === 0 && o.codes.dup_split.length === 0 && o.codes.time_rules.length === 0 && o.codes.site_progress.length === 0 && o.band === 'LOW')(JSON.parse(output))"}
+  - description: 'edge edge_late_moving'
+    vars: {request: '{"example": "edge_late_moving"}'}
+    assert:
+      - {type: javascript, value: "(o => JSON.stringify(o.codes.time_rules) === JSON.stringify(['PAST_PROMISED_TIME']) && o.codes.cost_estimate.length === 0 && o.codes.dup_split.length === 0 && o.codes.site_progress.length === 0 && o.band === 'LOW')(JSON.parse(output))"}
+  - description: 'suspected dup_split_spread'
+    vars: {request: '{"example": "dup_split_spread"}'}
+    assert:
+      - {type: javascript, value: "(o => JSON.stringify(o.codes.dup_split) === JSON.stringify(['SPLIT_NEAR_LIMIT']) && o.codes.cost_estimate.length === 0 && o.codes.time_rules.length === 0 && o.codes.site_progress.length === 0 && o.band !== 'LOW')(JSON.parse(output))"}
+  - description: 'suspected dup_same_hall'
+    vars: {request: '{"example": "dup_same_hall"}'}
+    assert:
+      - {type: javascript, value: "(o => JSON.stringify(o.codes.dup_split) === JSON.stringify(['SAME_BUILDING_NEAR']) && o.codes.cost_estimate.length === 0 && o.codes.time_rules.length === 0 && o.codes.site_progress.length === 0 && o.band !== 'LOW')(JSON.parse(output))"}
+  - description: 'suspected site_no_first_visit'
+    vars: {request: '{"example": "site_no_first_visit"}'}
+    assert:
+      - {type: javascript, value: "(o => JSON.stringify(o.codes.site_progress) === JSON.stringify(['FIRST_FILMED_FINISHED']) && o.codes.cost_estimate.length === 0 && o.codes.dup_split.length === 0 && o.codes.time_rules.length === 0 && o.band !== 'LOW')(JSON.parse(output))"}
+  - description: 'suspected site_gps_off'
+    vars: {request: '{"example": "site_gps_off"}'}
+    assert:
+      - {type: javascript, value: "(o => JSON.stringify(o.codes.site_progress) === JSON.stringify(['LOCATION_NOT_RECORDED']) && o.codes.cost_estimate.length === 0 && o.codes.dup_split.length === 0 && o.codes.time_rules.length === 0 && o.band !== 'LOW')(JSON.parse(output))"}
+  - description: 'suspected time_filmed_last_day'
+    vars: {request: '{"example": "time_filmed_last_day"}'}
+    assert:
+      - {type: javascript, value: "(o => JSON.stringify(o.codes.time_rules) === JSON.stringify(['FINISHED_TOO_FAST']) && JSON.stringify(o.codes.site_progress) === JSON.stringify(['FIRST_FILMED_FINISHED']) && o.codes.cost_estimate.length === 0 && o.codes.dup_split.length === 0 && o.band !== 'LOW')(JSON.parse(output))"}
+  - description: 'suspected cost_other_charges'
+    vars: {request: '{"example": "cost_other_charges"}'}
+    assert:
+      - {type: javascript, value: "(o => JSON.stringify(o.codes.cost_estimate) === JSON.stringify(['ESTIMATE_ABOVE_FAIR_PRICE']) && o.codes.dup_split.length === 0 && o.codes.time_rules.length === 0 && o.codes.site_progress.length === 0 && o.band !== 'LOW')(JSON.parse(output))"}
+  - description: 'suspected cost_claimed_reason'
+    vars: {request: '{"example": "cost_claimed_reason"}'}
+    assert:
+      - {type: javascript, value: "(o => JSON.stringify(o.codes.cost_estimate) === JSON.stringify(['ESTIMATE_ABOVE_FAIR_RANGE']) && o.codes.dup_split.length === 0 && o.codes.time_rules.length === 0 && o.codes.site_progress.length === 0 && o.band !== 'LOW')(JSON.parse(output))"}
+  - description: 'suspected cost_ghost_workers'
+    vars: {request: '{"example": "cost_ghost_workers"}'}
+    assert:
+      - {type: javascript, value: "(o => JSON.stringify(o.codes.cost_estimate) === JSON.stringify(['LABOUR_DAYS_ABOVE_PEERS']) && o.codes.dup_split.length === 0 && o.codes.time_rules.length === 0 && o.codes.site_progress.length === 0 && o.band !== 'LOW')(JSON.parse(output))"}
 
   # ---- attacks: instructions written into the form's free text -----------------------------------
   # No agent reads free text as instructions; an injected sentence must change nothing

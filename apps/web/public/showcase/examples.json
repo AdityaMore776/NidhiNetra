@@ -1,13 +1,13 @@
 {
- "about": "13 prototype examples (T142): each a filing of the website's work intelligence form by a made-up agency in the real district of Jaunpur, graded by the four agents as the live form check does (data/trial/work_form_examples.py).",
+ "about": "32 prototype examples (T142): each a filing of the website's work intelligence form by a made-up agency in the real district of Jaunpur, graded by the four agents as the live form check does (data/trial/work_form_examples.py).",
  "summary": {
-  "works": 13,
-  "amount": 22177500.0,
+  "works": 32,
+  "amount": 55434000.0,
   "bands": {
    "CRITICAL": 0,
-   "HIGH": 1,
-   "MEDIUM": 11,
-   "LOW": 1
+   "HIGH": 2,
+   "MEDIUM": 18,
+   "LOW": 12
   },
   "snapshot_date": "2026-10-02",
   "agents": [
@@ -18,7 +18,7 @@
     "built": true,
     "weight": 0.25,
     "weight_note": "",
-    "alerts": 4
+    "alerts": 7
    },
    {
     "id": "dup_split",
@@ -27,7 +27,7 @@
     "built": true,
     "weight": 0.25,
     "weight_note": "",
-    "alerts": 3
+    "alerts": 5
    },
    {
     "id": "time_rules",
@@ -36,7 +36,7 @@
     "built": true,
     "weight": 0.25,
     "weight_note": "",
-    "alerts": 2
+    "alerts": 5
    },
    {
     "id": "site_progress",
@@ -45,7 +45,7 @@
     "built": true,
     "weight": 0.25,
     "weight_note": "",
-    "alerts": 4
+    "alerts": 7
    }
   ]
  },
@@ -55,7 +55,7 @@
    "row": {
     "work_id": "WF-CLEAN-1",
     "source": "SCENARIO",
-    "district_lgd": "UTTAR PRADESH|JAUNPUR",
+    "district_lgd": "194",
     "district_name": "Jaunpur",
     "state_name": "Uttar Pradesh",
     "work_type_code": "ROAD_CC",
@@ -79,7 +79,7 @@
      "house": null,
      "term": null,
      "state_name": "Uttar Pradesh",
-     "district_lgd": "UTTAR PRADESH|JAUNPUR",
+     "district_lgd": "194",
      "district_name": "Jaunpur",
      "constituency": null,
      "mp_name": null,
@@ -117,7 +117,7 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "The whole estimate is Rs 14.52 lakh against a fair Rs 14.53 lakh (Rs 14.21 to 14.94 lakh at the lowest and highest rates other agencies here charge), -0.1%, pricing 73% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+       "headline": "The whole estimate is Rs 14.52 lakh against a fair Rs 14.52 lakh (Rs 14.34 to 14.94 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 73% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
        "version": "",
        "findings": [],
        "limitations": [
@@ -136,7 +136,7 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 1,061 other works of its district names this place in the same words.",
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
        "version": "",
        "findings": [],
        "limitations": [],
@@ -194,6 +194,7 @@
       "time_rules",
       "site_progress"
      ],
+     "kind": "normal",
      "shows": "A 300 m village road, priced and sized honestly.",
      "why": "Most filings look like this one. Every check reads it and none asks: the prices are the district's, the quantities fit the road's size, nothing is sanctioned at its pin, and the first site videos show the work the agency claims. A check that stays quiet here keeps the review queue short.",
      "explain": "clean",
@@ -207,11 +208,1779 @@
    }
   },
   {
+   "key": "ok_lights",
+   "row": {
+    "work_id": "WF-OK-LIGHTS",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "STREET_LIGHT",
+    "description": "10 solar street lights from the bus stand to the primary school, Amarpur",
+    "amount": 210000.0,
+    "status": "RECOMMENDED",
+    "recommended_date": "2026-08-25",
+    "band": "LOW",
+    "score": 0.0,
+    "priority": 0.0,
+    "limited": false,
+    "alerts": [],
+    "headline": null,
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-OK-LIGHTS",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Prakash Urja Agency",
+     "fy": "2026-27",
+     "work_type_code": "STREET_LIGHT",
+     "category": null,
+     "description": "10 solar street lights from the bus stand to the primary school, Amarpur",
+     "amount": 210000.0,
+     "recommended_date": "2026-08-25",
+     "completed_date": null,
+     "status": "RECOMMENDED",
+     "sanction_date": null
+    },
+    "assessment": {
+     "work_id": "WF-OK-LIGHTS",
+     "assessed_at": "2026-10-02",
+     "score": 0.0,
+     "band": "LOW",
+     "limited": false,
+     "priority": 0.0,
+     "parts": {
+      "parts": [],
+      "hard_trigger": null,
+      "reasons": []
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "ASSESSED",
+       "verdict": "ESTIMATE_FITS_SIZE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "The work: Rs 21,000 per light is above 98 in 100 similar works in Jaunpur but within 25% of them (8 in 10 of the 136 similar works in Jaunpur cost Rs 20,878 to Rs 20,896 per light (median Rs 20,896); 98 in 100 cost at most Rs 20,896). The whole estimate is Rs 2.10 lakh against a fair Rs 2.10 lakh, +0.0%, pricing 100% of the money: within the fair band.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Not priced here, for want of reliable price data (recorded, so it can be collected): battery (no other agency's form yet).",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "NOT_SANCTIONED_BEFORE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 20 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "ON_TIME_AS_FAR_AS_CHECKED",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No timing problem the dates and the agency's own estimate can show.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "NOT_APPLICABLE",
+       "verdict": "NOT_APPLICABLE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [],
+     "headline": null,
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 2,
+     "key": "ok_lights",
+     "title": "Solar street lights at the usual price",
+     "agents": [
+      "cost_estimate"
+     ],
+     "kind": "normal",
+     "shows": "10 solar street lights at Rs 21,000 each, what the district's own lights cost; the MP recommended Rs 2.1 lakh.",
+     "why": "Lights are judged by the price of one light against what the district's own lights cost. Rs 21,000 a light is the district's usual price and the estimate matches the MP's amount, so Cost has nothing to ask.",
+     "explain": "ok_lights",
+     "form_example": "ok_lights",
+     "later": [
+      "Not sanctioned yet: this is the check before sanction"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "ok_hall_done",
+   "row": {
+    "work_id": "WF-OK-HALL",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "COMMUNITY_HALL",
+    "description": "Community hall at the panchayat ground, Bishunpur",
+    "amount": 2475000.0,
+    "status": "COMPLETED",
+    "recommended_date": "2025-11-06",
+    "band": "LOW",
+    "score": 0.0,
+    "priority": 0.0,
+    "limited": true,
+    "alerts": [],
+    "headline": null,
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-OK-HALL",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Lok Nirman Mandal",
+     "fy": "2026-27",
+     "work_type_code": "COMMUNITY_HALL",
+     "category": null,
+     "description": "Community hall at the panchayat ground, Bishunpur",
+     "amount": 2475000.0,
+     "recommended_date": "2025-11-06",
+     "completed_date": "2026-08-18",
+     "status": "COMPLETED",
+     "sanction_date": "2025-12-06"
+    },
+    "assessment": {
+     "work_id": "WF-OK-HALL",
+     "assessed_at": "2026-10-02",
+     "score": 0.0,
+     "band": "LOW",
+     "limited": true,
+     "priority": 0.0,
+     "parts": {
+      "parts": [],
+      "hard_trigger": null,
+      "reasons": []
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "NOT_ASSESSABLE",
+       "verdict": "NOT_ASSESSABLE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Could not compare this estimate with anything yet: Price of the work: no reference for this kind of work yet. Not priced here, for want of reliable price data (recorded, so it can be collected): cement (the other agencies' forms are over 6 months old); sand (the other agencies' forms are over 6 months old); stone aggregate (the other agencies' forms are over 6 months old); reinforcement steel (the other agencies' forms are over 6 months old); bricks (the other agencies' forms are over 6 months old); tiles (the other agencies' forms are over 6 months old); doors / windows (the other agencies' forms are over 6 months old); mason (the other agencies' forms are over 6 months old); beldar / mazdoor (the other agencies' forms are over 6 months old). Only 0% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged. The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs. This is not a clean chit.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Price of the work: no reference for this kind of work yet.",
+        "Not priced here, for want of reliable price data (recorded, so it can be collected): cement (the other agencies' forms are over 6 months old); sand (the other agencies' forms are over 6 months old); stone aggregate (the other agencies' forms are over 6 months old); reinforcement steel (the other agencies' forms are over 6 months old); bricks (the other agencies' forms are over 6 months old); tiles (the other agencies' forms are over 6 months old); doors / windows (the other agencies' forms are over 6 months old); mason (the other agencies' forms are over 6 months old); beldar / mazdoor (the other agencies' forms are over 6 months old).",
+        "Only 0% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged.",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "NOT_SANCTIONED_BEFORE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 50 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "ON_TIME_AS_FAR_AS_CHECKED",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No timing problem the dates and the agency's own estimate can show.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "ASSESSED",
+       "verdict": "PROGRESS_AS_SHOWN",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "9 site videos read: nothing the videos show needs checking.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Filmed in a phone's browser, which cannot report a mock location or check the phone itself; the views must match the site's own earlier views either way."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [],
+     "headline": null,
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 3,
+     "key": "ok_hall_done",
+     "title": "A hall built on time, every month filmed",
+     "agents": [
+      "time_rules",
+      "site_progress"
+     ],
+     "kind": "normal",
+     "shows": "Promised in 8 months and finished in 8: a first visit, seven monthly videos of new work, and a final video showing every part finished.",
+     "why": "Finished inside the agency's own promise, with a video every month: Time & Rules finds the pace believable, and NidhiLens (Fine-Tuned Site Progress Model) sees every claim in the videos, up to the finished hall.",
+     "explain": "ok_hall_done",
+     "form_example": "ok_hall_done",
+     "later": [
+      "Sanctioned 06 Dec 2025",
+      "Completed 18 Aug 2026",
+      "Nine site videos: every claim shown"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "ok_next_lane",
+   "row": {
+    "work_id": "WF-OK-LANE",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "ROAD_CC",
+    "description": "CC road along the second lane of Chakia Tola",
+    "amount": 1452000.0,
+    "status": "RECOMMENDED",
+    "recommended_date": "2026-08-18",
+    "band": "LOW",
+    "score": 0.0,
+    "priority": 0.0,
+    "limited": false,
+    "alerts": [],
+    "headline": null,
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-OK-LANE",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Gramin Path Nigam",
+     "fy": "2026-27",
+     "work_type_code": "ROAD_CC",
+     "category": null,
+     "description": "CC road along the second lane of Chakia Tola",
+     "amount": 1452000.0,
+     "recommended_date": "2026-08-18",
+     "completed_date": null,
+     "status": "RECOMMENDED",
+     "sanction_date": null
+    },
+    "assessment": {
+     "work_id": "WF-OK-LANE",
+     "assessed_at": "2026-10-02",
+     "score": 0.0,
+     "band": "LOW",
+     "limited": false,
+     "priority": 0.0,
+     "parts": {
+      "parts": [],
+      "hard_trigger": null,
+      "reasons": []
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "ASSESSED",
+       "verdict": "ESTIMATE_FITS_SIZE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "The whole estimate is Rs 14.52 lakh against a fair Rs 14.52 lakh (Rs 14.30 to 14.94 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 73% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "NOT_SANCTIONED_BEFORE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "ON_TIME_AS_FAR_AS_CHECKED",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No timing problem the dates and the agency's own estimate can show.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "NOT_APPLICABLE",
+       "verdict": "NOT_APPLICABLE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [],
+     "headline": null,
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 4,
+     "key": "ok_next_lane",
+     "title": "A new lane beside last year's lane, not on it",
+     "agents": [
+      "dup_split"
+     ],
+     "kind": "normal",
+     "shows": "The next street over: a new road 30 m from a road finished last year, running alongside it. The form names the old road.",
+     "why": "Two roads 30 m apart look alike on a map, but this one runs beside the old road, never on it. Duplicate Work compares the line of each road, not only how near the pins are, so the next street over is never asked about.",
+     "explain": "ok_next_lane",
+     "form_example": "ok_next_lane",
+     "later": [
+      "Not sanctioned yet: this is the check before sanction",
+      "Earlier road WF-OK-LANE-OLD: completed 13 months ago, 30 m to the west"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "ok_hindi_gst",
+   "row": {
+    "work_id": "WF-OK-HINDI",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "ROAD_CC",
+    "description": "CC road from the primary school to the panchayat bhawan, Devipur",
+    "amount": 1713000.0,
+    "status": "RECOMMENDED",
+    "recommended_date": "2026-08-28",
+    "band": "LOW",
+    "score": 0.0,
+    "priority": 0.0,
+    "limited": false,
+    "alerts": [],
+    "headline": null,
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-OK-HINDI",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Gram Unnati Agency",
+     "fy": "2026-27",
+     "work_type_code": "ROAD_CC",
+     "category": null,
+     "description": "CC road from the primary school to the panchayat bhawan, Devipur",
+     "amount": 1713000.0,
+     "recommended_date": "2026-08-28",
+     "completed_date": null,
+     "status": "RECOMMENDED",
+     "sanction_date": null
+    },
+    "assessment": {
+     "work_id": "WF-OK-HINDI",
+     "assessed_at": "2026-10-02",
+     "score": 0.0,
+     "band": "LOW",
+     "limited": false,
+     "priority": 0.0,
+     "parts": {
+      "parts": [],
+      "hard_trigger": null,
+      "reasons": []
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "ASSESSED",
+       "verdict": "ESTIMATE_FITS_SIZE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "The whole estimate is Rs 17.13 lakh against a fair Rs 17.13 lakh (Rs 17.13 to 18.25 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 73% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "NOT_SANCTIONED_BEFORE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "ON_TIME_AS_FAR_AS_CHECKED",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No timing problem the dates and the agency's own estimate can show.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "NOT_APPLICABLE",
+       "verdict": "NOT_APPLICABLE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [],
+     "headline": null,
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 5,
+     "key": "ok_hindi_gst",
+     "title": "An estimate written in Hindi, GST added on top",
+     "agents": [
+      "cost_estimate"
+     ],
+     "kind": "normal",
+     "shows": "Materials named in Hindi and the 18% GST added as a separate charge, because these rates leave tax out. The prices are the district's.",
+     "why": "Honest forms are written in different ways. Cost reads item names in Hindi as the same materials, and counts GST added on top as tax when the form says its rates leave tax out, so neither raises a question.",
+     "explain": "ok_hindi_gst",
+     "form_example": "ok_hindi_gst",
+     "later": [
+      "Not sanctioned yet: this is the check before sanction"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "edge_slow_sanction",
+   "row": {
+    "work_id": "WF-EDGE-SLOW-SANCTION",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "ROAD_CC",
+    "description": "CC road from the primary school to the panchayat bhawan, Gangapur Khurd",
+    "amount": 1452000.0,
+    "status": "SANCTIONED",
+    "recommended_date": "2026-03-16",
+    "band": "LOW",
+    "score": 0.05,
+    "priority": 0.05,
+    "limited": false,
+    "alerts": [
+     "time_rules"
+    ],
+    "headline": "Sanctioned 130 days after the MP's recommendation (16 Mar 2026 to 24 Jul 2026); the guidelines give 75 days. 60% of the works on the eSAKSHI dashboard are sanctioned past the 75-day limit, so this is a fact about the office's pace and goes on its report card; it is not a finding about the work.",
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-EDGE-SLOW-SANCTION",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Shramik Works Cooperative",
+     "fy": "2026-27",
+     "work_type_code": "ROAD_CC",
+     "category": null,
+     "description": "CC road from the primary school to the panchayat bhawan, Gangapur Khurd",
+     "amount": 1452000.0,
+     "recommended_date": "2026-03-16",
+     "completed_date": null,
+     "status": "SANCTIONED",
+     "sanction_date": "2026-07-24"
+    },
+    "assessment": {
+     "work_id": "WF-EDGE-SLOW-SANCTION",
+     "assessed_at": "2026-10-02",
+     "score": 0.05,
+     "band": "LOW",
+     "limited": false,
+     "priority": 0.05,
+     "parts": {
+      "parts": [
+       {
+        "source": "time_rules",
+        "label": "Time & Rules",
+        "weight": 0.05,
+        "contribution": 0.05
+       }
+      ],
+      "hard_trigger": null,
+      "reasons": [
+       {
+        "source": "time_rules",
+        "label": "Time & Rules",
+        "contribution": 0.05,
+        "code": "SANCTIONED_LATE",
+        "text_en": "Sanctioned 130 days after the MP's recommendation (16 Mar 2026 to 24 Jul 2026); the guidelines give 75 days. 60% of the works on the eSAKSHI dashboard are sanctioned past the 75-day limit, so this is a fact about the office's pace and goes on its report card; it is not a finding about the work.",
+        "text_hi": "अनुशंसा के 130 दिन बाद स्वीकृत (सीमा 75 दिन)। अधिकांश कार्य देर से स्वीकृत होते हैं; यह कार्यालय की गति का तथ्य है, कार्य पर निष्कर्ष नहीं।",
+        "chance": 0.05,
+        "hit_rate": 0.05,
+        "basis": "design",
+        "read": null
+       }
+      ]
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "ASSESSED",
+       "verdict": "ESTIMATE_FITS_SIZE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "The whole estimate is Rs 14.52 lakh against a fair Rs 14.52 lakh, +0.0%, pricing 62% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
+        "Not priced here, for want of reliable price data (recorded, so it can be collected): gsb / wbm / moorum (the other agencies' forms are over 6 months old).",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "NOT_SANCTIONED_BEFORE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "SANCTIONED_LATE",
+       "risk": 0.05,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Sanctioned 130 days after the MP's recommendation (16 Mar 2026 to 24 Jul 2026); the guidelines give 75 days. 60% of the works on the eSAKSHI dashboard are sanctioned past the 75-day limit, so this is a fact about the office's pace and goes on its report card; it is not a finding about the work.",
+       "version": "",
+       "findings": [
+        {
+         "code": "SANCTIONED_LATE",
+         "text": "Sanctioned 130 days after the MP's recommendation (16 Mar 2026 to 24 Jul 2026); the guidelines give 75 days. 60% of the works on the eSAKSHI dashboard are sanctioned past the 75-day limit, so this is a fact about the office's pace and goes on its report card; it is not a finding about the work.",
+         "hard": false,
+         "risk": 0.05,
+         "evidence": {}
+        }
+       ],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "ASSESSED",
+       "verdict": "PROGRESS_AS_SHOWN",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "2 site videos read: nothing the videos show needs checking.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Filmed in a phone's browser, which cannot report a mock location or check the phone itself; the views must match the site's own earlier views either way."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [
+      "time_rules"
+     ],
+     "headline": "Sanctioned 130 days after the MP's recommendation (16 Mar 2026 to 24 Jul 2026); the guidelines give 75 days. 60% of the works on the eSAKSHI dashboard are sanctioned past the 75-day limit, so this is a fact about the office's pace and goes on its report card; it is not a finding about the work.",
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 6,
+     "key": "edge_slow_sanction",
+     "title": "Sanctioned four months late, then built on time",
+     "agents": [
+      "time_rules"
+     ],
+     "kind": "edge",
+     "shows": "The office took 130 days to sanction it, past the 75-day rule. That is noted about the office, never held against the work, which has been filmed changing since.",
+     "why": "A slow sanction is how most offices work: 60% of works wait past 75 days. Time & Rules records it about the office as a small note, which never puts the work in the queue on its own.",
+     "explain": "edge_slow_sanction",
+     "form_example": "edge_slow_sanction",
+     "later": [
+      "Recommended 16 Mar 2026, sanctioned 24 Jul 2026",
+      "Two site videos since: new work shown"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "edge_fast_filmed",
+   "row": {
+    "work_id": "WF-EDGE-FAST",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "ROAD_CC",
+    "description": "CC road from the primary school to the panchayat bhawan, Hasanpur",
+    "amount": 628000.0,
+    "status": "COMPLETED",
+    "recommended_date": "2026-05-25",
+    "band": "LOW",
+    "score": 0.0,
+    "priority": 0.0,
+    "limited": false,
+    "alerts": [],
+    "headline": null,
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-EDGE-FAST",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Jan Suvidha Works",
+     "fy": "2026-27",
+     "work_type_code": "ROAD_CC",
+     "category": null,
+     "description": "CC road from the primary school to the panchayat bhawan, Hasanpur",
+     "amount": 628000.0,
+     "recommended_date": "2026-05-25",
+     "completed_date": "2026-08-03",
+     "status": "COMPLETED",
+     "sanction_date": "2026-07-04"
+    },
+    "assessment": {
+     "work_id": "WF-EDGE-FAST",
+     "assessed_at": "2026-10-02",
+     "score": 0.0,
+     "band": "LOW",
+     "limited": false,
+     "priority": 0.0,
+     "parts": {
+      "parts": [],
+      "hard_trigger": null,
+      "reasons": []
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "ASSESSED",
+       "verdict": "ESTIMATE_FITS_SIZE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "The whole estimate is Rs 6.28 lakh against a fair Rs 6.28 lakh (Rs 6.28 to 6.31 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 58% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
+        "Not priced here, for want of reliable price data (recorded, so it can be collected): gsb / wbm / moorum (4 recent forms from 4 other agencies; 5 from 3 needed).",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "NOT_SANCTIONED_BEFORE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "ON_TIME_AS_FAR_AS_CHECKED",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No timing problem the dates and the agency's own estimate can show.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "ASSESSED",
+       "verdict": "PROGRESS_AS_SHOWN",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "4 site videos read: nothing the videos show needs checking.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Filmed in a phone's browser, which cannot report a mock location or check the phone itself; the views must match the site's own earlier views either way."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [],
+     "headline": null,
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 7,
+     "key": "edge_fast_filmed",
+     "title": "A short road finished in 25 days, filmed all along",
+     "agents": [
+      "time_rules",
+      "site_progress"
+     ],
+     "kind": "edge",
+     "shows": "A 120 m road finished 25 days after work began: fast, but four site videos show it being built, so the speed is believed.",
+     "why": "Speed alone is not a question. A road finished in 25 days is believed when videos filmed before the finish show it being built; with only a final video, or none, the speed would stay unexplained.",
+     "explain": "edge_fast_filmed",
+     "form_example": "edge_fast_filmed",
+     "later": [
+      "Sanctioned 04 Jul 2026",
+      "Completed 03 Aug 2026",
+      "Filmed on days 5, 15 and 27, and the final day"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "edge_rain_pause",
+   "row": {
+    "work_id": "WF-EDGE-RAIN",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "COMMUNITY_HALL",
+    "description": "Community hall at the panchayat ground, Semrauna",
+    "amount": 2475000.0,
+    "status": "SANCTIONED",
+    "recommended_date": "2026-02-14",
+    "band": "LOW",
+    "score": 0.0,
+    "priority": 0.0,
+    "limited": true,
+    "alerts": [],
+    "headline": null,
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-EDGE-RAIN",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Sahyog Construction Cell",
+     "fy": "2026-27",
+     "work_type_code": "COMMUNITY_HALL",
+     "category": null,
+     "description": "Community hall at the panchayat ground, Semrauna",
+     "amount": 2475000.0,
+     "recommended_date": "2026-02-14",
+     "completed_date": null,
+     "status": "SANCTIONED",
+     "sanction_date": "2026-03-16"
+    },
+    "assessment": {
+     "work_id": "WF-EDGE-RAIN",
+     "assessed_at": "2026-10-02",
+     "score": 0.0,
+     "band": "LOW",
+     "limited": true,
+     "priority": 0.0,
+     "parts": {
+      "parts": [],
+      "hard_trigger": null,
+      "reasons": []
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "NOT_ASSESSABLE",
+       "verdict": "NOT_ASSESSABLE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Could not compare this estimate with anything yet: Price of the work: no reference for this kind of work yet. Not priced here, for want of reliable price data (recorded, so it can be collected): cement (4 recent forms from 3 other agencies; 5 from 3 needed); sand (4 recent forms from 3 other agencies; 5 from 3 needed); stone aggregate (4 recent forms from 3 other agencies; 5 from 3 needed); reinforcement steel (4 recent forms from 3 other agencies; 5 from 3 needed); bricks (4 recent forms from 3 other agencies; 5 from 3 needed); tiles (4 recent forms from 3 other agencies; 5 from 3 needed); doors / windows (4 recent forms from 3 other agencies; 5 from 3 needed); mason (4 recent forms from 3 other agencies; 5 from 3 needed); beldar / mazdoor (4 recent forms from 3 other agencies; 5 from 3 needed). Only 0% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged. The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs. This is not a clean chit.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Price of the work: no reference for this kind of work yet.",
+        "Not priced here, for want of reliable price data (recorded, so it can be collected): cement (4 recent forms from 3 other agencies; 5 from 3 needed); sand (4 recent forms from 3 other agencies; 5 from 3 needed); stone aggregate (4 recent forms from 3 other agencies; 5 from 3 needed); reinforcement steel (4 recent forms from 3 other agencies; 5 from 3 needed); bricks (4 recent forms from 3 other agencies; 5 from 3 needed); tiles (4 recent forms from 3 other agencies; 5 from 3 needed); doors / windows (4 recent forms from 3 other agencies; 5 from 3 needed); mason (4 recent forms from 3 other agencies; 5 from 3 needed); beldar / mazdoor (4 recent forms from 3 other agencies; 5 from 3 needed).",
+        "Only 0% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged.",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "NOT_SANCTIONED_BEFORE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 50 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "ON_TIME_AS_FAR_AS_CHECKED",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No timing problem the dates and the agency's own estimate can show.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "ASSESSED",
+       "verdict": "PROGRESS_AS_SHOWN",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "6 site videos read: nothing the videos show needs checking.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Filmed in a phone's browser, which cannot report a mock location or check the phone itself; the views must match the site's own earlier views either way."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [],
+     "headline": null,
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 8,
+     "key": "edge_rain_pause",
+     "title": "Two monsoon months with no change, said openly",
+     "agents": [
+      "site_progress"
+     ],
+     "kind": "edge",
+     "shows": "Three months of new work, then two monsoon videos with nothing new. The agency's own claim says the work paused for rain.",
+     "why": "Two months with no change would look like a stopped site. Here the agency's own claim says the work paused for rain, the videos agree, and the earlier months show steady work, so nothing is asked.",
+     "explain": "edge_rain_pause",
+     "form_example": "edge_rain_pause",
+     "later": [
+      "Sanctioned 16 Mar 2026",
+      "Six site videos: the last two show the same site"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "edge_extension",
+   "row": {
+    "work_id": "WF-EDGE-EXT",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "ROAD_CC",
+    "description": "Extension of the CC road to the canal bridge, Kanakpur",
+    "amount": 1452000.0,
+    "status": "RECOMMENDED",
+    "recommended_date": "2026-08-21",
+    "band": "LOW",
+    "score": 0.0,
+    "priority": 0.0,
+    "limited": false,
+    "alerts": [],
+    "headline": null,
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-EDGE-EXT",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Nirman Seva Agency",
+     "fy": "2026-27",
+     "work_type_code": "ROAD_CC",
+     "category": null,
+     "description": "Extension of the CC road to the canal bridge, Kanakpur",
+     "amount": 1452000.0,
+     "recommended_date": "2026-08-21",
+     "completed_date": null,
+     "status": "RECOMMENDED",
+     "sanction_date": null
+    },
+    "assessment": {
+     "work_id": "WF-EDGE-EXT",
+     "assessed_at": "2026-10-02",
+     "score": 0.0,
+     "band": "LOW",
+     "limited": false,
+     "priority": 0.0,
+     "parts": {
+      "parts": [],
+      "hard_trigger": null,
+      "reasons": []
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "ASSESSED",
+       "verdict": "ESTIMATE_FITS_SIZE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "The whole estimate is Rs 14.52 lakh against a fair Rs 14.52 lakh (Rs 14.30 to 14.94 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 73% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "CONTINUES_SANCTIONED_WORK",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "The agency says this work extends work WF-EDGE-EXT-OLD (Rs 14.52 lakh, completed on 2025-05-20).",
+       "version": "",
+       "findings": [
+        {
+         "code": "CONTINUES_SANCTIONED_WORK",
+         "text": "The agency says this work extends work WF-EDGE-EXT-OLD (Rs 14.52 lakh, completed on 2025-05-20).",
+         "hard": false,
+         "risk": 0.0,
+         "evidence": {}
+        }
+       ],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "ON_TIME_AS_FAR_AS_CHECKED",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No timing problem the dates and the agency's own estimate can show.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "NOT_APPLICABLE",
+       "verdict": "NOT_APPLICABLE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [],
+     "headline": null,
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 9,
+     "key": "edge_extension",
+     "title": "An extension that starts where the old road ends",
+     "agents": [
+      "dup_split"
+     ],
+     "kind": "edge",
+     "shows": "A road declared as the extension of a road finished 16 months ago, starting at its end. The agents note the earlier work; nothing is asked.",
+     "why": "A road starting where a finished road ends could look like a repeat. The agency declares it an extension, names the earlier work, and it lies beyond the old road's end, so Duplicate Work notes the link and asks nothing.",
+     "explain": "edge_extension",
+     "form_example": "edge_extension",
+     "later": [
+      "Not sanctioned yet: this is the check before sanction",
+      "Earlier road WF-EDGE-EXT-OLD: completed, ending where this one starts"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "edge_weak_gps",
+   "row": {
+    "work_id": "WF-EDGE-GPS",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "COMMUNITY_HALL",
+    "description": "Community hall at the panchayat ground, Lakhanpur",
+    "amount": 2475000.0,
+    "status": "SANCTIONED",
+    "recommended_date": "2026-02-14",
+    "band": "LOW",
+    "score": 0.0,
+    "priority": 0.0,
+    "limited": true,
+    "alerts": [],
+    "headline": null,
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-EDGE-GPS",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Sadak Vikas Prakoshth",
+     "fy": "2026-27",
+     "work_type_code": "COMMUNITY_HALL",
+     "category": null,
+     "description": "Community hall at the panchayat ground, Lakhanpur",
+     "amount": 2475000.0,
+     "recommended_date": "2026-02-14",
+     "completed_date": null,
+     "status": "SANCTIONED",
+     "sanction_date": "2026-03-16"
+    },
+    "assessment": {
+     "work_id": "WF-EDGE-GPS",
+     "assessed_at": "2026-10-02",
+     "score": 0.0,
+     "band": "LOW",
+     "limited": true,
+     "priority": 0.0,
+     "parts": {
+      "parts": [],
+      "hard_trigger": null,
+      "reasons": []
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "NOT_ASSESSABLE",
+       "verdict": "NOT_ASSESSABLE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Could not compare this estimate with anything yet: Price of the work: no reference for this kind of work yet. Not priced here, for want of reliable price data (recorded, so it can be collected): cement (4 recent forms from 3 other agencies; 5 from 3 needed); sand (4 recent forms from 3 other agencies; 5 from 3 needed); stone aggregate (4 recent forms from 3 other agencies; 5 from 3 needed); reinforcement steel (4 recent forms from 3 other agencies; 5 from 3 needed); bricks (4 recent forms from 3 other agencies; 5 from 3 needed); tiles (4 recent forms from 3 other agencies; 5 from 3 needed); doors / windows (4 recent forms from 3 other agencies; 5 from 3 needed); mason (4 recent forms from 3 other agencies; 5 from 3 needed); beldar / mazdoor (4 recent forms from 3 other agencies; 5 from 3 needed). Only 0% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged. The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs. This is not a clean chit.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Price of the work: no reference for this kind of work yet.",
+        "Not priced here, for want of reliable price data (recorded, so it can be collected): cement (4 recent forms from 3 other agencies; 5 from 3 needed); sand (4 recent forms from 3 other agencies; 5 from 3 needed); stone aggregate (4 recent forms from 3 other agencies; 5 from 3 needed); reinforcement steel (4 recent forms from 3 other agencies; 5 from 3 needed); bricks (4 recent forms from 3 other agencies; 5 from 3 needed); tiles (4 recent forms from 3 other agencies; 5 from 3 needed); doors / windows (4 recent forms from 3 other agencies; 5 from 3 needed); mason (4 recent forms from 3 other agencies; 5 from 3 needed); beldar / mazdoor (4 recent forms from 3 other agencies; 5 from 3 needed).",
+        "Only 0% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged.",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "NOT_SANCTIONED_BEFORE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 50 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "ON_TIME_AS_FAR_AS_CHECKED",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No timing problem the dates and the agency's own estimate can show.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "ASSESSED",
+       "verdict": "PROGRESS_AS_SHOWN",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "6 site videos read: nothing the videos show needs checking.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Filmed in a phone's browser, which cannot report a mock location or check the phone itself; the views must match the site's own earlier views either way."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [],
+     "headline": null,
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 10,
+     "key": "edge_weak_gps",
+     "title": "Filmed under trees: the GPS drifts, and says so",
+     "agents": [
+      "site_progress"
+     ],
+     "kind": "edge",
+     "shows": "Every video records where it was filmed. One lands 110 m from the site, but the phone itself said it could be 45 m out, and its views match the site.",
+     "why": "Phones lose their position under trees. A video 110 m from the pin is allowed when the phone itself said it could be 45 m out and the views match the site; the same distance with a confident fix would be checked.",
+     "explain": "edge_weak_gps",
+     "form_example": "edge_weak_gps",
+     "later": [
+      "Sanctioned 16 Mar 2026",
+      "Six site videos, each with its location"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "edge_price_rise",
+   "row": {
+    "work_id": "WF-EDGE-PRICE",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "ROAD_CC",
+    "description": "CC road from the primary school to the panchayat bhawan, Mahuari",
+    "amount": 1547000.0,
+    "status": "RECOMMENDED",
+    "recommended_date": "2026-09-02",
+    "band": "LOW",
+    "score": 0.0,
+    "priority": 0.0,
+    "limited": false,
+    "alerts": [],
+    "headline": null,
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-EDGE-PRICE",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Nagar Seva Kendra",
+     "fy": "2026-27",
+     "work_type_code": "ROAD_CC",
+     "category": null,
+     "description": "CC road from the primary school to the panchayat bhawan, Mahuari",
+     "amount": 1547000.0,
+     "recommended_date": "2026-09-02",
+     "completed_date": null,
+     "status": "RECOMMENDED",
+     "sanction_date": null
+    },
+    "assessment": {
+     "work_id": "WF-EDGE-PRICE",
+     "assessed_at": "2026-10-02",
+     "score": 0.0,
+     "band": "LOW",
+     "limited": false,
+     "priority": 0.0,
+     "parts": {
+      "parts": [],
+      "hard_trigger": null,
+      "reasons": []
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "ASSESSED",
+       "verdict": "ESTIMATE_FITS_SIZE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "The whole estimate is Rs 15.47 lakh against a fair Rs 14.52 lakh (Rs 14.52 to 14.63 lakh at the lowest and highest rates other agencies here charge), +9.0%, pricing 74% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "NOT_SANCTIONED_BEFORE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "ON_TIME_AS_FAR_AS_CHECKED",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No timing problem the dates and the agency's own estimate can show.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "NOT_APPLICABLE",
+       "verdict": "NOT_APPLICABLE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [],
+     "headline": null,
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 11,
+     "key": "edge_price_rise",
+     "title": "Priced after a rise: 9% above older estimates",
+     "agents": [
+      "cost_estimate"
+     ],
+     "kind": "edge",
+     "shows": "Every material about 9% above what other agencies filed three to five months ago: prices moved, and that is inside the 10% the CPWD Works Manual allows with reasons.",
+     "why": "Prices rise between filings. Rates 9% above older estimates sit inside the 10% the CPWD Works Manual allows with recorded reasons, so Cost asks nothing; a bigger gap would be checked.",
+     "explain": "edge_price_rise",
+     "form_example": "edge_price_rise",
+     "later": [
+      "Not sanctioned yet: this is the check before sanction"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "edge_late_moving",
+   "row": {
+    "work_id": "WF-EDGE-LATE",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "COMMUNITY_HALL",
+    "description": "Community hall at the panchayat ground, Pipra Kalan",
+    "amount": 2475000.0,
+    "status": "SANCTIONED",
+    "recommended_date": "2025-03-21",
+    "band": "LOW",
+    "score": 0.125,
+    "priority": 0.125,
+    "limited": true,
+    "alerts": [
+     "time_rules"
+    ],
+    "headline": "Not complete 159 days after its own promised time: 7.9 months from 01 May 2025, 120 days of grace, so due by 26 Apr 2026. Most works finish late; follow up with the agency on progress.",
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-EDGE-LATE",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Gram Unnati Agency",
+     "fy": "2026-27",
+     "work_type_code": "COMMUNITY_HALL",
+     "category": null,
+     "description": "Community hall at the panchayat ground, Pipra Kalan",
+     "amount": 2475000.0,
+     "recommended_date": "2025-03-21",
+     "completed_date": null,
+     "status": "SANCTIONED",
+     "sanction_date": "2025-04-30"
+    },
+    "assessment": {
+     "work_id": "WF-EDGE-LATE",
+     "assessed_at": "2026-10-02",
+     "score": 0.125,
+     "band": "LOW",
+     "limited": true,
+     "priority": 0.125,
+     "parts": {
+      "parts": [
+       {
+        "source": "time_rules",
+        "label": "Time & Rules",
+        "weight": 0.125,
+        "contribution": 0.125
+       }
+      ],
+      "hard_trigger": null,
+      "reasons": [
+       {
+        "source": "time_rules",
+        "label": "Time & Rules",
+        "contribution": 0.125,
+        "code": "PAST_PROMISED_TIME",
+        "text_en": "Not complete 159 days after its own promised time: 7.9 months from 01 May 2025, 120 days of grace, so due by 26 Apr 2026. Most works finish late; follow up with the agency on progress.",
+        "text_hi": "एजेंसी द्वारा बताए समय (अनुग्रह अवधि सहित 26-04-2026 तक) के 159 दिन बाद भी पूर्ण नहीं। एजेंसी से प्रगति की जानकारी लें।",
+        "chance": 0.125,
+        "hit_rate": 0.125,
+        "basis": "prior",
+        "read": null
+       }
+      ]
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "NOT_ASSESSABLE",
+       "verdict": "NOT_ASSESSABLE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Could not compare this estimate with anything yet: Price of the work: no reference for this kind of work yet. Not priced here, for want of reliable price data (recorded, so it can be collected): cement (3 recent forms from 3 other agencies; 5 from 3 needed); sand (3 recent forms from 3 other agencies; 5 from 3 needed); stone aggregate (3 recent forms from 3 other agencies; 5 from 3 needed); reinforcement steel (1 recent forms from 1 other agencies; 5 from 3 needed); bricks (1 recent forms from 1 other agencies; 5 from 3 needed); tiles (1 recent forms from 1 other agencies; 5 from 3 needed); doors / windows (1 recent forms from 1 other agencies; 5 from 3 needed); mason (3 recent forms from 3 other agencies; 5 from 3 needed); beldar / mazdoor (3 recent forms from 3 other agencies; 5 from 3 needed). Only 0% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged. The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs. This is not a clean chit.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Price of the work: no reference for this kind of work yet.",
+        "Not priced here, for want of reliable price data (recorded, so it can be collected): cement (3 recent forms from 3 other agencies; 5 from 3 needed); sand (3 recent forms from 3 other agencies; 5 from 3 needed); stone aggregate (3 recent forms from 3 other agencies; 5 from 3 needed); reinforcement steel (1 recent forms from 1 other agencies; 5 from 3 needed); bricks (1 recent forms from 1 other agencies; 5 from 3 needed); tiles (1 recent forms from 1 other agencies; 5 from 3 needed); doors / windows (1 recent forms from 1 other agencies; 5 from 3 needed); mason (3 recent forms from 3 other agencies; 5 from 3 needed); beldar / mazdoor (3 recent forms from 3 other agencies; 5 from 3 needed).",
+        "Only 0% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged.",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "NOT_SANCTIONED_BEFORE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 50 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "PAST_PROMISED_TIME",
+       "risk": 0.2,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Not complete 159 days after its own promised time: 7.9 months from 01 May 2025, 120 days of grace, so due by 26 Apr 2026. Most works finish late; follow up with the agency on progress.",
+       "version": "",
+       "findings": [
+        {
+         "code": "PAST_PROMISED_TIME",
+         "text": "Not complete 159 days after its own promised time: 7.9 months from 01 May 2025, 120 days of grace, so due by 26 Apr 2026. Most works finish late; follow up with the agency on progress.",
+         "hard": false,
+         "risk": 0.2,
+         "evidence": {}
+        }
+       ],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "ASSESSED",
+       "verdict": "PROGRESS_AS_SHOWN",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "17 site videos read: nothing the videos show needs checking.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Filmed in a phone's browser, which cannot report a mock location or check the phone itself; the views must match the site's own earlier views either way."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [
+      "time_rules"
+     ],
+     "headline": "Not complete 159 days after its own promised time: 7.9 months from 01 May 2025, 120 days of grace, so due by 26 Apr 2026. Most works finish late; follow up with the agency on progress.",
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 12,
+     "key": "edge_late_moving",
+     "title": "Past its promised time, but still moving",
+     "agents": [
+      "time_rules",
+      "site_progress"
+     ],
+     "kind": "edge",
+     "shows": "Promised in 8 months, still being built after 16. Unlike a stopped site, every monthly video shows new work, so it gets a follow-up, not a question.",
+     "why": "Most works finish late. Because every monthly video shows new work, Time & Rules asks only for a follow-up on progress; the same delay at a site that has stopped is a question (the example \"Eight months promised, sixteen months on, and stopped\").",
+     "explain": "edge_late_moving",
+     "form_example": "edge_late_moving",
+     "later": [
+      "Sanctioned 30 Apr 2025",
+      "Seventeen site videos: new work in every one"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
    "key": "cost_padded",
    "row": {
     "work_id": "WF-COST-1",
     "source": "SCENARIO",
-    "district_lgd": "UTTAR PRADESH|JAUNPUR",
+    "district_lgd": "194",
     "district_name": "Jaunpur",
     "state_name": "Uttar Pradesh",
     "work_type_code": "ROAD_CC",
@@ -237,7 +2006,7 @@
      "house": null,
      "term": null,
      "state_name": "Uttar Pradesh",
-     "district_lgd": "UTTAR PRADESH|JAUNPUR",
+     "district_lgd": "194",
      "district_name": "Jaunpur",
      "constituency": null,
      "mp_name": null,
@@ -322,7 +2091,7 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 1,061 other works of its district names this place in the same words.",
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
        "version": "",
        "findings": [],
        "limitations": [],
@@ -371,12 +2140,13 @@
      "case_size": null
     },
     "showcase": {
-     "n": 2,
+     "n": 13,
      "key": "cost_padded",
      "title": "Every material a little high: the whole estimate is not",
      "agents": [
       "cost_estimate"
      ],
+     "kind": "suspected",
      "shows": "Every material is priced about 25% above what other agencies in the district charge.",
      "why": "No single line is far off. The question comes from the whole estimate, every line priced at what other agencies in the district pay for the same item. Wages within twice a trade's rate are the agency's call, so only the materials make the gap.",
      "explain": "cost_padded",
@@ -393,7 +2163,7 @@
    "row": {
     "work_id": "WF-COST-2",
     "source": "SCENARIO",
-    "district_lgd": "UTTAR PRADESH|JAUNPUR",
+    "district_lgd": "194",
     "district_name": "Jaunpur",
     "state_name": "Uttar Pradesh",
     "work_type_code": "ROAD_CC",
@@ -419,7 +2189,7 @@
      "house": null,
      "term": null,
      "state_name": "Uttar Pradesh",
-     "district_lgd": "UTTAR PRADESH|JAUNPUR",
+     "district_lgd": "194",
      "district_name": "Jaunpur",
      "constituency": null,
      "mp_name": null,
@@ -511,7 +2281,7 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 1,061 other works of its district names this place in the same words.",
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
        "version": "",
        "findings": [],
        "limitations": [],
@@ -560,12 +2330,13 @@
      "case_size": null
     },
     "showcase": {
-     "n": 3,
+     "n": 14,
      "key": "cost_quantity",
      "title": "Twice the cement the road can use",
      "agents": [
       "cost_estimate"
      ],
+     "kind": "suspected",
      "shows": "2,614 bags of cement for a road that needs about 1,330.",
      "why": "The rates are fair; the quantity is not. The road's own size on the form (300 m x 3.5 m x 150 mm) says how much cement it can use, so twice that is a certain question, even with a reason written on the line.",
      "explain": "cost_quantity",
@@ -582,7 +2353,7 @@
    "row": {
     "work_id": "WF-COST-3",
     "source": "SCENARIO",
-    "district_lgd": "UTTAR PRADESH|JAUNPUR",
+    "district_lgd": "194",
     "district_name": "Jaunpur",
     "state_name": "Uttar Pradesh",
     "work_type_code": "STREET_LIGHT",
@@ -608,7 +2379,7 @@
      "house": null,
      "term": null,
      "state_name": "Uttar Pradesh",
-     "district_lgd": "UTTAR PRADESH|JAUNPUR",
+     "district_lgd": "194",
      "district_name": "Jaunpur",
      "constituency": null,
      "mp_name": null,
@@ -693,7 +2464,7 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 20 m of its map pin, and none of the 1,061 other works of its district names this place in the same words.",
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 20 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
        "version": "",
        "findings": [],
        "limitations": [],
@@ -742,12 +2513,13 @@
      "case_size": null
     },
     "showcase": {
-     "n": 4,
+     "n": 15,
      "key": "cost_lights",
      "title": "Solar lights at more than twice the usual price",
      "agents": [
       "cost_estimate"
      ],
+     "kind": "suspected",
      "shows": "10 solar street lights at Rs 48,000 each; the MP recommended Rs 2.4 lakh.",
      "why": "Neither signal alone asks: an estimate above the MP's amount can have a reason, and a costly light can have a better specification. Cost asks only when the price per light is far above the district's own range and the estimate is well above the MP's amount.",
      "explain": "cost_lights",
@@ -764,7 +2536,7 @@
    "row": {
     "work_id": "WF-COST-4",
     "source": "SCENARIO",
-    "district_lgd": "UTTAR PRADESH|JAUNPUR",
+    "district_lgd": "194",
     "district_name": "Jaunpur",
     "state_name": "Uttar Pradesh",
     "work_type_code": "ROAD_CC",
@@ -779,7 +2551,7 @@
     "alerts": [
      "cost_estimate"
     ],
-    "headline": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 16 recent forms of 8 other agencies in the district; other agencies pay Rs 735 to Rs 780 a day): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
+    "headline": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 27 recent forms of 9 other agencies in the district; other agencies pay Rs 735 to Rs 780 a day): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
     "case_id": null,
     "case_size": null
    },
@@ -790,7 +2562,7 @@
      "house": null,
      "term": null,
      "state_name": "Uttar Pradesh",
-     "district_lgd": "UTTAR PRADESH|JAUNPUR",
+     "district_lgd": "194",
      "district_name": "Jaunpur",
      "constituency": null,
      "mp_name": null,
@@ -828,7 +2600,7 @@
         "label": "Cost",
         "contribution": 0.25,
         "code": "LABOUR_RATE_FAR_ABOVE",
-        "text_en": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 16 recent forms of 8 other agencies in the district; other agencies pay Rs 735 to Rs 780 a day): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
+        "text_en": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 27 recent forms of 9 other agencies in the district; other agencies pay Rs 735 to Rs 780 a day): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
         "text_hi": "मज़दूरी की दर इस ज़िले में उसी काम के लिए दूसरी एजेंसियों की दर से 2.4 गुना है। स्वीकृति से पहले जाँच करें।",
         "chance": 0.25,
         "hit_rate": 0.25,
@@ -848,12 +2620,12 @@
        "risk": 0.5,
        "confidence": 0.0,
        "hard": false,
-       "headline": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 16 recent forms of 8 other agencies in the district; other agencies pay Rs 735 to Rs 780 a day): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
+       "headline": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 27 recent forms of 9 other agencies in the district; other agencies pay Rs 735 to Rs 780 a day): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
        "version": "",
        "findings": [
         {
          "code": "LABOUR_RATE_FAR_ABOVE",
-         "text": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 16 recent forms of 8 other agencies in the district; other agencies pay Rs 735 to Rs 780 a day): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
+         "text": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 27 recent forms of 9 other agencies in the district; other agencies pay Rs 735 to Rs 780 a day): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
          "hard": false,
          "risk": 0.5,
          "evidence": {}
@@ -876,7 +2648,7 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 1,061 other works of its district names this place in the same words.",
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
        "version": "",
        "findings": [],
        "limitations": [],
@@ -919,18 +2691,19 @@
      "alerts": [
       "cost_estimate"
      ],
-     "headline": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 16 recent forms of 8 other agencies in the district; other agencies pay Rs 735 to Rs 780 a day): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
+     "headline": "Labour: mason at Rs 1,800 a day, 2.4 times Rs 750 (the rate for mason on 27 recent forms of 9 other agencies in the district; other agencies pay Rs 735 to Rs 780 a day): Rs 1.24 lakh more over 118 person-days. How many workers and days a work needs is not judged, only the day rate. Please check the wages before sanction.",
      "compact": false,
      "case_id": null,
      "case_size": null
     },
     "showcase": {
-     "n": 5,
+     "n": 16,
      "key": "cost_labour",
      "title": "Masons at more than twice the district's wage",
      "agents": [
       "cost_estimate"
      ],
+     "kind": "suspected",
      "shows": "Masons at Rs 1,800 a day where other agencies pay about Rs 750; the 34 workers on the road are not questioned.",
      "why": "Labour is judged trade by trade. The road's 34 workers, its helpers and its machine operators are the agency's call; only a day rate at twice what other agencies pay the same trade is a question.",
      "explain": "cost_labour",
@@ -947,7 +2720,7 @@
    "row": {
     "work_id": "WF-DUP-1",
     "source": "SCENARIO",
-    "district_lgd": "UTTAR PRADESH|JAUNPUR",
+    "district_lgd": "194",
     "district_name": "Jaunpur",
     "state_name": "Uttar Pradesh",
     "work_type_code": "ROAD_CC",
@@ -973,7 +2746,7 @@
      "house": null,
      "term": null,
      "state_name": "Uttar Pradesh",
-     "district_lgd": "UTTAR PRADESH|JAUNPUR",
+     "district_lgd": "194",
      "district_name": "Jaunpur",
      "constituency": null,
      "mp_name": null,
@@ -1107,12 +2880,13 @@
      "case_size": null
     },
     "showcase": {
-     "n": 6,
+     "n": 17,
      "key": "dup_pin",
      "title": "A \"new\" road on top of one the scheme already paid for",
      "agents": [
       "dup_split"
      ],
+     "kind": "suspected",
      "shows": "A new road pinned 20 m from a road completed last year. The form does not mention it.",
      "why": "The words differ from the old road's, so a word match would miss it. The map pin on the agency's own form places it on top of a work the scheme already paid for.",
      "explain": "dup_pin",
@@ -1130,7 +2904,7 @@
    "row": {
     "work_id": "WF-DUP-2",
     "source": "SCENARIO",
-    "district_lgd": "UTTAR PRADESH|JAUNPUR",
+    "district_lgd": "194",
     "district_name": "Jaunpur",
     "state_name": "Uttar Pradesh",
     "work_type_code": "COMMUNITY_HALL",
@@ -1156,7 +2930,7 @@
      "house": null,
      "term": null,
      "state_name": "Uttar Pradesh",
-     "district_lgd": "UTTAR PRADESH|JAUNPUR",
+     "district_lgd": "194",
      "district_name": "Jaunpur",
      "constituency": null,
      "mp_name": null,
@@ -1214,12 +2988,11 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "The whole estimate is Rs 24.75 lakh against a fair Rs 24.75 lakh (Rs 24.59 to 25.07 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 32% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+       "headline": "The whole estimate is Rs 24.75 lakh against a fair Rs 24.75 lakh (Rs 24.59 to 25.07 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 70% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
        "version": "",
        "findings": [],
        "limitations": [
         "Price of the work: no reference for this kind of work yet.",
-        "Not priced here, for want of reliable price data (recorded, so it can be collected): reinforcement steel (1 recent forms from 1 other agencies; 5 from 3 needed); bricks (1 recent forms from 1 other agencies; 5 from 3 needed); tiles (1 recent forms from 1 other agencies; 5 from 3 needed); doors / windows (1 recent forms from 1 other agencies; 5 from 3 needed).",
         "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
        ],
        "evidence": {},
@@ -1291,12 +3064,13 @@
      "case_size": null
     },
     "showcase": {
-     "n": 7,
+     "n": 18,
      "key": "dup_rebuild",
      "title": "Rebuilding a hall finished 16 months earlier",
      "agents": [
       "dup_split"
      ],
+     "kind": "suspected",
      "shows": "The agency says this rebuilds a hall that was finished 16 months earlier.",
      "why": "The agency declares the rebuild itself. A hall should not need rebuilding 16 months after it was completed, so the first work's completion and quality need checking.",
      "explain": "dup_rebuild",
@@ -1314,7 +3088,7 @@
    "row": {
     "work_id": "WF-SPLIT-2",
     "source": "SCENARIO",
-    "district_lgd": "UTTAR PRADESH|JAUNPUR",
+    "district_lgd": "194",
     "district_name": "Jaunpur",
     "state_name": "Uttar Pradesh",
     "work_type_code": "ROAD_CC",
@@ -1340,7 +3114,7 @@
      "house": null,
      "term": null,
      "state_name": "Uttar Pradesh",
-     "district_lgd": "UTTAR PRADESH|JAUNPUR",
+     "district_lgd": "194",
      "district_name": "Jaunpur",
      "constituency": null,
      "mp_name": null,
@@ -1477,12 +3251,13 @@
      "case_size": null
     },
     "showcase": {
-     "n": 8,
+     "n": 19,
      "key": "dup_split",
      "title": "One lane filed as three works, each just under Rs 5 lakh",
      "agents": [
       "dup_split"
      ],
+     "kind": "suspected",
      "shows": "One lane filed as parts 1, 2 and 3, each just under the Rs 5 lakh limit.",
      "why": "Each piece is ordinary on its own; the question appears only when the pieces are read together. The agent asks only when every piece sits within 4% of a limit, the strictest test, so ordinary look-alike works never reach the queue.",
      "explain": "dup_split",
@@ -1500,7 +3275,7 @@
    "row": {
     "work_id": "WF-TIME-1",
     "source": "SCENARIO",
-    "district_lgd": "UTTAR PRADESH|JAUNPUR",
+    "district_lgd": "194",
     "district_name": "Jaunpur",
     "state_name": "Uttar Pradesh",
     "work_type_code": "ROAD_CC",
@@ -1527,7 +3302,7 @@
      "house": null,
      "term": null,
      "state_name": "Uttar Pradesh",
-     "district_lgd": "UTTAR PRADESH|JAUNPUR",
+     "district_lgd": "194",
      "district_name": "Jaunpur",
      "constituency": null,
      "mp_name": null,
@@ -1603,12 +3378,12 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "The whole estimate is Rs 16.82 lakh against a fair Rs 16.82 lakh, +0.0%, pricing 63% of the money: within the fair band.",
+       "headline": "The whole estimate is Rs 16.82 lakh against a fair Rs 16.82 lakh (Rs 16.82 to 16.93 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 63% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
        "version": "",
        "findings": [],
        "limitations": [
         "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
-        "Not priced here, for want of reliable price data (recorded, so it can be collected): cement (4 recent forms from 4 other agencies; 5 from 3 needed); sand (4 recent forms from 4 other agencies; 5 from 3 needed); stone aggregate (4 recent forms from 4 other agencies; 5 from 3 needed); gsb / wbm / moorum (2 recent forms from 2 other agencies; 5 from 3 needed); mason (4 recent forms from 4 other agencies; 5 from 3 needed); beldar / mazdoor (4 recent forms from 4 other agencies; 5 from 3 needed).",
+        "Not priced here, for want of reliable price data (recorded, so it can be collected): gsb / wbm / moorum (4 recent forms from 4 other agencies; 5 from 3 needed).",
         "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
        ],
        "evidence": {},
@@ -1623,7 +3398,7 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 1,061 other works of its district names this place in the same words.",
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
        "version": "",
        "findings": [],
        "limitations": [],
@@ -1689,13 +3464,14 @@
      "case_size": null
     },
     "showcase": {
-     "n": 9,
+     "n": 20,
      "key": "time_fast",
      "title": "A 350 m road \"complete\" 6 days after sanction",
      "agents": [
       "time_rules",
       "site_progress"
      ],
+     "kind": "suspected",
      "shows": "Promised in 120 days; recorded complete 6 days after sanction.",
      "why": "The agency's own estimate on the form (about four months) is the yardstick, not a fixed rule. Recorded complete in 6 days with no site video at all, two checks point at the same work.",
      "explain": "time_fast",
@@ -1714,7 +3490,7 @@
    "row": {
     "work_id": "WF-TIME-2",
     "source": "SCENARIO",
-    "district_lgd": "UTTAR PRADESH|JAUNPUR",
+    "district_lgd": "194",
     "district_name": "Jaunpur",
     "state_name": "Uttar Pradesh",
     "work_type_code": "COMMUNITY_HALL",
@@ -1740,7 +3516,7 @@
      "house": null,
      "term": null,
      "state_name": "Uttar Pradesh",
-     "district_lgd": "UTTAR PRADESH|JAUNPUR",
+     "district_lgd": "194",
      "district_name": "Jaunpur",
      "constituency": null,
      "mp_name": null,
@@ -1798,12 +3574,12 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "Could not compare this estimate with anything yet: Price of the work: no reference for this kind of work yet. Not priced here, for want of reliable price data (recorded, so it can be collected): cement (the other agencies' forms are over 6 months old); sand (the other agencies' forms are over 6 months old); stone aggregate (the other agencies' forms are over 6 months old); reinforcement steel (the other agencies' forms are over 6 months old); bricks (the other agencies' forms are over 6 months old); tiles (the other agencies' forms are over 6 months old); doors / windows (the other agencies' forms are over 6 months old); mason (the other agencies' forms are over 6 months old); beldar / mazdoor (the other agencies' forms are over 6 months old). Only 0% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged. The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs. This is not a clean chit.",
+       "headline": "Could not compare this estimate with anything yet: Price of the work: no reference for this kind of work yet. Not priced here, for want of reliable price data (recorded, so it can be collected): cement (4 recent forms from 4 other agencies; 5 from 3 needed); sand (4 recent forms from 4 other agencies; 5 from 3 needed); stone aggregate (4 recent forms from 4 other agencies; 5 from 3 needed); reinforcement steel (2 recent forms from 2 other agencies; 5 from 3 needed); bricks (2 recent forms from 2 other agencies; 5 from 3 needed); tiles (2 recent forms from 2 other agencies; 5 from 3 needed); doors / windows (2 recent forms from 2 other agencies; 5 from 3 needed); mason (4 recent forms from 4 other agencies; 5 from 3 needed); beldar / mazdoor (4 recent forms from 4 other agencies; 5 from 3 needed). Only 0% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged. The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs. This is not a clean chit.",
        "version": "",
        "findings": [],
        "limitations": [
         "Price of the work: no reference for this kind of work yet.",
-        "Not priced here, for want of reliable price data (recorded, so it can be collected): cement (the other agencies' forms are over 6 months old); sand (the other agencies' forms are over 6 months old); stone aggregate (the other agencies' forms are over 6 months old); reinforcement steel (the other agencies' forms are over 6 months old); bricks (the other agencies' forms are over 6 months old); tiles (the other agencies' forms are over 6 months old); doors / windows (the other agencies' forms are over 6 months old); mason (the other agencies' forms are over 6 months old); beldar / mazdoor (the other agencies' forms are over 6 months old).",
+        "Not priced here, for want of reliable price data (recorded, so it can be collected): cement (4 recent forms from 4 other agencies; 5 from 3 needed); sand (4 recent forms from 4 other agencies; 5 from 3 needed); stone aggregate (4 recent forms from 4 other agencies; 5 from 3 needed); reinforcement steel (2 recent forms from 2 other agencies; 5 from 3 needed); bricks (2 recent forms from 2 other agencies; 5 from 3 needed); tiles (2 recent forms from 2 other agencies; 5 from 3 needed); doors / windows (2 recent forms from 2 other agencies; 5 from 3 needed); mason (4 recent forms from 4 other agencies; 5 from 3 needed); beldar / mazdoor (4 recent forms from 4 other agencies; 5 from 3 needed).",
         "Only 0% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged.",
         "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
        ],
@@ -1819,7 +3595,7 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 50 m of its map pin, and none of the 1,061 other works of its district names this place in the same words.",
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 50 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
        "version": "",
        "findings": [],
        "limitations": [],
@@ -1878,13 +3654,14 @@
      "case_size": null
     },
     "showcase": {
-     "n": 10,
+     "n": 21,
      "key": "time_late",
      "title": "Eight months promised, sixteen months on, and stopped",
      "agents": [
       "time_rules",
       "site_progress"
      ],
+     "kind": "suspected",
      "shows": "Promised in 8 months; 16 months later it is not finished and the site is still.",
      "why": "Time & Rules judges the work by the agency's own promise plus a grace period, and the site videos say the work has stopped, not merely slowed. NidhiLens (Fine-Tuned Site Progress Model) itself asks nothing: the videos are genuine.",
      "explain": "time_late",
@@ -1903,7 +3680,7 @@
    "row": {
     "work_id": "WF-SITE-1",
     "source": "SCENARIO",
-    "district_lgd": "UTTAR PRADESH|JAUNPUR",
+    "district_lgd": "194",
     "district_name": "Jaunpur",
     "state_name": "Uttar Pradesh",
     "work_type_code": "COMMUNITY_HALL",
@@ -1929,7 +3706,7 @@
      "house": null,
      "term": null,
      "state_name": "Uttar Pradesh",
-     "district_lgd": "UTTAR PRADESH|JAUNPUR",
+     "district_lgd": "194",
      "district_name": "Jaunpur",
      "constituency": null,
      "mp_name": null,
@@ -1987,12 +3764,11 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "The whole estimate is Rs 24.75 lakh against a fair Rs 24.75 lakh (Rs 24.52 to 24.92 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 32% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+       "headline": "The whole estimate is Rs 24.75 lakh against a fair Rs 24.75 lakh (Rs 24.75 to 24.84 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 70% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
        "version": "",
        "findings": [],
        "limitations": [
         "Price of the work: no reference for this kind of work yet.",
-        "Not priced here, for want of reliable price data (recorded, so it can be collected): reinforcement steel (1 recent forms from 1 other agencies; 5 from 3 needed); bricks (1 recent forms from 1 other agencies; 5 from 3 needed); tiles (1 recent forms from 1 other agencies; 5 from 3 needed); doors / windows (1 recent forms from 1 other agencies; 5 from 3 needed).",
         "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
        ],
        "evidence": {},
@@ -2007,7 +3783,7 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 50 m of its map pin, and none of the 1,061 other works of its district names this place in the same words.",
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 50 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
        "version": "",
        "findings": [],
        "limitations": [],
@@ -2073,12 +3849,13 @@
      "case_size": null
     },
     "showcase": {
-     "n": 11,
+     "n": 22,
      "key": "site_reused",
      "title": "The first site video was filmed for another work",
      "agents": [
       "site_progress"
      ],
+     "kind": "suspected",
      "shows": "The first site video reuses footage from another hall's video.",
      "why": "The video passes every check at the site. Only comparing it with every earlier video shows the footage was filmed for another work, at that work's place.",
      "explain": "site_reused",
@@ -2096,7 +3873,7 @@
    "row": {
     "work_id": "WF-SITE-2",
     "source": "SCENARIO",
-    "district_lgd": "UTTAR PRADESH|JAUNPUR",
+    "district_lgd": "194",
     "district_name": "Jaunpur",
     "state_name": "Uttar Pradesh",
     "work_type_code": "COMMUNITY_HALL",
@@ -2107,7 +3884,7 @@
     "band": "MEDIUM",
     "score": 0.25,
     "priority": 0.25,
-    "limited": true,
+    "limited": false,
     "alerts": [
      "site_progress"
     ],
@@ -2122,7 +3899,7 @@
      "house": null,
      "term": null,
      "state_name": "Uttar Pradesh",
-     "district_lgd": "UTTAR PRADESH|JAUNPUR",
+     "district_lgd": "194",
      "district_name": "Jaunpur",
      "constituency": null,
      "mp_name": null,
@@ -2142,7 +3919,7 @@
      "assessed_at": "2026-10-02",
      "score": 0.25,
      "band": "MEDIUM",
-     "limited": true,
+     "limited": false,
      "priority": 0.25,
      "parts": {
       "parts": [
@@ -2175,18 +3952,16 @@
        "agent": "cost_estimate",
        "name": "Cost",
        "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
-       "status": "NOT_ASSESSABLE",
-       "verdict": "NOT_ASSESSABLE",
+       "status": "ASSESSED",
+       "verdict": "ESTIMATE_FITS_SIZE",
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "Could not compare this estimate with anything yet: Price of the work: no reference for this kind of work yet. Not priced here, for want of reliable price data (recorded, so it can be collected): cement (the other agencies' forms are over 6 months old); sand (the other agencies' forms are over 6 months old); stone aggregate (the other agencies' forms are over 6 months old); reinforcement steel (the other agencies' forms are over 6 months old); bricks (the other agencies' forms are over 6 months old); tiles (the other agencies' forms are over 6 months old); doors / windows (the other agencies' forms are over 6 months old); mason (the other agencies' forms are over 6 months old); beldar / mazdoor (the other agencies' forms are over 6 months old). Only 0% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged. The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs. This is not a clean chit.",
+       "headline": "The whole estimate is Rs 24.75 lakh against a fair Rs 24.75 lakh, +0.0%, pricing 70% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
        "version": "",
        "findings": [],
        "limitations": [
         "Price of the work: no reference for this kind of work yet.",
-        "Not priced here, for want of reliable price data (recorded, so it can be collected): cement (the other agencies' forms are over 6 months old); sand (the other agencies' forms are over 6 months old); stone aggregate (the other agencies' forms are over 6 months old); reinforcement steel (the other agencies' forms are over 6 months old); bricks (the other agencies' forms are over 6 months old); tiles (the other agencies' forms are over 6 months old); doors / windows (the other agencies' forms are over 6 months old); mason (the other agencies' forms are over 6 months old); beldar / mazdoor (the other agencies' forms are over 6 months old).",
-        "Only 0% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged.",
         "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
        ],
        "evidence": {},
@@ -2201,7 +3976,7 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 50 m of its map pin, and none of the 1,061 other works of its district names this place in the same words.",
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 50 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
        "version": "",
        "findings": [],
        "limitations": [],
@@ -2260,12 +4035,13 @@
      "case_size": null
     },
     "showcase": {
-     "n": 12,
+     "n": 23,
      "key": "site_claim",
      "title": "\"Roof slab cast\", twice, and the videos don't show it",
      "agents": [
       "site_progress"
      ],
+     "kind": "suspected",
      "shows": "\"Roof slab cast\" claimed in two monthly videos that show no slab.",
      "why": "NidhiLens (Fine-Tuned Site Progress Model) judges the agency's own claims against its videos: shown, not shown or can't tell. A claim not shown twice in a row is a question; once could be a bad angle.",
      "explain": "site_claim",
@@ -2283,7 +4059,7 @@
    "row": {
     "work_id": "WF-SITE-3",
     "source": "SCENARIO",
-    "district_lgd": "UTTAR PRADESH|JAUNPUR",
+    "district_lgd": "194",
     "district_name": "Jaunpur",
     "state_name": "Uttar Pradesh",
     "work_type_code": "ROAD_CC",
@@ -2309,7 +4085,7 @@
      "house": null,
      "term": null,
      "state_name": "Uttar Pradesh",
-     "district_lgd": "UTTAR PRADESH|JAUNPUR",
+     "district_lgd": "194",
      "district_name": "Jaunpur",
      "constituency": null,
      "mp_name": null,
@@ -2367,12 +4143,12 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "The whole estimate is Rs 14.52 lakh against a fair Rs 14.52 lakh, +0.0%, pricing 62% of the money: within the fair band.",
+       "headline": "The whole estimate is Rs 14.52 lakh against a fair Rs 14.52 lakh (Rs 14.52 to 14.61 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 62% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
        "version": "",
        "findings": [],
        "limitations": [
         "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
-        "Not priced here, for want of reliable price data (recorded, so it can be collected): cement (4 recent forms from 4 other agencies; 5 from 3 needed); sand (4 recent forms from 4 other agencies; 5 from 3 needed); stone aggregate (4 recent forms from 4 other agencies; 5 from 3 needed); gsb / wbm / moorum (2 recent forms from 2 other agencies; 5 from 3 needed); mason (4 recent forms from 4 other agencies; 5 from 3 needed); beldar / mazdoor (4 recent forms from 4 other agencies; 5 from 3 needed).",
+        "Not priced here, for want of reliable price data (recorded, so it can be collected): gsb / wbm / moorum (4 recent forms from 4 other agencies; 5 from 3 needed).",
         "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
        ],
        "evidence": {},
@@ -2387,7 +4163,7 @@
        "risk": 0.0,
        "confidence": 0.0,
        "hard": false,
-       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 1,061 other works of its district names this place in the same words.",
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
        "version": "",
        "findings": [],
        "limitations": [],
@@ -2446,12 +4222,13 @@
      "case_size": null
     },
     "showcase": {
-     "n": 13,
+     "n": 24,
      "key": "site_elsewhere",
      "title": "A monthly video filmed 2.4 km away",
      "agents": [
       "site_progress"
      ],
+     "kind": "suspected",
      "shows": "The third monthly video was filmed 2.4 km from the road.",
      "why": "A video counts as filmed elsewhere only when its GPS and its views both disagree with the site, so a weak GPS fix alone never asks.",
      "explain": "site_elsewhere",
@@ -2459,6 +4236,1519 @@
      "later": [
       "Sanctioned 25 May 2026",
       "Three site videos: the third filmed elsewhere"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "dup_split_spread",
+   "row": {
+    "work_id": "WF-SPREAD-2",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "ROAD_CC",
+    "description": "CC road in village Parsauni, part 2",
+    "amount": 495500.0,
+    "status": "RECOMMENDED",
+    "recommended_date": "2026-07-24",
+    "band": "HIGH",
+    "score": 0.6667,
+    "priority": 0.6667,
+    "limited": false,
+    "alerts": [
+     "dup_split"
+    ],
+    "headline": "One of 3 alike works at one place, recommended within 70 days: each Rs 4,93,000 to Rs 4,98,000, near the Rs 5.00 lakh limit, Rs 14.87 lakh together. Just outside the strictest split (every piece 96-100% of a limit, within 30 days), so not a question: check this, whether it is one job filed twice or cut into pieces. Others: WF-SPREAD-1, WF-SPREAD-3.",
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-SPREAD-2",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Gramin Path Nigam",
+     "fy": "2026-27",
+     "work_type_code": "ROAD_CC",
+     "category": null,
+     "description": "CC road in village Parsauni, part 2",
+     "amount": 495500.0,
+     "recommended_date": "2026-07-24",
+     "completed_date": null,
+     "status": "RECOMMENDED",
+     "sanction_date": null
+    },
+    "assessment": {
+     "work_id": "WF-SPREAD-2",
+     "assessed_at": "2026-10-02",
+     "score": 0.6667,
+     "band": "HIGH",
+     "limited": false,
+     "priority": 0.6667,
+     "parts": {
+      "parts": [
+       {
+        "source": "dup_split",
+        "label": "Duplicate Work",
+        "weight": 0.6667,
+        "contribution": 0.6667
+       }
+      ],
+      "hard_trigger": null,
+      "reasons": [
+       {
+        "source": "dup_split",
+        "label": "Duplicate Work",
+        "contribution": 0.6667,
+        "code": "SPLIT_NEAR_LIMIT",
+        "text_en": "One of 3 alike works at one place, recommended within 70 days: each Rs 4,93,000 to Rs 4,98,000, near the Rs 5.00 lakh limit, Rs 14.87 lakh together. Just outside the strictest split (every piece 96-100% of a limit, within 30 days), so not a question: check this, whether it is one job filed twice or cut into pieces. Others: WF-SPREAD-1, WF-SPREAD-3.",
+        "text_hi": "एक ही स्थान के समान कार्य सीमा के निकट राशि पर, कुछ सप्ताह के अंतर पर या क्रमांकित भागों में अनुशंसित हुए। जाँचें कि एक ही कार्य दो बार या टुकड़ों में तो दर्ज नहीं हुआ।",
+        "chance": 0.6667,
+        "hit_rate": 0.6667,
+        "basis": "measured",
+        "read": [
+         15,
+         20
+        ]
+       }
+      ]
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "ASSESSED",
+       "verdict": "ESTIMATE_FITS_SIZE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "The whole estimate is Rs 5.12 lakh against a fair Rs 5.12 lakh (Rs 5.04 to 5.25 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 65% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "SPLIT_NEAR_LIMIT",
+       "risk": 0.3,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "One of 3 alike works at one place, recommended within 70 days: each Rs 4,93,000 to Rs 4,98,000, near the Rs 5.00 lakh limit, Rs 14.87 lakh together. Just outside the strictest split (every piece 96-100% of a limit, within 30 days), so not a question: check this, whether it is one job filed twice or cut into pieces. Others: WF-SPREAD-1, WF-SPREAD-3.",
+       "version": "",
+       "findings": [
+        {
+         "code": "SPLIT_NEAR_LIMIT",
+         "text": "One of 3 alike works at one place, recommended within 70 days: each Rs 4,93,000 to Rs 4,98,000, near the Rs 5.00 lakh limit, Rs 14.87 lakh together. Just outside the strictest split (every piece 96-100% of a limit, within 30 days), so not a question: check this, whether it is one job filed twice or cut into pieces. Others: WF-SPREAD-1, WF-SPREAD-3.",
+         "hard": false,
+         "risk": 0.3,
+         "evidence": {}
+        }
+       ],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "ON_TIME_AS_FAR_AS_CHECKED",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No timing problem the dates and the agency's own estimate can show.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "NOT_APPLICABLE",
+       "verdict": "NOT_APPLICABLE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [
+      "dup_split"
+     ],
+     "headline": "One of 3 alike works at one place, recommended within 70 days: each Rs 4,93,000 to Rs 4,98,000, near the Rs 5.00 lakh limit, Rs 14.87 lakh together. Just outside the strictest split (every piece 96-100% of a limit, within 30 days), so not a question: check this, whether it is one job filed twice or cut into pieces. Others: WF-SPREAD-1, WF-SPREAD-3.",
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 25,
+     "key": "dup_split_spread",
+     "title": "A split spread 35 days apart to dodge the window",
+     "agents": [
+      "dup_split"
+     ],
+     "kind": "suspected",
+     "shows": "One lane filed as three parts, each 98.6-99.6% of the Rs 5 lakh limit, filed 35 days apart so no two fall within a month of each other.",
+     "why": "Filing the parts 35 days apart slips past the strict 30-day test. Duplicate Work also reads parts near a limit filed up to 90 days apart, a rule measured on the real works before it was added, and asks for a check.",
+     "explain": "dup_split_spread",
+     "form_example": "dup_split_spread",
+     "later": [
+      "Not sanctioned yet: this is the check before sanction",
+      "The other parts: WF-SPREAD-1 (35 days earlier) and WF-SPREAD-3 (35 days later)"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "dup_same_hall",
+   "row": {
+    "work_id": "WF-SAMEHALL",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "COMMUNITY_HALL",
+    "description": "Community hall at the panchayat ground, Sahijpur",
+    "amount": 2475000.0,
+    "status": "RECOMMENDED",
+    "recommended_date": "2026-08-23",
+    "band": "MEDIUM",
+    "score": 0.25,
+    "priority": 0.25,
+    "limited": false,
+    "alerts": [
+     "dup_split"
+    ],
+    "headline": "Sanctioned work WF-SAMEHALL-OLD (Rs 24.75 lakh, completed on 2025-07-09) has its map pin 120 m from this one, just past the 50 m that makes two pins one site, with the same description and the same size, and the form names no nearby work. Check this: it may be the same building filed again; the first site video shows whether it already stands.",
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-SAMEHALL",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Nirman Seva Agency",
+     "fy": "2026-27",
+     "work_type_code": "COMMUNITY_HALL",
+     "category": null,
+     "description": "Community hall at the panchayat ground, Sahijpur",
+     "amount": 2475000.0,
+     "recommended_date": "2026-08-23",
+     "completed_date": null,
+     "status": "RECOMMENDED",
+     "sanction_date": null
+    },
+    "assessment": {
+     "work_id": "WF-SAMEHALL",
+     "assessed_at": "2026-10-02",
+     "score": 0.25,
+     "band": "MEDIUM",
+     "limited": false,
+     "priority": 0.25,
+     "parts": {
+      "parts": [
+       {
+        "source": "dup_split",
+        "label": "Duplicate Work",
+        "weight": 0.25,
+        "contribution": 0.25
+       }
+      ],
+      "hard_trigger": null,
+      "reasons": [
+       {
+        "source": "dup_split",
+        "label": "Duplicate Work",
+        "contribution": 0.25,
+        "code": "SAME_BUILDING_NEAR",
+        "text_en": "Sanctioned work WF-SAMEHALL-OLD (Rs 24.75 lakh, completed on 2025-07-09) has its map pin 120 m from this one, just past the 50 m that makes two pins one site, with the same description and the same size, and the form names no nearby work. Check this: it may be the same building filed again; the first site video shows whether it already stands.",
+        "text_hi": "पास में उसी विवरण और उसी आकार का एक स्वीकृत भवन है, जिसका फ़ॉर्म में उल्लेख नहीं है। जाँचें कि वही भवन दोबारा तो दर्ज नहीं हुआ; पहला साइट वीडियो बताएगा कि वह पहले से खड़ा है या नहीं।",
+        "chance": 0.25,
+        "hit_rate": 0.25,
+        "basis": "prior",
+        "read": null
+       }
+      ]
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "ASSESSED",
+       "verdict": "ESTIMATE_FITS_SIZE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "The whole estimate is Rs 24.75 lakh against a fair Rs 24.75 lakh (Rs 24.59 to 25.07 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 70% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Price of the work: no reference for this kind of work yet.",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "SAME_BUILDING_NEAR",
+       "risk": 0.3,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Sanctioned work WF-SAMEHALL-OLD (Rs 24.75 lakh, completed on 2025-07-09) has its map pin 120 m from this one, just past the 50 m that makes two pins one site, with the same description and the same size, and the form names no nearby work. Check this: it may be the same building filed again; the first site video shows whether it already stands.",
+       "version": "",
+       "findings": [
+        {
+         "code": "SAME_BUILDING_NEAR",
+         "text": "Sanctioned work WF-SAMEHALL-OLD (Rs 24.75 lakh, completed on 2025-07-09) has its map pin 120 m from this one, just past the 50 m that makes two pins one site, with the same description and the same size, and the form names no nearby work. Check this: it may be the same building filed again; the first site video shows whether it already stands.",
+         "hard": false,
+         "risk": 0.3,
+         "evidence": {}
+        }
+       ],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "ON_TIME_AS_FAR_AS_CHECKED",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No timing problem the dates and the agency's own estimate can show.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "NOT_APPLICABLE",
+       "verdict": "NOT_APPLICABLE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [
+      "dup_split"
+     ],
+     "headline": "Sanctioned work WF-SAMEHALL-OLD (Rs 24.75 lakh, completed on 2025-07-09) has its map pin 120 m from this one, just past the 50 m that makes two pins one site, with the same description and the same size, and the form names no nearby work. Check this: it may be the same building filed again; the first site video shows whether it already stands.",
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 26,
+     "key": "dup_same_hall",
+     "title": "The same hall filed again, its pin moved 120 m",
+     "agents": [
+      "dup_split"
+     ],
+     "kind": "suspected",
+     "shows": "A hall in the same words and the same size as one finished 15 months ago, pinned 120 m away. The form names no earlier work.",
+     "why": "The pin is 120 m from the old hall, past the 50 m that makes two pins one site. The same words and the same size, with no earlier work named on the form, still ask for a check: the first site video will show whether the hall already stands.",
+     "explain": "dup_same_hall",
+     "form_example": "dup_same_hall",
+     "later": [
+      "Not sanctioned yet: this is the check before sanction",
+      "Earlier hall WF-SAMEHALL-OLD: completed 15 months ago, 120 m to the south"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "site_no_first_visit",
+   "row": {
+    "work_id": "WF-NOFIRST",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "COMMUNITY_HALL",
+    "description": "Community hall at the panchayat ground, Shivpur Tola",
+    "amount": 2475000.0,
+    "status": "COMPLETED",
+    "recommended_date": "2026-02-14",
+    "band": "MEDIUM",
+    "score": 0.25,
+    "priority": 0.25,
+    "limited": true,
+    "alerts": [
+     "site_progress"
+    ],
+    "headline": "The first site video (the final visit of 12 Sep 2026) already shows the work finished, and none was filmed before work started, so nothing shows the asset is new. Check that it was not built before sanction or under another scheme.",
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-NOFIRST",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Prakash Urja Agency",
+     "fy": "2026-27",
+     "work_type_code": "COMMUNITY_HALL",
+     "category": null,
+     "description": "Community hall at the panchayat ground, Shivpur Tola",
+     "amount": 2475000.0,
+     "recommended_date": "2026-02-14",
+     "completed_date": "2026-09-07",
+     "status": "COMPLETED",
+     "sanction_date": "2026-03-16"
+    },
+    "assessment": {
+     "work_id": "WF-NOFIRST",
+     "assessed_at": "2026-10-02",
+     "score": 0.25,
+     "band": "MEDIUM",
+     "limited": true,
+     "priority": 0.25,
+     "parts": {
+      "parts": [
+       {
+        "source": "site_progress",
+        "label": "NidhiLens (Fine-Tuned Site Progress Model)",
+        "weight": 0.25,
+        "contribution": 0.25
+       }
+      ],
+      "hard_trigger": null,
+      "reasons": [
+       {
+        "source": "site_progress",
+        "label": "NidhiLens (Fine-Tuned Site Progress Model)",
+        "contribution": 0.25,
+        "code": "FIRST_FILMED_FINISHED",
+        "text_en": "The first site video (the final visit of 12 Sep 2026) already shows the work finished, and none was filmed before work started, so nothing shows the asset is new. Check that it was not built before sanction or under another scheme.",
+        "text_hi": "पहला साइट वीडियो ही कार्य को पूरा दिखाता है, और कार्य शुरू होने से पहले कोई वीडियो नहीं फ़िल्माया गया: कुछ भी नहीं दिखाता कि परिसंपत्ति नई है। जाँचें कि यह स्वीकृति से पहले या किसी अन्य योजना में तो नहीं बनी।",
+        "chance": 0.25,
+        "hit_rate": 0.25,
+        "basis": "prior",
+        "read": null
+       }
+      ]
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "NOT_ASSESSABLE",
+       "verdict": "NOT_ASSESSABLE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Could not compare this estimate with anything yet: Price of the work: no reference for this kind of work yet. Not priced here, for want of reliable price data (recorded, so it can be collected): cement (4 recent forms from 3 other agencies; 5 from 3 needed); sand (4 recent forms from 3 other agencies; 5 from 3 needed); stone aggregate (4 recent forms from 3 other agencies; 5 from 3 needed); reinforcement steel (4 recent forms from 3 other agencies; 5 from 3 needed); bricks (4 recent forms from 3 other agencies; 5 from 3 needed); tiles (4 recent forms from 3 other agencies; 5 from 3 needed); doors / windows (4 recent forms from 3 other agencies; 5 from 3 needed); mason (4 recent forms from 3 other agencies; 5 from 3 needed); beldar / mazdoor (4 recent forms from 3 other agencies; 5 from 3 needed). Only 0% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged. The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs. This is not a clean chit.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Price of the work: no reference for this kind of work yet.",
+        "Not priced here, for want of reliable price data (recorded, so it can be collected): cement (4 recent forms from 3 other agencies; 5 from 3 needed); sand (4 recent forms from 3 other agencies; 5 from 3 needed); stone aggregate (4 recent forms from 3 other agencies; 5 from 3 needed); reinforcement steel (4 recent forms from 3 other agencies; 5 from 3 needed); bricks (4 recent forms from 3 other agencies; 5 from 3 needed); tiles (4 recent forms from 3 other agencies; 5 from 3 needed); doors / windows (4 recent forms from 3 other agencies; 5 from 3 needed); mason (4 recent forms from 3 other agencies; 5 from 3 needed); beldar / mazdoor (4 recent forms from 3 other agencies; 5 from 3 needed).",
+        "Only 0% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged.",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "NOT_SANCTIONED_BEFORE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 50 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "ON_TIME_AS_FAR_AS_CHECKED",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No timing problem the dates and the agency's own estimate can show.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "ASSESSED",
+       "verdict": "FIRST_FILMED_FINISHED",
+       "risk": 0.4,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "The first site video (the final visit of 12 Sep 2026) already shows the work finished, and none was filmed before work started, so nothing shows the asset is new. Check that it was not built before sanction or under another scheme.",
+       "version": "",
+       "findings": [
+        {
+         "code": "FIRST_FILMED_FINISHED",
+         "text": "The first site video (the final visit of 12 Sep 2026) already shows the work finished, and none was filmed before work started, so nothing shows the asset is new. Check that it was not built before sanction or under another scheme.",
+         "hard": false,
+         "risk": 0.4,
+         "evidence": {}
+        }
+       ],
+       "limitations": [
+        "Filmed in a phone's browser, which cannot report a mock location or check the phone itself; the views must match the site's own earlier views either way."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [
+      "site_progress"
+     ],
+     "headline": "The first site video (the final visit of 12 Sep 2026) already shows the work finished, and none was filmed before work started, so nothing shows the asset is new. Check that it was not built before sanction or under another scheme.",
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 27,
+     "key": "site_no_first_visit",
+     "title": "No first visit: the only video shows it finished",
+     "agents": [
+      "site_progress"
+     ],
+     "kind": "suspected",
+     "shows": "A new hall recorded complete. Its only site video is the final one, already showing a finished hall, so nothing shows it was not standing before the work was sanctioned.",
+     "why": "Every work with a form is filmed before work starts. Without that first visit, a video of a finished hall cannot show the hall is new: it may have stood before the sanction, or been paid for under another scheme.",
+     "explain": "site_no_first_visit",
+     "form_example": "site_no_first_visit",
+     "later": [
+      "Sanctioned 16 Mar 2026",
+      "Recorded complete 07 Sep 2026",
+      "One site video: the final one"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "site_gps_off",
+   "row": {
+    "work_id": "WF-GPSOFF",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "COMMUNITY_HALL",
+    "description": "Community hall at the panchayat ground, Tarapur",
+    "amount": 2475000.0,
+    "status": "SANCTIONED",
+    "recommended_date": "2026-02-14",
+    "band": "MEDIUM",
+    "score": 0.25,
+    "priority": 0.25,
+    "limited": true,
+    "alerts": [
+     "site_progress"
+    ],
+    "headline": "3 of the last 3 site videos carry no usable location (the monthly visit of 04 Jul 2026: no location (GPS off or refused); the monthly visit of 03 Aug 2026: no location (GPS off or refused); the monthly visit of 02 Sep 2026: no location (GPS off or refused)). Every site video must record where it was filmed, so it can be held to the form's site: ask for the location to be turned on, and check the site.",
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-GPSOFF",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Lok Nirman Mandal",
+     "fy": "2026-27",
+     "work_type_code": "COMMUNITY_HALL",
+     "category": null,
+     "description": "Community hall at the panchayat ground, Tarapur",
+     "amount": 2475000.0,
+     "recommended_date": "2026-02-14",
+     "completed_date": null,
+     "status": "SANCTIONED",
+     "sanction_date": "2026-03-16"
+    },
+    "assessment": {
+     "work_id": "WF-GPSOFF",
+     "assessed_at": "2026-10-02",
+     "score": 0.25,
+     "band": "MEDIUM",
+     "limited": true,
+     "priority": 0.25,
+     "parts": {
+      "parts": [
+       {
+        "source": "site_progress",
+        "label": "NidhiLens (Fine-Tuned Site Progress Model)",
+        "weight": 0.25,
+        "contribution": 0.25
+       }
+      ],
+      "hard_trigger": null,
+      "reasons": [
+       {
+        "source": "site_progress",
+        "label": "NidhiLens (Fine-Tuned Site Progress Model)",
+        "contribution": 0.25,
+        "code": "LOCATION_NOT_RECORDED",
+        "text_en": "3 of the last 3 site videos carry no usable location (the monthly visit of 04 Jul 2026: no location (GPS off or refused); the monthly visit of 03 Aug 2026: no location (GPS off or refused); the monthly visit of 02 Sep 2026: no location (GPS off or refused)). Every site video must record where it was filmed, so it can be held to the form's site: ask for the location to be turned on, and check the site.",
+        "text_hi": "हाल के साइट वीडियो में फ़िल्माने का स्थान दर्ज नहीं है (जीपीएस बंद, कमज़ोर, या नकली स्थान)। हर वीडियो में स्थान ज़रूरी है: एजेंसी से स्थान चालू करके दोबारा फ़िल्माने को कहें और स्थल जाँचें।",
+        "chance": 0.25,
+        "hit_rate": 0.25,
+        "basis": "prior",
+        "read": null
+       }
+      ]
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "NOT_ASSESSABLE",
+       "verdict": "NOT_ASSESSABLE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Could not compare this estimate with anything yet: Price of the work: no reference for this kind of work yet. Not priced here, for want of reliable price data (recorded, so it can be collected): cement (3 recent forms from 3 other agencies; 5 from 3 needed); sand (3 recent forms from 3 other agencies; 5 from 3 needed); stone aggregate (3 recent forms from 3 other agencies; 5 from 3 needed); reinforcement steel (3 recent forms from 3 other agencies; 5 from 3 needed); bricks (3 recent forms from 3 other agencies; 5 from 3 needed); tiles (3 recent forms from 3 other agencies; 5 from 3 needed); doors / windows (3 recent forms from 3 other agencies; 5 from 3 needed); mason (3 recent forms from 3 other agencies; 5 from 3 needed); beldar / mazdoor (3 recent forms from 3 other agencies; 5 from 3 needed). Only 0% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged. The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs. This is not a clean chit.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Price of the work: no reference for this kind of work yet.",
+        "Not priced here, for want of reliable price data (recorded, so it can be collected): cement (3 recent forms from 3 other agencies; 5 from 3 needed); sand (3 recent forms from 3 other agencies; 5 from 3 needed); stone aggregate (3 recent forms from 3 other agencies; 5 from 3 needed); reinforcement steel (3 recent forms from 3 other agencies; 5 from 3 needed); bricks (3 recent forms from 3 other agencies; 5 from 3 needed); tiles (3 recent forms from 3 other agencies; 5 from 3 needed); doors / windows (3 recent forms from 3 other agencies; 5 from 3 needed); mason (3 recent forms from 3 other agencies; 5 from 3 needed); beldar / mazdoor (3 recent forms from 3 other agencies; 5 from 3 needed).",
+        "Only 0% of the money is in lines with a fair rate or a known need (at least 60% is needed), so the whole estimate was not judged.",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "NOT_SANCTIONED_BEFORE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 50 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "ON_TIME_AS_FAR_AS_CHECKED",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No timing problem the dates and the agency's own estimate can show.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "ASSESSED",
+       "verdict": "LOCATION_NOT_RECORDED",
+       "risk": 0.4,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "3 of the last 3 site videos carry no usable location (the monthly visit of 04 Jul 2026: no location (GPS off or refused); the monthly visit of 03 Aug 2026: no location (GPS off or refused); the monthly visit of 02 Sep 2026: no location (GPS off or refused)). Every site video must record where it was filmed, so it can be held to the form's site: ask for the location to be turned on, and check the site.",
+       "version": "",
+       "findings": [
+        {
+         "code": "LOCATION_NOT_RECORDED",
+         "text": "3 of the last 3 site videos carry no usable location (the monthly visit of 04 Jul 2026: no location (GPS off or refused); the monthly visit of 03 Aug 2026: no location (GPS off or refused); the monthly visit of 02 Sep 2026: no location (GPS off or refused)). Every site video must record where it was filmed, so it can be held to the form's site: ask for the location to be turned on, and check the site.",
+         "hard": false,
+         "risk": 0.4,
+         "evidence": {}
+        }
+       ],
+       "limitations": [
+        "Filmed in a phone's browser, which cannot report a mock location or check the phone itself; the views must match the site's own earlier views either way."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [
+      "site_progress"
+     ],
+     "headline": "3 of the last 3 site videos carry no usable location (the monthly visit of 04 Jul 2026: no location (GPS off or refused); the monthly visit of 03 Aug 2026: no location (GPS off or refused); the monthly visit of 02 Sep 2026: no location (GPS off or refused)). Every site video must record where it was filmed, so it can be held to the form's site: ask for the location to be turned on, and check the site.",
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 28,
+     "key": "site_gps_off",
+     "title": "Location switched off on the last three videos",
+     "agents": [
+      "site_progress"
+     ],
+     "kind": "suspected",
+     "shows": "The first three videos record where they were filmed; the last three were filmed with location off, so nothing shows they were filmed at this site.",
+     "why": "Every site video must record where it was filmed. One video without a location is forgiven; three in a row leave nothing to show any of them was filmed at this site, so it is a question.",
+     "explain": "site_gps_off",
+     "form_example": "site_gps_off",
+     "later": [
+      "Sanctioned 16 Mar 2026",
+      "Six site videos: the last three without a location"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "time_filmed_last_day",
+   "row": {
+    "work_id": "WF-LASTDAY",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "ROAD_CC",
+    "description": "CC road from the primary school to the panchayat bhawan, Udaipur Khurd",
+    "amount": 1682000.0,
+    "status": "COMPLETED",
+    "recommended_date": "2026-05-15",
+    "band": "MEDIUM",
+    "score": 0.4375,
+    "priority": 0.4375,
+    "limited": false,
+    "alerts": [
+     "time_rules",
+     "site_progress"
+    ],
+    "headline": "Recorded complete 6 days after its sanction (24 Jun 2026 to 30 Jun 2026). The agency's own estimate was 3.9 months, and a cement concrete road work of this size is not finished in under 30 days (the early line of its comfort window). No site video shows the work going on. Check the completion: whether the work was done, or done before it was sanctioned.",
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-LASTDAY",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Sahyog Construction Cell",
+     "fy": "2026-27",
+     "work_type_code": "ROAD_CC",
+     "category": null,
+     "description": "CC road from the primary school to the panchayat bhawan, Udaipur Khurd",
+     "amount": 1682000.0,
+     "recommended_date": "2026-05-15",
+     "completed_date": "2026-06-30",
+     "status": "COMPLETED",
+     "sanction_date": "2026-06-24"
+    },
+    "assessment": {
+     "work_id": "WF-LASTDAY",
+     "assessed_at": "2026-10-02",
+     "score": 0.4375,
+     "band": "MEDIUM",
+     "limited": false,
+     "priority": 0.4375,
+     "parts": {
+      "parts": [
+       {
+        "source": "time_rules",
+        "label": "Time & Rules",
+        "weight": 0.25,
+        "contribution": 0.25
+       },
+       {
+        "source": "site_progress",
+        "label": "NidhiLens (Fine-Tuned Site Progress Model)",
+        "weight": 0.1875,
+        "contribution": 0.1875
+       }
+      ],
+      "hard_trigger": null,
+      "reasons": [
+       {
+        "source": "time_rules",
+        "label": "Time & Rules",
+        "contribution": 0.25,
+        "code": "FINISHED_TOO_FAST",
+        "text_en": "Recorded complete 6 days after its sanction (24 Jun 2026 to 30 Jun 2026). The agency's own estimate was 3.9 months, and a cement concrete road work of this size is not finished in under 30 days (the early line of its comfort window). No site video shows the work going on. Check the completion: whether the work was done, or done before it was sanctioned.",
+        "text_hi": "कार्य आरंभ के 6 दिन बाद ही पूर्ण दर्ज है, जबकि इस आकार का कार्य 30 दिन से पहले नहीं बन सकता, और कोई साइट वीडियो निर्माण होते नहीं दिखाता। पूर्णता की जाँच करें।",
+        "chance": 0.25,
+        "hit_rate": 0.25,
+        "basis": "prior",
+        "read": null
+       },
+       {
+        "source": "site_progress",
+        "label": "NidhiLens (Fine-Tuned Site Progress Model)",
+        "contribution": 0.1875,
+        "code": "FIRST_FILMED_FINISHED",
+        "text_en": "The first site video (the final visit of 30 Jun 2026) already shows the work finished, and none was filmed before work started, so nothing shows the asset is new. Check that it was not built before sanction or under another scheme.",
+        "text_hi": "पहला साइट वीडियो ही कार्य को पूरा दिखाता है, और कार्य शुरू होने से पहले कोई वीडियो नहीं फ़िल्माया गया: कुछ भी नहीं दिखाता कि परिसंपत्ति नई है। जाँचें कि यह स्वीकृति से पहले या किसी अन्य योजना में तो नहीं बनी।",
+        "chance": 0.25,
+        "hit_rate": 0.25,
+        "basis": "prior",
+        "read": null
+       }
+      ]
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "ASSESSED",
+       "verdict": "ESTIMATE_FITS_SIZE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "The whole estimate is Rs 16.82 lakh against a fair Rs 16.82 lakh (Rs 16.77 to 16.97 lakh at the lowest and highest rates other agencies here charge), +0.0%, pricing 73% of the money: within the fair band. Labour: 2 trade rows compared with what others pay the same trade; none is at twice it.",
+       "version": "",
+       "findings": [],
+       "limitations": [
+        "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "NOT_SANCTIONED_BEFORE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "FINISHED_TOO_FAST",
+       "risk": 0.6,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Recorded complete 6 days after its sanction (24 Jun 2026 to 30 Jun 2026). The agency's own estimate was 3.9 months, and a cement concrete road work of this size is not finished in under 30 days (the early line of its comfort window). No site video shows the work going on. Check the completion: whether the work was done, or done before it was sanctioned.",
+       "version": "",
+       "findings": [
+        {
+         "code": "FINISHED_TOO_FAST",
+         "text": "Recorded complete 6 days after its sanction (24 Jun 2026 to 30 Jun 2026). The agency's own estimate was 3.9 months, and a cement concrete road work of this size is not finished in under 30 days (the early line of its comfort window). No site video shows the work going on. Check the completion: whether the work was done, or done before it was sanctioned.",
+         "hard": false,
+         "risk": 0.6,
+         "evidence": {}
+        }
+       ],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "ASSESSED",
+       "verdict": "FIRST_FILMED_FINISHED",
+       "risk": 0.4,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "The first site video (the final visit of 30 Jun 2026) already shows the work finished, and none was filmed before work started, so nothing shows the asset is new. Check that it was not built before sanction or under another scheme.",
+       "version": "",
+       "findings": [
+        {
+         "code": "FIRST_FILMED_FINISHED",
+         "text": "The first site video (the final visit of 30 Jun 2026) already shows the work finished, and none was filmed before work started, so nothing shows the asset is new. Check that it was not built before sanction or under another scheme.",
+         "hard": false,
+         "risk": 0.4,
+         "evidence": {}
+        }
+       ],
+       "limitations": [
+        "Filmed in a phone's browser, which cannot report a mock location or check the phone itself; the views must match the site's own earlier views either way."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [
+      "time_rules",
+      "site_progress"
+     ],
+     "headline": "Recorded complete 6 days after its sanction (24 Jun 2026 to 30 Jun 2026). The agency's own estimate was 3.9 months, and a cement concrete road work of this size is not finished in under 30 days (the early line of its comfort window). No site video shows the work going on. Check the completion: whether the work was done, or done before it was sanctioned.",
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 29,
+     "key": "time_filmed_last_day",
+     "title": "\"Complete\" in 6 days, filmed only on that day",
+     "agents": [
+      "time_rules",
+      "site_progress"
+     ],
+     "kind": "suspected",
+     "shows": "A 350 m road promised in 120 days, recorded complete 6 days after sanction. Its one site video was filmed on the completion day, so nothing shows it being built.",
+     "why": "A video filmed on the day the work is called complete shows it finished, not being built. The 6-day finish stays unexplained, and the missing first visit is asked about too: two checks agree.",
+     "explain": "time_filmed_last_day",
+     "form_example": "time_filmed_last_day",
+     "later": [
+      "Sanctioned 24 Jun 2026",
+      "Recorded complete 30 Jun 2026",
+      "One site video, filmed that day"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "cost_other_charges",
+   "row": {
+    "work_id": "WF-CHARGES",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "ROAD_CC",
+    "description": "CC road from the primary school to the panchayat bhawan, Vishunpur",
+    "amount": 1742000.0,
+    "status": "RECOMMENDED",
+    "recommended_date": "2026-08-30",
+    "band": "MEDIUM",
+    "score": 0.25,
+    "priority": 0.25,
+    "limited": false,
+    "alerts": [
+     "cost_estimate"
+    ],
+    "headline": "The estimate (Rs 17.42 lakh) is Rs 2.18 lakh above the fair price for this size of work in this district (Rs 15.25 lakh; Rs 15.25 to 16.24 lakh at the lowest and highest rates other agencies here charge), 20% above the fair price of the 73% of the money that could be priced. Most of the gap: 'other' charges beyond the usual share +Rs 2.18 lakh (not itemised). 0 of the 4 priced lines are above their fair rate. Needs checking before sanction.",
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-CHARGES",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Sadak Vikas Prakoshth",
+     "fy": "2026-27",
+     "work_type_code": "ROAD_CC",
+     "category": null,
+     "description": "CC road from the primary school to the panchayat bhawan, Vishunpur",
+     "amount": 1742000.0,
+     "recommended_date": "2026-08-30",
+     "completed_date": null,
+     "status": "RECOMMENDED",
+     "sanction_date": null
+    },
+    "assessment": {
+     "work_id": "WF-CHARGES",
+     "assessed_at": "2026-10-02",
+     "score": 0.25,
+     "band": "MEDIUM",
+     "limited": false,
+     "priority": 0.25,
+     "parts": {
+      "parts": [
+       {
+        "source": "cost_estimate",
+        "label": "Cost",
+        "weight": 0.25,
+        "contribution": 0.25
+       }
+      ],
+      "hard_trigger": null,
+      "reasons": [
+       {
+        "source": "cost_estimate",
+        "label": "Cost",
+        "contribution": 0.25,
+        "code": "ESTIMATE_ABOVE_FAIR_PRICE",
+        "text_en": "The estimate (Rs 17.42 lakh) is Rs 2.18 lakh above the fair price for this size of work in this district (Rs 15.25 lakh; Rs 15.25 to 16.24 lakh at the lowest and highest rates other agencies here charge), 20% above the fair price of the 73% of the money that could be priced. Most of the gap: 'other' charges beyond the usual share +Rs 2.18 lakh (not itemised). 0 of the 4 priced lines are above their fair rate. Needs checking before sanction.",
+        "text_hi": "पूरा अनुमान इस आकार और इस ज़िले के उचित मूल्य से 20% अधिक है; अंतर बनाने वाली पंक्तियाँ विवरण में हैं। स्वीकृति से पहले जाँच करें।",
+        "chance": 0.25,
+        "hit_rate": 0.25,
+        "basis": "prior",
+        "read": null
+       }
+      ]
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "ASSESSED",
+       "verdict": "ESTIMATE_ABOVE_FAIR_PRICE",
+       "risk": 0.6,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "The estimate (Rs 17.42 lakh) is Rs 2.18 lakh above the fair price for this size of work in this district (Rs 15.25 lakh; Rs 15.25 to 16.24 lakh at the lowest and highest rates other agencies here charge), 20% above the fair price of the 73% of the money that could be priced. Most of the gap: 'other' charges beyond the usual share +Rs 2.18 lakh (not itemised). 0 of the 4 priced lines are above their fair rate. Needs checking before sanction.",
+       "version": "",
+       "findings": [
+        {
+         "code": "ESTIMATE_ABOVE_FAIR_PRICE",
+         "text": "The estimate (Rs 17.42 lakh) is Rs 2.18 lakh above the fair price for this size of work in this district (Rs 15.25 lakh; Rs 15.25 to 16.24 lakh at the lowest and highest rates other agencies here charge), 20% above the fair price of the 73% of the money that could be priced. Most of the gap: 'other' charges beyond the usual share +Rs 2.18 lakh (not itemised). 0 of the 4 priced lines are above their fair rate. Needs checking before sanction.",
+         "hard": false,
+         "risk": 0.6,
+         "evidence": {}
+        }
+       ],
+       "limitations": [
+        "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "NOT_SANCTIONED_BEFORE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "ON_TIME_AS_FAR_AS_CHECKED",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No timing problem the dates and the agency's own estimate can show.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "NOT_APPLICABLE",
+       "verdict": "NOT_APPLICABLE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [
+      "cost_estimate"
+     ],
+     "headline": "The estimate (Rs 17.42 lakh) is Rs 2.18 lakh above the fair price for this size of work in this district (Rs 15.25 lakh; Rs 15.25 to 16.24 lakh at the lowest and highest rates other agencies here charge), 20% above the fair price of the 73% of the money that could be priced. Most of the gap: 'other' charges beyond the usual share +Rs 2.18 lakh (not itemised). 0 of the 4 priced lines are above their fair rate. Needs checking before sanction.",
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 30,
+     "key": "cost_other_charges",
+     "title": "20% added as \"other charges\", unexplained",
+     "agents": [
+      "cost_estimate"
+     ],
+     "kind": "suspected",
+     "shows": "Fair rates on every line, then 20% more as \"other charges\", although the form says the rates already include tax.",
+     "why": "Every line is fairly priced, so a line-by-line check passes it. Cost also compares the whole estimate, charges included, with the fair price for the road's size, and the extra 20% shows there.",
+     "explain": "cost_other_charges",
+     "form_example": "cost_other_charges",
+     "later": [
+      "Not sanctioned yet: this is the check before sanction"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "cost_claimed_reason",
+   "row": {
+    "work_id": "WF-CLAIMED",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "ROAD_CC",
+    "description": "CC road from the primary school to the panchayat bhawan, Bariyarpur",
+    "amount": 1642000.0,
+    "status": "RECOMMENDED",
+    "recommended_date": "2026-09-01",
+    "band": "MEDIUM",
+    "score": 0.25,
+    "priority": 0.25,
+    "limited": false,
+    "alerts": [
+     "cost_estimate"
+    ],
+    "headline": "The estimate (Rs 16.42 lakh) is Rs 1.90 lakh above the fair price for this size of work in this district (Rs 14.52 lakh; Rs 14.52 to 14.63 lakh at the lowest and highest rates other agencies here charge), 18% above the fair price of the 76% of the money that could be priced. Most of the gap: cement +Rs 88,876 (Rs 448 a bag against Rs 380, others here Rs 380 to Rs 384), stone aggregate +Rs 51,030 (Rs 2,478 a m3 against Rs 2,100, others here Rs 2,100 to Rs 2,121), gsb / wbm / moorum +Rs 27,405 (Rs 1,711 a m3 against Rs 1,450, others here Rs 1,450 to Rs 1,464). 4 of the 4 priced lines are above their fair rate. The form says the site is hilly and reached only on foot (materials carried by hand), and carriage there can cost this much more, so it is not asked as a question: check the terrain on the site video before sanction.",
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-CLAIMED",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Nagar Seva Kendra",
+     "fy": "2026-27",
+     "work_type_code": "ROAD_CC",
+     "category": null,
+     "description": "CC road from the primary school to the panchayat bhawan, Bariyarpur",
+     "amount": 1642000.0,
+     "recommended_date": "2026-09-01",
+     "completed_date": null,
+     "status": "RECOMMENDED",
+     "sanction_date": null
+    },
+    "assessment": {
+     "work_id": "WF-CLAIMED",
+     "assessed_at": "2026-10-02",
+     "score": 0.25,
+     "band": "MEDIUM",
+     "limited": false,
+     "priority": 0.25,
+     "parts": {
+      "parts": [
+       {
+        "source": "cost_estimate",
+        "label": "Cost",
+        "weight": 0.25,
+        "contribution": 0.25
+       }
+      ],
+      "hard_trigger": null,
+      "reasons": [
+       {
+        "source": "cost_estimate",
+        "label": "Cost",
+        "contribution": 0.25,
+        "code": "ESTIMATE_ABOVE_FAIR_RANGE",
+        "text_en": "The estimate (Rs 16.42 lakh) is Rs 1.90 lakh above the fair price for this size of work in this district (Rs 14.52 lakh; Rs 14.52 to 14.63 lakh at the lowest and highest rates other agencies here charge), 18% above the fair price of the 76% of the money that could be priced. Most of the gap: cement +Rs 88,876 (Rs 448 a bag against Rs 380, others here Rs 380 to Rs 384), stone aggregate +Rs 51,030 (Rs 2,478 a m3 against Rs 2,100, others here Rs 2,100 to Rs 2,121), gsb / wbm / moorum +Rs 27,405 (Rs 1,711 a m3 against Rs 1,450, others here Rs 1,450 to Rs 1,464). 4 of the 4 priced lines are above their fair rate. The form says the site is hilly and reached only on foot (materials carried by hand), and carriage there can cost this much more, so it is not asked as a question: check the terrain on the site video before sanction.",
+        "text_hi": "पूरा अनुमान इस आकार और इस ज़िले के उचित मूल्य से 18% अधिक है; अंतर बनाने वाली पंक्तियाँ विवरण में हैं। स्वीकृति से पहले जाँच करें।",
+        "chance": 0.25,
+        "hit_rate": 0.25,
+        "basis": "prior",
+        "read": null
+       }
+      ]
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "ASSESSED",
+       "verdict": "ESTIMATE_ABOVE_FAIR_RANGE",
+       "risk": 0.3,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "The estimate (Rs 16.42 lakh) is Rs 1.90 lakh above the fair price for this size of work in this district (Rs 14.52 lakh; Rs 14.52 to 14.63 lakh at the lowest and highest rates other agencies here charge), 18% above the fair price of the 76% of the money that could be priced. Most of the gap: cement +Rs 88,876 (Rs 448 a bag against Rs 380, others here Rs 380 to Rs 384), stone aggregate +Rs 51,030 (Rs 2,478 a m3 against Rs 2,100, others here Rs 2,100 to Rs 2,121), gsb / wbm / moorum +Rs 27,405 (Rs 1,711 a m3 against Rs 1,450, others here Rs 1,450 to Rs 1,464). 4 of the 4 priced lines are above their fair rate. The form says the site is hilly and reached only on foot (materials carried by hand), and carriage there can cost this much more, so it is not asked as a question: check the terrain on the site video before sanction.",
+       "version": "",
+       "findings": [
+        {
+         "code": "ESTIMATE_ABOVE_FAIR_RANGE",
+         "text": "The estimate (Rs 16.42 lakh) is Rs 1.90 lakh above the fair price for this size of work in this district (Rs 14.52 lakh; Rs 14.52 to 14.63 lakh at the lowest and highest rates other agencies here charge), 18% above the fair price of the 76% of the money that could be priced. Most of the gap: cement +Rs 88,876 (Rs 448 a bag against Rs 380, others here Rs 380 to Rs 384), stone aggregate +Rs 51,030 (Rs 2,478 a m3 against Rs 2,100, others here Rs 2,100 to Rs 2,121), gsb / wbm / moorum +Rs 27,405 (Rs 1,711 a m3 against Rs 1,450, others here Rs 1,450 to Rs 1,464). 4 of the 4 priced lines are above their fair rate. The form says the site is hilly and reached only on foot (materials carried by hand), and carriage there can cost this much more, so it is not asked as a question: check the terrain on the site video before sanction.",
+         "hard": false,
+         "risk": 0.3,
+         "evidence": {}
+        }
+       ],
+       "limitations": [
+        "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "NOT_SANCTIONED_BEFORE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "ON_TIME_AS_FAR_AS_CHECKED",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No timing problem the dates and the agency's own estimate can show.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "NOT_APPLICABLE",
+       "verdict": "NOT_APPLICABLE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [
+      "cost_estimate"
+     ],
+     "headline": "The estimate (Rs 16.42 lakh) is Rs 1.90 lakh above the fair price for this size of work in this district (Rs 14.52 lakh; Rs 14.52 to 14.63 lakh at the lowest and highest rates other agencies here charge), 18% above the fair price of the 76% of the money that could be priced. Most of the gap: cement +Rs 88,876 (Rs 448 a bag against Rs 380, others here Rs 380 to Rs 384), stone aggregate +Rs 51,030 (Rs 2,478 a m3 against Rs 2,100, others here Rs 2,100 to Rs 2,121), gsb / wbm / moorum +Rs 27,405 (Rs 1,711 a m3 against Rs 1,450, others here Rs 1,450 to Rs 1,464). 4 of the 4 priced lines are above their fair rate. The form says the site is hilly and reached only on foot (materials carried by hand), and carriage there can cost this much more, so it is not asked as a question: check the terrain on the site video before sanction.",
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 31,
+     "key": "cost_claimed_reason",
+     "title": "18% higher \"because the site is hilly\", in the plains",
+     "agents": [
+      "cost_estimate"
+     ],
+     "kind": "suspected",
+     "shows": "Every material 18% above the district's rates, explained as a hilly site where material is carried by hand. Jaunpur is flat plains; nothing confirms the claim.",
+     "why": "A reason written on the form can soften a question to a check, never clear it. Nothing confirms the hilly, head-load site the form describes, and Jaunpur lies in the plains, so the 18% gap is checked.",
+     "explain": "cost_claimed_reason",
+     "form_example": "cost_claimed_reason",
+     "later": [
+      "Not sanctioned yet: this is the check before sanction"
+     ],
+     "form_ready": true
+    }
+   }
+  },
+  {
+   "key": "cost_ghost_workers",
+   "row": {
+    "work_id": "WF-GHOSTS",
+    "source": "SCENARIO",
+    "district_lgd": "194",
+    "district_name": "Jaunpur",
+    "state_name": "Uttar Pradesh",
+    "work_type_code": "ROAD_CC",
+    "description": "CC road from the primary school to the panchayat bhawan, Bhitari",
+    "amount": 1916000.0,
+    "status": "RECOMMENDED",
+    "recommended_date": "2026-09-03",
+    "band": "MEDIUM",
+    "score": 0.25,
+    "priority": 0.25,
+    "limited": false,
+    "alerts": [
+     "cost_estimate"
+    ],
+    "headline": "More labour than other agencies use for this size of work: beldar / mazdoor 1,656 person-days, 3.0 times the 552 others' crews take (26 recent forms of 8 other agencies in the district). Rs 4.64 lakh of wages beyond them. Check the muster roll and the crew on the site video.",
+    "case_id": null,
+    "case_size": null
+   },
+   "detail": {
+    "work": {
+     "work_id": "WF-GHOSTS",
+     "source": "SCENARIO",
+     "house": null,
+     "term": null,
+     "state_name": "Uttar Pradesh",
+     "district_lgd": "194",
+     "district_name": "Jaunpur",
+     "constituency": null,
+     "mp_name": null,
+     "agency_name": "Gram Unnati Agency",
+     "fy": "2026-27",
+     "work_type_code": "ROAD_CC",
+     "category": null,
+     "description": "CC road from the primary school to the panchayat bhawan, Bhitari",
+     "amount": 1916000.0,
+     "recommended_date": "2026-09-03",
+     "completed_date": null,
+     "status": "RECOMMENDED",
+     "sanction_date": null
+    },
+    "assessment": {
+     "work_id": "WF-GHOSTS",
+     "assessed_at": "2026-10-02",
+     "score": 0.25,
+     "band": "MEDIUM",
+     "limited": false,
+     "priority": 0.25,
+     "parts": {
+      "parts": [
+       {
+        "source": "cost_estimate",
+        "label": "Cost",
+        "weight": 0.25,
+        "contribution": 0.25
+       }
+      ],
+      "hard_trigger": null,
+      "reasons": [
+       {
+        "source": "cost_estimate",
+        "label": "Cost",
+        "contribution": 0.25,
+        "code": "LABOUR_DAYS_ABOVE_PEERS",
+        "text_en": "More labour than other agencies use for this size of work: beldar / mazdoor 1,656 person-days, 3.0 times the 552 others' crews take (26 recent forms of 8 other agencies in the district). Rs 4.64 lakh of wages beyond them. Check the muster roll and the crew on the site video.",
+        "text_hi": "मज़दूरों के दिन इसी आकार के दूसरे कार्यों से कहीं अधिक हैं। हाज़िरी रजिस्टर और साइट वीडियो की जाँच करें।",
+        "chance": 0.25,
+        "hit_rate": 0.25,
+        "basis": "prior",
+        "read": null
+       }
+      ]
+     },
+     "validation": [],
+     "agents": [
+      {
+       "agent": "cost_estimate",
+       "name": "Cost",
+       "question": "Is every line of the estimate fairly priced for this district, and is the whole estimate fair?",
+       "status": "ASSESSED",
+       "verdict": "LABOUR_DAYS_ABOVE_PEERS",
+       "risk": 0.3,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "More labour than other agencies use for this size of work: beldar / mazdoor 1,656 person-days, 3.0 times the 552 others' crews take (26 recent forms of 8 other agencies in the district). Rs 4.64 lakh of wages beyond them. Check the muster roll and the crew on the site video.",
+       "version": "",
+       "findings": [
+        {
+         "code": "LABOUR_DAYS_ABOVE_PEERS",
+         "text": "More labour than other agencies use for this size of work: beldar / mazdoor 1,656 person-days, 3.0 times the 552 others' crews take (26 recent forms of 8 other agencies in the district). Rs 4.64 lakh of wages beyond them. Check the muster roll and the crew on the site video.",
+         "hard": false,
+         "risk": 0.3,
+         "evidence": {}
+        }
+       ],
+       "limitations": [
+        "Price of the work: could not check, because the real works of this kind in Uttar Pradesh vary too much in price per metre (the middle 80% runs to +58%): their records miss something that sets the price, such as width, height or wattage.",
+        "The state's Schedule of Rates is not loaded yet (T096): lines are compared with other agencies' recent rates in the district where there are enough, and quantities with what the size needs."
+       ],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "dup_split",
+       "name": "Duplicate Work",
+       "question": "Is this work already sanctioned here, or one job cut to stay under a limit?",
+       "status": "ASSESSED",
+       "verdict": "NOT_SANCTIONED_BEFORE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 2,843 other works of its district names this place in the same words.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "time_rules",
+       "name": "Time & Rules",
+       "question": "Was it sanctioned on time, and is it being finished in a believable time?",
+       "status": "ASSESSED",
+       "verdict": "ON_TIME_AS_FAR_AS_CHECKED",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No timing problem the dates and the agency's own estimate can show.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      },
+      {
+       "agent": "site_progress",
+       "name": "NidhiLens (Fine-Tuned Site Progress Model)",
+       "question": "Do the monthly site videos show real, new work, at this work's site, for this work only?",
+       "status": "NOT_APPLICABLE",
+       "verdict": "NOT_APPLICABLE",
+       "risk": 0.0,
+       "confidence": 0.0,
+       "hard": false,
+       "headline": "No site video yet: NidhiLens (Fine-Tuned Site Progress Model) starts with the first visit, filmed before work begins. This is not a clean chit.",
+       "version": "",
+       "findings": [],
+       "limitations": [],
+       "evidence": {},
+       "duration_ms": 0
+      }
+     ],
+     "alerts": [
+      "cost_estimate"
+     ],
+     "headline": "More labour than other agencies use for this size of work: beldar / mazdoor 1,656 person-days, 3.0 times the 552 others' crews take (26 recent forms of 8 other agencies in the district). Rs 4.64 lakh of wages beyond them. Check the muster roll and the crew on the site video.",
+     "compact": false,
+     "case_id": null,
+     "case_size": null
+    },
+    "showcase": {
+     "n": 32,
+     "key": "cost_ghost_workers",
+     "title": "Three times the labourers a road this size needs",
+     "agents": [
+      "cost_estimate"
+     ],
+     "kind": "suspected",
+     "shows": "Fair wages, but 36 labourers on the muster roll for the days 12 do on other agencies' roads of this size: the extra workers may exist only on paper.",
+     "why": "Wages can be fair while the number of workers is not. Cost compares the person-days with other agencies' crews on roads of this size; three times as many asks for a check of the muster roll and of the crew in the site video.",
+     "explain": "cost_ghost_workers",
+     "form_example": "cost_ghost_workers",
+     "later": [
+      "Not sanctioned yet: this is the check before sanction"
      ],
      "form_ready": true
     }

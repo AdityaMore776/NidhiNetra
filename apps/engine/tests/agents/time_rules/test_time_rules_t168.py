@@ -30,6 +30,19 @@ def test_the_final_video_alone_does_not_clear_a_fast_finish():
     assert "FINISHED_TOO_FAST" in _codes(r), r.headline
 
 
+def test_a_final_video_never_moves_the_start_the_pace_is_counted_from():
+    """T170: a final video on the completion day made the window start that day, so the reason
+    read "complete 0 days after the work could start". The final video shows the work finished,
+    not starting: the pace counts from the sanction, as with no video at all."""
+    start_july = _work(status="COMPLETED", sanction_date=SAN, completed_date=DONE,
+                       cost_form=_form(months=4, start="2026-07"))
+    for visits in ([], [_visit(DONE, kind="final")]):
+        r = assess({**start_july, "site_visits": visits}, AS_OF)
+        f = next(f for f in r.findings if f.code == "FINISHED_TOO_FAST")
+        assert "6 days after its sanction" in f.text, f.text
+        assert f.evidence["value"] == 6
+
+
 def test_videos_of_the_work_going_on_before_the_finish_still_clear_it():
     r = assess(_fast([_visit(SAN + timedelta(days=1), kind="baseline", change=None),
                       _visit(SAN + timedelta(days=3), kind="check"),

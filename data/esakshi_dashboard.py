@@ -195,5 +195,28 @@ def load(verbose: bool = False) -> tuple[list[dict], dict]:
     return out, info
 
 
+def load_research(as_of: date = date(2026, 10, 2)) -> tuple[list[dict], dict]:
+    """The same records from the research export (data/build/works.parquet, 2,09,993 works, the
+    snapshot of 26 May 2026) when the dashboard tables are not on this PC (T170, owner's choice).
+    It is what the live database holds, so the examples meet the same works the site does. The
+    export has no sanction date, disbursement or photo flag: those stay empty, never invented.
+    `as_of` is the examples' own day (the dashboard copy's, 2 Oct 2026)."""
+    import math
+
+    import pandas as pd
+
+    df = pd.read_parquet(ROOT / "data" / "build" / "works.parquet")
+    extra = {"sanction_date": None, "amount_disbursed": None, "has_image": None,
+             "dashboard_status": None, "esakshi_category": None, "seen_in": ["research"]}
+    out = []
+    for r in df.to_dict("records"):
+        w = {k: (None if (isinstance(v, float) and math.isnan(v)) or v is pd.NaT else v)
+             for k, v in r.items()}
+        out.append({**extra, **w})
+    info = {"works": len(out), "as_of": as_of, "source": "research export (26 May 2026)",
+            "status": dict(Counter(w["status"] for w in out))}
+    return out, info
+
+
 if __name__ == "__main__":
     load(verbose=True)

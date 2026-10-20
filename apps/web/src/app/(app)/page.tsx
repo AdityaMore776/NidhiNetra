@@ -78,7 +78,7 @@ export default function Dashboard() {
   // T132, T142: the public view shows the example form filings, graded, instead of the engine's data
   const show = isShowcase(me);
   const file = useShowcase(show);
-  const total = file?.examples.length ?? 13;
+  const total = file?.examples.length;
 
   return (
     <div className="space-y-8">
@@ -89,7 +89,7 @@ export default function Dashboard() {
         lead={
           show ? (
             <>
-              {total} example filings of the work intelligence form, each graded by the four checks: the form a made-up agency filed before sanction,
+              {total ? `${total} example filings` : "Example filings"} of the work intelligence form, each graded by the four checks: the form a made-up agency filed before sanction,
               compared with a real district&apos;s eSAKSHI works. Open any one to see the form, the fields each check asked about and why. It flags; it
               never accuses.
             </>
@@ -208,7 +208,7 @@ export default function Dashboard() {
           <section className="space-y-4">
             <SectionHeader
               eyebrow="Example filings"
-              title={`${total} forms, and what each check made of them`}
+              title={total ? `${total} forms, and what each check made of them` : "The forms, and what each check made of them"}
               description="Each one is a textbook case: a check asking for a look where it should, two checks agreeing, or the checks staying quiet on an honest filing. Open one to see the form as filed, the fields each check asked about, the score and all four checks."
             />
             <ExampleGallery file={file} />

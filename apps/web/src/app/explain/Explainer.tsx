@@ -182,19 +182,35 @@ export default function Explainer() {
           </div>
         </section>
 
-        <section aria-label="Examples" className="flex flex-wrap gap-2">
-          {(file?.examples ?? []).map((e) => (
-            <button
-              key={e.id}
-              onClick={() => choose(e.id)}
-              className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-all sm:text-sm ${pick === e.id ? "border-transparent bg-brand-gradient text-white shadow-[0_8px_20px_-10px_rgb(10_102_194/0.9)]" : "bg-white text-foreground hover:border-brand-200 hover:bg-brand-50"}`}
-            >
-              {e.title}
-            </button>
-          ))}
+        <section aria-label="Examples" className="space-y-2.5">
+          {/* T170: grouped as on the form page: honest, unusual, then the schemes */}
+          {(
+            [
+              ["normal", "Normal"],
+              ["edge", "Edge cases"],
+              ["suspected", "Suspected"],
+            ] as const
+          ).map(([kind, label]) => {
+            const items = (file?.examples ?? []).filter((e) => (e.kind ?? (e.id === "clean" ? "normal" : "suspected")) === kind);
+            if (!items.length) return null;
+            return (
+              <div key={kind} className="flex flex-wrap items-center gap-2">
+                <span className="w-24 shrink-0 text-[11px] font-semibold uppercase tracking-wide text-brand-700">{label}</span>
+                {items.map((e) => (
+                  <button
+                    key={e.id}
+                    onClick={() => choose(e.id)}
+                    className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-all sm:text-sm ${pick === e.id ? "border-transparent bg-brand-gradient text-white shadow-[0_8px_20px_-10px_rgb(10_102_194/0.9)]" : "bg-white text-foreground hover:border-brand-200 hover:bg-brand-50"}`}
+                  >
+                    {e.title}
+                  </button>
+                ))}
+              </div>
+            );
+          })}
           <Link
             href="/work-form"
-            className="rounded-full border border-dashed border-brand-400 px-3 py-1.5 text-xs font-medium text-brand-700 transition-all hover:bg-brand-50 sm:text-sm"
+            className="inline-block rounded-full border border-dashed border-brand-400 px-3 py-1.5 text-xs font-medium text-brand-700 transition-all hover:bg-brand-50 sm:text-sm"
           >
             + Check your own form
           </Link>

@@ -58,6 +58,51 @@ EXAMPLES = [
      "district's, the quantities fit the road's size, nothing is sanctioned at its pin, and the "
      "first site videos show the work the agency claims. A check that stays quiet here keeps the "
      "review queue short."),
+    # T170: more normal works, then edge cases, then suspected schemes (owner, 20 Oct 2026)
+    ("ok_lights", ["cost_estimate"],
+     "Lights are judged by the price of one light against what the district's own lights cost. "
+     "Rs 21,000 a light is the district's usual price and the estimate matches the MP's amount, "
+     "so Cost has nothing to ask."),
+    ("ok_hall_done", ["time_rules", "site_progress"],
+     "Finished inside the agency's own promise, with a video every month: Time & Rules finds the "
+     "pace believable, and NidhiLens (Fine-Tuned Site Progress Model) sees every claim in the "
+     "videos, up to the finished hall."),
+    ("ok_next_lane", ["dup_split"],
+     "Two roads 30 m apart look alike on a map, but this one runs beside the old road, never on "
+     "it. Duplicate Work compares the line of each road, not only how near the pins are, so the "
+     "next street over is never asked about."),
+    ("ok_hindi_gst", ["cost_estimate"],
+     "Honest forms are written in different ways. Cost reads item names in Hindi as the same "
+     "materials, and counts GST added on top as tax when the form says its rates leave tax out, "
+     "so neither raises a question."),
+    ("edge_slow_sanction", ["time_rules"],
+     "A slow sanction is how most offices work: 60% of works wait past 75 days. Time & Rules "
+     "records it about the office as a small note, which never puts the work in the queue on its "
+     "own."),
+    ("edge_fast_filmed", ["time_rules", "site_progress"],
+     "Speed alone is not a question. A road finished in 25 days is believed when videos filmed "
+     "before the finish show it being built; with only a final video, or none, the speed would "
+     "stay unexplained."),
+    ("edge_rain_pause", ["site_progress"],
+     "Two months with no change would look like a stopped site. Here the agency's own claim says "
+     "the work paused for rain, the videos agree, and the earlier months show steady work, so "
+     "nothing is asked."),
+    ("edge_extension", ["dup_split"],
+     "A road starting where a finished road ends could look like a repeat. The agency declares it "
+     "an extension, names the earlier work, and it lies beyond the old road's end, so Duplicate "
+     "Work notes the link and asks nothing."),
+    ("edge_weak_gps", ["site_progress"],
+     "Phones lose their position under trees. A video 110 m from the pin is allowed when the "
+     "phone itself said it could be 45 m out and the views match the site; the same distance "
+     "with a confident fix would be checked."),
+    ("edge_price_rise", ["cost_estimate"],
+     "Prices rise between filings. Rates 9% above older estimates sit inside the 10% the CPWD "
+     "Works Manual allows with recorded reasons, so Cost asks nothing; a bigger gap would be "
+     "checked."),
+    ("edge_late_moving", ["time_rules", "site_progress"],
+     "Most works finish late. Because every monthly video shows new work, Time & Rules asks only "
+     "for a follow-up on progress; the same delay at a site that has stopped is a question (the "
+     "example \"Eight months promised, sixteen months on, and stopped\")."),
     ("cost_padded", ["cost_estimate"],
      "No single line is far off. The question comes from the whole estimate, every line priced at "
      "what other agencies in the district pay for the same item. Wages within twice a trade's "
@@ -101,6 +146,38 @@ EXAMPLES = [
     ("site_elsewhere", ["site_progress"],
      "A video counts as filmed elsewhere only when its GPS and its views both disagree with the "
      "site, so a weak GPS fix alone never asks."),
+    ("dup_split_spread", ["dup_split"],
+     "Filing the parts 35 days apart slips past the strict 30-day test. Duplicate Work also reads "
+     "parts near a limit filed up to 90 days apart, a rule measured on the real works before it "
+     "was added, and asks for a check."),
+    ("dup_same_hall", ["dup_split"],
+     "The pin is 120 m from the old hall, past the 50 m that makes two pins one site. The same "
+     "words and the same size, with no earlier work named on the form, still ask for a check: "
+     "the first site video will show whether the hall already stands."),
+    ("site_no_first_visit", ["site_progress"],
+     "Every work with a form is filmed before work starts. Without that first visit, a video of a "
+     "finished hall cannot show the hall is new: it may have stood before the sanction, or been "
+     "paid for under another scheme."),
+    ("site_gps_off", ["site_progress"],
+     "Every site video must record where it was filmed. One video without a location is forgiven; "
+     "three in a row leave nothing to show any of them was filmed at this site, so it is a "
+     "question."),
+    ("time_filmed_last_day", ["time_rules", "site_progress"],
+     "A video filmed on the day the work is called complete shows it finished, not being built. "
+     "The 6-day finish stays unexplained, and the missing first visit is asked about too: two "
+     "checks agree."),
+    ("cost_other_charges", ["cost_estimate"],
+     "Every line is fairly priced, so a line-by-line check passes it. Cost also compares the "
+     "whole estimate, charges included, with the fair price for the road's size, and the extra "
+     "20% shows there."),
+    ("cost_claimed_reason", ["cost_estimate"],
+     "A reason written on the form can soften a question to a check, never clear it. Nothing "
+     "confirms the hilly, head-load site the form describes, and Jaunpur lies in the plains, so "
+     "the 18% gap is checked."),
+    ("cost_ghost_workers", ["cost_estimate"],
+     "Wages can be fair while the number of workers is not. Cost compares the person-days with "
+     "other agencies' crews on roads of this size; three times as many asks for a check of the "
+     "muster roll and of the crew in the site video."),
 ]
 
 
@@ -180,13 +257,17 @@ def main() -> None:
             if ex.get("codes") else None
         asks = sorted(x["agent"] for x in a["agents"] if x["agent"] in agents
                       and any(f["risk"] > 0 for f in x["findings"]))
-        if key == "clean" and fired:
+        kind = ex.get("kind", "suspected")
+        if kind == "normal" and fired:
             bad.append(f"{key}: an honest filing raises {fired}")
-        if key != "clean" and not asks:
+        if kind == "edge" and a["band"] != "LOW":
+            bad.append(f"{key}: an edge case reaches {a['band']}")
+        if kind == "suspected" and not asks:
             bad.append(f"{key}: none of {agents} asks now")
         if meant is not None and meant != fired:
             bad.append(f"{key}: raises {fired}, meant {meant}")
         detail["showcase"] = {"n": n, "key": key, "title": ex["title"], "agents": agents,
+                              "kind": kind,
                               # Step by step (/explain) walks through the same filings (T142)
                               "shows": ex["story"], "why": why, "explain": key,
                               "form_example": key, "later": ex["later"],

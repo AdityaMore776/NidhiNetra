@@ -18,6 +18,8 @@ export interface ShowcaseMeta {
   title: string;
   /** the checks this example is about */
   agents: string[];
+  /** T170: an honest work, an edge case, or a suspected scheme (older files: none) */
+  kind?: "normal" | "edge" | "suspected";
   shows: string;
   why: string;
   /** the Step by step page's example of the same made-up work */
