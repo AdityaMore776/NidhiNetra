@@ -60,7 +60,7 @@ LGD outlines ─► boundaries.py ─► district_crosswalk.py ─► apps/web/p
 |---|---|
 | `data/build_corpus.py` | one row per work from the research build's cleaned table, joined back to the raw CSVs for house, term, constituency, MP, agency, category |
 | `data/build_stats.py` | peer cost bands, completion-time percentiles, road price curve — **asserts** it reproduces the earlier measurements (e.g. 84.2% of works have a district peer group of 20+) before writing anything |
-| `data/load_db.py` | loads everything in one transaction (a failed load leaves the old data in place) |
+| `data/load_db.py` | loads everything in one transaction (a failed load leaves the old data in place). The works are replaced in place (`drishti/reload.py`, T169): only new or changed works are written, and a work with a saved cost form or site visit is never deleted, so a reload keeps everything people saved |
 | `data/batch_assess.py` | assesses all works and stores the results (LOW works stored compact) |
 | `data/seed_users.py` | creates the demo accounts; passwords printed once, stored nowhere |
 | `data/boundaries.py` | simplified LGD outlines for the map |

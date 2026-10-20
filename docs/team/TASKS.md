@@ -495,7 +495,8 @@ Hindi. Tune cut-offs so High + Critical ≈ 5–10%. Engines not built yet count
 **What:** tables `alerts` (New → Triaged → In plan → Inspected → Issue confirmed / Cleared → Closed) and
 hash-chained `audit_log`; `GET /alerts`, `PATCH /alerts/{id}`; district queue UI with triage actions; daily digest
 to console.
-**Done when:** [ ] every state change audited, chain verified by a test · [ ] role scoping tested
+**Done when:** [x] every state change audited, chain verified by a test · [x] role scoping tested
+(T060 PR: `tests/api/test_alerts.py`, 17 tests; steps shown in plain words, owner's ask 20 Oct)
 
 ### T061 · Location lookup  ·  S–M  ·  data  ·  Data: LGD / PIN files
 **What:** work → approximate lat/lon: village or place token → block → district centroid, with a precision flag
