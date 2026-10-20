@@ -3,7 +3,9 @@
 import { AlertOctagon, IndianRupee, Inbox, Scale } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
+import { useMe } from "@/components/me";
 import { Reveal } from "@/components/motion/reveal";
+import { CaseBoard } from "@/components/nn/case-board";
 import { PageHeader, StatTile } from "@/components/nn/layout-bits";
 import { Segmented } from "@/components/nn/segmented";
 import { Pager, WorkTable } from "@/components/nn/work-table";
@@ -30,6 +32,7 @@ function Queue() {
   const [data, setData] = useState<{ key: string; page: Page<WorkRow> } | null>(null);
   const { data: s } = useApiData<Summary>("/dashboard/summary");
   const { data: all } = useApiData<Page<WorkRow>>("/queue");
+  const me = useMe();
   const key = `${band}|${page}`;
 
   useEffect(() => {
@@ -94,6 +97,8 @@ function Queue() {
         />
         {current && <Pager page={current.page} total={current.total} size={current.page_size} onPage={(p) => set({ page: p })} />}
       </Reveal>
+
+      {me && me.role !== "PUBLIC" && <CaseBoard />}
     </div>
   );
 }
