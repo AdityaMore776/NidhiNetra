@@ -258,7 +258,10 @@ function WorkForm() {
           <Button size="sm" className="rounded-xl" onClick={checkOwn} disabled={!ready}>
             <Play /> Check this form with the agents
           </Button>
-          <span>Change any field (say, the cement quantity) and check again. Nothing is saved.</span>
+          <span>
+            Change any field (say, the cement rate), answer what the form then asks (a changed total needs a reason in section F) and check again.
+            Nothing is saved.
+          </span>
         </div>
       </section>
 
@@ -345,9 +348,11 @@ function Verdict({ shown, onShow, onData }: { shown: Shown | null; onShow: (fiel
           </>
         )}
         {fixes.length > 0 && (
-          <details className="text-xs text-muted-foreground">
+          // open: Cost judges a form only once it is complete, so say what to fill (T170)
+          <details open className="rounded-lg border border-[var(--medium)] bg-[var(--medium-soft)] px-2.5 py-1.5 text-xs text-foreground/85">
             <summary className="more-toggle">
-              {fixes.length} {fixes.length === 1 ? "answer" : "answers"} missing for Cost
+              Cost waits for {fixes.length} {fixes.length === 1 ? "answer" : "answers"} in the form: fill {fixes.length === 1 ? "it" : "them"} and check
+              again
             </summary>
             <ul className="mt-1 max-h-32 space-y-0.5 overflow-auto">
               {fixes.slice(0, 12).map((i) => (

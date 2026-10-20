@@ -336,7 +336,8 @@ export function agentLines(trace: Trace, form: Form): AgentLine[] {
     if (flags.length) return { id, state: "flagged", flags, note: null };
     if (c.status === "ASSESSED") return { id, state: "clear", flags, note: null };
     if (c.status === "NOT_APPLICABLE") return { id, state: "later", flags, note: LATER[id] ?? null };
-    return { id, state: "not_checked", flags, note: NOT_CHECKED[id] ?? null };
+    // the agent's own reason (e.g. "the cost estimate form is not complete"), never a guess (T170)
+    return { id, state: "not_checked", flags, note: c.headline || (NOT_CHECKED[id] ?? null) };
   });
 }
 
