@@ -176,7 +176,9 @@ ENTRIES: list[Entry] = [
     Entry("M-SYS-3", "scoring", "Scoring MPs by their history",
           "Considered and rejected: lighter checks for \"low-risk\" MPs, a cold start for new ones, "
           "a loop feeding on its own flags.", "T052, 1 Oct 2026", "fixed",
-          "Never scored (rule 5): works, offices and agencies only."),
+          "Never scored (AGENTS.md rule 5): works, offices and agencies only; no MP's name ever "
+          "reaches a work's record from the form.",
+          guard="tests/cost_form/test_pswif.py::test_the_work_record_carries_the_form_and_never_an_mp_name"),
     Entry("M-SYS-4", "data", "A data reload erasing what people saved",
           "load_db emptied the works; saved cost forms and site visits point at them, so the reload "
           "failed, and CASCADE would have erased them.", "T169, 20 Oct 2026", "fixed",

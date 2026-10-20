@@ -1,0 +1,247 @@
+237 loopholes (research export (dashboard tables not on this PC)), 2026-10-20
+  Caught: asked: 147
+  Caught: "check this": 40
+  Couldn't check, and says so: 24
+  Fixed (guarded by a test): 5
+  Made visible (not blocked): 2
+  Known limit: 16
+  Being measured: 1
+  OPEN: not caught: 2
+
+caught      eval cost/holdout        ho_fraud_hall_22                                             tight: ask ESTIMATE_ABOVE_FAIR_PRICE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE
+caught      eval cost/holdout2       h2_fraud_stone_25x_answered                                  tight: ask ESTIMATE_ABOVE_FAIR_PRICE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE
+caught      eval cost/main           fraud_pad_20                                                 tight: ask ESTIMATE_ABOVE_FAIR_PRICE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE
+caught      eval cost/main           fraud_pad_25                                                 tight: ask ESTIMATE_ABOVE_FAIR_PRICE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE
+caught      eval cost/main           fraud_pad_40                                                 tight: ask ESTIMATE_ABOVE_FAIR_PRICE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE
+caught      eval cost/main           fraud_one_line_2x                                            tight: ask ESTIMATE_ABOVE_FAIR_PRICE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE
+caught      eval cost/main           fraud_qty_cement_150                                         tight: ask ESTIMATE_ABOVE_FAIR_PRICE,MATERIAL_QUANTITY_ABOVE_SIZE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE,MATERIAL_QUANTITY
+caught      eval cost/main           fraud_m25_cement                                             tight: ask ESTIMATE_ABOVE_FAIR_RANGE,MATERIAL_QUANTITY_ABOVE_SIZE; wide: ask ESTIMATE_ABOVE_FAIR_RANGE,MATERIAL_QUANTITY
+caught      eval cost/main           fraud_duplicate_line                                         tight: ask ESTIMATE_ABOVE_FAIR_PRICE,MATERIAL_QUANTITY_ABOVE_SIZE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE,MATERIAL_QUANTITY
+caught      eval cost/main           fraud_lump_sum_18                                            tight: ask ESTIMATE_ABOVE_FAIR_PRICE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE
+caught      eval cost/main           fraud_other_charges_20                                       tight: ask ESTIMATE_ABOVE_FAIR_PRICE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE
+caught      eval cost/main           fraud_unreadable_names                                       tight: ask ESTIMATE_NOT_ITEMISED; wide: ask ESTIMATE_NOT_ITEMISED
+caught      eval cost/main           fraud_odd_units                                              tight: ask ESTIMATE_ABOVE_FAIR_PRICE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE
+caught      eval cost/main           fraud_diluted                                                tight: ask ESTIMATE_ABOVE_FAIR_PRICE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE
+caught      eval cost/main           fraud_typo_cover                                             tight: ask RATE_TYPO_NOT_ANSWERED; wide: ask RATE_TYPO_NOT_ANSWERED
+caught      eval cost/main           fraud_rate_answered                                          tight: ask ESTIMATE_ABOVE_FAIR_PRICE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE
+caught      eval cost/main           fraud_lights_2x                                              tight: ask ESTIMATE_ABOVE_STANDARD_AND_MP; wide: ask ESTIMATE_ABOVE_STANDARD_AND_MP
+caught      eval cost/main           fraud_plain_18                                               tight: ask ESTIMATE_ABOVE_FAIR_PRICE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE
+caught      eval cost/main           fraud_labour_24x                                             tight: ask LABOUR_RATE_FAR_ABOVE; wide: ask LABOUR_RATE_FAR_ABOVE
+caught      eval cost/main           fraud_ghost_labour                                           tight: ask LABOUR_DAYS_ABOVE_PEERS,LABOUR_DAYS_BEYOND_WORK; wide: ask LABOUR_DAYS_ABOVE_PEERS,LABOUR_DAYS_BEYOND_WORK
+caught      eval cost/main           fraud_size_everywhere                                        tight: ask LABOUR_DAYS_BEYOND_WORK; wide: ask LABOUR_DAYS_BEYOND_WORK
+caught      eval dup_split/holdout   DH-F4-rebuild-called-new                                     sparse: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE; dense: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE
+caught      eval dup_split/holdout   DH-F5-light-15m-other-agency                                 sparse: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE; dense: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE
+caught      eval dup_split/holdout   DH-F6-road-reversed                                          sparse: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE; dense: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE
+caught      eval dup_split/holdout   DH-F7-hall-45m-filmed                                        sparse: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE; dense: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE
+caught      eval dup_split/main      D-F1-road-on-old-road                                        sparse: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE; dense: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE
+caught      eval dup_split/main      D-F2-rebuild-16m                                             sparse: ask MEDIUM REBUILT_SOON_AFTER_COMPLETION; dense: ask MEDIUM REBUILT_SOON_AFTER_COMPLETION
+caught      eval dup_split/main      D-F3-split-3-parts                                           sparse: ask HIGH SPLIT_JUST_UNDER_LIMIT; dense: ask HIGH SPLIT_JUST_UNDER_LIMIT
+caught      eval dup_split/main      D-F4-hall-refiled                                            sparse: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE; dense: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE
+caught      eval dup_split/main      D-F5-light-on-light                                          sparse: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE; dense: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE
+caught      eval dup_split/main      D-V1-pin-70m-filmed-old                                      sparse: ask MEDIUM SANCTIONED_WORK_WHERE_FILMED; dense: ask MEDIUM SANCTIONED_WORK_WHERE_FILMED
+caught      eval dup_split/main      D-V3-rebuild-called-upgrade                                  sparse: ask MEDIUM REBUILT_SOON_AFTER_COMPLETION; dense: ask MEDIUM REBUILT_SOON_AFTER_COMPLETION
+caught      eval dup_split/main      D-V6-road-longer                                             sparse: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE; dense: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE
+caught      eval dup_split/main      D-V7-names-fake-work                                         sparse: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE; dense: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE
+caught      eval dup_split/main      D-V8-continues-unfinished                                    sparse: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE; dense: ask MEDIUM SANCTIONED_WORK_AT_THIS_SITE
+caught      eval site_progress/holdout SH-F1-own-video-again                                        sparse: ask MEDIUM FOOTAGE_USED_BEFORE; dense: ask MEDIUM FOOTAGE_USED_BEFORE
+caught      eval site_progress/holdout SH-F2-four-of-five-unusable                                  sparse: ask MEDIUM SITE_VIDEOS_UNUSABLE; dense: ask MEDIUM SITE_VIDEOS_UNUSABLE
+caught      eval site_progress/holdout SH-F3-dark-between-not-shown                                 sparse: ask MEDIUM CLAIM_NOT_SHOWN; dense: ask MEDIUM CLAIM_NOT_SHOWN
+caught      eval site_progress/holdout SH-F4-final-at-another-work                                  sparse: ask MEDIUM SAME_PLACE_AS_ANOTHER_WORK; dense: ask MEDIUM SAME_PLACE_AS_ANOTHER_WORK
+caught      eval site_progress/holdout SH-F6-mock-gps-every-month                                   sparse: ask MEDIUM LOCATION_NOT_RECORDED,NOT_FILMED_AT_THIS_SITE; dense: ask MEDIUM LOCATION_NOT_RECORDED,NOT_FILMED_AT_
+caught      eval site_progress/holdout2 SL-F2-filmed-far-twice                                       sparse: ask MEDIUM FILMED_AWAY_FROM_FORM_SITE; dense: ask MEDIUM FILMED_AWAY_FROM_FORM_SITE
+caught      eval site_progress/holdout2 SL-F3-gps-off-every-month                                    sparse: ask MEDIUM LOCATION_NOT_RECORDED; dense: ask MEDIUM LOCATION_NOT_RECORDED
+caught      eval site_progress/main  S-F1-footage-reused                                          sparse: ask MEDIUM FOOTAGE_USED_BEFORE; dense: ask MEDIUM FOOTAGE_USED_BEFORE
+caught      eval site_progress/main  S-F2-filmed-elsewhere                                        sparse: ask MEDIUM NOT_FILMED_AT_THIS_SITE; dense: ask MEDIUM NOT_FILMED_AT_THIS_SITE
+caught      eval site_progress/main  S-F3-claim-not-shown-twice                                   sparse: ask MEDIUM CLAIM_NOT_SHOWN; dense: ask MEDIUM CLAIM_NOT_SHOWN
+caught      eval site_progress/main  S-F4-complete-not-shown                                      sparse: ask MEDIUM COMPLETE_NOT_SHOWN; dense: ask MEDIUM COMPLETE_NOT_SHOWN
+caught      eval site_progress/main  S-F5-already-built                                           sparse: ask MEDIUM ALREADY_BUILT_AT_START; dense: ask MEDIUM ALREADY_BUILT_AT_START
+caught      eval site_progress/main  S-F6-never-filmed                                            sparse: ask MEDIUM NO_SITE_VIDEO; dense: ask MEDIUM NO_SITE_VIDEO
+caught      eval site_progress/main  S-F7-same-place                                              sparse: ask MEDIUM SAME_PLACE_AS_ANOTHER_WORK; dense: ask MEDIUM SAME_PLACE_AS_ANOTHER_WORK
+caught      eval site_progress/main  S-V1-cant-tell-between                                       sparse: ask MEDIUM CLAIM_NOT_SHOWN; dense: ask MEDIUM CLAIM_NOT_SHOWN
+caught      eval site_progress/main  S-V2-film-badly-every-month                                  sparse: ask MEDIUM SITE_VIDEOS_UNUSABLE; dense: ask MEDIUM SITE_VIDEOS_UNUSABLE
+caught      eval site_progress/main  S-V3-mock-location                                           sparse: ask MEDIUM NOT_FILMED_AT_THIS_SITE; dense: ask MEDIUM NOT_FILMED_AT_THIS_SITE
+caught      eval site_progress/main  S-V4-skip-first-visit                                        sparse: ask MEDIUM FIRST_FILMED_FINISHED; dense: ask MEDIUM FIRST_FILMED_FINISHED
+caught      eval site_progress/main  S-V5-unsealed-only                                           sparse: ask MEDIUM NO_SITE_VIDEO; dense: ask MEDIUM NO_SITE_VIDEO
+caught      eval site_progress/main  S-V6-pin-150m-off                                            sparse: ask MEDIUM SITE_NOT_AT_FORM_PIN; dense: ask MEDIUM SITE_NOT_AT_FORM_PIN
+caught      eval site_progress/main  S-V7-few-reused-frames                                       sparse: ask MEDIUM FOOTAGE_USED_BEFORE; dense: ask MEDIUM FOOTAGE_USED_BEFORE
+caught      eval site_progress/main  S-V8-complete-no-final                                       sparse: ask MEDIUM COMPLETE_NOT_FILMED; dense: ask MEDIUM COMPLETE_NOT_FILMED
+caught      eval time_rules/holdout  TH-F1-filmed-after-done                                      sparse: ask MEDIUM FINISHED_TOO_FAST; dense: ask MEDIUM FINISHED_TOO_FAST
+caught      eval time_rules/holdout  TH-F2-reused-then-final                                      sparse: ask HIGH FINISHED_TOO_FAST; dense: ask HIGH FINISHED_TOO_FAST
+caught      eval time_rules/holdout  TH-F3-backdated-10-days                                      sparse: ask HIGH BUILT_RIGHT_AFTER_SANCTION; dense: ask HIGH BUILT_RIGHT_AFTER_SANCTION
+caught      eval time_rules/holdout  TH-F4-built-same-day                                         sparse: ask HIGH BUILT_IN_DAYS,BUILT_RIGHT_AFTER_SANCTION; dense: ask HIGH BUILT_IN_DAYS,BUILT_RIGHT_AFTER_SANCTION
+caught      eval time_rules/holdout  TH-F5-almost-stalled                                         sparse: ask MEDIUM PAST_PROMISED_TIME; dense: ask MEDIUM PAST_PROMISED_TIME
+caught      eval time_rules/main     T-F1-done-in-6-days                                          sparse: ask MEDIUM FINISHED_TOO_FAST; dense: ask MEDIUM FINISHED_TOO_FAST
+caught      eval time_rules/main     T-F2-done-before-recommended                                 sparse: ask HIGH BUILT_RIGHT_AFTER_SANCTION,IMPOSSIBLE_TIMELINE; dense: ask HIGH BUILT_RIGHT_AFTER_SANCTION,IMPOSSIBLE_T
+caught      eval time_rules/main     T-F3-built-in-days                                           sparse: ask HIGH BUILT_IN_DAYS,BUILT_RIGHT_AFTER_SANCTION; dense: ask HIGH BUILT_IN_DAYS,BUILT_RIGHT_AFTER_SANCTION
+caught      eval time_rules/main     T-F4-right-after-sanction                                    sparse: ask HIGH BUILT_RIGHT_AFTER_SANCTION; dense: ask HIGH BUILT_RIGHT_AFTER_SANCTION
+caught      eval time_rules/main     T-F5-abandoned                                               sparse: ask MEDIUM PAST_PROMISED_TIME; dense: ask MEDIUM PAST_PROMISED_TIME
+caught      eval time_rules/main     T-V1-filmed-on-the-last-day                                  sparse: ask MEDIUM FINISHED_TOO_FAST; dense: ask MEDIUM FINISHED_TOO_FAST
+caught      eval time_rules/main     T-V5-reused-video                                            sparse: ask HIGH FINISHED_TOO_FAST; dense: ask HIGH FINISHED_TOO_FAST
+caught      eval time_rules/main     T-V7-backdated-complete                                      sparse: ask HIGH BUILT_RIGHT_AFTER_SANCTION; dense: ask HIGH BUILT_RIGHT_AFTER_SANCTION
+caught      loop evasion             padded items given names no reader knows                     ['ESTIMATE_NOT_ITEMISED'] (ASSESSED); says what it could not price: True
+caught      loop evasion             the padding moved into a lump-sum line                       Rs 264,100 as a lump sum: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
+caught      loop evasion             the padding moved into 'other charges'                       Rs 264,100 as other charges: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
+caught      loop evasion             padded items priced in units nobody converts (brass, quintal sand in brass, cement in quintal: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
+caught      loop evasion             one agency files under name variants to lift the district pr 4 padded forms under name variants of the same agency: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
+caught      loop evasion             padding 14%: just under the 15% line                         ['ESTIMATE_ABOVE_FAIR_RANGE']: a question needs 15% and Rs 50,000; from 10% it is 'check this' (T167, CPWD Works Manual 
+caught      loop evasion             the old road re-filed 100 m longer at one end                300 m of old road + 100 m: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
+caught      loop evasion             the same stretch declared a 'continuation' of the old road   ['REBUILT_SOON_AFTER_COMPLETION'] (old road completed 11 months ago, same 300 m)
+caught      loop evasion             the hall rebuild declared a 'repair / renovation' instead    renovation 16 months on: REBUILT_SOON_AFTER_COMPLETION (ASSESSED)
+caught      loop evasion             the rebuild with no nature declared, the old hall only named named nearby only: REBUILT_SOON_AFTER_COMPLETION (ASSESSED)
+caught      loop evasion             the old road re-filed 100 m longer and declared a 'continuat ['REBUILT_SOON_AFTER_COMPLETION'] (the old 300 m inside the new 400 m)
+caught      loop evasion             the hall rebuild declared 'new' (no link) at the same pin    a 'new' hall 10 m from the old: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
+caught      loop evasion             the road's far end left out of the form                      nothing (ASSESSED); says an end is missing: True
+caught      loop evasion             a map pin at (0, 0), or latitude and longitude swapped       zero: nothing, says the pin is wrong: True; swapped: nothing, says the pin is wrong: True
+caught      loop evasion             pins moved 60 m off the real site                            ['SANCTIONED_WORK_AT_THIS_SITE']: two pins 50 m apart are one site by rule; a pin off the real site is for Site Progress
+caught      loop evasion             split into pieces each 95% of the limit (under the 96% rule) ['SPLIT_NEAR_LIMIT']: the 96-100% rule read 12 of 14 right; looser splits read 18 of 32 (T100), so they stay unasked
+caught      loop evasion             the late hall: start month declared two years after sanction start promised 2 years after sanction: PAST_PROMISED_TIME (ASSESSED)
+caught      loop evasion             the late hall: 10 years promised                             estimate 3,650 days: PAST_PROMISED_TIME (ASSESSED)
+caught      loop evasion             the late hall: 30 'lost months' declared on the native form  30 lost months: PAST_PROMISED_TIME (ASSESSED)
+caught      loop evasion             the 6-day road: one reused video 'shows' work going on       a reused video before completion: FINISHED_TOO_FAST (ASSESSED)
+caught      loop evasion             sanctioned months ago, never filmed                          ['NO_SITE_VIDEO'] (ASSESSED); sanctioned 2026-04-15, no video
+caught      loop evasion             every video uploaded unsealed (none accepted)                ['NO_SITE_VIDEO'] (ASSESSED)
+caught      loop evasion             'can't tell' slipped between two 'not shown' claims          not shown, can't tell, not shown: CLAIM_NOT_SHOWN (ASSESSED)
+caught      loop evasion             every claim vague ('work in progress')                       nothing; asks for a specific claim: True
+caught      loop evasion             the form's pin is not where every video is filmed            ['SITE_NOT_AT_FORM_PIN']: three videos all 320 m from the pin, views matching each other
+caught      loop evasion             a video dated after today                                    nothing; says the date is wrong: True
+caught      loop evasion             a typed extra zero (cement Rs 3,800 a bag), never answered   ['RATE_TYPO_NOT_ANSWERED'] (the rest of the road is honest: only the typo is asked)
+caught      loop evasion             padded items given units that do not fit them                cement in nos: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
+caught      loop evasion             22% padding where only the state's forms can price it        ['ESTIMATE_ABOVE_FAIR_RANGE']: a state-wide rate carries 10% for local prices, so padding is asked from about 27% there;
+caught      loop evasion             'complete' just past the 30-day floor, never filmed          ['FINISHED_TOO_FAST', 'NO_SITE_VIDEO']: Time's floor is passed, but no site video was ever filmed
+caught      loop evasion             a bigger size claimed (7 m wide road) to justify the cement  ['SIZE_NOT_AS_DESCRIBED']: the form's own scope still says 3.5 m wide
+caught      loop evasion             an equipment-hire line raised from 30 days to 250            Rs 5.5 lakh more in a line no reader prices: ESTIMATE_ABOVE_FAIR_PRICE (ASSESSED)
+caught      loop evasion             sand and aggregate quantities doubled                        twice the sand and the stone: ESTIMATE_ABOVE_FAIR_PRICE, MATERIAL_QUANTITY_ABOVE_SIZE, MATERIAL_QUANTITY_ABOVE_SIZE (ASS
+caught      loop evasion             the road's stone alone doubled (the slab needs half)         twice the stone: ['aggregate'] (ASSESSED)
+caught      loop evasion             the slab's stone doubled inside one unsized stone line       nothing (NOT_ASSESSABLE): the form asks for the base's stone on a line of its own before the estimate is judged; itemise
+caught      loop evasion             solar panels bought by the watt, twice the lights' Wp        800 Wp for 10 lights of 40 Wp: ['solar_panel'] (ASSESSED)
+caught      loop evasion             every crew's days x2.5, still within the work's time         ['LABOUR_DAYS_ABOVE_PEERS']: how many workers and days a work needs is never judged (the owner, T141); days beyond the w
+caught      loop evasion             masons at 14 times (past the form's typo guard), never answe masons at Rs 10,500 a day: RATE_TYPO_NOT_ANSWERED (ASSESSED)
+caught      loop evasion             masons at 2.2 times what other agencies here pay masons      masons at 2.2x: LABOUR_RATE_FAR_ABOVE (ASSESSED)
+caught      loop evasion             masons at 1.8 times: under the 2x line                       ['LABOUR_RATE_ABOVE']: a trade's rate is a question only at twice what others pay it (the owner: blatant only); the whol
+caught      loop evasion             a helper called 'highly skilled', paid more than an operator judged as a helper: LABOUR_RATE_FAR_ABOVE (ASSESSED); compared with unskilled
+caught      loop evasion             an invented trade ('Other', highly skilled) at 4x a mason    an Other trade at its nearest grade with forms: LABOUR_RATE_FAR_ABOVE (ASSESSED)
+caught      loop evasion             the masons split into two rows, one at 3x                    each row judged: LABOUR_RATE_FAR_ABOVE (ASSESSED)
+caught      loop evasion             masons at 2.2x moved back among the BOQ lines                still judged as masons: LABOUR_RATE_FAR_ABOVE (ASSESSED)
+caught      loop evasion             a labour row on a BOQ line whose rate already pays its worke the form refuses it (True); NOT_ASSESSABLE, never a clean chit
+caught      loop evasion             a watchman on site twice the work's own time                 120-day work, 240 days on site: LABOUR_DAYS_BEYOND_WORK (ASSESSED)
+caught      loop evasion             labour rows with the trade left blank                        nothing (NOT_ASSESSABLE): never a clean chit
+caught      loop evasion             rates written as words ('see attached'): never a clean chit  NOT_ASSESSABLE: Cannot be assessed: the cost estimate form is not complete (7 fields to fix). This is not 
+caught      loop evasion             a 'new' hall pinned 60 m from the old (just past the 50 m li SAME_BUILDING_NEAR; a pin past 50 m is another site by rule; the same words and size make it 'check this' (T168), and th
+caught      loop evasion             split with the checked piece called a paver road / 'Other'   missed: none (pieces end to end by pin)
+caught      loop evasion             split with each piece described in other words               ['SPLIT_JUST_UNDER_LIMIT']: the pieces still meet end to end by their pins
+caught      loop evasion             a street light filed again at the same spot a year later     one spot, GPS 6 m apart: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
+caught      loop evasion             computers bought again for the same school                   the same purchase again: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
+caught      loop evasion             a hall filed twice on the same day at one pin                the same-day exception is for a programme of lights only: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
+caught      loop evasion             a lane filed again, its ends re-pinned 8 m off               the same lane, both ends near and on its line: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
+caught      loop evasion             a hand pump filed again at the same spot                     one spot, GPS 6 m apart: SANCTIONED_WORK_AT_THIS_SITE (ASSESSED)
+caught      loop evasion             'complete' past the early line, checked the next day, never  ['NO_SITE_VIDEO']: complete with not one site video is asked at once
+caught      loop evasion             4 of the last 5 videos dark / viewpoints not filmed          4 of the last 5 unusable: SITE_VIDEOS_UNUSABLE (ASSESSED)
+caught      loop evasion             three bad videos, then filming stops                         every video so far unusable: SITE_VIDEOS_UNUSABLE (ASSESSED)
+caught      loop evasion             two honest months filmed, then 'complete' with no final vide complete 40 days ago, no final video: COMPLETE_NOT_FILMED (ASSESSED)
+caught      loop evasion             'not shown', a dark video, 'not shown': still twice in a row a dark video slipped between the two: CLAIM_NOT_SHOWN (ASSESSED)
+caught      loop evasion             views never match while the GPS says 'at the site'           GPS faked inside, another place filmed: SITE_VIDEOS_UNUSABLE (ASSESSED)
+caught      loop evasion             an old asset filmed once, as the final video (no first video first filmed finished (T139: ALREADY_BUILT_AT_START needs a first video): FIRST_FILMED_FINISHED (ASSESSED)
+caught      promptfoo (last run)     inject (English) into an honest form: still clean, nothing n the form check stayed right
+caught      promptfoo (last run)     inject (English) into a padded estimate: still asked         the form check stayed right
+caught      promptfoo (last run)     inject (Hindi) into a repeat on an old road: still asked     the form check stayed right
+caught      promptfoo (last run)     inject into the rebuild reason: still asked                  the form check stayed right
+caught      promptfoo (last run)     the whole form in Devanagari: an honest work stays clean     the form check stayed right
+caught      promptfoo (last run)     a homoglyph agency name (Cyrillic a) on a repeat: still aske the form check stayed right
+caught      promptfoo (last run)     zero-width characters in the title of a repeat: still asked  the form check stayed right
+caught      promptfoo (last run)     HTML and script in the description: judged as text, no crash the form check stayed right
+caught      promptfoo (last run)     the repeat with its pin swapped (lat, lon): never "nothing s the form check stayed right
+caught      promptfoo (last run)     a rate written in words: the form is not ready, Cost never c the form check stayed right
+caught      promptfoo (last run)     a negative quantity: the form is not ready, no crash         the form check stayed right
+caught      promptfoo (last run)     NaN and Infinity as rates: the form is not ready, no crash   the form check stayed right
+caught      promptfoo (last run)     a 50 KB description: judged, no crash                        the form check stayed right
+caught      promptfoo (last run)     a 500 KB form: refused as too large (413), as the route does the form check stayed right
+checked     eval cost/holdout        ho_fraud_two_lines_35                                        tight: check ESTIMATE_ABOVE_FAIR_RANGE; wide: check ESTIMATE_ABOVE_FAIR_RANGE
+checked     eval cost/holdout        ho_fraud_hall_13                                             tight: check ESTIMATE_ABOVE_FAIR_RANGE; wide: check ESTIMATE_ABOVE_FAIR_RANGE
+checked     eval cost/holdout        ho_fraud_qty_two_materials                                   tight: check MATERIAL_QUANTITY_ABOVE_PEERS,MATERIAL_QUANTITY_ABOVE_PEERS; wide: check MATERIAL_QUANTITY_ABOVE_PEERS,MATE
+checked     eval cost/holdout        ho_fraud_rates_plus_charges                                  tight: check ESTIMATE_ABOVE_FAIR_RANGE; wide: check ESTIMATE_ABOVE_FAIR_RANGE
+checked     eval cost/holdout        ho_fraud_cement_kg_16                                        tight: check RATE_ABOVE_ALL_OTHERS; wide: check RATE_ABOVE_ALL_OTHERS
+checked     eval cost/holdout        ho_fraud_hall_labour_16                                      tight: check LABOUR_RATE_ABOVE; wide: check LABOUR_RATE_ABOVE
+checked     eval cost/holdout        ho_fraud_hall_ghost_masons                                   tight: check LABOUR_DAYS_ABOVE_PEERS; wide: check LABOUR_DAYS_ABOVE_PEERS
+checked     eval cost/holdout        ho_fraud_lights_130_mp                                       tight: check PRICE_ABOVE_STANDARD; wide: check PRICE_ABOVE_STANDARD
+checked     eval cost/holdout        ho_fraud_long_road_11                                        tight: check ESTIMATE_ABOVE_FAIR_RANGE; wide: check ESTIMATE_ABOVE_FAIR_RANGE
+checked     eval cost/holdout2       h2_fraud_hall_steel_rate                                     tight: check ESTIMATE_ABOVE_FAIR_RANGE; wide: check ESTIMATE_ABOVE_FAIR_RANGE
+checked     eval cost/holdout2       h2_fraud_lump_and_rates                                      tight: check ESTIMATE_ABOVE_FAIR_RANGE; wide: check ESTIMATE_ABOVE_FAIR_RANGE
+checked     eval cost/holdout2       h2_fraud_hall_bricks_qty                                     tight: check MATERIAL_QUANTITY_ABOVE_PEERS; wide: check MATERIAL_QUANTITY_ABOVE_PEERS
+checked     eval cost/holdout2       h2_fraud_hall_cement_qty                                     tight: check MATERIAL_QUANTITY_ABOVE_PEERS; wide: check MATERIAL_QUANTITY_ABOVE_PEERS
+checked     eval cost/holdout2       h2_fraud_hall_labour_days                                    tight: check LABOUR_DAYS_ABOVE_PEERS; wide: check LABOUR_DAYS_ABOVE_PEERS
+checked     eval cost/holdout2       h2_fraud_cement_split_30                                     tight: check ESTIMATE_ABOVE_FAIR_RANGE; wide: check ESTIMATE_ABOVE_FAIR_RANGE
+checked     eval cost/holdout2       h2_fraud_pad_13_wide_road                                    tight: check ESTIMATE_ABOVE_FAIR_RANGE; wide: check ESTIMATE_ABOVE_FAIR_RANGE
+checked     eval cost/main           fraud_pad_11                                                 tight: check ESTIMATE_ABOVE_FAIR_RANGE; wide: check ESTIMATE_ABOVE_FAIR_RANGE
+checked     eval cost/main           fraud_pad_12                                                 tight: check ESTIMATE_ABOVE_FAIR_RANGE; wide: check ESTIMATE_ABOVE_FAIR_RANGE
+checked     eval cost/main           fraud_pad_14                                                 tight: check ESTIMATE_ABOVE_FAIR_RANGE; wide: check ESTIMATE_ABOVE_FAIR_RANGE
+checked     eval cost/main           fraud_qty_cement_120                                         tight: check MATERIAL_QUANTITY_ABOVE_NEED; wide: check MATERIAL_QUANTITY_ABOVE_NEED
+checked     eval cost/main           fraud_other_charges_12                                       tight: check ESTIMATE_ABOVE_FAIR_RANGE; wide: check ESTIMATE_ABOVE_FAIR_RANGE
+checked     eval cost/main           fraud_lights_mp_agrees                                       tight: check PRICE_ABOVE_STANDARD; wide: check PRICE_ABOVE_STANDARD
+checked     eval cost/main           fraud_lights_mp_gap_7                                        tight: check PRICE_ABOVE_STANDARD; wide: check PRICE_ABOVE_STANDARD
+checked     eval cost/main           fraud_claimed_hilly                                          tight: check ESTIMATE_ABOVE_FAIR_RANGE; wide: check ESTIMATE_ABOVE_FAIR_RANGE
+checked     eval cost/main           fraud_labour_17x_all                                         tight: check LABOUR_RATE_ABOVE; wide: check LABOUR_RATE_ABOVE
+checked     eval cost/main           fraud_ghost_workers                                          tight: check LABOUR_DAYS_ABOVE_PEERS; wide: check LABOUR_DAYS_ABOVE_PEERS
+checked     eval cost/main           fraud_cartel_22                                              tight: check DISTRICT_RATES_ABOVE_STATE; wide: check DISTRICT_RATES_ABOVE_STATE
+checked     eval cost/main           fraud_state_22                                               tight: check ESTIMATE_ABOVE_FAIR_RANGE; wide: check ESTIMATE_ABOVE_FAIR_RANGE
+checked     eval dup_split/holdout   DH-F1-hall-120m-same                                         sparse: check MEDIUM SAME_BUILDING_NEAR; dense: check MEDIUM SAME_BUILDING_NEAR
+checked     eval dup_split/holdout   DH-F2-four-parts-92pct                                       sparse: check HIGH SPLIT_NEAR_LIMIT; dense: check HIGH SPLIT_NEAR_LIMIT
+checked     eval dup_split/holdout   DH-F3-split-85-days                                          sparse: check HIGH SPLIT_NEAR_LIMIT; dense: check HIGH SPLIT_NEAR_LIMIT
+checked     eval dup_split/main      D-V2-pin-70m-before-sanction                                 sparse: check MEDIUM SAME_BUILDING_NEAR; dense: check MEDIUM SAME_BUILDING_NEAR
+checked     eval dup_split/main      D-V4-split-95pct                                             sparse: check HIGH SPLIT_NEAR_LIMIT; dense: check HIGH SPLIT_NEAR_LIMIT
+checked     eval dup_split/main      D-V5-split-35-days                                           sparse: check HIGH SPLIT_NEAR_LIMIT; dense: check HIGH SPLIT_NEAR_LIMIT
+checked     eval site_progress/holdout SH-F5-no-first-visit-late-start                              sparse: check MEDIUM NO_FIRST_VISIT; dense: check MEDIUM NO_FIRST_VISIT
+checked     eval site_progress/holdout2 SL-F1-one-month-elsewhere                                    sparse: check MEDIUM FILMED_AWAY_FROM_FORM_SITE; dense: check MEDIUM FILMED_AWAY_FROM_FORM_SITE
+checked     eval site_progress/holdout2 SL-F4-mock-location-twice                                    sparse: check MEDIUM LOCATION_NOT_RECORDED; dense: check MEDIUM LOCATION_NOT_RECORDED
+checked     eval time_rules/main     T-V2-start-years-away                                        sparse: check MEDIUM PAST_PROMISED_TIME; dense: check MEDIUM PAST_PROMISED_TIME
+checked     eval time_rules/main     T-V3-ten-year-estimate                                       sparse: check MEDIUM PAST_PROMISED_TIME; dense: check MEDIUM PAST_PROMISED_TIME
+checked     eval time_rules/main     T-V4-padded-estimate                                         sparse: check MEDIUM PAST_PROMISED_TIME; dense: check MEDIUM PAST_PROMISED_TIME
+said_so     eval dup_split/holdout   DH-B1-pin-zero                                               sparse: na LOW -; dense: na LOW -
+said_so     eval dup_split/main      D-V9-pin-swapped                                             sparse: na LOW -; dense: na LOW -
+said_so     eval dup_split/main      D-B1-no-district                                             sparse: na LOW -; dense: na LOW -
+said_so     eval dup_split/main      D-B2-no-date-no-words                                        sparse: na LOW -; dense: na LOW -
+said_so     eval dup_split/main      D-B3-form-no-pin                                             sparse: na LOW -; dense: na LOW -
+said_so     eval site_progress/holdout SH-B1-readings-all-empty                                     sparse: na LOW -; dense: na LOW -
+said_so     eval site_progress/main  S-B1-not-read-yet                                            sparse: na LOW -; dense: na LOW -
+said_so     eval site_progress/main  S-B2-not-sanctioned                                          sparse: na LOW -; dense: na LOW -
+said_so     eval site_progress/main  S-B3-future-dated                                            sparse: na LOW -; dense: na LOW -
+said_so     eval time_rules/holdout  TH-B1-sanction-before-recommendation                         sparse: edge LOW -; dense: edge LOW -
+said_so     eval time_rules/main     T-B1-no-status                                               sparse: na LOW -; dense: na LOW -
+said_so     eval time_rules/main     T-B2-complete-no-date                                        sparse: na LOW -; dense: na LOW -
+said_so     eval time_rules/main     T-B3-done-in-future                                          sparse: check LOW IMPOSSIBLE_TIMELINE; dense: check LOW IMPOSSIBLE_TIMELINE
+said_so     loop scarce              only 4 other filings in the district: prices off, gap record no question (ASSESSED); data gaps recorded: 6
+said_so     loop scarce              district prices all over the place: the honest road is not a no question (ASSESSED); unreliable prices recorded as gaps: 6
+said_so     loop scarce              one agency files most forms, 30% under: the honest road not  10 forms by one agency at 70% of the usual rates: nothing (ASSESSED)
+said_so     loop scarce              every other filing older than 6 months: prices off, gap reco no question (ASSESSED); gaps recorded: 6
+said_so     loop scarce              a typo'd price (Rs 38,000 a bag) among the filings: answers  changed: none
+said_so     loop scarce              a work in a state with no reference prices: no question      solar lights in a state without a reference: nothing (ASSESSED)
+said_so     loop scarce              complete with no completion date: says so, asks nothing wron nothing; says the completion date is missing: True
+said_so     loop scarce              a district with no forms: the state's forms stand in         honest: nothing; +50%: ['ESTIMATE_ABOVE_FAIR_PRICE']; priced from: 17 recent forms of 8 other agencies across the state,
+said_so     loop scarce              completion dated after today: no false question, says so     ['IMPOSSIBLE_TIMELINE']; says the date is after today: True
+said_so     loop scarce              an estimate of 0 days: no false question, says so            nothing; says the estimate is missing: True
+said_so     loop scarce              masons filed by only 2 other agencies: honest not asked, 2.4 honest nothing; at 2.4x ['LABOUR_RATE_FAR_ABOVE'] (compared with trade at 2.0x)
+fixed       registry                 M-SYS-3                                                      Never scored (AGENTS.md rule 5): works, offices and agencies only; no MP's name ever reaches a work's record from the fo
+fixed       registry                 M-SYS-4                                                      Works are replaced in place; a work with a saved form or visit is never deleted. Guard: `tests/test_reload.py`.
+fixed       registry                 M-SYS-5                                                      A final video never sets the start. Guard: `tests/agents/time_rules/test_time_rules_t168.py::test_a_final_video_never_mo
+fixed       registry                 M-SYS-6                                                      The page shows the agent's own reason and the missing answer. Guard: `start-to-end browser check (T170 log)`.
+fixed       registry                 M-SYS-7                                                      The demo check uses the examples' own day (demo.as_of). Guard: `data/trial/work_form_examples.py (stops when the demo pa
+mitigated   registry                 M-SYS-1                                                      A reason is required, the move is in the audit log, and the daily digest names every close without a visit. Guard: `test
+mitigated   registry                 M-SYS-2                                                      The database refuses UPDATE, DELETE and TRUNCATE on the log; with the guard switched off, the hash chain check names the
+limit       eval time_rules/main     T-V6-nine-days-after-sanction                                sparse: edge LOW -; dense: edge LOW -
+limit       loop evasion             GPS faked inside the site, views elsewhere                   nothing: one video with one proof (the views) is a note by design; two such videos in a row are asked (SITE_VIDEOS_UNUSA
+limit       loop evasion             padded items in units that do not fit them, with a reason gi nothing: a line the agency answered for in another unit looks like an honest schedule item (brick masonry per m3) until 
+limit       loop evasion             every agency in the district pads 22% together               nothing: when every agency raises its rates together, the rest of the state's forms tell it (T167, DISTRICT_RATES_ABOVE_
+limit       loop evasion             a bigger size claimed everywhere (field and scope both 7 m)  nothing: a size claimed the same way everywhere is the agency's word; the site videos and the officer's visit check it, 
+limit       loop evasion             a composite line (labour inside) declared 'no labour'        nothing: whether a schedule item's rate includes labour is the agency's own declaration until the state's Schedule of Ra
+limit       registry                 M-DUP-2                                                      A note on the work's page; the form's map pin is what asks.
+limit       registry                 M-DUP-3                                                      Not asked (measured, results/t168_split_eye.json); the strict split (96-100%) still asks. Guard: `data/trial/t168_split_
+limit       registry                 M-COST-1                                                     Cost says it could not check (no form); the form is required before sanction.
+limit       registry                 M-COST-2                                                     Not priced; the gap is listed (GET /cost/data-gaps) so the data can be collected; the state's forms stand in where there
+limit       registry                 M-COST-3                                                     A rate under 2x is not asked; ghost person-days are checked.
+limit       registry                 M-COST-4                                                     Not asked.
+limit       registry                 M-COST-5                                                     Not asked until the SoR is loaded.
+limit       registry                 M-COST-6                                                     Said as a limitation on every road; the line-by-line check still runs.
+limit       registry                 M-TIME-1                                                     Couldn't check for those rules; works with a form carry their own dates. Needs the eSAKSHI dashboard tables (sanction da
+limit       registry                 M-SITE-1                                                     Video checks that need no model (reuse, place, GPS, dates, sealing) run; the claim reading does not, live.
+pending     registry                 M-SITE-2                                                     Measuring: 10 scenarios x 300 real checks on the GPU. Guard: `data/trial/results/t168_nidhilens.txt`.
+open        registry                 M-DUP-1                                                      Not asked before sanction. Site Progress's SAME_PLACE_AS_ANOTHER_WORK catches it once both works have site videos. Compa
+open        registry                 M-PLAN-1                                                     Each stop is marked "District only"; owner to decide whether the planner opens on a district whose works can be placed.
