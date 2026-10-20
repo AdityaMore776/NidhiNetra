@@ -1,7 +1,9 @@
 r"""Load the built parquet files into Postgres (local pgserver or Supabase).
 
 Idempotent: tables are emptied and refilled in one transaction, so a failed
-load leaves the previous data in place.
+load leaves the previous data in place. The works are replaced in place instead
+(drishti/reload.py, T169): saved cost forms and site visits point at them and
+must survive every reload.
 
 Run:
   $env:DATABASE_URL = "postgresql://..."      # Supabase session pooler (port 5432) for bulk loads
@@ -18,7 +20,7 @@ import pandas as pd
 import psycopg
 
 from common import BUILD, clean, model_rows, signal_rows
-from drishti import migrate
+from drishti import migrate, reload
 
 TABLES = {
     "districts": ["district_lgd", "name", "state_lgd", "state_name"],
@@ -55,7 +57,8 @@ def load_signals(con: psycopg.Connection) -> None:
 def load(url: str) -> None:
     print("migrations applied:", migrate.apply(url) or "none pending")
     with psycopg.connect(url, prepare_threshold=None) as con:
-        con.execute("TRUNCATE assessments, work_signals, works, districts, cohort_stats, "
+        # never `works` here: cost_forms and site_visits reference it (reload.replace_works)
+        con.execute("TRUNCATE assessments, work_signals, districts, cohort_stats, "
                     "duration_stats, unit_rate_models, timeline_quarters, timeline_agencies, "
                     "evidence_facts")
         for table, cols in TABLES.items():
@@ -65,10 +68,17 @@ def load(url: str) -> None:
                       "engine will report NOT_ASSESSABLE where it needs it")
                 continue
             df = pd.read_parquet(BUILD / f"{table}.parquet")
+            rows = ([r[c] for c in cols] for r in map(clean, df[cols].to_dict("records")))
+            if table == "works":
+                out = reload.replace_works(con, cols, rows)
+                print(f"works: {len(df):,} rows ({out['written']:,} new or changed) in "
+                      f"{time.time() - t0:.0f}s; {out['removed']:,} gone from the source "
+                      f"removed, {out['kept_for_saved_input']:,} kept for their saved form or "
+                      f"site visit")
+                continue
             with con.cursor().copy(f"COPY {table} ({', '.join(cols)}) FROM STDIN") as cp:
-                for rec in df[cols].to_dict("records"):
-                    r = clean(rec)
-                    cp.write_row([r[c] for c in cols])
+                for r in rows:
+                    cp.write_row(r)
             print(f"{table}: {len(df):,} rows in {time.time() - t0:.0f}s")
         load_signals(con)
         con.execute("TRUNCATE engine_models")
