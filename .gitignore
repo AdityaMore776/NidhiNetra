@@ -60,3 +60,4 @@ apps/vision/runs/
 
 # Inspect AI eval logs (T167): local runs, browse with inspect view
 data/eval/cost/logs/
+data/eval/logs/

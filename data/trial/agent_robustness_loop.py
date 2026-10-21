@@ -1611,10 +1611,13 @@ def _(world):
              repeat_reason="", known_nearby_work_ids="", existing_asset_same_site="No",
              nearby_work_relationship="None known", latitude=f"{lat + 60 * METRE:.6f}")
     res = run(world, work_of(p, {}, world.place, world.as_of))
-    noted = any(f.code == "NEAR_SANCTIONED_WORK" for f in res["dup_split"].findings)
+    codes = {f.code for f in res["dup_split"].findings}
+    # T168: the same words and the same size, the form naming no nearby work: "check this"
+    noted = bool(codes & {"NEAR_SANCTIONED_WORK", "SAME_BUILDING_NEAR"})
     return ("PASS" if noted else "FAIL",
-            f"note: {noted}; a pin past 50 m is another site by rule, so it is named in a note "
-            "and the first site video (the hall already standing) settles it")
+            f"{', '.join(sorted(codes)) or 'nothing'}; a pin past 50 m is another site by rule; "
+            "the same words and size make it 'check this' (T168), and the first site video (the "
+            "hall already standing) settles it")
 
 
 @probe("dup_split", "evasion", "split with the checked piece called a paver road / 'Other'")

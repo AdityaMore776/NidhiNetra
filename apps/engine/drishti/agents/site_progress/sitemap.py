@@ -171,7 +171,18 @@ def site_of(form: dict | None, work_type: str | None = None) -> Site | None:
     """The site from the form's first site, or None when it has no usable map pin."""
     if not isinstance(form, dict):
         return None
-    site = _first_site(form)
+    return _site(_first_site(form), form, work_type)
+
+
+def places(form: dict | None, work_type: str | None = None) -> list[Site]:
+    """Every place the form says the work is (T168): each of its sites with a usable map pin."""
+    sites = form.get("sites") if isinstance(form, dict) else None
+    out = ([_site(x, form, work_type) for x in sites if isinstance(x, dict)]
+           if isinstance(sites, list) else [])
+    return [x for x in out if x is not None]
+
+
+def _site(site: dict, form: dict, work_type: str | None) -> Site | None:
     loc = site.get("location") if isinstance(site.get("location"), dict) else {}
     lat, lon = _num(loc.get("lat")), _num(loc.get("lon"))
     if lat is None or lon is None or not (-90 <= lat <= 90 and -180 <= lon <= 180):
@@ -182,6 +193,7 @@ def site_of(form: dict | None, work_type: str | None = None) -> Site | None:
     # an OTHER work the form gives two ends for is an alignment too (T136: a gravel road)
     if (catalog.is_linear(wt) or wt in (None, "OTHER")) and elat is not None and elon is not None:
         return Site("linear", lat, lon, MIN_RADIUS_M / 2, elat, elon)
-    area = footprint_m2(_size(form))
+    size = site.get("size") if isinstance(site.get("size"), dict) else {}
+    area = footprint_m2(size)
     radius = max(MIN_RADIUS_M, math.sqrt(area)) if area else MIN_RADIUS_M
     return Site("compact", lat, lon, radius)

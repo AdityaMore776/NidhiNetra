@@ -40,7 +40,7 @@ from drishti.agents.site_progress import visits as site_visits
 from drishti.agents.time_rules import window as win
 
 AGENT = "time_rules"
-VERSION = "time-rules-1.0.0"
+VERSION = "time-rules-1.1.0"
 QUESTION = "Was it sanctioned on time, and is it being finished in a believable time?"
 CONFIDENCE = 0.9
 KEEP_RULES = ("R01", "R06", "R13", "R14")      # the measured timing rules, from rules.json
@@ -55,6 +55,9 @@ HI = {
     "FINISHED_TOO_FAST": "कार्य आरंभ के {days} दिन बाद ही पूर्ण दर्ज है, जबकि इस आकार का कार्य "
                          "{early} दिन से पहले नहीं बन सकता, और कोई साइट वीडियो निर्माण होते नहीं "
                          "दिखाता। पूर्णता की जाँच करें।",
+    "SANCTIONED_BEFORE_RECOMMENDED": "सांसद की अनुशंसा से {days} दिन पहले स्वीकृत दर्ज: तिथियाँ "
+                                     "असंभव क्रम में हैं। अभिलेख की तिथियाँ और स्वीकृति आदेश "
+                                     "जाँचें।",
     "PAST_PROMISED_TIME": "एजेंसी द्वारा बताए समय (अनुग्रह अवधि सहित {late} तक) के {days} दिन बाद "
                           "भी पूर्ण नहीं। एजेंसी से प्रगति की जानकारी लें।",
 }
@@ -103,6 +106,25 @@ def sanctioned_late(work: dict) -> Finding | None:
                              "message_hi": HI["SANCTIONED_LATE"].format(days=lag, limit=limit)})
 
 
+BEFORE_DAYS = 7               # as R06: a week's slack for dates typed in a hurry
+
+
+def sanctioned_before_recommended(work: dict) -> Finding | None:
+    """T168: sanctioned 7+ days before the MP recommended it, dates in an impossible order. A
+    note (risk as SANCTIONED_LATE): how often this is a typing slip and how often backdated
+    paperwork is not measured yet (no table with sanction dates on hand), so it never queues."""
+    rec, san = as_date(work.get("recommended_date")), as_date(work.get("sanction_date"))
+    if not rec or not san or (rec - san).days < BEFORE_DAYS:
+        return None
+    text = (f"Recorded as sanctioned {_days((rec - san).days)} before the MP recommended it "
+            f"({san:%d %b %Y}, recommended {rec:%d %b %Y}): dates in an impossible order. Check "
+            "the record's dates and the sanction order.")
+    return Finding("SANCTIONED_BEFORE_RECOMMENDED", text, hard=False, risk=LATE_FACT_RISK,
+                   evidence={"value": (rec - san).days, "limit": BEFORE_DAYS,
+                             "message_hi": HI["SANCTIONED_BEFORE_RECOMMENDED"].format(
+                                 days=(rec - san).days)})
+
+
 def _first_work_seen(vs: list[site_visits.Visit]) -> date | None:
     return next((v.captured for v in vs if v.shows_work and site_visits.genuine(v)), None)
 
@@ -113,7 +135,10 @@ def too_fast(work: dict, w: win.Window, vs: list[site_visits.Visit]) -> Finding 
             or done >= w.early or not is_construction(work)
             or float(work.get("amount") or 0) < float(win.floors().get("min_amount_rs", 0))):
         return None
-    shown = [v for v in vs if v.shows_work and site_visits.genuine(v) and v.captured <= done]
+    # T168: only a video of the work going on BEFORE the day it is called complete, never the
+    # final video: one video filmed on the completion day cleared a road "built" in 6 days
+    shown = [v for v in vs if v.shows_work and site_visits.genuine(v) and v.kind != "final"
+             and v.captured < done]
     if shown:
         return None        # a real fast finish: the videos show the work going on
     # recorded complete before its own planned start month: count from the sanction instead
@@ -144,9 +169,13 @@ def past_promised(work: dict, w: win.Window, vs: list[site_visits.Visit],
     if work.get("status") == "COMPLETED" or as_of <= w.late:
         return None
     over = (as_of - w.late).days
+    # T168: the last videos show no change, and at most one of them could not be read: one with
+    # no change reading between still ones reset the count (as "can't tell" between two claims
+    # not shown did, T135)
     recent = [v for v in vs if v.kind != "baseline"][-STALLED_VISITS:]
     stalled = (len(recent) == STALLED_VISITS
-               and all(v.change == "no_change" for v in recent))
+               and not any(v.change == "changed" for v in recent)
+               and sum(v.change == "no_change" for v in recent) >= STALLED_VISITS - 1)
     parts = [f"{_months(w.accepted_days)} from {w.start:%d %b %Y}",
              f"{_days(w.grace_days)} of grace"]
     if w.lost_months:
@@ -172,7 +201,7 @@ def assess(work: dict, as_of: date, timeline=None, offices=None) -> AgentResult:
 
     def done(status, headline, findings=(), limitations=(), **evidence) -> AgentResult:
         findings = sorted(findings, key=lambda f: -f.risk)
-        top = findings[0] if findings else None
+        top = findings[0] if findings and status == Status.ASSESSED else None
         return AgentResult(agent=AGENT, status=status,
                            verdict=top.code if top else (status.value if status != Status.ASSESSED
                                                          else "ON_TIME_AS_FAR_AS_CHECKED"),
@@ -203,9 +232,9 @@ def assess(work: dict, as_of: date, timeline=None, offices=None) -> AgentResult:
         if w is not None and rule in ("R13", "R14"):
             continue          # with a form, the comfort window asks the same question better
         findings.append(f)
-    late = sanctioned_late(work)
-    if late:
-        findings.append(late)
+    for f in (sanctioned_late(work), sanctioned_before_recommended(work)):
+        if f:
+            findings.append(f)
     limitations = []
     if w is not None:
         for f in (too_fast(work, w, vs), past_promised(work, w, vs, as_of)):
@@ -227,6 +256,16 @@ def assess(work: dict, as_of: date, timeline=None, offices=None) -> AgentResult:
                            "finished could not be checked: ask for the date.")
     if w is not None:
         limitations += w.notes     # an estimate or start the window did not take as written
+    counted = [f for f in findings if f.risk >= LATE_FACT_RISK * 2]
+    if (work.get("status") == "COMPLETED" and not as_date(work.get("completed_date"))
+            and not counted):
+        # T168: the pace of a finished work cannot be judged without the day it finished:
+        # "nothing found" would read as a clean chit
+        return done(Status.NOT_ASSESSABLE, "Cannot be assessed: recorded complete without a "
+                    "completion date, so how fast it was finished cannot be checked. This is not "
+                    "a clean chit: ask for the date.", findings, limitations,
+                    window=w.to_json() if w else None, videos=len(vs),
+                    rules_checked=list(KEEP_RULES))
     headline = (max(findings, key=lambda f: f.risk).text if findings else
                 "No timing problem the dates and the agency's own estimate can show.")
     return done(Status.ASSESSED, headline, findings, limitations,

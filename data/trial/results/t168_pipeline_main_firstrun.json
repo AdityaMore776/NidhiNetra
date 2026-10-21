@@ -1,0 +1,3319 @@
+{
+ "totals": {
+  "pass": "136/144",
+  "honest_low": "40/46",
+  "honest_queued": "6/46",
+  "honest_high": "0/46",
+  "ideal": "120/144",
+  "fraud_queued": "78/80",
+  "fraud_excused": "2/80",
+  "verdicts": {
+   "pass": 136,
+   "hard": 8
+  }
+ },
+ "rows": [
+  {
+   "case": "P:D-H1-new-road",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "new site",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-H1-new-road",
+   "world": "dense",
+   "truth": "honest",
+   "family": "new site",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-H2-hall-300m",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "neighbour",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-H2-hall-300m",
+   "world": "dense",
+   "truth": "honest",
+   "family": "neighbour",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-H3-next-lane",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "neighbour",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": "lane-30m"
+  },
+  {
+   "case": "P:D-H3-next-lane",
+   "world": "dense",
+   "truth": "honest",
+   "family": "neighbour",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": "lane-30m"
+  },
+  {
+   "case": "P:D-H4-light-next-house",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "neighbour",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "hard",
+   "codes": [
+    "cost_estimate:PRICE_ABOVE_STANDARD"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": "light-spot"
+  },
+  {
+   "case": "P:D-H4-light-next-house",
+   "world": "dense",
+   "truth": "honest",
+   "family": "neighbour",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "hard",
+   "codes": [
+    "cost_estimate:PRICE_ABOVE_STANDARD"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": "light-spot"
+  },
+  {
+   "case": "P:D-H5-light-same-programme",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "programme",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "hard",
+   "codes": [
+    "cost_estimate:PRICE_ABOVE_STANDARD"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-H5-light-same-programme",
+   "world": "dense",
+   "truth": "honest",
+   "family": "programme",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "hard",
+   "codes": [
+    "cost_estimate:PRICE_ABOVE_STANDARD"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-H6-crossing-road",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "neighbour",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-H6-crossing-road",
+   "world": "dense",
+   "truth": "honest",
+   "family": "neighbour",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-H7-two-works-70pct",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "split look-alike",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": "split-share"
+  },
+  {
+   "case": "P:D-H7-two-works-70pct",
+   "world": "dense",
+   "truth": "honest",
+   "family": "split look-alike",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": "split-share"
+  },
+  {
+   "case": "P:D-E1-declared-extension",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-E1-declared-extension",
+   "world": "dense",
+   "truth": "edge",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-E2-rebuild-after-4y",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": "rebuild-age"
+  },
+  {
+   "case": "P:D-E2-rebuild-after-4y",
+   "world": "dense",
+   "truth": "edge",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": "rebuild-age"
+  },
+  {
+   "case": "P:D-F1-road-on-old-road",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": "lane-30m"
+  },
+  {
+   "case": "P:D-F1-road-on-old-road",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": "lane-30m"
+  },
+  {
+   "case": "P:D-F2-rebuild-16m",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:REBUILT_SOON_AFTER_COMPLETION"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": "rebuild-age"
+  },
+  {
+   "case": "P:D-F2-rebuild-16m",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:REBUILT_SOON_AFTER_COMPLETION"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": "rebuild-age"
+  },
+  {
+   "case": "P:D-F3-split-3-parts",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "split",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "HIGH",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SPLIT_JUST_UNDER_LIMIT"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.722,
+   "headline": "",
+   "pair": "split-share"
+  },
+  {
+   "case": "P:D-F3-split-3-parts",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "split",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "HIGH",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SPLIT_JUST_UNDER_LIMIT"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.722,
+   "headline": "",
+   "pair": "split-share"
+  },
+  {
+   "case": "P:D-F4-hall-refiled",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-F4-hall-refiled",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-F5-light-on-light",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "cost_estimate:PRICE_ABOVE_STANDARD",
+    "dup_split:SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.438,
+   "headline": "",
+   "pair": "light-spot"
+  },
+  {
+   "case": "P:D-F5-light-on-light",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "cost_estimate:PRICE_ABOVE_STANDARD",
+    "dup_split:SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.438,
+   "headline": "",
+   "pair": "light-spot"
+  },
+  {
+   "case": "P:D-V1-pin-70m-filmed-old",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "pin typed off",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SANCTIONED_WORK_WHERE_FILMED"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-V1-pin-70m-filmed-old",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "pin typed off",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SANCTIONED_WORK_WHERE_FILMED"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-V2-pin-70m-before-sanction",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "pin typed off",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SAME_BUILDING_NEAR"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": "hall-70m"
+  },
+  {
+   "case": "P:D-V2-pin-70m-before-sanction",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "pin typed off",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SAME_BUILDING_NEAR"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": "hall-70m"
+  },
+  {
+   "case": "P:D-V3-rebuild-called-upgrade",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:REBUILT_SOON_AFTER_COMPLETION"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-V3-rebuild-called-upgrade",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:REBUILT_SOON_AFTER_COMPLETION"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-V4-split-95pct",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "split",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "HIGH",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SPLIT_NEAR_LIMIT"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.667,
+   "headline": "",
+   "pair": "split-share"
+  },
+  {
+   "case": "P:D-V4-split-95pct",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "split",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "HIGH",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SPLIT_NEAR_LIMIT"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.667,
+   "headline": "",
+   "pair": "split-share"
+  },
+  {
+   "case": "P:D-V5-split-35-days",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "split",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "HIGH",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SPLIT_NEAR_LIMIT"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.678,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-V5-split-35-days",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "split",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "HIGH",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SPLIT_NEAR_LIMIT"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.678,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-V6-road-longer",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-V6-road-longer",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-V7-names-fake-work",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-V7-names-fake-work",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-V8-continues-unfinished",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-V8-continues-unfinished",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "dup_split:SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-V9-pin-swapped",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "pin typed off",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "hard",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-V9-pin-swapped",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "pin typed off",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "hard",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-B1-no-district",
+   "world": "sparse",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-B1-no-district",
+   "world": "dense",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-B2-no-date-no-words",
+   "world": "sparse",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-B2-no-date-no-words",
+   "world": "dense",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-B3-form-no-pin",
+   "world": "sparse",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:D-B3-form-no-pin",
+   "world": "dense",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-H1-on-track",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "in progress",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-H1-on-track",
+   "world": "dense",
+   "truth": "honest",
+   "family": "in progress",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-H2-fast-but-filmed",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "hard",
+   "codes": [
+    "site_progress:COMPLETE_NOT_FILMED"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": "fast"
+  },
+  {
+   "case": "P:T-H2-fast-but-filmed",
+   "world": "dense",
+   "truth": "edge",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "hard",
+   "codes": [
+    "site_progress:COMPLETE_NOT_FILMED"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": "fast"
+  },
+  {
+   "case": "P:T-H3-sanctioned-late",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "late sanction",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.05,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-H3-sanctioned-late",
+   "world": "dense",
+   "truth": "honest",
+   "family": "late sanction",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.05,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-H4-late-but-moving",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.125,
+   "headline": "",
+   "pair": "late"
+  },
+  {
+   "case": "P:T-H4-late-but-moving",
+   "world": "dense",
+   "truth": "edge",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.125,
+   "headline": "",
+   "pair": "late"
+  },
+  {
+   "case": "P:T-H5-record-normal",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-H5-record-normal",
+   "world": "dense",
+   "truth": "honest",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-H6-purchase-fast",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-H6-purchase-fast",
+   "world": "dense",
+   "truth": "honest",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-H7-waiting-40-days",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "waiting",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-H7-waiting-40-days",
+   "world": "dense",
+   "truth": "honest",
+   "family": "waiting",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-H8-waiting-long",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "waiting",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:SANCTION_OVERDUE"
+   ],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.157,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-H8-waiting-long",
+   "world": "dense",
+   "truth": "edge",
+   "family": "waiting",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:SANCTION_OVERDUE"
+   ],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.157,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-F1-done-in-6-days",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:NO_SITE_VIDEO",
+    "time_rules:FINISHED_TOO_FAST"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.438,
+   "headline": "",
+   "pair": "fast"
+  },
+  {
+   "case": "P:T-F1-done-in-6-days",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:NO_SITE_VIDEO",
+    "time_rules:FINISHED_TOO_FAST"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.438,
+   "headline": "",
+   "pair": "fast"
+  },
+  {
+   "case": "P:T-F2-done-before-recommended",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "HIGH",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:BUILT_RIGHT_AFTER_SANCTION",
+    "time_rules:IMPOSSIBLE_TIMELINE"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.91,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-F2-done-before-recommended",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "HIGH",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:BUILT_RIGHT_AFTER_SANCTION",
+    "time_rules:IMPOSSIBLE_TIMELINE"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.91,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-F3-built-in-days",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "HIGH",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:BUILT_IN_DAYS",
+    "time_rules:BUILT_RIGHT_AFTER_SANCTION"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.982,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-F3-built-in-days",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "HIGH",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:BUILT_IN_DAYS",
+    "time_rules:BUILT_RIGHT_AFTER_SANCTION"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.982,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-F4-right-after-sanction",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "HIGH",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:BUILT_RIGHT_AFTER_SANCTION"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.902,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-F4-right-after-sanction",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "HIGH",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:BUILT_RIGHT_AFTER_SANCTION"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.902,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-F5-abandoned",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": "late"
+  },
+  {
+   "case": "P:T-F5-abandoned",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": "late"
+  },
+  {
+   "case": "P:T-V1-filmed-on-the-last-day",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:FIRST_FILMED_FINISHED",
+    "time_rules:FINISHED_TOO_FAST"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.438,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-V1-filmed-on-the-last-day",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:FIRST_FILMED_FINISHED",
+    "time_rules:FINISHED_TOO_FAST"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.438,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-V2-start-years-away",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:NO_SITE_VIDEO",
+    "time_rules:PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.344,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-V2-start-years-away",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:NO_SITE_VIDEO",
+    "time_rules:PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.344,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-V3-ten-year-estimate",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:NO_SITE_VIDEO",
+    "time_rules:PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.344,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-V3-ten-year-estimate",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:NO_SITE_VIDEO",
+    "time_rules:PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.344,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-V4-padded-estimate",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:NO_SITE_VIDEO",
+    "time_rules:PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.344,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-V4-padded-estimate",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "late",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:NO_SITE_VIDEO",
+    "time_rules:PAST_PROMISED_TIME"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.344,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-V5-reused-video",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "HIGH",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:COMPLETE_NOT_FILMED",
+    "site_progress:FOOTAGE_USED_BEFORE",
+    "time_rules:FINISHED_TOO_FAST"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.578,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-V5-reused-video",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "fast finish",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "HIGH",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:COMPLETE_NOT_FILMED",
+    "site_progress:FOOTAGE_USED_BEFORE",
+    "time_rules:FINISHED_TOO_FAST"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.578,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-V7-backdated-complete",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "HIGH",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:BUILT_RIGHT_AFTER_SANCTION"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.902,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-V7-backdated-complete",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "record",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "HIGH",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:BUILT_RIGHT_AFTER_SANCTION"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.902,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-B1-no-status",
+   "world": "sparse",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-B1-no-status",
+   "world": "dense",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-B2-complete-no-date",
+   "world": "sparse",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-B2-complete-no-date",
+   "world": "dense",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-B3-done-in-future",
+   "world": "sparse",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:IMPOSSIBLE_TIMELINE"
+   ],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.174,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:T-B3-done-in-future",
+   "world": "dense",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:IMPOSSIBLE_TIMELINE"
+   ],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.174,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-H1-honest-months",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "honest",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-H1-honest-months",
+   "world": "dense",
+   "truth": "honest",
+   "family": "honest",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-H2-one-dark-month",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "room for error",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": "dark"
+  },
+  {
+   "case": "P:S-H2-one-dark-month",
+   "world": "dense",
+   "truth": "edge",
+   "family": "room for error",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": "dark"
+  },
+  {
+   "case": "P:S-H3-gps-jitter",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "room for error",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": "gps"
+  },
+  {
+   "case": "P:S-H3-gps-jitter",
+   "world": "dense",
+   "truth": "edge",
+   "family": "room for error",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": "gps"
+  },
+  {
+   "case": "P:S-H4-monsoon-pause",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "honest",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-H4-monsoon-pause",
+   "world": "dense",
+   "truth": "edge",
+   "family": "honest",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-H5-declared-upgrade",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "honest",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-H5-declared-upgrade",
+   "world": "dense",
+   "truth": "edge",
+   "family": "honest",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-H6-complete-filmed",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "honest",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-H6-complete-filmed",
+   "world": "dense",
+   "truth": "honest",
+   "family": "honest",
+   "scope": "self",
+   "allowed": [
+    "LOW"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-F1-footage-reused",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "reuse",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:FOOTAGE_USED_BEFORE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-F1-footage-reused",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "reuse",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:FOOTAGE_USED_BEFORE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-F2-filmed-elsewhere",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "elsewhere",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:NOT_FILMED_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": "gps"
+  },
+  {
+   "case": "P:S-F2-filmed-elsewhere",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "elsewhere",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:NOT_FILMED_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": "gps"
+  },
+  {
+   "case": "P:S-F3-claim-not-shown-twice",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "claim",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:CLAIM_NOT_SHOWN"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-F3-claim-not-shown-twice",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "claim",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:CLAIM_NOT_SHOWN"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-F4-complete-not-shown",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "complete",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:COMPLETE_NOT_SHOWN"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-F4-complete-not-shown",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "complete",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:COMPLETE_NOT_SHOWN"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-F5-already-built",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "built before",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:ALREADY_BUILT_AT_START"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-F5-already-built",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "built before",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:ALREADY_BUILT_AT_START"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-F6-never-filmed",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "no video",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:NO_SITE_VIDEO"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-F6-never-filmed",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "no video",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:NO_SITE_VIDEO"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-F7-same-place",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "reuse",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:SAME_PLACE_AS_ANOTHER_WORK"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-F7-same-place",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "reuse",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:SAME_PLACE_AS_ANOTHER_WORK"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-V1-cant-tell-between",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "claim",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:CLAIM_NOT_SHOWN"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-V1-cant-tell-between",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "claim",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:CLAIM_NOT_SHOWN"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-V2-film-badly-every-month",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "room for error",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:SITE_VIDEOS_UNUSABLE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": "dark"
+  },
+  {
+   "case": "P:S-V2-film-badly-every-month",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "room for error",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:SITE_VIDEOS_UNUSABLE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": "dark"
+  },
+  {
+   "case": "P:S-V3-mock-location",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "elsewhere",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:NOT_FILMED_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-V3-mock-location",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "elsewhere",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:NOT_FILMED_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-V4-skip-first-visit",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "built before",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:FIRST_FILMED_FINISHED"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-V4-skip-first-visit",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "built before",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:FIRST_FILMED_FINISHED"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-V5-unsealed-only",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "no video",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:NO_SITE_VIDEO"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-V5-unsealed-only",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "no video",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:NO_SITE_VIDEO"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-V6-pin-150m-off",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "elsewhere",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:SITE_NOT_AT_FORM_PIN"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-V6-pin-150m-off",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "elsewhere",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:SITE_NOT_AT_FORM_PIN"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-V7-few-reused-frames",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "reuse",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:FOOTAGE_USED_BEFORE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-V7-few-reused-frames",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "reuse",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:FOOTAGE_USED_BEFORE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-V8-complete-no-final",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "complete",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:COMPLETE_NOT_FILMED"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-V8-complete-no-final",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "complete",
+   "scope": "self",
+   "allowed": [
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "MEDIUM",
+   "got": "MEDIUM",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "site_progress:COMPLETE_NOT_FILMED"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-B1-not-read-yet",
+   "world": "sparse",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-B1-not-read-yet",
+   "world": "dense",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-B2-not-sanctioned",
+   "world": "sparse",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:SANCTION_OVERDUE"
+   ],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.118,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-B2-not-sanctioned",
+   "world": "dense",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [
+    "time_rules:SANCTION_OVERDUE"
+   ],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.118,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-B3-future-dated",
+   "world": "sparse",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  },
+  {
+   "case": "P:S-B3-future-dated",
+   "world": "dense",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "ideal": "LOW",
+   "got": "LOW",
+   "agent": "pipeline",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "",
+   "pair": ""
+  }
+ ]
+}

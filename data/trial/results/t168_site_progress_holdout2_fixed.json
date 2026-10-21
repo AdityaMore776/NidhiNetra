@@ -1,0 +1,363 @@
+{
+ "totals": {
+  "pass": "16/16",
+  "honest_clear": "8/8",
+  "honest_asked": "0/8",
+  "ideal": "16/16",
+  "fraud_caught": "8/8",
+  "fraud_excused": "0/8",
+  "verdicts": {
+   "pass": 16
+  }
+ },
+ "rows": [
+  {
+   "case": "SL-H1-filmed-around-the-site",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "location",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "agent": "site_progress",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "6 site videos read: nothing the videos show needs checking.",
+   "pair": ""
+  },
+  {
+   "case": "SL-H1-filmed-around-the-site",
+   "world": "dense",
+   "truth": "honest",
+   "family": "location",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "agent": "site_progress",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "6 site videos read: nothing the videos show needs checking.",
+   "pair": ""
+  },
+  {
+   "case": "SL-H2-one-month-gps-off",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "location",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "agent": "site_progress",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "6 site videos read: nothing the videos show needs checking.",
+   "pair": ""
+  },
+  {
+   "case": "SL-H2-one-month-gps-off",
+   "world": "dense",
+   "truth": "edge",
+   "family": "location",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "agent": "site_progress",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "6 site videos read: nothing the videos show needs checking.",
+   "pair": ""
+  },
+  {
+   "case": "SL-H3-weak-gps-honest-accuracy",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "location",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "agent": "site_progress",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "6 site videos read: nothing the videos show needs checking.",
+   "pair": ""
+  },
+  {
+   "case": "SL-H3-weak-gps-honest-accuracy",
+   "world": "dense",
+   "truth": "edge",
+   "family": "location",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "agent": "site_progress",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "6 site videos read: nothing the videos show needs checking.",
+   "pair": ""
+  },
+  {
+   "case": "SL-F1-one-month-elsewhere",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "location",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "agent": "site_progress",
+   "verdict": "pass",
+   "codes": [
+    "FILMED_AWAY_FROM_FORM_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "1 site video filmed well outside the place the form gives for the work (the monthly visit of 04 Jun 2026 about 492 m from it; a rough area of 75 m around the site, and the phone's own accuracy, are allowed). Check this: once can be a GPS sl",
+   "pair": ""
+  },
+  {
+   "case": "SL-F1-one-month-elsewhere",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "location",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "agent": "site_progress",
+   "verdict": "pass",
+   "codes": [
+    "FILMED_AWAY_FROM_FORM_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "1 site video filmed well outside the place the form gives for the work (the monthly visit of 04 Jun 2026 about 492 m from it; a rough area of 75 m around the site, and the phone's own accuracy, are allowed). Check this: once can be a GPS sl",
+   "pair": ""
+  },
+  {
+   "case": "SL-F2-filmed-far-twice",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "location",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "site_progress",
+   "verdict": "pass",
+   "codes": [
+    "FILMED_AWAY_FROM_FORM_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "2 site videos filmed well outside the place the form gives for the work (the monthly visit of 05 May 2026 about 342 m from it, the monthly visit of 04 Jul 2026 about 842 m from it; a rough area of 75 m around the site, and the phone's own a",
+   "pair": ""
+  },
+  {
+   "case": "SL-F2-filmed-far-twice",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "location",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "site_progress",
+   "verdict": "pass",
+   "codes": [
+    "FILMED_AWAY_FROM_FORM_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "2 site videos filmed well outside the place the form gives for the work (the monthly visit of 05 May 2026 about 342 m from it, the monthly visit of 04 Jul 2026 about 842 m from it; a rough area of 75 m around the site, and the phone's own a",
+   "pair": ""
+  },
+  {
+   "case": "SL-F3-gps-off-every-month",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "location",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "site_progress",
+   "verdict": "pass",
+   "codes": [
+    "LOCATION_NOT_RECORDED"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "3 of the last 3 site videos carry no usable location (the monthly visit of 04 Jul 2026: no location (GPS off or refused); the monthly visit of 03 Aug 2026: no location (GPS off or refused); the monthly visit of 02 Sep 2026: no location (GPS",
+   "pair": ""
+  },
+  {
+   "case": "SL-F3-gps-off-every-month",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "location",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "site_progress",
+   "verdict": "pass",
+   "codes": [
+    "LOCATION_NOT_RECORDED"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "3 of the last 3 site videos carry no usable location (the monthly visit of 04 Jul 2026: no location (GPS off or refused); the monthly visit of 03 Aug 2026: no location (GPS off or refused); the monthly visit of 02 Sep 2026: no location (GPS",
+   "pair": ""
+  },
+  {
+   "case": "SL-F4-mock-location-twice",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "location",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "agent": "site_progress",
+   "verdict": "pass",
+   "codes": [
+    "LOCATION_NOT_RECORDED"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "2 of the last 3 site videos carry no usable location (the monthly visit of 04 Jul 2026: the phone reported a faked (mock) location; the monthly visit of 02 Sep 2026: the phone reported a faked (mock) location). Every site video must record ",
+   "pair": ""
+  },
+  {
+   "case": "SL-F4-mock-location-twice",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "location",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "agent": "site_progress",
+   "verdict": "pass",
+   "codes": [
+    "LOCATION_NOT_RECORDED"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "2 of the last 3 site videos carry no usable location (the monthly visit of 04 Jul 2026: the phone reported a faked (mock) location; the monthly visit of 02 Sep 2026: the phone reported a faked (mock) location). Every site video must record ",
+   "pair": ""
+  },
+  {
+   "case": "SL-H4-old-readings",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "location",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "agent": "site_progress",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "6 site videos read: nothing the videos show needs checking.",
+   "pair": ""
+  },
+  {
+   "case": "SL-H4-old-readings",
+   "world": "dense",
+   "truth": "honest",
+   "family": "location",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "agent": "site_progress",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "6 site videos read: nothing the videos show needs checking.",
+   "pair": ""
+  }
+ ]
+}

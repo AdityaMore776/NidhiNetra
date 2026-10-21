@@ -1,0 +1,25 @@
+T168 site_progress eval, set holdout, label baseline: 10 cases x 2 worlds
+totals: {"pass": "18/20", "honest_clear": "6/6", "honest_asked": "0/6", "ideal": "18/20", "fraud_caught": "10/12", "fraud_excused": "2/12", "broken_cleared": "0/2", "verdicts": {"pass": 18, "hard": 2}}
+
+  SH-H1-two-dark-not-in-a-row  sparse edge    got fits   (allowed fits/edge) -
+  SH-H1-two-dark-not-in-a-row  dense  edge    got fits   (allowed fits/edge) -
+  SH-H2-viewpoint-blocked      sparse edge    got fits   (allowed fits/edge) -
+  SH-H2-viewpoint-blocked      dense  edge    got fits   (allowed fits/edge) -
+  SH-H3-retake-after-unsealed  sparse edge    got fits   (allowed fits/edge) -
+  SH-H3-retake-after-unsealed  dense  edge    got fits   (allowed fits/edge) -
+  SH-F1-own-video-again        sparse evasion got ask    (allowed ask) FOOTAGE_USED_BEFORE
+  SH-F1-own-video-again        dense  evasion got ask    (allowed ask) FOOTAGE_USED_BEFORE
+  SH-F2-four-of-five-unusable  sparse evasion got ask    (allowed check/ask) SITE_VIDEOS_UNUSABLE
+  SH-F2-four-of-five-unusable  dense  evasion got ask    (allowed check/ask) SITE_VIDEOS_UNUSABLE
+  SH-F3-dark-between-not-shown sparse evasion got ask    (allowed ask) CLAIM_NOT_SHOWN
+  SH-F3-dark-between-not-shown dense  evasion got ask    (allowed ask) CLAIM_NOT_SHOWN
+  SH-F4-final-at-another-work  sparse fraud   got ask    (allowed ask) SAME_PLACE_AS_ANOTHER_WORK
+  SH-F4-final-at-another-work  dense  fraud   got ask    (allowed ask) SAME_PLACE_AS_ANOTHER_WORK
+X SH-F5-no-first-visit-late-start sparse evasion got fits   (allowed check/ask) -
+      2 site videos read: nothing the videos show needs checking.
+X SH-F5-no-first-visit-late-start dense  evasion got fits   (allowed check/ask) -
+      2 site videos read: nothing the videos show needs checking.
+  SH-F6-mock-gps-every-month   sparse evasion got ask    (allowed ask) NOT_FILMED_AT_THIS_SITE
+  SH-F6-mock-gps-every-month   dense  evasion got ask    (allowed ask) NOT_FILMED_AT_THIS_SITE
+  SH-B1-readings-all-empty     sparse broken  got na     (allowed na) -
+  SH-B1-readings-all-empty     dense  broken  got na     (allowed na) -

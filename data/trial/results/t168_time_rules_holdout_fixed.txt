@@ -1,0 +1,23 @@
+T168 time_rules eval, set holdout, label fixed: 10 cases x 2 worlds
+totals: {"pass": "20/20", "honest_clear": "6/8", "honest_asked": "0/8", "ideal": "16/20", "fraud_caught": "10/10", "fraud_excused": "0/10", "broken_cleared": "0/2", "verdicts": {"pass": 20}}
+
+  TH-H1-hall-in-70-days-filmed sparse honest  got fits   (allowed fits/edge) -
+  TH-H1-hall-in-70-days-filmed dense  honest  got fits   (allowed fits/edge) -
+  TH-H2-hall-fast-filmed       sparse edge    got fits   (allowed fits/edge) -
+  TH-H2-hall-fast-filmed       dense  edge    got fits   (allowed fits/edge) -
+  TH-H3-extension-recorded     sparse edge    got check  (allowed fits/edge/check) PAST_PROMISED_TIME
+  TH-H3-extension-recorded     dense  edge    got check  (allowed fits/edge/check) PAST_PROMISED_TIME
+  TH-H4-waiting-70-days        sparse honest  got fits   (allowed fits/edge) -
+  TH-H4-waiting-70-days        dense  honest  got fits   (allowed fits/edge) -
+  TH-F1-filmed-after-done      sparse evasion got ask    (allowed check/ask) FINISHED_TOO_FAST
+  TH-F1-filmed-after-done      dense  evasion got ask    (allowed check/ask) FINISHED_TOO_FAST
+  TH-F2-reused-then-final      sparse evasion got ask    (allowed check/ask) FINISHED_TOO_FAST
+  TH-F2-reused-then-final      dense  evasion got ask    (allowed check/ask) FINISHED_TOO_FAST
+  TH-F3-backdated-10-days      sparse evasion got ask    (allowed check/ask) BUILT_RIGHT_AFTER_SANCTION notes SANCTIONED_LATE
+  TH-F3-backdated-10-days      dense  evasion got ask    (allowed check/ask) BUILT_RIGHT_AFTER_SANCTION notes SANCTIONED_LATE
+  TH-F4-built-same-day         sparse fraud   got ask    (allowed ask) BUILT_IN_DAYS,BUILT_RIGHT_AFTER_SANCTION
+  TH-F4-built-same-day         dense  fraud   got ask    (allowed ask) BUILT_IN_DAYS,BUILT_RIGHT_AFTER_SANCTION
+  TH-F5-almost-stalled         sparse evasion got ask    (allowed check/ask) PAST_PROMISED_TIME
+  TH-F5-almost-stalled         dense  evasion got ask    (allowed check/ask) PAST_PROMISED_TIME
+  TH-B1-sanction-before-recommendation sparse broken  got edge   (allowed na/edge/check) - notes SANCTIONED_BEFORE_RECOMMENDED
+  TH-B1-sanction-before-recommendation dense  broken  got edge   (allowed na/edge/check) - notes SANCTIONED_BEFORE_RECOMMENDED

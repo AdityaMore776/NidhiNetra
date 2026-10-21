@@ -1,0 +1,35 @@
+T168 dup_split eval, set holdout, label baseline: 12 cases x 2 worlds
+totals: {"pass": "16/24", "honest_clear": "8/8", "honest_asked": "0/8", "ideal": "14/24", "fraud_caught": "8/14", "fraud_excused": "6/14", "broken_cleared": "0/2", "verdicts": {"pass": 16, "hard": 6, "soft": 2}}
+
+  DH-H1-two-halls-70m-other-size sparse honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK,NEAR_SANCTIONED_WORK
+  DH-H1-two-halls-70m-other-size dense  honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK,NEAR_SANCTIONED_WORK
+  DH-H2-phase-two-60-days      sparse edge    got edge   (allowed fits/edge/check) - notes CONTINUES_SANCTIONED_WORK
+  DH-H2-phase-two-60-days      dense  edge    got edge   (allowed fits/edge/check) - notes CONTINUES_SANCTIONED_WORK
+  DH-H3-borewells-two-blocks   sparse honest  got fits   (allowed fits/edge) -
+  DH-H3-borewells-two-blocks   dense  honest  got fits   (allowed fits/edge) -
+  DH-H4-light-21m              sparse honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK
+  DH-H4-light-21m              dense  honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK
+X DH-F1-hall-120m-same         sparse evasion got edge   (allowed check/ask) - notes LOOKS_LIKE_SANCTIONED_WORK,NEAR_SANCTIONED_WORK
+      Reads like sanctioned work XF1-OLD (Rs 24.75 lakh, completed on 2025-07-09): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.
+X DH-F1-hall-120m-same         dense  evasion got edge   (allowed check/ask) - notes LOOKS_LIKE_SANCTIONED_WORK,NEAR_SANCTIONED_WORK
+      Reads like sanctioned work XF1-OLD (Rs 24.75 lakh, completed on 2025-07-09): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.
+X DH-F2-four-parts-92pct       sparse evasion got fits   (allowed check/ask) -
+      Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 15 other works of its district names this place in the same words.
+X DH-F2-four-parts-92pct       dense  evasion got fits   (allowed check/ask) -
+      Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 73 other works of its district names this place in the same words.
+X DH-F3-split-85-days          sparse evasion got fits   (allowed check/ask) -
+      Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 13 other works of its district names this place in the same words.
+X DH-F3-split-85-days          dense  evasion got fits   (allowed check/ask) -
+      Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 71 other works of its district names this place in the same words.
+  DH-F4-rebuild-called-new     sparse evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+  DH-F4-rebuild-called-new     dense  evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+  DH-F5-light-15m-other-agency sparse fraud   got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+  DH-F5-light-15m-other-agency dense  fraud   got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+  DH-F6-road-reversed          sparse evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+  DH-F6-road-reversed          dense  evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+  DH-F7-hall-45m-filmed        sparse evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+  DH-F7-hall-45m-filmed        dense  evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+~ DH-B1-pin-zero               sparse broken  got edge   (allowed na/check/ask) - notes LOOKS_LIKE_SANCTIONED_WORK
+      Reads like sanctioned work XB1-OLD (Rs 14.52 lakh, completed on 2025-11-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.
+~ DH-B1-pin-zero               dense  broken  got edge   (allowed na/check/ask) - notes LOOKS_LIKE_SANCTIONED_WORK
+      Reads like sanctioned work XB1-OLD (Rs 14.52 lakh, completed on 2025-11-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.

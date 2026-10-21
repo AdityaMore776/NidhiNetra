@@ -146,7 +146,7 @@ def of(work: dict) -> list[Visit]:
                                                   "quality_ok", "motion_consistent",
                                                   "gps_weak")}
         for k in ("gps_distance_m", "viewpoints_expected", "viewpoints_matched",
-                  "spots_needed", "spots_filmed"):
+                  "spots_needed", "spots_filmed", "gps_fixes", "gps_accuracy_m"):
             n = r.get(k)
             readings[k] = float(n) if _finite(n) else None
         readings["zones_shown"] = _ids(r.get("zones_shown"))

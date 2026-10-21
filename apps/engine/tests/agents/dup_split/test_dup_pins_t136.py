@@ -38,7 +38,10 @@ def test_pieces_not_all_just_under_the_limit_are_not_a_split():
 
 def test_pieces_far_apart_in_time_or_by_another_mp_are_not_a_split():
     late = [_piece(0), _piece(1, rec=date(2025, 3, 1))]
-    assert not asked(assess(late[1], RepeatIndex.build(_filler() + late)))
+    # T168: 55 days apart is past the strictest split, but "check this" (risk 0.3), never asked
+    assert asked(assess(late[1], RepeatIndex.build(_filler() + late))) == ["SPLIT_NEAR_LIMIT"]
+    far = [_piece(0), _piece(1, rec=date(2025, 6, 1))]
+    assert not asked(assess(far[1], RepeatIndex.build(_filler() + far)))
     other_mp = [_piece(0), _piece(1, mp="MP B")]
     assert not asked(assess(other_mp[1], RepeatIndex.build(_filler() + other_mp)))
 

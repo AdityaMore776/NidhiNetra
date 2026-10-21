@@ -1,0 +1,63 @@
+T168 dup_split eval, set main, label baseline: 26 cases x 2 worlds
+totals: {"pass": "44/52", "honest_clear": "18/18", "honest_asked": "0/18", "ideal": "32/52", "fraud_caught": "20/28", "fraud_excused": "8/28", "broken_cleared": "0/6", "verdicts": {"pass": 44, "hard": 8}}
+
+  D-H1-new-road                sparse honest  got fits   (allowed fits) -
+  D-H1-new-road                dense  honest  got fits   (allowed fits) -
+  D-H2-hall-300m               sparse honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK
+  D-H2-hall-300m               dense  honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK
+  D-H3-next-lane               sparse honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK
+  D-H3-next-lane               dense  honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK
+  D-H4-light-next-house        sparse honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK
+  D-H4-light-next-house        dense  honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK
+  D-H5-light-same-programme    sparse honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK
+  D-H5-light-same-programme    dense  honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK
+  D-H6-crossing-road           sparse honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK
+  D-H6-crossing-road           dense  honest  got edge   (allowed fits/edge) - notes LOOKS_LIKE_SANCTIONED_WORK
+  D-H7-two-works-70pct         sparse honest  got fits   (allowed fits) -
+  D-H7-two-works-70pct         dense  honest  got fits   (allowed fits) -
+  D-E1-declared-extension      sparse edge    got edge   (allowed fits/edge) - notes CONTINUES_SANCTIONED_WORK
+  D-E1-declared-extension      dense  edge    got edge   (allowed fits/edge) - notes CONTINUES_SANCTIONED_WORK
+  D-E2-rebuild-after-4y        sparse edge    got edge   (allowed fits/edge) - notes CONTINUES_SANCTIONED_WORK
+  D-E2-rebuild-after-4y        dense  edge    got edge   (allowed fits/edge) - notes CONTINUES_SANCTIONED_WORK
+  D-F1-road-on-old-road        sparse fraud   got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+  D-F1-road-on-old-road        dense  fraud   got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+  D-F2-rebuild-16m             sparse fraud   got ask    (allowed ask) REBUILT_SOON_AFTER_COMPLETION
+  D-F2-rebuild-16m             dense  fraud   got ask    (allowed ask) REBUILT_SOON_AFTER_COMPLETION
+  D-F3-split-3-parts           sparse fraud   got ask    (allowed ask) SPLIT_JUST_UNDER_LIMIT
+  D-F3-split-3-parts           dense  fraud   got ask    (allowed ask) SPLIT_JUST_UNDER_LIMIT
+  D-F4-hall-refiled            sparse fraud   got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+  D-F4-hall-refiled            dense  fraud   got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+  D-F5-light-on-light          sparse fraud   got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+  D-F5-light-on-light          dense  fraud   got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+  D-V1-pin-70m-filmed-old      sparse evasion got ask    (allowed ask) SANCTIONED_WORK_WHERE_FILMED
+  D-V1-pin-70m-filmed-old      dense  evasion got ask    (allowed ask) SANCTIONED_WORK_WHERE_FILMED
+X D-V2-pin-70m-before-sanction sparse evasion got edge   (allowed check/ask) - notes LOOKS_LIKE_SANCTIONED_WORK,NEAR_SANCTIONED_WORK
+      Reads like sanctioned work DV2-OLD (Rs 24.75 lakh, completed on 2025-05-20): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.
+X D-V2-pin-70m-before-sanction dense  evasion got edge   (allowed check/ask) - notes LOOKS_LIKE_SANCTIONED_WORK,NEAR_SANCTIONED_WORK
+      Reads like sanctioned work DV2-OLD (Rs 24.75 lakh, completed on 2025-05-20): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.
+  D-V3-rebuild-called-upgrade  sparse evasion got ask    (allowed ask) REBUILT_SOON_AFTER_COMPLETION
+  D-V3-rebuild-called-upgrade  dense  evasion got ask    (allowed ask) REBUILT_SOON_AFTER_COMPLETION
+X D-V4-split-95pct             sparse evasion got fits   (allowed check/ask) -
+      Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 14 other works of its district names this place in the same words.
+X D-V4-split-95pct             dense  evasion got fits   (allowed check/ask) -
+      Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 72 other works of its district names this place in the same words.
+X D-V5-split-35-days           sparse evasion got fits   (allowed check/ask) -
+      Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 14 other works of its district names this place in the same words.
+X D-V5-split-35-days           dense  evasion got fits   (allowed check/ask) -
+      Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 72 other works of its district names this place in the same words.
+  D-V6-road-longer             sparse evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+  D-V6-road-longer             dense  evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE
+  D-V7-names-fake-work         sparse evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE notes CONTINUES_SANCTIONED_WORK
+  D-V7-names-fake-work         dense  evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE notes CONTINUES_SANCTIONED_WORK
+  D-V8-continues-unfinished    sparse evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE notes CONTINUES_SANCTIONED_WORK
+  D-V8-continues-unfinished    dense  evasion got ask    (allowed ask) SANCTIONED_WORK_AT_THIS_SITE notes CONTINUES_SANCTIONED_WORK
+X D-V9-pin-swapped             sparse evasion got edge   (allowed na/check/ask) - notes LOOKS_LIKE_SANCTIONED_WORK
+      Reads like sanctioned work DV9-OLD (Rs 14.52 lakh, completed on 2025-11-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.
+X D-V9-pin-swapped             dense  evasion got edge   (allowed na/check/ask) - notes LOOKS_LIKE_SANCTIONED_WORK
+      Reads like sanctioned work DV9-OLD (Rs 14.52 lakh, completed on 2025-11-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.
+  D-B1-no-district             sparse broken  got na     (allowed na) -
+  D-B1-no-district             dense  broken  got na     (allowed na) -
+  D-B2-no-date-no-words        sparse broken  got na     (allowed na) -
+  D-B2-no-date-no-words        dense  broken  got na     (allowed na) -
+  D-B3-form-no-pin             sparse broken  got edge   (allowed na/edge/check) - notes LOOKS_LIKE_SANCTIONED_WORK
+  D-B3-form-no-pin             dense  broken  got edge   (allowed na/edge/check) - notes LOOKS_LIKE_SANCTIONED_WORK

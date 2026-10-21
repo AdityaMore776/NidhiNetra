@@ -1,0 +1,1180 @@
+{
+ "totals": {
+  "pass": "52/52",
+  "honest_clear": "18/18",
+  "honest_asked": "0/18",
+  "ideal": "42/52",
+  "fraud_caught": "26/28",
+  "fraud_excused": "0/28",
+  "broken_cleared": "0/6",
+  "verdicts": {
+   "pass": 52
+  }
+ },
+ "rows": [
+  {
+   "case": "D-H1-new-road",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "new site",
+   "scope": "self",
+   "allowed": [
+    "fits"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 12 other works of its district names this place in the same words.",
+   "pair": ""
+  },
+  {
+   "case": "D-H1-new-road",
+   "world": "dense",
+   "truth": "honest",
+   "family": "new site",
+   "scope": "self",
+   "allowed": [
+    "fits"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 70 other works of its district names this place in the same words.",
+   "pair": ""
+  },
+  {
+   "case": "D-H2-hall-300m",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "neighbour",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "edge",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "LOOKS_LIKE_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work DH2-OLD (Rs 24.75 lakh, completed on 2025-02-09): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "pair": ""
+  },
+  {
+   "case": "D-H2-hall-300m",
+   "world": "dense",
+   "truth": "honest",
+   "family": "neighbour",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "edge",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "LOOKS_LIKE_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work DH2-OLD (Rs 24.75 lakh, completed on 2025-02-09): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "pair": ""
+  },
+  {
+   "case": "D-H3-next-lane",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "neighbour",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "edge",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "LOOKS_LIKE_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work DH3-OLD (Rs 14.52 lakh, completed on 2025-08-28): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "pair": "lane-30m"
+  },
+  {
+   "case": "D-H3-next-lane",
+   "world": "dense",
+   "truth": "honest",
+   "family": "neighbour",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "edge",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "LOOKS_LIKE_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work DH3-OLD (Rs 14.52 lakh, completed on 2025-08-28): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "pair": "lane-30m"
+  },
+  {
+   "case": "D-H4-light-next-house",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "neighbour",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "edge",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "LOOKS_LIKE_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work DH4-OLD (Rs 2.10 lakh, completed on 2025-12-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "pair": "light-spot"
+  },
+  {
+   "case": "D-H4-light-next-house",
+   "world": "dense",
+   "truth": "honest",
+   "family": "neighbour",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "edge",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "LOOKS_LIKE_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work DH4-OLD (Rs 2.10 lakh, completed on 2025-12-06): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "pair": "light-spot"
+  },
+  {
+   "case": "D-H5-light-same-programme",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "programme",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "edge",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "LOOKS_LIKE_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work DH5-A (Rs 2.10 lakh, sanctioned on 2026-09-22, not yet completed): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "pair": ""
+  },
+  {
+   "case": "D-H5-light-same-programme",
+   "world": "dense",
+   "truth": "honest",
+   "family": "programme",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "edge",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "LOOKS_LIKE_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work DH5-A (Rs 2.10 lakh, sanctioned on 2026-09-22, not yet completed): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "pair": ""
+  },
+  {
+   "case": "D-H6-crossing-road",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "neighbour",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "edge",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "LOOKS_LIKE_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work DH6-OLD (Rs 14.52 lakh, completed on 2025-05-20): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "pair": ""
+  },
+  {
+   "case": "D-H6-crossing-road",
+   "world": "dense",
+   "truth": "honest",
+   "family": "neighbour",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "fits",
+   "got": "edge",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "LOOKS_LIKE_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Reads like sanctioned work DH6-OLD (Rs 14.52 lakh, completed on 2025-05-20): the same place named, descriptions 100% alike. From words alone this is right about 2 times in 3, so it is a note, not a question.",
+   "pair": ""
+  },
+  {
+   "case": "D-H7-two-works-70pct",
+   "world": "sparse",
+   "truth": "honest",
+   "family": "split look-alike",
+   "scope": "self",
+   "allowed": [
+    "fits"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 13 other works of its district names this place in the same words.",
+   "pair": "split-share"
+  },
+  {
+   "case": "D-H7-two-works-70pct",
+   "world": "dense",
+   "truth": "honest",
+   "family": "split look-alike",
+   "scope": "self",
+   "allowed": [
+    "fits"
+   ],
+   "ideal": "fits",
+   "got": "fits",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Nothing on record says this work is already sanctioned: no sanctioned work within 30 m of its map pin, and none of the 71 other works of its district names this place in the same words.",
+   "pair": "split-share"
+  },
+  {
+   "case": "D-E1-declared-extension",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "edge",
+   "got": "edge",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "CONTINUES_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "The agency says this work extends work DE1-OLD (Rs 14.52 lakh, completed on 2025-05-20).",
+   "pair": ""
+  },
+  {
+   "case": "D-E1-declared-extension",
+   "world": "dense",
+   "truth": "edge",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "edge",
+   "got": "edge",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "CONTINUES_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "The agency says this work extends work DE1-OLD (Rs 14.52 lakh, completed on 2025-05-20).",
+   "pair": ""
+  },
+  {
+   "case": "D-E2-rebuild-after-4y",
+   "world": "sparse",
+   "truth": "edge",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "edge",
+   "got": "edge",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "CONTINUES_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "The agency says this work rebuilds work DE2-OLD (Rs 24.75 lakh, completed on 2022-08-04).",
+   "pair": "rebuild-age"
+  },
+  {
+   "case": "D-E2-rebuild-after-4y",
+   "world": "dense",
+   "truth": "edge",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "fits",
+    "edge"
+   ],
+   "ideal": "edge",
+   "got": "edge",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "CONTINUES_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "The agency says this work rebuilds work DE2-OLD (Rs 24.75 lakh, completed on 2022-08-04).",
+   "pair": "rebuild-age"
+  },
+  {
+   "case": "D-F1-road-on-old-road",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The map pin is 20 m from sanctioned work DF1-OLD, of the same kind (Rs 14.52 lakh, completed on 2025-11-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
+   "pair": "lane-30m"
+  },
+  {
+   "case": "D-F1-road-on-old-road",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The map pin is 20 m from sanctioned work DF1-OLD, of the same kind (Rs 14.52 lakh, completed on 2025-11-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
+   "pair": "lane-30m"
+  },
+  {
+   "case": "D-F2-rebuild-16m",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "REBUILT_SOON_AFTER_COMPLETION"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The agency says this work rebuilds work DF2-OLD (Rs 24.75 lakh), which was completed on 2025-06-04, 14 months before this one was recommended. A new asset should not need rebuilding this soon: please check the first work's completion and qu",
+   "pair": "rebuild-age"
+  },
+  {
+   "case": "D-F2-rebuild-16m",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "REBUILT_SOON_AFTER_COMPLETION"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The agency says this work rebuilds work DF2-OLD (Rs 24.75 lakh), which was completed on 2025-06-04, 14 months before this one was recommended. A new asset should not need rebuilding this soon: please check the first work's completion and qu",
+   "pair": "rebuild-age"
+  },
+  {
+   "case": "D-F3-split-3-parts",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "split",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SPLIT_JUST_UNDER_LIMIT"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.722,
+   "headline": "One of 3 alike works at one place (part 1, part 2, part 3), recommended within 8 days: each Rs 4,93,000 to Rs 4,98,000, just under the Rs 5.00 lakh limit, Rs 14.87 lakh together. Please check whether one job was cut into pieces to stay unde",
+   "pair": "split-share"
+  },
+  {
+   "case": "D-F3-split-3-parts",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "split",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SPLIT_JUST_UNDER_LIMIT"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.722,
+   "headline": "One of 3 alike works at one place (part 1, part 2, part 3), recommended within 8 days: each Rs 4,93,000 to Rs 4,98,000, just under the Rs 5.00 lakh limit, Rs 14.87 lakh together. Please check whether one job was cut into pieces to stay unde",
+   "pair": "split-share"
+  },
+  {
+   "case": "D-F4-hall-refiled",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The map pin is 10 m from sanctioned work DF4-OLD, of the same kind (Rs 24.75 lakh, sanctioned on 2026-04-25, not yet completed). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
+   "pair": ""
+  },
+  {
+   "case": "D-F4-hall-refiled",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The map pin is 10 m from sanctioned work DF4-OLD, of the same kind (Rs 24.75 lakh, sanctioned on 2026-04-25, not yet completed). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
+   "pair": ""
+  },
+  {
+   "case": "D-F5-light-on-light",
+   "world": "sparse",
+   "truth": "fraud",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The map pin is 5 m from sanctioned work DF5-OLD, of the same kind (Rs 2.10 lakh, completed on 2025-12-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
+   "pair": "light-spot"
+  },
+  {
+   "case": "D-F5-light-on-light",
+   "world": "dense",
+   "truth": "fraud",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The map pin is 5 m from sanctioned work DF5-OLD, of the same kind (Rs 2.10 lakh, completed on 2025-12-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
+   "pair": "light-spot"
+  },
+  {
+   "case": "D-V1-pin-70m-filmed-old",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "pin typed off",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SANCTIONED_WORK_WHERE_FILMED"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "2 site videos (V1, V2) were filmed within 0 m of sanctioned work DV1-OLD of the same kind (Rs 24.75 lakh, completed on 2025-05-20), nearer to it than to this form's map pin, which is 70 m from it. The form does not name it as the work this ",
+   "pair": ""
+  },
+  {
+   "case": "D-V1-pin-70m-filmed-old",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "pin typed off",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SANCTIONED_WORK_WHERE_FILMED"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "2 site videos (V1, V2) were filmed within 0 m of sanctioned work DV1-OLD of the same kind (Rs 24.75 lakh, completed on 2025-05-20), nearer to it than to this form's map pin, which is 70 m from it. The form does not name it as the work this ",
+   "pair": ""
+  },
+  {
+   "case": "D-V2-pin-70m-before-sanction",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "pin typed off",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SAME_BUILDING_NEAR"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "Sanctioned work DV2-OLD (Rs 24.75 lakh, completed on 2025-05-20) has its map pin 70 m from this one, just past the 50 m that makes two pins one site, with the same description and the same size, and the form names no nearby work. Check this",
+   "pair": "hall-70m"
+  },
+  {
+   "case": "D-V2-pin-70m-before-sanction",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "pin typed off",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SAME_BUILDING_NEAR"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "Sanctioned work DV2-OLD (Rs 24.75 lakh, completed on 2025-05-20) has its map pin 70 m from this one, just past the 50 m that makes two pins one site, with the same description and the same size, and the form names no nearby work. Check this",
+   "pair": "hall-70m"
+  },
+  {
+   "case": "D-V3-rebuild-called-upgrade",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "REBUILT_SOON_AFTER_COMPLETION"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The agency says this work upgrades work DV3-OLD (Rs 24.75 lakh), which was completed on 2025-06-04, 14 months before this one was recommended. It is called a continuation or an upgrade, but it covers that work's own ground with the same siz",
+   "pair": ""
+  },
+  {
+   "case": "D-V3-rebuild-called-upgrade",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "REBUILT_SOON_AFTER_COMPLETION"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The agency says this work upgrades work DV3-OLD (Rs 24.75 lakh), which was completed on 2025-06-04, 14 months before this one was recommended. It is called a continuation or an upgrade, but it covers that work's own ground with the same siz",
+   "pair": ""
+  },
+  {
+   "case": "D-V4-split-95pct",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "split",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SPLIT_NEAR_LIMIT"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.667,
+   "headline": "One of 3 alike works at one place, recommended within 8 days: each Rs 4,73,000 to Rs 4,77,000, near the Rs 5.00 lakh limit, Rs 14.26 lakh together. Just outside the strictest split (every piece 96-100% of a limit, within 30 days), so not a ",
+   "pair": "split-share"
+  },
+  {
+   "case": "D-V4-split-95pct",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "split",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SPLIT_NEAR_LIMIT"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.667,
+   "headline": "One of 3 alike works at one place, recommended within 8 days: each Rs 4,73,000 to Rs 4,77,000, near the Rs 5.00 lakh limit, Rs 14.26 lakh together. Just outside the strictest split (every piece 96-100% of a limit, within 30 days), so not a ",
+   "pair": "split-share"
+  },
+  {
+   "case": "D-V5-split-35-days",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "split",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SPLIT_NEAR_LIMIT"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.678,
+   "headline": "One of 3 alike works at one place, recommended within 70 days: each Rs 4,93,000 to Rs 4,98,000, near the Rs 5.00 lakh limit, Rs 14.87 lakh together. Just outside the strictest split (every piece 96-100% of a limit, within 30 days), so not a",
+   "pair": ""
+  },
+  {
+   "case": "D-V5-split-35-days",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "split",
+   "scope": "self",
+   "allowed": [
+    "check",
+    "ask"
+   ],
+   "ideal": "check",
+   "got": "check",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SPLIT_NEAR_LIMIT"
+   ],
+   "notes": [],
+   "band": "HIGH",
+   "score": 0.678,
+   "headline": "One of 3 alike works at one place, recommended within 70 days: each Rs 4,93,000 to Rs 4,98,000, near the Rs 5.00 lakh limit, Rs 14.87 lakh together. Just outside the strictest split (every piece 96-100% of a limit, within 30 days), so not a",
+   "pair": ""
+  },
+  {
+   "case": "D-V6-road-longer",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The map pin is 29 m from sanctioned work DV6-OLD, of the same kind (Rs 14.52 lakh, completed on 2025-11-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
+   "pair": ""
+  },
+  {
+   "case": "D-V6-road-longer",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The map pin is 29 m from sanctioned work DV6-OLD, of the same kind (Rs 14.52 lakh, completed on 2025-11-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
+   "pair": ""
+  },
+  {
+   "case": "D-V7-names-fake-work",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [
+    "CONTINUES_SANCTIONED_WORK"
+   ],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The map pin is 10 m from sanctioned work DV7-OLD, of the same kind (Rs 14.52 lakh, completed on 2025-11-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
+   "pair": ""
+  },
+  {
+   "case": "D-V7-names-fake-work",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "same site",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [
+    "CONTINUES_SANCTIONED_WORK"
+   ],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The map pin is 10 m from sanctioned work DV7-OLD, of the same kind (Rs 14.52 lakh, completed on 2025-11-06). The form does not name it as the work this one continues. Please check on site whether it is the same work.",
+   "pair": ""
+  },
+  {
+   "case": "D-V8-continues-unfinished",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [
+    "CONTINUES_SANCTIONED_WORK"
+   ],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The map pin is 5 m from sanctioned work DV8-OLD, of the same kind (Rs 14.52 lakh, sanctioned on 2026-04-25, not yet completed). The form names it as the work this one continues, but it lies on that work's own ground, which is not finished y",
+   "pair": ""
+  },
+  {
+   "case": "D-V8-continues-unfinished",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "declared",
+   "scope": "self",
+   "allowed": [
+    "ask"
+   ],
+   "ideal": "ask",
+   "got": "ask",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [
+    "SANCTIONED_WORK_AT_THIS_SITE"
+   ],
+   "notes": [
+    "CONTINUES_SANCTIONED_WORK"
+   ],
+   "band": "MEDIUM",
+   "score": 0.25,
+   "headline": "The map pin is 5 m from sanctioned work DV8-OLD, of the same kind (Rs 14.52 lakh, sanctioned on 2026-04-25, not yet completed). The form names it as the work this one continues, but it lies on that work's own ground, which is not finished y",
+   "pair": ""
+  },
+  {
+   "case": "D-V9-pin-swapped",
+   "world": "sparse",
+   "truth": "evasion",
+   "family": "pin typed off",
+   "scope": "self",
+   "allowed": [
+    "na",
+    "check",
+    "ask"
+   ],
+   "ideal": "na",
+   "got": "na",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "LOOKS_LIKE_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Cannot be assessed by site: the form's map pin is missing or not in India, so no sanctioned work at this place could be looked for. This is not a clean chit: ask for the right pin.",
+   "pair": ""
+  },
+  {
+   "case": "D-V9-pin-swapped",
+   "world": "dense",
+   "truth": "evasion",
+   "family": "pin typed off",
+   "scope": "self",
+   "allowed": [
+    "na",
+    "check",
+    "ask"
+   ],
+   "ideal": "na",
+   "got": "na",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "LOOKS_LIKE_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Cannot be assessed by site: the form's map pin is missing or not in India, so no sanctioned work at this place could be looked for. This is not a clean chit: ask for the right pin.",
+   "pair": ""
+  },
+  {
+   "case": "D-B1-no-district",
+   "world": "sparse",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "na"
+   ],
+   "ideal": "na",
+   "got": "na",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Cannot be assessed: the works of its district were not available to compare with. This is not a clean chit.",
+   "pair": ""
+  },
+  {
+   "case": "D-B1-no-district",
+   "world": "dense",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "na"
+   ],
+   "ideal": "na",
+   "got": "na",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Cannot be assessed: the works of its district were not available to compare with. This is not a clean chit.",
+   "pair": ""
+  },
+  {
+   "case": "D-B2-no-date-no-words",
+   "world": "sparse",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "na"
+   ],
+   "ideal": "na",
+   "got": "na",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Cannot be assessed: the record has no date, or no readable description or map pin, to compare. This is not a clean chit.",
+   "pair": ""
+  },
+  {
+   "case": "D-B2-no-date-no-words",
+   "world": "dense",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "na"
+   ],
+   "ideal": "na",
+   "got": "na",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Cannot be assessed: the record has no date, or no readable description or map pin, to compare. This is not a clean chit.",
+   "pair": ""
+  },
+  {
+   "case": "D-B3-form-no-pin",
+   "world": "sparse",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "na",
+    "edge",
+    "check"
+   ],
+   "ideal": "na",
+   "got": "na",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "LOOKS_LIKE_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Cannot be assessed by site: the form's map pin is missing or not in India, so no sanctioned work at this place could be looked for. This is not a clean chit: ask for the right pin.",
+   "pair": ""
+  },
+  {
+   "case": "D-B3-form-no-pin",
+   "world": "dense",
+   "truth": "broken",
+   "family": "broken",
+   "scope": "self",
+   "allowed": [
+    "na",
+    "edge",
+    "check"
+   ],
+   "ideal": "na",
+   "got": "na",
+   "agent": "dup_split",
+   "verdict": "pass",
+   "codes": [],
+   "notes": [
+    "LOOKS_LIKE_SANCTIONED_WORK"
+   ],
+   "band": "LOW",
+   "score": 0.0,
+   "headline": "Cannot be assessed by site: the form's map pin is missing or not in India, so no sanctioned work at this place could be looked for. This is not a clean chit: ask for the right pin.",
+   "pair": ""
+  }
+ ]
+}

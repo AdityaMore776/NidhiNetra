@@ -1,0 +1,51 @@
+T168 time_rules eval, set main, label fixed: 23 cases x 2 worlds
+totals: {"pass": "44/44", "honest_clear": "12/16", "honest_asked": "0/16", "ideal": "42/44", "fraud_caught": "22/22", "fraud_excused": "0/22", "broken_cleared": "0/6", "verdicts": {"pass": 44}, "apart": {"T-V6-nine-days-after-sanction@sparse": "limit: evasion got edge", "T-V6-nine-days-after-sanction@dense": "limit: evasion got edge"}}
+
+  T-H1-on-track                sparse honest  got fits   (allowed fits/edge) -
+  T-H1-on-track                dense  honest  got fits   (allowed fits/edge) -
+  T-H2-fast-but-filmed         sparse edge    got fits   (allowed fits/edge) -
+  T-H2-fast-but-filmed         dense  edge    got fits   (allowed fits/edge) -
+  T-H3-sanctioned-late         sparse honest  got edge   (allowed fits/edge) - notes SANCTIONED_LATE
+  T-H3-sanctioned-late         dense  honest  got edge   (allowed fits/edge) - notes SANCTIONED_LATE
+  T-H4-late-but-moving         sparse edge    got check  (allowed fits/edge/check) PAST_PROMISED_TIME
+  T-H4-late-but-moving         dense  edge    got check  (allowed fits/edge/check) PAST_PROMISED_TIME
+  T-H5-record-normal           sparse honest  got fits   (allowed fits/edge) -
+  T-H5-record-normal           dense  honest  got fits   (allowed fits/edge) -
+  T-H6-purchase-fast           sparse honest  got fits   (allowed fits/edge) -
+  T-H6-purchase-fast           dense  honest  got fits   (allowed fits/edge) -
+  T-H7-waiting-40-days         sparse honest  got fits   (allowed fits/edge) -
+  T-H7-waiting-40-days         dense  honest  got fits   (allowed fits/edge) -
+  T-H8-waiting-long            sparse edge    got check  (allowed edge/check) SANCTION_OVERDUE
+  T-H8-waiting-long            dense  edge    got check  (allowed edge/check) SANCTION_OVERDUE
+  T-F1-done-in-6-days          sparse fraud   got ask    (allowed ask) FINISHED_TOO_FAST
+  T-F1-done-in-6-days          dense  fraud   got ask    (allowed ask) FINISHED_TOO_FAST
+  T-F2-done-before-recommended sparse fraud   got ask    (allowed check/ask) BUILT_RIGHT_AFTER_SANCTION,IMPOSSIBLE_TIMELINE
+  T-F2-done-before-recommended dense  fraud   got ask    (allowed check/ask) BUILT_RIGHT_AFTER_SANCTION,IMPOSSIBLE_TIMELINE
+  T-F3-built-in-days           sparse fraud   got ask    (allowed ask) BUILT_IN_DAYS,BUILT_RIGHT_AFTER_SANCTION
+  T-F3-built-in-days           dense  fraud   got ask    (allowed ask) BUILT_IN_DAYS,BUILT_RIGHT_AFTER_SANCTION
+  T-F4-right-after-sanction    sparse fraud   got ask    (allowed ask) BUILT_RIGHT_AFTER_SANCTION notes SANCTIONED_LATE
+  T-F4-right-after-sanction    dense  fraud   got ask    (allowed ask) BUILT_RIGHT_AFTER_SANCTION notes SANCTIONED_LATE
+  T-F5-abandoned               sparse fraud   got ask    (allowed ask) PAST_PROMISED_TIME
+  T-F5-abandoned               dense  fraud   got ask    (allowed ask) PAST_PROMISED_TIME
+  T-V1-filmed-on-the-last-day  sparse evasion got ask    (allowed check/ask) FINISHED_TOO_FAST
+  T-V1-filmed-on-the-last-day  dense  evasion got ask    (allowed check/ask) FINISHED_TOO_FAST
+  T-V2-start-years-away        sparse evasion got check  (allowed check/ask) PAST_PROMISED_TIME
+  T-V2-start-years-away        dense  evasion got check  (allowed check/ask) PAST_PROMISED_TIME
+  T-V3-ten-year-estimate       sparse evasion got check  (allowed check/ask) PAST_PROMISED_TIME
+  T-V3-ten-year-estimate       dense  evasion got check  (allowed check/ask) PAST_PROMISED_TIME
+  T-V4-padded-estimate         sparse evasion got check  (allowed check/ask) PAST_PROMISED_TIME
+  T-V4-padded-estimate         dense  evasion got check  (allowed check/ask) PAST_PROMISED_TIME
+  T-V5-reused-video            sparse evasion got ask    (allowed ask) FINISHED_TOO_FAST
+  T-V5-reused-video            dense  evasion got ask    (allowed ask) FINISHED_TOO_FAST
+X T-V6-nine-days-after-sanction sparse evasion got edge   (allowed check/ask) - notes SANCTIONED_LATE [limit: not counted]
+      Sanctioned 100 days after the MP's recommendation (06 Dec 2025 to 16 Mar 2026); the guidelines give 75 days. 60% of the works on the eSAKSHI dashboard are sanctioned past the 75-day limit, so this is a fact about the office's pace and goes 
+X T-V6-nine-days-after-sanction dense  evasion got edge   (allowed check/ask) - notes SANCTIONED_LATE [limit: not counted]
+      Sanctioned 100 days after the MP's recommendation (06 Dec 2025 to 16 Mar 2026); the guidelines give 75 days. 60% of the works on the eSAKSHI dashboard are sanctioned past the 75-day limit, so this is a fact about the office's pace and goes 
+  T-V7-backdated-complete      sparse evasion got ask    (allowed check/ask) BUILT_RIGHT_AFTER_SANCTION notes SANCTIONED_LATE
+  T-V7-backdated-complete      dense  evasion got ask    (allowed check/ask) BUILT_RIGHT_AFTER_SANCTION notes SANCTIONED_LATE
+  T-B1-no-status               sparse broken  got na     (allowed na) -
+  T-B1-no-status               dense  broken  got na     (allowed na) -
+  T-B2-complete-no-date        sparse broken  got na     (allowed na/check) - notes SANCTIONED_LATE
+  T-B2-complete-no-date        dense  broken  got na     (allowed na/check) - notes SANCTIONED_LATE
+  T-B3-done-in-future          sparse broken  got check  (allowed na/edge/check) IMPOSSIBLE_TIMELINE notes SANCTIONED_LATE
+  T-B3-done-in-future          dense  broken  got check  (allowed na/edge/check) IMPOSSIBLE_TIMELINE notes SANCTIONED_LATE

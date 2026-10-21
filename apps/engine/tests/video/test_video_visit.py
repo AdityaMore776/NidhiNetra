@@ -273,6 +273,15 @@ def test_weak_gps_says_cant_tell_and_good_gps_counts_its_own_accuracy(site_a):
     assert r["gps_weak"] is False and r["gps_inside"] is True
     # T160: where it was filmed, for Duplicate Work, whatever the site circle says
     assert r["gps_point"]["lat"] == pytest.approx(25.75 + 70 / 111_195, abs=1e-6)
+    # T168: how many fixes, and how accurate (Site Progress allows for it)
+    assert r["gps_fixes"] == len(near["gps"]) and r["gps_accuracy_m"] == 35.0
+
+
+def test_a_video_with_location_off_says_so(site_a):
+    _d, logs, _r, base_k = site_a
+    base = earlier_from("W1", "base", "baseline", base_k)
+    r, _ = vv.read(logs["m1"][0], dict(logs["m1"][1], gps=[]), SITE, [base], [], "monthly")
+    assert r["gps_fixes"] == 0 and r["gps_point"] is None and r["gps_accuracy_m"] is None
 
 
 def test_a_viewpoint_skipped_with_a_reason_is_not_counted_against_the_visit(site_a):

@@ -44,15 +44,22 @@ import time
 from datetime import timedelta
 
 from drishti.agents.contract import AgentResult, Finding, Status
-from drishti.agents.dup_split.repeat import PIN_METRES, RepeatIndex, pin_problems, same_ground
+from drishti.agents.dup_split.repeat import (
+    PIN_METRES,
+    RepeatIndex,
+    pin_problems,
+    same_ground,
+    size_alike,
+)
 from drishti.agents.site_progress import visits as site_visits
 
 AGENT = "dup_split"
-VERSION = "dup-split-3.0.0"
+VERSION = "dup-split-3.1.0"
 QUESTION = "Is this work already sanctioned here, or one job cut to stay under a limit?"
 SITE_RISK = 0.7
 REBUILT_RISK = 0.6
 SPLIT_RISK = 0.6
+CHECK_RISK = 0.3        # T168 "check this": a fraud is never an edge case (the owner, 19 Oct 2026)
 REBUILT_WITHIN = timedelta(days=3 * 365)
 NATURE_WORDS = {"continuation": "continues", "extension": "extends", "upgrade": "upgrades",
                 "reconstruction": "rebuilds"}
@@ -244,6 +251,34 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
                       "limit": g["limit"], "others": others, "days": g["days"],
                       "segments": g.get("segments") or [], "kind": "split"}))
 
+    # 3b. the ways past the strictest split that read as one job on the real works (T168,
+    #     repeat.LOOSE_SHARE): "check this", never a question
+    g = found.get("split_loose")
+    if g:
+        others = [m for m in g["members"] if m != me.work_id]
+        lo, hi = min(g["amounts"]), max(g["amounts"])
+        span = "on the same day" if not g["days"] else f"within {g['days']} days"
+        # the agency naming every other piece as an earlier phase of this asset is a claim: it
+        # softens (its own code, at the 1-in-4 prior), never clears (T168, pipeline eval)
+        declared = all((link and link["work_id"] == o)
+                       or (answers.get(o) or {}).get("answer") == "continues" for o in others)
+        said = (" The agency names the others as earlier phases of the same asset; a phase "
+                "filed at the limit each time is how a job is cut, so check this all the same."
+                if declared else "")
+        findings.append(Finding(
+            "SPLIT_NEAR_LIMIT_DECLARED" if declared else "SPLIT_NEAR_LIMIT",
+            f"One of {g['size']} alike works at one place, recommended {span}: each "
+            f"{_rupees(lo)}{'' if lo == hi else f' to {_rupees(hi)}'}, near the "
+            f"{_lakh(g['limit'])} limit, {_lakh(g['total'])} together. Just outside the strictest "
+            "split (every piece 96-100% of a limit, within 30 days), so not a question: check "
+            "this, whether it is one job filed twice or cut into pieces. Others: "
+            f"{', '.join(others)}.{said}",
+            hard=False, risk=CHECK_RISK,
+            evidence={"group_id": g["group_id"], "size": g["size"], "total": g["total"],
+                      "limit": g["limit"], "others": others, "days": g["days"],
+                      "segments": g.get("segments") or [], "kind": "split_loose",
+                      "declared": declared}))
+
     # 4. look-alikes by words: a note, the form asks the agency
     asked = {f.evidence.get("other") for f in findings}
     for x, t in found["look_alike"]:
@@ -260,11 +295,26 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
                       "other_amount": x.amount, "answer": (answers.get(x.work_id) or {})
                       .get("answer"), "kind": "look_alike"}))
 
-    # 5. a same-kind building just past the one-site line (T136): a note, never counted
+    # 5. a same-kind building just past the one-site line (T136): a note, never counted. T168: the
+    #    same words AND the same size, the form naming no nearby work: "check this" (a building
+    #    re-filed with its pin typed 70 m off; the first site video settles it)
+    alike_ids = {x.work_id for x, _t in found["look_alike"]}
     for x, d in found.get("near") or []:
         if x.work_id in asked:
             continue
         named = x.work_id in answers or (link and link["work_id"] == x.work_id)
+        if not named and x.work_id in alike_ids and size_alike(me.form, x.form):
+            findings.append(Finding(
+                "SAME_BUILDING_NEAR",
+                f"Sanctioned work {x.work_id} ({_lakh(x.amount)}, {_state(x)}) has its map pin "
+                f"{d:,.0f} m from this one, just past the {PIN_METRES:.0f} m that makes two pins "
+                "one site, with the same description and the same size, and the form names no "
+                "nearby work. Check this: it may be the same building filed again; the first "
+                "site video shows whether it already stands.",
+                hard=False, risk=CHECK_RISK,
+                evidence={"other": x.work_id, "metres": round(d, 1), "other_amount": x.amount,
+                          "kind": "near_same"}))
+            continue
         findings.append(Finding(
             "NEAR_SANCTIONED_WORK",
             f"Sanctioned work {x.work_id} ({_lakh(x.amount)}, {_state(x)}) of the same kind has "
@@ -278,6 +328,9 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
             evidence={"other": x.work_id, "metres": round(d, 1), "other_amount": x.amount,
                       "kind": "near"}))
 
+    same_near = {f.evidence.get("other") for f in findings if f.code == "SAME_BUILDING_NEAR"}
+    findings = [f for f in findings if not (f.code == "LOOKS_LIKE_SANCTIONED_WORK"
+                                            and f.evidence.get("other") in same_near)]
     n, pinned, line = found["compared"], bool(me.sites), found.get("line", PIN_METRES)
     limits = pin_problems(me.form, me.linear)
     if not pinned:
@@ -293,6 +346,17 @@ def assess(work: dict, index: RepeatIndex | None) -> AgentResult:
     if together:            # display only: the queue shows works filed together as one case
         evidence.update(group_id=together[0], size=together[1])
     asked_codes = [f for f in findings if f.risk > 0]
+    if me.form and not pinned and not asked_codes:
+        # T168: a form whose map pin is blank or not in India (swapped, 0, 0) was not compared by
+        # site: "nothing sanctioned here" would read as a clean chit. The notes by words stay
+        return AgentResult(
+            agent=AGENT, status=Status.NOT_ASSESSABLE, verdict=Status.NOT_ASSESSABLE.value,
+            risk=0.0, confidence=0.0, hard=False, version=VERSION,
+            headline="Cannot be assessed by site: the form's map pin is missing or not in India, "
+                     "so no sanctioned work at this place could be looked for. This is not a "
+                     "clean chit: ask for the right pin.",
+            findings=findings, limitations=limits, evidence=evidence,
+            duration_ms=int((time.perf_counter() - t0) * 1000))
     if asked_codes:
         asked_codes.sort(key=lambda f: -f.risk)
         top = asked_codes[0]

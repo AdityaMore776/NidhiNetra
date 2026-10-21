@@ -103,6 +103,13 @@ TEXT_MIN = 0.90                   # look-alike wording (the trial's strictest ru
 PLACE_MIN = 100.0                 # every place word shared
 SPLIT_SHARE = 0.96                # every piece at least this share of the limit it sits under
 SPLIT_MAX = 5                     # 6+ alike pieces read as a series of purchases, not one job
+# T168 "check this" splits, the ways past the strictest one that read as one job on the real works
+# (data/trial/t168_split_measure.py): every piece 96-100% but filed 31-90 days apart (12 of 17
+# groups read one job filed twice or cut in two), or numbered parts / pieces end to end at 90-96%
+# within 30 days (3 of 3). Unnumbered pieces at 90-96% were mostly different spots (C-Block and
+# D-Block borewells): never asked
+LOOSE_SHARE = 0.90
+LOOSE_GAP_DAYS = 90
 DECLARED_NATURES = ("continuation", "extension", "upgrade", "reconstruction")
 SANCTIONED = ("SANCTIONED", "COMPLETED")
 # A ground floor and a first floor, an SC colony and a BC colony are two works (read by eye on
@@ -378,8 +385,8 @@ def _together_key(r: Rec) -> tuple:
     return (r.district, r.mp, _key(r.description), r.rec)
 
 
-def _near_limit(amount: float) -> bool:
-    return any(SPLIT_SHARE * lim <= amount <= lim for lim in split_limits())
+def _near_limit(amount: float, share: float = SPLIT_SHARE) -> bool:
+    return any(share * lim <= amount <= lim for lim in split_limits())
 
 
 def _touch(a: Rec, b: Rec) -> bool:
@@ -395,14 +402,15 @@ def _touch(a: Rec, b: Rec) -> bool:
     return False
 
 
-def pin_split_groups(recs: list[Rec]) -> list[dict]:
+def pin_split_groups(recs: list[Rec], share: float = SPLIT_SHARE,
+                     gap: int = SPLIT_GAP_DAYS) -> list[dict]:
     """The strictest split found by the forms' map pins (T136: the same split with one piece
     called another kind of road, or described in other words, escaped the wording rule): 2 to
     SPLIT_MAX works of one family (a lane: Rec.lane) whose sites meet end to end or at one pin,
     recommended within
     SPLIT_GAP_DAYS, EVERY piece 96-100% of one limit and the total above it."""
     cand = sorted((r for r in recs if r.sites and r.rec is not None and r.lane
-                   and _near_limit(r.amount)), key=lambda r: r.rec)
+                   and _near_limit(r.amount, share)), key=lambda r: r.rec)
     parent = list(range(len(cand)))
 
     def find(x: int) -> int:
@@ -414,7 +422,7 @@ def pin_split_groups(recs: list[Rec]) -> list[dict]:
     for i, a in enumerate(cand):
         for j in range(i + 1, len(cand)):
             b = cand[j]
-            if (b.rec - a.rec).days > SPLIT_GAP_DAYS:
+            if (b.rec - a.rec).days > gap:
                 break
             if a.mp == b.mp and a.lane == b.lane and _touch(a, b):
                 parent[find(i)] = find(j)
@@ -424,7 +432,7 @@ def pin_split_groups(recs: list[Rec]) -> list[dict]:
     out = []
     for sub in chains.values():
         amounts = [r.amount for r in sub]
-        lim = next((x for x in split_limits() if all(SPLIT_SHARE * x <= a <= x for a in amounts)
+        lim = next((x for x in split_limits() if all(share * x <= a <= x for a in amounts)
                     and sum(amounts) > x), None)
         if not 2 <= len(sub) <= SPLIT_MAX or lim is None:
             continue
@@ -436,26 +444,44 @@ def pin_split_groups(recs: list[Rec]) -> list[dict]:
     return out
 
 
-def split_groups(recs: list[Rec]) -> dict[str, dict]:
+def split_groups(recs: list[Rec], share: float = SPLIT_SHARE,
+                 gap: int = SPLIT_GAP_DAYS) -> dict[str, dict]:
     """{work id: group} for the strictest splits among these works of one district (module
     note): only works priced within 4% under a limit can be pieces, so the blocks stay small."""
     blocks: dict[tuple, list[Rec]] = defaultdict(list)
     for r in recs:
-        if r.rec is not None and _near_limit(r.amount):
+        if r.rec is not None and _near_limit(r.amount, share):
             blocks[(r.mp, r.work_type)].append(r)
     out: dict[str, dict] = {}
-    for g in pin_split_groups(recs):
+    for g in pin_split_groups(recs, share, gap):
         for wid in g["members"]:
             out[wid] = g                     # the wording's group, if any, is set below
     for block in blocks.values():
         if len(block) < 2:
             continue
-        for g in groups_in_block(block):
+        for g in groups_in_block(block, gap):
             lim = g.get("limit")
             if (g["kind"] in ("same_site_split", "stretches") and lim and g["size"] <= SPLIT_MAX
-                    and all(SPLIT_SHARE * lim <= a <= lim for a in g["amounts"])):
+                    and all(share * lim <= a <= lim for a in g["amounts"])):
                 for wid in g["members"]:
                     out[wid] = g
+    return out
+
+
+def loose_split_groups(recs: list[Rec], strict: dict[str, dict]) -> dict[str, dict]:
+    """{work id: group} for the T168 "check this" splits (LOOSE_SHARE note) among these works,
+    leaving out every work already in a strictest split."""
+    out: dict[str, dict] = {}
+    for wid, g in split_groups(recs, LOOSE_SHARE, LOOSE_GAP_DAYS).items():
+        if wid in strict or any(m in strict for m in g["members"]):
+            continue
+        lim = g.get("limit") or 0
+        if not lim:
+            continue
+        share = min(g["amounts"]) / lim
+        numbered = g["kind"] in ("stretches", "pins_split")
+        if share >= SPLIT_SHARE or (numbered and g["days"] <= SPLIT_GAP_DAYS):
+            out[wid] = g
     return out
 
 
@@ -504,6 +530,7 @@ class RepeatIndex:
     # as one case (migration 012), so 11 rows of one street-light purchase read as one.
     _together: dict[tuple, list[str]] = field(default_factory=dict)
     _splits: dict[str, dict] = field(default_factory=dict)
+    _loose: dict[str, dict] = field(default_factory=dict)       # T168 "check this" splits
     # pinned works by district and map cell, and those too long to file in cells (always looked at)
     _grid: dict[str, dict[tuple[int, int], list[Rec]]] = field(default_factory=dict)
     _wide: dict[str, list[Rec]] = field(default_factory=dict)
@@ -522,7 +549,9 @@ class RepeatIndex:
             for r in recs:
                 if r.rec is not None and _key(r.description):
                     idx._together.setdefault(_together_key(r), []).append(r.work_id)
-            idx._splits.update(split_groups(recs))
+            strict = split_groups(recs)
+            idx._splits.update(strict)
+            idx._loose.update(loose_split_groups(recs, strict))
             for r in recs:
                 if not r.sites:
                     continue
@@ -637,8 +666,11 @@ class RepeatIndex:
                         alike.append((x, t))
         if known is not None and known.description == me.description:
             split = self._splits.get(me.work_id)
+            loose = None if split else self._loose.get(me.work_id)
         else:                                 # a new work: its pieces are looked for on the spot
-            split = split_groups(others + [me]).get(me.work_id)
+            strict = split_groups(others + [me])
+            split = strict.get(me.work_id)
+            loose = None if split else loose_split_groups(others + [me], strict).get(me.work_id)
             _localise(others)                 # leave the index as it was
             _count_copies(others)
         alike.sort(key=lambda p: (-p[1], p[0].work_id))
@@ -646,6 +678,7 @@ class RepeatIndex:
         return {"me": me, "at_site": at_site, "overlap": overlap, "declared": link,
                 "look_alike": alike[:5], "near": near[:3],
                 "answers": answers(me.form), "compared": len(others), "split": split,
+                "split_loose": loose,
                 "sanctioned_earlier": len(earlier), "place_named": bool(me.place),
                 "line": line}
 

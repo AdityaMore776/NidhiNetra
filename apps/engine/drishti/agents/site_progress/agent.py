@@ -61,12 +61,12 @@ import time
 from datetime import date, timedelta
 
 from drishti.agents.contract import AgentResult, Finding, Status
-from drishti.agents.site_progress import spots
+from drishti.agents.site_progress import sitemap, spots
 from drishti.agents.site_progress import visits as site_visits
 
 AGENT = "site_progress"
 NAME = "NidhiLens (Fine-Tuned Site Progress Model)"  # the name shown on the website (T166)
-VERSION = "site-progress-3.4.0"
+VERSION = "site-progress-3.6.0"
 QUESTION = ("Do the monthly site videos show real, new work, at this work's site, for this "
             "work only?")
 CONFIDENCE = 0.8
@@ -82,13 +82,35 @@ UNUSABLE_OF, UNUSABLE_LAST = 4, 5   # this many of the latest videos cannot show
 UNUSABLE_ALL_FROM = 3         # ... or every video so far, from the third
 UNUSABLE_RISK = 0.4           # as NO_SITE_VIDEO: the same way past every other check
 FINAL_GRACE_DAYS = 30         # recorded complete: the final video is due within this many days
+CHECK_RISK = 0.3              # T168 "check this": a fraud is never an edge case (19 Oct)
+PROGRESS_VIDEOS = 2           # T139: progress filmed before the final shows the asset is new
+# T168 (the owner): every video records where it was filmed, near where the form says the work is.
+# The rough area: the site's own size (a building's side, a road's line), plus AWAY_M, plus the
+# phone's own reported accuracy (fixes poorer than 50 m are already dropped). AWAY_M covers
+# standing back to film (VIEW_REACH_M, 40 m) and a map pin typed a little off
+AWAY_M = 75.0
+AWAY_RISK, AWAY_TWICE_RISK = CHECK_RISK, 0.5
+APPROX_M = 500.0              # a location this vague is none ("approximate location": 1-3 km)
+NO_LOCATION_LAST = 3          # of the last this many accepted videos ...
+NO_LOCATION_RISK, NO_LOCATION_ALL_RISK = CHECK_RISK, 0.4     # ... 2 without a location, or all
 OFF_SPOT_M = 20.0             # T158: a viewpoint filmed this far from its spot is noted
 RISK = {"FOOTAGE_USED_BEFORE": 0.8, "SAME_PLACE_AS_ANOTHER_WORK": 0.7,
         "NOT_FILMED_AT_THIS_SITE": 0.8, "CLAIM_NOT_SHOWN": 0.5, "COMPLETE_NOT_SHOWN": 0.6,
         "ALREADY_BUILT_AT_START": 0.6, "NO_SITE_VIDEO": NO_VIDEO_RISK,
         "SITE_NOT_AT_FORM_PIN": PIN_OFF_RISK, "SITE_VIDEOS_UNUSABLE": UNUSABLE_RISK,
-        "COMPLETE_NOT_FILMED": NO_VIDEO_RISK, "FIRST_FILMED_FINISHED": NO_VIDEO_RISK}
+        "COMPLETE_NOT_FILMED": NO_VIDEO_RISK, "FIRST_FILMED_FINISHED": NO_VIDEO_RISK,
+        "NO_FIRST_VISIT": CHECK_RISK, "LOCATION_NOT_RECORDED": NO_LOCATION_RISK,
+        "FILMED_AWAY_FROM_FORM_SITE": AWAY_RISK}
 HI = {
+    "LOCATION_NOT_RECORDED": "हाल के साइट वीडियो में फ़िल्माने का स्थान दर्ज नहीं है (जीपीएस बंद, कमज़ोर, "
+                             "या नकली स्थान)। हर वीडियो में स्थान ज़रूरी है: एजेंसी से स्थान चालू "
+                             "करके दोबारा फ़िल्माने को कहें और स्थल जाँचें।",
+    "FILMED_AWAY_FROM_FORM_SITE": "साइट वीडियो फ़ॉर्म में बताए कार्य स्थल से काफ़ी दूर फ़िल्माया गया। "
+                                  "जाँचें कि कार्य वहीं है जहाँ फ़ॉर्म बताता है।",
+    "NO_FIRST_VISIT": "कार्य पूर्ण दर्ज है, पर कार्य शुरू होने से पहले पहला साइट वीडियो नहीं बना और "
+                      "अंत से पहले कार्य होते हुए दिखाने वाले वीडियो दो से कम हैं, इसलिए कोई वीडियो "
+                      "नहीं दिखाता कि परिसंपत्ति नई है। जाँचें कि वह स्वीकृति से पहले से खड़ी तो "
+                      "नहीं थी।",
     "FIRST_FILMED_FINISHED": "पहला साइट वीडियो ही कार्य को पूरा दिखाता है, और कार्य शुरू होने से "
                              "पहले कोई वीडियो नहीं फ़िल्माया गया: कुछ भी नहीं दिखाता कि परिसंपत्ति "
                              "नई है। जाँचें कि यह स्वीकृति से पहले या किसी अन्य योजना में तो नहीं "
@@ -123,8 +145,8 @@ VAGUE = re.compile(r"^(?:the\s+)?(?:works?\s+)?(?:is\s+)?(?:in\s+progress|on\s*g
                    r"work|progress|-+)$", re.IGNORECASE)
 
 
-def _f(code: str, text: str, **evidence) -> Finding:
-    return Finding(code, text, hard=False, risk=RISK[code],
+def _f(code: str, text: str, risk: float | None = None, **evidence) -> Finding:
+    return Finding(code, text, hard=False, risk=RISK[code] if risk is None else risk,
                    evidence={"message_hi": HI[code], **evidence})
 
 
@@ -358,6 +380,62 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
                                "was compared with).", visits=[v.visit_id for v in off],
                                metres=round(mid, 1)))
 
+    # 4c. T168: filmed far from every place the form gives (beyond the rough area, AWAY_M note)
+    form = work.get("cost_form") if isinstance(work.get("cost_form"), dict) else None
+    places = sitemap.places(form, work.get("work_type_code"))
+    counted = {f.code for f in findings}
+    away = []
+    for v in trusted if places else []:
+        p = v.get("gps_point")
+        if not p or v.get("mock_location") is True or v.get("gps_weak") is True:
+            continue
+        beyond = (min(s.outside_by(p["lat"], p["lon"]) for s in places)
+                  - (v.get("gps_accuracy_m") or 0.0))
+        if beyond > AWAY_M:
+            away.append((v, beyond))
+    if away and not counted & {"NOT_FILMED_AT_THIS_SITE", "SITE_NOT_AT_FORM_PIN"}:
+        far = ", ".join(f"{_when(v)} about {d + AWAY_M:,.0f} m from it" for v, d in away[:4])
+        findings.append(_f("FILMED_AWAY_FROM_FORM_SITE",
+                           f"{len(away)} site video{'s' * (len(away) != 1)} filmed well outside "
+                           f"the place the form gives for the work ({far}; a rough area of "
+                           f"{AWAY_M:.0f} m around the site, and the phone's own accuracy, are "
+                           "allowed). " + ("Check this: once can be a GPS slip, but check where "
+                                           "the work really is." if len(away) == 1 else
+                                           "Check where the work really is, and whether the form's "
+                                           "location is right."),
+                           risk=AWAY_RISK if len(away) == 1 else AWAY_TWICE_RISK,
+                           visits=[v.visit_id for v, _d in away],
+                           metres_beyond=[round(d, 1) for _v, d in away]))
+
+    # 4d. T168: every video records where it was filmed. Only what the readings say counts: a
+    #     reading with no GPS fields at all (older readings) says nothing
+    def unlocated(v) -> str | None:
+        if v.get("mock_location") is True:
+            return "the phone reported a faked (mock) location"
+        if v.get("gps_fixes") == 0:
+            return "no location (GPS off or refused)"
+        acc = v.get("gps_accuracy_m")
+        if v.get("gps_weak") is True and acc is not None and acc > APPROX_M:
+            # weak GPS under trees or a roof is honest noise, the views decide (T136); a phone
+            # set to give only an approximate location is not
+            return f"only an approximate location (+-{acc:,.0f} m)"
+        return None
+    last = [(v, unlocated(v)) for v in trusted][-NO_LOCATION_LAST:]
+    missing = [(v, why) for v, why in last if why]
+    if len(missing) >= 2:
+        every = len(last) == NO_LOCATION_LAST and len(missing) == NO_LOCATION_LAST
+        findings.append(_f("LOCATION_NOT_RECORDED",
+                           f"{len(missing)} of the last {len(last)} site videos carry no usable "
+                           "location (" + "; ".join(f"{_when(v)}: {why}" for v, why in missing)
+                           + "). Every site video must record where it was filmed, so it can be "
+                           "held to the form's site: ask for the location to be turned on, and "
+                           "check the site.", risk=NO_LOCATION_ALL_RISK if every
+                           else NO_LOCATION_RISK, visits=[v.visit_id for v, _w in missing]))
+    elif missing:
+        v, why = missing[0]
+        notes.append(f"{_when_cap(v)} has no location recorded ({why}): the next video must record "
+                     "where it was filmed. One such video is not a finding.")
+
     # 5. complete, but not shown complete
     finals = [v for v in trusted if v.kind == "final"]
     if finals and finals[-1].get("complete_shown") is False:
@@ -406,6 +484,18 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
                                "finished, and none was filmed before work started, so nothing "
                                "shows the asset is new. Check that it was not built before "
                                "sanction or under another scheme.", visit=first.visit_id))
+        elif work.get("status") == "COMPLETED" or any(x.kind == "final" for x in trusted):
+            # T168: one late-stage monthly video, then the final one, passed as new. Two videos
+            # of the work going on before the final still show it rising (T139)
+            progress = [x for x in trusted if x.kind != "final" and x.shows_work]
+            if len(progress) < PROGRESS_VIDEOS:
+                findings.append(_f("NO_FIRST_VISIT",
+                                   f"Recorded complete, but no first visit was filmed before "
+                                   f"work started and only {len(progress)} video"
+                                   f"{'s' * (len(progress) != 1)} shows the work going on "
+                                   f"before the end (first: {_when(first)}), so nothing filmed "
+                                   "shows the asset is new. Check this: that it was not standing "
+                                   "before sanction.", visit=first.visit_id))
 
     # 7. room for error (T136): one poor video is a note; the latest two in a row are a question
     poor = [(v, site_visits.unusable(v)) for v in trusted]
