@@ -258,10 +258,10 @@ export interface Me {
 }
 
 /** POST JSON to the engine at /api/v1 with the same sign-in headers as api() (T064). */
-export async function apiPost<T>(path: string, body: unknown): Promise<T> {
+export async function apiPost<T>(path: string, body: unknown, method: "POST" | "PATCH" = "POST"): Promise<T> {
   const headers = { "Content-Type": "application/json", ...(await signInHeaders()) };
   const res = await fetch(new URL(`/api/v1${path}`, window.location.origin), {
-    method: "POST",
+    method,
     headers,
     body: JSON.stringify(body),
     cache: "no-store",
@@ -447,4 +447,45 @@ export interface PlanDistrict {
   name: string;
   state: string;
   cases: number;
+}
+
+// ---- alerts: queue cases, their lifecycle and audit trail (mirror apps/engine/drishti/api/alerts.py, T060)
+
+export type AlertState = "NEW" | "TRIAGED" | "IN_PLAN" | "INSPECTED" | "ISSUE_CONFIRMED" | "CLEARED" | "CLOSED";
+
+export interface AlertRow {
+  alert_id: string;
+  state: AlertState;
+  label: string;
+  /** false once the case has left the review queue; its history stays */
+  in_queue: boolean;
+  /** the states this account may move the case to */
+  moves: AlertState[];
+  work_id: string;
+  district_lgd: string | null;
+  district_name: string | null;
+  state_name: string | null;
+  work_type_code: string | null;
+  description: string | null;
+  amount: number | null;
+  band: Band | null;
+  headline: string | null;
+  case_size: number | null;
+  updated_at: string | null;
+  note: string | null;
+}
+
+export interface AlertEntry {
+  seq: number;
+  at: string;
+  action: "open" | "move";
+  from_state: AlertState | null;
+  to_state: AlertState;
+  note: string | null;
+  actor_role: string;
+  actor_name: string | null;
+}
+
+export interface AlertPage extends Page<AlertRow> {
+  counts: Record<AlertState, number>;
 }
