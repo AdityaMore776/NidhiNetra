@@ -78,17 +78,21 @@ def test_dup_ignores_every_date_moved_by_the_same_days(gap, shift):
 # ---- Time & Rules --------------------------------------------------------------------------
 
 def _finish(days_after: int, shift: int = 0, videos=()):
-    san = date(2026, 3, 1) + timedelta(days=shift)
-    start = f"{(san + timedelta(days=5)):%Y-%m}"
+    # shifted in whole months, the sanction on the 1st: the form declares its start as a MONTH,
+    # so a shift of days could move the start a day against the sanction (28 Feb -> "March"
+    # counts from 1 March) and the two works would no longer be the same work moved in time
+    m = 3 + shift
+    san = date(2026 + (m - 1) // 12, (m - 1) % 12 + 1, 1)
+    start = f"{san:%Y-%m}"
     w = _work(status="COMPLETED", recommended_date=san - timedelta(days=40), sanction_date=san,
               completed_date=san + timedelta(days=days_after),
               cost_form=_tform(months=4, start=start),
               site_visits=[_visit(san + timedelta(days=d + 0)) for d in videos])
-    return timing(w, AS_OF + timedelta(days=shift))
+    return timing(w, AS_OF + (san - date(2026, 3, 1)))
 
 
 @FAST
-@given(days=st.integers(1, 200), shift=st.integers(-300, 300))
+@given(days=st.integers(1, 200), shift=st.integers(-24, 24))      # whole months, see _finish
 def test_time_rules_ignore_every_date_moved_by_the_same_days(days, shift):
     assert counted(_finish(days, shift)) == counted(_finish(days)), days
 

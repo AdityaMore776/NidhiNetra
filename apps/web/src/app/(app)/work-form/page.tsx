@@ -32,6 +32,8 @@ import { type FormWindow, fillForm as fill, fitFrame } from "@/lib/work-form-fra
 interface FormExample {
   id: string;
   agent: string | null;
+  /** T170: how the picker groups it (an older file has none: an agent means suspected) */
+  kind?: Kind;
   title: string;
   story: string;
   later: string[];
@@ -68,10 +70,30 @@ function mark(frame: HTMLIFrameElement | null, trace: Trace, form: Record<string
   );
 }
 
-const GROUPS: { agent: string | null; label: string }[] = [
-  ...AGENT_ORDER.map((id) => ({ agent: id as string | null, label: agentMeta(id).name })),
-  { agent: null, label: "Nothing flagged" },
+type Kind = "normal" | "edge" | "suspected";
+
+/** T170 (owner): the examples as judges should read them, honest first, then the unusual, then the schemes */
+const KINDS: { kind: Kind; label: string; note: string; color: string }[] = [
+  { kind: "normal", label: "Normal", note: "Honest works: every agent reads the form and none asks.", color: "var(--low)" },
+  {
+    kind: "edge",
+    label: "Edge cases",
+    note: "Honest but unusual: the agents notice, say why it is fine, and at most ask for a follow-up.",
+    color: "var(--medium)",
+  },
+  { kind: "suspected", label: "Suspected", note: "Schemes an agency could try: each is caught, and the officer is told why.", color: "var(--high)" },
 ];
+
+function kindOf(ex: FormExample): Kind {
+  return ex.kind ?? (ex.agent ? "suspected" : "normal");
+}
+
+/** one group's examples, the suspected ones agent by agent */
+function inKind(examples: FormExample[], kind: Kind): FormExample[] {
+  const order = (ex: FormExample) => (ex.agent ? AGENT_ORDER.indexOf(ex.agent) : -1);
+  const items = examples.filter((e) => kindOf(e) === kind);
+  return kind === "suspected" ? [...items].sort((a, b) => order(a) - order(b)) : items;
+}
 
 export default function WorkFormPage() {
   return (
@@ -88,6 +110,7 @@ function WorkForm() {
   const [shown, setShown] = useState<Shown | null>(null);
   const [ready, setReady] = useState(false);
   const [tab, setTab] = useState<"form" | "data">("form");
+  const [group, setGroup] = useState<Kind | null>(null);
 
   useEffect(() => {
     fetch("/work-form/examples.json")
@@ -142,6 +165,9 @@ function WorkForm() {
   }
 
   const titles = Object.fromEntries((file?.examples ?? []).map((e) => [e.id, e.title]));
+  // the group on show: the one picked, else the shown example's, else the honest ones
+  const active: Kind = group ?? (view?.kind === "example" ? kindOf(view.ex) : "normal");
+  const activeKind = KINDS.find((k) => k.kind === active) ?? KINDS[0];
 
   return (
     <div className="space-y-5">
@@ -163,7 +189,7 @@ function WorkForm() {
           <p className="text-xs text-muted-foreground">Pick one: the form fills in, and the flagged fields are outlined.</p>
         </div>
         {!file && <p className="text-sm text-muted-foreground">Loading the examples…</p>}
-        {/* T143: on a phone the 13 filings are one list to pick from */}
+        {/* T143: on a phone the filings are one list to pick from, grouped as on a wide screen */}
         {file && (
           <label className="block md:hidden">
             <span className="sr-only">Example filing</span>
@@ -179,10 +205,10 @@ function WorkForm() {
               <option value="" disabled>
                 Pick an example filing…
               </option>
-              {GROUPS.map((g) => {
-                const items = file.examples.filter((e) => e.agent === g.agent);
+              {KINDS.map((g) => {
+                const items = inKind(file.examples, g.kind);
                 return items.length ? (
-                  <optgroup key={g.label} label={g.label}>
+                  <optgroup key={g.kind} label={`${g.label} (${items.length})`}>
                     {items.map((ex) => (
                       <option key={ex.id} value={ex.id}>
                         {ex.title}
@@ -195,47 +221,47 @@ function WorkForm() {
           </label>
         )}
         {file && (
-          <div className="hidden gap-3 md:grid md:grid-cols-2 xl:grid-cols-5">
-            {GROUPS.map((g) => {
-              const items = file.examples.filter((e) => e.agent === g.agent);
-              if (!items.length) return null;
-              const color = g.agent ? agentMeta(g.agent).color : "var(--low)";
-              return (
-                <div key={g.label} className="min-w-0 space-y-1.5">
-                  <div className="flex items-center gap-2 text-xs font-semibold" style={{ color }}>
-                    {g.agent && <EngineMark id={g.agent} size={20} />}
-                    {g.label}
-                  </div>
-                  <ul className="space-y-1">
-                    {items.map((ex) => {
-                      const on = view?.kind === "example" && view.ex.id === ex.id;
-                      return (
-                        <li key={ex.id}>
-                          <button
-                            type="button"
-                            onClick={() => pick(ex)}
-                            disabled={!ready}
-                            className={cn(
-                              "w-full rounded-lg border px-2.5 py-1.5 text-left text-xs leading-snug transition-colors disabled:opacity-50",
-                              on ? "border-brand-600 bg-brand-50 font-medium" : "bg-white hover:bg-muted",
-                            )}
-                          >
-                            {ex.title}
-                          </button>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              );
-            })}
+          <div className="hidden space-y-3 md:block">
+            <div className="flex flex-wrap items-center gap-3">
+              <Segmented<Kind>
+                value={active}
+                onChange={setGroup}
+                options={KINDS.map((g) => ({ value: g.kind, label: g.label, dot: g.color, count: inKind(file.examples, g.kind).length }))}
+              />
+              <span className="text-xs text-muted-foreground">{activeKind.note}</span>
+            </div>
+            <ul className="grid gap-1.5 md:grid-cols-2 xl:grid-cols-4">
+              {inKind(file.examples, active).map((ex) => {
+                const on = view?.kind === "example" && view.ex.id === ex.id;
+                return (
+                  <li key={ex.id}>
+                    <button
+                      type="button"
+                      onClick={() => pick(ex)}
+                      disabled={!ready}
+                      title={ex.agent ? `About ${agentMeta(ex.agent).name}` : "Every agent reads it"}
+                      className={cn(
+                        "flex h-full w-full items-start gap-2 rounded-lg border px-2.5 py-1.5 text-left text-xs leading-snug transition-colors disabled:opacity-50",
+                        on ? "border-brand-600 bg-brand-50 font-medium" : "bg-white hover:bg-muted",
+                      )}
+                    >
+                      {ex.agent && <EngineMark id={ex.agent} size={16} />}
+                      <span className="min-w-0">{ex.title}</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         )}
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t pt-3 text-xs text-muted-foreground">
           <Button size="sm" className="rounded-xl" onClick={checkOwn} disabled={!ready}>
             <Play /> Check this form with the agents
           </Button>
-          <span>Change any field (say, the cement quantity) and check again. Nothing is saved.</span>
+          <span>
+            Change any field (say, the cement rate), answer what the form then asks (a changed total needs a reason in section F) and check again.
+            Nothing is saved.
+          </span>
         </div>
       </section>
 
@@ -322,9 +348,11 @@ function Verdict({ shown, onShow, onData }: { shown: Shown | null; onShow: (fiel
           </>
         )}
         {fixes.length > 0 && (
-          <details className="text-xs text-muted-foreground">
+          // open: Cost judges a form only once it is complete, so say what to fill (T170)
+          <details open className="rounded-lg border border-[var(--medium)] bg-[var(--medium-soft)] px-2.5 py-1.5 text-xs text-foreground/85">
             <summary className="more-toggle">
-              {fixes.length} {fixes.length === 1 ? "answer" : "answers"} missing for Cost
+              Cost waits for {fixes.length} {fixes.length === 1 ? "answer" : "answers"} in the form: fill {fixes.length === 1 ? "it" : "them"} and check
+              again
             </summary>
             <ul className="mt-1 max-h-32 space-y-0.5 overflow-auto">
               {fixes.slice(0, 12).map((i) => (

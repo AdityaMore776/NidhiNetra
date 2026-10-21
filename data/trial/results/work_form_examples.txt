@@ -1,4 +1,4 @@
-40,935 dashboard works, as of 2026-10-02; district Jaunpur; 11 background filings
+209,993 works (research export (26 May 2026)), as of 2026-10-02; district Jaunpur; 16 background filings
 clean           LOW     0.000 form ready True  {} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
 cost_padded     MEDIUM  0.250 form ready True  {'cost_estimate': ['ESTIMATE_ABOVE_FAIR_PRICE']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}
 cost_quantity   MEDIUM  0.438 form ready True  {'cost_estimate': ['ESTIMATE_ABOVE_FAIR_PRICE', 'MATERIAL_QUANTITY_ABOVE_SIZE']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}
@@ -10,5 +10,24 @@ dup_split       HIGH    0.722 form ready True  {'dup_split': ['SPLIT_JUST_UNDER_
 time_fast       MEDIUM  0.438 form ready True  {'time_rules': ['FINISHED_TOO_FAST'], 'site_progress': ['NO_SITE_VIDEO']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
 time_late       MEDIUM  0.250 form ready True  {'time_rules': ['PAST_PROMISED_TIME']} {'cost_estimate': 'NOT_ASSESSABLE', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
 site_reused     MEDIUM  0.438 form ready True  {'site_progress': ['FOOTAGE_USED_BEFORE', 'SAME_PLACE_AS_ANOTHER_WORK']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
-site_claim      MEDIUM  0.250 form ready True  {'site_progress': ['CLAIM_NOT_SHOWN']} {'cost_estimate': 'NOT_ASSESSABLE', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
+site_claim      MEDIUM  0.250 form ready True  {'site_progress': ['CLAIM_NOT_SHOWN']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
 site_elsewhere  MEDIUM  0.250 form ready True  {'site_progress': ['NOT_FILMED_AT_THIS_SITE']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
+ok_lights       LOW     0.000 form ready True  {} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}
+ok_hall_done    LOW     0.000 form ready True  {} {'cost_estimate': 'NOT_ASSESSABLE', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
+ok_next_lane    LOW     0.000 form ready True  {} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}
+ok_hindi_gst    LOW     0.000 form ready True  {} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}
+edge_slow_sanction LOW     0.050 form ready True  {'time_rules': ['SANCTIONED_LATE']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
+edge_fast_filmed LOW     0.000 form ready True  {} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
+edge_rain_pause LOW     0.000 form ready True  {} {'cost_estimate': 'NOT_ASSESSABLE', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
+edge_extension  LOW     0.000 form ready True  {} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}
+edge_weak_gps   LOW     0.000 form ready True  {} {'cost_estimate': 'NOT_ASSESSABLE', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
+edge_price_rise LOW     0.000 form ready True  {} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}
+edge_late_moving LOW     0.125 form ready True  {'time_rules': ['PAST_PROMISED_TIME']} {'cost_estimate': 'NOT_ASSESSABLE', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
+dup_split_spread HIGH    0.667 form ready True  {'dup_split': ['SPLIT_NEAR_LIMIT']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}
+dup_same_hall   MEDIUM  0.250 form ready True  {'dup_split': ['SAME_BUILDING_NEAR']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}
+site_no_first_visit MEDIUM  0.250 form ready True  {'site_progress': ['FIRST_FILMED_FINISHED']} {'cost_estimate': 'NOT_ASSESSABLE', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
+site_gps_off    MEDIUM  0.250 form ready True  {'site_progress': ['LOCATION_NOT_RECORDED']} {'cost_estimate': 'NOT_ASSESSABLE', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
+time_filmed_last_day MEDIUM  0.438 form ready True  {'time_rules': ['FINISHED_TOO_FAST'], 'site_progress': ['FIRST_FILMED_FINISHED']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'ASSESSED'}
+cost_other_charges MEDIUM  0.250 form ready True  {'cost_estimate': ['ESTIMATE_ABOVE_FAIR_PRICE']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}
+cost_claimed_reason MEDIUM  0.250 form ready True  {'cost_estimate': ['ESTIMATE_ABOVE_FAIR_RANGE']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}
+cost_ghost_workers MEDIUM  0.250 form ready True  {'cost_estimate': ['LABOUR_DAYS_ABOVE_PEERS']} {'cost_estimate': 'ASSESSED', 'dup_split': 'ASSESSED', 'time_rules': 'ASSESSED', 'site_progress': 'NOT_APPLICABLE'}

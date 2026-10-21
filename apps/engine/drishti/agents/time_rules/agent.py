@@ -126,7 +126,9 @@ def sanctioned_before_recommended(work: dict) -> Finding | None:
 
 
 def _first_work_seen(vs: list[site_visits.Visit]) -> date | None:
-    return next((v.captured for v in vs if v.shows_work and site_visits.genuine(v)), None)
+    # never the final video: it shows the work finished, not starting (T170; as too_fast, T168)
+    return next((v.captured for v in vs if v.shows_work and site_visits.genuine(v)
+                 and v.kind != "final"), None)
 
 
 def too_fast(work: dict, w: win.Window, vs: list[site_visits.Visit]) -> Finding | None:

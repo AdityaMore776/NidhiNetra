@@ -33,7 +33,7 @@ export function ShowcaseBanner() {
       <div className="mx-auto flex w-full max-w-[1440px] items-start gap-x-3 px-4 py-2 text-[12px] leading-snug sm:items-center sm:px-6 sm:text-[12.5px] lg:px-8">
         <FlaskConical className="mt-0.5 size-3.5 shrink-0 text-brand-700 sm:mt-0" />
         <span className="min-w-0 flex-1 text-brand-950">
-          <b className="font-semibold">Prototype view:</b> {f ? f.examples.length : 13} example filings
+          <b className="font-semibold">Prototype view:</b> {f ? `${f.examples.length} example filings` : "Example filings"}
           <span className="hidden sm:inline"> of the work intelligence form</span>, each graded by the four checks.
           <span className="hidden text-muted-foreground sm:inline"> Made-up agencies, compared with a real district&apos;s eSAKSHI works.</span>
         </span>
@@ -51,7 +51,18 @@ export function ShowcaseBanner() {
   );
 }
 
-/** The example filings as cards: what each one shows, and a way into its form and full page. */
+/** T170 (owner): honest works first, then the unusual ones, then the schemes, each group explained */
+const KINDS: { kind: NonNullable<ShowcaseMeta["kind"]>; title: string; note: string }[] = [
+  { kind: "normal", title: "Normal works", note: "Honest filings: every check reads them and none asks. Most filings look like these." },
+  {
+    kind: "edge",
+    title: "Edge cases",
+    note: "Honest but unusual: on some measure each looks like a problem. The checks notice, say why it is fine, and at most ask for a follow-up.",
+  },
+  { kind: "suspected", title: "Suspected", note: "Schemes an agency could try, each caught a different way, with the reason an officer is given." },
+];
+
+/** The example filings as cards, grouped: what each one shows, and a way into its form and full page. */
 export function ExampleGallery({ file }: { file: ShowcaseFile | null }) {
   if (!file)
     return (
@@ -61,9 +72,32 @@ export function ExampleGallery({ file }: { file: ShowcaseFile | null }) {
         ))}
       </div>
     );
+  const kindOf = (m: ShowcaseMeta) => m.kind ?? (m.key === "clean" ? "normal" : "suspected");
+  return (
+    <div className="space-y-8">
+      {KINDS.map((g) => {
+        const items = file.examples.filter(({ detail }) => kindOf(detail.showcase as ShowcaseMeta) === g.kind);
+        if (!items.length) return null;
+        return (
+          <section key={g.kind} className="space-y-3" aria-label={g.title}>
+            <div>
+              <h3 className="text-base font-semibold text-brand-950">
+                {g.title} <span className="num text-sm font-normal text-muted-foreground">({items.length})</span>
+              </h3>
+              <p className="text-[13px] text-muted-foreground">{g.note}</p>
+            </div>
+            <ExampleCards items={items} />
+          </section>
+        );
+      })}
+    </div>
+  );
+}
+
+function ExampleCards({ items }: { items: ShowcaseFile["examples"] }) {
   return (
     <ol className="grid gap-4 md:grid-cols-2">
-      {file.examples.map(({ row, detail }) => {
+      {items.map(({ row, detail }) => {
         const m = detail.showcase as ShowcaseMeta;
         return (
           <li key={row.work_id}>

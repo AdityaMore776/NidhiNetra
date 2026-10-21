@@ -199,6 +199,8 @@ export interface Example {
   trace: Trace;
   /** T142: the work intelligence form the example is a filing of */
   form?: Record<string, unknown>;
+  /** T170: an honest work, an edge case, or a suspected scheme */
+  kind?: "normal" | "edge" | "suspected";
 }
 
 export interface ExamplesFile {

@@ -36,6 +36,7 @@ Run:  apps\engine\.venv\Scripts\python.exe data\trial\work_form_examples.py
 from __future__ import annotations
 
 import json
+import math
 import sys
 from datetime import date, timedelta
 from pathlib import Path
@@ -43,7 +44,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "data"))
 sys.path.insert(0, str(ROOT / "apps" / "engine"))
-from esakshi_dashboard import load  # noqa: E402
+import esakshi_dashboard  # noqa: E402
 
 from drishti import demo  # noqa: E402
 from drishti.agents.cost_estimate import labour as labour_rules  # noqa: E402
@@ -389,9 +390,9 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
                  length=250 + 40 * i, jitter=jit)
         bg_works.append(pswif.to_work(p, today=as_of, status="SANCTIONED"))
 
-    def add(key, agent, codes, title, story, later, p, **record):
+    def add(key, agent, codes, title, story, later, p, kind="suspected", **record):
         ex.append({"key": key, "agent": agent, "codes": codes, "title": title, "story": story,
-                   "later": later, "form": p, "record": record})
+                   "later": later, "form": p, "record": record, "kind": kind})
 
     # --- clean ---
     rec = m(110)
@@ -403,7 +404,7 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
         [f"Sanctioned {san:%d %b %Y}, 35 days after the recommendation",
          "Three site videos so far: the first visit, then new work at the same viewpoints "
          "each month, the agency's claim shown"],
-        p, status="SANCTIONED",
+        p, kind="normal", status="SANCTIONED",
         site_visits=[visit(1, "baseline", start),
                      visit(2, "monthly", start + timedelta(days=30), "changed",
                            "base laid on the first 150 m", "shown"),
@@ -588,7 +589,339 @@ def build(as_of: date) -> tuple[list[dict], list[dict]]:
                            "concrete laid on 200 m", None, gps_inside=False,
                            gps_distance_m=2400, views_match_site=False,
                            viewpoints_matched=0)])
+
+    more_examples(m, add, bg_works)
     return ex, bg_works
+
+
+# ---- T170: more examples, every one different (owner, 20 Oct 2026) -------------------------------
+# Normal works (nothing asked), edge cases (unusual, explained, at most a follow-up) and more
+# suspected schemes, ported from the agents' labelled eval cases (data/eval/*/cases.py, holdout*.py:
+# the case each one follows is named), so each shows a behaviour that is already measured.
+
+NEW_VILLAGES = ["Amarpur", "Bishunpur", "Chakia Tola", "Devipur", "Gangapur Khurd", "Hasanpur",
+                "Semrauna", "Kanakpur", "Lakhanpur", "Mahuari", "Pipra Kalan",
+                "Parsauni", "Sahijpur", "Shivpur Tola", "Tarapur", "Udaipur Khurd",
+                "Vishunpur", "Bariyarpur", "Bhitari"]
+LON_M = METRE / math.cos(math.radians(BASE[0]))          # one metre east, in degrees
+
+
+def at(k: int, north: float = 0.0, east: float = 0.0) -> dict:
+    """Site k's pin moved `north`/`east` metres, as a point work's form fields."""
+    lat, lon = pin(k)
+    return {"latitude": f"{lat + north * METRE:.6f}", "longitude": f"{lon + east * LON_M:.6f}"}
+
+
+def road_at(ref: str, agency: str, village: str, k: int, rec: date, sanction: date | None,
+            north: float = 0.0, east: float = 0.0, length: float = 300, **over) -> dict:
+    """A road starting `north`/`east` metres from site k's pin and running north."""
+    lat, lon = pin(k)
+    la, lo = lat + north * METRE, lon + east * LON_M
+    geo = {"latitude": f"{la:.6f}", "longitude": f"{lo:.6f}", "start_lat": f"{la:.6f}",
+           "start_lon": f"{lo:.6f}", "end_lat": f"{la + length * 0.97 * METRE:.6f}",
+           "end_lon": f"{lo:.6f}"}
+    return road(ref, agency, village, k, rec, sanction, length=length, **{**geo, **over})
+
+
+def retotal(p: dict, mp_x: float = 1.0) -> dict:
+    """The form's totals from its lines, lump sums and other charges, after a line changed."""
+    total = (estimate_total(p) + float(p.get("lumpsum_components") or 0)
+             + float(p.get("other_charges") or 0))
+    p.update(technical_estimate=f"{total:.2f}", mplads_share=f"{total:.0f}",
+             mp_recommended_amount=f"{round(total * mp_x, -3):.0f}")
+    return p
+
+
+def line_no(p: dict, start: str) -> str:
+    return next(k.removeprefix("boq_desc_") for k, v in p.items()
+                if k.startswith("boq_desc_") and str(v).startswith(start))
+
+
+def done_before(p: dict, as_of: date, completed_days_ago: int) -> dict:
+    """An earlier work: recommended 200 days before it was finished, sanctioned 40 days later."""
+    rec = as_of - timedelta(days=completed_days_ago + 200)
+    san = rec + timedelta(days=40)
+    p.update(mp_recommendation_date=d(rec), ida_received_date=d(rec), sanction_date=d(san),
+             sanction_decision="Sanction")
+    return pswif.to_work(p, today=as_of, status="COMPLETED",
+                         completed_date=d(as_of - timedelta(days=completed_days_ago)),
+                         sanction_date=d(san))
+
+
+def located(v: dict, k: int, north: float, accuracy: float = 8.0, fixes: int = 25) -> dict:
+    """A site video that recorded where it was filmed (T168): `north` metres from site k's pin,
+    with the phone's own accuracy; fixes=0 is a video filmed with location off."""
+    lat, lon = pin(k)
+    reading = ({"gps_fixes": 0} if fixes == 0 else
+               {"gps_point": {"lat": round(lat + north * METRE, 6), "lon": lon},
+                "gps_accuracy_m": accuracy, "gps_fixes": fixes, "gps_weak": False})
+    return {**v, "readings": {**v["readings"], **reading}}
+
+
+def months(start: date, n: int, first: int = 2, claim: str = "stage {} done") -> list[dict]:
+    """n monthly videos after a first visit on `start`, new work each month, the claim shown."""
+    return [visit(first + i, "monthly", start + timedelta(days=30 * (i + 1)), "changed",
+                  claim.format(i + 1), "shown") for i in range(n)]
+
+
+def more_examples(m, add, bg_works: list[dict]) -> None:
+    V = NEW_VILLAGES
+    as_of = m(0)
+
+    # ===== normal: nothing to ask ======================================================
+    # cost/cases.py edge_lights_usual: Jaunpur's real solar lights cost about Rs 20,896
+    p = lights("WF-OK-LIGHTS", AG[3], V[0], 27, m(38), 21_000, 210_000)
+    add("ok_lights", "cost_estimate", {}, "Solar street lights at the usual price",
+        "10 solar street lights at Rs 21,000 each, what the district's own lights cost; the MP "
+        "recommended Rs 2.1 lakh.", ["Not sanctioned yet: this is the check before sanction"],
+        p, kind="normal")
+
+    # site_progress/cases.py S-H6: complete, every month filmed, the final video shows it all
+    rec, san = m(330), m(300)
+    start = san + timedelta(days=20)
+    p = hall("WF-OK-HALL", AG[5], V[1], 28, rec, san, days=240, start=start)
+    vs = [visit(1, "baseline", start)] + months(start, 7) + [
+        visit(9, "final", start + timedelta(days=235), "changed", "complete", "shown",
+              complete_shown=True)]
+    add("ok_hall_done", "site_progress", {}, "A hall built on time, every month filmed",
+        "Promised in 8 months and finished in 8: a first visit, seven monthly videos of new "
+        "work, and a final video showing every part finished.",
+        [f"Sanctioned {san:%d %b %Y}", f"Completed {start + timedelta(days=235):%d %b %Y}",
+         "Nine site videos: every claim shown"], p, kind="normal", status="COMPLETED",
+        completed_date=d(start + timedelta(days=235)), site_visits=vs)
+
+    # dup_split/cases.py D-H3: the next street over, 30 m east and parallel
+    old = road_at("WF-OK-LANE-OLD", AG[6], V[2], 29, m(600), m(560))
+    bg_works.append(done_before(old, as_of, 400))
+    p = road_at("WF-OK-LANE", AG[1], V[2], 29, m(45), None, east=30,
+                work_title=f"CC road along the second lane of {V[2]}",
+                scope_of_work=f"Construction of a 300 m long, 3.5 m wide CC road, 150 mm thick in "
+                              f"M20 over a 100 mm WBM base, along the second lane of village "
+                              f"{V[2]}, parallel to the lane built last year.",
+                known_nearby_work_ids="WF-OK-LANE-OLD",
+                nearby_work_relationship="Different asset nearby")
+    add("ok_next_lane", "dup_split", {}, "A new lane beside last year's lane, not on it",
+        "The next street over: a new road 30 m from a road finished last year, running "
+        "alongside it. The form names the old road.",
+        ["Not sanctioned yet: this is the check before sanction",
+         "Earlier road WF-OK-LANE-OLD: completed 13 months ago, 30 m to the west"], p,
+        kind="normal")
+
+    # cost/cases.py noise_hindi + noise_gst_18: written differently, priced honestly
+    p = road("WF-OK-HINDI", AG[8], V[3], 30, m(35), None)
+    for start_word, txt in (("Cement", "सीमेंट (ओपीसी 43)"), ("Coarse sand", "मौरंग / बालू"),
+                            ("Stone aggregate", "गिट्टी 20 मिमी")):
+        p[f"boq_desc_{line_no(p, start_word)}"] = txt
+    p["tax_treatment"] = "Added separately"
+    p["other_charges"] = f"{estimate_total(p) * 0.18:.0f}"
+    retotal(p)
+    add("ok_hindi_gst", "cost_estimate", {}, "An estimate written in Hindi, GST added on top",
+        "Materials named in Hindi and the 18% GST added as a separate charge, because these "
+        "rates leave tax out. The prices are the district's.",
+        ["Not sanctioned yet: this is the check before sanction"], p, kind="normal")
+
+    # ===== edge cases: unusual, explained, never a question ==========================
+    # time_rules/cases.py T-H3: a slow sanction is the office's pace, not the work's (a note
+    # of 0.05: the measured wait curve, T054; it never reaches the queue on its own)
+    rec, san = m(200), m(70)
+    start = m(60)
+    p = road("WF-EDGE-SLOW-SANCTION", AG[9], V[4], 31, rec, san, start=start)
+    add("edge_slow_sanction", "time_rules", {"time_rules": ["SANCTIONED_LATE"]},
+        "Sanctioned four months late, then built on time",
+        "The office took 130 days to sanction it, past the 75-day rule. That is noted about the "
+        "office, never held against the work, which has been filmed changing since.",
+        [f"Recommended {rec:%d %b %Y}, sanctioned {san:%d %b %Y}",
+         "Two site videos since: new work shown"], p, kind="edge", status="SANCTIONED",
+        site_visits=[visit(1, "baseline", start)] + months(start, 1, claim="base laid"))
+
+    # time_rules/cases.py T-H2: a real fast finish is filmed being built
+    rec, san = m(130), m(90)
+    p = road("WF-EDGE-FAST", AG[2], V[5], 32, rec, san, start=san + timedelta(days=5),
+             length=120)
+    add("edge_fast_filmed", "time_rules", {}, "A short road finished in 25 days, filmed all along",
+        "A 120 m road finished 25 days after work began: fast, but four site videos show it "
+        "being built, so the speed is believed.",
+        [f"Sanctioned {san:%d %b %Y}", f"Completed {san + timedelta(days=30):%d %b %Y}",
+         "Filmed on days 5, 15 and 27, and the final day"], p, kind="edge",
+        status="COMPLETED", completed_date=d(san + timedelta(days=30)),
+        site_visits=[visit(1, "baseline", san + timedelta(days=5)),
+                     visit(2, "check", san + timedelta(days=15), "changed", "base laid",
+                           "shown"),
+                     visit(3, "monthly", san + timedelta(days=27), "changed",
+                           "concrete laid on 100 m", "shown"),
+                     visit(4, "final", san + timedelta(days=30), "changed", "complete",
+                           "shown", complete_shown=True)])
+
+    # site_progress/cases.py S-H4: a pause shown honestly is a note
+    san = m(200)
+    start = san + timedelta(days=20)
+    p = hall("WF-EDGE-RAIN", AG[4], V[6], 33, san - timedelta(days=30), san, start=start)
+    vs = [visit(1, "baseline", start)] + months(start, 3) + [
+        visit(5, "monthly", start + timedelta(days=120), "no_change", "work paused for rain",
+              "cant_tell"),
+        visit(6, "monthly", start + timedelta(days=150), "no_change", "work paused for rain",
+              "cant_tell")]
+    add("edge_rain_pause", "site_progress", {}, "Two monsoon months with no change, said openly",
+        "Three months of new work, then two monsoon videos with nothing new. The agency's own "
+        "claim says the work paused for rain.",
+        [f"Sanctioned {san:%d %b %Y}", "Six site videos: the last two show the same site"], p,
+        kind="edge", status="SANCTIONED", site_visits=vs)
+
+    # dup_split/cases.py D-E1: a declared extension that starts where the old road ends
+    old = road_at("WF-EDGE-EXT-OLD", AG[9], V[7], 34, m(700), m(660))
+    bg_works.append(done_before(old, as_of, 500))
+    p = road_at("WF-EDGE-EXT", AG[0], V[7], 34, m(42), None, north=300,
+                work_nature="Extension / additional component",
+                prior_work_id="WF-EDGE-EXT-OLD", known_nearby_work_ids="WF-EDGE-EXT-OLD",
+                nearby_work_relationship="Same asset, separate phase",
+                work_title=f"Extension of the CC road to the canal bridge, {V[7]}",
+                scope_of_work=f"Extension of the existing CC road in village {V[7]} by 300 m, "
+                              "from its present end to the canal bridge, 3.5 m wide, 150 mm "
+                              "thick in M20 over a 100 mm WBM base.")
+    add("edge_extension", "dup_split", {}, "An extension that starts where the old road ends",
+        "A road declared as the extension of a road finished 16 months ago, starting at its "
+        "end. The agents note the earlier work; nothing is asked.",
+        ["Not sanctioned yet: this is the check before sanction",
+         "Earlier road WF-EDGE-EXT-OLD: completed, ending where this one starts"], p,
+        kind="edge")
+
+    # site_progress/holdout2.py SL-H3: under trees the phone says how unsure it is
+    san = m(200)
+    start = san + timedelta(days=20)
+    p = hall("WF-EDGE-GPS", AG[6], V[8], 35, san - timedelta(days=30), san, start=start)
+    vs = [visit(1, "baseline", start)] + months(start, 5)
+    vs = [located(v, 35, north, acc) for v, (north, acc) in
+          zip(vs, [(0, 8), (10, 8), (110, 45), (5, 8), (15, 8), (0, 8)], strict=True)]
+    add("edge_weak_gps", "site_progress", {}, "Filmed under trees: the GPS drifts, and says so",
+        "Every video records where it was filmed. One lands 110 m from the site, but the phone "
+        "itself said it could be 45 m out, and its views match the site.",
+        [f"Sanctioned {san:%d %b %Y}", "Six site videos, each with its location"], p,
+        kind="edge", status="SANCTIONED", site_visits=vs)
+
+    # cost/cases.py edge_price_rise: within the CPWD's 10%
+    p = road("WF-EDGE-PRICE", AG[7], V[9], 36, m(30), None, rate_up=1.09)
+    add("edge_price_rise", "cost_estimate", {}, "Priced after a rise: 9% above older estimates",
+        "Every material about 9% above what other agencies filed three to five months ago: "
+        "prices moved, and that is inside the 10% the CPWD Works Manual allows with reasons.",
+        ["Not sanctioned yet: this is the check before sanction"], p, kind="edge")
+
+    # time_rules/cases.py T-H4: late but still moving: a follow-up at most
+    rec, san, start = m(560), m(520), m(500)
+    p = hall("WF-EDGE-LATE", AG[8], V[10], 37, rec, san, days=240, start=start)
+    vs = [visit(1, "baseline", start)] + months(start, 16)
+    add("edge_late_moving", "time_rules", {"time_rules": ["PAST_PROMISED_TIME"]},
+        "Past its promised time, but still moving",
+        "Promised in 8 months, still being built after 16. Unlike a stopped site, every "
+        "monthly video shows new work, so it gets a follow-up, not a question.",
+        [f"Sanctioned {san:%d %b %Y}", "Seventeen site videos: new work in every one"], p,
+        kind="edge", status="SANCTIONED", site_visits=vs)
+
+    # ===== suspected: more schemes, each caught a different way ========================
+    # dup_split/cases.py D-V5: the strict split, spread past its 30-day window
+    pieces = []
+    # (the shown part is 70 days old: under the 75-day sanction clock, so only the split shows)
+    for i, (amount, days_ago) in enumerate(((493_000, 105), (495_500, 70), (498_000, 35))):
+        piece = road_at(f"WF-SPREAD-{i + 1}", AG[1], V[11], 38, m(days_ago), None,
+                        north=100 * i, length=95,
+                        work_title=f"CC road in village {V[11]}, part {i + 1}",
+                        scope_of_work=f"Construction of a CC road in village {V[11]}, part "
+                                      f"{i + 1} of the lane from the main road to the pond, "
+                                      "95 m long, 3.5 m wide, 150 mm thick in M20 over a WBM "
+                                      "base.")
+        piece["mp_recommended_amount"] = str(amount)
+        pieces.append(piece)
+    for piece in pieces[::2]:
+        bg_works.append(pswif.to_work(piece, today=as_of))
+    add("dup_split_spread", "dup_split", {"dup_split": ["SPLIT_NEAR_LIMIT"]}, "A split spread 35 days apart to dodge the window",
+        "One lane filed as three parts, each 98.6-99.6% of the Rs 5 lakh limit, filed 35 days "
+        "apart so no two fall within a month of each other.",
+        ["Not sanctioned yet: this is the check before sanction",
+         "The other parts: WF-SPREAD-1 (35 days earlier) and WF-SPREAD-3 (35 days later)"],
+        pieces[1])
+
+    # dup_split/holdout.py DH-F1: the same hall, its pin typed 120 m off
+    old = hall("WF-SAMEHALL-OLD", AG[2], V[12], 39, m(900), m(860), **at(39))
+    bg_works.append(done_before(old, as_of, 450))
+    p = hall("WF-SAMEHALL", AG[0], V[12], 39, m(40), None, **at(39, north=120))
+    add("dup_same_hall", "dup_split", {"dup_split": ["SAME_BUILDING_NEAR"]}, "The same hall filed again, its pin moved 120 m",
+        "A hall in the same words and the same size as one finished 15 months ago, pinned 120 "
+        "m away. The form names no earlier work.",
+        ["Not sanctioned yet: this is the check before sanction",
+         "Earlier hall WF-SAMEHALL-OLD: completed 15 months ago, 120 m to the south"], p)
+
+    # site_progress/cases.py S-V4: the first video is the final one
+    san = m(200)
+    p = hall("WF-NOFIRST", AG[3], V[13], 40, san - timedelta(days=30), san,
+             start=san + timedelta(days=20))
+    add("site_no_first_visit", "site_progress",
+        {"site_progress": ["FIRST_FILMED_FINISHED"]},
+        "No first visit: the only video shows it finished",
+        "A new hall recorded complete. Its only site video is the final one, already showing a "
+        "finished hall, so nothing shows it was not standing before the work was sanctioned.",
+        [f"Sanctioned {san:%d %b %Y}", f"Recorded complete {m(25):%d %b %Y}",
+         "One site video: the final one"], p, status="COMPLETED", completed_date=d(m(25)),
+        site_visits=[visit(1, "final", m(20), "changed", "complete", "shown",
+                           complete_shown=True)])
+
+    # site_progress/holdout2.py SL-F3: location switched off, three months running
+    san = m(200)
+    start = san + timedelta(days=20)
+    p = hall("WF-GPSOFF", AG[5], V[14], 41, san - timedelta(days=30), san, start=start)
+    vs = [visit(1, "baseline", start)] + months(start, 5)
+    vs = [located(v, 41, north, fixes=fixes) for v, (north, fixes) in
+          zip(vs, [(0, 25), (10, 25), (0, 25), (0, 0), (0, 0), (0, 0)], strict=True)]
+    add("site_gps_off", "site_progress", {"site_progress": ["LOCATION_NOT_RECORDED"]}, "Location switched off on the last three videos",
+        "The first three videos record where they were filmed; the last three were filmed "
+        "with location off, so nothing shows they were filmed at this site.",
+        [f"Sanctioned {san:%d %b %Y}", "Six site videos: the last three without a location"],
+        p, status="SANCTIONED", site_visits=vs)
+
+    # time_rules/cases.py T-V1: one video, on the day it was called complete
+    rec, san = m(140), m(100)
+    p = road("WF-LASTDAY", AG[4], V[15], 42, rec, san, length=350)
+    add("time_filmed_last_day", "time_rules",
+        {"time_rules": ["FINISHED_TOO_FAST"], "site_progress": ["FIRST_FILMED_FINISHED"]},
+        "\"Complete\" in 6 days, filmed only on that day",
+        "A 350 m road promised in 120 days, recorded complete 6 days after sanction. Its one "
+        "site video was filmed on the completion day, so nothing shows it being built.",
+        [f"Sanctioned {san:%d %b %Y}", f"Recorded complete {san + timedelta(days=6):%d %b %Y}",
+         "One site video, filmed that day"], p, status="COMPLETED",
+        completed_date=d(san + timedelta(days=6)),
+        site_visits=[visit(1, "final", san + timedelta(days=6), "changed", "complete",
+                           "shown", complete_shown=True)])
+
+    # cost/cases.py fraud_other_charges_20: 20% "other charges" on rates that include tax
+    p = road("WF-CHARGES", AG[6], V[16], 43, m(33), None)
+    p["other_charges"] = f"{estimate_total(p) * 0.20:.0f}"
+    retotal(p)
+    add("cost_other_charges", "cost_estimate",
+        {"cost_estimate": ["ESTIMATE_ABOVE_FAIR_PRICE"]}, "20% added as \"other charges\", unexplained",
+        "Fair rates on every line, then 20% more as \"other charges\", although the form says "
+        "the rates already include tax.",
+        ["Not sanctioned yet: this is the check before sanction"], p)
+
+    # cost/cases.py fraud_claimed_hilly: a reason the district's own map contradicts
+    p = road("WF-CLAIMED", AG[7], V[17], 44, m(31), None, rate_up=1.18,
+             terrain="Hilly / steep", site_access="Foot / manual carry required",
+             motorable_access_distance_m="800")
+    add("cost_claimed_reason", "cost_estimate",
+        {"cost_estimate": ["ESTIMATE_ABOVE_FAIR_RANGE"]},
+        "18% higher \"because the site is hilly\", in the plains",
+        "Every material 18% above the district's rates, explained as a hilly site where "
+        "material is carried by hand. Jaunpur is flat plains; nothing confirms the claim.",
+        ["Not sanctioned yet: this is the check before sanction"], p)
+
+    # cost/cases.py fraud_ghost_workers: three times the labourers for the same days
+    p = road("WF-GHOSTS", AG[8], V[18], 45, m(29), None)
+    for k in [k for k in p if k.startswith("lab_trade_") and p[k] == "beldar"]:
+        n = k.removeprefix("lab_trade_")
+        p[f"lab_workers_{n}"] = f"{float(p[f'lab_workers_{n}']) * 3:g}"
+    retotal(p)
+    add("cost_ghost_workers", "cost_estimate",
+        {"cost_estimate": ["LABOUR_DAYS_ABOVE_PEERS"]}, "Three times the labourers a road this size needs",
+        "Fair wages, but 36 labourers on the muster roll for the days 12 do on other agencies' "
+        "roads of this size: the extra workers may exist only on paper.",
+        ["Not sanctioned yet: this is the check before sanction"], p)
 
 
 # ---- the page's Data tab, in plain words, and the engine's copy of the same data ---------------
@@ -602,9 +935,38 @@ def day(x) -> str:
     return date.fromisoformat(str(x)[:10]).strftime("%d %b %Y")
 
 
-def video(v: dict) -> dict:
+def _metres(a: tuple[float, float], b: tuple[float, float]) -> float:
+    dy = (a[0] - b[0]) / METRE
+    dx = (a[1] - b[1]) / METRE * math.cos(math.radians(a[0]))
+    return math.hypot(dx, dy)
+
+
+def where_filmed(v: dict, site: tuple[float, float] | None) -> str | None:
+    """Where the video says it was filmed (T168's location rule), when it says anything worth
+    a line: off, or more than a stone's throw (60 m) from the form's pin. None otherwise."""
+    r = v["readings"]
+    if r.get("gps_fixes") == 0:
+        return "location off: not recorded"
+    point = r.get("gps_point")
+    if not (isinstance(point, dict) and site):
+        return None
+    far = _metres((point["lat"], point["lon"]), site)
+    if far <= 60:
+        return None
+    acc = r.get("gps_accuracy_m")
+    return (f"filmed {far:.0f} m from the form's pin" +
+            (f" (the phone said it could be {acc:.0f} m out)" if acc and acc >= 20 else ""))
+
+
+def video(v: dict, site: tuple[float, float] | None = None) -> dict:
     """One site video, as the video job's readings say, in plain words."""
     r, bits = v["readings"], []
+    if (place := where_filmed(v, site)):
+        bits.append(place)
+    if r.get("quality_ok") is False:
+        bits.append("too dark or short to read")
+    if r.get("complete_shown"):
+        bits.append("every part finished")
     for x in r.get("reused_from") or []:
         bits.append(f"{x['frames']} frames already seen in {x['work_id']}'s video")
     for x in r.get("same_place_as") or []:
@@ -622,15 +984,27 @@ def video(v: dict) -> dict:
             "reading": "; ".join(bits) or "at the site, all 5 viewpoints marked"}
 
 
-def videos(vs: list[dict]) -> list[dict]:
-    """A long run of ordinary monthly visits is told in one line."""
-    rows = [video(v) for v in vs]
-    plain = [i for i, v in enumerate(vs) if v["kind"] == "monthly"
-             and v["readings"].get("change") == "changed"
-             and v["readings"].get("claim_verdict") == "shown"]
-    if len(rows) <= 5 or len(plain) < 3:
+def videos(vs: list[dict], form: dict | None = None) -> list[dict]:
+    """A long run of ordinary monthly visits, one after another, is told in one line; a video
+    with anything to say (no change, no location, filmed away) is never folded into it."""
+    try:
+        site = (float(form["latitude"]), float(form["longitude"])) if form else None
+    except (KeyError, TypeError, ValueError):
+        site = None
+    rows = [video(v, site) for v in vs]
+    plain = [v["kind"] == "monthly" and v["readings"].get("change") == "changed"
+             and v["readings"].get("claim_verdict") == "shown" and where_filmed(v, site) is None
+             for v in vs]
+    best, a = (0, 0), None                    # the longest run of plain visits: (length, start)
+    for i, ok in enumerate([*plain, False]):
+        if ok and a is None:
+            a = i
+        elif not ok and a is not None:
+            best, a = max(best, (i - a, a)), None
+    n, a = best
+    if len(rows) <= 5 or n < 3:
         return rows
-    a, b = plain[0], plain[-1]
+    b = a + n - 1
     run = {"visit": f"{rows[a]['visit']} to {rows[b]['visit']}", "date": "monthly",
            "kind": "Monthly visits", "reading": "new work each month; the claim shown"}
     return rows[:a] + [run] + rows[b + 1:]
@@ -704,7 +1078,7 @@ def plain_data(examples: list[dict], records: list[dict], traces: dict) -> dict:
         "rates": sorted(rates, key=lambda r: -r["forms"]), "standard": standard,
         "rules": rules, "works": works, "filings": filings,
         "after": {e["key"]: e["later"] for e in examples},
-        "videos": {e["key"]: videos(e["record"]["site_visits"]) for e in examples
+        "videos": {e["key"]: videos(e["record"]["site_visits"], e["form"]) for e in examples
                    if e["record"].get("site_visits")},
     }
 
@@ -719,6 +1093,15 @@ def demo_file(examples: list[dict], records: list[dict], as_of: date) -> dict:
             "records": [{k: v for k, v in w.items() if k not in PLACE_KEYS} for w in records],
             "later": {e["form"]["recommendation_ref"]: e["record"] for e in examples
                       if e["record"]}}
+
+
+def load() -> tuple[list[dict], dict]:
+    """The district's real works: the dashboard tables, or with --research the research export
+    (what the live database holds; T170, owner's choice while the tables are not on this PC)."""
+    if "--research" in sys.argv:
+        return esakshi_dashboard.load_research()
+    works, info = esakshi_dashboard.load()
+    return works, {**info, "source": "eSAKSHI dashboard tables"}
 
 
 def main() -> None:
@@ -754,6 +1137,8 @@ def main() -> None:
                      f"form ready {checked['ready']!s:5} {fired} {statuses}")
         print(lines[-1])
         out.append({"id": e["key"], "agent": e["agent"], "title": e["title"],
+                    # normal / edge / suspected: how the form page groups them (T170)
+                    "kind": e["kind"],
                     # the questions it is meant to raise (the public examples check them, T142)
                     "codes": e["codes"],
                     "story": e["story"], "later": e["later"], "form": e["form"],
@@ -782,11 +1167,11 @@ def main() -> None:
             bad.append(f"{e['key']}: the demo check raises {asked}")
     if bad:
         sys.exit("the demo check differs from the examples:\n" + "\n".join(bad))
-    SUMMARY.write_text(f"{len(works):,} dashboard works, as of {as_of}; district {DISTRICT}; "
+    SUMMARY.write_text(f"{len(works):,} works ({info['source']}), as of {as_of}; district {DISTRICT}; "
                        f"{len(background)} background filings\n" + "\n".join(lines) + "\n",
                        encoding="utf-8")
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps({"source": f"eSAKSHI dashboard tables, {len(works):,} works, "
+    OUT.write_text(json.dumps({"source": f"{info['source']}, {len(works):,} works, "
                                          f"as of {as_of}; made-up filings in {DISTRICT}",
                                "as_of": str(as_of), "examples": out,
                                "data": plain_data(examples, background + records, traces)},
