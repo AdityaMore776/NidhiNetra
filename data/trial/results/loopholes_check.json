@@ -2552,6 +2552,17 @@
   "detail": "Not measured. No live score today (NidhiLens is behind a switch, M-SITE-1)."
  },
  {
+  "id": "M-SITE-8",
+  "source": "registry",
+  "agent": "site_progress",
+  "kind": "open",
+  "title": "Any free-text claim reaches NidhiLens's prompt",
+  "how": "The word guard (T172) blocks known instruction words only; a new phrasing in any language may still steer the model (the owner, 21 Oct 2026).",
+  "found": "T172, 21 Oct 2026",
+  "result": "open",
+  "detail": "Not measured beyond the known words. T173: judge from the photos alone, the agency's stage picked from a fixed list. No live score today (M-SITE-1)."
+ },
+ {
   "id": "M-SITE-5",
   "source": "registry",
   "agent": "site_progress",
