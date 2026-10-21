@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT / "data" / "eval" / "loopholes"))
 import world  # noqa: E402,F401,I001  (first: it sets the paths)
 import manual as M  # noqa: E402
 
-STATES = {"fixed", "mitigated", "limit", "open", "pending"}
+STATES = {"fixed", "mitigated", "limit", "open", "pending", "holds"}
 
 
 def test_every_entry_has_a_state_an_id_and_says_what_happens_today():
@@ -27,6 +27,7 @@ def test_every_entry_has_a_state_an_id_and_says_what_happens_today():
         assert e.state in STATES, e.id
         assert e.title and e.found and e.now, e.id
         assert e.state != "fixed" or e.guard, f"{e.id}: a fix names the test that keeps it"
+        assert e.state != "holds" or (ROOT / e.guard).exists(), f"{e.id}: names its result file"
 
 
 @pytest.mark.parametrize("entry", [e for e in M.ENTRIES if e.guard.startswith("tests/")],

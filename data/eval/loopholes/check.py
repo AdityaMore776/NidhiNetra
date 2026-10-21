@@ -54,6 +54,7 @@ RESULTS = {
     "mitigated": "Made visible (not blocked)",
     "limit": "Known limit",
     "pending": "Being measured",
+    "holds": "Measured: not fooled",
     "open": "OPEN: not caught",
     "missed": "MISSED: not caught",
 }
@@ -201,7 +202,8 @@ def manual() -> list[dict]:
 
 def write(rows: list[dict], source_of_works: str) -> None:
     counts = Counter(r["result"] for r in rows)
-    caught = sum(counts[k] for k in ("caught", "checked", "other_agent", "said_so", "fixed"))
+    caught = sum(counts[k] for k in ("caught", "checked", "other_agent", "said_so", "fixed",
+                                     "holds"))
     lines = [
         "# Loopholes: every known way past the agents, and today's result",
         "",
@@ -225,7 +227,8 @@ def write(rows: list[dict], source_of_works: str) -> None:
         "*check this* = a lighter follow-up; *another agent* = this agent cannot see it, but the four "
         "together still queue it; *couldn't check, and says so* = broken or missing data reads as "
         "\"couldn't check\", never as a clean chit; *known limit* = accepted by the owner's design or until "
-        "data not on hand exists, listed so nobody mistakes it for coverage. A case counts as caught only "
+        "data not on hand exists, listed so nobody mistakes it for coverage; *measured: not fooled* = tried "
+        "on real checks, and the agent's answers did not change. A case counts as caught only "
         "when it is caught in every test district it runs in.",
         "",
     ]
@@ -234,7 +237,7 @@ def write(rows: list[dict], source_of_works: str) -> None:
                           ("Known limits", ("limit",)),
                           ("Made visible, being measured", ("mitigated", "pending")),
                           ("Caught, fixed or said so", ("caught", "checked", "other_agent", "said_so",
-                                                        "fixed"))):
+                                                        "fixed", "holds"))):
         part = [r for r in rows if r["result"] in keep]
         if not part:
             continue
@@ -267,6 +270,7 @@ def write(rows: list[dict], source_of_works: str) -> None:
 
 
 def main() -> None:
+    sys.stdout.reconfigure(encoding="utf-8")   # Hindi titles on a Windows console
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-loop", action="store_true", help="skip the robustness loop's probes")
     ap.add_argument("--research", action="store_true", help=argparse.SUPPRESS)

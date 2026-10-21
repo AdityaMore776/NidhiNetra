@@ -1,12 +1,12 @@
-237 loopholes (research export (dashboard tables not on this PC)), 2026-10-20
+241 loopholes (research export (dashboard tables not on this PC)), 2026-10-21
   Caught: asked: 147
   Caught: "check this": 40
   Couldn't check, and says so: 24
   Fixed (guarded by a test): 5
   Made visible (not blocked): 2
   Known limit: 16
-  Being measured: 1
-  OPEN: not caught: 2
+  Measured: not fooled: 2
+  OPEN: not caught: 5
 
 caught      eval cost/holdout        ho_fraud_hall_22                                             tight: ask ESTIMATE_ABOVE_FAIR_PRICE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE
 caught      eval cost/holdout2       h2_fraud_stone_25x_answered                                  tight: ask ESTIMATE_ABOVE_FAIR_PRICE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE
@@ -242,6 +242,10 @@ limit       registry                 M-COST-5                                   
 limit       registry                 M-COST-6                                                     Said as a limitation on every road; the line-by-line check still runs.
 limit       registry                 M-TIME-1                                                     Couldn't check for those rules; works with a form carry their own dates. Needs the eSAKSHI dashboard tables (sanction da
 limit       registry                 M-SITE-1                                                     Video checks that need no model (reuse, place, GPS, dates, sealing) run; the claim reading does not, live.
-pending     registry                 M-SITE-2                                                     Measuring: 10 scenarios x 300 real checks on the GPU. Guard: `data/trial/results/t168_nidhilens.txt`.
+holds       registry                 M-SITE-2                                                     No change: wrongly says "shown" 1.9-3.1% (clean 1.9%), macro-F1 0.898-0.911 (clean 0.907). Guard: `data/trial/results/t1
+holds       registry                 M-SITE-3                                                     Never read as progress: 0 of 269. Guard: `data/trial/results/t168_nidhilens.txt`.
 open        registry                 M-DUP-1                                                      Not asked before sanction. Site Progress's SAME_PLACE_AS_ANOTHER_WORK catches it once both works have site videos. Compa
+open        registry                 M-SITE-4                                                     Wrongly says "shown" 29.7% [23.5, 35.5] (clean 1.9%). No live score today (NidhiLens is behind a switch, M-SITE-1); must
+open        registry                 M-SITE-5                                                     Wrongly says "shown" 8.8% [5.3, 12.7] (clean 1.9%). Measured on NidhiLens alone; the place and same-spot video checks we
+open        registry                 M-SITE-6                                                     Wrongly says "shown" 3.9% [1.2, 6.9] against clean 1.9% [0.4, 3.7]: the intervals overlap, so at most a slight effect. N
 open        registry                 M-PLAN-1                                                     Each stop is marked "District only"; owner to decide whether the planner opens on a district whose works can be placed.
