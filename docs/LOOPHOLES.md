@@ -2,7 +2,7 @@
 
 Every way found so far to get a fraud past NidhiNetra's agents, every bypass, and every situation where an agent cannot work, in one list, each run against the current agents. **When a new loophole is found, add it at once** (a labelled case in `data/eval/<agent>/`, a probe in `data/trial/agent_robustness_loop.py`, or an entry in `data/eval/loopholes/manual.py`) and run `data/eval/loopholes/check.py`, which rewrites this file (owner, 20 Oct 2026; T171).
 
-**Last run:** 21 Oct 2026, on the research export (dashboard tables not on this PC). **242 entries.**
+**Last run:** 21 Oct 2026, on the research export (dashboard tables not on this PC). **243 entries.**
 
 | Today's result | Entries |
 |---|---|
@@ -13,13 +13,13 @@ Every way found so far to get a fraud past NidhiNetra's agents, every bypass, an
 | Made visible (not blocked) | 2 |
 | Known limit | 16 |
 | Measured: not fooled | 2 |
-| OPEN: not caught | 4 |
+| OPEN: not caught | 5 |
 
-**Caught or said so:** 220 of 242. **Known limits:** 16. **Made visible:** 2. **Being measured:** 0. **Open or missed:** 4.
+**Caught or said so:** 220 of 243. **Known limits:** 16. **Made visible:** 2. **Being measured:** 0. **Open or missed:** 5.
 
 How to read a result: *asked* = the agent raises a question (the work goes to the review queue); *check this* = a lighter follow-up; *another agent* = this agent cannot see it, but the four together still queue it; *couldn't check, and says so* = broken or missing data reads as "couldn't check", never as a clean chit; *known limit* = accepted by the owner's design or until data not on hand exists, listed so nobody mistakes it for coverage; *measured: not fooled* = tried on real checks, and the agent's answers did not change. A case counts as caught only when it is caught in every test district it runs in.
 
-## Open and missed: not caught today (4)
+## Open and missed: not caught today (5)
 
 ### Duplicate Work
 
@@ -33,6 +33,7 @@ How to read a result: *asked* = the agent raises a question (the work goes to th
 |---|---|---|---|---|
 | The before and after photos in the wrong order | A finished building filmed first and the bare site later, claimed as progress. | T168, 21 Oct 2026, `M-SITE-5` | **OPEN: not caught** | Wrongly says "shown" 8.8% [5.3, 12.7] (clean 1.9%). Measured on NidhiLens alone; the place and same-spot video checks were not part of this run. Guard: `data/trial/results/t168_nidhilens.txt`. |
 | A "done" mark that is not writing (a big tick, a symbol) | The text finder greys only writing; a painted tick or a picture of a finished building held to the camera stays in the photo. | T172, 21 Oct 2026, `M-SITE-7` | **OPEN: not caught** | Not measured. No live score today (NidhiLens is behind a switch, M-SITE-1). |
+| Any free-text claim reaches NidhiLens's prompt | The word guard (T172) blocks known instruction words only; a new phrasing in any language may still steer the model (the owner, 21 Oct 2026). | T172, 21 Oct 2026, `M-SITE-8` | **OPEN: not caught** | Not measured beyond the known words. T173: judge from the photos alone, the agency's stage picked from a fixed list. No live score today (M-SITE-1). |
 
 ### Inspection Planner
 

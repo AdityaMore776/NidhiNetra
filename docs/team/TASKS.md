@@ -543,6 +543,13 @@ splits, rule breaches, impossible timelines, `source = SCENARIO`), runs the pipe
 the top 5% of each engine and overall. Never mixes planted rows into the live database silently.
 **Done when:** [ ] result JSON in `data/trial/results/` · [ ] numbers in FINDINGS and the deck, reported honestly
 
+### T173 · NidhiLens on photos alone (no written claim), after a data-leak check  ·  L  ·  vision + eval  ·  #148
+**Owner's request, 21 Oct 2026:** any text the agency writes into the model's prompt can be injected; judge progress
+from the before and after photos alone. First make sure the model never saw the test site photos or their answers
+(its fine-tuning data, and the base model's own training). Plan: `docs/plans/T173-photo-only-progress.md`.
+**Done when:** [ ] leak check saved and in FINDINGS (a leak re-scored, never hidden) · [ ] photo-only scored on the
+883 + fresh · [ ] altered photos re-run · [ ] owner decides the switch · [ ] registry `M-SITE-8`, FINDINGS "T173", log
+
 ### T172 · NidhiLens guards: writing in the photo, instructions in the claim  ·  M  ·  engine + vision + eval
 **Owner's go-ahead, 21 Oct 2026** (after T168 measured both). Every patch of writing in a site photo (a sign, a
 plaque, a stamp) is greyed out before NidhiLens reads it; a claim that instructs the checker is never sent to it and

@@ -173,6 +173,11 @@ ENTRIES: list[Entry] = [
           "The text finder greys only writing; a painted tick or a picture of a finished building "
           "held to the camera stays in the photo.", "T172, 21 Oct 2026", "open",
           "Not measured. No live score today (NidhiLens is behind a switch, M-SITE-1)."),
+    Entry("M-SITE-8", "site_progress", "Any free-text claim reaches NidhiLens's prompt",
+          "The word guard (T172) blocks known instruction words only; a new phrasing in any "
+          "language may still steer the model (the owner, 21 Oct 2026).", "T172, 21 Oct 2026",
+          "open", "Not measured beyond the known words. T173: judge from the photos alone, the "
+          "agency's stage picked from a fixed list. No live score today (M-SITE-1)."),
     Entry("M-SITE-5", "site_progress", "The before and after photos in the wrong order",
           "A finished building filmed first and the bare site later, claimed as progress.",
           "T168, 21 Oct 2026", "open",
