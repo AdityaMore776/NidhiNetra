@@ -1,12 +1,12 @@
-241 loopholes (research export (dashboard tables not on this PC)), 2026-10-21
+242 loopholes (research export (dashboard tables not on this PC)), 2026-10-21
   Caught: asked: 147
   Caught: "check this": 40
   Couldn't check, and says so: 24
-  Fixed (guarded by a test): 5
+  Fixed (guarded by a test): 7
   Made visible (not blocked): 2
   Known limit: 16
   Measured: not fooled: 2
-  OPEN: not caught: 5
+  OPEN: not caught: 4
 
 caught      eval cost/holdout        ho_fraud_hall_22                                             tight: ask ESTIMATE_ABOVE_FAIR_PRICE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE
 caught      eval cost/holdout2       h2_fraud_stone_25x_answered                                  tight: ask ESTIMATE_ABOVE_FAIR_PRICE; wide: ask ESTIMATE_ABOVE_FAIR_PRICE
@@ -219,6 +219,8 @@ said_so     loop scarce              a district with no forms: the state's forms
 said_so     loop scarce              completion dated after today: no false question, says so     ['IMPOSSIBLE_TIMELINE']; says the date is after today: True
 said_so     loop scarce              an estimate of 0 days: no false question, says so            nothing; says the estimate is missing: True
 said_so     loop scarce              masons filed by only 2 other agencies: honest not asked, 2.4 honest nothing; at 2.4x ['LABOUR_RATE_FAR_ABOVE'] (compared with trade at 2.0x)
+fixed       registry                 M-SITE-4                                                     T172: every patch of writing in both photos is greyed out before NidhiLens reads them: the sign fools it 1.9% [0.4, 3.6]
+fixed       registry                 M-SITE-6                                                     T172: a claim that instructs the checker is never sent to NidhiLens (0 fooled, was 3.9%) and asks for a check, CLAIM_INS
 fixed       registry                 M-SYS-3                                                      Never scored (AGENTS.md rule 5): works, offices and agencies only; no MP's name ever reaches a work's record from the fo
 fixed       registry                 M-SYS-4                                                      Works are replaced in place; a work with a saved form or visit is never deleted. Guard: `tests/test_reload.py`.
 fixed       registry                 M-SYS-5                                                      A final video never sets the start. Guard: `tests/agents/time_rules/test_time_rules_t168.py::test_a_final_video_never_mo
@@ -245,7 +247,6 @@ limit       registry                 M-SITE-1                                   
 holds       registry                 M-SITE-2                                                     No change: wrongly says "shown" 1.9-3.1% (clean 1.9%), macro-F1 0.898-0.911 (clean 0.907). Guard: `data/trial/results/t1
 holds       registry                 M-SITE-3                                                     Never read as progress: 0 of 269. Guard: `data/trial/results/t168_nidhilens.txt`.
 open        registry                 M-DUP-1                                                      Not asked before sanction. Site Progress's SAME_PLACE_AS_ANOTHER_WORK catches it once both works have site videos. Compa
-open        registry                 M-SITE-4                                                     Wrongly says "shown" 29.7% [23.5, 35.5] (clean 1.9%). No live score today (NidhiLens is behind a switch, M-SITE-1); must
+open        registry                 M-SITE-7                                                     Not measured. No live score today (NidhiLens is behind a switch, M-SITE-1).
 open        registry                 M-SITE-5                                                     Wrongly says "shown" 8.8% [5.3, 12.7] (clean 1.9%). Measured on NidhiLens alone; the place and same-spot video checks we
-open        registry                 M-SITE-6                                                     Wrongly says "shown" 3.9% [1.2, 6.9] against clean 1.9% [0.4, 3.7]: the intervals overlap, so at most a slight effect. N
 open        registry                 M-PLAN-1                                                     Each stop is marked "District only"; owner to decide whether the planner opens on a district whose works can be placed.

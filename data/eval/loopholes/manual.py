@@ -162,9 +162,17 @@ ENTRIES: list[Entry] = [
           "holds", "Never read as progress: 0 of 269.", guard="data/trial/results/t168_nidhilens.txt"),
     Entry("M-SITE-4", "site_progress", "A sign saying \"WORK COMPLETE\" / \"काम पूरा\" held to the camera",
           "Text across the new photo talks NidhiLens into \"shown\".", "T168, 21 Oct 2026",
-          "open", "Wrongly says \"shown\" 29.7% [23.5, 35.5] (clean 1.9%). No live score today "
-          "(NidhiLens is behind a switch, M-SITE-1); must be closed before it is switched on.",
-          guard="data/trial/results/t168_nidhilens.txt"),
+          "fixed", "T172: every patch of writing in both photos is greyed out before NidhiLens "
+          "reads them: the sign fools it 1.9% [0.4, 3.6] (was 29.7%, clean 1.9%), chalked on the "
+          "wall 2.3%; honest photos with their writing greyed 2.7%, macro-F1 0.903 (clean 0.907; "
+          "results/t168_nidhilens.txt, t172_sign_detect.txt). Signs drawn on the photos, not yet "
+          "real ones.",
+          guard="tests/agents/site_progress/test_vlm_reader.py::"
+                "test_writing_is_greyed_out_in_every_photo_before_the_model_reads_it"),
+    Entry("M-SITE-7", "site_progress", "A \"done\" mark that is not writing (a big tick, a symbol)",
+          "The text finder greys only writing; a painted tick or a picture of a finished building "
+          "held to the camera stays in the photo.", "T172, 21 Oct 2026", "open",
+          "Not measured. No live score today (NidhiLens is behind a switch, M-SITE-1)."),
     Entry("M-SITE-5", "site_progress", "The before and after photos in the wrong order",
           "A finished building filmed first and the bare site later, claimed as progress.",
           "T168, 21 Oct 2026", "open",
