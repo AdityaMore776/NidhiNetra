@@ -15,7 +15,7 @@ import numpy as np
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-from run import FONT, RELEASE, ROOT, _jpeg, frame, items  # noqa: E402  (it sets the vision path)
+from run import FONT, RELEASE, ROOT, _jpeg, frame, items  # noqa: E402,I001  (it sets the vision path)
 
 from drishti_vision import textmask  # noqa: E402
 

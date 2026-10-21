@@ -145,7 +145,7 @@ def run(scenario: str, its: list[dict], L, vlm, masked: bool = False) -> None:
             grey = None
             if masked:
                 from drishti_vision import textmask
-                (a, ga), (b, grey) = textmask.mask(a), textmask.mask(b)
+                (a, _), (b, grey) = textmask.mask(a), textmask.mask(b)
             claim = it["claim"] + (INJECT if scenario == "inject" else "")
             o = vlm.judge_images(L, a, b, it["work_type"], claim, it["claim_kind"])
             ans = o.get("answer") or {}
