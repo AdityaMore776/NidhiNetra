@@ -110,6 +110,11 @@ Bigger than one session? That's normal. Push at the end of every session.
   - **Database migrations** (`apps/engine/drishti/migrations/NNN_*.sql`): before creating one, run
     `git pull` on main and take the next free number. If two branches collide, the one merged second renumbers.
   - `docs/STATUS.md`: edit only the lines about your milestone.
+- **Found a loophole?** (a way to get a fraud past an agent, a bypass, or a situation where an agent cannot
+  work) Register it the moment you find it: a labelled case in `data/eval/<agent>/`, a probe in
+  `data/trial/agent_robustness_loop.py`, or an entry in `data/eval/loopholes/manual.py`. Then run
+  `data/eval/loopholes/check.py`: it runs every known loophole against the current agents and rewrites
+  [`docs/LOOPHOLES.md`](docs/LOOPHOLES.md). Run it again at the end of your work (owner, 20 Oct 2026).
 - **Commit small and often** with messages like `T103: read sanction date from the certificate`.
 - **Keep your branch current:** `git fetch origin && git merge origin/main` at least once a session and
   before marking the PR ready. Merge, don't rebase, on shared branches.
