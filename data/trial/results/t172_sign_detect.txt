@@ -1,0 +1,9 @@
+T172 text finder on harder signs: the same 300 real 'after' photos as T168, a sign drawn on each; share of the sign's lettering greyed out before NidhiLens reads the photo
+
+sign                  mostly hidden (>=90%)  fully hidden (>=99%)  lettering greyed, mean
+printed (as T168)                     1.000                 1.000                   1.000
+small                                 1.000                 1.000                   1.000
+tilted 20 deg                         0.997                 0.997                   0.999
+faded                                 0.997                 0.997                   0.998
+hand-written                          1.000                 1.000                   1.000
+chalk on the wall                     0.917                 0.870                   0.975

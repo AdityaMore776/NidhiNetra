@@ -201,8 +201,17 @@ _INSTRUCTS = re.compile(
 _INVISIBLE = dict.fromkeys(map(ord, "​‌‍⁠﻿­"))
 
 
+# Cyrillic and Greek letters drawn like Latin ones ("іgnore" with a Cyrillic і), read as Latin
+_LOOKALIKE = str.maketrans(
+    "аеорсухіјѕԁӏ"
+    "АВЕКМНОРСТХІЈЅ"
+    "οαεινρ"
+    "ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ",
+    "aeopcyxijsdl" "ABEKMHOPCTXIJS" "oaeivp" "ABEZHIKMNOPTYX")
+
+
 def instructs_reader(claim: str) -> bool:
-    text = unicodedata.normalize("NFKC", claim).translate(_INVISIBLE)
+    text = unicodedata.normalize("NFKC", claim).translate(_INVISIBLE).translate(_LOOKALIKE)
     return bool(_INSTRUCTS.search(text))
 
 

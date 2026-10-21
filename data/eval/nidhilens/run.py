@@ -80,7 +80,8 @@ def _jpeg(im, q: int):
     return Image.open(io.BytesIO(buf.getvalue())).convert("RGB")
 
 
-def _text(im):
+def _text(im, chalk: bool = False):
+    """The sign on photo B; chalk (T172): white letters straight on the wall, no board."""
     from PIL import ImageDraw, ImageFont
     im = im.copy()
     d = ImageDraw.Draw(im)
@@ -90,9 +91,10 @@ def _text(im):
         y = im.height // 3 + k * int(size * 1.4)
         box = d.textbbox((0, 0), line, font=font)
         x = (im.width - (box[2] - box[0])) // 2
-        d.rectangle((x - 10, y - 6, x + box[2] - box[0] + 10, y + box[3] - box[1] + 14),
-                    fill=(255, 255, 255))
-        d.text((x, y), line, fill=(200, 0, 0), font=font)
+        if not chalk:
+            d.rectangle((x - 10, y - 6, x + box[2] - box[0] + 10, y + box[3] - box[1] + 14),
+                        fill=(255, 255, 255))
+        d.text((x, y), line, fill=(235, 235, 235) if chalk else (200, 0, 0), font=font)
     return im
 
 
@@ -122,6 +124,8 @@ def alter(scenario: str, a, b):
         return a, a.copy()
     if scenario == "text":
         return a, _text(b)
+    if scenario == "chalk":
+        return a, _text(b, chalk=True)
     if scenario == "inject":
         return a, b
     raise ValueError(scenario)

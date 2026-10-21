@@ -18,6 +18,9 @@ dependencies = [
 [project.optional-dependencies]
 # the model and its training (Kaggle has these already)
 train = ["torch>=2.2"]
+# T172: the text finder that greys writing out before NidhiLens reads a photo (textmask.py). It pulls
+# in opencv-python 5; afterwards: pip uninstall -y opencv-python, reinstall the headless 4.x above
+textmask = ["rapidocr-onnxruntime==1.4.4"]
 dev = ["pytest>=8", "ruff>=0.6"]
 
 [tool.setuptools]

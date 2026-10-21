@@ -43,11 +43,13 @@ RUNS = Path(r"D:\nidhinetra-data\runs\t168_nidhilens")
 ITEMS = ROOT / "NidhiLens (Fine-Tuned Qwen for site progress monitoring)" / "data" / "items_test.jsonl"
 OUT = ROOT / "data" / "trial" / "results" / "t168_nidhilens"
 SCENARIOS = ("clean", "dark", "blur", "jpeg30", "crop60", "small", "swap", "same", "text", "inject")
+MASK_ONLY = ("chalk",)      # T172: the sign chalked straight on the wall, run with the guard only
 
 
 def scenarios() -> tuple[str, ...]:
     """The T168 scenarios, then each one also run with the writing greyed out (T172), if run."""
-    return SCENARIOS + tuple(f"{s}+mask" for s in SCENARIOS if (RUNS / f"{s}+mask.jsonl").exists())
+    return SCENARIOS + tuple(f"{s}+mask" for s in (*SCENARIOS, *MASK_ONLY)
+                             if (RUNS / f"{s}+mask.jsonl").exists())
 
 
 def _read(p: Path) -> list[dict]:
