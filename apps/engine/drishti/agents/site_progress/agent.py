@@ -63,6 +63,7 @@ from datetime import date, timedelta
 from drishti.agents.contract import AgentResult, Finding, Status
 from drishti.agents.site_progress import sitemap, spots
 from drishti.agents.site_progress import visits as site_visits
+from drishti.agents.site_progress.readers import instructs_reader
 
 AGENT = "site_progress"
 NAME = "NidhiLens (Fine-Tuned Site Progress Model)"  # the name shown on the website (T166)
@@ -100,8 +101,11 @@ RISK = {"FOOTAGE_USED_BEFORE": 0.8, "SAME_PLACE_AS_ANOTHER_WORK": 0.7,
         "SITE_NOT_AT_FORM_PIN": PIN_OFF_RISK, "SITE_VIDEOS_UNUSABLE": UNUSABLE_RISK,
         "COMPLETE_NOT_FILMED": NO_VIDEO_RISK, "FIRST_FILMED_FINISHED": NO_VIDEO_RISK,
         "NO_FIRST_VISIT": CHECK_RISK, "LOCATION_NOT_RECORDED": NO_LOCATION_RISK,
-        "FILMED_AWAY_FROM_FORM_SITE": AWAY_RISK}
+        "FILMED_AWAY_FROM_FORM_SITE": AWAY_RISK, "CLAIM_INSTRUCTS_CHECKER": CHECK_RISK}
 HI = {
+    "CLAIM_INSTRUCTS_CHECKER": "साइट विज़िट के दावे में जाँच करने वाले के लिए निर्देश लिखे हैं (क्या "
+                               "उत्तर दें या क्या अनदेखा करें), कार्य का विवरण नहीं। ऐसा दावा पढ़ा "
+                               "नहीं जाता: एजेंसी से सही दावा माँगें और साइट जाँचें।",
     "LOCATION_NOT_RECORDED": "हाल के साइट वीडियो में फ़िल्माने का स्थान दर्ज नहीं है (जीपीएस बंद, कमज़ोर, "
                              "या नकली स्थान)। हर वीडियो में स्थान ज़रूरी है: एजेंसी से स्थान चालू "
                              "करके दोबारा फ़िल्माने को कहें और स्थल जाँचें।",
@@ -435,6 +439,17 @@ def judge(work: dict, vs: list[site_visits.Visit], as_of: date) -> tuple[list[Fi
         v, why = missing[0]
         notes.append(f"{_when_cap(v)} has no location recorded ({why}): the next video must record "
                      "where it was filmed. One such video is not a finding.")
+
+    # 4e. T172: a claim that instructs the checker (what to answer, what to ignore) is never an
+    #     honest claim about a site; NidhiLens never reads it. The text decides: no model needed
+    told = [v for v in vs if v.claim and instructs_reader(v.claim)]
+    if told:
+        findings.append(_f("CLAIM_INSTRUCTS_CHECKER",
+                           "The claim filed with " + ", ".join(_when(v) for v in told)
+                           + " contains instructions to the checker (what to answer or what to "
+                           "ignore) instead of what was built, so it was not read. Check this: "
+                           "ask the agency for a plain claim, and check the site.",
+                           visits=[v.visit_id for v in told]))
 
     # 5. complete, but not shown complete
     finals = [v for v in trusted if v.kind == "final"]

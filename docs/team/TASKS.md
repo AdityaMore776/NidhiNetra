@@ -543,6 +543,13 @@ splits, rule breaches, impossible timelines, `source = SCENARIO`), runs the pipe
 the top 5% of each engine and overall. Never mixes planted rows into the live database silently.
 **Done when:** [ ] result JSON in `data/trial/results/` · [ ] numbers in FINDINGS and the deck, reported honestly
 
+### T172 · NidhiLens guards: writing in the photo, instructions in the claim  ·  M  ·  engine + vision + eval
+**Owner's go-ahead, 21 Oct 2026** (after T168 measured both). Every patch of writing in a site photo (a sign, a
+plaque, a stamp) is greyed out before NidhiLens reads it; a claim that instructs the checker is never sent to it and
+Site Progress asks for a check (`CLAIM_INSTRUCTS_CHECKER`, 0.3), with or without the model. Loopholes M-SITE-4, M-SITE-6.
+**Done when:** [x] the "complete" sign fools it no more than a clean photo (re-run on the GPU) · [x] greying costs
+honest answers nothing measurable · [x] 0 honest claims refused · [x] tests · [x] registry, FINDINGS "T172", catalog, log
+
 ### T168 · Eval environments for all four agents and NidhiLens (Inspect AI, promptfoo, Hypothesis)  ·  L  ·  engine + eval
 **Owner's request, 19 Oct 2026.** Plan: `docs/plans/T168-agent-evals.md`. Labelled scenarios for every agent (honest, edge, fraud, evasion, broken) in two worlds with held-out sets, the four agents together, promptfoo end to end and attacks, Hypothesis properties, NidhiLens on altered photos on the local GPU; fix the rules where a fraud slips past.
 **Done when:** [x] baselines of the agents as they were · [x] Inspect tasks, held-out sets before first runs · [x] frauds excused 0, honest asked 0, broken cleared 0 · [x] promptfoo 27/27, Hypothesis in CI · [x] NidhiLens scored (a sign saying "complete" fools it 29.7%, swapped photos 8.8%: FINDINGS "T168") · [x] FINDINGS "T168", catalog, log

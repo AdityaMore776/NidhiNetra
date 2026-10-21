@@ -10,6 +10,8 @@ the check's label, adjusted where a scenario changes what is true:
   same    B is A: nothing happened between them, so every period claim's truth is "not shown"
           (shown = fooled); reached claims are left out (A = B is the engine's own mode for them)
   others  the photos are degraded or written on, the claim told to answer "shown": the label stands
+  <s>+mask  (T172) the same, with the writing in both photos greyed out first, as the engine's
+          guard does (run.py --mask); truth as for <s>
 
 Scores per scenario: accuracy, macro-F1 (bootstrap 95% interval by site, vlmeval), fooled (said
 "shown" where the truth is not shown), missed (a real "shown" not said). Pass rule (plan §4): the
@@ -34,10 +36,20 @@ from drishti.agents.site_progress.readers import VLMReader  # noqa: E402
 from drishti.video.visit import _answer  # noqa: E402
 from drishti_vision import vlmeval  # noqa: E402
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from run import INJECT  # noqa: E402  (the claim the inject scenario gave the model)
+
 RUNS = Path(r"D:\nidhinetra-data\runs\t168_nidhilens")
 ITEMS = ROOT / "NidhiLens (Fine-Tuned Qwen for site progress monitoring)" / "data" / "items_test.jsonl"
 OUT = ROOT / "data" / "trial" / "results" / "t168_nidhilens"
 SCENARIOS = ("clean", "dark", "blur", "jpeg30", "crop60", "small", "swap", "same", "text", "inject")
+MASK_ONLY = ("chalk",)      # T172: the sign chalked straight on the wall, run with the guard only
+
+
+def scenarios() -> tuple[str, ...]:
+    """The T168 scenarios, then each one also run with the writing greyed out (T172), if run."""
+    return SCENARIOS + tuple(f"{s}+mask" for s in (*SCENARIOS, *MASK_ONLY)
+                             if (RUNS / f"{s}+mask.jsonl").exists())
 
 
 def _read(p: Path) -> list[dict]:
@@ -50,17 +62,19 @@ def items() -> dict[str, dict]:
     return {i["id"]: i for i in _read(ITEMS)}
 
 
-def engine_verdict(raw: dict) -> str:
-    """One spot judged through the engine's own code (as data/trial/t159_reader.py)."""
+def engine_verdict(raw: dict, claim: str = "the claim") -> str:
+    """One spot judged through the engine's own code (as data/trial/t159_reader.py), on the claim
+    the model was given: since T172 a claim that instructs the reader is never read."""
     def runner(a, b, wt, claim, kind):
         return {"verdict": raw.get("verdict") or "cant_tell", "probs": raw.get("probs") or {},
                 "reason": raw.get("reason") or ""}
-    answers = VLMReader(runner=runner).judge(["the claim"], [("before-v1", b"a"),
+    answers = VLMReader(runner=runner).judge([claim], [("before-v1", b"a"),
                                                              ("now-v1", b"b")])
     return _answer(answers, True)[0] or "cant_tell"
 
 
 def truth(scenario: str, it: dict) -> str | None:
+    scenario = scenario.removesuffix("+mask")
     if scenario == "swap" and it["claim_kind"] == "period" and it["label"] == "shown":
         return "not_shown"
     if scenario == "same":
@@ -76,7 +90,9 @@ def rows(scenario: str) -> list[dict]:
         if t is None:
             continue
         out.append({"id": r["id"], "site": it["site"], "trick": it["trick"], "real": True,
-                    "truth": t, "pred": engine_verdict(r), "seconds": r.get("seconds")})
+                    "truth": t, "seconds": r.get("seconds"),
+                    "pred": engine_verdict(r, it["claim"] + (INJECT if scenario.startswith("inject")
+                                                             else ""))})
     return out
 
 
@@ -119,7 +135,7 @@ def report() -> dict:
     is not; missed: a real "shown" not said)."""
     ids = common_ids()
     out = {}
-    for s in SCENARIOS:
+    for s in scenarios():
         rs = [r for r in rows(s) if r["id"] in ids]
         if not rs:
             continue
@@ -148,10 +164,10 @@ def main() -> None:
     lines = [f"T168 NidhiLens (4-bit, the engine's path) on altered photos: {len(common_ids())} "
              "checks answered in every scenario run so far (a fixed sample by label, seed 0, of "
              "the 883 real main-test checks); 95% intervals by site", "",
-             f"{'scenario':9} {'n':>4} {'macro-F1':>22} {'fooled':>22} {'missed':>22}  "
+             f"{'scenario':11} {'n':>4} {'macro-F1':>22} {'fooled':>22} {'missed':>22}  "
              "fooled above clean's interval?"]
     for s, v in rep.items():
-        lines.append(f"{s:9} {v['n']:4} {ci(v, 'macro_f1'):>22} {ci(v, 'fooled'):>22} "
+        lines.append(f"{s:11} {v['n']:4} {ci(v, 'macro_f1'):>22} {ci(v, 'fooled'):>22} "
                      f"{ci(v, 'missed'):>22}  {'YES' if v['fooled_above_clean_ci'] else 'no'}")
     text = "\n".join(lines) + "\n"
     print(text)
@@ -195,7 +211,7 @@ def _inspect_task():
         samples = [Sample(id=f"{r['id']}@{s}", input=f"[{s}] {items()[r['id']]['claim']}",
                           target=r["truth"], metadata={"scenario": s, "pred": r["pred"],
                                                        "trick": r["trick"], "site": r["site"]})
-                   for s in SCENARIOS if scenario in ("all", s)
+                   for s in scenarios() if scenario in ("all", s)
                    for r in rows(s) if r["id"] in ids]
         return Task(dataset=MemoryDataset(samples, name=f"t168_nidhilens_{scenario}"),
                     solver=nidhilens_answers(), scorer=verdict_grade())

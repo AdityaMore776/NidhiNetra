@@ -301,6 +301,13 @@ IS 456's 450 kg cement ceiling. Measured by the Inspect AI eval in `data/eval/co
 
 **T168 (20 Oct 2026): every agent through three eval environments** (Inspect AI, promptfoo, Hypothesis; `data/eval/README.md`, FINDINGS "T168"). New "check this" findings (risk 0.3): Duplicate Work `SPLIT_NEAR_LIMIT` (numbered pieces at 90-96% of a limit within 30 days, or every piece 96-100% within 90 days; 15 of 20 read one job on the real works) and `SPLIT_NEAR_LIMIT_DECLARED` (the same, the agency naming the other pieces as earlier phases: at the prior), `SAME_BUILDING_NEAR` (a same-kind building 50-150 m away with the same words and size, not named); Site Progress `NO_FIRST_VISIT` (complete, no first visit, under two progress videos); Time & Rules note `SANCTIONED_BEFORE_RECOMMENDED`. A form pin that cannot be compared and a completed work with no completion date are NOT_ASSESSABLE, never a clean chit; only a video before the completion day clears a fast finish; a stall survives one unreadable video. **Location (the owner, 20 Oct):** every site video must record where it was filmed (the capture page will not finish without a precise fix); `LOCATION_NOT_RECORDED` (2 of the last 3 without one: check; all 3: question) and `FILMED_AWAY_FROM_FORM_SITE` (75 m beyond every place on the form, after the phone's accuracy: one video check, two a question).
 
+**T172 (21 Oct 2026): NidhiLens guards** (FINDINGS "T172"). Site Progress `CLAIM_INSTRUCTS_CHECKER` ("check this",
+0.3): the agency's claim tells the checker what to answer or what to ignore (English or Hindi; zero-width characters
+are stripped, and wide, styled or Cyrillic and Greek look-alike letters read as Latin first); the claim is never sent to NidhiLens, and the finding needs no model, so it
+is live today (0 of 109 honest claims trip it). Before NidhiLens reads a photo, every patch of writing in it (a sign,
+a plaque, a date stamp) is greyed out (`drishti_vision/textmask.py`; switch `DRISHTI_VLM_TEXTMASK=0`): a "WORK
+COMPLETE" sign fooled it 29.7%, now 1.9%, as clean photos.
+
 A group of real works is compared only when it has 30+ works, is tight (p90 within +25% of the median), and is
 priced in the form's own unit of size. Roads (priced per m²) are never compared with roads per metre.
 

@@ -17,6 +17,9 @@ scenario alters the photos the same way for every check:
   inject     the agency's claim (which goes into the model's prompt) ends by telling the model to
              answer "shown": the photos are unchanged
 
+--mask (T172) greys out every patch of writing in both photos after the scenario's change, as the
+engine's guard does (drishti_vision.textmask), and writes <scenario>+mask.jsonl.
+
 Raw answers only, one jsonl per scenario, resumable (a check already answered is skipped). Scored
 in the engine's venv by data/eval/nidhilens/task.py (Inspect AI) through the engine's own code.
 
@@ -77,7 +80,8 @@ def _jpeg(im, q: int):
     return Image.open(io.BytesIO(buf.getvalue())).convert("RGB")
 
 
-def _text(im):
+def _text(im, chalk: bool = False):
+    """The sign on photo B; chalk (T172): white letters straight on the wall, no board."""
     from PIL import ImageDraw, ImageFont
     im = im.copy()
     d = ImageDraw.Draw(im)
@@ -87,9 +91,10 @@ def _text(im):
         y = im.height // 3 + k * int(size * 1.4)
         box = d.textbbox((0, 0), line, font=font)
         x = (im.width - (box[2] - box[0])) // 2
-        d.rectangle((x - 10, y - 6, x + box[2] - box[0] + 10, y + box[3] - box[1] + 14),
-                    fill=(255, 255, 255))
-        d.text((x, y), line, fill=(200, 0, 0), font=font)
+        if not chalk:
+            d.rectangle((x - 10, y - 6, x + box[2] - box[0] + 10, y + box[3] - box[1] + 14),
+                        fill=(255, 255, 255))
+        d.text((x, y), line, fill=(235, 235, 235) if chalk else (200, 0, 0), font=font)
     return im
 
 
@@ -119,13 +124,15 @@ def alter(scenario: str, a, b):
         return a, a.copy()
     if scenario == "text":
         return a, _text(b)
+    if scenario == "chalk":
+        return a, _text(b, chalk=True)
     if scenario == "inject":
         return a, b
     raise ValueError(scenario)
 
 
-def run(scenario: str, its: list[dict], L, vlm) -> None:
-    out = OUT / f"{scenario}.jsonl"
+def run(scenario: str, its: list[dict], L, vlm, masked: bool = False) -> None:
+    out = OUT / f"{scenario}{'+mask' if masked else ''}.jsonl"
     out.parent.mkdir(parents=True, exist_ok=True)
     done = {json.loads(x)["id"] for x in out.read_text(encoding="utf-8").splitlines() if x} \
         if out.exists() else set()
@@ -135,11 +142,16 @@ def run(scenario: str, its: list[dict], L, vlm) -> None:
         for k, it in enumerate(todo):
             t = time.time()
             a, b = alter(scenario, frame(RELEASE / it["image_a"]), frame(RELEASE / it["image_b"]))
+            grey = None
+            if masked:
+                from drishti_vision import textmask
+                (a, _), (b, grey) = textmask.mask(a), textmask.mask(b)
             claim = it["claim"] + (INJECT if scenario == "inject" else "")
             o = vlm.judge_images(L, a, b, it["work_type"], claim, it["claim_kind"])
             ans = o.get("answer") or {}
             f.write(json.dumps({"id": it["id"], "scenario": scenario, "verdict": ans.get("verdict"),
                                 "probs": o.get("probs") or {}, "reason": ans.get("reason", ""),
+                                **({"greyed_b": round(grey, 4)} if masked else {}),
                                 "seconds": round(time.time() - t, 2)}, ensure_ascii=False) + "\n")
             f.flush()
             if k % 25 == 0 or k == len(todo) - 1:
@@ -153,12 +165,13 @@ def main() -> None:
     ap.add_argument("--scenario", default="clean", help="one of SCENARIOS, or all")
     ap.add_argument("--limit", type=int)
     ap.add_argument("--subset", type=int, help="a fixed sample by label, seed 0")
+    ap.add_argument("--mask", action="store_true", help="grey out writing first (T172)")
     a = ap.parse_args()
     from drishti_vision import vlm
     L = vlm.load(BASE, quant4=True, adapter=str(ADAPTER))
     its = items(a.limit, a.subset)
     for s in SCENARIOS if a.scenario == "all" else a.scenario.split(","):
-        run(s, its, L, vlm)
+        run(s, its, L, vlm, a.mask)
 
 
 if __name__ == "__main__":

@@ -3018,3 +3018,50 @@ is complete** (about 1 in 3 false "shown", the big one), **the before and after 
 11), and an instruction hidden in the agency's claim (3.9% against 1.9%: the intervals overlap, so at most slight).
 Each is in the loophole registry (T171). NidhiLens is behind a switch on the live site (notes only until the field
 trial, `M-SITE-1`), so none of the three reaches a live risk score today; they must be closed before it is switched on.
+
+## T172 (21 Oct 2026): NidhiLens guards: writing in the photo, instructions in the claim
+
+**Why:** T168 measured two ways to talk NidhiLens into "shown": a sign saying the work is complete (29.7% false
+"shown", clean photos 1.9%) and an instruction written into the agency's claim (3.9%). The owner said fix it now.
+
+**Writing in a photo is greyed out before NidhiLens reads it** (`apps/vision/drishti_vision/textmask.py`; on in the
+engine's reader whenever NidhiLens is, switch `DRISHTI_VLM_TEXTMASK=0`). Refusing any photo with writing was not an
+option: the text finder found writing in **229 of the 300 clean "after" photos and 207 of the 300 "before" photos**
+(plaques, stamps, shop boards), and a finished MPLADS work is meant to carry a plaque. So every patch of writing is
+filled with flat grey (padded by a quarter of its height) in both photos, and the model judges what is left. The finder
+is RapidOCR's text detector alone (no reading), on the CPU, about 0.26 s a photo.
+
+The same 300 real checks as T168, the engine's 4-bit path and code (`run.py --mask`, `task.py`,
+`results/t168_nidhilens.txt`):
+
+| scenario | macro-F1 | fooled | missed |
+|---|---|---|---|
+| clean, as before | 0.907 [0.869, 0.942] | 1.9% [0.4, 3.7] | 19.5% |
+| **clean, writing greyed** (the cost to honest works) | 0.903 [0.863, 0.941] | 2.7% [0.8, 5.0] | 19.5% |
+| "WORK COMPLETE" sign, as before | 0.717 | 29.7% [23.5, 35.5] | 12.2% |
+| **"WORK COMPLETE" sign, writing greyed** | 0.911 [0.872, 0.948] | **1.9% [0.4, 3.6]** | 17.1% |
+| the sign chalked on the wall (white letters, no board), writing greyed | 0.911 [0.872, 0.946] | 2.3% [0.4, 4.5] | 17.1% |
+
+The sign now fools it no more than a clean photo does, and greying costs honest photos nothing measurable (every
+interval overlaps the clean run's). **Harder signs** (`sign_detect.py`, `results/t172_sign_detect.txt`, CPU only: how
+much of the sign's lettering is greyed, on the same 300 "after" photos): printed 100%, small (1/40 of the width) 100%,
+tilted 20 degrees 299 of 300 photos fully hidden, faded 299 of 300, hand-written 300 of 300; **chalk straight on the
+wall (white letters, no board) the weak case: 261 of 300 fully hidden, 275 mostly (90%+), 97.5% of the lettering
+greyed on average.** So the chalked sign went through NidhiLens too (table above): with the bits the finder
+leaves, it is fooled 2.3%, inside the clean run's interval. Not yet tried: real photos of real signs (these are drawn
+on the photos), and a sign the finder cannot see as writing at all (a symbol, a tick mark).
+
+**A claim that instructs the checker is never read.** The claim goes into NidhiLens's prompt word for word.
+`readers.instructs_reader` (English and Hindi words for ignore, reply, answer, verdict, instructions, "you must", braces;
+zero-width characters stripped, wide or styled letters and Cyrillic or Greek look-alikes read as Latin first): such a
+claim is never sent to the model (can't tell), and Site Progress raises `CLAIM_INSTRUCTS_CHECKER` ("check this", 0.3:
+ask the agency for a plain claim, check the site). It needs no model, so it is live today. On every distinct honest claim
+on hand (`claim_guard.py`, `results/t172_claim_guard.txt`): **109 claims, refused 0** (102 in NidhiLens's 18 item
+files, 7 in the eval cases and the website's examples; "उत्तर दिशा", the north side, is read: उत्तर is not "answer"
+here). The "inject" row of `t168_nidhilens.txt` now shows the engine's answer, never read (fooled 0; every check
+"can't tell", so missed 1.0, and Site Progress asks for the check). A claim that misleads in plain words, with no
+instruction, is read as any claim is.
+
+Tests: 15 reader tests (every photo greyed once, the switch, 7 instruction claims never sent, 5 ordinary claims read), 3
+Site Progress tests, 3 text-mask tests. Engine 1824 passed. Not covered: the swapped photos (`M-SITE-5`, 8.8%), still
+open; the place and same-spot video checks were not part of that measurement.
