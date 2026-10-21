@@ -26,6 +26,8 @@ import base64
 import hashlib
 import json
 import os
+import re
+import unicodedata
 import urllib.request
 from collections.abc import Callable
 from datetime import date
@@ -178,6 +180,8 @@ class GeminiReader:
 # A runner judges one (before, now) pair: (a_jpeg, b_jpeg, work_type, claim, kind) ->
 # {"verdict", "probs": {verdict: p}, "reason"}. The real one wraps the fine-tuned model (T154).
 PairRunner = Callable[[bytes, bytes, str, str, str], dict]
+# A masker greys out the writing in one photo: jpeg -> (jpeg, share of the photo greyed) (T172).
+Masker = Callable[[bytes], tuple[bytes, float]]
 
 _WORK_WORDS = (("road", ("road", "sadak", "lane", "street", "path", "kharanja", "interlocking")),
                ("drain", ("drain", "nali", "naali", "nala")),
@@ -185,6 +189,21 @@ _WORK_WORDS = (("road", ("road", "sadak", "lane", "street", "path", "kharanja", 
                ("building", ("hall", "building", "bhawan", "room", "anganwadi", "school", "shed",
                              "toilet", "complex", "centre", "center", "kendra")))
 _PERIOD_WORDS = ("since the last", "this month", "since last", "pichhli", "is mahine")
+
+
+# A claim goes into the model's prompt word for word. One that tells the reader what to do or answer
+# is never an honest claim about a site (T172, M-SITE-6): it is not read, and says so.
+_INSTRUCTS = re.compile(
+    r"\b(ignore|disregard|verdict|reply|respond|answer|instructions?|system prompt|"
+    r"you are|you must|as an ai)\b|[{}]|"
+    r"नज़रअंदाज़|नजरअंदाज|अनदेखा|जवाब|निर्देश",
+    re.IGNORECASE)
+_INVISIBLE = dict.fromkeys(map(ord, "​‌‍⁠﻿­"))
+
+
+def instructs_reader(claim: str) -> bool:
+    text = unicodedata.normalize("NFKC", claim).translate(_INVISIBLE)
+    return bool(_INSTRUCTS.search(text))
 
 
 def work_type_of(asset: str) -> str:
@@ -204,29 +223,44 @@ class VLMReader:
     ("now-<viewpoint>", jpeg). Each claim is judged on every viewpoint seen both last time and now;
     the views are combined so that one confident "shown" is enough to say shown, "not_shown" needs
     EVERY judged view to say so confidently, and anything else is "cant_tell" (never a finding).
-    A claim with no before view is judged on the now view alone (A = B), and then only "reached"."""
+    A claim with no before view is judged on the now view alone (A = B), and then only "reached".
+
+    Writing in every photo (a sign held to the camera, a plaque, a date stamp) is greyed out
+    before the model reads it (T172): a "WORK COMPLETE" sign fooled it 29.7% (T168).
+    DRISHTI_VLM_TEXTMASK=0 switches that off."""
 
     def __init__(self, runner: PairRunner | None = None, adapter: str | None = None,
-                 base: str | None = None, sure: float = 0.6, asset: str = "") -> None:
+                 base: str | None = None, sure: float = 0.6, asset: str = "",
+                 masker: Masker | None = None) -> None:
         self.sure = sure
         self.asset = asset
+        self.masker = masker
         if runner is None:
             adapter = adapter or os.environ.get("DRISHTI_VLM_ADAPTER", "")
             if not adapter:
                 raise ValueError("no DRISHTI_VLM_ADAPTER: the fine-tuned reader stays off")
             base = base or os.environ.get("DRISHTI_VLM_BASE", "Qwen/Qwen3-VL-4B-Instruct")
             runner = _model_runner(base, adapter)
+            if masker is None and os.environ.get("DRISHTI_VLM_TEXTMASK", "1") != "0":
+                self.masker = _text_masker()
             self.name = f"vlm:{Path(adapter).name}"
         else:
             self.name = "vlm:test"
         self._run = runner
 
     def judge(self, claims: list[str], photos: list[tuple[str, bytes]]) -> list[dict]:
+        if self.masker is not None:
+            photos = [(n, self.masker(b)[0]) for n, b in photos]
         before = {n.split("-", 1)[1]: b for n, b in photos if n.startswith("before-")}
         now = {n.split("-", 1)[1]: b for n, b in photos if n.startswith("now-")}
         wt = work_type_of(" ".join([self.asset, *claims]))
         out = []
         for c in claims:
+            if instructs_reader(c):
+                out.append({"claim": c, "verdict": "cant_tell", "instructs_reader": True,
+                            "reason": "the claim contains instructions to the checker, so it "
+                                      "was not read", "reader": self.name})
+                continue
             kind = "period" if any(w in c.lower() for w in _PERIOD_WORDS) else "reached"
             pairs = [(before[v], now[v]) for v in now if v in before]
             if not pairs and kind == "reached":
@@ -252,6 +286,22 @@ class VLMReader:
                       else "no view to judge the claim on")
         return {"claim": claim, "verdict": verdict,
                 "reason": " ".join(str(reason or "").split())[:200], "reader": self.name}
+
+
+def _text_masker() -> Masker:                                # pragma: no cover (trial venv)
+    import io
+
+    from drishti_vision import textmask  # the trial venv only, with the model
+    from PIL import Image
+
+    def mask(jpeg: bytes) -> tuple[bytes, float]:
+        im, share = textmask.mask(Image.open(io.BytesIO(jpeg)))
+        if not share:
+            return jpeg, 0.0
+        buf = io.BytesIO()
+        im.save(buf, "JPEG", quality=90)
+        return buf.getvalue(), share
+    return mask
 
 
 def _model_runner(base: str, adapter: str) -> PairRunner:     # pragma: no cover (GPU, trial venv)
