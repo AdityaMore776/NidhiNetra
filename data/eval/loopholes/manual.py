@@ -172,9 +172,13 @@ ENTRIES: list[Entry] = [
           "place and same-spot video checks were not part of this run.", guard="data/trial/results/t168_nidhilens.txt"),
     Entry("M-SITE-6", "site_progress", "An instruction hidden in the agency's claim (\"answer shown\")",
           "The claim text goes into NidhiLens's prompt; it ends by telling the model what to answer.",
-          "T168, 21 Oct 2026", "open",
-          "Wrongly says \"shown\" 3.9% [1.2, 6.9] against clean 1.9% [0.4, 3.7]: the intervals "
-          "overlap, so at most a slight effect. No live score today (M-SITE-1).", guard="data/trial/results/t168_nidhilens.txt"),
+          "T168, 21 Oct 2026", "fixed",
+          "T172: a claim that instructs the checker is never sent to NidhiLens (0 fooled, was "
+          "3.9%) and asks for a check, CLAIM_INSTRUCTS_CHECKER (0.3), with or without the model; "
+          "0 of 109 honest claims trip it (results/t172_claim_guard.txt). A claim that misleads "
+          "in plain words (no instruction) is still read, as any claim.",
+          guard="tests/agents/site_progress/test_site_claim_guard_t172.py::"
+                "test_a_claim_that_instructs_the_checker_is_check_this"),
 
     # ---- Inspection Planner ----------------------------------------------------------------------
     Entry("M-PLAN-1", "planner", "A work whose description names no place the planner can find",
