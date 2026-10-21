@@ -545,7 +545,7 @@ the top 5% of each engine and overall. Never mixes planted rows into the live da
 
 ### T168 · Eval environments for all four agents and NidhiLens (Inspect AI, promptfoo, Hypothesis)  ·  L  ·  engine + eval
 **Owner's request, 19 Oct 2026.** Plan: `docs/plans/T168-agent-evals.md`. Labelled scenarios for every agent (honest, edge, fraud, evasion, broken) in two worlds with held-out sets, the four agents together, promptfoo end to end and attacks, Hypothesis properties, NidhiLens on altered photos on the local GPU; fix the rules where a fraud slips past.
-**Done when:** [x] baselines of the agents as they were · [x] Inspect tasks, held-out sets before first runs · [x] frauds excused 0, honest asked 0, broken cleared 0 · [x] promptfoo 27/27, Hypothesis in CI · [ ] NidhiLens scored · [x] FINDINGS "T168", catalog, log
+**Done when:** [x] baselines of the agents as they were · [x] Inspect tasks, held-out sets before first runs · [x] frauds excused 0, honest asked 0, broken cleared 0 · [x] promptfoo 27/27, Hypothesis in CI · [x] NidhiLens scored (a sign saying "complete" fools it 29.7%, swapped photos 8.8%: FINDINGS "T168") · [x] FINDINGS "T168", catalog, log
 
 ### T167 · Cost agent eval environment: frauds against honest edge cases  ·  L  ·  engine + eval
 **Owner's request, 19 Oct 2026.** Plan: `docs/plans/T167-cost-eval.md`. An Inspect AI eval of the Cost agent with
