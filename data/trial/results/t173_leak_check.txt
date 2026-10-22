@@ -1,0 +1,30 @@
+T173 leak check: training items re-derived = 2924 (training run says 2,924)
+sets: test 883, fresh 785, probe 93
+
+1. Shared names (training vs each set)
+  test: sites in training 0/883 | districts in training [] | photo files in training 0/1037 | (site, claim) in training 0
+  fresh: sites in training 0/785 | districts in training [] | photo files in training 0/880 | (site, claim) in training 0
+  probe: sites in training 0/93 | districts in training [] | photo files in training 0/128 | (site, claim) in training 0
+  between sets: test & fresh sites 0, test & probe 85
+
+3. Answers
+  test: reference reasons also a training target word for word 883/883 (e.g. 'Both photos were taken at the same time from different spots; nothing new was built.')
+  test: labels checked by eye 883/883
+  fresh: reference reasons also a training target word for word 785/785 (e.g. 'Both photos were taken at the same time from different spots; nothing new was built.')
+  fresh: labels checked by eye 785/785
+  probe: reference reasons also a training target word for word 93/93 (e.g. 'Photos A and B show different places, so the claim cannot be judged from them.')
+  probe: labels checked by eye 93/93
+  test: photos also in the Gemini label queue (v7) 59
+  fresh: photos also in the Gemini label queue (v7) 880
+  probe: photos also in the Gemini label queue (v7) 25
+  training labels by method: {'auto': 2923, 'eye': 1}
+
+2. The same picture under another name
+  photos: training 2910, test+fresh+probe 1897, missing on disk 0
+  exact same bytes: 0
+  pHash within 8/64 of a training photo: 3 ({'test': 2, 'fresh': 1})
+  pHash distance to the closest training photo: min 8, 1% 12, 5% 14, median 16
+  CLIP cosine >= 0.95 to a training photo: 7 ({'fresh': 4, 'test': 3})
+  CLIP cosine to the closest training photo: min 0.597, 1% 0.695, 5% 0.826, median 0.894
+  for scale, CLIP closest other test photo (median): 0.956
+  closest 30 pairs of each kind -> t173_closest_pairs.json (look at them by eye)

@@ -1,0 +1,366 @@
+{
+ "phash_closest": [
+  {
+   "d": 8,
+   "test": "gov/mgnrega/photos/mg-130043573/s3_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-200162332/s1_p2.jpg"
+  },
+  {
+   "d": 8,
+   "test": "gov/mgnrega/photos/mg-167647615/s3_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-222636866/s1_p1.jpg"
+  },
+  {
+   "d": 8,
+   "test": "gov/mgnrega/photos/mg-221805252/s3_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-189868500/s1_p2.jpg"
+  },
+  {
+   "d": 10,
+   "test": "gov/mgnrega/photos/mg-114560460/s1_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-153101554/s3_p1.jpg"
+  },
+  {
+   "d": 10,
+   "test": "gov/mgnrega/photos/mg-116428938/s3_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-201930182/s1_p2.jpg"
+  },
+  {
+   "d": 10,
+   "test": "gov/mgnrega/photos/mg-127619845/s1_p2.jpg",
+   "set": "test",
+   "train": "vlm/v6/frames/built_b2/yt-ggZ15ZBW_OI-s3/f045.jpg"
+  },
+  {
+   "d": 10,
+   "test": "gov/mgnrega/photos/mg-133120720/s3_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-142230526/s1_p2.jpg"
+  },
+  {
+   "d": 10,
+   "test": "gov/mgnrega/photos/mg-148345314/s3_p2.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-204004769/s3_p1.jpg"
+  },
+  {
+   "d": 10,
+   "test": "gov/mgnrega/photos/mg-148703975/s3_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-184501891/s1_p2.jpg"
+  },
+  {
+   "d": 10,
+   "test": "gov/mgnrega/photos/mg-167647615/s3_p1.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-222636866/s1_p1.jpg"
+  },
+  {
+   "d": 10,
+   "test": "gov/mgnrega/photos/mg-192518591/s1_p1.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-224344873/s1_p1.jpg"
+  },
+  {
+   "d": 10,
+   "test": "gov/mgnrega/photos/mg-195535666/s2_p2.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-200162332/s1_p1.jpg"
+  },
+  {
+   "d": 10,
+   "test": "gov/mgnrega/photos/mg-200586421/s2_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-206066237/s3_p2.jpg"
+  },
+  {
+   "d": 10,
+   "test": "gov/mgnrega/photos/mg-205487931/s1_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-203407097/s2_p2.jpg"
+  },
+  {
+   "d": 10,
+   "test": "gov/mgnrega/photos/mg-218123106/s1_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-202303980/s2_p2.jpg"
+  },
+  {
+   "d": 12,
+   "test": "gov/mgnrega/photos/mg-115481108/s3_p2.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-164267281/s3_p1.jpg"
+  },
+  {
+   "d": 12,
+   "test": "gov/mgnrega/photos/mg-116428938/s2_p1.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-143591253/s1_p1.jpg"
+  },
+  {
+   "d": 12,
+   "test": "gov/mgnrega/photos/mg-116428938/s2_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-179493394/s2_p2.jpg"
+  },
+  {
+   "d": 12,
+   "test": "gov/mgnrega/photos/mg-119232776/s1_p2.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-142230526/s2_p2.jpg"
+  },
+  {
+   "d": 12,
+   "test": "gov/mgnrega/photos/mg-119243675/s1_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-136430227/s3_p2.jpg"
+  },
+  {
+   "d": 12,
+   "test": "gov/mgnrega/photos/mg-122169143/s2_p1.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-143539467/s2_p2.jpg"
+  },
+  {
+   "d": 12,
+   "test": "gov/mgnrega/photos/mg-122169143/s2_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-203867719/s2_p2.jpg"
+  },
+  {
+   "d": 12,
+   "test": "gov/mgnrega/photos/mg-122444509/s3_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-146412966/s3_p2.jpg"
+  },
+  {
+   "d": 12,
+   "test": "gov/mgnrega/photos/mg-122453790/s1_p1.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-222819721/s1_p1.jpg"
+  },
+  {
+   "d": 12,
+   "test": "gov/mgnrega/photos/mg-122453790/s1_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-194168998/s2_p2.jpg"
+  },
+  {
+   "d": 12,
+   "test": "gov/mgnrega/photos/mg-122885881/s2_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-164264563/s3_p1.jpg"
+  },
+  {
+   "d": 12,
+   "test": "gov/mgnrega/photos/mg-124841601/s2_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-167993453/s1_p1.jpg"
+  },
+  {
+   "d": 12,
+   "test": "gov/mgnrega/photos/mg-135253808/s1_p2.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-152603125/s1_p2.jpg"
+  },
+  {
+   "d": 12,
+   "test": "gov/mgnrega/photos/mg-135734581/s1_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-203177806/s3_p2.jpg"
+  },
+  {
+   "d": 12,
+   "test": "gov/mgnrega/photos/mg-135736453/s1_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-143992623/s3_p2.jpg"
+  }
+ ],
+ "clip_closest": [
+  {
+   "cos": 0.9654,
+   "test": "gov/mgnrega/photos/mg-202716628/s3_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-192301123/s3_p1.jpg"
+  },
+  {
+   "cos": 0.9546,
+   "test": "gov/mgnrega/photos/mg-202716628/s3_p2.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-192301123/s3_p1.jpg"
+  },
+  {
+   "cos": 0.9523,
+   "test": "gov/mgnrega/photos/mg-199452459/s3_p2.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-190274662/s2_p1.jpg"
+  },
+  {
+   "cos": 0.9521,
+   "test": "gov/mgnrega/photos/mg-133120720/s3_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-199279568/s3_p2.jpg"
+  },
+  {
+   "cos": 0.952,
+   "test": "gov/mgnrega/photos/mg-171666364/s1_p1.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-222459667/s1_p2.jpg"
+  },
+  {
+   "cos": 0.9504,
+   "test": "gov/mgnrega/photos/mg-169476770/s2_p1.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-160563222/s2_p2.jpg"
+  },
+  {
+   "cos": 0.95,
+   "test": "gov/mgnrega/photos/mg-171666364/s1_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-222459667/s1_p2.jpg"
+  },
+  {
+   "cos": 0.9487,
+   "test": "gov/mgnrega/photos/mg-190745616/s3_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-152786970/s1_p1.jpg"
+  },
+  {
+   "cos": 0.9483,
+   "test": "gov/mgnrega/photos/mg-119243675/s2_p2.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-161674042/s3_p1.jpg"
+  },
+  {
+   "cos": 0.9479,
+   "test": "gov/mgnrega/photos/mg-157444772/s3_p1.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-160563222/s2_p2.jpg"
+  },
+  {
+   "cos": 0.9473,
+   "test": "gov/mgnrega/photos/mg-190745616/s3_p2.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-152786970/s1_p1.jpg"
+  },
+  {
+   "cos": 0.9469,
+   "test": "gov/mgnrega/photos/mg-122951419/s2_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-197360471/s1_p1.jpg"
+  },
+  {
+   "cos": 0.9469,
+   "test": "gov/mgnrega/photos/mg-132995169/s1_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-179485691/s1_p1.jpg"
+  },
+  {
+   "cos": 0.9469,
+   "test": "gov/mgnrega/photos/mg-116870364/s1_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-164264563/s1_p1.jpg"
+  },
+  {
+   "cos": 0.9463,
+   "test": "gov/mgnrega/photos/mg-202716628/s1_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-164265396/s1_p2.jpg"
+  },
+  {
+   "cos": 0.9458,
+   "test": "gov/mgnrega/photos/mg-152788788/s3_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-160563222/s2_p2.jpg"
+  },
+  {
+   "cos": 0.9447,
+   "test": "gov/mgnrega/photos/mg-130043599/s3_p1.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-136016908/s1_p1.jpg"
+  },
+  {
+   "cos": 0.9444,
+   "test": "gov/mgnrega/photos/mg-122169143/s3_p1.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-198540421/s3_p2.jpg"
+  },
+  {
+   "cos": 0.9439,
+   "test": "gov/mgnrega/photos/mg-207632587/s3_p2.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-139700294/s1_p1.jpg"
+  },
+  {
+   "cos": 0.943,
+   "test": "gov/mgnrega/photos/mg-169476770/s2_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-160563222/s2_p2.jpg"
+  },
+  {
+   "cos": 0.9429,
+   "test": "gov/mgnrega/photos/mg-122169143/s3_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-198540421/s3_p2.jpg"
+  },
+  {
+   "cos": 0.9428,
+   "test": "gov/mgnrega/photos/mg-222376424/s2_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-139700294/s1_p1.jpg"
+  },
+  {
+   "cos": 0.9428,
+   "test": "gov/mgnrega/photos/mg-222376388/s2_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-139700294/s1_p1.jpg"
+  },
+  {
+   "cos": 0.9427,
+   "test": "gov/mgnrega/photos/mg-120437209/s2_p1.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-200654462/s1_p2.jpg"
+  },
+  {
+   "cos": 0.9427,
+   "test": "gov/mgnrega/photos/mg-179678757/s2_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-201624674/s1_p2.jpg"
+  },
+  {
+   "cos": 0.942,
+   "test": "gov/mgnrega/photos/mg-191338980/s3_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-200654462/s1_p2.jpg"
+  },
+  {
+   "cos": 0.9419,
+   "test": "gov/mgnrega/photos/mg-153004798/s3_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-175934762/s3_p1.jpg"
+  },
+  {
+   "cos": 0.9416,
+   "test": "gov/mgnrega/photos/mg-140693437/s1_p1.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-204503891/s3_p1.jpg"
+  },
+  {
+   "cos": 0.9415,
+   "test": "gov/mgnrega/photos/mg-199452459/s3_p1.jpg",
+   "set": "fresh",
+   "train": "gov/mgnrega/photos/mg-190274662/s2_p2.jpg"
+  },
+  {
+   "cos": 0.9411,
+   "test": "gov/mgnrega/photos/mg-169476770/s3_p2.jpg",
+   "set": "test",
+   "train": "gov/mgnrega/photos/mg-160563222/s2_p2.jpg"
+  }
+ ]
+}
