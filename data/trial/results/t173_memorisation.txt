@@ -1,0 +1,6 @@
+T173 memorisation probe: 40 training items (one a site, seed 0), trained answer = A not started, B complete, shown
+
+as trained: verdicts {'cant_tell': 19, 'shown': 20, 'not_shown': 1} | stage_B {'unknown': 18, 'complete': 20, 'cant_tell': 1, 'not started': 1} | training reason word for word 20/40
+swapped: verdicts {'cant_tell': 6, 'shown': 4, 'not_shown': 30} | stage_B {'unknown': 6, 'complete': 4, 'not started': 30} | training reason word for word 4/40
+
+Swapped photos read as going backwards (not_shown): 30/40; memorised answer kept (shown + training reason): 4/40

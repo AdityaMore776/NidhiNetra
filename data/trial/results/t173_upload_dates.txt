@@ -1,0 +1,6 @@
+T173: upload month of each GeoMGNREGA photo (base model released 2025-10)
+
+training  GeoMGNREGA photos 2467, month known 2467, uploaded 2025-10 or later 122 | by year {'2018': 49, '2019': 247, '2020': 485, '2021': 443, '2022': 373, '2023': 283, '2024': 314, '2025': 173, '2026': 100} | newest 2026-06
+test      GeoMGNREGA photos 973, month known 973, uploaded 2025-10 or later 27 | by year {'2018': 28, '2019': 136, '2020': 223, '2021': 210, '2022': 124, '2023': 105, '2024': 72, '2025': 54, '2026': 21} | newest 2026-06
+fresh     GeoMGNREGA photos 880, month known 880, uploaded 2025-10 or later 25 | by year {'2018': 64, '2019': 132, '2020': 169, '2021': 158, '2022': 113, '2023': 84, '2024': 95, '2025': 44, '2026': 21} | newest 2026-06
+probe     GeoMGNREGA photos 128, month known 128, uploaded 2025-10 or later 5 | by year {'2018': 7, '2019': 25, '2020': 29, '2021': 22, '2022': 16, '2023': 16, '2024': 5, '2025': 3, '2026': 5} | newest 2026-06
