@@ -89,5 +89,5 @@ Each item has `site`, `district`, `source`, `image_a`, `image_b`, `claim`, `labe
 idhinetra-datauns	173	est_fixed.jsonl`, resumable;
   `t173_photo_only.py --set test --modes fixed`), then `t173_compare.py`.
 - NEXT: altered photos in fixed mode with the T172 greying: `data/eval/nidhilens/run.py --scenario
-  clean,swap,same,text,chalk --mask --fixed` (300 each, ~28 min each), scored by `task.py`; then fresh 785
+  clean,swap,same,text,chalk --subset 300 --mask --fixed` (300 each, ~28 min each), scored by `task.py`; then fresh 785
   fixed; then FINDINGS part 2, registry `M-SITE-8`, ask the owner about switching.
