@@ -3065,3 +3065,94 @@ instruction, is read as any claim is.
 Tests: 15 reader tests (every photo greyed once, the switch, 7 instruction claims never sent, 5 ordinary claims read), 3
 Site Progress tests, 3 text-mask tests. Engine 1824 passed. Not covered: the swapped photos (`M-SITE-5`, 8.8%), still
 open; the place and same-spot video checks were not part of that measurement.
+
+## T173 (22 Oct 2026): has NidhiLens seen the test before? And can it judge from the photos alone?
+
+**Why:** the owner, 21 Oct: "If they are allowed to write a prompt, there are ways for it to be prompt injected." Before
+measuring NidhiLens with no agency text, check that its scores so far (macro-F1 0.935 on the 883) are not inflated by
+a leak: the model must not have seen the test photos, or their answers, before.
+
+### Part 1: the leak check: no leak found
+
+`data/trial/t173_leak_check.py` (`results/t173_leak_check.txt`, `t173_closest_pairs.json`): the 2,924 training items
+re-derived with the training code's own filter (`vlm.training_items`, split train, real photos only; the run's own
+count is 2,924), against the release test 883, fresh 785 and probe 93.
+
+| check | test 883 | fresh 785 | probe 93 |
+|---|---|---|---|
+| sites also in training | 0 | 0 | 0 |
+| districts also in training | 0 | 0 | 0 |
+| photo files also in training | 0 of 1,037 | 0 of 880 | 0 of 128 |
+| (site, claim) also in training | 0 | 0 | 0 |
+| exact same bytes as a training photo | 0 | 0 | 0 |
+| pHash within 8 of 64 bits of a training photo | 2 | 1 | 0 |
+| CLIP image similarity 0.95 or more to a training photo | 3 | 4 | 0 |
+| labels checked by eye | 883 | 785 | 93 |
+
+**The closest 18 pairs were looked at by eye** (the 6 closest by pHash, the 12 closest by CLIP): every one is two
+different places (village roads, open plots, paver roads that look alike). The closest-photo distance is a median 16 of
+64 bits (pHash) and 0.894 (CLIP), against 0.956 between the test photos themselves. The reference *reasons* do appear
+word for word in training (883 of 883), because reasons come from a fixed set of sentences (28 in training, 25 in
+test); scores are on the verdict, so this carries no answer across.
+
+**The base model (Qwen3-VL-4B, no adapter)** on the same 883 (T155, saved in the NidhiLens report folder,
+`data/vlm_compare_test_full.txt`): macro-F1 **0.493** against NidhiLens's 0.935. Most test photos were online before
+the base model came out (`t173_upload_dates.py`: 946 of 973 test photos uploaded before October 2025, 27 after), so its
+pretraining may have seen the pictures, but not the answers: they were written by the team and published on 8 Oct
+2026. Either way it does not know them.
+
+**Memorisation** (`t173_memorisation.py`, `results/t173_memorisation.txt`): the training loss reached 0.02 by step 70
+of 731, so 40 training items (one a site, all "open ground in A, finished work in B: shown") were asked again, as
+trained and with the two photos swapped. With the photos swapped NidhiLens said "not shown" (less built) **30 of 40**
+and kept the trained answer **4 of 40**; even as trained it gave the trained answer only 20 of 40 (the other 19 "can't
+tell: different places", its usual caution on far-apart before/after views, the same caution behind its 17% "missed"
+on the test). A model that had learnt its items by heart would answer them all as trained. The low loss is the
+fixed-sentence answers being easy to write, not the items being remembered.
+
+**Two things to know.** (1) The test set and its answers are in this public repo (the NidhiLens report's data package,
+committed 8 Oct 2026, after this adapter's training data was fixed, and sharing nothing with it). A model trained
+later on public web data could have seen it: for any future comparison, use newly filmed sites. (2) 59 test and 880
+fresh photos are in the v7 Gemini label queue; v7 came after this adapter (v6) and is not in its training file, and
+every test label was checked by a person.
+
+### Part 2: judging without reading the agency's words
+
+Two ways to keep the agency's own text out of NidhiLens's prompt (`apps/vision/drishti_vision/photo_only.py`). In
+both, the agency picks the stage reached from a fixed list on the form (`under way` / `complete`, now or since the
+last visit), so nothing they type reaches the model:
+- **photos**: no claim at all; the model only says same place / stage in A / stage in B / permanent change, and
+  code compares that with the pick;
+- **fixed**: code writes the claim from the pick (`photo_only.fixed_claim`, e.g. "Road completed since the last
+  visit") in the format the model was trained on.
+
+**Screen, 150 test checks** (50 per answer; `t173_photo_only.py --subset 150`, `results/t173_photo_only_test_150.txt`):
+
+| Mode | Macro-F1 | Real progress missed (of 50) | Fooled (of 100) |
+|---|---|---|---|
+| agency's words | 0.946 | 7 | 0 |
+| fixed | 0.932 | 9 | 0 |
+| photos | 0.711 | 34 | 1 |
+
+With no claim the model reads the stage in B as "unknown" far more often (stage B right 20% against 80%), so it
+misses two thirds of the real progress. **Photos-only is dropped at the screen** (not scaled up); **fixed** goes on.
+
+**Fixed on the full 883** (`results/t173_photo_only_test.txt`, `t173_compare.txt`), check by check against the
+agency's own words. The fixed run is 4-bit (this PC), so the agency's words are shown both at full precision (the
+report, T155) and in 4-bit (T159, the engine's weights):
+
+| Run | Macro-F1 [95% CI] | Fooled (of 762) | Missed (of 121) |
+|---|---|---|---|
+| agency's words, full precision (T155) | 0.935 [0.921, 0.951] | 4 | 21 |
+| agency's words, 4-bit (T159) | 0.933 [0.913, 0.951] | 11 | 17 |
+| **fixed, 4-bit** | **0.917 [0.900, 0.933]** | **11** | **23** |
+
+- **Like for like (both 4-bit), the code-written claim is fooled exactly as often** (11 and 11). The extra
+  fooling against the report is the 4-bit weights, already seen in T159.
+- It misses a little more real work (23 against 17): McNemar 6 against 13, p = 0.17, not proven. Its claim is
+  vaguer ("Road completed" for "Interlocking tile road completed"), so the model has less to match.
+- The 11 it is fooled on, by the people's labels: 4 are photos in reverse order (finished in A, nothing in B) and
+  5 show no change at all, where the model says "complete" in B; 2 are two different places the model calls the
+  same. 3 of the 11 fool the agency's-words run (full precision) too.
+
+Still to come (running): the altered photos (clean, swapped, same photo twice, the sign, chalk; greyed as in T172)
+in fixed mode, and the fresh 785.

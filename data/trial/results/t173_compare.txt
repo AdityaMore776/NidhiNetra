@@ -1,0 +1,9 @@
+T173: NidhiLens with a claim written by code from the agency's pick, against the agency's own words (same checks)
+
+test (883 checks answered by both):
+  agency's words (T155, full prec.)  n 883: macro-F1 0.935 [0.921, 0.951], accuracy 0.960, fooled 4 of 762, missed 21 of 121
+  code-written claim (4-bit)         n 883: macro-F1 0.917 [0.900, 0.933], accuracy 0.949, fooled 11 of 762, missed 23 of 121
+  McNemar: only code-written right 6, only agency's words right 16, p 0.0525
+  agency's words (T159, 4-bit)       n 883: macro-F1 0.933 [0.913, 0.951], accuracy 0.957, fooled 11 of 762, missed 17 of 121
+  McNemar, both 4-bit: only code-written right 6, only agency's words right 13, p 0.167
+

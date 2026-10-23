@@ -1,0 +1,11 @@
+T173 photo-only: set test, 150 items (labels {'cant_tell': 50, 'not_shown': 50, 'shown': 50}), NidhiLens 4-bit on the RTX 3070 Ti
+
+claim   n 150: macro-F1 0.946 None, accuracy 0.947, fooled 0.0, missed 0.14, unreadable 0
+        facts vs people's answer: {'same_place': 0.953, 'stage_A': 0.929, 'stage_B': 0.797, 'permanent_change': 0.94}
+        confusion (truth -> predicted): {'shown': {'cant_tell': 6, 'shown': 43, 'not_shown': 1}, 'not_shown': {'not_shown': 49, 'cant_tell': 1}, 'cant_tell': {'cant_tell': 50}}
+fixed   n 150: macro-F1 0.932 None, accuracy 0.933, fooled 0.0, missed 0.18, unreadable 0
+        facts vs people's answer: {'same_place': 0.947, 'stage_A': 0.913, 'stage_B': 0.75, 'permanent_change': 0.933}
+        confusion (truth -> predicted): {'shown': {'cant_tell': 7, 'shown': 41, 'not_shown': 2}, 'not_shown': {'not_shown': 49, 'cant_tell': 1}, 'cant_tell': {'cant_tell': 50}}
+photos  n 150: macro-F1 0.711 None, accuracy 0.733, fooled 0.02, missed 0.68, unreadable 0
+        facts vs people's answer: {'same_place': 0.88, 'stage_A': 0.746, 'stage_B': 0.203, 'permanent_change': 0.867}
+        confusion (truth -> predicted): {'shown': {'cant_tell': 34, 'shown': 16}, 'not_shown': {'not_shown': 44, 'cant_tell': 5, 'shown': 1}, 'cant_tell': {'cant_tell': 50}}

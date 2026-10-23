@@ -1,0 +1,50 @@
+{
+ "fixed": {
+  "headline": {
+   "n": 883,
+   "accuracy": 0.9490373725934315,
+   "macro_f1": 0.9165384438412364,
+   "fooled_rate": 0.015625,
+   "n_no_progress": 576,
+   "missed_rate": 0.19008264462809918,
+   "n_progress": 121,
+   "answered_accuracy": 0.9790419161676647,
+   "answered_share": 0.7565118912797282,
+   "macro_f1_ci95": [
+    0.9009424324901851,
+    0.9329690042054937
+   ],
+   "fooled_rate_ci95": [
+    0.0068143100511073255,
+    0.026411956250779006
+   ],
+   "missed_rate_ci95": [
+    0.14736842105263157,
+    0.2240159420289855
+   ],
+   "ece": null
+  },
+  "confusion": {
+   "shown": {
+    "cant_tell": 20,
+    "shown": 98,
+    "not_shown": 3
+   },
+   "not_shown": {
+    "not_shown": 556,
+    "shown": 9,
+    "cant_tell": 11
+   },
+   "cant_tell": {
+    "cant_tell": 184,
+    "shown": 2
+   }
+  },
+  "observed": {
+   "same_place": 0.963,
+   "stage_A": 0.809,
+   "stage_B": 0.678,
+   "permanent_change": 0.948
+  }
+ }
+}

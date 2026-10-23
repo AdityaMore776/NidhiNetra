@@ -47,9 +47,13 @@ MASK_ONLY = ("chalk",)      # T172: the sign chalked straight on the wall, run w
 
 
 def scenarios() -> tuple[str, ...]:
-    """The T168 scenarios, then each one also run with the writing greyed out (T172), if run."""
-    return SCENARIOS + tuple(f"{s}+mask" for s in (*SCENARIOS, *MASK_ONLY)
-                             if (RUNS / f"{s}+mask.jsonl").exists())
+    """The T168 scenarios, then each one also run with the writing greyed out (T172), then with no
+    claim in the prompt (T173, run.py --photos), if run."""
+    masked = tuple(f"{s}+mask" for s in (*SCENARIOS, *MASK_ONLY)
+                   if (RUNS / f"{s}+mask.jsonl").exists())
+    asked = tuple(f"{s}+{ask}" for ask in ("fixed", "photos") for s in (*SCENARIOS, *masked, *MASK_ONLY)
+                  if (RUNS / f"{s}+{ask}.jsonl").exists())
+    return SCENARIOS + masked + asked
 
 
 def _read(p: Path) -> list[dict]:
@@ -74,7 +78,7 @@ def engine_verdict(raw: dict, claim: str = "the claim") -> str:
 
 
 def truth(scenario: str, it: dict) -> str | None:
-    scenario = scenario.removesuffix("+mask")
+    scenario = scenario.removesuffix("+photos").removesuffix("+fixed").removesuffix("+mask")
     if scenario == "swap" and it["claim_kind"] == "period" and it["label"] == "shown":
         return "not_shown"
     if scenario == "same":
@@ -89,10 +93,13 @@ def rows(scenario: str) -> list[dict]:
         t = truth(scenario, it) if it else None
         if t is None:
             continue
+        # photo-only rows carry the code's verdict already (photo_only.verdict); no claim was read
+        # fixed rows: the model read only code's claim (photo_only.fixed_claim), which never instructs
+        pred = (r.get("verdict") or "cant_tell") if scenario.endswith("+photos") else \
+            engine_verdict(r) if scenario.endswith("+fixed") else \
+            engine_verdict(r, it["claim"] + (INJECT if scenario.startswith("inject") else ""))
         out.append({"id": r["id"], "site": it["site"], "trick": it["trick"], "real": True,
-                    "truth": t, "seconds": r.get("seconds"),
-                    "pred": engine_verdict(r, it["claim"] + (INJECT if scenario.startswith("inject")
-                                                             else ""))})
+                    "truth": t, "seconds": r.get("seconds"), "pred": pred})
     return out
 
 

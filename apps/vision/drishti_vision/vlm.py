@@ -62,9 +62,14 @@ def jitter(im, rng: random.Random, p: float = 0.7):
 
 def messages(item: Item | dict, answer: dict | None = None) -> list[dict]:
     it = item if isinstance(item, dict) else item.__dict__
+    if it["claim"] is None:             # T173: photos alone, no claim text (photo_only.py)
+        from drishti_vision.photo_only import observe_prompt
+        ask = observe_prompt(it["work_type"])
+    else:
+        ask = user_prompt(it["work_type"], it["claim"], it["claim_kind"])
     user = [{"type": "text", "text": "Photo A (last visit):"}, {"type": "image"},
             {"type": "text", "text": "Photo B (this visit):"}, {"type": "image"},
-            {"type": "text", "text": user_prompt(it["work_type"], it["claim"], it["claim_kind"])}]
+            {"type": "text", "text": ask}]
     out = [{"role": "system", "content": [{"type": "text", "text": SYSTEM}]},
            {"role": "user", "content": user}]
     if answer is not None:
