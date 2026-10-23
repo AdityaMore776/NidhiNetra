@@ -22,7 +22,9 @@ engine's guard does (drishti_vision.textmask), and writes <scenario>+mask.jsonl.
 
 --photos (T173) asks with no claim at all (drishti_vision.photo_only): the model describes the photos
 and code compares the claim's pick from the form's list with that; writes <scenario>[+mask]+photos.jsonl.
-"inject" is not run this way: its prompt is the same as "clean" (the claim never reaches the model).
+--fixed (T173) gives the model a claim written by code from that pick (photo_only.fixed_claim), never
+the agency's words; writes <scenario>[+mask]+fixed.jsonl. "inject" is not run either way: its prompt is
+the same as "clean" (the agency's text never reaches the model).
 
 Raw answers only, one jsonl per scenario, resumable (a check already answered is skipped). Scored
 in the engine's venv by data/eval/nidhilens/task.py (Inspect AI) through the engine's own code.
@@ -137,12 +139,14 @@ def alter(scenario: str, a, b):
     raise ValueError(scenario)
 
 
-def run(scenario: str, its: list[dict], L, vlm, masked: bool = False, photos: bool = False) -> None:
+def run(scenario: str, its: list[dict], L, vlm, masked: bool = False, photos: bool = False,
+        fixed: bool = False) -> None:
     from drishti_vision import photo_only
-    if photos and scenario == "inject":
-        print("inject: skipped with --photos (no claim reaches the model)", flush=True)
+    if (photos or fixed) and scenario == "inject":
+        print("inject: skipped (the agency's text never reaches the model)", flush=True)
         return
-    out = OUT / f"{scenario}{'+mask' if masked else ''}{'+photos' if photos else ''}.jsonl"
+    ask = "+photos" if photos else "+fixed" if fixed else ""
+    out = OUT / f"{scenario}{'+mask' if masked else ''}{ask}.jsonl"
     out.parent.mkdir(parents=True, exist_ok=True)
     done = {json.loads(x)["id"] for x in out.read_text(encoding="utf-8").splitlines() if x} \
         if out.exists() else set()
@@ -157,6 +161,9 @@ def run(scenario: str, its: list[dict], L, vlm, masked: bool = False, photos: bo
                 from drishti_vision import textmask
                 (a, _), (b, grey) = textmask.mask(a), textmask.mask(b)
             claim = None if photos else it["claim"] + (INJECT if scenario == "inject" else "")
+            if fixed:
+                claim = photo_only.fixed_claim(it["work_type"], photo_only.pick_of_claim(it["claim"]),
+                                               it["claim_kind"])
             o = vlm.judge_images(L, a, b, it["work_type"], claim, it["claim_kind"])
             ans = o.get("answer") or {}
             extra = {}
@@ -183,12 +190,13 @@ def main() -> None:
     ap.add_argument("--subset", type=int, help="a fixed sample by label, seed 0")
     ap.add_argument("--mask", action="store_true", help="grey out writing first (T172)")
     ap.add_argument("--photos", action="store_true", help="no claim in the prompt (T173)")
+    ap.add_argument("--fixed", action="store_true", help="a claim written by code from the pick (T173)")
     a = ap.parse_args()
     from drishti_vision import vlm
     L = vlm.load(BASE, quant4=True, adapter=str(ADAPTER))
     its = items(a.limit, a.subset)
     for s in SCENARIOS if a.scenario == "all" else a.scenario.split(","):
-        run(s, its, L, vlm, a.mask, a.photos)
+        run(s, its, L, vlm, a.mask, a.photos, a.fixed)
 
 
 if __name__ == "__main__":

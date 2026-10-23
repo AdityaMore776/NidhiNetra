@@ -1,0 +1,5 @@
+T173 photo-only: set test, 883 items (labels {'not_shown': 576, 'cant_tell': 186, 'shown': 121}), NidhiLens 4-bit on the RTX 3070 Ti
+
+fixed   n 883: macro-F1 0.917 None, accuracy 0.949, fooled 0.015625, missed 0.19008264462809918, unreadable 0
+        facts vs people's answer: {'same_place': 0.963, 'stage_A': 0.809, 'stage_B': 0.678, 'permanent_change': 0.948}
+        confusion (truth -> predicted): {'shown': {'cant_tell': 20, 'shown': 98, 'not_shown': 3}, 'not_shown': {'not_shown': 556, 'shown': 9, 'cant_tell': 11}, 'cant_tell': {'cant_tell': 184, 'shown': 2}}

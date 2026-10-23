@@ -3114,3 +3114,45 @@ committed 8 Oct 2026, after this adapter's training data was fixed, and sharing 
 later on public web data could have seen it: for any future comparison, use newly filmed sites. (2) 59 test and 880
 fresh photos are in the v7 Gemini label queue; v7 came after this adapter (v6) and is not in its training file, and
 every test label was checked by a person.
+
+### Part 2: judging without reading the agency's words
+
+Two ways to keep the agency's own text out of NidhiLens's prompt (`apps/vision/drishti_vision/photo_only.py`). In
+both, the agency picks the stage reached from a fixed list on the form (`under way` / `complete`, now or since the
+last visit), so nothing they type reaches the model:
+- **photos**: no claim at all; the model only says same place / stage in A / stage in B / permanent change, and
+  code compares that with the pick;
+- **fixed**: code writes the claim from the pick (`photo_only.fixed_claim`, e.g. "Road completed since the last
+  visit") in the format the model was trained on.
+
+**Screen, 150 test checks** (50 per answer; `t173_photo_only.py --subset 150`, `results/t173_photo_only_test_150.txt`):
+
+| Mode | Macro-F1 | Real progress missed (of 50) | Fooled (of 100) |
+|---|---|---|---|
+| agency's words | 0.946 | 7 | 0 |
+| fixed | 0.932 | 9 | 0 |
+| photos | 0.711 | 34 | 1 |
+
+With no claim the model reads the stage in B as "unknown" far more often (stage B right 20% against 80%), so it
+misses two thirds of the real progress. **Photos-only is dropped at the screen** (not scaled up); **fixed** goes on.
+
+**Fixed on the full 883** (`results/t173_photo_only_test.txt`, `t173_compare.txt`), check by check against the
+agency's own words. The fixed run is 4-bit (this PC), so the agency's words are shown both at full precision (the
+report, T155) and in 4-bit (T159, the engine's weights):
+
+| Run | Macro-F1 [95% CI] | Fooled (of 762) | Missed (of 121) |
+|---|---|---|---|
+| agency's words, full precision (T155) | 0.935 [0.921, 0.951] | 4 | 21 |
+| agency's words, 4-bit (T159) | 0.933 [0.913, 0.951] | 11 | 17 |
+| **fixed, 4-bit** | **0.917 [0.900, 0.933]** | **11** | **23** |
+
+- **Like for like (both 4-bit), the code-written claim is fooled exactly as often** (11 and 11). The extra
+  fooling against the report is the 4-bit weights, already seen in T159.
+- It misses a little more real work (23 against 17): McNemar 6 against 13, p = 0.17, not proven. Its claim is
+  vaguer ("Road completed" for "Interlocking tile road completed"), so the model has less to match.
+- The 11 it is fooled on, by the people's labels: 4 are photos in reverse order (finished in A, nothing in B) and
+  5 show no change at all, where the model says "complete" in B; 2 are two different places the model calls the
+  same. 3 of the 11 fool the agency's-words run (full precision) too.
+
+Still to come (running): the altered photos (clean, swapped, same photo twice, the sign, chalk; greyed as in T172)
+in fixed mode, and the fresh 785.

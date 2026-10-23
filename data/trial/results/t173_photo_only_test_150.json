@@ -1,0 +1,140 @@
+{
+ "claim": {
+  "headline": {
+   "n": 150,
+   "accuracy": 0.9466666666666667,
+   "macro_f1": 0.9464368740160118,
+   "fooled_rate": 0.0,
+   "n_no_progress": 50,
+   "missed_rate": 0.14,
+   "n_progress": 50,
+   "answered_accuracy": 0.989247311827957,
+   "answered_share": 0.62,
+   "macro_f1_ci95": [
+    0.9122352305324162,
+    0.9773052147495918
+   ],
+   "fooled_rate_ci95": [
+    0.0,
+    0.0
+   ],
+   "missed_rate_ci95": [
+    0.06246811224489796,
+    0.22648388364779867
+   ],
+   "ece": null
+  },
+  "confusion": {
+   "shown": {
+    "cant_tell": 6,
+    "shown": 43,
+    "not_shown": 1
+   },
+   "not_shown": {
+    "not_shown": 49,
+    "cant_tell": 1
+   },
+   "cant_tell": {
+    "cant_tell": 50
+   }
+  },
+  "observed": {
+   "same_place": 0.953,
+   "stage_A": 0.929,
+   "stage_B": 0.797,
+   "permanent_change": 0.94
+  }
+ },
+ "fixed": {
+  "headline": {
+   "n": 150,
+   "accuracy": 0.9333333333333333,
+   "macro_f1": 0.9324406189092658,
+   "fooled_rate": 0.0,
+   "n_no_progress": 50,
+   "missed_rate": 0.18,
+   "n_progress": 50,
+   "answered_accuracy": 0.9782608695652174,
+   "answered_share": 0.6133333333333333,
+   "macro_f1_ci95": [
+    0.8966125447599625,
+    0.9635707117028955
+   ],
+   "fooled_rate_ci95": [
+    0.0,
+    0.0
+   ],
+   "missed_rate_ci95": [
+    0.09750290360046458,
+    0.2653061224489796
+   ],
+   "ece": null
+  },
+  "confusion": {
+   "shown": {
+    "cant_tell": 7,
+    "shown": 41,
+    "not_shown": 2
+   },
+   "not_shown": {
+    "not_shown": 49,
+    "cant_tell": 1
+   },
+   "cant_tell": {
+    "cant_tell": 50
+   }
+  },
+  "observed": {
+   "same_place": 0.947,
+   "stage_A": 0.913,
+   "stage_B": 0.75,
+   "permanent_change": 0.933
+  }
+ },
+ "photos": {
+  "headline": {
+   "n": 150,
+   "accuracy": 0.7333333333333333,
+   "macro_f1": 0.7110688711653732,
+   "fooled_rate": 0.02,
+   "n_no_progress": 50,
+   "missed_rate": 0.68,
+   "n_progress": 50,
+   "answered_accuracy": 0.9836065573770492,
+   "answered_share": 0.4066666666666667,
+   "macro_f1_ci95": [
+    0.6334473496749776,
+    0.7854334567215903
+   ],
+   "fooled_rate_ci95": [
+    0.0,
+    0.06666666666666667
+   ],
+   "missed_rate_ci95": [
+    0.5434627329192546,
+    0.8113502358490566
+   ],
+   "ece": null
+  },
+  "confusion": {
+   "shown": {
+    "cant_tell": 34,
+    "shown": 16
+   },
+   "not_shown": {
+    "not_shown": 44,
+    "cant_tell": 5,
+    "shown": 1
+   },
+   "cant_tell": {
+    "cant_tell": 50
+   }
+  },
+  "observed": {
+   "same_place": 0.88,
+   "stage_A": 0.746,
+   "stage_B": 0.203,
+   "permanent_change": 0.867
+  }
+ }
+}

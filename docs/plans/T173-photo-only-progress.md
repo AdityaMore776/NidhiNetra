@@ -71,6 +71,20 @@ Each item has `site`, `district`, `source`, `image_a`, `image_b`, `claim`, `labe
 5. **Ask the owner before switching the engine** to photo-only (the rule: ask before swapping an agent's whole method),
    with the two modes' numbers side by side.
 
-**Done when:** [ ] leak check saved, any leak re-scored and in FINDINGS · [ ] base model and memorisation probes run
+**Done when:** [x] leak check saved (no leak), in FINDINGS · [x] base model and memorisation probes run
 · [ ] photo-only scored on 883 + fresh · [ ] altered photos re-run · [ ] owner's decision on the switch · [ ] registry
 (`M-SITE-8`) updated, `check.py` run · [ ] FINDINGS "T173", log
+
+## Status (23 Oct 2026)
+
+- Part 1 DONE (commit c196d21): no leak.
+- Part 2 screen, 150 test items (`results/t173_photo_only_test_150.txt`): agency's words 0.946, **fixed** (claim
+  written by code from the agency's pick) 0.932, **photos** (no claim, code decides) 0.711: missed 34 of 50 real
+  progress, because without a claim the model reads stage B as "unknown". Photos-only is dropped by the screen
+  (not scaled up); **fixed** is the injection-proof mode taken forward.
+- Full test 883, fixed mode: running (`D:
+idhinetra-datauns	173	est_fixed.jsonl`, resumable;
+  `t173_photo_only.py --set test --modes fixed`), then `t173_compare.py`.
+- NEXT: altered photos in fixed mode with the T172 greying: `data/eval/nidhilens/run.py --scenario
+  clean,swap,same,text,chalk --mask --fixed` (300 each, ~28 min each), scored by `task.py`; then fresh 785
+  fixed; then FINDINGS part 2, registry `M-SITE-8`, ask the owner about switching.
