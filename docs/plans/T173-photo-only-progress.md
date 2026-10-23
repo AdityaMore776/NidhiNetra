@@ -82,7 +82,10 @@ Each item has `site`, `district`, `source`, `image_a`, `image_b`, `claim`, `labe
   written by code from the agency's pick) 0.932, **photos** (no claim, code decides) 0.711: missed 34 of 50 real
   progress, because without a claim the model reads stage B as "unknown". Photos-only is dropped by the screen
   (not scaled up); **fixed** is the injection-proof mode taken forward.
-- Full test 883, fixed mode: running (`D:
+- 23 Oct night: GPU runs STOPPED by the user (needs the PC; no overnight runs). Full test 883 is DONE (FINDINGS
+  part 2). Altered photos stopped at clean+mask+fixed 30/300 (resumable, same command); fresh 785 not started.
+  Each 300-check scenario ~35 min; run them one at a time when the user says the PC is free.
+- Full test 883, fixed mode: done (`D:
 idhinetra-datauns	173	est_fixed.jsonl`, resumable;
   `t173_photo_only.py --set test --modes fixed`), then `t173_compare.py`.
 - NEXT: altered photos in fixed mode with the T172 greying: `data/eval/nidhilens/run.py --scenario
